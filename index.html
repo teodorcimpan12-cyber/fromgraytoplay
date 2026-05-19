@@ -307,7 +307,7 @@ const T = {
     signIn: "Sign In",
     signUp: "Sign Up",
     signOut: "Sign Out",
-    language: "RO",
+    language: "HU",
     courtsReported: "Courts reported",
     petitionVotes: "Petition votes",
     volunteers: "Volunteers",
@@ -786,27 +786,33 @@ const CITIES = {
 const TIMELINE = [{
   y: 2013,
   ro: "Ultima renovare majoră a terenurilor periferice",
-  en: "Last major peripheral court renovation"
+  en: "Last major peripheral court renovation",
+  hu: "Az utolsó nagyobb felújítás a peremkerületi pályákon"
 }, {
   y: 2016,
   ro: "SIDU identifică deficit infrastructură sportivă",
-  en: "SIDU identifies sports infrastructure deficit"
+  en: "SIDU identifies sports infrastructure deficit",
+  hu: "A SIDU sportinfrastruktúra-hiányt azonosít"
 }, {
   y: 2019,
   ro: "Buget promis pentru renovări — nerealizat",
-  en: "Budget promised for renovations — unfulfilled"
+  en: "Budget promised for renovations — unfulfilled",
+  hu: "Ígért felújítási költségvetés — nem teljesült"
 }, {
   y: 2022,
   ro: "Degradare avansată terenuri Tudor și Auchan",
-  en: "Advanced degradation of Tudor and Auchan courts"
+  en: "Advanced degradation of Tudor and Auchan courts",
+  hu: "A Tudor és Auchan pályák súlyos állapotromlása"
 }, {
   y: 2025,
   ro: "Eroare administrativă 5M lei — Punctul.ro",
-  en: "5M lei admin error exposed — Punctul.ro"
+  en: "5M lei admin error exposed — Punctul.ro",
+  hu: "5 millió lejes hivatali hiba feltárva — Punctul.ro"
 }, {
   y: 2026,
   ro: "Lansare From Grey to Play",
-  en: "From Grey to Play launched"
+  en: "From Grey to Play launched",
+  hu: "From Grey to Play indulása"
 }];
 const ADMIN_PW = "teodor2026";
 
@@ -993,7 +999,7 @@ function Navbar() {
   })), /*#__PURE__*/React.createElement("button", {
     onClick: () => setPage("profile")
   }, user ? "👤 " + (user.name || t.profile) : t.signIn), /*#__PURE__*/React.createElement("button", {
-    onClick: () => setLang(lang === "ro" ? "en" : "ro")
+    onClick: () => setLang(nextLang(lang))
   }, t.language), /*#__PURE__*/React.createElement("button", {
     onClick: () => setTheme(theme === "dark" ? "light" : "dark")
   }, theme === "dark" ? "☀️" : "🌙")), /*#__PURE__*/React.createElement("button", {
@@ -1023,7 +1029,7 @@ function Navbar() {
     }
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-outline",
-    onClick: () => setLang(lang === "ro" ? "en" : "ro")
+    onClick: () => setLang(nextLang(lang))
   }, t.language), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-outline",
     onClick: () => setTheme(theme === "dark" ? "light" : "dark")
@@ -1325,6 +1331,10 @@ function CourtsPage() {
       color: "var(--textSec)"
     }
   }, c.address)), /*#__PURE__*/React.createElement("span", {
+    className: "badge",
+    title: getCourtWeather(c.condition, t).label,
+    style: { background: getCourtWeather(c.condition, t).color + "22", color: getCourtWeather(c.condition, t).color, marginRight: ".3rem" }
+  }, getCourtWeather(c.condition, t).icon, " ", getCourtWeather(c.condition, t).label), /*#__PURE__*/React.createElement("span", {
     className: `badge ${c.status === "degraded" ? "badge-red" : c.status === "inProgress" ? "badge-coral" : "badge-green"}`
   }, c.status === "degraded" ? t.degraded : c.status === "inProgress" ? t.inProgress : t.renovated)), /*#__PURE__*/React.createElement("div", {
     className: "progress-bar mt-1"
@@ -1386,6 +1396,7 @@ function CourtDetail({
       name: user?.name || "Guest",
       ts: Date.now()
     });
+    logActivity("check-in", user?.name || "Guest", c.id);
     setCi(true);
     toast(t.success);
     setTimeout(() => db.ref("courts/" + c.id + "/checkins/" + uid).remove(), 7200000);
@@ -1420,6 +1431,10 @@ function CourtDetail({
       flexWrap: "wrap"
     }
   }, /*#__PURE__*/React.createElement("span", {
+    className: "badge",
+    title: getCourtWeather(c.condition, t).label,
+    style: { background: getCourtWeather(c.condition, t).color + "22", color: getCourtWeather(c.condition, t).color, marginRight: ".3rem" }
+  }, getCourtWeather(c.condition, t).icon, " ", getCourtWeather(c.condition, t).label), /*#__PURE__*/React.createElement("span", {
     className: `badge ${c.status === "degraded" ? "badge-red" : c.status === "inProgress" ? "badge-coral" : "badge-green"}`
   }, c.status === "degraded" ? t.degraded : c.status === "inProgress" ? t.inProgress : t.renovated), /*#__PURE__*/React.createElement("span", {
     className: `badge ${occ === "empty" ? "badge-green" : occ === "active" ? "badge-coral" : "badge-red"}`
@@ -1758,6 +1773,7 @@ function PetitionPage() {
       volunteer: vol,
       date: new Date().toISOString()
     });
+    logActivity("petition", name);
     const lbKey = user?.id || name.trim().replace(/[.#$/\[\]]/g, '_');
     db.ref("leaderboard/" + lbKey).transaction(v => ({
       ...(v || {}),
@@ -2048,12 +2064,55 @@ function LetterModal({
   }, t.cancel))));
 }
 
+/* === Activity Feed (build brief #5) === */
+function ActivityFeed() {
+  const { t } = useApp();
+  const data = useFirebase("activity");
+  const list = data
+    ? Object.entries(data).map(([id, a]) => ({ id, ...a })).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).slice(0, 30)
+    : [];
+  const COURT_NAMES = COURTS.reduce((acc, c) => (acc[c.id] = c.name, acc), {});
+  const ICONS = { "check-in": "🏀", petition: "✍️", photo: "📸", report: "⚠️", game: "🎯" };
+  const msgFor = a => {
+    const courtName = a.courtId ? (COURT_NAMES[a.courtId] || a.courtId) : "";
+    const tplKey = "feed" + (a.type === "check-in" ? "Checkin" : (a.type || "").charAt(0).toUpperCase() + (a.type || "").slice(1));
+    const tpl = t[tplKey] || ((a.userName || "Anon") + " — " + (a.type || ""));
+    return tpl.replace("{name}", a.userName || "Anon").replace("{court}", courtName);
+  };
+  const ago = ts => {
+    if (!ts) return "—";
+    const s = Math.floor((Date.now() - ts) / 1000);
+    if (s < 60) return s + "s";
+    if (s < 3600) return Math.floor(s / 60) + "m";
+    if (s < 86400) return Math.floor(s / 3600) + "h";
+    return Math.floor(s / 86400) + "d";
+  };
+  return /*#__PURE__*/React.createElement("div", null,
+    /*#__PURE__*/React.createElement("h3", { style: { marginBottom: ".8rem" } }, "📡 ", t.liveActivity),
+    list.length === 0
+      ? /*#__PURE__*/React.createElement("p", { style: { color: "var(--textSec)" } }, t.feedEmpty)
+      : /*#__PURE__*/React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: ".5rem" } },
+          list.map((a, i) => /*#__PURE__*/React.createElement("div", {
+            key: a.id,
+            className: "card",
+            style: { display: "flex", gap: ".7rem", alignItems: "center", padding: ".7rem .9rem", borderLeft: i === 0 ? "4px solid var(--green)" : "4px solid transparent" }
+          },
+            /*#__PURE__*/React.createElement("span", { style: { fontSize: "1.4rem", lineHeight: 1 } }, ICONS[a.type] || "•"),
+            /*#__PURE__*/React.createElement("div", { style: { flex: 1 } },
+              /*#__PURE__*/React.createElement("p", { style: { margin: 0, fontSize: ".92rem" } }, msgFor(a)),
+              /*#__PURE__*/React.createElement("time", { style: { fontFamily: "'Space Mono', monospace", fontSize: ".68rem", color: "var(--textSec)", textTransform: "uppercase", letterSpacing: ".06em" } }, ago(a.timestamp), " ago")
+            )
+          ))
+        )
+  );
+}
+
 /* === Community === */
 function CommunityPage() {
   const {
     t
   } = useApp();
-  const [tab, setTab] = useState("forum");
+  const [tab, setTab] = useState("activity");
   return /*#__PURE__*/React.createElement("div", {
     className: "animate-in"
   }, /*#__PURE__*/React.createElement("section", {
@@ -2064,11 +2123,11 @@ function CommunityPage() {
     className: "section-title"
   }, "\uD83E\uDD1D ", t.community), /*#__PURE__*/React.createElement("div", {
     className: "tabs"
-  }, ["forum", "events", "gallery", "teams", "leaderboard"].map(tb => /*#__PURE__*/React.createElement("button", {
+  }, ["activity", "forum", "events", "gallery", "teams", "leaderboard"].map(tb => /*#__PURE__*/React.createElement("button", {
     key: tb,
     className: tab === tb ? "active" : "",
     onClick: () => setTab(tb)
-  }, tb === "forum" ? "💬 " + t.forum : tb === "events" ? "📅 " + t.events : tb === "gallery" ? "📸 " + t.gallery : tb === "teams" ? "⚽ " + t.teams : "🏆 " + t.leaderboard))), tab === "forum" && /*#__PURE__*/React.createElement(ForumTab, null), tab === "events" && /*#__PURE__*/React.createElement(EventsTab, null), tab === "gallery" && /*#__PURE__*/React.createElement(GalleryTab, null), tab === "teams" && /*#__PURE__*/React.createElement(TeamsTab, null), tab === "leaderboard" && /*#__PURE__*/React.createElement(LBTab, null))));
+  }, tb === "activity" ? "📡 " + t.liveActivity : tb === "forum" ? "💬 " + t.forum : tb === "events" ? "📅 " + t.events : tb === "gallery" ? "📸 " + t.gallery : tb === "teams" ? "⚽ " + t.teams : "🏆 " + t.leaderboard))), tab === "activity" && /*#__PURE__*/React.createElement(ActivityFeed, null), tab === "forum" && /*#__PURE__*/React.createElement(ForumTab, null), tab === "events" && /*#__PURE__*/React.createElement(EventsTab, null), tab === "gallery" && /*#__PURE__*/React.createElement(GalleryTab, null), tab === "teams" && /*#__PURE__*/React.createElement(TeamsTab, null), tab === "leaderboard" && /*#__PURE__*/React.createElement(LBTab, null))));
 }
 function ForumTab() {
   const {
@@ -3132,7 +3191,7 @@ function AboutPage() {
       lineHeight: 1.7,
       fontSize: ".92rem"
     }
-  }, ESSAY[lang])), /*#__PURE__*/React.createElement("div", {
+  }, ESSAY[lang] || ESSAY.ro)), /*#__PURE__*/React.createElement("div", {
     className: "card mt-2"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "mb-2"
@@ -3475,7 +3534,7 @@ function ProfilePage() {
     className: "flex justify-between items-center mb-1"
   }, /*#__PURE__*/React.createElement("span", null, "Language"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-outline",
-    onClick: () => setLang(lang === "ro" ? "en" : "ro")
+    onClick: () => setLang(nextLang(lang))
   }, t.language))), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline btn-block",
     style: {
