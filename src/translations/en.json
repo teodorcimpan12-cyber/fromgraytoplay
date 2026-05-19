@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "title": "From Grey to Play",
+    "tagline": "From Grey to Play — Târgu Mureș"
+  },
+  "nav": {
+    "home": "Home",
+    "courts": "Courts",
+    "petition": "Petition",
+    "community": "Community",
+    "impact": "Impact",
+    "help": "Help",
+    "about": "About"
+  },
+  "lang": {
+    "label": "Language",
+    "ro": "Romanian",
+    "en": "English",
+    "hu": "Hungarian"
+  },
+  "home": {
+    "kicker": "Civic project · Târgu Mureș",
+    "title": "From grey to play.",
+    "lead": "The peripheral neighborhoods of Târgu Mureș have forgotten sports courts. This project documents the problem, proposes solutions, and mobilizes the people who want change.",
+    "ctaPetition": "Sign the petition",
+    "ctaCourts": "See the courts",
+    "statsCourts": "courts documented",
+    "statsSignatures": "signatures",
+    "statsCheckins": "check-ins logged",
+    "problemTitle": "Two cities in one",
+    "problemBody": "On the Cornești Plateau you find groomed parks and colourful facades. In Tudor or behind Auchan, the basketball court has cracks, the backboard is bent, the net is gone. Same authority, same local taxes — visibly different outcomes.",
+    "solutionTitle": "Three concrete proposals",
+    "solutionFlip": "Flip-the-Court",
+    "solutionFlipBody": "Renovate existing courts with durable materials and realistic budgets — don't build from scratch, repair what we have.",
+    "solutionMural": "Street Canvas",
+    "solutionMuralBody": "A mural on the asphalt, chosen by community vote and painted alongside local artists. The space becomes the neighborhood's.",
+    "solutionAdopt": "Adopt a court",
+    "solutionAdoptBody": "Resident volunteers check on a court each week and report issues. Accountability without bureaucracy.",
+    "ctaAll": "See all solutions"
+  },
+  "courts": {
+    "title": "The city's courts",
+    "lead": "Eight documented courts, each with a current state. Tap for details.",
+    "filterAll": "All",
+    "filterCentral": "Central",
+    "filterPeripheral": "Peripheral",
+    "showMap": "Map",
+    "showList": "List",
+    "condition": "Condition",
+    "openDetail": "Details",
+    "noResults": "No courts match this filter."
+  },
+  "court": {
+    "back": "Back to courts",
+    "neighborhood": "Neighborhood",
+    "side": "Zone",
+    "central": "Central",
+    "peripheral": "Peripheral",
+    "checkIn": "I'm here now",
+    "report": "Report an issue",
+    "addPhoto": "Add a photo",
+    "lastActivity": "Recent activity"
+  },
+  "petition": {
+    "title": "Sign for a Târgu Mureș everyone can play in",
+    "lead": "This petition asks the local authorities for a transparent renovation plan for the peripheral neighborhood courts. Your signature counts.",
+    "nameLabel": "Your name",
+    "namePh": "Andrei P.",
+    "emailLabel": "Email",
+    "emailPh": "you@example.com",
+    "choiceLabel": "Which solution do you prefer?",
+    "choiceFlip": "Renovation (Flip-the-Court)",
+    "choiceMural": "Community mural",
+    "choiceBoth": "Both",
+    "volunteerLabel": "I want to help as a volunteer",
+    "submit": "Sign",
+    "submitting": "Sending...",
+    "thanks": "Thank you — your signature is in.",
+    "errorRequired": "Please fill in name and email.",
+    "errorOffline": "You're offline. Try again later.",
+    "currentCount": "{count} signatures so far",
+    "goalProgress": "{count} of {goal} for the next step"
+  },
+  "community": {
+    "title": "Community",
+    "lead": "This is where the movement shows up: who joined, who played, who reported.",
+    "feedTitle": "Live activity",
+    "feedEmpty": "Nothing yet. Be the first to sign or check in.",
+    "feedCheckin": "{name} checked in at {court}",
+    "feedPetition": "{name} signed the petition",
+    "feedPhoto": "{name} uploaded a photo of {court}",
+    "feedReport": "{name} reported a problem at {court}",
+    "feedGame": "{name} posted a pickup game at {court}"
+  },
+  "impact": {
+    "title": "Impact",
+    "lead": "Open data. Everything we document is available to anyone.",
+    "metricCourts": "Courts",
+    "metricSignatures": "Signatures",
+    "metricNeighborhoods": "Neighborhoods covered",
+    "metricPeripheral": "Peripheral courts in poor state",
+    "explainTitle": "What makes a court \"degraded\"?",
+    "explainBody": "A score below 0.4 means: visible cracks in the surface, bent backboard or missing net, no working lighting. These details may look small, but they turn a playspace into a discouraging place."
+  },
+  "help": {
+    "title": "Help",
+    "lead": "Three ways to contribute right now.",
+    "wayOneTitle": "Sign",
+    "wayOneBody": "The smallest gesture, the biggest cumulative effect.",
+    "wayTwoTitle": "Document",
+    "wayTwoBody": "Send a photo of a court in your neighborhood. The geographic data is what matters.",
+    "wayThreeTitle": "Adopt",
+    "wayThreeBody": "30 seconds a week to check a court. Become the community's eye."
+  },
+  "about": {
+    "title": "About",
+    "lead": "A civic project built by a high schooler in Târgu Mureș. Documentation, code, and data are open.",
+    "byline": "Cîmpan Teodor · Târgu Mureș, 2026",
+    "contact": "Contact",
+    "github": "Source code",
+    "license": "Data licensed under CC BY 4.0"
+  },
+  "weather": {
+    "excellent": "Excellent",
+    "excellentDesc": "Clean, intact, ready to play",
+    "good": "Good",
+    "goodDesc": "Minor wear, fully playable",
+    "okay": "Okay",
+    "okayDesc": "Some issues, still usable",
+    "poor": "Poor",
+    "poorDesc": "Significant damage, hard to use",
+    "broken": "Broken",
+    "brokenDesc": "Severely degraded, unsafe"
+  },
+  "footer": {
+    "rights": "Open data · Open source",
+    "source": "Source on GitHub",
+    "back": "Top"
+  }
+}

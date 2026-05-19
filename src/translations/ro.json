@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "title": "From Grey to Play",
+    "tagline": "Din gri în joc — Târgu Mureș"
+  },
+  "nav": {
+    "home": "Acasă",
+    "courts": "Terenuri",
+    "petition": "Petiție",
+    "community": "Comunitate",
+    "impact": "Impact",
+    "help": "Ajută",
+    "about": "Despre"
+  },
+  "lang": {
+    "label": "Limbă",
+    "ro": "Română",
+    "en": "Engleză",
+    "hu": "Maghiară"
+  },
+  "home": {
+    "kicker": "Proiect civic · Târgu Mureș",
+    "title": "Din gri în joc.",
+    "lead": "Cartierele periferice ale Târgu Mureșului au terenuri sportive uitate. Acest proiect documentează problema, propune soluții și mobilizează oamenii care vor schimbarea.",
+    "ctaPetition": "Semnează petiția",
+    "ctaCourts": "Vezi terenurile",
+    "statsCourts": "terenuri documentate",
+    "statsSignatures": "semnături",
+    "statsCheckins": "vizite înregistrate",
+    "problemTitle": "Două orașe într-unul singur",
+    "problemBody": "Pe Platoul Cornești găsești parcuri îngrijite și fațade colorate. În Tudor sau lângă Auchan, terenul de baschet are crăpături, panoul e îndoit, plasa lipsește. Aceeași autoritate, aceeași taxe locale — rezultate vizibil diferite.",
+    "solutionTitle": "Trei propuneri concrete",
+    "solutionFlip": "Flip-the-Court",
+    "solutionFlipBody": "Renovarea terenurilor existente cu materiale durabile și bugete realiste — nu construim de la zero, reparăm ce avem.",
+    "solutionMural": "Pânza Străzii",
+    "solutionMuralBody": "Un mural pe asfalt, ales prin votul comunității și pictat împreună cu artiști locali. Spațiul devine al cartierului.",
+    "solutionAdopt": "Adoptă un teren",
+    "solutionAdoptBody": "Rezidenți voluntari verifică săptămânal starea terenurilor și raportează problemele. Responsabilitate fără birocrație.",
+    "ctaAll": "Vezi toate soluțiile"
+  },
+  "courts": {
+    "title": "Terenurile orașului",
+    "lead": "Opt terenuri documentate, fiecare cu o stare actuală. Apasă pentru detalii.",
+    "filterAll": "Toate",
+    "filterCentral": "Centru",
+    "filterPeripheral": "Periferie",
+    "showMap": "Hartă",
+    "showList": "Listă",
+    "condition": "Stare",
+    "openDetail": "Detalii",
+    "noResults": "Niciun teren nu corespunde filtrului."
+  },
+  "court": {
+    "back": "Înapoi la terenuri",
+    "neighborhood": "Cartier",
+    "side": "Zonă",
+    "central": "Centru",
+    "peripheral": "Periferie",
+    "checkIn": "Sunt aici acum",
+    "report": "Raportează o problemă",
+    "addPhoto": "Adaugă o fotografie",
+    "lastActivity": "Activitate recentă"
+  },
+  "petition": {
+    "title": "Semnează pentru un Târgu Mureș jucat de toți",
+    "lead": "Petiția cere autorităților locale un plan transparent de renovare pentru terenurile din cartierele periferice. Semnătura ta contează.",
+    "nameLabel": "Numele tău",
+    "namePh": "Andrei P.",
+    "emailLabel": "Email",
+    "emailPh": "tu@exemplu.ro",
+    "choiceLabel": "Ce soluție preferi?",
+    "choiceFlip": "Renovare (Flip-the-Court)",
+    "choiceMural": "Mural comunitar",
+    "choiceBoth": "Ambele",
+    "volunteerLabel": "Vreau să ajut ca voluntar",
+    "submit": "Semnează",
+    "submitting": "Se trimite...",
+    "thanks": "Mulțumesc! Semnătura ta a fost înregistrată.",
+    "errorRequired": "Completează numele și emailul.",
+    "errorOffline": "Ești offline. Reîncearcă mai târziu.",
+    "currentCount": "{count} semnături până acum",
+    "goalProgress": "{count} din {goal} pentru următorul pas"
+  },
+  "community": {
+    "title": "Comunitate",
+    "lead": "Aici se vede mișcarea: cine s-a alăturat, cine joacă, cine raportează.",
+    "feedTitle": "Activitate live",
+    "feedEmpty": "Nimic încă. Fii primul care semnează sau face check-in.",
+    "feedCheckin": "{name} a făcut check-in la {court}",
+    "feedPetition": "{name} a semnat petiția",
+    "feedPhoto": "{name} a încărcat o fotografie de la {court}",
+    "feedReport": "{name} a raportat o problemă la {court}",
+    "feedGame": "{name} a postat un meci la {court}"
+  },
+  "impact": {
+    "title": "Impact",
+    "lead": "Date deschise. Tot ce documentăm e disponibil pentru oricine.",
+    "metricCourts": "Terenuri",
+    "metricSignatures": "Semnături",
+    "metricNeighborhoods": "Cartiere acoperite",
+    "metricPeripheral": "Terenuri periferice degradate",
+    "explainTitle": "Ce face un teren \"degradat\"?",
+    "explainBody": "Un scor sub 0.4 înseamnă: fisuri vizibile în suprafață, panou îndoit sau plasă lipsă, iluminat absent. Aceste detalii pot părea mici, dar transformă un spațiu de joacă într-unul descurajant."
+  },
+  "help": {
+    "title": "Ajută",
+    "lead": "Trei moduri în care poți contribui chiar acum.",
+    "wayOneTitle": "Semnează",
+    "wayOneBody": "Cel mai mic gest, cel mai mare efect cumulat.",
+    "wayTwoTitle": "Documentează",
+    "wayTwoBody": "Trimite o fotografie a unui teren din cartierul tău. Datele geografice sunt cele care contează.",
+    "wayThreeTitle": "Adoptă",
+    "wayThreeBody": "30 de secunde pe săptămână pentru a verifica un teren. Devii ochiul comunității."
+  },
+  "about": {
+    "title": "Despre",
+    "lead": "Un proiect civic gândit de un elev din Târgu Mureș. Documentația, codul și datele sunt deschise.",
+    "byline": "Cîmpan Teodor · Târgu Mureș, 2026",
+    "contact": "Contact",
+    "github": "Cod sursă",
+    "license": "Datele sunt publicate sub CC BY 4.0"
+  },
+  "weather": {
+    "excellent": "Excelent",
+    "excellentDesc": "Curat, intact, gata de joc",
+    "good": "Bun",
+    "goodDesc": "Uzură minoră, complet jucabil",
+    "okay": "Acceptabil",
+    "okayDesc": "Câteva probleme, dar utilizabil",
+    "poor": "Slab",
+    "poorDesc": "Defect semnificativ, greu de folosit",
+    "broken": "Stricat",
+    "brokenDesc": "Foarte degradat, nesigur"
+  },
+  "footer": {
+    "rights": "Date deschise · Cod deschis",
+    "source": "Cod sursă pe GitHub",
+    "back": "Sus"
+  }
+}

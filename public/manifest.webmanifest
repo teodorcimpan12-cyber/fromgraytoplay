@@ -1,0 +1,13 @@
+{
+  "name": "From Grey to Play",
+  "short_name": "Grey→Play",
+  "description": "Civic project reviving neglected sports courts in Târgu Mureș.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#1A1A2E",
+  "theme_color": "#1A1A2E",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

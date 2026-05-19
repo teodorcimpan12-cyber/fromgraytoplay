@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "title": "From Grey to Play",
+    "tagline": "Szürkéből játszótér — Marosvásárhely"
+  },
+  "nav": {
+    "home": "Kezdőlap",
+    "courts": "Pályák",
+    "petition": "Petíció",
+    "community": "Közösség",
+    "impact": "Hatás",
+    "help": "Segíts",
+    "about": "Rólunk"
+  },
+  "lang": {
+    "label": "Nyelv",
+    "ro": "Román",
+    "en": "Angol",
+    "hu": "Magyar"
+  },
+  "home": {
+    "kicker": "Polgári kezdeményezés · Marosvásárhely",
+    "title": "Szürkéből játszótér.",
+    "lead": "Marosvásárhely peremkerületeinek sportpályái elhanyagoltak. Ez a projekt dokumentálja a problémát, megoldásokat javasol, és mozgósítja azokat, akik változást akarnak.",
+    "ctaPetition": "Írd alá a petíciót",
+    "ctaCourts": "Nézd meg a pályákat",
+    "statsCourts": "dokumentált pálya",
+    "statsSignatures": "aláírás",
+    "statsCheckins": "bejelentkezés",
+    "problemTitle": "Két város egyben",
+    "problemBody": "A Somostetőn gondozott parkokat és színes homlokzatokat találsz. Tudorban vagy az Auchan mögött a kosárlabdapálya repedezett, a palánk hajlott, a háló hiányzik. Ugyanaz az önkormányzat, ugyanazok a helyi adók — láthatóan más eredmény.",
+    "solutionTitle": "Három konkrét javaslat",
+    "solutionFlip": "Flip-the-Court",
+    "solutionFlipBody": "Meglévő pályák felújítása tartós anyagokkal és reális költségvetéssel — nem építünk a semmiből, megjavítjuk, ami van.",
+    "solutionMural": "Utca Vászna",
+    "solutionMuralBody": "Az aszfalton egy falfestmény, amit a közösség választ ki és helyi művészekkel közösen készít. A tér a kerületé lesz.",
+    "solutionAdopt": "Fogadj örökbe egy pályát",
+    "solutionAdoptBody": "Lakó önkéntesek hetente ellenőriznek egy pályát, és jelzik a problémákat. Felelősség bürokrácia nélkül.",
+    "ctaAll": "Minden megoldás"
+  },
+  "courts": {
+    "title": "A város pályái",
+    "lead": "Nyolc dokumentált pálya, mindegyik mai állapotában. Kattints a részletekért.",
+    "filterAll": "Mind",
+    "filterCentral": "Központ",
+    "filterPeripheral": "Peremkerület",
+    "showMap": "Térkép",
+    "showList": "Lista",
+    "condition": "Állapot",
+    "openDetail": "Részletek",
+    "noResults": "Nincs a szűrőnek megfelelő pálya."
+  },
+  "court": {
+    "back": "Vissza a pályákhoz",
+    "neighborhood": "Kerület",
+    "side": "Zóna",
+    "central": "Központ",
+    "peripheral": "Peremkerület",
+    "checkIn": "Itt vagyok most",
+    "report": "Probléma jelzése",
+    "addPhoto": "Fénykép hozzáadása",
+    "lastActivity": "Legutóbbi tevékenység"
+  },
+  "petition": {
+    "title": "Írd alá egy mindenki által játszható Marosvásárhelyért",
+    "lead": "A petíció átlátható felújítási tervet kér a helyi hatóságoktól a peremkerületi pályákra. Az aláírásod számít.",
+    "nameLabel": "Neved",
+    "namePh": "András P.",
+    "emailLabel": "Email",
+    "emailPh": "te@pelda.hu",
+    "choiceLabel": "Melyik megoldást támogatod?",
+    "choiceFlip": "Felújítás (Flip-the-Court)",
+    "choiceMural": "Közösségi falfestmény",
+    "choiceBoth": "Mindkettő",
+    "volunteerLabel": "Önkéntesként szeretnék segíteni",
+    "submit": "Aláírom",
+    "submitting": "Küldés...",
+    "thanks": "Köszönöm — az aláírásod beérkezett.",
+    "errorRequired": "Kérlek, töltsd ki a nevet és az emailt.",
+    "errorOffline": "Nincs internet. Próbáld újra később.",
+    "currentCount": "{count} aláírás eddig",
+    "goalProgress": "{count} / {goal} a következő lépésig"
+  },
+  "community": {
+    "title": "Közösség",
+    "lead": "Itt látszik a mozgalom: ki csatlakozott, ki játszott, ki jelzett problémát.",
+    "feedTitle": "Élő tevékenység",
+    "feedEmpty": "Még semmi. Légy az első, aki aláír vagy bejelentkezik.",
+    "feedCheckin": "{name} bejelentkezett: {court}",
+    "feedPetition": "{name} aláírta a petíciót",
+    "feedPhoto": "{name} fényképet töltött fel: {court}",
+    "feedReport": "{name} problémát jelzett: {court}",
+    "feedGame": "{name} meccset hirdetett: {court}"
+  },
+  "impact": {
+    "title": "Hatás",
+    "lead": "Nyílt adatok. Minden, amit dokumentálunk, bárki számára elérhető.",
+    "metricCourts": "Pályák",
+    "metricSignatures": "Aláírások",
+    "metricNeighborhoods": "Lefedett kerületek",
+    "metricPeripheral": "Peremkerületi rossz állapotú pályák",
+    "explainTitle": "Mitől \"romos\" egy pálya?",
+    "explainBody": "A 0,4 alatti pontszám azt jelenti: látható repedések, hajlott palánk vagy hiányzó háló, nincs működő világítás. Apró részleteknek tűnnek, de játszóhelyből elkedvetlenítő hellyé teszik a teret."
+  },
+  "help": {
+    "title": "Segíts",
+    "lead": "Három módon járulhatsz hozzá most.",
+    "wayOneTitle": "Írd alá",
+    "wayOneBody": "A legkisebb gesztus, a legnagyobb összesített hatás.",
+    "wayTwoTitle": "Dokumentálj",
+    "wayTwoBody": "Küldj egy fényképet egy pályáról a kerületedből. A földrajzi adat számít igazán.",
+    "wayThreeTitle": "Fogadj örökbe",
+    "wayThreeBody": "Heti 30 másodperc egy pálya ellenőrzésére. Légy a közösség szeme."
+  },
+  "about": {
+    "title": "Rólunk",
+    "lead": "Polgári kezdeményezés egy marosvásárhelyi középiskolástól. A dokumentáció, a kód és az adatok nyíltak.",
+    "byline": "Cîmpan Teodor · Marosvásárhely, 2026",
+    "contact": "Kapcsolat",
+    "github": "Forráskód",
+    "license": "Adatok CC BY 4.0 alatt"
+  },
+  "weather": {
+    "excellent": "Kiváló",
+    "excellentDesc": "Tiszta, ép, készen áll",
+    "good": "Jó",
+    "goodDesc": "Kisebb kopás, teljesen játszható",
+    "okay": "Elfogadható",
+    "okayDesc": "Vannak hibák, de használható",
+    "poor": "Rossz",
+    "poorDesc": "Jelentős kár, nehéz használni",
+    "broken": "Tönkrement",
+    "brokenDesc": "Súlyosan leromlott, nem biztonságos"
+  },
+  "footer": {
+    "rights": "Nyílt adatok · Nyílt forráskód",
+    "source": "Forráskód a GitHubon",
+    "back": "Fel"
+  }
+}
