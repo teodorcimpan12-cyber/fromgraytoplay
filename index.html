@@ -1,27 +1,4126 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ro">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#1A1A2E" />
-    <meta name="description" content="From Grey to Play — un proiect civic pentru renașterea infrastructurii sportive din cartierele periferice ale Târgu Mureșului." />
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5"/>
+<meta name="theme-color" content="#10B981"/>
+<meta name="description" content="From Grey to Play — Târgu Mureș"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Grey2Play"/>
+<link rel="manifest" href="/manifest.json"/>
+<link rel="icon" href="/icons/icon-192.png"/>
+<link rel="apple-touch-icon" href="/icons/icon-192.png"/>
+<link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152.png"/>
+<link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144.png"/>
+<title>From Grey to Play</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Libre+Franklin:wght@300;400;500;600;700;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--dark:#1A1A2E;--darkCard:#16213E;--green:#10B981;--coral:#F97316;--teal:#0D9488;--grey:#6B7280;--darkGrey:#374151;--light:#F8FAFC;--lightGrey:#D1D5DB;--white:#FFFFFF;--red:#DC2626;--bg:var(--light);--bgCard:var(--white);--text:var(--darkGrey);--textSec:var(--grey);--border:var(--lightGrey);--navBg:var(--white);--shadow:0 2px 12px rgba(0,0,0,.08);--radius:12px}
+[data-theme="dark"]{--bg:var(--dark);--bgCard:var(--darkCard);--text:#E5E7EB;--textSec:#9CA3AF;--border:#374151;--navBg:#0F172A;--shadow:0 2px 12px rgba(0,0,0,.4)}
+html{scroll-behavior:smooth}
+body{font-family:'Libre Franklin',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background .3s,color .3s}
+h1,h2,h3,h4{font-family:'Space Mono',monospace;font-weight:700;line-height:1.2}
+a{color:var(--teal);text-decoration:none}
+button{cursor:pointer;font-family:inherit}
+input,textarea,select{font-family:inherit;font-size:1rem;padding:.55rem .8rem;border:1px solid var(--border);border-radius:8px;background:var(--bgCard);color:var(--text);width:100%}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
+.container{max-width:1100px;margin:0 auto;padding:0 1rem}
+.navbar{position:sticky;top:0;z-index:100;background:var(--navBg);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:.55rem 1rem;max-width:1100px;margin:0 auto}
+.nav-logo{display:flex;align-items:center;gap:.5rem;font-family:'Space Mono',monospace;font-weight:700;font-size:1rem;color:var(--green)}
+.nav-logo .bar{width:4px;height:22px;background:var(--green);border-radius:2px}
+.nav-links{display:flex;gap:.15rem;align-items:center}
+.nav-links a,.nav-links button{padding:.35rem .6rem;border-radius:8px;font-size:.8rem;font-weight:500;color:var(--text);background:none;border:none;white-space:nowrap;transition:background .15s}
+.nav-links a:hover,.nav-links button:hover,.nav-links a.active{background:var(--green);color:#fff}
+.hamburger{display:none;background:none;border:none;color:var(--text);font-size:1.5rem;padding:.3rem}
+@media(max-width:860px){.nav-links.desktop{display:none}.hamburger{display:block}}
+.mobile-menu{position:fixed;inset:0;z-index:200;background:var(--bg);padding:3.5rem 1rem 1rem;overflow-y:auto;animation:slideR .2s}
+.mobile-menu a,.mobile-menu button{display:block;padding:.7rem 1rem;border-radius:8px;font-size:1rem;color:var(--text);background:none;border:none;text-align:left;width:100%}
+.mobile-menu a:hover,.mobile-menu a.active{background:var(--green);color:#fff}
+.mobile-close{position:absolute;top:.8rem;right:1rem;font-size:1.8rem;background:none;border:none;color:var(--text)}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1.1rem;border-radius:8px;font-weight:600;font-size:.88rem;border:none;transition:transform .1s,box-shadow .2s}
+.btn:active{transform:scale(.97)}
+.btn-green{background:var(--green);color:#fff}.btn-green:hover{box-shadow:0 4px 16px rgba(16,185,129,.3)}
+.btn-coral{background:var(--coral);color:#fff}
+.btn-outline{background:transparent;border:2px solid var(--green);color:var(--green)}.btn-outline:hover{background:var(--green);color:#fff}
+.btn-sm{padding:.35rem .7rem;font-size:.78rem}
+.btn-block{width:100%;justify-content:center}
+.card{background:var(--bgCard);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.2rem;transition:transform .2s;border-left:4px solid transparent;overflow:hidden}
+.card:hover{transform:translateY(-1px)}.card-accent{border-left-color:var(--green)}
+.badge{display:inline-block;padding:.15rem .5rem;border-radius:20px;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.badge-green{background:rgba(16,185,129,.15);color:var(--green)}.badge-coral{background:rgba(249,115,22,.15);color:var(--coral)}.badge-red{background:rgba(220,38,38,.15);color:var(--red)}.badge-teal{background:rgba(13,148,136,.15);color:var(--teal)}
+.section{padding:2rem 0}.section-title{font-size:1.5rem;margin-bottom:.4rem}.section-sub{color:var(--textSec);margin-bottom:1.2rem;font-size:.92rem}
+.grid{display:grid;gap:1rem}.grid-2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}.grid-3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}.grid-4{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.tabs{display:flex;gap:.2rem;overflow-x:auto;padding-bottom:.4rem;border-bottom:2px solid var(--border);margin-bottom:1rem}
+.tabs button{padding:.4rem .8rem;border:none;background:none;font-weight:500;color:var(--textSec);white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .15s}
+.tabs button.active{color:var(--green);border-bottom-color:var(--green)}
+.progress-bar{height:7px;background:var(--border);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--teal));border-radius:4px;transition:width .6s}
+.stat-number{font-family:'Space Mono',monospace;font-size:1.8rem;font-weight:900;color:var(--green)}
+.stat-label{font-size:.78rem;color:var(--textSec);margin-top:.15rem}
+.modal-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:1rem;animation:fadeIn .15s}
+.modal{background:var(--bgCard);border-radius:var(--radius);padding:1.4rem;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;animation:slideUp .2s}
+.modal-lg{max-width:700px}
+.map-box{border-radius:var(--radius);overflow:hidden;height:380px;border:2px solid var(--border)}
+.toast{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%);background:var(--darkCard);color:#fff;padding:.6rem 1.2rem;border-radius:8px;font-size:.85rem;z-index:400;animation:slideUp .2s;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.footer{background:var(--dark);color:#9CA3AF;padding:1.5rem 0;text-align:center;font-size:.82rem}
+.footer a{color:var(--green)}.footer .owner{font-family:'Space Mono',monospace;color:var(--green);font-weight:700;font-size:1rem}
+.onboarding{position:fixed;inset:0;z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;padding:2rem}
+.onboarding h1{font-size:2rem;margin-bottom:.8rem}.onboarding p{font-size:1.05rem;color:#9CA3AF;max-width:380px;margin-bottom:1.5rem}
+.ob-dots{display:flex;gap:.5rem;margin-bottom:1.2rem}.ob-dots span{width:10px;height:10px;border-radius:50%;background:#374151;transition:background .2s}.ob-dots span.active{background:var(--green)}
+.petition-option{background:var(--bgCard);border-radius:var(--radius);padding:1.1rem;cursor:pointer;border:3px solid var(--border);transition:all .2s;text-align:center;user-select:none}
+.petition-option:active{transform:scale(.98)}
+.petition-option.sel-flip{border-color:#10B981;background:rgba(16,185,129,.06);box-shadow:0 0 0 1px #10B981}
+.petition-option.sel-mural{border-color:#F97316;background:rgba(249,115,22,.06);box-shadow:0 0 0 1px #F97316}
+.petition-option.sel-both{border-color:#0D9488;background:rgba(13,148,136,.06);box-shadow:0 0 0 1px #0D9488}
+.po-radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);margin:0 auto .5rem;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.sel-flip .po-radio{border-color:#10B981;background:#10B981}.sel-mural .po-radio{border-color:#F97316;background:#F97316}.sel-both .po-radio{border-color:#0D9488;background:#0D9488}
+.po-radio-dot{width:8px;height:8px;border-radius:50%;background:#fff;opacity:0;transition:opacity .1s}
+.sel-flip .po-radio-dot,.sel-mural .po-radio-dot,.sel-both .po-radio-dot{opacity:1}
+.po-emoji{font-size:2.2rem;margin-bottom:.3rem}.po-label{font-family:'Space Mono',monospace;font-weight:700;font-size:.9rem}.po-desc{font-size:.78rem;color:var(--textSec);margin-top:.2rem}
+.vol-check{display:flex;align-items:center;gap:.6rem;padding:.7rem 1rem;background:var(--bgCard);border:2px solid var(--border);border-radius:10px;cursor:pointer;user-select:none}
+.vol-check.on{border-color:var(--green);background:rgba(16,185,129,.05)}
+.vol-box{width:20px;height:20px;border-radius:5px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;font-size:.7rem;color:#fff}
+.vol-check.on .vol-box{background:var(--green);border-color:var(--green)}
+.pet-submit{width:100%;padding:.8rem;border:none;border-radius:10px;font-family:'Space Mono',monospace;font-weight:700;font-size:1rem;transition:all .2s}
+.pet-submit:enabled{background:var(--green);color:#fff;cursor:pointer;box-shadow:0 4px 16px rgba(16,185,129,.3)}
+.pet-submit:enabled:hover{transform:translateY(-1px)}.pet-submit:enabled:active{transform:scale(.98)}
+.pet-submit:disabled{background:var(--border);color:var(--textSec);cursor:not-allowed}
+.install-banner{background:linear-gradient(135deg,#0D9488,#10B981);color:#fff;padding:.6rem 1rem;display:flex;align-items:center;justify-content:center;gap:.7rem;font-size:.85rem;position:relative;z-index:90;flex-wrap:wrap;animation:slideDown .3s}
+.install-banner button.ib-btn{background:#fff;color:#0D9488;border:none;padding:.35rem .9rem;border-radius:6px;font-weight:700;font-size:.8rem;cursor:pointer}
+.install-banner .ib-x{background:none;border:none;color:rgba(255,255,255,.7);font-size:1.1rem;cursor:pointer;position:absolute;right:.5rem}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes slideR{from{transform:translateX(100%)}to{transform:translateX(0)}}
+@keyframes slideDown{from{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.animate-in{animation:slideUp .4s ease both}
+.flex{display:flex}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-between{justify-content:space-between}.gap-1{gap:.5rem}.gap-2{gap:1rem}
+.text-sm{font-size:.85rem}.text-xs{font-size:.75rem}.font-bold{font-weight:700}
+.mt-1{margin-top:.5rem}.mt-2{margin-top:1rem}.mt-3{margin-top:1.5rem}.mb-1{margin-bottom:.5rem}.mb-2{margin-bottom:1rem}
+.text-green{color:var(--green)}.text-red{color:var(--red)}
+.leaflet-container{font-family:inherit;z-index:1}
+/* Admin */
+.admin-shell{min-height:100vh;background:#0B0E18;color:#E5E7EB}
+.admin-hdr{background:#10131F;border-bottom:1px solid #1E2235;padding:.7rem 1.2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.admin-hdr h1{font-family:'Space Mono',monospace;font-size:1rem;color:#10B981}
+.admin-body{display:flex;min-height:calc(100vh - 50px)}
+.admin-side{width:200px;background:#10131F;border-right:1px solid #1E2235;padding:.6rem 0;flex-shrink:0}
+.admin-side button{display:block;width:100%;padding:.5rem 1rem;border:none;background:none;color:#9CA3AF;font-size:.82rem;text-align:left;cursor:pointer;border-left:3px solid transparent}
+.admin-side button:hover{background:#1A1D2E;color:#E5E7EB}
+.admin-side button.active{background:#1A1D2E;color:#10B981;border-left-color:#10B981;font-weight:600}
+.admin-main{flex:1;padding:1.2rem;overflow-x:auto;max-width:960px}
+.admin-main h2{font-family:'Space Mono',monospace;font-size:1.15rem;margin-bottom:1rem;color:#10B981}
+.a-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.6rem;margin-bottom:1rem}
+.a-stat{background:#151828;border:1px solid #1E2235;border-radius:10px;padding:.8rem;text-align:center}
+.a-stat .n{font-family:'Space Mono',monospace;font-size:1.4rem;font-weight:900}
+.a-stat .l{font-size:.68rem;color:#6B7280;margin-top:.1rem;text-transform:uppercase;letter-spacing:.4px}
+.a-table-wrap{overflow-x:auto;border:1px solid #1E2235;border-radius:10px;background:#151828}
+.a-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.a-table th{background:#1A1D2E;padding:.45rem .7rem;text-align:left;font-weight:600;color:#9CA3AF;text-transform:uppercase;font-size:.68rem;letter-spacing:.4px;white-space:nowrap}
+.a-table td{padding:.45rem .7rem;border-top:1px solid #1E2235;white-space:nowrap;max-width:180px;overflow:hidden;text-overflow:ellipsis}
+.a-table tr:hover td{background:#1A1D2E}
+.a-table .acts{display:flex;gap:.2rem}
+.a-table .acts button{padding:.15rem .4rem;border-radius:4px;border:1px solid #1E2235;background:none;color:#9CA3AF;font-size:.7rem;cursor:pointer}
+.a-table .acts button:hover{border-color:#10B981;color:#10B981}
+.a-table .acts button.dng:hover{border-color:#DC2626;color:#DC2626}
+.a-form{background:#151828;border:1px solid #1E2235;border-radius:10px;padding:1rem;margin-bottom:.8rem}
+.a-form input,.a-form textarea,.a-form select{background:#1A1D2E;border:1px solid #1E2235;color:#E5E7EB;padding:.45rem .7rem;border-radius:6px;width:100%;margin-bottom:.5rem;font-size:.82rem}
+.a-form input:focus,.a-form select:focus,.a-form textarea:focus{border-color:#10B981;outline:none}
+.a-form label{display:block;font-size:.7rem;color:#6B7280;text-transform:uppercase;margin-bottom:.2rem}
+.a-badge{display:inline-block;padding:.1rem .4rem;border-radius:4px;font-size:.66rem;font-weight:600}
+.a-badge-g{background:rgba(16,185,129,.15);color:#10B981}.a-badge-o{background:rgba(249,115,22,.15);color:#F97316}.a-badge-r{background:rgba(220,38,38,.15);color:#DC2626}.a-badge-t{background:rgba(13,148,136,.15);color:#0D9488}
+.admin-login{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#0B0E18}
+.admin-login-box{background:#151828;border:1px solid #1E2235;border-radius:12px;padding:2rem;width:100%;max-width:340px;text-align:center}
+.admin-login-box h2{font-family:'Space Mono',monospace;color:#10B981;margin-bottom:.3rem;font-size:1.05rem}
+.admin-login-box p{color:#6B7280;font-size:.8rem;margin-bottom:1.2rem}
+.admin-login-box input{background:#1A1D2E;border:1px solid #1E2235;color:#E5E7EB;padding:.6rem .8rem;border-radius:8px;width:100%;margin-bottom:.6rem}
+.admin-login-box input:focus{border-color:#10B981;outline:none}
+.admin-login-box .ab{width:100%;padding:.65rem;background:#10B981;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer}
+.admin-login-box .err{color:#DC2626;font-size:.78rem;margin-bottom:.5rem}
+@media(max-width:700px){.admin-side{display:none}}
+</style>
+</head>
+<body>
+<div id="root"></div>
 
-    <meta property="og:title" content="From Grey to Play" />
-    <meta property="og:description" content="Civic project reviving neglected basketball courts in Târgu Mureș." />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="/og.png" />
+<script>/* === Firebase === */
+firebase.initializeApp({
+  databaseURL: "https://fromgreytoplay-default-rtdb.firebaseio.com"
+});
+const db = firebase.database();
+const {
+  useState,
+  useEffect,
+  useRef,
+  createContext,
+  useContext,
+  useCallback
+} = React;
+const AppCtx = createContext();
+const useApp = () => useContext(AppCtx);
+function useFirebase(path) {
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    if (!path) return;
+    const ref = db.ref(path);
+    const fn = snap => setData(snap.val());
+    ref.on('value', fn);
+    return () => ref.off('value', fn);
+  }, [path]);
+  return data;
+}
 
-    <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+/* === i18n === */
+const T = {
+  ro: {
+    home: "Acasă",
+    courts: "Terenuri",
+    petition: "Petiție",
+    community: "Comunitate",
+    impact: "Impact",
+    help: "Cum ajuți",
+    about: "Despre",
+    profile: "Profil",
+    signIn: "Autentificare",
+    signUp: "Înregistrare",
+    signOut: "Deconectare",
+    language: "EN",
+    courtsReported: "Terenuri raportate",
+    petitionVotes: "Voturi petiție",
+    volunteers: "Voluntari",
+    reportCourt: "Raportează teren",
+    voteTitle: "Votează pentru schimbare",
+    quickVolunteer: "Devino voluntar",
+    weeklyChallenge: "Provocarea săptămânii",
+    flipCourt: "Flip-the-Court",
+    streetCanvas: "Street Canvas",
+    both: "Ambele",
+    totalVotes: "Total voturi",
+    liveResults: "Rezultate live",
+    share: "Distribuie",
+    generateLetter: "Generează scrisoare",
+    downloadPDF: "Descarcă",
+    forum: "Forum",
+    events: "Evenimente",
+    gallery: "Galerie",
+    videos: "Video",
+    teams: "Echipe",
+    leaderboard: "Clasament",
+    newPost: "Postare nouă",
+    submit: "Trimite",
+    cancel: "Anulează",
+    success: "Succes!",
+    error: "Eroare",
+    noData: "Nu există date încă",
+    close: "Închide",
+    points: "Puncte",
+    badges: "Insigne",
+    settings: "Setări",
+    courtName: "Numele terenului",
+    address: "Adresă",
+    condition: "Stare",
+    description: "Descriere",
+    basketball: "Baschet",
+    football: "Fotbal",
+    handball: "Handbal",
+    tennis: "Tenis",
+    multiuse: "Multifuncțional",
+    degraded: "Degradat",
+    inProgress: "În lucru",
+    renovated: "Renovat",
+    empty: "Liber",
+    active: "Activ",
+    full: "Plin",
+    checkIn: "Check-in",
+    checkOut: "Check-out",
+    bookCourt: "Rezervă",
+    allStatus: "Toate",
+    neighbourhood: "Cartier",
+    tudor: "Tudor",
+    auchan: "Zona Auchan",
+    sportcomplex: "Sportcomplex",
+    general: "General",
+    center: "Centru",
+    accessibility: "Accesibilitate",
+    rsvp: "Participă",
+    attendees: "Participanți",
+    addToCalendar: "Calendar",
+    upvote: "▲",
+    downvote: "▼",
+    reply: "Răspuns",
+    email: "Email",
+    phone: "Telefon",
+    volunteerSignup: "Înscriere voluntar",
+    theProject: "Proiectul",
+    fundingSources: "Surse finanțare",
+    partnerships: "Parteneriate",
+    pressKit: "Kit presă",
+    councilTracker: "Consiliu local",
+    companyName: "Numele companiei",
+    message: "Mesaj",
+    howToHelp: "Cum poți ajuta",
+    volunteerPath: "Voluntariat",
+    donatePath: "Donează",
+    sharePath: "Distribuie",
+    contactPath: "Contactează Primăria",
+    qrCode: "Cod QR",
+    sources: "Surse",
+    myReports: "Rapoartele mele",
+    myBookings: "Rezervările mele",
+    volunteerCertificate: "Certificat voluntar",
+    owner: "Cimpan Teodor",
+    madeBy: "Creat și gestionat de",
+    city: "Târgu Mureș, România",
+    copyright: "© 2026 From Grey to Play",
+    impactCalc: "Calculator impact",
+    cityComparison: "Comparație orașe",
+    budgetTransparency: "Transparență buget",
+    carbonCalc: "Amprenta carbon",
+    healthImpact: "Impact sănătate",
+    mentalHealth: "Sănătate mintală",
+    timeline: "Cronologie",
+    courtsRenovated: "Terenuri renovate",
+    youthAffected: "Tineri afectați",
+    sportHours: "Ore sport/an",
+    healthSavings: "Economii sănătate",
+    partnerForm: "Devino partener"
+  },
+  en: {
+    home: "Home",
+    courts: "Courts",
+    petition: "Petition",
+    community: "Community",
+    impact: "Impact",
+    help: "How to Help",
+    about: "About",
+    profile: "Profile",
+    signIn: "Sign In",
+    signUp: "Sign Up",
+    signOut: "Sign Out",
+    language: "RO",
+    courtsReported: "Courts reported",
+    petitionVotes: "Petition votes",
+    volunteers: "Volunteers",
+    reportCourt: "Report court",
+    voteTitle: "Vote for change",
+    quickVolunteer: "Become volunteer",
+    weeklyChallenge: "Weekly Challenge",
+    flipCourt: "Flip-the-Court",
+    streetCanvas: "Street Canvas",
+    both: "Both",
+    totalVotes: "Total votes",
+    liveResults: "Live results",
+    share: "Share",
+    generateLetter: "Generate letter",
+    downloadPDF: "Download",
+    forum: "Forum",
+    events: "Events",
+    gallery: "Gallery",
+    videos: "Videos",
+    teams: "Teams",
+    leaderboard: "Leaderboard",
+    newPost: "New post",
+    submit: "Submit",
+    cancel: "Cancel",
+    success: "Success!",
+    error: "Error",
+    noData: "No data yet",
+    close: "Close",
+    points: "Points",
+    badges: "Badges",
+    settings: "Settings",
+    courtName: "Court name",
+    address: "Address",
+    condition: "Condition",
+    description: "Description",
+    basketball: "Basketball",
+    football: "Football",
+    handball: "Handball",
+    tennis: "Tennis",
+    multiuse: "Multi-use",
+    degraded: "Degraded",
+    inProgress: "In progress",
+    renovated: "Renovated",
+    empty: "Empty",
+    active: "Active",
+    full: "Full",
+    checkIn: "Check in",
+    checkOut: "Check out",
+    bookCourt: "Book",
+    allStatus: "All",
+    neighbourhood: "Neighbourhood",
+    tudor: "Tudor",
+    auchan: "Auchan Area",
+    sportcomplex: "Sportcomplex",
+    general: "General",
+    center: "Centre",
+    accessibility: "Accessibility",
+    rsvp: "RSVP",
+    attendees: "Attendees",
+    addToCalendar: "Calendar",
+    upvote: "▲",
+    downvote: "▼",
+    reply: "Reply",
+    email: "Email",
+    phone: "Phone",
+    volunteerSignup: "Volunteer sign-up",
+    theProject: "The Project",
+    fundingSources: "Funding Sources",
+    partnerships: "Partnerships",
+    pressKit: "Press Kit",
+    councilTracker: "Council Tracker",
+    companyName: "Company name",
+    message: "Message",
+    howToHelp: "How you can help",
+    volunteerPath: "Volunteer",
+    donatePath: "Donate",
+    sharePath: "Share",
+    contactPath: "Contact City Hall",
+    qrCode: "QR Code",
+    sources: "Sources",
+    myReports: "My Reports",
+    myBookings: "My Bookings",
+    volunteerCertificate: "Volunteer Certificate",
+    owner: "Cimpan Teodor",
+    madeBy: "Created and managed by",
+    city: "Târgu Mureș, Romania",
+    copyright: "© 2026 From Grey to Play",
+    impactCalc: "Impact Calculator",
+    cityComparison: "City Comparison",
+    budgetTransparency: "Budget Transparency",
+    carbonCalc: "Carbon Footprint",
+    healthImpact: "Health Impact",
+    mentalHealth: "Mental Health",
+    timeline: "Timeline",
+    courtsRenovated: "Courts renovated",
+    youthAffected: "Youth affected",
+    sportHours: "Sport hours/year",
+    healthSavings: "Health savings",
+    partnerForm: "Become a partner"
+  },
+  hu: {
+    home: "Kezdőlap",
+    courts: "Pályák",
+    petition: "Petíció",
+    community: "Közösség",
+    impact: "Hatás",
+    help: "Segíts",
+    about: "Rólunk",
+    profile: "Profil",
+    signIn: "Bejelentkezés",
+    signUp: "Regisztráció",
+    signOut: "Kijelentkezés",
+    language: "RO",
+    courtsReported: "Bejelentett pályák",
+    petitionVotes: "Petíció szavazatok",
+    volunteers: "Önkéntesek",
+    reportCourt: "Pálya bejelentése",
+    voteTitle: "Szavazz a változásért",
+    quickVolunteer: "Legyél önkéntes",
+    weeklyChallenge: "Heti kihívás",
+    flipCourt: "Flip-the-Court",
+    streetCanvas: "Street Canvas",
+    both: "Mindkettő",
+    totalVotes: "Összes szavazat",
+    liveResults: "Élő eredmények",
+    share: "Megosztás",
+    generateLetter: "Levél generálása",
+    downloadPDF: "Letöltés",
+    forum: "Fórum",
+    events: "Események",
+    gallery: "Galéria",
+    videos: "Videók",
+    teams: "Csapatok",
+    leaderboard: "Ranglista",
+    newPost: "Új bejegyzés",
+    submit: "Küldés",
+    cancel: "Mégse",
+    success: "Sikerült!",
+    error: "Hiba",
+    noData: "Még nincs adat",
+    close: "Bezárás",
+    points: "Pont",
+    badges: "Jelvények",
+    settings: "Beállítások",
+    courtName: "Pálya neve",
+    address: "Cím",
+    condition: "Állapot",
+    description: "Leírás",
+    basketball: "Kosárlabda",
+    football: "Foci",
+    handball: "Kézilabda",
+    tennis: "Tenisz",
+    multiuse: "Többcélú",
+    degraded: "Leromlott",
+    inProgress: "Folyamatban",
+    renovated: "Felújítva",
+    empty: "Üres",
+    active: "Aktív",
+    full: "Tele",
+    checkIn: "Bejelentkezés",
+    checkOut: "Kijelentkezés",
+    bookCourt: "Foglalás",
+    allStatus: "Mind",
+    neighbourhood: "Kerület",
+    tudor: "Tudor",
+    auchan: "Auchan környéke",
+    sportcomplex: "Sportcomplex",
+    general: "Általános",
+    center: "Központ",
+    accessibility: "Akadálymentesség",
+    rsvp: "Részt veszek",
+    attendees: "Résztvevők",
+    addToCalendar: "Naptár",
+    upvote: "▲",
+    downvote: "▼",
+    reply: "Válasz",
+    email: "Email",
+    phone: "Telefon",
+    volunteerSignup: "Önkéntes jelentkezés",
+    theProject: "A projekt",
+    fundingSources: "Finanszírozási források",
+    partnerships: "Partnerségek",
+    pressKit: "Sajtócsomag",
+    councilTracker: "Helyi tanács",
+    companyName: "Cég neve",
+    message: "Üzenet",
+    howToHelp: "Hogyan segíthetsz",
+    volunteerPath: "Önkéntesség",
+    donatePath: "Adományozz",
+    sharePath: "Megosztás",
+    contactPath: "Polgármesteri Hivatal",
+    qrCode: "QR-kód",
+    sources: "Források",
+    myReports: "Bejelentéseim",
+    myBookings: "Foglalásaim",
+    volunteerCertificate: "Önkéntes igazolás",
+    owner: "Cimpan Teodor",
+    madeBy: "Készítette és kezeli",
+    city: "Marosvásárhely, Románia",
+    copyright: "© 2026 From Grey to Play",
+    impactCalc: "Hatás-kalkulátor",
+    cityComparison: "Városok összehasonlítása",
+    budgetTransparency: "Költségvetés-átláthatóság",
+    carbonCalc: "Szénlábnyom",
+    healthImpact: "Egészséghatás",
+    mentalHealth: "Mentális egészség",
+    timeline: "Idővonal",
+    courtsRenovated: "Felújított pályák",
+    youthAffected: "Érintett fiatalok",
+    sportHours: "Sportóra/év",
+    healthSavings: "Egészségügyi megtakarítás",
+    partnerForm: "Légy partner",
+    weatherExcellent: "Kiváló",
+    weatherGood: "Jó",
+    weatherOkay: "Elfogadható",
+    weatherPoor: "Rossz",
+    weatherBroken: "Tönkrement",
+    liveActivity: "Élő tevékenység",
+    feedEmpty: "Még semmi. Légy az első, aki aláír vagy bejelentkezik.",
+    feedCheckin: "{name} bejelentkezett: {court}",
+    feedPetition: "{name} aláírta a petíciót",
+    feedReport: "{name} problémát jelzett: {court}"
+  }
+};
+/* Translations added inline for new features — keep T.ro / T.en in sync. */
+T.ro.weatherExcellent = "Excelent";
+T.ro.weatherGood = "Bun";
+T.ro.weatherOkay = "Acceptabil";
+T.ro.weatherPoor = "Slab";
+T.ro.weatherBroken = "Stricat";
+T.ro.liveActivity = "Activitate live";
+T.ro.feedEmpty = "Nimic încă. Fii primul care semnează.";
+T.ro.feedCheckin = "{name} a făcut check-in la {court}";
+T.ro.feedPetition = "{name} a semnat petiția";
+T.ro.feedReport = "{name} a raportat o problemă la {court}";
+T.en.weatherExcellent = "Excellent";
+T.en.weatherGood = "Good";
+T.en.weatherOkay = "Okay";
+T.en.weatherPoor = "Poor";
+T.en.weatherBroken = "Broken";
+T.en.liveActivity = "Live activity";
+T.en.feedEmpty = "Nothing yet. Be the first to sign or check in.";
+T.en.feedCheckin = "{name} checked in at {court}";
+T.en.feedPetition = "{name} signed the petition";
+T.en.feedReport = "{name} reported a problem at {court}";
 
-    <title>From Grey to Play · Târgu Mureș</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+/* === Court weather helper (#12 from build brief) === */
+/* Maps the existing 1-5 condition score to a weather chip. */
+function getCourtWeather(condition, t) {
+  const c = Math.max(0, Math.min(5, Number(condition) || 0)) / 5;
+  if (c >= 0.8) return { icon: "☀️", key: "weatherExcellent", color: "#10B981", label: t.weatherExcellent };
+  if (c >= 0.6) return { icon: "🌤️", key: "weatherGood", color: "#22C55E", label: t.weatherGood };
+  if (c >= 0.4) return { icon: "⛅", key: "weatherOkay", color: "#F59E0B", label: t.weatherOkay };
+  if (c >= 0.2) return { icon: "🌧️", key: "weatherPoor", color: "#F97316", label: t.weatherPoor };
+  return { icon: "⛈️", key: "weatherBroken", color: "#DC2626", label: t.weatherBroken };
+}
+
+/* === Cycle through ro -> en -> hu === */
+const LANG_ORDER = ["ro", "en", "hu"];
+const LANG_LABEL = { ro: "EN", en: "HU", hu: "RO" };
+function nextLang(l) {
+  const i = LANG_ORDER.indexOf(l);
+  return LANG_ORDER[(i + 1) % LANG_ORDER.length];
+}
+
+/* === Anonymize a name to "Andrei P." for the activity feed. === */
+function anonName(s) {
+  const x = String(s || "").trim();
+  if (!x) return "Anonim";
+  const parts = x.split(/\s+/);
+  return parts.length === 1 ? parts[0] : parts[0] + " " + parts[parts.length - 1][0] + ".";
+}
+
+/* === Push an activity entry. Fire-and-forget. === */
+function logActivity(type, userName, courtId) {
+  try {
+    db.ref("activity").push({
+      type, userName: anonName(userName), courtId: courtId || null, timestamp: Date.now()
+    });
+  } catch (e) { /* offline — silently drop */ }
+}
+
+/* === Data === */
+const COURTS = [{
+  id: "c1",
+  name: "Teren Tudor 1",
+  address: "Str. Tudor Vladimirescu 45",
+  lat: 46.5512,
+  lng: 24.5678,
+  status: "degraded",
+  neighbourhood: "tudor",
+  category: "basketball",
+  condition: 2,
+  occupancy: "empty",
+  progress: 10,
+  accessibility: {
+    wheelchair: false,
+    lighting: false,
+    parking: true,
+    flatSurface: false
+  },
+  reports: 3
+}, {
+  id: "c2",
+  name: "Teren Auchan",
+  address: "Zona Auchan, Calea Sighișoarei",
+  lat: 46.5445,
+  lng: 24.5789,
+  status: "degraded",
+  neighbourhood: "auchan",
+  category: "multiuse",
+  condition: 1,
+  occupancy: "empty",
+  progress: 5,
+  accessibility: {
+    wheelchair: false,
+    lighting: false,
+    parking: true,
+    flatSurface: false
+  },
+  reports: 5
+}, {
+  id: "c3",
+  name: "Teren Sportcomplex",
+  address: "Str. Sportcomplex 12",
+  lat: 46.5567,
+  lng: 24.5623,
+  status: "inProgress",
+  neighbourhood: "sportcomplex",
+  category: "football",
+  condition: 3,
+  occupancy: "active",
+  progress: 45,
+  accessibility: {
+    wheelchair: true,
+    lighting: true,
+    parking: true,
+    flatSurface: true
+  },
+  reports: 2
+}, {
+  id: "c4",
+  name: "Teren Cornești",
+  address: "Platoul Cornești",
+  lat: 46.5634,
+  lng: 24.5432,
+  status: "renovated",
+  neighbourhood: "center",
+  category: "tennis",
+  condition: 5,
+  occupancy: "active",
+  progress: 100,
+  accessibility: {
+    wheelchair: true,
+    lighting: true,
+    parking: true,
+    flatSurface: true
+  },
+  reports: 0
+}, {
+  id: "c5",
+  name: "Teren Insulei",
+  address: "Str. Insulei 8",
+  lat: 46.5489,
+  lng: 24.5701,
+  status: "degraded",
+  neighbourhood: "tudor",
+  category: "handball",
+  condition: 2,
+  occupancy: "empty",
+  progress: 15,
+  accessibility: {
+    wheelchair: false,
+    lighting: false,
+    parking: false,
+    flatSurface: false
+  },
+  reports: 7
+}];
+var ESSAY = {
+  ro: "Cauta Targu Mures pe Google si fotografiile iti vand un vis – trasee de alergare pe Platoul Cornesti, parcuri verzi, fatade colorate. Oras sportiv, zic ei. Dar ia autobuzul spre Tudor sau in spatele Auchan, si visul se crapa, la propriu. Terenurile sunt sparte, cosurile indoite, si nimanui pare sa-i pese. Am vrut sa aflu de ce.\n\nAm cautat mai intai dovezi academice. Un studiu din 2023 in Urban Science (publicat de MDPI) compara modul in care orasele europene gestioneaza infrastructura recreationala si argumenteaza ca distributia inegala tinde sa adanceasca decalajele sociale. Este un studiu amplu, transnational – nu se potriveste perfect pentru un singur oras romanesc – dar rationamentul mi-a ramas. Journal of Urban Health restrange focusul: absenta terenurilor sportive la nivel de cartier se coreleaza direct cu inactivitatea si izolarea tinerilor. Ceea ce a fost decisiv a fost descoperirea Strategiei Integrate de Dezvoltare Urbana (SIDU), publicata pe site-ul Primariei. Documentul admite deschis ca districtele periferice – cele cu populatiile cele mai tinere – primesc cele mai putine investitii in infrastructura.\n\nReportajele locale au adaugat culoare. O investigatie Punctul.ro din octombrie 2025 a expus cum o eroare administrativa de cinci milioane de lei a inghetat renovarea unei baze sportive de pe strada Insulei – birocratie la superlativ. Un alt reportaj Punctul.ro a explorat cum Cluj si Sibiu au transformat cu succes loturi urbane neglijate in hub-uri digitale, evidentiind prin contrast cat de putin a facut Targu Mures. Acum, presa poate sensationaliza, asa ca am verificat cu bugetul oficial al Primariei Targu Mures. Cifrele s-au aliniat: fondurile promise pentru renovari depasesc constant ceea ce se cheltuieste efectiv.\n\nTotusi, cercetarea de birou iti arata doar o parte din imagine. Pe parcursul a doua weekenduri, am strabatut Tudor, zona Auchan si terenurile de langa Sportcomplex, fotografiind asfalt crapat si cosuri indoite si le-am inregistrat pe Google My Maps. Am facut si un sondaj informal rapid – cincisprezece rezidenti, o intrebare: folosesti terenul cel mai aproape de tine? Doisprezece au spus nu, prea degradat. Trei au spus ocazional, din lipsa de alternative. Cincisprezece respondenti nu vor castiga un premiu de statistica, dar acel nivel de consens este greu de respins.\n\nPunand piesele cap la cap, apare un lant clar: pasul unu, municipalitatea concentreaza cheltuielile pe locatii centrale de profil inalt; pasul doi, terenurile periferice se degradeaza din pura neatentie; pasul trei, tinerii din acele zone isi pierd sansa la sport regulat si la viata sociala care vine cu el. Platoul Cornesti ar putea fi intr-un alt cod postal fata de periferie. Nu spun ca cineva actioneaza din rautate – bugetele limitate si prea multe cereri concurente probabil explica mult. Dar rezidentii din aceste cartiere nu au canale civice clare pentru a semnala problema, si aceasta tacere lasa ciclul sa se repete.\n\nPrima mea propunere este un pilot Flip-the-Court: alegem trei dintre cele mai degradate terenuri, le refacem suprafata si echipam fiecare cu un dulap de echipament rezistent la intemperii pe care localnicii il pot debloca printr-o aplicatie gratuita. Aplicatia functioneaza si ca instrument de feedback – oamenii evalueaza facilitatile, raporteaza daunele si sugereaza ce echipament sportiv sa fie aprovizionat. Ca finantare, micro-granturile EU pentru sport-tineret acopera costurile principale; cateva parteneriate cu sali de sport locale acopera intretinerea. De la obtinerea grantului pana la taierea panglicii, sase luni par realizabile.\n\nA doua idee se bazeaza mai mult pe arta decat pe tehnologie. O initiativa Street Canvas ar aduce artistii locali de graffiti si rezidentii impreuna pentru a picta murale colorate la scara mare pe suprafetele renovate – finantata aproape in intregime din spray paint donat si ore de voluntariat. De ce sa ne obosim? Cercetarile privind atasamentul de loc arata ca oamenii care ajuta fizic la modelarea unui spatiu public il trateaza ca pe al lor, iar ratele de vandalism scad corespunzator. O placa cenusie devine un loc de intalnire pe care oamenii chiar vor sa-l protejeze.\n\nNimic din toate acestea nu este cu adevarat despre baschet sau handbal. Este despre daca adresa ta ar trebui sa-ti limiteze oportunitatile. Un pilot mic, cateva murale, un efort comunitar incapatanat – pretul este modest. Singurul lucru scump este sa continuam sa nu facem nimic.",
+  en: "Google Târgu Mureș and the photos sell you a dream – running trails on the Cornești Plateau, green parks, colourful facades. Sporty city, they say. But ride the bus out to Tudor or behind Auchan, and the dream cracks, quite literally. The courts are broken, the hoops bent, and nobody seems to care. I wanted to find out why.\n\nI went looking for academic backing first. A 2023 study in Urban Science (published by MDPI) compares how European cities manage recreational infrastructure and argues that uneven distribution tends to widen social gaps rather than narrow them. It is a broad, cross-national piece – not a perfect fit for one Romanian city – but the reasoning stuck with me. The Journal of Urban Health narrows the focus: the absence of neighbourhood-level sports courts correlates directly with youth inactivity and isolation. What really sealed it, though, was finding our city’s Integrated Urban Development Strategy (SIDU), published on the Primaria website. The document openly admits that peripheral districts – the ones with the youngest populations – receive the least infrastructure investment.\n\nLocal reporting added colour. A Punctul.ro investigation from October 2025 exposed how a five-million-lei administrative mix-up froze the renovation of a sports facility on Insulei Street – bureaucracy at its finest. A separate Punctul.ro feature explored how Cluj and Sibiu successfully repurposed neglected urban lots into digital hubs, highlighting by contrast just how little Targu Mures has done. Now, media outlets can sensationalise, so I cross-checked against the official Primaria Targu Mures budget. The numbers lined up: pledged renovation funds consistently outstrip what actually gets spent on the ground.\n\nStill, desk research only shows you part of the picture. Over two weekends, I walked through Tudor, the Auchan area, and the courts near Sportcomplex, photographing cracked asphalt and bent rims and logging it all on Google My Maps. I also ran a quick, informal poll – fifteen residents, one question: do you use the court nearest to you? Twelve said no, too run-down. Three said occasionally, for lack of alternatives. Fifteen respondents will not win a statistics prize, but that level of agreement is hard to dismiss.\n\nPut the pieces together, and a clear chain emerges: step one, the municipality concentrates spending on high-profile central venues; step two, peripheral courts decay from sheer inattention; step three, young people in those areas lose their shot at regular sport and the social life that goes with it. The Cornesti Plateau might as well be in a different postcode from the outskirts. Now, I am not saying anyone is acting out of spite – limited budgets and too many competing demands probably explain a lot. But residents in these neighbourhoods also lack clear civic channels to flag the problem, and that silence lets the cycle repeat itself.\n\nMy first proposal is a Flip-the-Court pilot: choose three of the worst-off courts, resurface them, and fit each with a weather-proof equipment cabinet that locals can unlock through a free phone app. The app doubles as a feedback tool – people rate the facilities, report damage, and suggest what sports gear to stock next. Funding-wise, EU youth-sport micro-grants cover the hard costs; a handful of local gym partnerships cover maintenance. From securing the grant to cutting the ribbon, six months feels achievable.\n\nMy second idea leans more on art than on tech. A Street Canvas initiative would bring local graffiti artists and residents together to paint large-scale, colourful ground murals across the refurbished surfaces – funded almost entirely by donated spray paint and volunteer hours. Why bother? Research on place attachment shows that people who physically help shape a public space treat it as their own, and that damage rates drop accordingly. A once-grey slab becomes a gathering spot people actually want to protect.\n\nNone of this is really about basketball or handball. It is about whether your address should cap your opportunities. A small pilot, a few murals, some stubborn community effort – the price tag is modest. The only expensive thing is continuing to do nothing."
+};
+const FUNDING = [{
+  name: "Erasmus+ Sport KA2",
+  amount: "EUR 120K-450K",
+  url: "https://erasmus-plus.ec.europa.eu/funding-calls",
+  type: "EU"
+}, {
+  name: "Erasmus+ Youth KA1",
+  amount: "—",
+  url: "https://erasmus-plus.ec.europa.eu/funding-calls",
+  type: "EU"
+}, {
+  name: "European Youth Together",
+  amount: "—",
+  url: "https://ec.europa.eu/info/funding-tenders/",
+  type: "EU"
+}, {
+  name: "EU Sport Grassroot",
+  amount: "—",
+  url: "https://sport.ec.europa.eu/funding",
+  type: "EU"
+}, {
+  name: "POR Regional",
+  amount: "—",
+  url: "https://mfe.gov.ro/",
+  type: "National"
+}, {
+  name: "PNRR Pillar VI",
+  amount: "—",
+  url: "https://mfe.gov.ro/pnrr/",
+  type: "National"
+}, {
+  name: "Law 350/2005",
+  amount: "—",
+  url: "https://politicisport.ro/",
+  type: "National"
+}, {
+  name: "Buget Local TGM",
+  amount: "—",
+  url: "https://www.tirgumures.ro/",
+  type: "Local"
+}];
+const BUDGET = [{
+  y: 2020,
+  p: 2.1,
+  s: 0.8
+}, {
+  y: 2021,
+  p: 2.5,
+  s: 1.0
+}, {
+  y: 2022,
+  p: 3.0,
+  s: 0.7
+}, {
+  y: 2023,
+  p: 2.8,
+  s: 0.9
+}, {
+  y: 2024,
+  p: 3.5,
+  s: 1.1
+}, {
+  y: 2025,
+  p: 4.0,
+  s: 0.6
+}];
+const CITIES = {
+  tgm: {
+    name: "Târgu Mureș",
+    b: 12,
+    c: 3.2,
+    r: 0
+  },
+  clj: {
+    name: "Cluj-Napoca",
+    b: 28,
+    c: 7.1,
+    r: 45
+  },
+  sib: {
+    name: "Sibiu",
+    b: 22,
+    c: 5.8,
+    r: 38
+  },
+  bv: {
+    name: "Brașov",
+    b: 25,
+    c: 6.3,
+    r: 42
+  }
+};
+const TIMELINE = [{
+  y: 2013,
+  ro: "Ultima renovare majoră a terenurilor periferice",
+  en: "Last major peripheral court renovation"
+}, {
+  y: 2016,
+  ro: "SIDU identifică deficit infrastructură sportivă",
+  en: "SIDU identifies sports infrastructure deficit"
+}, {
+  y: 2019,
+  ro: "Buget promis pentru renovări — nerealizat",
+  en: "Budget promised for renovations — unfulfilled"
+}, {
+  y: 2022,
+  ro: "Degradare avansată terenuri Tudor și Auchan",
+  en: "Advanced degradation of Tudor and Auchan courts"
+}, {
+  y: 2025,
+  ro: "Eroare administrativă 5M lei — Punctul.ro",
+  en: "5M lei admin error exposed — Punctul.ro"
+}, {
+  y: 2026,
+  ro: "Lansare From Grey to Play",
+  en: "From Grey to Play launched"
+}];
+const ADMIN_PW = "teodor2026";
+
+/* === Toast === */
+function Toast({
+  msg,
+  onClose
+}) {
+  useEffect(() => {
+    const t = setTimeout(onClose, 3000);
+    return () => clearTimeout(t);
+  }, []);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "toast"
+  }, msg);
+}
+
+/* === Onboarding === */
+function Onboarding({
+  onDone,
+  lang
+}) {
+  const [s, setS] = useState(0);
+  const screens = [{
+    emoji: "🏀",
+    title: "FROM GREY TO PLAY",
+    sub: lang === "ro" ? "Documentăm inegalitatea infrastructurii sportive din Târgu Mureș" : "Documenting sports infrastructure inequality in Târgu Mureș",
+    bg: "linear-gradient(135deg,#1A1A2E,#16213E)"
+  }, {
+    emoji: "🏚️ ↔ 🏟️",
+    title: lang === "ro" ? "Același oraș, două realități" : "Same city, two worlds",
+    sub: lang === "ro" ? "Centrul strălucește. Cartierele periferice se degradează." : "The centre shines. Peripheral neighbourhoods crumble.",
+    bg: "linear-gradient(135deg,#374151,#1A1A2E)"
+  }, {
+    emoji: "✊",
+    title: lang === "ro" ? "Ajută-ne să schimbăm asta" : "Help us change this",
+    sub: lang === "ro" ? "Semnează, raportează, participă." : "Sign, report, participate.",
+    bg: "linear-gradient(135deg,#10B981,#0D9488)"
+  }];
+  return /*#__PURE__*/React.createElement("div", {
+    className: "onboarding",
+    style: {
+      background: screens[s].bg,
+      transition: "background .4s"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "3.5rem",
+      marginBottom: "1rem",
+      animation: "pulse 2s infinite"
+    }
+  }, screens[s].emoji), /*#__PURE__*/React.createElement("h1", null, screens[s].title), /*#__PURE__*/React.createElement("p", null, screens[s].sub), /*#__PURE__*/React.createElement("div", {
+    className: "ob-dots"
+  }, screens.map((_, i) => /*#__PURE__*/React.createElement("span", {
+    key: i,
+    className: i === s ? "active" : ""
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline",
+    onClick: onDone
+  }, lang === "ro" ? "Treci peste" : "Skip"), s < 2 ? /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green",
+    onClick: () => setS(s + 1)
+  }, lang === "ro" ? "Următorul" : "Next") : /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green",
+    onClick: onDone
+  }, lang === "ro" ? "Începe" : "Start", " \u2192")));
+}
+
+/* === Install Banner === */
+function InstallBanner({
+  lang
+}) {
+  const [dp, setDp] = useState(null);
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    if (window.matchMedia('(display-mode:standalone)').matches) return;
+    const d = localStorage.getItem("g2p_ib_d");
+    if (d && Date.now() - +d < 7 * 86400000) return;
+    const h = e => {
+      e.preventDefault();
+      setDp(e);
+      setShow(true);
+    };
+    window.addEventListener("beforeinstallprompt", h);
+    const ios = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    if (ios) setTimeout(() => setShow(true), 2e3);
+    return () => window.removeEventListener("beforeinstallprompt", h);
+  }, []);
+  const install = async () => {
+    if (dp) {
+      dp.prompt();
+      const r = await dp.userChoice;
+      if (r.outcome === "accepted") setShow(false);
+      setDp(null);
+    } else {
+      alert(lang === "ro" ? "Apasă Share ⬆️ → Adaugă pe ecranul principal" : "Tap Share ⬆️ → Add to Home Screen");
+    }
+  };
+  const dismiss = () => {
+    setShow(false);
+    localStorage.setItem("g2p_ib_d", String(Date.now()));
+  };
+  if (!show) return null;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "install-banner"
+  }, /*#__PURE__*/React.createElement("span", null, "\uD83D\uDCF2"), /*#__PURE__*/React.createElement("span", null, lang === "ro" ? "Instalează aplicația From Grey to Play!" : "Install the From Grey to Play app!"), /*#__PURE__*/React.createElement("button", {
+    className: "ib-btn",
+    onClick: install
+  }, lang === "ro" ? "Instalează" : "Install"), /*#__PURE__*/React.createElement("button", {
+    className: "ib-x",
+    onClick: dismiss
+  }, "\u2715"));
+}
+
+/* === Navbar === */
+function Navbar() {
+  const {
+    t,
+    lang,
+    setLang,
+    theme,
+    setTheme,
+    page,
+    setPage,
+    user
+  } = useApp();
+  const [mob, setMob] = useState(false);
+  const navs = [{
+    k: "home",
+    l: t.home
+  }, {
+    k: "courts",
+    l: t.courts
+  }, {
+    k: "petition",
+    l: t.petition
+  }, {
+    k: "community",
+    l: t.community
+  }, {
+    k: "impact",
+    l: t.impact
+  }, {
+    k: "help",
+    l: t.help
+  }, {
+    k: "about",
+    l: t.about
+  }];
+  const NL = ({
+    k,
+    l,
+    click
+  }) => /*#__PURE__*/React.createElement("a", {
+    href: "#",
+    className: page === k ? "active" : "",
+    onClick: e => {
+      e.preventDefault();
+      setPage(k);
+      click && click();
+    }
+  }, l);
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("nav", {
+    className: "navbar"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "nav-inner"
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "#",
+    className: "nav-logo",
+    onClick: e => {
+      e.preventDefault();
+      setPage("home");
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "bar"
+  }), "FROM GREY TO PLAY"), /*#__PURE__*/React.createElement("div", {
+    className: "nav-links desktop"
+  }, navs.map(n => /*#__PURE__*/React.createElement(NL, {
+    key: n.k,
+    k: n.k,
+    l: n.l
+  })), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setPage("profile")
+  }, user ? "👤 " + (user.name || t.profile) : t.signIn), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setLang(lang === "ro" ? "en" : "ro")
+  }, t.language), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setTheme(theme === "dark" ? "light" : "dark")
+  }, theme === "dark" ? "☀️" : "🌙")), /*#__PURE__*/React.createElement("button", {
+    className: "hamburger",
+    onClick: () => setMob(true)
+  }, "\u2630"))), mob && /*#__PURE__*/React.createElement("div", {
+    className: "mobile-menu"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "mobile-close",
+    onClick: () => setMob(false)
+  }, "\u2715"), navs.map(n => /*#__PURE__*/React.createElement(NL, {
+    key: n.k,
+    k: n.k,
+    l: n.l,
+    click: () => setMob(false)
+  })), /*#__PURE__*/React.createElement("a", {
+    href: "#",
+    onClick: e => {
+      e.preventDefault();
+      setPage("profile");
+      setMob(false);
+    }
+  }, user ? "👤 " + user.name : t.signIn), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1",
+    style: {
+      padding: "1rem"
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-outline",
+    onClick: () => setLang(lang === "ro" ? "en" : "ro")
+  }, t.language), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-outline",
+    onClick: () => setTheme(theme === "dark" ? "light" : "dark")
+  }, theme === "dark" ? "☀️" : "🌙"))));
+}
+
+/* === Map === */
+function MapView({
+  courts,
+  height = "380px",
+  onSelect
+}) {
+  const ref = useRef(null);
+  const mapRef = useRef(null);
+  const {
+    t
+  } = useApp();
+  useEffect(() => {
+    if (!ref.current || mapRef.current) return;
+    const m = L.map(ref.current).setView([46.5455, 24.5625], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OSM'
+    }).addTo(m);
+    courts.forEach(c => {
+      const col = c.status === "degraded" ? "#DC2626" : c.status === "inProgress" ? "#F97316" : "#10B981";
+      const icon = L.divIcon({
+        html: `<div style="width:14px;height:14px;border-radius:50%;background:${col};border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3)"></div>`,
+        className: "",
+        iconSize: [14, 14]
+      });
+      const mk = L.marker([c.lat, c.lng], {
+        icon
+      }).addTo(m);
+      mk.bindPopup(`<b>${c.name}</b><br>${c.address}`);
+      if (onSelect) mk.on('click', () => onSelect(c));
+    });
+    mapRef.current = m;
+    setTimeout(() => m.invalidateSize(), 200);
+    return () => {
+      m.remove();
+      mapRef.current = null;
+    };
+  }, [courts]);
+  return /*#__PURE__*/React.createElement("div", {
+    ref: ref,
+    className: "map-box",
+    style: {
+      height
+    }
+  });
+}
+
+/* === Home === */
+function HomePage() {
+  const {
+    t,
+    lang,
+    setPage
+  } = useApp();
+  const votes = useFirebase("votes");
+  const signups = useFirebase("signups");
+  const tv = votes ? (votes.flip || 0) + (votes.mural || 0) + (votes.both || 0) : 0;
+  const vc = signups ? Object.values(signups).filter(s => s.volunteer).length : 0;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "animate-in"
+  }, /*#__PURE__*/React.createElement("section", {
+    style: {
+      background: "linear-gradient(135deg,var(--dark),#16213E)",
+      color: "#fff",
+      padding: "2.5rem 0",
+      position: "relative",
+      overflow: "hidden"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "absolute",
+      top: "-20px",
+      right: "-20px",
+      fontSize: "7rem",
+      opacity: .06
+    }
+  }, "\uD83C\uDFC0"), /*#__PURE__*/React.createElement("div", {
+    className: "container"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderLeft: "6px solid var(--green)",
+      paddingLeft: "1rem"
+    }
+  }, /*#__PURE__*/React.createElement("h1", {
+    style: {
+      fontSize: "2rem",
+      marginBottom: ".4rem"
+    }
+  }, lang === "ro" ? "Terenurile tale contează" : "Your courts matter"), /*#__PURE__*/React.createElement("p", {
+    style: {
+      color: "#9CA3AF",
+      maxWidth: 560
+    }
+  }, lang === "ro" ? "Documentăm inegalitatea infrastructurii sportive din Târgu Mureș. Semnează petiția, raportează terenuri degradate." : "Documenting sports infrastructure inequality in Târgu Mureș. Sign the petition, report degraded courts.")), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-3 mt-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      background: "rgba(16,185,129,.1)",
+      borderLeft: "4px solid var(--green)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number"
+  }, COURTS.length), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, t.courtsReported)), /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      background: "rgba(249,115,22,.1)",
+      borderLeft: "4px solid var(--coral)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number",
+    style: {
+      color: "var(--coral)"
+    }
+  }, tv), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, t.petitionVotes)), /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      background: "rgba(13,148,136,.1)",
+      borderLeft: "4px solid var(--teal)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number",
+    style: {
+      color: "var(--teal)"
+    }
+  }, vc), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, t.volunteers))))), /*#__PURE__*/React.createElement("section", {
+    className: "section"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "card card-accent",
+    onClick: () => setPage("courts"),
+    style: {
+      textAlign: "left",
+      border: "none"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "1.8rem",
+      marginBottom: ".3rem"
+    }
+  }, "\uD83D\uDCCD"), /*#__PURE__*/React.createElement("h3", null, t.reportCourt)), /*#__PURE__*/React.createElement("button", {
+    className: "card",
+    onClick: () => setPage("petition"),
+    style: {
+      textAlign: "left",
+      border: "none",
+      borderLeft: "4px solid var(--coral)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "1.8rem",
+      marginBottom: ".3rem"
+    }
+  }, "\u270A"), /*#__PURE__*/React.createElement("h3", null, t.voteTitle)), /*#__PURE__*/React.createElement("button", {
+    className: "card",
+    onClick: () => setPage("help"),
+    style: {
+      textAlign: "left",
+      border: "none",
+      borderLeft: "4px solid var(--teal)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "1.8rem",
+      marginBottom: ".3rem"
+    }
+  }, "\uD83E\uDD1D"), /*#__PURE__*/React.createElement("h3", null, t.quickVolunteer))))), /*#__PURE__*/React.createElement("section", {
+    className: "section",
+    style: {
+      background: "var(--bgCard)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container"
+  }, /*#__PURE__*/React.createElement("h2", {
+    className: "section-title"
+  }, "\uD83D\uDCCD ", t.courtsReported), /*#__PURE__*/React.createElement(MapView, {
+    courts: COURTS,
+    height: "320px"
+  }))));
+}
+
+/* === Courts === */
+function CourtsPage() {
+  const {
+    t,
+    lang,
+    toast,
+    user,
+    setPage
+  } = useApp();
+  const [tab, setTab] = useState("map");
+  const [filter, setFilter] = useState("all");
+  const [hood, setHood] = useState("all");
+  const [sel, setSel] = useState(null);
+  const [showRep, setShowRep] = useState(false);
+  const [showBook, setShowBook] = useState(false);
+  const fbCourts = useFirebase("courts");
+  const extra = fbCourts ? Object.entries(fbCourts).map(([id, c]) => ({
+    id,
+    ...c
+  })) : [];
+  const all = [...COURTS, ...extra];
+  const filtered = all.filter(c => (filter === "all" || c.status === filter) && (hood === "all" || c.neighbourhood === hood));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "animate-in"
+  }, /*#__PURE__*/React.createElement("section", {
+    className: "section"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center mb-2"
+  }, /*#__PURE__*/React.createElement("h2", {
+    className: "section-title"
+  }, "\uD83C\uDFDF\uFE0F ", t.courts), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green btn-sm",
+    onClick: () => setShowRep(true)
+  }, "+ ", t.reportCourt)), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1 mb-2",
+    style: {
+      flexWrap: "wrap"
+    }
+  }, /*#__PURE__*/React.createElement("select", {
+    value: filter,
+    onChange: e => setFilter(e.target.value),
+    style: {
+      width: "auto",
+      padding: ".3rem .5rem",
+      fontSize: ".82rem"
+    }
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "all"
+  }, t.allStatus), /*#__PURE__*/React.createElement("option", {
+    value: "degraded"
+  }, t.degraded), /*#__PURE__*/React.createElement("option", {
+    value: "inProgress"
+  }, t.inProgress), /*#__PURE__*/React.createElement("option", {
+    value: "renovated"
+  }, t.renovated)), /*#__PURE__*/React.createElement("select", {
+    value: hood,
+    onChange: e => setHood(e.target.value),
+    style: {
+      width: "auto",
+      padding: ".3rem .5rem",
+      fontSize: ".82rem"
+    }
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "all"
+  }, t.neighbourhood), /*#__PURE__*/React.createElement("option", {
+    value: "tudor"
+  }, t.tudor), /*#__PURE__*/React.createElement("option", {
+    value: "auchan"
+  }, t.auchan), /*#__PURE__*/React.createElement("option", {
+    value: "sportcomplex"
+  }, t.sportcomplex), /*#__PURE__*/React.createElement("option", {
+    value: "center"
+  }, t.center))), /*#__PURE__*/React.createElement("div", {
+    className: "tabs"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: tab === "map" ? "active" : "",
+    onClick: () => setTab("map")
+  }, "\uD83D\uDDFA\uFE0F"), /*#__PURE__*/React.createElement("button", {
+    className: tab === "list" ? "active" : "",
+    onClick: () => setTab("list")
+  }, "\uD83D\uDCCB")), tab === "map" && /*#__PURE__*/React.createElement(MapView, {
+    courts: filtered,
+    onSelect: setSel
+  }), tab === "list" && /*#__PURE__*/React.createElement("div", {
+    className: "grid gap-1"
+  }, filtered.map(c => /*#__PURE__*/React.createElement("div", {
+    key: c.id,
+    className: "card card-accent",
+    onClick: () => setSel(c),
+    style: {
+      cursor: "pointer"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", {
+    style: {
+      fontSize: ".95rem"
+    }
+  }, c.name), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs",
+    style: {
+      color: "var(--textSec)"
+    }
+  }, c.address)), /*#__PURE__*/React.createElement("span", {
+    className: `badge ${c.status === "degraded" ? "badge-red" : c.status === "inProgress" ? "badge-coral" : "badge-green"}`
+  }, c.status === "degraded" ? t.degraded : c.status === "inProgress" ? t.inProgress : t.renovated)), /*#__PURE__*/React.createElement("div", {
+    className: "progress-bar mt-1"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "progress-fill",
+    style: {
+      width: c.progress + "%"
+    }
+  }))))))), /*#__PURE__*/React.createElement("section", {
+    className: "section",
+    style: {
+      background: "var(--bgCard)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container"
+  }, /*#__PURE__*/React.createElement("h2", {
+    className: "section-title"
+  }, "\uD83D\uDDFA\uFE0F Google My Maps"), /*#__PURE__*/React.createElement("iframe", {
+    src: "https://www.google.com/maps/d/embed?mid=19tND_bqOJoFbhTNKN0PenNW7S7yUog8",
+    width: "100%",
+    height: "380",
+    style: {
+      border: 0,
+      borderRadius: "var(--radius)"
+    },
+    loading: "lazy"
+  }))), sel && /*#__PURE__*/React.createElement(CourtDetail, {
+    court: sel,
+    onClose: () => setSel(null),
+    onBook: () => setShowBook(true)
+  }), showRep && /*#__PURE__*/React.createElement(ReportModal, {
+    onClose: () => setShowRep(false)
+  }), showBook && sel && /*#__PURE__*/React.createElement(BookingModal, {
+    court: sel,
+    onClose: () => setShowBook(false)
+  }));
+}
+
+/* === Court Detail === */
+function CourtDetail({
+  court: c,
+  onClose,
+  onBook
+}) {
+  const {
+    t,
+    lang,
+    toast,
+    user
+  } = useApp();
+  const [ci, setCi] = useState(false);
+  const liveCI = useFirebase("courts/" + c.id + "/checkins");
+  const cnt = liveCI ? Object.keys(liveCI).length : 0;
+  const occ = cnt === 0 ? "empty" : cnt < 5 ? "active" : "full";
+  const qr = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent("https://animated-swan-5a568b.netlify.app/#court-" + c.id)}`;
+  const doCI = () => {
+    const uid = user?.id || "g" + Date.now();
+    db.ref("courts/" + c.id + "/checkins/" + uid).set({
+      name: user?.name || "Guest",
+      ts: Date.now()
+    });
+    setCi(true);
+    toast(t.success);
+    setTimeout(() => db.ref("courts/" + c.id + "/checkins/" + uid).remove(), 7200000);
+  };
+  const doCO = () => {
+    const uid = user?.id || "g" + Date.now();
+    db.ref("courts/" + c.id + "/checkins/" + uid).remove();
+    setCi(false);
+    toast(t.success);
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal modal-lg",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center mb-2"
+  }, /*#__PURE__*/React.createElement("h2", null, c.name), /*#__PURE__*/React.createElement("button", {
+    onClick: onClose,
+    style: {
+      background: "none",
+      border: "none",
+      fontSize: "1.4rem",
+      color: "var(--text)"
+    }
+  }, "\u2715")), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm mb-1"
+  }, c.address), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1 mb-2",
+    style: {
+      flexWrap: "wrap"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: `badge ${c.status === "degraded" ? "badge-red" : c.status === "inProgress" ? "badge-coral" : "badge-green"}`
+  }, c.status === "degraded" ? t.degraded : c.status === "inProgress" ? t.inProgress : t.renovated), /*#__PURE__*/React.createElement("span", {
+    className: `badge ${occ === "empty" ? "badge-green" : occ === "active" ? "badge-coral" : "badge-red"}`
+  }, occ === "empty" ? "🟢 " + t.empty + " (0)" : occ === "active" ? "🟡 " + t.active + " (" + cnt + ")" : "🔴 " + t.full + " (" + cnt + ")")), /*#__PURE__*/React.createElement("h4", {
+    className: "mb-1"
+  }, "Progress"), /*#__PURE__*/React.createElement("div", {
+    className: "progress-bar mb-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "progress-fill",
+    style: {
+      width: c.progress + "%"
+    }
+  })), /*#__PURE__*/React.createElement("h4", {
+    className: "mb-1"
+  }, "\u267F ", t.accessibility), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1 mb-2",
+    style: {
+      flexWrap: "wrap"
+    }
+  }, Object.entries(c.accessibility || {}).map(([k, v]) => /*#__PURE__*/React.createElement("span", {
+    key: k,
+    className: `badge ${v ? "badge-green" : "badge-red"}`
+  }, k, ": ", v ? "✓" : "✗"))), /*#__PURE__*/React.createElement("h4", {
+    className: "mb-1"
+  }, t.qrCode), /*#__PURE__*/React.createElement("img", {
+    src: qr,
+    alt: "QR",
+    style: {
+      width: 110,
+      height: 110,
+      borderRadius: 8
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1 mt-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green btn-sm",
+    onClick: onBook
+  }, "\uD83D\uDCC5 ", t.bookCourt), !ci ? /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline btn-sm",
+    onClick: doCI
+  }, "\uD83D\uDCCD ", t.checkIn) : /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm",
+    style: {
+      background: "var(--red)",
+      color: "#fff"
+    },
+    onClick: doCO
+  }, "\uD83D\uDCCD ", t.checkOut))));
+}
+
+/* === Report Modal === */
+function ReportModal({
+  onClose
+}) {
+  const {
+    t,
+    toast
+  } = useApp();
+  const [f, setF] = useState({
+    name: "",
+    address: "",
+    condition: 3,
+    description: "",
+    category: "basketball"
+  });
+  const sub = () => {
+    if (!f.name || !f.address) {
+      toast(t.error);
+      return;
+    }
+    db.ref("courts").push({
+      ...f,
+      status: "degraded",
+      occupancy: "empty",
+      progress: 0,
+      date: new Date().toISOString(),
+      lat: 46.545 + Math.random() * 0.02,
+      lng: 24.555 + Math.random() * 0.02,
+      reports: 1,
+      accessibility: {
+        wheelchair: false,
+        lighting: false,
+        parking: false,
+        flatSurface: false
+      }
+    });
+    toast(t.success);
+    onClose();
+  };
+  const gps = () => {
+    if (navigator.geolocation) navigator.geolocation.getCurrentPosition(p => setF(o => ({
+      ...o,
+      address: `${p.coords.latitude.toFixed(4)}, ${p.coords.longitude.toFixed(4)}`
+    })));
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("h2", {
+    className: "mb-2"
+  }, "\uD83D\uDCCD ", t.reportCourt), /*#__PURE__*/React.createElement("input", {
+    placeholder: t.courtName,
+    value: f.name,
+    onChange: e => setF({
+      ...f,
+      name: e.target.value
+    }),
+    className: "mb-1"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1 mb-1"
+  }, /*#__PURE__*/React.createElement("input", {
+    placeholder: t.address,
+    value: f.address,
+    onChange: e => setF({
+      ...f,
+      address: e.target.value
+    })
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-outline",
+    onClick: gps,
+    type: "button"
+  }, "\uD83D\uDCCD")), /*#__PURE__*/React.createElement("select", {
+    value: f.category,
+    onChange: e => setF({
+      ...f,
+      category: e.target.value
+    }),
+    className: "mb-1"
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "basketball"
+  }, t.basketball), /*#__PURE__*/React.createElement("option", {
+    value: "football"
+  }, t.football), /*#__PURE__*/React.createElement("option", {
+    value: "handball"
+  }, t.handball), /*#__PURE__*/React.createElement("option", {
+    value: "tennis"
+  }, t.tennis), /*#__PURE__*/React.createElement("option", {
+    value: "multiuse"
+  }, t.multiuse)), /*#__PURE__*/React.createElement("div", {
+    className: "mb-1"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "text-sm"
+  }, t.condition, ": ", f.condition, "/5"), /*#__PURE__*/React.createElement("input", {
+    type: "range",
+    min: "1",
+    max: "5",
+    value: f.condition,
+    onChange: e => setF({
+      ...f,
+      condition: +e.target.value
+    })
+  })), /*#__PURE__*/React.createElement("textarea", {
+    placeholder: t.description,
+    value: f.description,
+    onChange: e => setF({
+      ...f,
+      description: e.target.value
+    }),
+    rows: 3,
+    className: "mb-1"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green btn-block",
+    onClick: sub
+  }, t.submit), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline",
+    onClick: onClose
+  }, t.cancel))));
+}
+
+/* === Booking Modal === */
+function BookingModal({
+  court,
+  onClose
+}) {
+  const {
+    t,
+    lang,
+    toast,
+    user
+  } = useApp();
+  const [date, setDate] = useState(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().split("T")[0];
+  });
+  const [hour, setHour] = useState("");
+  const bk = useFirebase(date ? "bookings/" + court.id + "/" + date : null);
+  const taken = bk ? Object.keys(bk).map(k => k.replace("-", ":")) : [];
+  const hours = Array.from({
+    length: 12
+  }, (_, i) => `${8 + i}:00`);
+  const book = () => {
+    if (!hour) return;
+    db.ref(`bookings/${court.id}/${date}/${hour.replace(":", "-")}`).set({
+      name: user?.name || "Guest",
+      uid: user?.id || "g" + Date.now(),
+      hour,
+      ts: Date.now()
+    });
+    toast(t.success);
+    setHour("");
+  };
+  const cancel = h => {
+    db.ref(`bookings/${court.id}/${date}/${h.replace(":", "-")}`).remove();
+    toast(lang === "ro" ? "Anulat" : "Cancelled");
+  };
+  const myUid = user?.id || "";
+  return /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal modal-lg",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center mb-2"
+  }, /*#__PURE__*/React.createElement("h2", null, "\uD83D\uDCC5 ", t.bookCourt, ": ", court.name), /*#__PURE__*/React.createElement("button", {
+    onClick: onClose,
+    style: {
+      background: "none",
+      border: "none",
+      fontSize: "1.4rem",
+      color: "var(--text)"
+    }
+  }, "\u2715")), /*#__PURE__*/React.createElement("input", {
+    type: "date",
+    value: date,
+    onChange: e => setDate(e.target.value),
+    min: new Date().toISOString().split("T")[0],
+    className: "mb-2"
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fill,minmax(100px,1fr))",
+      gap: ".35rem",
+      marginBottom: "1rem"
+    }
+  }, hours.map(h => {
+    const booked = taken.includes(h);
+    const bd = booked && bk ? bk[h.replace(":", "-")] : null;
+    const mine = bd && bd.uid === myUid;
+    return /*#__PURE__*/React.createElement("div", {
+      key: h,
+      onClick: () => {
+        if (!booked) setHour(h);
+      },
+      style: {
+        padding: ".4rem",
+        borderRadius: 8,
+        textAlign: "center",
+        cursor: booked ? "default" : "pointer",
+        border: hour === h ? "2px solid var(--green)" : "2px solid var(--border)",
+        background: booked ? mine ? "rgba(16,185,129,.08)" : "rgba(220,38,38,.05)" : hour === h ? "rgba(16,185,129,.06)" : "var(--bgCard)",
+        opacity: booked && !mine ? .55 : 1
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontFamily: "'Space Mono',monospace",
+        fontWeight: 700,
+        fontSize: ".85rem",
+        color: booked ? "var(--red)" : "var(--text)"
+      }
+    }, h), booked ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      className: "text-xs",
+      style: {
+        color: "var(--textSec)"
+      }
+    }, bd?.name || "Booked"), mine && /*#__PURE__*/React.createElement("button", {
+      onClick: e => {
+        e.stopPropagation();
+        cancel(h);
+      },
+      className: "text-xs",
+      style: {
+        color: "var(--red)",
+        background: "none",
+        border: "none",
+        cursor: "pointer",
+        textDecoration: "underline"
+      }
+    }, t.cancel)) : /*#__PURE__*/React.createElement("div", {
+      className: "text-xs",
+      style: {
+        color: "var(--green)"
+      }
+    }, lang === "ro" ? "Liber" : "Free"));
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green btn-block",
+    disabled: !hour,
+    onClick: book,
+    style: {
+      opacity: hour ? 1 : .5,
+      cursor: hour ? "pointer" : "not-allowed"
+    }
+  }, hour ? `📅 ${t.bookCourt} ${hour}` : lang === "ro" ? "Selectează o oră" : "Select an hour"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline",
+    onClick: onClose
+  }, t.cancel))));
+}
+
+/* === Petition === */
+function PetitionPage() {
+  const {
+    t,
+    lang,
+    toast,
+    user
+  } = useApp();
+  const votes = useFirebase("votes");
+  const [ch, setCh] = useState("");
+  const [voted, setVoted] = useState(() => !!localStorage.getItem("g2p_voted"));
+  const [name, setName] = useState(user?.name || "");
+  const [email, setEmail] = useState(user?.email || "");
+  const [vol, setVol] = useState(false);
+  const [showLetter, setShowLetter] = useState(false);
+  const flip = votes?.flip || 0,
+    mural = votes?.mural || 0,
+    both = votes?.both || 0,
+    total = flip + mural + both,
+    mx = Math.max(flip, mural, both, 1);
+  const ok = name.trim().length >= 2 && email.includes("@") && ch !== "";
+  const doVote = () => {
+    if (!ok) return;
+    const key = ch;
+    db.ref("votes/" + key).transaction(v => (v || 0) + 1);
+    db.ref("signups").push({
+      name: name.trim(),
+      email: email.trim(),
+      choice: key,
+      volunteer: vol,
+      date: new Date().toISOString()
+    });
+    const lbKey = user?.id || name.trim().replace(/[.#$/\[\]]/g, '_');
+    db.ref("leaderboard/" + lbKey).transaction(v => ({
+      ...(v || {}),
+      points: (v?.points || 0) + 10,
+      name: name.trim()
+    }));
+    setVoted(true);
+    localStorage.setItem("g2p_voted", "1");
+    toast(t.success + " +10 " + t.points);
+  };
+  const url = "https://animated-swan-5a568b.netlify.app/";
+  const st = lang === "ro" ? `Am votat pe From Grey to Play! ${total} voturi.` : `I voted on From Grey to Play! ${total} votes.`;
+  const opts = [{
+    k: "flip",
+    emoji: "🏀",
+    sel: "sel-flip"
+  }, {
+    k: "mural",
+    emoji: "🎨",
+    sel: "sel-mural"
+  }, {
+    k: "both",
+    emoji: "✨",
+    sel: "sel-both"
+  }];
+  return /*#__PURE__*/React.createElement("div", {
+    className: "animate-in"
+  }, /*#__PURE__*/React.createElement("section", {
+    className: "section"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container"
+  }, /*#__PURE__*/React.createElement("h2", {
+    className: "section-title",
+    style: {
+      textAlign: "center"
+    }
+  }, "\u270A ", t.voteTitle), /*#__PURE__*/React.createElement("p", {
+    className: "section-sub",
+    style: {
+      textAlign: "center"
+    }
+  }, lang === "ro" ? "Alege viziunea ta pentru terenurile din Târgu Mureș" : "Choose your vision for Târgu Mureș courts"), !voted ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 600,
+      margin: "0 auto"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: ".7rem"
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "text-xs font-bold",
+    style: {
+      color: "var(--textSec)"
+    }
+  }, lang === "ro" ? "NUMELE TĂU" : "YOUR NAME", " *"), /*#__PURE__*/React.createElement("input", {
+    placeholder: lang === "ro" ? "ex: Popescu Ion" : "e.g. John Smith",
+    value: name,
+    onChange: e => setName(e.target.value)
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: ".7rem"
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "text-xs font-bold",
+    style: {
+      color: "var(--textSec)"
+    }
+  }, t.email, " *"), /*#__PURE__*/React.createElement("input", {
+    type: "email",
+    placeholder: "email@example.com",
+    value: email,
+    onChange: e => setEmail(e.target.value)
+  })), /*#__PURE__*/React.createElement("label", {
+    className: "text-xs font-bold",
+    style: {
+      color: "var(--textSec)",
+      display: "block",
+      marginBottom: ".4rem"
+    }
+  }, lang === "ro" ? "ALEGE PROPUNEREA" : "CHOOSE PROPOSAL", " *"), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-3",
+    style: {
+      marginBottom: ".8rem"
+    }
+  }, opts.map(o => /*#__PURE__*/React.createElement("div", {
+    key: o.k,
+    className: `petition-option ${ch === o.k ? o.sel : ""}`,
+    onClick: () => setCh(o.k)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "po-radio"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "po-radio-dot"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "po-emoji"
+  }, o.emoji), /*#__PURE__*/React.createElement("div", {
+    className: "po-label"
+  }, o.k === "flip" ? t.flipCourt : o.k === "mural" ? t.streetCanvas : lang === "ro" ? "Ambele" : "Both"), /*#__PURE__*/React.createElement("div", {
+    className: "po-desc"
+  }, o.k === "flip" ? lang === "ro" ? "Renovare 3 terenuri + dulap echipament" : "Resurface 3 courts + equipment cabinet" : o.k === "mural" ? lang === "ro" ? "Murale colorate cu artiștii locali" : "Colourful murals with local artists" : lang === "ro" ? "Ambele proiecte combinate" : "Both projects combined")))), /*#__PURE__*/React.createElement("div", {
+    className: `vol-check ${vol ? "on" : ""}`,
+    onClick: () => setVol(!vol),
+    style: {
+      marginBottom: "1rem"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "vol-box"
+  }, vol && "✓"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 600,
+      fontSize: ".88rem"
+    }
+  }, "\uD83E\uDD1D ", lang === "ro" ? "Vreau să fiu voluntar" : "I want to volunteer"), /*#__PURE__*/React.createElement("div", {
+    className: "text-xs",
+    style: {
+      color: "var(--textSec)"
+    }
+  }, lang === "ro" ? "Participă la evenimente" : "Join events and earn points"))), /*#__PURE__*/React.createElement("button", {
+    className: "pet-submit",
+    disabled: !ok,
+    onClick: doVote
+  }, ok ? lang === "ro" ? "✊ Semnează petiția" : "✊ Sign the petition" : lang === "ro" ? "Completează toate câmpurile" : "Fill all fields to vote")) : /*#__PURE__*/React.createElement("div", {
+    className: "card mt-2",
+    style: {
+      textAlign: "center",
+      background: "rgba(16,185,129,.07)",
+      padding: "2rem",
+      maxWidth: 550,
+      margin: "1rem auto"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "2.5rem",
+      marginBottom: ".3rem"
+    }
+  }, "\uD83C\uDF89"), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: "1.2rem",
+      fontWeight: 700,
+      color: "var(--green)"
+    }
+  }, lang === "ro" ? "Mulțumim!" : "Thank you!"), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm",
+    style: {
+      color: "var(--textSec)"
+    }
+  }, lang === "ro" ? "Votul tău a fost înregistrat." : "Your vote has been recorded.")), /*#__PURE__*/React.createElement("div", {
+    className: "card mt-3"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "mb-2"
+  }, t.liveResults), [{
+    l: "🏀 " + t.flipCourt,
+    v: flip,
+    c: "var(--green)"
+  }, {
+    l: "🎨 " + t.streetCanvas,
+    v: mural,
+    c: "var(--coral)"
+  }, {
+    l: "✨ " + t.both,
+    v: both,
+    c: "var(--teal)"
+  }].map(r => /*#__PURE__*/React.createElement("div", {
+    key: r.l,
+    style: {
+      marginBottom: ".7rem"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between text-sm mb-1"
+  }, /*#__PURE__*/React.createElement("span", null, r.l), /*#__PURE__*/React.createElement("span", {
+    className: "font-bold",
+    style: {
+      color: r.c
+    }
+  }, r.v)), /*#__PURE__*/React.createElement("div", {
+    className: "progress-bar"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "progress-fill",
+    style: {
+      width: r.v / mx * 100 + "%",
+      background: r.c
+    }
+  })))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      marginTop: "1rem"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number",
+    style: {
+      fontSize: "2.2rem"
+    }
+  }, total), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, t.totalVotes))), /*#__PURE__*/React.createElement("div", {
+    className: "card mt-2"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "mb-1"
+  }, t.share), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1",
+    style: {
+      flexWrap: "wrap"
+    }
+  }, /*#__PURE__*/React.createElement("a", {
+    className: "btn btn-sm",
+    style: {
+      background: "#25D366",
+      color: "#fff"
+    },
+    href: `https://wa.me/?text=${encodeURIComponent(st + " " + url)}`,
+    target: "_blank"
+  }, "\uD83D\uDCAC WhatsApp"), /*#__PURE__*/React.createElement("a", {
+    className: "btn btn-sm",
+    style: {
+      background: "#1877F2",
+      color: "#fff"
+    },
+    href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+    target: "_blank"
+  }, "\uD83D\uDCD8 Facebook"), /*#__PURE__*/React.createElement("a", {
+    className: "btn btn-sm",
+    style: {
+      background: "#1DA1F2",
+      color: "#fff"
+    },
+    href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(st)}&url=${encodeURIComponent(url)}`,
+    target: "_blank"
+  }, "\uD83D\uDC26 Twitter"))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      marginTop: "1rem"
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-coral",
+    onClick: () => setShowLetter(true)
+  }, "\uD83D\uDCC4 ", t.generateLetter)))), showLetter && /*#__PURE__*/React.createElement(LetterModal, {
+    onClose: () => setShowLetter(false),
+    total: total
+  }));
+}
+function LetterModal({
+  onClose,
+  total
+}) {
+  const {
+    t,
+    lang
+  } = useApp();
+  const [n, setN] = useState("");
+  const [a, setA] = useState("");
+  const dl = () => {
+    const c = lang === "ro" ? `CĂTRE: Primăria Municipiului Târgu Mureș\n\nSubsemnatul/a ${n || "___"}, domiciliat/ă în ${a || "___"},\n\nsolicit renovarea terenurilor sportive din cartierele periferice.\n\n- ${total} cetățeni au semnat petiția online\n- 12 din 15 rezidenți — terenuri prea degradate\n- 5.000.000 lei înghețați prin eroare administrativă\n- 0% renovare periferie\n\nPropunem: 1. Flip-the-Court 2. Street Canvas\n\nCu stimă,\n${n || "___"}\nData: ${new Date().toLocaleDateString("ro-RO")}` : `TO: Târgu Mureș City Hall\n\nI, ${n || "___"}, residing at ${a || "___"},\n\nrequest the renovation of peripheral sports courts.\n\n- ${total} citizens signed the online petition\n- 12/15 residents — courts too degraded\n- 5M lei frozen by admin error\n- 0% peripheral renovation\n\nProposals: 1. Flip-the-Court 2. Street Canvas\n\nSincerely,\n${n || "___"}\nDate: ${new Date().toLocaleDateString("en-GB")}`;
+    const b = new Blob([c], {
+      type: "text/plain"
+    });
+    const u = URL.createObjectURL(b);
+    const el = document.createElement("a");
+    el.href = u;
+    el.download = "petitie_g2p.txt";
+    el.click();
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("h2", {
+    className: "mb-2"
+  }, "\uD83D\uDCC4 ", t.generateLetter), /*#__PURE__*/React.createElement("input", {
+    placeholder: lang === "ro" ? "Numele tău" : "Your name",
+    value: n,
+    onChange: e => setN(e.target.value),
+    className: "mb-1"
+  }), /*#__PURE__*/React.createElement("input", {
+    placeholder: t.address,
+    value: a,
+    onChange: e => setA(e.target.value),
+    className: "mb-1"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green btn-block",
+    onClick: dl
+  }, "\uD83D\uDCE5 ", t.downloadPDF), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline",
+    onClick: onClose
+  }, t.cancel))));
+}
+
+/* === Community === */
+function CommunityPage() {
+  const {
+    t
+  } = useApp();
+  const [tab, setTab] = useState("forum");
+  return /*#__PURE__*/React.createElement("div", {
+    className: "animate-in"
+  }, /*#__PURE__*/React.createElement("section", {
+    className: "section"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container"
+  }, /*#__PURE__*/React.createElement("h2", {
+    className: "section-title"
+  }, "\uD83E\uDD1D ", t.community), /*#__PURE__*/React.createElement("div", {
+    className: "tabs"
+  }, ["forum", "events", "gallery", "teams", "leaderboard"].map(tb => /*#__PURE__*/React.createElement("button", {
+    key: tb,
+    className: tab === tb ? "active" : "",
+    onClick: () => setTab(tb)
+  }, tb === "forum" ? "💬 " + t.forum : tb === "events" ? "📅 " + t.events : tb === "gallery" ? "📸 " + t.gallery : tb === "teams" ? "⚽ " + t.teams : "🏆 " + t.leaderboard))), tab === "forum" && /*#__PURE__*/React.createElement(ForumTab, null), tab === "events" && /*#__PURE__*/React.createElement(EventsTab, null), tab === "gallery" && /*#__PURE__*/React.createElement(GalleryTab, null), tab === "teams" && /*#__PURE__*/React.createElement(TeamsTab, null), tab === "leaderboard" && /*#__PURE__*/React.createElement(LBTab, null))));
+}
+function ForumTab() {
+  const {
+    t,
+    lang,
+    toast,
+    user
+  } = useApp();
+  const posts = useFirebase("forum");
+  const [showNew, setShowNew] = useState(false);
+  const [f, setF] = useState({
+    title: "",
+    body: "",
+    category: "general",
+    type: "discussion"
+  });
+  const [replyTo, setReplyTo] = useState(null);
+  const [rt, setRt] = useState("");
+  const list = posts ? Object.entries(posts).map(([id, p]) => ({
+    id,
+    ...p
+  })).reverse() : [];
+  const submit = () => {
+    if (!f.title || !f.body) {
+      toast(t.error);
+      return;
+    }
+    db.ref("forum").push({
+      ...f,
+      neighbourhood: f.category,
+      author: user?.name || "Anonim",
+      date: new Date().toISOString(),
+      upvotes: 0,
+      downvotes: 0,
+      pinned: false,
+      replies: {}
+    });
+    toast(t.success);
+    setShowNew(false);
+    setF({
+      title: "",
+      body: "",
+      category: "general",
+      type: "discussion"
+    });
+  };
+  const vote = (id, d) => {
+    db.ref(`forum/${id}/${d}`).transaction(v => (v || 0) + 1);
+  };
+  const addReply = pid => {
+    if (!rt) return;
+    db.ref(`forum/${pid}/replies`).push({
+      author: user?.name || "Anonim",
+      body: rt,
+      date: new Date().toISOString()
+    });
+    setReplyTo(null);
+    setRt("");
+  };
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center mb-2"
+  }, /*#__PURE__*/React.createElement("select", {
+    style: {
+      width: "auto",
+      padding: ".3rem",
+      fontSize: ".82rem"
+    }
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "all"
+  }, t.allStatus), /*#__PURE__*/React.createElement("option", {
+    value: "tudor"
+  }, t.tudor), /*#__PURE__*/React.createElement("option", {
+    value: "auchan"
+  }, t.auchan)), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green btn-sm",
+    onClick: () => setShowNew(true)
+  }, "+ ", t.newPost)), showNew && /*#__PURE__*/React.createElement("div", {
+    className: "card mb-2"
+  }, /*#__PURE__*/React.createElement("input", {
+    placeholder: "Title",
+    value: f.title,
+    onChange: e => setF({
+      ...f,
+      title: e.target.value
+    }),
+    className: "mb-1"
+  }), /*#__PURE__*/React.createElement("textarea", {
+    placeholder: "Content",
+    value: f.body,
+    onChange: e => setF({
+      ...f,
+      body: e.target.value
+    }),
+    rows: 3,
+    className: "mb-1"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1 mb-1"
+  }, /*#__PURE__*/React.createElement("select", {
+    value: f.type,
+    onChange: e => setF({
+      ...f,
+      type: e.target.value
+    }),
+    style: {
+      width: "auto"
+    }
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "discussion"
+  }, "Discussion"), /*#__PURE__*/React.createElement("option", {
+    value: "proposal"
+  }, "Proposal"), /*#__PURE__*/React.createElement("option", {
+    value: "volunteerCall"
+  }, "Volunteer Call")), /*#__PURE__*/React.createElement("select", {
+    value: f.category,
+    onChange: e => setF({
+      ...f,
+      category: e.target.value
+    }),
+    style: {
+      width: "auto"
+    }
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "general"
+  }, t.general), /*#__PURE__*/React.createElement("option", {
+    value: "tudor"
+  }, t.tudor), /*#__PURE__*/React.createElement("option", {
+    value: "auchan"
+  }, t.auchan))), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green btn-sm",
+    onClick: submit
+  }, t.submit), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline btn-sm",
+    onClick: () => setShowNew(false)
+  }, t.cancel))), list.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      textAlign: "center",
+      padding: "2rem"
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      color: "var(--textSec)"
+    }
+  }, t.noData)), list.map(p => /*#__PURE__*/React.createElement("div", {
+    key: p.id,
+    className: "card mb-1"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: `badge ${p.type === "proposal" ? "badge-green" : "badge-teal"}`
+  }, p.type), /*#__PURE__*/React.createElement("span", {
+    className: "text-xs",
+    style: {
+      color: "var(--textSec)"
+    }
+  }, p.date ? new Date(p.date).toLocaleDateString() : "")), /*#__PURE__*/React.createElement("h4", {
+    className: "mt-1"
+  }, p.pinned ? "📌 " : "", p.title), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm mt-1"
+  }, p.body), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs",
+    style: {
+      color: "var(--textSec)"
+    }
+  }, "\u2014 ", p.author), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1 mt-1"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-outline",
+    onClick: () => vote(p.id, "upvotes")
+  }, t.upvote, " ", p.upvotes || 0), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-outline",
+    onClick: () => vote(p.id, "downvotes")
+  }, t.downvote, " ", p.downvotes || 0), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-outline",
+    onClick: () => setReplyTo(replyTo === p.id ? null : p.id)
+  }, "\uD83D\uDCAC")), p.replies && Object.entries(p.replies).map(([rid, r]) => /*#__PURE__*/React.createElement("div", {
+    key: rid,
+    style: {
+      marginLeft: "1.2rem",
+      borderLeft: "2px solid var(--border)",
+      paddingLeft: ".8rem",
+      marginTop: ".4rem"
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-sm"
+  }, r.body), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs",
+    style: {
+      color: "var(--textSec)"
+    }
+  }, "\u2014 ", r.author))), replyTo === p.id && /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1 mt-1"
+  }, /*#__PURE__*/React.createElement("input", {
+    placeholder: t.reply + "...",
+    value: rt,
+    onChange: e => setRt(e.target.value),
+    style: {
+      flex: 1
+    }
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green btn-sm",
+    onClick: () => addReply(p.id)
+  }, t.submit)))));
+}
+function EventsTab() {
+  const {
+    t,
+    lang,
+    toast
+  } = useApp();
+  const evts = useFirebase("events");
+  const list = evts ? Object.entries(evts).map(([id, e]) => ({
+    id,
+    ...e
+  })) : [];
+  const rsvp = id => {
+    db.ref(`events/${id}/attendeeCount`).transaction(v => (v || 0) + 1);
+    toast(t.success);
+  };
+  const addCal = ev => {
+    const s = new Date(ev.date).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.title)}&dates=${s}/${s}&details=${encodeURIComponent(ev.desc || '')}`, '_blank');
+  };
+  if (!list.length) return /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      textAlign: "center",
+      padding: "2rem"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "2rem"
+    }
+  }, "\uD83D\uDCC5"), /*#__PURE__*/React.createElement("p", {
+    style: {
+      color: "var(--textSec)"
+    }
+  }, lang === "ro" ? "Niciun eveniment programat. Evenimentele vor fi adăugate de Cimpan Teodor." : "No events scheduled yet."));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "grid gap-1"
+  }, list.map(ev => /*#__PURE__*/React.createElement("div", {
+    key: ev.id,
+    className: "card card-accent"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "badge badge-green"
+  }, ev.type), /*#__PURE__*/React.createElement("span", {
+    className: "text-sm font-bold"
+  }, ev.date)), /*#__PURE__*/React.createElement("h3", {
+    className: "mt-1"
+  }, ev.title), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm",
+    style: {
+      color: "var(--textSec)"
+    }
+  }, ev.desc), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs mt-1"
+  }, "\uD83D\uDCCD ", ev.location, " \xB7 \uD83D\uDC65 ", ev.attendeeCount || 0), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1 mt-1"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green btn-sm",
+    onClick: () => rsvp(ev.id)
+  }, "\u2713 ", t.rsvp), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline btn-sm",
+    onClick: () => addCal(ev)
+  }, "\uD83D\uDCC5 ", t.addToCalendar)))));
+}
+function GalleryTab() {
+  const {
+    t,
+    lang,
+    toast
+  } = useApp();
+  const gallery = useFirebase("gallery");
+  const imgs = gallery ? Object.entries(gallery).map(([id, g]) => ({
+    id,
+    ...g
+  })) : [];
+  if (!imgs.length) return /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      textAlign: "center",
+      padding: "2rem"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "2rem"
+    }
+  }, "\uD83D\uDCF8"), /*#__PURE__*/React.createElement("p", {
+    style: {
+      color: "var(--textSec)"
+    }
+  }, lang === "ro" ? "Nicio fotografie încărcată încă." : "No photos uploaded yet."));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-3"
+  }, imgs.map(im => /*#__PURE__*/React.createElement("div", {
+    key: im.id,
+    className: "card",
+    style: {
+      padding: ".5rem"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "var(--border)",
+      height: 130,
+      borderRadius: 8,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    }
+  }, "\uD83D\uDCF7"), /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center mt-1"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-xs"
+  }, im.courtId), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-outline",
+    onClick: () => {
+      db.ref(`gallery/${im.id}/votes`).transaction(v => (v || 0) + 1);
+      toast("+1!");
+    }
+  }, "\u2764\uFE0F ", im.votes || 0)))));
+}
+function TeamsTab() {
+  const {
+    t,
+    lang,
+    toast
+  } = useApp();
+  const teams = useFirebase("teams");
+  const [show, setShow] = useState(false);
+  const [tn, setTn] = useState("");
+  const [th, setTh] = useState("tudor");
+  const create = () => {
+    if (!tn) return;
+    db.ref("teams").push({
+      name: tn,
+      neighbourhood: th,
+      members: [],
+      wins: 0,
+      losses: 0
+    });
+    toast(t.success);
+    setShow(false);
+    setTn("");
+  };
+  const list = teams ? Object.entries(teams).map(([id, tm]) => ({
+    id,
+    ...tm
+  })) : [];
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center mb-2"
+  }, /*#__PURE__*/React.createElement("h3", null, "\u26BD ", t.teams), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green btn-sm",
+    onClick: () => setShow(!show)
+  }, "+ ", lang === "ro" ? "Creează echipă" : "Create team")), show && /*#__PURE__*/React.createElement("div", {
+    className: "card mb-2"
+  }, /*#__PURE__*/React.createElement("input", {
+    placeholder: lang === "ro" ? "Numele echipei" : "Team name",
+    value: tn,
+    onChange: e => setTn(e.target.value),
+    className: "mb-1"
+  }), /*#__PURE__*/React.createElement("select", {
+    value: th,
+    onChange: e => setTh(e.target.value),
+    className: "mb-1"
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "tudor"
+  }, t.tudor), /*#__PURE__*/React.createElement("option", {
+    value: "auchan"
+  }, t.auchan), /*#__PURE__*/React.createElement("option", {
+    value: "sportcomplex"
+  }, t.sportcomplex)), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green btn-sm",
+    onClick: create
+  }, t.submit)), list.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      textAlign: "center",
+      padding: "2rem"
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      color: "var(--textSec)"
+    }
+  }, lang === "ro" ? "Nicio echipă creată încă." : "No teams yet.")) : /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-3"
+  }, list.map(tm => /*#__PURE__*/React.createElement("div", {
+    key: tm.id,
+    className: "card card-accent"
+  }, /*#__PURE__*/React.createElement("h4", null, tm.name), /*#__PURE__*/React.createElement("span", {
+    className: "badge badge-teal"
+  }, tm.neighbourhood), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm mt-1"
+  }, "\uD83D\uDC65 ", tm.members?.length || 0)))));
+}
+function LBTab() {
+  const {
+    t,
+    lang
+  } = useApp();
+  const lb = useFirebase("leaderboard");
+  const medals = ["🥇", "🥈", "🥉"];
+  const list = lb ? Object.values(lb).sort((a, b) => (b.points || 0) - (a.points || 0)).slice(0, 20) : [];
+  if (!list.length) return /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      textAlign: "center",
+      padding: "2rem"
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      color: "var(--textSec)"
+    }
+  }, t.noData));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "grid gap-1"
+  }, list.map((u, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: `card flex items-center gap-2 ${i < 3 ? "card-accent" : ""}`,
+    style: {
+      padding: ".6rem 1rem"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: i < 3 ? "1.3rem" : "1rem",
+      width: "2rem",
+      textAlign: "center"
+    }
+  }, i < 3 ? medals[i] : i + 1 + "."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "font-bold"
+  }, u.name || "User")), /*#__PURE__*/React.createElement("span", {
+    className: "font-bold text-green"
+  }, u.points || 0, " pts"))), /*#__PURE__*/React.createElement("div", {
+    className: "card mt-1",
+    style: {
+      fontSize: ".82rem",
+      color: "var(--textSec)"
+    }
+  }, /*#__PURE__*/React.createElement("p", null, lang === "ro" ? "Punctaj" : "Points", ": Vote +10 \xB7 Report +25 \xB7 Volunteer +50 \xB7 Challenge +30")));
+}
+
+/* === Impact === */
+function ImpactPage() {
+  const {
+    t,
+    lang
+  } = useApp();
+  const [tab, setTab] = useState("calc");
+  return /*#__PURE__*/React.createElement("div", {
+    className: "animate-in"
+  }, /*#__PURE__*/React.createElement("section", {
+    className: "section"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container"
+  }, /*#__PURE__*/React.createElement("h2", {
+    className: "section-title"
+  }, "\uD83D\uDCCA ", t.impact), /*#__PURE__*/React.createElement("div", {
+    className: "tabs"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: tab === "calc" ? "active" : "",
+    onClick: () => setTab("calc")
+  }, "\uD83E\uDDEE"), /*#__PURE__*/React.createElement("button", {
+    className: tab === "city" ? "active" : "",
+    onClick: () => setTab("city")
+  }, "\uD83D\uDCCA"), /*#__PURE__*/React.createElement("button", {
+    className: tab === "budget" ? "active" : "",
+    onClick: () => setTab("budget")
+  }, "\uD83D\uDCB0"), /*#__PURE__*/React.createElement("button", {
+    className: tab === "carbon" ? "active" : "",
+    onClick: () => setTab("carbon")
+  }, "\uD83C\uDF31"), /*#__PURE__*/React.createElement("button", {
+    className: tab === "health" ? "active" : "",
+    onClick: () => setTab("health")
+  }, "\uD83D\uDCAA"), /*#__PURE__*/React.createElement("button", {
+    className: tab === "mental" ? "active" : "",
+    onClick: () => setTab("mental")
+  }, "\uD83E\uDDE0"), /*#__PURE__*/React.createElement("button", {
+    className: tab === "tl" ? "active" : "",
+    onClick: () => setTab("tl")
+  }, "\uD83D\uDCC5")), tab === "calc" && /*#__PURE__*/React.createElement(ImpactCalc, null), tab === "city" && /*#__PURE__*/React.createElement(CityComp, null), tab === "budget" && /*#__PURE__*/React.createElement(BudgetViz, null), tab === "carbon" && /*#__PURE__*/React.createElement(CarbonCalc, null), tab === "health" && /*#__PURE__*/React.createElement(HealthCalc, null), tab === "mental" && /*#__PURE__*/React.createElement(MentalSec, null), tab === "tl" && /*#__PURE__*/React.createElement(TimelineSec, null))));
+}
+function ImpactCalc() {
+  const {
+    t,
+    lang
+  } = useApp();
+  const [n, setN] = useState(3);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "font-bold"
+  }, t.courtsRenovated, ": ", n), /*#__PURE__*/React.createElement("input", {
+    type: "range",
+    min: "1",
+    max: "20",
+    value: n,
+    onChange: e => setN(+e.target.value),
+    className: "mt-1"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-3 mt-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number"
+  }, n * 180), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, t.youthAffected)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number"
+  }, (n * 2400).toLocaleString()), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, t.sportHours)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number",
+    style: {
+      color: "var(--coral)"
+    }
+  }, "\u20AC", (n * 45000).toLocaleString()), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, t.healthSavings))), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs mt-2",
+    style: {
+      color: "var(--textSec)"
+    }
+  }, lang === "ro" ? "Bazat pe date WHO și EU Sport" : "Based on WHO and EU Sport data"));
+}
+function CityComp() {
+  const {
+    t
+  } = useApp();
+  const cs = Object.values(CITIES);
+  const mx = Math.max(...cs.map(c => c.b));
+  return /*#__PURE__*/React.createElement("div", null, cs.map(c => /*#__PURE__*/React.createElement("div", {
+    key: c.name,
+    className: "mb-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between text-sm"
+  }, /*#__PURE__*/React.createElement("span", null, c.name), /*#__PURE__*/React.createElement("span", {
+    className: "font-bold"
+  }, "\u20AC", c.b, "/cap")), /*#__PURE__*/React.createElement("div", {
+    className: "progress-bar"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "progress-fill",
+    style: {
+      width: c.b / mx * 100 + "%",
+      background: c.name === "Târgu Mureș" ? "var(--red)" : "var(--green)"
+    }
+  })))));
+}
+function BudgetViz() {
+  const {
+    t,
+    lang
+  } = useApp();
+  const mx = Math.max(...BUDGET.map(d => d.p));
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", {
+    className: "mb-2"
+  }, lang === "ro" ? "Promis vs Cheltuit (mil. lei)" : "Promised vs Spent (M lei)"), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1",
+    style: {
+      minWidth: 400,
+      overflowX: "auto"
+    }
+  }, BUDGET.map(d => /*#__PURE__*/React.createElement("div", {
+    key: d.y,
+    style: {
+      flex: 1,
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      height: 180,
+      display: "flex",
+      alignItems: "flex-end",
+      justifyContent: "center",
+      gap: 3
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 20,
+      background: "var(--green)",
+      borderRadius: "3px 3px 0 0",
+      height: d.p / mx * 160 + "px",
+      opacity: .5
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 20,
+      background: "var(--red)",
+      borderRadius: "3px 3px 0 0",
+      height: d.s / mx * 160 + "px"
+    }
+  })), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs mt-1"
+  }, d.y)))), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2 mt-2",
+    style: {
+      justifyContent: "center"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-xs flex items-center gap-1"
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      width: 10,
+      height: 10,
+      background: "var(--green)",
+      borderRadius: 2,
+      display: "inline-block",
+      opacity: .5
+    }
+  }), " ", lang === "ro" ? "Promis" : "Promised"), /*#__PURE__*/React.createElement("span", {
+    className: "text-xs flex items-center gap-1"
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      width: 10,
+      height: 10,
+      background: "var(--red)",
+      borderRadius: 2,
+      display: "inline-block"
+    }
+  }), " ", lang === "ro" ? "Cheltuit" : "Spent")));
+}
+function CarbonCalc() {
+  const {
+    lang
+  } = useApp();
+  const [y, setY] = useState(200);
+  const [d, setD] = useState(5);
+  const co2 = Math.round(y * d * 0.21 * 365 / 1000 * 10) / 10;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "mb-2"
+  }, "\uD83C\uDF31 ", lang === "ro" ? "Amprenta de carbon" : "Carbon Footprint"), /*#__PURE__*/React.createElement("label", {
+    className: "text-sm"
+  }, lang === "ro" ? "Tineri" : "Youth", ": ", y), /*#__PURE__*/React.createElement("input", {
+    type: "range",
+    min: "50",
+    max: "1000",
+    step: "50",
+    value: y,
+    onChange: e => setY(+e.target.value),
+    className: "mb-1"
+  }), /*#__PURE__*/React.createElement("label", {
+    className: "text-sm"
+  }, lang === "ro" ? "Distanță medie" : "Avg distance", ": ", d, "km"), /*#__PURE__*/React.createElement("input", {
+    type: "range",
+    min: "1",
+    max: "15",
+    value: d,
+    onChange: e => setD(+e.target.value),
+    className: "mb-2"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number"
+  }, co2, "t"), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, "CO\u2082/", lang === "ro" ? "an" : "year")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number",
+    style: {
+      color: "var(--teal)"
+    }
+  }, Math.round(co2 / 21), " \uD83C\uDF33"), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, lang === "ro" ? "Echivalent copaci" : "Trees equivalent"))));
+}
+function HealthCalc() {
+  const {
+    t,
+    lang
+  } = useApp();
+  const [n, setN] = useState(3);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "mb-2"
+  }, "\uD83D\uDCAA ", t.healthImpact), /*#__PURE__*/React.createElement("label", {
+    className: "text-sm"
+  }, t.courtsRenovated, ": ", n), /*#__PURE__*/React.createElement("input", {
+    type: "range",
+    min: "1",
+    max: "20",
+    value: n,
+    onChange: e => setN(+e.target.value),
+    className: "mb-2"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number"
+  }, n * 12), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, lang === "ro" ? "Obezitate prevenită" : "Obesity prevented")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number",
+    style: {
+      color: "var(--teal)"
+    }
+  }, n * 25, "%"), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, lang === "ro" ? "Sedentarism redus" : "Sedentarism reduced")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number",
+    style: {
+      color: "var(--coral)"
+    }
+  }, "\u20AC", (n * 18000).toLocaleString()), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, lang === "ro" ? "Economii sănătate" : "Health savings"))));
+}
+function MentalSec() {
+  const {
+    lang
+  } = useApp();
+  return /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "mb-2"
+  }, "\uD83E\uDDE0 ", lang === "ro" ? "Sport și sănătate mintală" : "Sport and mental health"), /*#__PURE__*/React.createElement("p", {
+    className: "mb-2"
+  }, lang === "ro" ? "Activitatea fizică reduce depresia cu 30% și anxietatea cu 20% la tineri." : "Physical activity reduces depression by 30% and anxiety by 20% in youth."), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-2 mb-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      background: "rgba(16,185,129,.06)",
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number"
+  }, "30%"), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, lang === "ro" ? "Reducere depresie" : "Depression reduction")), /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      background: "rgba(13,148,136,.06)",
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number",
+    style: {
+      color: "var(--teal)"
+    }
+  }, "20%"), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, lang === "ro" ? "Reducere anxietate" : "Anxiety reduction"))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "rgba(249,115,22,.06)",
+      padding: ".8rem",
+      borderRadius: 8
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-sm"
+  }, /*#__PURE__*/React.createElement("strong", null, lang === "ro" ? "Linii de ajutor" : "Helplines", ":")), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm"
+  }, "\uD83D\uDCDE ", lang === "ro" ? "Telefonul Sufletului" : "Mental Health Line", ": 0800 801 200"), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm"
+  }, "\uD83D\uDCDE ", lang === "ro" ? "Telefonul Copilului" : "Child Helpline", ": 116 111")));
+}
+function TimelineSec() {
+  const {
+    lang
+  } = useApp();
+  return /*#__PURE__*/React.createElement("div", null, TIMELINE.map((ev, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "flex gap-2 mb-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      minWidth: 50
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 10,
+      height: 10,
+      borderRadius: "50%",
+      background: i === TIMELINE.length - 1 ? "var(--green)" : "var(--coral)",
+      flexShrink: 0
+    }
+  }), i < TIMELINE.length - 1 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 2,
+      flex: 1,
+      background: "var(--border)"
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "badge badge-teal"
+  }, ev.y), /*#__PURE__*/React.createElement("p", {
+    className: "mt-1"
+  }, ev[lang])))));
+}
+
+/* === Help === */
+function HelpPage() {
+  const {
+    t,
+    lang,
+    toast
+  } = useApp();
+  const [tab, setTab] = useState("volunteer");
+  const [vf, setVf] = useState({
+    name: "",
+    email: "",
+    phone: ""
+  });
+  const subVol = () => {
+    if (!vf.name || !vf.email) {
+      toast(t.error);
+      return;
+    }
+    db.ref("signups").push({
+      ...vf,
+      volunteer: true,
+      date: new Date().toISOString(),
+      choice: "both"
+    });
+    const k = vf.name.replace(/[.#$/\[\]]/g, '_');
+    db.ref("leaderboard/" + k).transaction(v => ({
+      ...(v || {}),
+      points: (v?.points || 0) + 50,
+      name: vf.name
+    }));
+    toast(t.success + " +50 pts");
+    setVf({
+      name: "",
+      email: "",
+      phone: ""
+    });
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "animate-in"
+  }, /*#__PURE__*/React.createElement("section", {
+    className: "section"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container"
+  }, /*#__PURE__*/React.createElement("h2", {
+    className: "section-title"
+  }, "\uD83E\uDD1D ", t.howToHelp), /*#__PURE__*/React.createElement("div", {
+    className: "tabs"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: tab === "volunteer" ? "active" : "",
+    onClick: () => setTab("volunteer")
+  }, "\uD83D\uDE4B ", t.volunteerPath), /*#__PURE__*/React.createElement("button", {
+    className: tab === "donate" ? "active" : "",
+    onClick: () => setTab("donate")
+  }, "\uD83D\uDC9D ", t.donatePath), /*#__PURE__*/React.createElement("button", {
+    className: tab === "share" ? "active" : "",
+    onClick: () => setTab("share")
+  }, "\uD83D\uDCE3 ", t.sharePath), /*#__PURE__*/React.createElement("button", {
+    className: tab === "contact" ? "active" : "",
+    onClick: () => setTab("contact")
+  }, "\uD83C\uDFDB\uFE0F ", t.contactPath)), tab === "volunteer" && /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "mb-2"
+  }, "\uD83D\uDE4B ", t.volunteerSignup), /*#__PURE__*/React.createElement("input", {
+    placeholder: lang === "ro" ? "Numele tău" : "Your name",
+    value: vf.name,
+    onChange: e => setVf({
+      ...vf,
+      name: e.target.value
+    }),
+    className: "mb-1"
+  }), /*#__PURE__*/React.createElement("input", {
+    placeholder: t.email,
+    type: "email",
+    value: vf.email,
+    onChange: e => setVf({
+      ...vf,
+      email: e.target.value
+    }),
+    className: "mb-1"
+  }), /*#__PURE__*/React.createElement("input", {
+    placeholder: t.phone,
+    value: vf.phone,
+    onChange: e => setVf({
+      ...vf,
+      phone: e.target.value
+    }),
+    className: "mb-1"
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green btn-block",
+    onClick: subVol
+  }, t.submit)), tab === "donate" && /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      textAlign: "center",
+      padding: "2rem"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "2.5rem",
+      marginBottom: ".5rem"
+    }
+  }, "\uD83D\uDC9D"), /*#__PURE__*/React.createElement("p", null, lang === "ro" ? "Modulul de donații va fi activat după înregistrarea ONG-ului." : "Donation module will be activated after NGO registration.")), tab === "share" && /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "mb-2"
+  }, "\uD83D\uDCE3 ", t.sharePath), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1",
+    style: {
+      flexWrap: "wrap"
+    }
+  }, /*#__PURE__*/React.createElement("a", {
+    className: "btn btn-sm",
+    style: {
+      background: "#25D366",
+      color: "#fff"
+    },
+    href: `https://wa.me/?text=${encodeURIComponent("From Grey to Play https://animated-swan-5a568b.netlify.app")}`,
+    target: "_blank"
+  }, "\uD83D\uDCAC WhatsApp"), /*#__PURE__*/React.createElement("a", {
+    className: "btn btn-sm",
+    style: {
+      background: "#1877F2",
+      color: "#fff"
+    },
+    href: "https://www.facebook.com/sharer/sharer.php?u=https://animated-swan-5a568b.netlify.app",
+    target: "_blank"
+  }, "\uD83D\uDCD8 Facebook"), /*#__PURE__*/React.createElement("a", {
+    className: "btn btn-sm",
+    style: {
+      background: "#E4405F",
+      color: "#fff"
+    },
+    href: "https://www.instagram.com/",
+    target: "_blank"
+  }, "\uD83D\uDCF7 Instagram"))), tab === "contact" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "card mb-2"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "mb-1"
+  }, "\uD83C\uDFDB\uFE0F ", lang === "ro" ? "Primăria Târgu Mureș" : "Târgu Mureș City Hall"), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm"
+  }, "\uD83D\uDCCD Pia\u021Ba Victoriei nr. 3, 540026"), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm"
+  }, "\uD83D\uDCDE 0265-268.330"), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm"
+  }, "\uD83D\uDCE7 primar@tirgumures.ro"), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm"
+  }, "\uD83C\uDF10 www.tirgumures.ro")), /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "mb-1"
+  }, "\uD83D\uDCC4 ", lang === "ro" ? "Șablon cerere oficială" : "Official Request Template"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green mt-1",
+    onClick: () => {
+      const c = `CĂTRE: Registratura Primăriei Municipiului Târgu Mureș\nPiața Victoriei nr. 3, 540026\n\nSubsemnatul/a _____________, domiciliat/ă în _____________,\n\nsolicit:\n1. Informare privind stadiul renovării terenurilor sportive din cartierele periferice\n2. Alocarea de fonduri pentru programul pilot Flip-the-Court\n3. Accesarea fondurilor Erasmus+ Sport KA2\n\nCu stimă,\n_____________\nData: ${new Date().toLocaleDateString("ro-RO")}`;
+      const b = new Blob([c], {
+        type: "text/plain"
+      });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(b);
+      a.download = "cerere_primaria.txt";
+      a.click();
+    }
+  }, "\uD83D\uDCE5 ", t.downloadPDF))))));
+}
+
+/* === About === */
+function AboutPage() {
+  const {
+    t,
+    lang,
+    toast
+  } = useApp();
+  const [tab, setTab] = useState("project");
+  const [pf, setPf] = useState({
+    company: "",
+    email: "",
+    message: ""
+  });
+  const subPartner = () => {
+    if (!pf.company || !pf.email) {
+      toast(t.error);
+      return;
+    }
+    db.ref("partnerRequests").push({
+      ...pf,
+      date: new Date().toISOString()
+    });
+    toast(t.success);
+    setPf({
+      company: "",
+      email: "",
+      message: ""
+    });
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "animate-in"
+  }, /*#__PURE__*/React.createElement("section", {
+    className: "section"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container"
+  }, /*#__PURE__*/React.createElement("h2", {
+    className: "section-title"
+  }, "\uD83D\uDCD6 ", t.about), /*#__PURE__*/React.createElement("div", {
+    className: "tabs"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: tab === "project" ? "active" : "",
+    onClick: () => setTab("project")
+  }, "\uD83D\uDCD6 ", t.theProject), /*#__PURE__*/React.createElement("button", {
+    className: tab === "funding" ? "active" : "",
+    onClick: () => setTab("funding")
+  }, "\uD83D\uDCB0 ", t.fundingSources), /*#__PURE__*/React.createElement("button", {
+    className: tab === "partners" ? "active" : "",
+    onClick: () => setTab("partners")
+  }, "\uD83E\uDD1D ", t.partnerships), /*#__PURE__*/React.createElement("button", {
+    className: tab === "press" ? "active" : "",
+    onClick: () => setTab("press")
+  }, "\uD83D\uDCF0 ", t.pressKit)), tab === "project" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderLeft: "6px solid var(--green)",
+      paddingLeft: "1rem",
+      marginBottom: "1.2rem"
+    }
+  }, /*#__PURE__*/React.createElement("h3", null, "FROM GREY TO PLAY")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      whiteSpace: "pre-wrap",
+      lineHeight: 1.7,
+      fontSize: ".92rem"
+    }
+  }, ESSAY[lang])), /*#__PURE__*/React.createElement("div", {
+    className: "card mt-2"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "mb-2"
+  }, "\uD83D\uDCCA ", lang === "ro" ? "Date cheie" : "Key Data"), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number"
+  }, "12/15"), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, lang === "ro" ? "rezidenți" : "residents")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number",
+    style: {
+      color: "var(--coral)"
+    }
+  }, "5M"), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, lang === "ro" ? "lei înghețați" : "lei frozen")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number",
+    style: {
+      color: "var(--red)"
+    }
+  }, "0%"), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, lang === "ro" ? "renovare" : "renovation")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number",
+    style: {
+      color: "var(--teal)"
+    }
+  }, "3km"), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, lang === "ro" ? "decalaj" : "gap")))), /*#__PURE__*/React.createElement("div", {
+    className: "card mt-2"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "mb-1"
+  }, t.sources), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col gap-1"
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "https://www.google.com/maps/d/edit?mid=19tND_bqOJoFbhTNKN0PenNW7S7yUog8",
+    target: "_blank"
+  }, "\uD83D\uDDFA\uFE0F Google My Maps"), /*#__PURE__*/React.createElement("a", {
+    href: "https://punctul.ro/eroare-tehnica-de-5-milioane-de-lei-baza-sportiva-din-str-insulei-identificata-gresit-in-acte/",
+    target: "_blank"
+  }, "\uD83D\uDCF0 Punctul.ro \u2014 Oct 2025"), /*#__PURE__*/React.createElement("a", {
+    href: "https://punctul.ro/din-centrale-in-restaurante-hub-uri-digitale-si-cartiere-3-exemple-care-sa-inspire-targu-muresul/",
+    target: "_blank"
+  }, "\uD83D\uDCF0 Punctul.ro \u2014 Mar 2026"), /*#__PURE__*/React.createElement("a", {
+    href: "https://www.mdpi.com/2413-8851/8/4/203",
+    target: "_blank"
+  }, "\uD83D\uDCDA MDPI Urban Science"), /*#__PURE__*/React.createElement("a", {
+    href: "https://www.tirgumures.ro/strategie/SIDU_Targu_Mures.pdf",
+    target: "_blank"
+  }, "\uD83D\uDCC4 SIDU T\xE2rgu Mure\u0219")))), tab === "funding" && /*#__PURE__*/React.createElement("div", {
+    className: "grid gap-1"
+  }, FUNDING.map((f, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "card card-accent"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center"
+  }, /*#__PURE__*/React.createElement("h4", null, f.name), /*#__PURE__*/React.createElement("span", {
+    className: `badge ${f.type === "EU" ? "badge-teal" : f.type === "National" ? "badge-coral" : "badge-green"}`
+  }, f.type)), f.amount !== "—" && /*#__PURE__*/React.createElement("p", {
+    className: "text-sm font-bold mt-1 text-green"
+  }, f.amount), /*#__PURE__*/React.createElement("a", {
+    href: f.url,
+    target: "_blank",
+    className: "text-sm mt-1",
+    style: {
+      display: "block"
+    }
+  }, "\uD83D\uDD17 ", lang === "ro" ? "Detalii" : "Details")))), tab === "partners" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "card mb-2",
+    style: {
+      textAlign: "center",
+      padding: "2rem"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "2.5rem",
+      marginBottom: ".4rem"
+    }
+  }, "\uD83E\uDD1D"), /*#__PURE__*/React.createElement("h3", null, t.partnerForm), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm mt-1",
+    style: {
+      color: "var(--textSec)"
+    }
+  }, lang === "ro" ? "Niciun parteneriat confirmat încă. Completați formularul de mai jos." : "No partnerships confirmed yet. Fill in the form below.")), /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "mb-2"
+  }, "\uD83D\uDCE9 ", t.partnerForm), /*#__PURE__*/React.createElement("input", {
+    placeholder: t.companyName,
+    value: pf.company,
+    onChange: e => setPf({
+      ...pf,
+      company: e.target.value
+    }),
+    className: "mb-1"
+  }), /*#__PURE__*/React.createElement("input", {
+    placeholder: t.email,
+    type: "email",
+    value: pf.email,
+    onChange: e => setPf({
+      ...pf,
+      email: e.target.value
+    }),
+    className: "mb-1"
+  }), /*#__PURE__*/React.createElement("textarea", {
+    placeholder: t.message,
+    value: pf.message,
+    onChange: e => setPf({
+      ...pf,
+      message: e.target.value
+    }),
+    rows: 3,
+    className: "mb-1"
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green btn-block",
+    onClick: subPartner
+  }, t.submit))), tab === "press" && /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "mb-2"
+  }, "\uD83D\uDCF0 ", t.pressKit), /*#__PURE__*/React.createElement("p", {
+    className: "mb-2"
+  }, lang === "ro" ? "Pachet pentru presă" : "Press pack"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green",
+    onClick: () => {
+      const c = `FROM GREY TO PLAY — Press Kit\n\nProject: Civic initiative — Târgu Mureș\nOwner: Cimpan Teodor\nWeb: animated-swan-5a568b.netlify.app\n\nKey Stats:\n- 12/15 residents say courts too degraded\n- 5M lei frozen by admin error\n- 0% peripheral courts renovated\n- 3km gap\n\nProposals:\n1. Flip-the-Court\n2. Street Canvas\n\nContact: fromgreytoplay@gmail.com`;
+      const b = new Blob([c], {
+        type: "text/plain"
+      });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(b);
+      a.download = "press_kit_g2p.txt";
+      a.click();
+    }
+  }, "\uD83D\uDCE5 ", lang === "ro" ? "Descarcă" : "Download")))));
+}
+
+/* === Profile === */
+function ProfilePage() {
+  const {
+    t,
+    lang,
+    theme,
+    setTheme,
+    setLang,
+    user,
+    setUser,
+    toast
+  } = useApp();
+  const [isReg, setIsReg] = useState(false);
+  const [lf, setLf] = useState({
+    email: "",
+    pw: "",
+    name: ""
+  });
+  const auth = () => {
+    if (!lf.email) {
+      toast(t.error);
+      return;
+    }
+    const uid = "u_" + Date.now();
+    const nu = {
+      id: uid,
+      name: lf.name || lf.email.split("@")[0],
+      email: lf.email,
+      points: 0,
+      badges: ["🌱"],
+      reports: [],
+      volunteer: false
+    };
+    db.ref("users/" + uid).set(nu);
+    db.ref("leaderboard/" + uid).set({
+      name: nu.name,
+      points: 0
+    });
+    setUser(nu);
+    localStorage.setItem("g2p_user", JSON.stringify(nu));
+    toast(t.success);
+  };
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("g2p_user");
+  };
+  const cert = () => {
+    const c = `══════════════════════\nCERTIFICAT VOLUNTAR\n══════════════════════\n\nFROM GREY TO PLAY\n\n${user?.name || "___"}\n\na participat ca voluntar.\nPuncte: ${user?.points || 0}\n\nManager: Cimpan Teodor\nData: ${new Date().toLocaleDateString()}\n══════════════════════`;
+    const b = new Blob([c], {
+      type: "text/plain"
+    });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(b);
+    a.download = "certificat_g2p.txt";
+    a.click();
+  };
+  if (!user) return /*#__PURE__*/React.createElement("div", {
+    className: "animate-in"
+  }, /*#__PURE__*/React.createElement("section", {
+    className: "section"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container",
+    style: {
+      maxWidth: 380,
+      margin: "0 auto"
+    }
+  }, /*#__PURE__*/React.createElement("h2", {
+    className: "section-title",
+    style: {
+      textAlign: "center"
+    }
+  }, isReg ? t.signUp : t.signIn), isReg && /*#__PURE__*/React.createElement("input", {
+    placeholder: lang === "ro" ? "Numele tău" : "Your name",
+    value: lf.name,
+    onChange: e => setLf({
+      ...lf,
+      name: e.target.value
+    }),
+    className: "mb-1"
+  }), /*#__PURE__*/React.createElement("input", {
+    placeholder: t.email,
+    type: "email",
+    value: lf.email,
+    onChange: e => setLf({
+      ...lf,
+      email: e.target.value
+    }),
+    className: "mb-1"
+  }), /*#__PURE__*/React.createElement("input", {
+    placeholder: "Password",
+    type: "password",
+    value: lf.pw,
+    onChange: e => setLf({
+      ...lf,
+      pw: e.target.value
+    }),
+    className: "mb-1"
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green btn-block mb-1",
+    onClick: auth
+  }, isReg ? t.signUp : t.signIn), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm",
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "#",
+    onClick: e => {
+      e.preventDefault();
+      setIsReg(!isReg);
+    }
+  }, isReg ? lang === "ro" ? "Ai cont? Autentifică-te" : "Have account? Sign in" : lang === "ro" ? "Nu ai cont? Înregistrează-te" : "No account? Sign up")))));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "animate-in"
+  }, /*#__PURE__*/React.createElement("section", {
+    className: "section"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card mb-2",
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 70,
+      height: 70,
+      borderRadius: "50%",
+      background: "var(--green)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      margin: "0 auto",
+      fontSize: "1.8rem",
+      color: "#fff"
+    }
+  }, user.name[0].toUpperCase()), /*#__PURE__*/React.createElement("h2", {
+    className: "mt-1"
+  }, user.name), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm",
+    style: {
+      color: "var(--textSec)"
+    }
+  }, user.email)), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-3 mb-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number"
+  }, user.points || 0), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, t.points)), /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-number",
+    style: {
+      color: "var(--coral)"
+    }
+  }, (user.badges || []).length), /*#__PURE__*/React.createElement("div", {
+    className: "stat-label"
+  }, t.badges)), /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green btn-sm mt-1",
+    onClick: cert
+  }, "\uD83D\uDCDC ", t.volunteerCertificate))), /*#__PURE__*/React.createElement("div", {
+    className: "card mb-2"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "mb-1"
+  }, "\u2699\uFE0F ", t.settings), /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center mb-1"
+  }, /*#__PURE__*/React.createElement("span", null, theme === "dark" ? "🌙 Dark" : "☀️ Light"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-outline",
+    onClick: () => setTheme(theme === "dark" ? "light" : "dark")
+  }, theme === "dark" ? "☀️" : "🌙")), /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center mb-1"
+  }, /*#__PURE__*/React.createElement("span", null, "Language"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm btn-outline",
+    onClick: () => setLang(lang === "ro" ? "en" : "ro")
+  }, t.language))), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline btn-block",
+    style: {
+      color: "var(--red)",
+      borderColor: "var(--red)"
+    },
+    onClick: logout
+  }, t.signOut))));
+}
+
+/* === Admin === */
+function AdminLogin({
+  onAuth,
+  onBack
+}) {
+  const [pw, setPw] = useState("");
+  const [err, setErr] = useState(false);
+  const go = () => {
+    if (pw === ADMIN_PW) onAuth();else {
+      setErr(true);
+      setTimeout(() => setErr(false), 2e3);
+    }
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "admin-login"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "admin-login-box"
+  }, /*#__PURE__*/React.createElement("h2", null, "\uD83D\uDD12 ADMIN"), /*#__PURE__*/React.createElement("p", null, "From Grey to Play"), err && /*#__PURE__*/React.createElement("div", {
+    className: "err"
+  }, "Wrong password"), /*#__PURE__*/React.createElement("input", {
+    type: "password",
+    placeholder: "Password",
+    value: pw,
+    onChange: e => setPw(e.target.value),
+    onKeyDown: e => {
+      if (e.key === "Enter") go();
+    },
+    autoFocus: true
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "ab",
+    onClick: go
+  }, "Log In"), /*#__PURE__*/React.createElement("button", {
+    onClick: onBack,
+    style: {
+      background: "none",
+      border: "none",
+      color: "#6B7280",
+      marginTop: ".6rem",
+      cursor: "pointer",
+      fontSize: ".8rem"
+    }
+  }, "\u2190 Back")));
+}
+function AdminPanel({
+  onExit
+}) {
+  const [tab, setTab] = useState("signups");
+  const su = useFirebase("signups");
+  const vo = useFirebase("votes");
+  const co = useFirebase("courts");
+  const fo = useFirebase("forum");
+  const ev = useFirebase("events");
+  const lb = useFirebase("leaderboard");
+  const us = useFirebase("users");
+  const sl = su ? Object.entries(su).map(([id, s]) => ({
+    id,
+    ...s
+  })) : [];
+  const cl = co ? Object.entries(co).map(([id, c]) => ({
+    id,
+    ...c
+  })) : [];
+  const fl = fo ? Object.entries(fo).map(([id, p]) => ({
+    id,
+    ...p
+  })) : [];
+  const el = ev ? Object.entries(ev).map(([id, e]) => ({
+    id,
+    ...e
+  })) : [];
+  const ll = lb ? Object.entries(lb).map(([id, u]) => ({
+    id,
+    ...u
+  })).sort((a, b) => (b.points || 0) - (a.points || 0)) : [];
+  const ul = us ? Object.entries(us).map(([id, u]) => ({
+    id,
+    ...u
+  })) : [];
+  const flip = vo?.flip || 0,
+    mural = vo?.mural || 0,
+    both = vo?.both || 0,
+    tv = flip + mural + both;
+  const csv = (rows, fn) => {
+    if (!rows.length) return;
+    const ks = Object.keys(rows[0]).filter(k => k !== "id");
+    const h = ks.join(",");
+    const b = rows.map(r => ks.map(k => String(r[k] || "").includes(",") ? `"${r[k]}"` : String(r[k] || "")).join(",")).join("\n");
+    const bl = new Blob([h + "\n" + b], {
+      type: "text/csv"
+    });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(bl);
+    a.download = fn;
+    a.click();
+  };
+  const [ef, setEf] = useState({
+    title: "",
+    desc: "",
+    date: "",
+    location: "",
+    type: "volunteerDay"
+  });
+  const [editId, setEditId] = useState(null);
+  const saveEv = () => {
+    if (!ef.title || !ef.date) return;
+    if (editId) {
+      db.ref("events/" + editId).update(ef);
+      setEditId(null);
+    } else db.ref("events").push({
+      ...ef,
+      attendeeCount: 0
+    });
+    setEf({
+      title: "",
+      desc: "",
+      date: "",
+      location: "",
+      type: "volunteerDay"
+    });
+  };
+  const tabs = [{
+    k: "signups",
+    l: "📋 Signups (" + sl.length + ")"
+  }, {
+    k: "votes",
+    l: "✊ Votes (" + tv + ")"
+  }, {
+    k: "courts",
+    l: "🏟️ Courts (" + cl.length + ")"
+  }, {
+    k: "forum",
+    l: "💬 Forum (" + fl.length + ")"
+  }, {
+    k: "events",
+    l: "📅 Events (" + el.length + ")"
+  }, {
+    k: "leaderboard",
+    l: "🏆 Leaderboard"
+  }, {
+    k: "users",
+    l: "👥 Users (" + ul.length + ")"
+  }];
+  return /*#__PURE__*/React.createElement("div", {
+    className: "admin-shell"
+  }, /*#__PURE__*/React.createElement("header", {
+    className: "admin-hdr"
+  }, /*#__PURE__*/React.createElement("h1", null, "\uD83D\uDD12 ADMIN \u2014 From Grey to Play"), /*#__PURE__*/React.createElement("button", {
+    onClick: onExit,
+    style: {
+      background: "none",
+      border: "1px solid #1E2235",
+      color: "#9CA3AF",
+      padding: ".3rem .7rem",
+      borderRadius: 6,
+      fontSize: ".78rem",
+      cursor: "pointer"
+    }
+  }, "\u2715 Exit")), /*#__PURE__*/React.createElement("div", {
+    className: "admin-body"
+  }, /*#__PURE__*/React.createElement("nav", {
+    className: "admin-side"
+  }, tabs.map(tb => /*#__PURE__*/React.createElement("button", {
+    key: tb.k,
+    className: tab === tb.k ? "active" : "",
+    onClick: () => setTab(tb.k)
+  }, tb.l))), /*#__PURE__*/React.createElement("div", {
+    className: "admin-main"
+  }, tab === "signups" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Petition Signups"), /*#__PURE__*/React.createElement("div", {
+    className: "a-stats"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "a-stat"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "n",
+    style: {
+      color: "#10B981"
+    }
+  }, sl.length), /*#__PURE__*/React.createElement("div", {
+    className: "l"
+  }, "Total")), /*#__PURE__*/React.createElement("div", {
+    className: "a-stat"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "n",
+    style: {
+      color: "#F97316"
+    }
+  }, sl.filter(s => s.volunteer).length), /*#__PURE__*/React.createElement("div", {
+    className: "l"
+  }, "Volunteers"))), /*#__PURE__*/React.createElement("button", {
+    onClick: () => csv(sl, "signups.csv"),
+    className: "btn btn-sm btn-green mb-1"
+  }, "\uD83D\uDCE5 CSV"), sl.length ? /*#__PURE__*/React.createElement("div", {
+    className: "a-table-wrap"
+  }, /*#__PURE__*/React.createElement("table", {
+    className: "a-table"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "#"), /*#__PURE__*/React.createElement("th", null, "Name"), /*#__PURE__*/React.createElement("th", null, "Email"), /*#__PURE__*/React.createElement("th", null, "Choice"), /*#__PURE__*/React.createElement("th", null, "Vol"), /*#__PURE__*/React.createElement("th", null, "Date"))), /*#__PURE__*/React.createElement("tbody", null, sl.map((s, i) => /*#__PURE__*/React.createElement("tr", {
+    key: s.id
+  }, /*#__PURE__*/React.createElement("td", null, i + 1), /*#__PURE__*/React.createElement("td", null, s.name), /*#__PURE__*/React.createElement("td", null, s.email), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("span", {
+    className: `a-badge ${s.choice === "flip" ? "a-badge-g" : s.choice === "mural" ? "a-badge-o" : "a-badge-t"}`
+  }, s.choice)), /*#__PURE__*/React.createElement("td", null, s.volunteer ? "✓" : ""), /*#__PURE__*/React.createElement("td", null, s.date ? new Date(s.date).toLocaleDateString() : "")))))) : /*#__PURE__*/React.createElement("p", {
+    style: {
+      color: "#6B7280"
+    }
+  }, "No signups yet")), tab === "votes" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Votes"), /*#__PURE__*/React.createElement("div", {
+    className: "a-stats"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "a-stat"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "n",
+    style: {
+      color: "#10B981"
+    }
+  }, tv), /*#__PURE__*/React.createElement("div", {
+    className: "l"
+  }, "Total")), /*#__PURE__*/React.createElement("div", {
+    className: "a-stat"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "n",
+    style: {
+      color: "#10B981"
+    }
+  }, flip), /*#__PURE__*/React.createElement("div", {
+    className: "l"
+  }, "Flip")), /*#__PURE__*/React.createElement("div", {
+    className: "a-stat"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "n",
+    style: {
+      color: "#F97316"
+    }
+  }, mural), /*#__PURE__*/React.createElement("div", {
+    className: "l"
+  }, "Canvas")), /*#__PURE__*/React.createElement("div", {
+    className: "a-stat"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "n",
+    style: {
+      color: "#0D9488"
+    }
+  }, both), /*#__PURE__*/React.createElement("div", {
+    className: "l"
+  }, "Both"))), tv > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "#151828",
+      border: "1px solid #1E2235",
+      borderRadius: 10,
+      padding: "1rem"
+    }
+  }, [{
+    l: "Flip-the-Court",
+    v: flip,
+    c: "#10B981"
+  }, {
+    l: "Street Canvas",
+    v: mural,
+    c: "#F97316"
+  }, {
+    l: "Both",
+    v: both,
+    c: "#0D9488"
+  }].map(x => /*#__PURE__*/React.createElement("div", {
+    key: x.l,
+    style: {
+      marginBottom: ".5rem"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      fontSize: ".82rem",
+      marginBottom: ".2rem"
+    }
+  }, /*#__PURE__*/React.createElement("span", null, x.l), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: x.c,
+      fontWeight: 700
+    }
+  }, (x.v / tv * 100).toFixed(1), "%")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      height: 5,
+      background: "#1E2235",
+      borderRadius: 3,
+      overflow: "hidden"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      height: "100%",
+      width: x.v / tv * 100 + "%",
+      background: x.c,
+      borderRadius: 3
+    }
+  })))))), tab === "courts" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Court Reports"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => csv(cl.map(c => ({
+      name: c.name,
+      address: c.address,
+      status: c.status,
+      condition: c.condition
+    })), "courts.csv"),
+    className: "btn btn-sm btn-green mb-1"
+  }, "\uD83D\uDCE5 CSV"), cl.length ? /*#__PURE__*/React.createElement("div", {
+    className: "a-table-wrap"
+  }, /*#__PURE__*/React.createElement("table", {
+    className: "a-table"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Name"), /*#__PURE__*/React.createElement("th", null, "Status"), /*#__PURE__*/React.createElement("th", null, "Cond"), /*#__PURE__*/React.createElement("th", null, "Date"), /*#__PURE__*/React.createElement("th", null, "Actions"))), /*#__PURE__*/React.createElement("tbody", null, cl.map(c => /*#__PURE__*/React.createElement("tr", {
+    key: c.id
+  }, /*#__PURE__*/React.createElement("td", null, c.name), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("span", {
+    className: `a-badge ${c.status === "degraded" ? "a-badge-r" : "a-badge-g"}`
+  }, c.status)), /*#__PURE__*/React.createElement("td", null, c.condition, "/5"), /*#__PURE__*/React.createElement("td", null, c.date ? new Date(c.date).toLocaleDateString() : ""), /*#__PURE__*/React.createElement("td", {
+    className: "acts"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => db.ref("courts/" + c.id + "/status").set("inProgress")
+  }, "\u2192 WIP"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => db.ref("courts/" + c.id + "/status").set("renovated")
+  }, "\u2713"), /*#__PURE__*/React.createElement("button", {
+    className: "dng",
+    onClick: () => {
+      if (confirm("Delete?")) db.ref("courts/" + c.id).remove();
+    }
+  }, "\u2715"))))))) : /*#__PURE__*/React.createElement("p", {
+    style: {
+      color: "#6B7280"
+    }
+  }, "No reports")), tab === "forum" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Forum Moderation"), fl.length ? /*#__PURE__*/React.createElement("div", {
+    className: "a-table-wrap"
+  }, /*#__PURE__*/React.createElement("table", {
+    className: "a-table"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "\uD83D\uDCCC"), /*#__PURE__*/React.createElement("th", null, "Type"), /*#__PURE__*/React.createElement("th", null, "Title"), /*#__PURE__*/React.createElement("th", null, "Author"), /*#__PURE__*/React.createElement("th", null, "\u2191"), /*#__PURE__*/React.createElement("th", null, "\u2193"), /*#__PURE__*/React.createElement("th", null, "Actions"))), /*#__PURE__*/React.createElement("tbody", null, fl.map(p => /*#__PURE__*/React.createElement("tr", {
+    key: p.id
+  }, /*#__PURE__*/React.createElement("td", null, p.pinned ? "📌" : ""), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("span", {
+    className: "a-badge a-badge-t"
+  }, p.type)), /*#__PURE__*/React.createElement("td", null, p.title), /*#__PURE__*/React.createElement("td", null, p.author), /*#__PURE__*/React.createElement("td", {
+    style: {
+      color: "#10B981"
+    }
+  }, p.upvotes || 0), /*#__PURE__*/React.createElement("td", {
+    style: {
+      color: "#DC2626"
+    }
+  }, p.downvotes || 0), /*#__PURE__*/React.createElement("td", {
+    className: "acts"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => db.ref("forum/" + p.id + "/pinned").set(!p.pinned)
+  }, p.pinned ? "Unpin" : "Pin"), /*#__PURE__*/React.createElement("button", {
+    className: "dng",
+    onClick: () => {
+      if (confirm("Delete?")) db.ref("forum/" + p.id).remove();
+    }
+  }, "\uD83D\uDDD1"))))))) : /*#__PURE__*/React.createElement("p", {
+    style: {
+      color: "#6B7280"
+    }
+  }, "No posts")), tab === "events" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Events"), /*#__PURE__*/React.createElement("div", {
+    className: "a-form"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: ".4rem"
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", null, "Title"), /*#__PURE__*/React.createElement("input", {
+    value: ef.title,
+    onChange: e => setEf({
+      ...ef,
+      title: e.target.value
+    })
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", null, "Date"), /*#__PURE__*/React.createElement("input", {
+    type: "date",
+    value: ef.date,
+    onChange: e => setEf({
+      ...ef,
+      date: e.target.value
+    })
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", null, "Location"), /*#__PURE__*/React.createElement("input", {
+    value: ef.location,
+    onChange: e => setEf({
+      ...ef,
+      location: e.target.value
+    })
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", null, "Type"), /*#__PURE__*/React.createElement("select", {
+    value: ef.type,
+    onChange: e => setEf({
+      ...ef,
+      type: e.target.value
+    })
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "volunteerDay"
+  }, "Volunteer Day"), /*#__PURE__*/React.createElement("option", {
+    value: "muralPainting"
+  }, "Mural Painting"), /*#__PURE__*/React.createElement("option", {
+    value: "tournament"
+  }, "Tournament"), /*#__PURE__*/React.createElement("option", {
+    value: "meeting"
+  }, "Meeting")))), /*#__PURE__*/React.createElement("label", null, "Description"), /*#__PURE__*/React.createElement("textarea", {
+    value: ef.desc,
+    onChange: e => setEf({
+      ...ef,
+      desc: e.target.value
+    }),
+    rows: 2
+  }), /*#__PURE__*/React.createElement("button", {
+    onClick: saveEv,
+    className: "btn btn-sm",
+    style: {
+      background: "#10B981",
+      color: "#fff"
+    }
+  }, editId ? "💾 Update" : "+ Create")), el.length ? /*#__PURE__*/React.createElement("div", {
+    className: "a-table-wrap"
+  }, /*#__PURE__*/React.createElement("table", {
+    className: "a-table"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Title"), /*#__PURE__*/React.createElement("th", null, "Date"), /*#__PURE__*/React.createElement("th", null, "Location"), /*#__PURE__*/React.createElement("th", null, "RSVPs"), /*#__PURE__*/React.createElement("th", null, "Actions"))), /*#__PURE__*/React.createElement("tbody", null, el.map(e => /*#__PURE__*/React.createElement("tr", {
+    key: e.id
+  }, /*#__PURE__*/React.createElement("td", null, e.title), /*#__PURE__*/React.createElement("td", null, e.date), /*#__PURE__*/React.createElement("td", null, e.location), /*#__PURE__*/React.createElement("td", null, e.attendeeCount || 0), /*#__PURE__*/React.createElement("td", {
+    className: "acts"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setEditId(e.id);
+      setEf({
+        title: e.title || "",
+        desc: e.desc || "",
+        date: e.date || "",
+        location: e.location || "",
+        type: e.type || "volunteerDay"
+      });
+    }
+  }, "\u270F\uFE0F"), /*#__PURE__*/React.createElement("button", {
+    className: "dng",
+    onClick: () => {
+      if (confirm("Delete?")) db.ref("events/" + e.id).remove();
+    }
+  }, "\uD83D\uDDD1"))))))) : /*#__PURE__*/React.createElement("p", {
+    style: {
+      color: "#6B7280"
+    }
+  }, "No events")), tab === "leaderboard" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Leaderboard"), ll.length ? /*#__PURE__*/React.createElement("div", {
+    className: "a-table-wrap"
+  }, /*#__PURE__*/React.createElement("table", {
+    className: "a-table"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "#"), /*#__PURE__*/React.createElement("th", null, "Name"), /*#__PURE__*/React.createElement("th", null, "Points"), /*#__PURE__*/React.createElement("th", null, "Adjust"))), /*#__PURE__*/React.createElement("tbody", null, ll.map((u, i) => /*#__PURE__*/React.createElement("tr", {
+    key: u.id
+  }, /*#__PURE__*/React.createElement("td", {
+    style: {
+      color: i < 3 ? "#10B981" : "inherit"
+    }
+  }, i + 1), /*#__PURE__*/React.createElement("td", null, u.name || u.id), /*#__PURE__*/React.createElement("td", {
+    style: {
+      fontFamily: "'Space Mono',monospace",
+      fontWeight: 700
+    }
+  }, u.points || 0), /*#__PURE__*/React.createElement("td", {
+    className: "acts"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => db.ref("leaderboard/" + u.id + "/points").transaction(v => Math.max(0, (v || 0) + 10))
+  }, "+10"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => db.ref("leaderboard/" + u.id + "/points").transaction(v => Math.max(0, (v || 0) + 50))
+  }, "+50"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => db.ref("leaderboard/" + u.id + "/points").transaction(v => Math.max(0, (v || 0) - 10))
+  }, "-10"), /*#__PURE__*/React.createElement("button", {
+    className: "dng",
+    onClick: () => db.ref("leaderboard/" + u.id + "/points").set(0)
+  }, "Reset"))))))) : /*#__PURE__*/React.createElement("p", {
+    style: {
+      color: "#6B7280"
+    }
+  }, "Empty")), tab === "users" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Users"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => csv(ul.map(u => ({
+      name: u.name,
+      email: u.email,
+      points: u.points,
+      volunteer: u.volunteer ? "Yes" : "No"
+    })), "users.csv"),
+    className: "btn btn-sm btn-green mb-1"
+  }, "\uD83D\uDCE5 CSV"), ul.length ? /*#__PURE__*/React.createElement("div", {
+    className: "a-table-wrap"
+  }, /*#__PURE__*/React.createElement("table", {
+    className: "a-table"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Name"), /*#__PURE__*/React.createElement("th", null, "Email"), /*#__PURE__*/React.createElement("th", null, "Points"), /*#__PURE__*/React.createElement("th", null, "Vol"))), /*#__PURE__*/React.createElement("tbody", null, ul.map(u => /*#__PURE__*/React.createElement("tr", {
+    key: u.id
+  }, /*#__PURE__*/React.createElement("td", null, u.name), /*#__PURE__*/React.createElement("td", null, u.email), /*#__PURE__*/React.createElement("td", null, u.points || 0), /*#__PURE__*/React.createElement("td", null, u.volunteer ? "✓" : "")))))) : /*#__PURE__*/React.createElement("p", {
+    style: {
+      color: "#6B7280"
+    }
+  }, "No users")))));
+}
+
+/* === Footer === */
+function Footer() {
+  const {
+    t
+  } = useApp();
+  return /*#__PURE__*/React.createElement("footer", {
+    className: "footer"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "owner"
+  }, t.owner), /*#__PURE__*/React.createElement("p", null, t.madeBy, " ", t.owner, " \u2014 ", t.city), /*#__PURE__*/React.createElement("p", {
+    className: "mt-1"
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "https://www.google.com/maps/d/edit?mid=19tND_bqOJoFbhTNKN0PenNW7S7yUog8",
+    target: "_blank"
+  }, "\uD83D\uDDFA\uFE0F Maps"), " · ", /*#__PURE__*/React.createElement("a", {
+    href: "https://punctul.ro/eroare-tehnica-de-5-milioane-de-lei-baza-sportiva-din-str-insulei-identificata-gresit-in-acte/",
+    target: "_blank"
+  }, "\uD83D\uDCF0 Punctul.ro"), " · ", /*#__PURE__*/React.createElement("a", {
+    href: "https://www.mdpi.com/2413-8851/8/4/203",
+    target: "_blank"
+  }, "\uD83D\uDCDA MDPI")), /*#__PURE__*/React.createElement("p", {
+    className: "mt-1"
+  }, t.copyright)));
+}
+
+/* === App === */
+function App() {
+  const [lang, setLang] = useState(() => localStorage.getItem("g2p_lang") || "ro");
+  const [theme, setTheme] = useState(() => localStorage.getItem("g2p_theme") || (window.matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light"));
+  const [page, setPage] = useState("home");
+  const [user, setUser] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("g2p_user"));
+    } catch {
+      return null;
+    }
+  });
+  const [toastMsg, setToastMsg] = useState("");
+  const [onboard, setOnboard] = useState(() => !localStorage.getItem("g2p_ob"));
+  const [adminMode, setAdminMode] = useState(false);
+  const [adminAuth, setAdminAuth] = useState(false);
+  useEffect(() => {
+    localStorage.setItem("g2p_lang", lang);
+  }, [lang]);
+  useEffect(() => {
+    localStorage.setItem("g2p_theme", theme);
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
+  useEffect(() => {
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+  }, []);
+  useEffect(() => {
+    const h = e => {
+      if (e.ctrlKey && e.shiftKey && (e.key === "A" || e.key === "a")) {
+        e.preventDefault();
+        setAdminMode(true);
+      }
+    };
+    window.addEventListener("keydown", h);
+    return () => window.removeEventListener("keydown", h);
+  }, []);
+  useEffect(() => {
+    if (location.hash === "#/admin") setAdminMode(true);
+    const h = () => {
+      if (location.hash === "#/admin") setAdminMode(true);
+    };
+    window.addEventListener("hashchange", h);
+    return () => window.removeEventListener("hashchange", h);
+  }, []);
+  const toast = useCallback(msg => {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(""), 3e3);
+  }, []);
+  const t = T[lang];
+  const ctx = {
+    t,
+    lang,
+    setLang,
+    theme,
+    setTheme,
+    page,
+    setPage,
+    user,
+    setUser,
+    toast
+  };
+  if (adminMode && !adminAuth) return /*#__PURE__*/React.createElement(AdminLogin, {
+    onAuth: () => setAdminAuth(true),
+    onBack: () => {
+      setAdminMode(false);
+      location.hash = "";
+    }
+  });
+  if (adminMode && adminAuth) return /*#__PURE__*/React.createElement(AdminPanel, {
+    onExit: () => {
+      setAdminMode(false);
+      setAdminAuth(false);
+      location.hash = "";
+    }
+  });
+  if (onboard) return /*#__PURE__*/React.createElement(Onboarding, {
+    lang: lang,
+    onDone: () => {
+      localStorage.setItem("g2p_ob", "1");
+      setOnboard(false);
+    }
+  });
+  const P = () => {
+    switch (page) {
+      case "courts":
+        return /*#__PURE__*/React.createElement(CourtsPage, null);
+      case "petition":
+        return /*#__PURE__*/React.createElement(PetitionPage, null);
+      case "community":
+        return /*#__PURE__*/React.createElement(CommunityPage, null);
+      case "impact":
+        return /*#__PURE__*/React.createElement(ImpactPage, null);
+      case "help":
+        return /*#__PURE__*/React.createElement(HelpPage, null);
+      case "about":
+        return /*#__PURE__*/React.createElement(AboutPage, null);
+      case "profile":
+        return /*#__PURE__*/React.createElement(ProfilePage, null);
+      default:
+        return /*#__PURE__*/React.createElement(HomePage, null);
+    }
+  };
+  return /*#__PURE__*/React.createElement(AppCtx.Provider, {
+    value: ctx
+  }, /*#__PURE__*/React.createElement(InstallBanner, {
+    lang: lang
+  }), /*#__PURE__*/React.createElement(Navbar, null), /*#__PURE__*/React.createElement("main", {
+    style: {
+      minHeight: "80vh"
+    }
+  }, /*#__PURE__*/React.createElement(P, null)), /*#__PURE__*/React.createElement(Footer, null), toastMsg && /*#__PURE__*/React.createElement(Toast, {
+    msg: toastMsg,
+    onClose: () => setToastMsg("")
+  }));
+}
+try {
+  ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
+} catch (e) {
+  document.getElementById("root").innerHTML = '<div style="padding:2rem;text-align:center;color:#DC2626;font-family:sans-serif"><h2>Error</h2><p>' + e.message + '</p><p style="color:#6B7280;margin-top:1rem">Deploy pe Netlify pentru funcționalitate completă.</p></div>';
+}
+</script>
+
+</body>
 </html>
