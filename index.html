@@ -210,6 +210,10 @@ const T = {
     liveResults: "Rezultate live",
     share: "Distribuie",
     generateLetter: "Generează scrisoare",
+    letterArea: "Cartierul tău",
+    letterWhy: "De ce contează pentru tine",
+    letterWhyPh: "O propoziție: de ce e important acest teren pentru tine...",
+    emailLetter: "Trimite pe email",
     downloadPDF: "Descarcă",
     forum: "Forum",
     events: "Evenimente",
@@ -323,6 +327,10 @@ const T = {
     liveResults: "Live results",
     share: "Share",
     generateLetter: "Generate letter",
+    letterArea: "Your neighbourhood",
+    letterWhy: "Why it matters to you",
+    letterWhyPh: "One sentence: why this court matters to you...",
+    emailLetter: "Send by email",
     downloadPDF: "Download",
     forum: "Forum",
     events: "Events",
@@ -436,6 +444,10 @@ const T = {
     liveResults: "Élő eredmények",
     share: "Megosztás",
     generateLetter: "Levél generálása",
+    letterArea: "A te kerületed",
+    letterWhy: "Miért fontos neked",
+    letterWhyPh: "Egy mondat: miért fontos neked ez a pálya...",
+    emailLetter: "Küldés emailben",
     downloadPDF: "Letöltés",
     forum: "Fórum",
     events: "Események",
@@ -2015,19 +2027,37 @@ function PetitionPage() {
     total: total
   }));
 }
+const LETTER_AREAS = [
+  { k: "tudor", ro: "Tudor", en: "Tudor", hu: "Tudor" },
+  { k: "auchan", ro: "Mureșeni / Auchan", en: "Mureșeni / Auchan", hu: "Mureșeni / Auchan" },
+  { k: "sportcomplex", ro: "Sportcomplex", en: "Sportcomplex", hu: "Sportcomplex" },
+  { k: "center", ro: "Centru", en: "Center", hu: "Központ" }
+];
 function LetterModal({
   onClose,
   total
 }) {
   const {
     t,
-    lang
+    lang,
+    toast
   } = useApp();
   const [n, setN] = useState("");
   const [a, setA] = useState("");
+  const [area, setArea] = useState("tudor");
+  const [why, setWhy] = useState("");
+  const buildLetter = () => {
+    const areaObj = LETTER_AREAS.find(x => x.k === area) || LETTER_AREAS[0];
+    const areaLabel = areaObj[lang];
+    const court = COURTS.find(c => c.neighbourhood === area && c.status === "degraded") || COURTS.find(c => c.neighbourhood === area) || COURTS[0];
+    const web = SITE.replace("https://", "");
+    if (lang === "ro") return `CĂTRE: Consiliul Local și Primăria Municipiului Târgu Mureș\n\nSubsemnatul/a ${n || "___"}, domiciliat/ă în ${a || areaLabel},\n\nÎn calitate de locuitor al zonei ${areaLabel}, solicit renovarea terenurilor sportive din cartierele periferice, în special "${court.name}".\n${why ? "\nDe ce contează pentru mine: " + why + "\n" : ""}\nArgumente:\n- ${total} cetățeni au semnat petiția online (${web})\n- 12 din 15 rezidenți consideră terenurile prea degradate\n- 5.000.000 lei înghețați printr-o eroare administrativă\n- 0% dintre terenurile periferice au fost renovate\n- Investiția se încadrează în Strategia Integrată de Dezvoltare Urbană (SIDU)\n\nPropuneri concrete:\n1. Flip-the-Court — renovarea terenurilor existente\n2. Street Canvas — mural comunitar ales prin vot\n\nCu stimă,\n${n || "___"}\nData: ${new Date().toLocaleDateString("ro-RO")}`;
+    // TODO: HU review — draft translation, verify with a native speaker
+    if (lang === "hu") return `CÍMZETT: Marosvásárhely Helyi Tanácsa és Polgármesteri Hivatala\n\nAlulírott ${n || "___"}, lakcím: ${a || areaLabel},\n\na(z) ${areaLabel} környék lakójaként kérem a peremkerületi sportpályák felújítását, különösen a(z) "${court.name}" pályáét.\n${why ? "\nMiért fontos ez nekem: " + why + "\n" : ""}\nÉrvek:\n- ${total} polgár írta alá az online petíciót (${web})\n- 15 lakosból 12 szerint a pályák túl rossz állapotúak\n- 5.000.000 lej befagyasztva adminisztratív hiba miatt\n- a peremkerületi pályák 0%-a lett felújítva\n- A beruházás illeszkedik az Integrált Városfejlesztési Stratégiához (SIDU)\n\nKonkrét javaslatok:\n1. Flip-the-Court — meglévő pályák felújítása\n2. Street Canvas — közösségi szavazással választott falfestmény\n\nTisztelettel,\n${n || "___"}\nDátum: ${new Date().toLocaleDateString("hu-HU")}`;
+    return `TO: Târgu Mureș City Council and City Hall\n\nI, ${n || "___"}, residing at ${a || areaLabel},\n\nas a resident of the ${areaLabel} area, I request the renovation of peripheral sports courts, in particular "${court.name}".\n${why ? "\nWhy this matters to me: " + why + "\n" : ""}\nArguments:\n- ${total} citizens signed the online petition (${web})\n- 12 of 15 residents consider the courts too degraded\n- 5,000,000 lei frozen by an administrative error\n- 0% of peripheral courts have been renovated\n- This investment fits the Integrated Urban Development Strategy (SIDU)\n\nConcrete proposals:\n1. Flip-the-Court — renovate existing courts\n2. Street Canvas — community-voted mural\n\nSincerely,\n${n || "___"}\nDate: ${new Date().toLocaleDateString("en-GB")}`;
+  };
   const dl = () => {
-    const c = lang === "ro" ? `CĂTRE: Primăria Municipiului Târgu Mureș\n\nSubsemnatul/a ${n || "___"}, domiciliat/ă în ${a || "___"},\n\nsolicit renovarea terenurilor sportive din cartierele periferice.\n\n- ${total} cetățeni au semnat petiția online\n- 12 din 15 rezidenți — terenuri prea degradate\n- 5.000.000 lei înghețați prin eroare administrativă\n- 0% renovare periferie\n\nPropunem: 1. Flip-the-Court 2. Street Canvas\n\nCu stimă,\n${n || "___"}\nData: ${new Date().toLocaleDateString("ro-RO")}` : `TO: Târgu Mureș City Hall\n\nI, ${n || "___"}, residing at ${a || "___"},\n\nrequest the renovation of peripheral sports courts.\n\n- ${total} citizens signed the online petition\n- 12/15 residents — courts too degraded\n- 5M lei frozen by admin error\n- 0% peripheral renovation\n\nProposals: 1. Flip-the-Court 2. Street Canvas\n\nSincerely,\n${n || "___"}\nDate: ${new Date().toLocaleDateString("en-GB")}`;
-    const b = new Blob([c], {
+    const b = new Blob([buildLetter()], {
       type: "text/plain"
     });
     const u = URL.createObjectURL(b);
@@ -2035,6 +2065,11 @@ function LetterModal({
     el.href = u;
     el.download = "petitie_g2p.txt";
     el.click();
+  };
+  const email = () => {
+    const subj = lang === "ro" ? "Renovarea terenurilor sportive — Târgu Mureș" : lang === "hu" ? "Sportpályák felújítása — Marosvásárhely" : "Renovation of sports courts — Târgu Mureș";
+    window.location.href = `mailto:?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(buildLetter())}`;
+    toast(t.success);
   };
   return /*#__PURE__*/React.createElement("div", {
     className: "modal-overlay",
@@ -2044,8 +2079,8 @@ function LetterModal({
     onClick: e => e.stopPropagation()
   }, /*#__PURE__*/React.createElement("h2", {
     className: "mb-2"
-  }, "\uD83D\uDCC4 ", t.generateLetter), /*#__PURE__*/React.createElement("input", {
-    placeholder: lang === "ro" ? "Numele tău" : "Your name",
+  }, "📄 ", t.generateLetter), /*#__PURE__*/React.createElement("input", {
+    placeholder: lang === "ro" ? "Numele tău" : lang === "hu" ? "Neved" : "Your name",
     value: n,
     onChange: e => setN(e.target.value),
     className: "mb-1"
@@ -2054,13 +2089,36 @@ function LetterModal({
     value: a,
     onChange: e => setA(e.target.value),
     className: "mb-1"
+  }), /*#__PURE__*/React.createElement("label", {
+    className: "text-xs font-bold",
+    style: { color: "var(--textSec)" }
+  }, t.letterArea), /*#__PURE__*/React.createElement("select", {
+    value: area,
+    onChange: e => setArea(e.target.value),
+    className: "mb-1"
+  }, LETTER_AREAS.map(x => /*#__PURE__*/React.createElement("option", {
+    key: x.k,
+    value: x.k
+  }, x[lang]))), /*#__PURE__*/React.createElement("label", {
+    className: "text-xs font-bold",
+    style: { color: "var(--textSec)" }
+  }, t.letterWhy), /*#__PURE__*/React.createElement("textarea", {
+    placeholder: t.letterWhyPh,
+    value: why,
+    onChange: e => setWhy(e.target.value),
+    className: "mb-2",
+    rows: 2
   }), /*#__PURE__*/React.createElement("div", {
-    className: "flex gap-1"
+    className: "flex gap-1",
+    style: { flexWrap: "wrap" }
   }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-green btn-block",
-    onClick: dl
-  }, "\uD83D\uDCE5 ", t.downloadPDF), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green",
+    onClick: email
+  }, "✉️ ", t.emailLetter), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline",
+    onClick: dl
+  }, "📥 ", t.downloadPDF), /*#__PURE__*/React.createElement("button", {
+    className: "btn",
     onClick: onClose
   }, t.cancel))));
 }
