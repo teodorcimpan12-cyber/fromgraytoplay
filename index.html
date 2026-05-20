@@ -168,6 +168,7 @@ const {
 } = React;
 const AppCtx = createContext();
 const useApp = () => useContext(AppCtx);
+const SITE = "https://fromgraytoplay.netlify.app";
 function useFirebase(path) {
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -1389,7 +1390,7 @@ function CourtDetail({
   const liveCI = useFirebase("courts/" + c.id + "/checkins");
   const cnt = liveCI ? Object.keys(liveCI).length : 0;
   const occ = cnt === 0 ? "empty" : cnt < 5 ? "active" : "full";
-  const qr = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent("https://animated-swan-5a568b.netlify.app/#court-" + c.id)}`;
+  const qr = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(SITE + "/#court-" + c.id)}`;
   const doCI = () => {
     const uid = user?.id || "g" + Date.now();
     db.ref("courts/" + c.id + "/checkins/" + uid).set({
@@ -1784,7 +1785,7 @@ function PetitionPage() {
     localStorage.setItem("g2p_voted", "1");
     toast(t.success + " +10 " + t.points);
   };
-  const url = "https://animated-swan-5a568b.netlify.app/";
+  const url = SITE + "/";
   const st = lang === "ro" ? `Am votat pe From Grey to Play! ${total} voturi.` : `I voted on From Grey to Play! ${total} votes.`;
   const opts = [{
     k: "flip",
@@ -3077,7 +3078,7 @@ function HelpPage() {
       background: "#25D366",
       color: "#fff"
     },
-    href: `https://wa.me/?text=${encodeURIComponent("From Grey to Play https://animated-swan-5a568b.netlify.app")}`,
+    href: `https://wa.me/?text=${encodeURIComponent("From Grey to Play " + SITE)}`,
     target: "_blank"
   }, "\uD83D\uDCAC WhatsApp"), /*#__PURE__*/React.createElement("a", {
     className: "btn btn-sm",
@@ -3085,7 +3086,7 @@ function HelpPage() {
       background: "#1877F2",
       color: "#fff"
     },
-    href: "https://www.facebook.com/sharer/sharer.php?u=https://animated-swan-5a568b.netlify.app",
+    href: "https://www.facebook.com/sharer/sharer.php?u=" + SITE,
     target: "_blank"
   }, "\uD83D\uDCD8 Facebook"), /*#__PURE__*/React.createElement("a", {
     className: "btn btn-sm",
@@ -3335,7 +3336,7 @@ function AboutPage() {
   }, lang === "ro" ? "Pachet pentru presă" : "Press pack"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-green",
     onClick: () => {
-      const c = `FROM GREY TO PLAY — Press Kit\n\nProject: Civic initiative — Târgu Mureș\nOwner: Cimpan Teodor\nWeb: animated-swan-5a568b.netlify.app\n\nKey Stats:\n- 12/15 residents say courts too degraded\n- 5M lei frozen by admin error\n- 0% peripheral courts renovated\n- 3km gap\n\nProposals:\n1. Flip-the-Court\n2. Street Canvas\n\nContact: fromgreytoplay@gmail.com`;
+      const c = `FROM GREY TO PLAY — Press Kit\n\nProject: Civic initiative — Târgu Mureș\nOwner: Cimpan Teodor\nWeb: ${SITE.replace("https://", "")}\n\nKey Stats:\n- 12/15 residents say courts too degraded\n- 5M lei frozen by admin error\n- 0% peripheral courts renovated\n- 3km gap\n\nProposals:\n1. Flip-the-Court\n2. Street Canvas\n\nContact: fromgreytoplay@gmail.com`;
       const b = new Blob([c], {
         type: "text/plain"
       });
