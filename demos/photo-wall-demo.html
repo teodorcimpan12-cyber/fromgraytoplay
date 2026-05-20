@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Photo Evidence Wall — Demo · From Grey to Play</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--dark:#1A1A2E;--darkCard:#16213E;--green:#10B981;--coral:#F97316;--teal:#0D9488;--grey:#6B7280;--darkGrey:#374151;--light:#F8FAFC;--lightGrey:#D1D5DB;--white:#FFFFFF;--red:#DC2626;--bg:var(--light);--bgCard:var(--white);--text:var(--darkGrey);--textSec:var(--grey);--border:var(--lightGrey);--navBg:var(--white);--shadow:0 2px 12px rgba(0,0,0,.08);--radius:12px}
+[data-theme="dark"]{--bg:var(--dark);--bgCard:var(--darkCard);--text:#E5E7EB;--textSec:#9CA3AF;--border:#374151;--navBg:#0F172A;--shadow:0 2px 12px rgba(0,0,0,.4)}
+body{font-family:'Libre Franklin',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background .3s,color .3s;min-height:100vh}
+h1,h2,h3,h4{font-family:'Space Mono',monospace;font-weight:700;line-height:1.2}
+button{cursor:pointer;font-family:inherit}
+input,textarea,select{font-family:inherit;font-size:1rem;padding:.55rem .8rem;border:1px solid var(--border);border-radius:8px;background:var(--bgCard);color:var(--text);width:100%}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
+.container{max-width:1100px;margin:0 auto;padding:0 1rem}
+.navbar{position:sticky;top:0;z-index:100;background:var(--navBg);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:.55rem 1rem;max-width:1100px;margin:0 auto}
+.nav-logo{display:flex;align-items:center;gap:.5rem;font-family:'Space Mono',monospace;font-weight:700;font-size:1rem;color:var(--green)}
+.nav-logo .bar{width:4px;height:22px;background:var(--green);border-radius:2px}
+.nav-tools{display:flex;gap:.3rem}
+.nav-tools button{padding:.35rem .6rem;border-radius:8px;font-size:.82rem;font-weight:600;color:var(--text);background:none;border:1px solid var(--border)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.55rem 1.1rem;border-radius:8px;font-weight:600;font-size:.88rem;border:none;transition:transform .1s,box-shadow .2s}
+.btn:active{transform:scale(.97)}
+.btn-green{background:var(--green);color:#fff}.btn-green:hover{box-shadow:0 4px 16px rgba(16,185,129,.3)}
+.btn-coral{background:var(--coral);color:#fff}
+.btn-outline{background:transparent;border:2px solid var(--green);color:var(--green)}.btn-outline:hover{background:var(--green);color:#fff}
+.btn-sm{padding:.35rem .7rem;font-size:.78rem}
+.btn-block{width:100%}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.card{background:var(--bgCard);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.2rem;transition:transform .2s;border-left:4px solid transparent;overflow:hidden}
+.badge{display:inline-block;padding:.15rem .5rem;border-radius:20px;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.badge-green{background:rgba(16,185,129,.15);color:var(--green)}.badge-coral{background:rgba(249,115,22,.15);color:var(--coral)}.badge-red{background:rgba(220,38,38,.15);color:var(--red)}.badge-teal{background:rgba(13,148,136,.15);color:var(--teal)}
+.section{padding:1.6rem 0}.section-title{font-size:1.5rem;margin-bottom:.4rem}.section-sub{color:var(--textSec);margin-bottom:1.2rem;font-size:.92rem}
+.grid{display:grid;gap:1rem}.grid-3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--darkCard);color:#fff;padding:.6rem 1.2rem;border-radius:8px;font-size:.85rem;z-index:400;box-shadow:0 4px 20px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+.flex{display:flex}.items-center{align-items:center}.justify-between{justify-content:space-between}.gap-1{gap:.5rem}
+.text-sm{font-size:.85rem}.text-xs{font-size:.75rem}.font-bold{font-weight:700}
+.mt-1{margin-top:.5rem}.mb-1{margin-bottom:.5rem}.mb-2{margin-bottom:1rem}
+/* demo-specific */
+.info-banner{background:linear-gradient(135deg,#0D9488,#10B981);color:#fff;padding:.7rem 1rem;border-radius:10px;font-size:.82rem;margin-bottom:1.2rem;display:flex;gap:.5rem;align-items:flex-start}
+.upload-drop{border:2px dashed var(--border);border-radius:10px;padding:1.1rem;text-align:center;color:var(--textSec);transition:border-color .15s;cursor:pointer}
+.upload-drop:hover{border-color:var(--green)}
+.preview-thumb{width:100%;height:160px;object-fit:cover;border-radius:8px;margin-top:.6rem}
+.photo-img{width:100%;height:150px;object-fit:cover;border-radius:8px;display:block}
+.vote-btn{padding:.3rem .6rem;border-radius:20px;border:1px solid var(--border);background:none;color:var(--text);font-size:.78rem;font-weight:600;display:inline-flex;gap:.3rem;align-items:center;transition:all .15s}
+.vote-btn:hover{border-color:var(--red);color:var(--red)}
+.vote-btn.voted{border-color:var(--red);color:var(--red);background:rgba(220,38,38,.08)}
+.field-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--textSec);display:block;margin-bottom:.2rem;margin-top:.6rem}
+.muted{color:var(--textSec)}
+</style>
+</head>
+<body>
+<div class="navbar"><div class="nav-inner">
+  <div class="nav-logo"><span class="bar"></span> From Grey to Play</div>
+  <div class="nav-tools">
+    <button id="langBtn" title="Language">RO</button>
+    <button id="themeBtn" title="Theme">🌙</button>
+  </div>
+</div></div>
+
+<div class="container section">
+  <h2 class="section-title">📸 <span id="t-title">Zid de Dovezi Foto</span></h2>
+  <p class="section-sub" id="t-sub"></p>
+
+  <div class="info-banner">
+    <span style="font-size:1.1rem">ℹ️</span>
+    <span id="t-preview"></span>
+  </div>
+
+  <!-- Upload card -->
+  <div class="card mb-2" style="border-left-color:var(--green)">
+    <div class="font-bold mb-1" id="t-add">Adaugă o fotografie</div>
+
+    <label class="upload-drop" for="fileInput">
+      <div style="font-size:1.6rem">📷</div>
+      <div class="text-sm" id="t-choose">Alege sau fă o poză</div>
+    </label>
+    <input type="file" id="fileInput" accept="image/*" capture="environment" style="display:none">
+    <img id="previewThumb" class="preview-thumb" style="display:none" alt="preview">
+
+    <label class="field-label" id="t-court">Terenul</label>
+    <select id="courtSel"></select>
+
+    <label class="field-label" id="t-caption">Descriere (opțional)</label>
+    <textarea id="captionInput" rows="2" placeholder=""></textarea>
+
+    <button class="btn btn-green btn-block mt-1" id="addBtn" disabled>＋ <span id="t-addbtn">Adaugă pe perete</span></button>
+  </div>
+
+  <!-- Wall -->
+  <div class="grid grid-3" id="wall"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---- Court data (mirrors live COURTS) ---- */
+var COURTS = [
+  {id:"c1", name:"Teren Tudor 1",      neighbourhood:"tudor",        status:"degraded"},
+  {id:"c2", name:"Teren Auchan",       neighbourhood:"auchan",       status:"degraded"},
+  {id:"c3", name:"Teren Sportcomplex", neighbourhood:"sportcomplex", status:"inProgress"},
+  {id:"c4", name:"Teren Cornești",     neighbourhood:"center",       status:"renovated"},
+  {id:"c5", name:"Teren Insulei",      neighbourhood:"tudor",        status:"degraded"}
+];
+
+/* ---- Trilingual strings (RO / EN / HU). HU draft — TODO: HU review ---- */
+var T = {
+  ro: {
+    title:"Zid de Dovezi Foto",
+    sub:"Încarcă dovezi din cartierul tău — arată cum arată terenurile cu adevărat.",
+    preview:"Previzualizare locală: pozele rămân pe telefonul tău, nimic nu se încarcă. Versiunea live le salvează în Firebase pentru toți.",
+    add:"Adaugă o fotografie", choose:"Alege sau fă o poză", court:"Terenul",
+    caption:"Descriere (opțional)", captionPh:"Ce arată poza? (ex: asfalt crăpat, coș îndoit)",
+    addbtn:"Adaugă pe perete", needPhoto:"Alege mai întâi o poză", added:"Fotografie adăugată!",
+    empty:"Nicio fotografie încărcată încă.",
+    degraded:"degradat", inProgress:"în lucru", renovated:"renovat"
+  },
+  en: {
+    title:"Photo Evidence Wall",
+    sub:"Upload evidence from your neighbourhood — show what the courts really look like.",
+    preview:"Local preview: photos stay on your phone, nothing is uploaded. The live version saves to Firebase for everyone.",
+    add:"Add a photo", choose:"Choose or take a photo", court:"Court",
+    caption:"Caption (optional)", captionPh:"What does it show? (e.g. cracked asphalt, bent hoop)",
+    addbtn:"Add to wall", needPhoto:"Choose a photo first", added:"Photo added!",
+    empty:"No photos uploaded yet.",
+    degraded:"degraded", inProgress:"in progress", renovated:"renovated"
+  },
+  hu: { // TODO: HU review — draft translation, verify with a native speaker
+    title:"Fotó Bizonyítékfal",
+    sub:"Tölts fel bizonyítékot a környékedről — mutasd meg, milyenek valójában a pályák.",
+    preview:"Helyi előnézet: a fotók a telefonodon maradnak, semmi sem töltődik fel. Az éles verzió mindenki számára a Firebase-be menti.",
+    add:"Fénykép hozzáadása", choose:"Válassz vagy készíts fotót", court:"Pálya",
+    caption:"Leírás (opcionális)", captionPh:"Mit mutat a kép? (pl. repedt aszfalt, görbe palánk)",
+    addbtn:"Hozzáadás a falhoz", needPhoto:"Előbb válassz fotót", added:"Fénykép hozzáadva!",
+    empty:"Még nincs feltöltött fénykép.",
+    degraded:"rossz állapotú", inProgress:"folyamatban", renovated:"felújított"
+  }
+};
+
+var LANGS = ["ro","en","hu"];
+var lang = "ro";
+function t(){ return T[lang]; }
+
+/* status -> badge class + label */
+function statusBadge(s){
+  var cls = s==="degraded" ? "badge-red" : s==="inProgress" ? "badge-coral" : "badge-green";
+  var label = s==="degraded" ? t().degraded : s==="inProgress" ? t().inProgress : t().renovated;
+  return '<span class="badge '+cls+'">'+label+'</span>';
+}
+function courtById(id){ for(var i=0;i<COURTS.length;i++) if(COURTS[i].id===id) return COURTS[i]; return COURTS[0]; }
+
+/* seed placeholder "photos" as inline SVG so the wall isn't empty */
+function svgPhoto(tone, label){
+  var s = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 150">'
+    + '<rect width="240" height="150" fill="'+tone+'"/>'
+    + '<line x1="0" y1="115" x2="240" y2="115" stroke="rgba(255,255,255,.35)" stroke-width="3"/>'
+    + '<circle cx="120" cy="115" r="26" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3"/>'
+    + '<path d="M40 0 L70 60 L55 95 L95 150" stroke="rgba(0,0,0,.25)" stroke-width="2.5" fill="none"/>'
+    + '<path d="M160 0 L150 50 L185 80 L170 150" stroke="rgba(0,0,0,.18)" stroke-width="2" fill="none"/>'
+    + '<text x="120" y="28" font-family="monospace" font-size="13" fill="rgba(255,255,255,.8)" text-anchor="middle">'+label+'</text>'
+    + '</svg>';
+  return "data:image/svg+xml," + encodeURIComponent(s);
+}
+
+var photos = [
+  {id:"p1", court:"c1", caption:"Asfalt crăpat lângă coș", img:svgPhoto("#9CA3AF","TUDOR"), votes:7, voted:false},
+  {id:"p2", court:"c2", caption:"Fără marcaje, gard rupt", img:svgPhoto("#78716C","AUCHAN"), votes:4, voted:false}
+];
+
+/* ---- render ---- */
+function escapeHtml(s){ return (s||"").replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+
+function renderWall(){
+  var wall = document.getElementById("wall");
+  if(!photos.length){
+    wall.innerHTML = '<div class="card" style="text-align:center;padding:2rem;grid-column:1/-1">'
+      + '<div style="font-size:2rem">📸</div><p class="muted">'+t().empty+'</p></div>';
+    return;
+  }
+  wall.innerHTML = photos.map(function(p){
+    var c = courtById(p.court);
+    return '<div class="card" style="padding:.6rem">'
+      + '<img class="photo-img" src="'+p.img+'" alt="evidence">'
+      + '<div class="flex gap-1 mt-1" style="flex-wrap:wrap">'
+      +   '<span class="badge badge-teal">'+escapeHtml(c.neighbourhood)+'</span>'
+      +   statusBadge(c.status)
+      + '</div>'
+      + '<div class="font-bold text-sm mt-1">'+escapeHtml(c.name)+'</div>'
+      + (p.caption ? '<div class="text-xs muted">'+escapeHtml(p.caption)+'</div>' : '')
+      + '<div class="flex justify-between items-center mt-1">'
+      +   '<span class="text-xs muted">'+c.id+'</span>'
+      +   '<button class="vote-btn'+(p.voted?' voted':'')+'" data-id="'+p.id+'">❤️ '+p.votes+'</button>'
+      + '</div>'
+      + '</div>';
+  }).join("");
+  // wire votes
+  var btns = wall.querySelectorAll(".vote-btn");
+  for(var i=0;i<btns.length;i++){
+    btns[i].addEventListener("click", function(){
+      var id=this.getAttribute("data-id");
+      for(var j=0;j<photos.length;j++) if(photos[j].id===id){
+        if(photos[j].voted){ photos[j].votes--; photos[j].voted=false; }
+        else { photos[j].votes++; photos[j].voted=true; }
+      }
+      renderWall();
+    });
+  }
+}
+
+/* ---- upload handling ---- */
+var pendingImg = null;
+document.getElementById("fileInput").addEventListener("change", function(e){
+  var file = e.target.files[0];
+  if(!file) return;
+  pendingImg = URL.createObjectURL(file);
+  var tn = document.getElementById("previewThumb");
+  tn.src = pendingImg; tn.style.display = "block";
+  document.getElementById("addBtn").disabled = false;
+});
+
+document.getElementById("addBtn").addEventListener("click", function(){
+  if(!pendingImg){ showToast(t().needPhoto); return; }
+  photos.unshift({
+    id:"p"+Date.now(),
+    court:document.getElementById("courtSel").value,
+    caption:document.getElementById("captionInput").value.trim(),
+    img:pendingImg, votes:0, voted:false
+  });
+  // reset form
+  pendingImg=null;
+  document.getElementById("fileInput").value="";
+  document.getElementById("captionInput").value="";
+  document.getElementById("previewThumb").style.display="none";
+  document.getElementById("addBtn").disabled=true;
+  renderWall();
+  showToast(t().added);
+});
+
+/* ---- toast ---- */
+var toastTimer;
+function showToast(msg){
+  var el=document.getElementById("toast");
+  el.textContent=msg; el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(function(){ el.classList.remove("show"); }, 2200);
+}
+
+/* ---- i18n + theme ---- */
+function applyLang(){
+  var d=t();
+  document.getElementById("t-title").textContent=d.title;
+  document.getElementById("t-sub").textContent=d.sub;
+  document.getElementById("t-preview").textContent=d.preview;
+  document.getElementById("t-add").textContent=d.add;
+  document.getElementById("t-choose").textContent=d.choose;
+  document.getElementById("t-court").textContent=d.court;
+  document.getElementById("t-caption").textContent=d.caption;
+  document.getElementById("t-addbtn").textContent=d.addbtn;
+  document.getElementById("captionInput").placeholder=d.captionPh;
+  document.getElementById("langBtn").textContent=lang.toUpperCase();
+  document.title=d.title+" — Demo · From Grey to Play";
+  // court options
+  var sel=document.getElementById("courtSel");
+  var cur=sel.value;
+  sel.innerHTML=COURTS.map(function(c){ return '<option value="'+c.id+'">'+escapeHtml(c.name)+'</option>'; }).join("");
+  if(cur) sel.value=cur;
+  renderWall();
+}
+document.getElementById("langBtn").addEventListener("click", function(){
+  lang=LANGS[(LANGS.indexOf(lang)+1)%LANGS.length];
+  applyLang();
+});
+document.getElementById("themeBtn").addEventListener("click", function(){
+  var dark=document.documentElement.getAttribute("data-theme")==="dark";
+  document.documentElement.setAttribute("data-theme", dark?"light":"dark");
+  this.textContent=dark?"🌙":"☀️";
+});
+
+applyLang();
+</script>
+</body>
+</html>
