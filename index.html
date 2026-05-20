@@ -1456,6 +1456,8 @@ function CourtDetail({
   const [ci, setCi] = useState(false);
   const liveCI = useFirebase("courts/" + c.id + "/checkins");
   const cnt = liveCI ? Object.keys(liveCI).length : 0;
+  const gallery = useFirebase("gallery");
+  const courtPhotos = gallery ? Object.entries(gallery).map(([id, g]) => ({ id, ...g })).filter(p => p.courtId === c.id).reverse() : [];
   const occ = cnt === 0 ? "empty" : cnt < 5 ? "active" : "full";
   const qr = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(SITE + "/#court-" + c.id)}`;
   const doCI = () => {
@@ -1525,7 +1527,18 @@ function CourtDetail({
   }, Object.entries(c.accessibility || {}).map(([k, v]) => /*#__PURE__*/React.createElement("span", {
     key: k,
     className: `badge ${v ? "badge-green" : "badge-red"}`
-  }, k, ": ", v ? "✓" : "✗"))), /*#__PURE__*/React.createElement("h4", {
+  }, k, ": ", v ? "✓" : "✗"))), courtPhotos.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h4", {
+    className: "mb-1"
+  }, "📸 ", t.gallery, " (", courtPhotos.length, ")"), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1 mb-2",
+    style: { overflowX: "auto" }
+  }, courtPhotos.slice(0, 8).map(p => /*#__PURE__*/React.createElement("img", {
+    key: p.id,
+    src: p.img,
+    alt: "evidence",
+    title: p.caption || "",
+    style: { width: 90, height: 90, objectFit: "cover", borderRadius: 8, flexShrink: 0 }
+  })))), /*#__PURE__*/React.createElement("h4", {
     className: "mb-1"
   }, t.qrCode), /*#__PURE__*/React.createElement("img", {
     src: qr,
