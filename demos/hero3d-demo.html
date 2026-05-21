@@ -13,7 +13,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%}
 body{font-family:'Libre Franklin',sans-serif;background:radial-gradient(circle at 50% 8%, #25254d 0%, #1A1A2E 55%, #0c0c18 100%);color:#fff;overflow:hidden}
-#hero{position:fixed;inset:0}
+#hero{position:fixed;inset:0;z-index:0}
 canvas{display:block}
 .topbar{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.2rem;pointer-events:none;z-index:5}
 .logo{font-family:'Space Mono',monospace;font-weight:700;color:var(--green);display:flex;gap:.5rem;align-items:center;font-size:.95rem}
@@ -25,7 +25,7 @@ h1{font-family:'Space Mono',monospace;font-size:clamp(2.1rem,9vw,4rem);line-heig
 h1 .grey{color:#9CA3AF}
 h1 .play{background:linear-gradient(90deg,var(--green),var(--teal),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
 .sub{color:#C7CBD1;max-width:30rem;margin-bottom:1.2rem;font-size:.97rem;line-height:1.5}
-.cta{display:flex;gap:.6rem;flex-wrap:wrap;pointer-events:auto}
+.cta{display:flex;gap:.6rem;flex-wrap:wrap;pointer-events:auto;position:relative;z-index:7}
 .btn{font-family:'Space Mono',monospace;font-weight:700;border:none;border-radius:10px;padding:.72rem 1.2rem;font-size:.9rem;cursor:pointer;transition:transform .1s}
 .btn:active{transform:scale(.97)}
 .btn-green{background:var(--green);color:#06281d;box-shadow:0 8px 30px rgba(16,185,129,.35)}
@@ -192,18 +192,21 @@ if (typeof THREE === "undefined") {
   window.addEventListener("pointerup", function () { dragging = false; });
   setTimeout(hideHint, 4200);
 
-  /* ---------- renovate toggle ---------- */
+  /* ---------- toast ---------- */
+  var toastEl = document.getElementById("toast"), tt;
+  function showToast(msg) { toastEl.textContent = msg; toastEl.classList.add("show"); clearTimeout(tt); tt = setTimeout(function () { toastEl.classList.remove("show"); }, 2200); }
+
+  /* ---------- renovate toggle (no autoplay: the button is the trigger) ---------- */
   var prog = 0, progTarget = 0;
   var rbtn = document.getElementById("renovateBtn");
   function updateBtn() { rbtn.textContent = progTarget > 0.5 ? "↺ Înapoi la gri" : "▶ Renovează terenul"; }
-  rbtn.addEventListener("click", function () { progTarget = progTarget > 0.5 ? 0 : 1; updateBtn(); });
-  setTimeout(function () { progTarget = 1; updateBtn(); }, 1400); // auto-play once
-
-  var toast = document.getElementById("toast"), tt;
-  document.getElementById("signBtn").addEventListener("click", function () {
-    toast.textContent = "În site real: deschide formularul petiției ✍️";
-    toast.classList.add("show"); clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove("show"); }, 2400);
+  rbtn.addEventListener("click", function () {
+    progTarget = progTarget > 0.5 ? 0 : 1; updateBtn();
+    showToast(progTarget > 0.5 ? "Se renovează terenul ✨" : "Înapoi la starea degradată");
   });
+  updateBtn();
+
+  document.getElementById("signBtn").addEventListener("click", function () { showToast("În site real: se deschide petiția ✍️"); });
 
   /* ---------- loop ---------- */
   var t0 = performance.now();
