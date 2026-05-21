@@ -178,22 +178,25 @@ function buildBloc(base, win) {
 }
 function buildBasketball() {
   var c = document.createElement("canvas"); c.width = 512; c.height = 256; var cx = c.getContext("2d");
-  var g = cx.createLinearGradient(0, 0, 0, 256); g.addColorStop(0, "#E07B2E"); g.addColorStop(1, "#C25C19");
+  var g = cx.createLinearGradient(0, 0, 0, 256); g.addColorStop(0, "#E8821F"); g.addColorStop(0.5, "#D76B16"); g.addColorStop(1, "#BE5712");
   cx.fillStyle = g; cx.fillRect(0, 0, 512, 256);
-  cx.strokeStyle = "#20140a"; cx.lineWidth = 6; cx.lineCap = "round";
-  cx.beginPath(); cx.moveTo(0, 128); cx.lineTo(512, 128); cx.stroke();
-  cx.beginPath(); cx.moveTo(128, 0); cx.lineTo(128, 256); cx.stroke();
-  cx.beginPath(); cx.moveTo(384, 0); cx.lineTo(384, 256); cx.stroke();
-  cx.beginPath(); cx.moveTo(0, 0); cx.bezierCurveTo(120, 90, 120, 166, 0, 256); cx.stroke();
-  cx.beginPath(); cx.moveTo(512, 0); cx.bezierCurveTo(392, 90, 392, 166, 512, 256); cx.stroke();
+  for (var i = 0; i < 5200; i++) { var v = (Math.random() * 36 - 18) | 0; cx.fillStyle = "rgba(" + (215 + v) + "," + (110 + v) + "," + (32 + v) + ",.5)"; cx.fillRect(Math.random() * 512, Math.random() * 256, 2, 2); }
+  cx.strokeStyle = "#140d05"; cx.lineCap = "round";
+  cx.lineWidth = 7; cx.beginPath(); cx.moveTo(0, 128); cx.lineTo(512, 128); cx.stroke();
+  cx.beginPath(); cx.moveTo(256, 0); cx.lineTo(256, 256); cx.stroke();
+  cx.lineWidth = 6;
+  cx.beginPath(); cx.moveTo(80, 0); cx.bezierCurveTo(150, 80, 150, 176, 80, 256); cx.stroke();
+  cx.beginPath(); cx.moveTo(432, 0); cx.bezierCurveTo(362, 80, 362, 176, 432, 256); cx.stroke();
   return c;
 }
 function buildSoccer() {
   var c = document.createElement("canvas"); c.width = 512; c.height = 256; var cx = c.getContext("2d");
-  cx.fillStyle = "#f2f2f0"; cx.fillRect(0, 0, 512, 256);
-  function pent(x, y, r, rot) { cx.fillStyle = "#1a1c20"; cx.beginPath(); for (var i = 0; i < 5; i++) { var a = rot + i / 5 * Math.PI * 2 - Math.PI / 2; var px = x + Math.cos(a) * r, py = y + Math.sin(a) * r; i ? cx.lineTo(px, py) : cx.moveTo(px, py); } cx.closePath(); cx.fill(); }
-  var pts = [[60, 60], [180, 40], [300, 60], [430, 45], [120, 150], [250, 130], [380, 150], [470, 120], [60, 210], [200, 220], [330, 210], [450, 215]];
-  for (var i = 0; i < pts.length; i++) pent(pts[i][0], pts[i][1], 20, Math.random() * 1.2);
+  cx.fillStyle = "#f4f4f2"; cx.fillRect(0, 0, 512, 256);
+  for (var i = 0; i < 1800; i++) { var v = (Math.random() * 16 - 8) | 0; cx.fillStyle = "rgba(" + (235 + v) + "," + (235 + v) + "," + (233 + v) + ",.4)"; cx.fillRect(Math.random() * 512, Math.random() * 256, 2, 2); }
+  function poly(x, y, r, n, rot, fill) { cx.beginPath(); for (var k = 0; k < n; k++) { var a = rot + k / n * Math.PI * 2 - Math.PI / 2; var px = x + Math.cos(a) * r, py = y + Math.sin(a) * r; k ? cx.lineTo(px, py) : cx.moveTo(px, py); } cx.closePath(); if (fill) { cx.fillStyle = "#15171b"; cx.fill(); } else { cx.strokeStyle = "rgba(46,46,50,.5)"; cx.lineWidth = 2; cx.stroke(); } }
+  var pts = [[70, 64], [196, 48], [320, 60], [446, 50], [128, 150], [256, 132], [384, 150], [70, 214], [200, 226], [330, 212], [456, 210]];
+  for (var h = 0; h < pts.length; h++) poly(pts[h][0], pts[h][1], 30, 6, 0.3, false);
+  for (var p = 0; p < pts.length; p++) poly(pts[p][0], pts[p][1], 17, 5, Math.random() * 1.2, true);
   return c;
 }
 function buildNet() {
@@ -214,6 +217,21 @@ function buildBackboard() {
   cx.fillStyle = "rgba(250,250,248,.96)"; cx.fillRect(0, 0, 160, 110);
   cx.strokeStyle = "#c2c6cc"; cx.lineWidth = 6; cx.strokeRect(3, 3, 154, 104);
   cx.strokeStyle = "#222"; cx.lineWidth = 5; cx.strokeRect(58, 44, 44, 40);
+  return c;
+}
+function buildPoster(title, sub, accent, icon) {
+  var c = document.createElement("canvas"); c.width = 256; c.height = 340; var cx = c.getContext("2d");
+  cx.fillStyle = "#16213E"; cx.fillRect(0, 0, 256, 340);
+  cx.fillStyle = accent; cx.fillRect(0, 0, 256, 10);
+  cx.fillStyle = accent; cx.font = "bold 17px 'Space Mono', monospace"; cx.textAlign = "center"; cx.textBaseline = "middle";
+  cx.fillText("FROM GREY TO PLAY", 128, 36);
+  cx.fillStyle = "#fff"; cx.font = "bold 30px 'Space Mono', monospace";
+  var words = title.split(" "); cx.fillText(words[0], 128, 108); if (words[1]) cx.fillText(words.slice(1).join(" "), 128, 146);
+  cx.font = "62px serif"; cx.fillText(icon, 128, 220);
+  cx.fillStyle = "#C7CBD1"; cx.font = "14px 'Libre Franklin', sans-serif";
+  var ww = sub.split(" "), line = "", y = 280;
+  for (var i = 0; i < ww.length; i++) { var test = line + ww[i] + " "; if (cx.measureText(test).width > 224) { cx.fillText(line, 128, y); line = ww[i] + " "; y += 20; } else line = test; }
+  cx.fillText(line, 128, y);
   return c;
 }
 
@@ -249,6 +267,9 @@ function init() {
 
   var group = new THREE.Group(); world.add(group);   // the whole little world — rotates
   var city = new THREE.Group(); group.add(city);     // surroundings rotate together with the court
+  // grey base plate the whole world stands on (rotates with everything, so nothing floats)
+  var basePlate = new THREE.Mesh(new THREE.CircleGeometry(7, 64), new THREE.MeshStandardMaterial({ map: texFrom(buildAsphalt(512, 512), 14, 14), roughness: 1 }));
+  basePlate.rotation.x = -Math.PI / 2; basePlate.position.y = GY - 0.008; basePlate.receiveShadow = true; group.add(basePlate);
 
   var CX = 3.375, CZ = 1.856, CW = 1280, CH = 704;
   var greyImg = buildGrey(CW, CH), vibImg = buildVibrant(CW, CH), greyBump = buildGreyBump(CW, CH), vibBump = buildVibBump(CW, CH);
@@ -359,7 +380,7 @@ function init() {
       var hnd = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.05, 0.012), new THREE.MeshStandardMaterial({ color: 0xc8ccd0, metalness: 0.7, roughness: 0.3 })); hnd.position.set(px2 + 0.06, py2, Dl / 2 + 0.012); g.add(hnd);
     }
     var scr = new THREE.Mesh(new THREE.PlaneGeometry(0.22, 0.13), new THREE.MeshStandardMaterial({ color: 0x07120d, emissive: new THREE.Color(0x10B981), emissiveIntensity: 0, roughness: 0.15, metalness: 0.4 })); scr.position.set(0, GY + Hl - 0.17, Dl / 2 + 0.006); g.add(scr); lockerScreen = scr.material;
-    g.position.set(-0.55, 0, -(CZ / 2 + 0.5)); group.add(g); renovOnly.push(g);
+    g.position.set(-0.55, 0, -(CZ / 2 + 0.92)); group.add(g); renovOnly.push(g);
   })();
 
   // ===== grey city (rotates with the world; never changes colour when renovated) =====
@@ -393,8 +414,19 @@ function init() {
     var seat = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.04, 0.16), wood); seat.position.y = 0.16; seat.castShadow = true; g.add(seat);
     var bk = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.14, 0.03), wood); bk.position.set(0, 0.25, -0.07); g.add(bk);
     [-0.22, 0.22].forEach(function (lx) { var l = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.16, 0.14), new THREE.MeshStandardMaterial({ color: 0x3a3a3a })); l.position.set(lx, 0.08, 0); g.add(l); });
-    g.position.set(0.7, GY, RZ - 0.15); g.rotation.y = Math.PI; city.add(g);
+    g.position.set(0.95, GY, RZ - 0.12); g.rotation.y = Math.PI; city.add(g);
   })();
+
+  // campaign poster boards (the two proposals) on stands at the front, facing the viewer
+  function posterSign(x, z, ry, tex) {
+    var g = new THREE.Group();
+    var board = new THREE.Mesh(new THREE.PlaneGeometry(0.42, 0.55), new THREE.MeshStandardMaterial({ map: tex, side: THREE.DoubleSide, roughness: 0.85 })); board.position.y = GY + 0.56; board.castShadow = true; g.add(board);
+    var frame = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.59, 0.02), new THREE.MeshStandardMaterial({ color: 0x222831, roughness: 0.6, metalness: 0.4 })); frame.position.set(0, GY + 0.56, -0.013); g.add(frame);
+    [-0.16, 0.16].forEach(function (lx) { var p = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.016, 0.32, 8), new THREE.MeshStandardMaterial({ color: 0x2b2f36, metalness: 0.5, roughness: 0.6 })); p.position.set(lx, GY + 0.16, 0); p.castShadow = true; g.add(p); });
+    g.position.set(x, 0, z); g.rotation.y = ry; city.add(g);
+  }
+  posterSign(-1.35, RZ - 0.05, 0, texFrom(buildPoster("FLIP THE COURT", "Renovăm terenurile existente din cartierele periferice.", "#10B981", "🏀")));
+  posterSign(1.35, RZ - 0.05, 0, texFrom(buildPoster("STREET CANVAS", "Murale comunitare alese de localnici prin vot.", "#F97316", "🎨")));
 
   // detailed cars on the ring road
   var carCols = [0x9498a0, 0x7a323c, 0x2f3b54, 0xb8b4aa, 0x39473d, 0xd0cfca, 0x4a4d52];
@@ -427,12 +459,13 @@ function init() {
   function makeChild(skin, shirt, shorts, hair, pony) {
     var g = new THREE.Group(); var sk = new THREE.MeshStandardMaterial({ color: skin, roughness: 0.85 });
     var head = new THREE.Mesh(new THREE.SphereGeometry(0.052, 16, 12), sk); head.position.y = 0.3; head.scale.y = 1.1; head.castShadow = true; g.add(head);
+    var eyeM = new THREE.MeshStandardMaterial({ color: 0x1a1a1a }); [-0.02, 0.02].forEach(function (ex2) { var ey = new THREE.Mesh(new THREE.SphereGeometry(0.008, 8, 8), eyeM); ey.position.set(ex2, 0.305, 0.046); g.add(ey); });
     var hairM = new THREE.Mesh(new THREE.SphereGeometry(0.055, 16, 10, 0, 6.3, 0, 1.7), new THREE.MeshStandardMaterial({ color: hair, roughness: 1 })); hairM.position.y = 0.315; g.add(hairM);
     if (pony) { var pt = new THREE.Mesh(new THREE.SphereGeometry(0.03, 8, 8), new THREE.MeshStandardMaterial({ color: hair, roughness: 1 })); pt.position.set(0, 0.3, -0.05); pt.scale.set(1, 1.6, 1); g.add(pt); }
     var torso = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.045, 0.13, 9), new THREE.MeshStandardMaterial({ color: shirt, roughness: 0.85 })); torso.position.y = 0.205; torso.castShadow = true; g.add(torso);
     var hip = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.042, 0.04, 9), new THREE.MeshStandardMaterial({ color: shorts, roughness: 0.85 })); hip.position.y = 0.13; g.add(hip);
     function leg(side) { var grp = new THREE.Group(); var thigh = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.018, 0.075, 7), new THREE.MeshStandardMaterial({ color: shorts, roughness: 0.85 })); thigh.position.y = -0.0375; thigh.castShadow = true; grp.add(thigh); var shin = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.014, 0.07, 7), sk); shin.position.y = -0.11; shin.castShadow = true; grp.add(shin); var shoe = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.022, 0.05), new THREE.MeshStandardMaterial({ color: 0x222428, roughness: 0.7 })); shoe.position.set(0, -0.15, 0.012); grp.add(shoe); grp.position.set(side * 0.025, 0.11, 0); g.add(grp); return grp; }
-    function arm(side) { var grp = new THREE.Group(); var up = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.014, 0.07, 7), new THREE.MeshStandardMaterial({ color: shirt, roughness: 0.85 })); up.position.y = -0.035; up.castShadow = true; grp.add(up); var fore = new THREE.Mesh(new THREE.CylinderGeometry(0.013, 0.011, 0.065, 7), sk); fore.position.y = -0.1; grp.add(fore); grp.position.set(side * 0.058, 0.255, 0); g.add(grp); return grp; }
+    function arm(side) { var grp = new THREE.Group(); var up = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.014, 0.07, 7), new THREE.MeshStandardMaterial({ color: shirt, roughness: 0.85 })); up.position.y = -0.035; up.castShadow = true; grp.add(up); var fore = new THREE.Mesh(new THREE.CylinderGeometry(0.013, 0.011, 0.065, 7), sk); fore.position.y = -0.1; grp.add(fore); var hand = new THREE.Mesh(new THREE.SphereGeometry(0.016, 8, 8), sk); hand.position.y = -0.138; grp.add(hand); grp.position.set(side * 0.058, 0.255, 0); g.add(grp); return grp; }
     var ll = leg(-1), lr = leg(1), al = arm(-1), ar = arm(1);
     g.userData = { ll: ll, lr: lr, al: al, ar: ar }; g.scale.setScalar(0); group.add(g); return g;
   }
@@ -560,7 +593,7 @@ function init() {
       if (cm.userData.life <= 0 || cm.position.y < 0.02) { group.remove(cm); cm.material.dispose(); confetti.splice(ci, 1); }
     }
     for (var ki = 0; ki < children.length; ki++) {
-      var kch = children[ki], u = kch.userData, ksc = prog; kch.scale.setScalar(ksc); kch.visible = ksc > 0.02;
+      var kch = children[ki], u = kch.userData, ksc = prog * 1.3; kch.scale.setScalar(ksc); kch.visible = prog > 0.02;
       if (ksc <= 0.02) continue;
       u.ang += u.spd * dt; var R = u.R, kx = Math.cos(u.ang) * R, kz = Math.sin(u.ang) * R * 0.42, rcy = t * u.cad + ki;
       kch.position.set(kx, Math.abs(Math.sin(rcy)) * 0.03, kz);
