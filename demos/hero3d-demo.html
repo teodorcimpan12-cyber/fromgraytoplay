@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
 :root{--green:#10B981;--coral:#F97316;--teal:#0D9488;--dark:#1A1A2E}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -56,9 +55,7 @@ h1 .play{background:linear-gradient(90deg,var(--green),var(--teal),var(--coral))
 <div class="err" id="err">Nu s-a putut încărca motorul 3D (Three.js). Verifică conexiunea și reîncarcă.</div>
 
 <script>
-if (typeof THREE === "undefined") {
-  document.getElementById("err").style.display = "flex";
-} else {
+function init() {
   /* ---------- renderer / scene / camera ---------- */
   var host = document.getElementById("hero");
   var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -235,6 +232,22 @@ if (typeof THREE === "undefined") {
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
 }
+/* ---------- load Three.js robustly (survives htmlpreview's script injection) ---------- */
+var CDNS = [
+  "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js",
+  "https://unpkg.com/three@0.128.0/build/three.min.js",
+  "https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"
+];
+function tryLoad(i) {
+  if (typeof THREE !== "undefined") { init(); return; }
+  if (i >= CDNS.length) { document.getElementById("err").style.display = "flex"; return; }
+  var s = document.createElement("script");
+  s.src = CDNS[i];
+  s.onload = function () { typeof THREE !== "undefined" ? init() : tryLoad(i + 1); };
+  s.onerror = function () { tryLoad(i + 1); };
+  document.head.appendChild(s);
+}
+tryLoad(0);
 </script>
 </body>
 </html>
