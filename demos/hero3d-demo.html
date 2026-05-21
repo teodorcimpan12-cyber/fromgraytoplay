@@ -2,7 +2,7 @@
 <html lang="ro" data-theme="dark">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>3D Hero — Demo · From Grey to Play</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,16 +11,16 @@
 :root{--green:#10B981;--coral:#F97316;--teal:#0D9488;--dark:#1A1A2E}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%}
-body{font-family:'Libre Franklin',sans-serif;background:radial-gradient(circle at 50% 8%, #25254d 0%, #1A1A2E 55%, #0c0c18 100%);color:#fff;overflow:hidden}
+body{font-family:'Libre Franklin',sans-serif;background:radial-gradient(circle at 50% 6%, #26264f 0%, #1A1A2E 52%, #0b0b16 100%);color:#fff;overflow:hidden}
 #hero{position:fixed;inset:0;z-index:0}
-canvas{display:block}
+#hero canvas{display:block;touch-action:none}
 .topbar{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.2rem;pointer-events:none;z-index:5}
 .logo{font-family:'Space Mono',monospace;font-weight:700;color:var(--green);display:flex;gap:.5rem;align-items:center;font-size:.95rem}
 .logo .bar{width:4px;height:20px;background:var(--green);border-radius:2px}
 .badge-demo{font-family:'Space Mono',monospace;font-size:.7rem;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:.2rem .6rem}
 .overlay{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:2rem 1.3rem 2.4rem;pointer-events:none;z-index:5}
 .kicker{font-family:'Space Mono',monospace;color:var(--green);font-size:.78rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:.5rem}
-h1{font-family:'Space Mono',monospace;font-size:clamp(2.1rem,9vw,4rem);line-height:1.02;margin-bottom:.6rem;text-shadow:0 6px 34px rgba(0,0,0,.55)}
+h1{font-family:'Space Mono',monospace;font-size:clamp(2.1rem,9vw,4rem);line-height:1.02;margin-bottom:.6rem;text-shadow:0 6px 34px rgba(0,0,0,.6)}
 h1 .grey{color:#9CA3AF}
 h1 .play{background:linear-gradient(90deg,var(--green),var(--teal),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
 .sub{color:#C7CBD1;max-width:30rem;margin-bottom:1.2rem;font-size:.97rem;line-height:1.5}
@@ -29,10 +29,13 @@ h1 .play{background:linear-gradient(90deg,var(--green),var(--teal),var(--coral))
 .btn:active{transform:scale(.97)}
 .btn-green{background:var(--green);color:#06281d;box-shadow:0 8px 30px rgba(16,185,129,.35)}
 .btn-ghost{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(6px)}
-.hint{position:fixed;left:50%;top:38%;transform:translateX(-50%);font-size:.74rem;color:rgba(255,255,255,.45);font-family:'Space Mono',monospace;pointer-events:none;z-index:5;transition:opacity .5s;text-align:center}
+.hint{position:fixed;left:50%;top:36%;transform:translateX(-50%);font-size:.74rem;color:rgba(255,255,255,.45);font-family:'Space Mono',monospace;pointer-events:none;z-index:5;transition:opacity .5s;text-align:center}
 .toast{position:fixed;bottom:7.5rem;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.78);color:#fff;padding:.6rem 1rem;border-radius:8px;font-size:.85rem;opacity:0;transition:opacity .2s;pointer-events:none;z-index:6}
 .toast.show{opacity:1}
-.err{position:fixed;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:2rem;color:#C7CBD1;font-size:.9rem}
+.loading,.err{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:2rem;color:#C7CBD1;font-size:.9rem;z-index:4;flex-direction:column;gap:.6rem}
+.err{display:none}
+.spin{width:34px;height:34px;border:3px solid rgba(255,255,255,.18);border-top-color:var(--green);border-radius:50%;animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
@@ -41,7 +44,8 @@ h1 .play{background:linear-gradient(90deg,var(--green),var(--teal),var(--coral))
   <div class="logo"><span class="bar"></span> FROM GREY TO PLAY</div>
   <span class="badge-demo">3D hero · demo</span>
 </div>
-<div class="hint" id="hint">trage pentru a roti</div>
+<div class="hint" id="hint">trage cu degetul pentru a roti</div>
+<div class="loading" id="loading"><div class="spin"></div><div>se încarcă scena 3D…</div></div>
 <div class="overlay">
   <div class="kicker">Târgu Mureș · terenuri sportive</div>
   <h1><span class="grey">From Grey</span><br>to <span class="play">Play</span></h1>
@@ -52,187 +56,356 @@ h1 .play{background:linear-gradient(90deg,var(--green),var(--teal),var(--coral))
   </div>
 </div>
 <div class="toast" id="toast"></div>
-<div class="err" id="err">Nu s-a putut încărca motorul 3D (Three.js). Verifică conexiunea și reîncarcă.</div>
+<div class="err" id="err">Nu s-a putut încărca motorul 3D (Three.js).<br>Verifică conexiunea și reîncarcă.</div>
 
 <script>
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+/* ---------------- texture builders ---------------- */
+function texFrom(canvas, rx, ry) {
+  var t = new THREE.CanvasTexture(canvas);
+  t.generateMipmaps = false; t.minFilter = THREE.LinearFilter; t.anisotropy = 4;
+  if (rx) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rx, ry); }
+  return t;
+}
+
+function courtLines(cx, W, H, o) {
+  cx.strokeStyle = o.color; cx.lineWidth = o.lw; cx.setLineDash(o.dash || []);
+  var M = 70;
+  cx.strokeRect(M, M, W - 2 * M, H - 2 * M);
+  cx.beginPath(); cx.moveTo(W / 2, M); cx.lineTo(W / 2, H - M); cx.stroke();
+  cx.beginPath(); cx.arc(W / 2, H / 2, 112, 0, Math.PI * 2); cx.stroke();
+  var keyLen = 250, keyW = 210;
+  [[M + 6, 1], [W - M - 6, -1]].forEach(function (e) {
+    var bx = e[0], s = e[1];
+    cx.strokeRect(s > 0 ? bx : bx - keyLen, H / 2 - keyW / 2, keyLen, keyW);
+    cx.beginPath(); cx.arc(bx + s * keyLen, H / 2, 86, 0, Math.PI * 2); cx.stroke();
+    cx.beginPath(); cx.arc(bx + s * 36, H / 2, 300, s > 0 ? -Math.PI / 2.25 : Math.PI / 2.25, s > 0 ? Math.PI / 2.25 : -Math.PI / 2.25, s < 0); cx.stroke();
+    cx.beginPath(); cx.arc(bx + s * 30, H / 2, 17, 0, Math.PI * 2); cx.stroke();
+  });
+  cx.setLineDash([]);
+}
+
+function buildGrey(W, H) {
+  var c = document.createElement("canvas"); c.width = W; c.height = H; var cx = c.getContext("2d");
+  var g = cx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "#4c515a"); g.addColorStop(1, "#33373f");
+  cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+  // asphalt noise
+  for (var i = 0; i < 4200; i++) {
+    var v = (Math.random() * 60 - 30) | 0;
+    cx.fillStyle = "rgba(" + (70 + v) + "," + (74 + v) + "," + (82 + v) + ",.5)";
+    cx.fillRect(Math.random() * W, Math.random() * H, 2, 2);
+  }
+  // oil stains
+  for (var s = 0; s < 7; s++) {
+    var sx = Math.random() * W, sy = Math.random() * H, sr = 40 + Math.random() * 90;
+    var rg = cx.createRadialGradient(sx, sy, 0, sx, sy, sr);
+    rg.addColorStop(0, "rgba(10,10,14,.5)"); rg.addColorStop(1, "rgba(10,10,14,0)");
+    cx.fillStyle = rg; cx.beginPath(); cx.arc(sx, sy, sr, 0, Math.PI * 2); cx.fill();
+  }
+  // faded broken markings
+  courtLines(cx, W, H, { color: "rgba(222,216,188,.28)", lw: 7, dash: [26, 22] });
+  // cracks
+  cx.lineCap = "round";
+  for (var k = 0; k < 16; k++) {
+    var x = Math.random() * W, y = Math.random() * H, n = 5 + (Math.random() * 6 | 0);
+    cx.strokeStyle = "rgba(15,15,20,.62)"; cx.lineWidth = 1 + Math.random() * 2.5; cx.beginPath(); cx.moveTo(x, y);
+    for (var j = 0; j < n; j++) { x += (Math.random() - 0.5) * 150; y += (Math.random() - 0.5) * 150; cx.lineTo(x, y); }
+    cx.stroke();
+  }
+  // potholes
+  for (var p = 0; p < 5; p++) {
+    var px = Math.random() * W, py = Math.random() * H, pr = 16 + Math.random() * 26;
+    cx.fillStyle = "rgba(8,8,11,.8)"; cx.beginPath();
+    for (var a = 0; a < 10; a++) { var ang = a / 10 * Math.PI * 2, rr = pr * (0.7 + Math.random() * 0.5); var fx = px + Math.cos(ang) * rr, fy = py + Math.sin(ang) * rr; a ? cx.lineTo(fx, fy) : cx.moveTo(fx, fy); }
+    cx.closePath(); cx.fill();
+  }
+  // weeds at random spots
+  for (var w = 0; w < 26; w++) {
+    var wx = Math.random() * W, wy = Math.random() * H;
+    cx.strokeStyle = "rgba(70,110,55," + (0.4 + Math.random() * 0.4) + ")"; cx.lineWidth = 1.6;
+    for (var b = 0; b < 4; b++) { cx.beginPath(); cx.moveTo(wx, wy); cx.lineTo(wx + (Math.random() - 0.5) * 16, wy - 8 - Math.random() * 14); cx.stroke(); }
+  }
+  return c;
+}
+
+function buildVibrant(W, H) {
+  var c = document.createElement("canvas"); c.width = W; c.height = H; var cx = c.getContext("2d");
+  // premium emerald-teal base
+  var g = cx.createLinearGradient(0, 0, W, H); g.addColorStop(0, "#10B07C"); g.addColorStop(0.55, "#0C9281"); g.addColorStop(1, "#0A7E88");
+  cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+  // soft top-light for depth
+  var rg = cx.createRadialGradient(W / 2, H * 0.4, 40, W / 2, H / 2, W * 0.62);
+  rg.addColorStop(0, "rgba(255,255,255,.16)"); rg.addColorStop(1, "rgba(0,0,0,.16)"); cx.fillStyle = rg; cx.fillRect(0, 0, W, H);
+  // painted keys with coral gradient
+  var M = 76, keyLen = 250, keyW = 210;
+  [[M + 6, 1], [W - M - 6, -1]].forEach(function (e) {
+    var x = e[1] > 0 ? e[0] : e[0] - keyLen;
+    var kg = cx.createLinearGradient(x, 0, x + keyLen, 0); kg.addColorStop(0, "#FB923C"); kg.addColorStop(1, "#F97316");
+    cx.fillStyle = kg; cx.fillRect(x, H / 2 - keyW / 2, keyLen, keyW);
+  });
+  // tasteful mural splashes
+  var mc = ["rgba(249,115,22,.55)", "rgba(255,255,255,.45)", "rgba(13,148,136,.6)", "rgba(250,204,21,.55)"];
+  for (var i = 0; i < 13; i++) {
+    var mx = Math.random() * W, my = Math.random() * H, r = 14 + Math.random() * 40; cx.fillStyle = mc[i % 4];
+    if (Math.random() < 0.5) { cx.beginPath(); cx.arc(mx, my, r, 0, Math.PI * 2); cx.fill(); }
+    else { cx.beginPath(); cx.moveTo(mx, my - r); cx.lineTo(mx + r, my + r); cx.lineTo(mx - r, my + r); cx.closePath(); cx.fill(); }
+  }
+  // double premium lines: gold underlay + crisp white
+  courtLines(cx, W, H, { color: "rgba(250,204,21,.85)", lw: 13 });
+  courtLines(cx, W, H, { color: "rgba(255,255,255,.97)", lw: 6 });
+  // polished centre medallion
+  cx.save(); cx.translate(W / 2, H / 2);
+  cx.strokeStyle = "rgba(250,204,21,.9)"; cx.lineWidth = 9; cx.beginPath(); cx.arc(0, 0, 122, 0, 7); cx.stroke();
+  cx.strokeStyle = "rgba(255,255,255,.95)"; cx.lineWidth = 4; cx.beginPath(); cx.arc(0, 0, 108, 0, 7); cx.stroke();
+  cx.fillStyle = "rgba(255,255,255,.10)"; cx.beginPath(); cx.arc(0, 0, 104, 0, 7); cx.fill();
+  cx.fillStyle = "#fff"; cx.font = "bold 82px 'Space Mono', monospace"; cx.textAlign = "center"; cx.textBaseline = "middle"; cx.fillText("G2P", 0, 6);
+  cx.restore();
+  // glossy diagonal sheen
+  var sh = cx.createLinearGradient(0, 0, W, H);
+  sh.addColorStop(0, "rgba(255,255,255,0)"); sh.addColorStop(0.46, "rgba(255,255,255,.12)"); sh.addColorStop(0.5, "rgba(255,255,255,.22)"); sh.addColorStop(0.54, "rgba(255,255,255,.12)"); sh.addColorStop(1, "rgba(255,255,255,0)");
+  cx.fillStyle = sh; cx.fillRect(0, 0, W, H);
+  // vignette
+  var vg = cx.createRadialGradient(W / 2, H / 2, H * 0.34, W / 2, H / 2, W * 0.72);
+  vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,.26)"); cx.fillStyle = vg; cx.fillRect(0, 0, W, H);
+  return c;
+}
+
+function buildBasketball() {
+  var c = document.createElement("canvas"); c.width = 512; c.height = 256; var cx = c.getContext("2d");
+  var g = cx.createLinearGradient(0, 0, 0, 256); g.addColorStop(0, "#F2882F"); g.addColorStop(1, "#D2611A");
+  cx.fillStyle = g; cx.fillRect(0, 0, 512, 256);
+  cx.strokeStyle = "#1a1108"; cx.lineWidth = 6; cx.lineCap = "round";
+  cx.beginPath(); cx.moveTo(0, 128); cx.lineTo(512, 128); cx.stroke();
+  cx.beginPath(); cx.moveTo(128, 0); cx.lineTo(128, 256); cx.stroke();
+  cx.beginPath(); cx.moveTo(384, 0); cx.lineTo(384, 256); cx.stroke();
+  cx.beginPath(); cx.moveTo(0, 0); cx.bezierCurveTo(120, 90, 120, 166, 0, 256); cx.stroke();
+  cx.beginPath(); cx.moveTo(512, 0); cx.bezierCurveTo(392, 90, 392, 166, 512, 256); cx.stroke();
+  return c;
+}
+
+function buildSoccer() {
+  var c = document.createElement("canvas"); c.width = 512; c.height = 256; var cx = c.getContext("2d");
+  cx.fillStyle = "#f4f4f4"; cx.fillRect(0, 0, 512, 256);
+  function pent(x, y, r, rot) {
+    cx.fillStyle = "#16181d"; cx.beginPath();
+    for (var i = 0; i < 5; i++) { var a = rot + i / 5 * Math.PI * 2 - Math.PI / 2; var px = x + Math.cos(a) * r, py = y + Math.sin(a) * r; i ? cx.lineTo(px, py) : cx.moveTo(px, py); }
+    cx.closePath(); cx.fill();
+  }
+  var pts = [[60, 60], [180, 40], [300, 60], [430, 45], [120, 150], [250, 130], [380, 150], [470, 120], [60, 210], [200, 220], [330, 210], [450, 215]];
+  for (var i = 0; i < pts.length; i++) pent(pts[i][0], pts[i][1], 24, Math.random() * 1.2);
+  cx.strokeStyle = "rgba(120,120,120,.5)"; cx.lineWidth = 2;
+  for (var s = 0; s < pts.length; s++) { cx.beginPath(); cx.arc(pts[s][0], pts[s][1], 30, 0, Math.PI * 2); cx.stroke(); }
+  return c;
+}
+
+function buildNet() {
+  var c = document.createElement("canvas"); c.width = 128; c.height = 128; var cx = c.getContext("2d");
+  cx.clearRect(0, 0, 128, 128); cx.strokeStyle = "rgba(255,255,255,.85)"; cx.lineWidth = 3;
+  for (var i = -128; i < 128; i += 16) { cx.beginPath(); cx.moveTo(i, 0); cx.lineTo(i + 128, 128); cx.stroke(); cx.beginPath(); cx.moveTo(i + 128, 0); cx.lineTo(i, 128); cx.stroke(); }
+  return c;
+}
+
+function buildBackboard() {
+  var c = document.createElement("canvas"); c.width = 160; c.height = 110; var cx = c.getContext("2d");
+  cx.fillStyle = "rgba(255,255,255,.94)"; cx.fillRect(0, 0, 160, 110);
+  cx.strokeStyle = "#cbd0d8"; cx.lineWidth = 6; cx.strokeRect(3, 3, 154, 104);
+  cx.strokeStyle = "#F97316"; cx.lineWidth = 7; cx.strokeRect(54, 40, 52, 46);
+  return c;
+}
+
+function buildChain() {
+  var c = document.createElement("canvas"); c.width = 128; c.height = 128; var cx = c.getContext("2d");
+  cx.clearRect(0, 0, 128, 128); cx.strokeStyle = "rgba(180,188,196,.55)"; cx.lineWidth = 2.4;
+  for (var i = -128; i < 128; i += 18) { cx.beginPath(); cx.moveTo(i, 0); cx.lineTo(i + 128, 128); cx.stroke(); cx.beginPath(); cx.moveTo(i + 128, 0); cx.lineTo(i, 128); cx.stroke(); }
+  return c;
+}
+
+/* ---------------- scene ---------------- */
 function init() {
-  /* ---------- renderer / scene / camera ---------- */
+  document.getElementById("loading").style.display = "none";
   var host = document.getElementById("hero");
   var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.domElement.style.touchAction = "none";
   host.appendChild(renderer.domElement);
 
   var scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x12122a, 7.5, 17);
+  scene.fog = new THREE.Fog(0x15152a, 7, 19);
   var camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
-  camera.position.set(0, 3.4, 5.4);
-  camera.lookAt(0, 0.35, 0);
+  camera.position.set(0, 2.75, 4.7);
+  camera.lookAt(0, 0.45, 0);
 
-  scene.add(new THREE.AmbientLight(0xffffff, 0.85));
-  var dir = new THREE.DirectionalLight(0xffffff, 0.75);
-  dir.position.set(3, 8, 4);
-  scene.add(dir);
+  var amb = new THREE.AmbientLight(0xffffff, 0.6); scene.add(amb);
+  var key = new THREE.DirectionalLight(0xbfd0e0, 0.5); key.position.set(3, 8, 4); scene.add(key);
+  var rim = new THREE.DirectionalLight(0x4a5570, 0.4); rim.position.set(-4, 3, -5); scene.add(rim);
 
-  var group = new THREE.Group();
-  scene.add(group);
+  // floor
+  var floor = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), new THREE.MeshStandardMaterial({ color: 0x0c0c16, roughness: 1 }));
+  floor.rotation.x = -Math.PI / 2; floor.position.y = -0.02; scene.add(floor);
 
-  /* ---------- court texture (canvas) ---------- */
-  var CW = 1024, CH = 560, M = 48;
-  var cv = document.createElement("canvas"); cv.width = CW; cv.height = CH;
-  var cx = cv.getContext("2d");
+  var group = new THREE.Group(); scene.add(group);
 
-  // precompute cracks + mural shapes so they don't jitter on redraw
-  var cracks = [];
-  for (var i = 0; i < 13; i++) {
-    var pts = [], x = Math.random() * CW, y = Math.random() * CH, n = 4 + (Math.random() * 4 | 0);
-    for (var j = 0; j < n; j++) { pts.push([x, y]); x += (Math.random() - 0.5) * 130; y += (Math.random() - 0.5) * 130; }
-    cracks.push(pts);
-  }
-  var mcol = ["rgba(249,115,22,.55)", "rgba(255,255,255,.35)", "rgba(13,148,136,.5)", "rgba(16,185,129,.45)"];
-  var murals = [];
-  for (var k = 0; k < 14; k++) murals.push({ x: Math.random() * CW, y: Math.random() * CH, r: 22 + Math.random() * 72, c: mcol[k % 4], tri: Math.random() < 0.5 });
-
-  function lines(alpha, dashed) {
-    cx.strokeStyle = "rgba(255,255,255," + alpha + ")";
-    cx.lineWidth = 5; cx.setLineDash(dashed ? [16, 14] : []);
-    cx.strokeRect(M, M, CW - 2 * M, CH - 2 * M);                  // boundary
-    cx.beginPath(); cx.moveTo(CW / 2, M); cx.lineTo(CW / 2, CH - M); cx.stroke(); // center line
-    cx.beginPath(); cx.arc(CW / 2, CH / 2, 72, 0, Math.PI * 2); cx.stroke();      // center circle
-    // keys + free-throw circles + 3pt arcs, both ends
-    var keyW = 168, keyH = 196;
-    [[M, 1], [CW - M, -1]].forEach(function (e) {
-      var bx = e[0], s = e[1];
-      cx.strokeRect(s > 0 ? bx : bx - keyW, CH / 2 - keyH / 2, keyW, keyH);
-      cx.beginPath(); cx.arc(bx + s * keyW, CH / 2, 60, 0, Math.PI * 2); cx.stroke();
-      cx.beginPath(); cx.arc(bx, CH / 2, 232, s > 0 ? -Math.PI / 2.3 : Math.PI / 2.3, s > 0 ? Math.PI / 2.3 : -Math.PI / 2.3, s < 0); cx.stroke();
-      cx.beginPath(); cx.arc(bx + s * 34, CH / 2, 16, 0, Math.PI * 2); cx.stroke(); // hoop
-    });
-    cx.setLineDash([]);
-  }
-  function grey() {
-    var g = cx.createLinearGradient(0, 0, 0, CH);
-    g.addColorStop(0, "#5b616b"); g.addColorStop(1, "#3c4149");
-    cx.fillStyle = g; cx.fillRect(0, 0, CW, CH);
-    cx.lineCap = "round";
-    cracks.forEach(function (p) {
-      cx.strokeStyle = "rgba(18,18,24,.6)"; cx.lineWidth = 2.5; cx.setLineDash([]);
-      cx.beginPath(); cx.moveTo(p[0][0], p[0][1]); for (var q = 1; q < p.length; q++) cx.lineTo(p[q][0], p[q][1]); cx.stroke();
-    });
-    lines(0.22, true);
-  }
-  function vibrant() {
-    var g = cx.createLinearGradient(0, 0, CW, CH);
-    g.addColorStop(0, "#10B981"); g.addColorStop(1, "#0D9488");
-    cx.fillStyle = g; cx.fillRect(0, 0, CW, CH);
-    murals.forEach(function (m) {
-      cx.fillStyle = m.c;
-      if (m.tri) { cx.beginPath(); cx.moveTo(m.x, m.y - m.r); cx.lineTo(m.x + m.r, m.y + m.r); cx.lineTo(m.x - m.r, m.y + m.r); cx.closePath(); cx.fill(); }
-      else { cx.beginPath(); cx.arc(m.x, m.y, m.r, 0, Math.PI * 2); cx.fill(); }
-    });
-    lines(0.95, false);
-  }
+  var CX = 4.5, CZ = 2.475, CW = 1280, CH = 704;
+  var greyTex = texFrom(buildGrey(CW, CH));
+  var vibTex = texFrom(buildVibrant(CW, CH));
+  // composite canvas for the sweep
+  var comp = document.createElement("canvas"); comp.width = CW; comp.height = CH; var compx = comp.getContext("2d");
+  var greyImg = greyTex.image, vibImg = vibTex.image;
+  var courtTex = texFrom(comp);
   function drawCourt(p) {
-    cx.clearRect(0, 0, CW, CH);
-    grey();
+    compx.clearRect(0, 0, CW, CH);
+    compx.drawImage(greyImg, 0, 0);
     var split = p * CW;
     if (split > 1) {
-      cx.save(); cx.beginPath(); cx.rect(0, 0, split, CH); cx.clip(); vibrant(); cx.restore();
-      if (p < 0.999) { // glowing renovation seam
-        var sg = cx.createLinearGradient(split - 46, 0, split + 12, 0);
-        sg.addColorStop(0, "rgba(255,255,255,0)"); sg.addColorStop(1, "rgba(255,255,255,.6)");
-        cx.fillStyle = sg; cx.fillRect(split - 46, 0, 58, CH);
-      }
+      compx.save(); compx.beginPath(); compx.rect(0, 0, split, CH); compx.clip(); compx.drawImage(vibImg, 0, 0); compx.restore();
+      if (p < 0.999) { var sg = compx.createLinearGradient(split - 60, 0, split + 14, 0); sg.addColorStop(0, "rgba(255,255,255,0)"); sg.addColorStop(1, "rgba(255,255,255,.7)"); compx.fillStyle = sg; compx.fillRect(split - 60, 0, 74, CH); }
     }
-    tex.needsUpdate = true;
+    courtTex.needsUpdate = true;
   }
-  var tex = new THREE.CanvasTexture(cv);
-  tex.anisotropy = 4;
-  var court = new THREE.Mesh(new THREE.PlaneGeometry(6, 3.3), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.92, metalness: 0 }));
-  court.rotation.x = -Math.PI / 2;
-  group.add(court);
-  drawCourt(0);
+  var courtMat = new THREE.MeshStandardMaterial({ map: courtTex, emissiveMap: courtTex, emissive: new THREE.Color(0xffffff), emissiveIntensity: 0.04, roughness: 0.88, metalness: 0 });
+  var court = new THREE.Mesh(new THREE.PlaneGeometry(CX, CZ), courtMat);
+  court.rotation.x = -Math.PI / 2; group.add(court); drawCourt(0);
 
-  /* ---------- hoops ---------- */
+  // shared textures
+  var netTex = texFrom(buildNet(), 2, 2), chainTex = texFrom(buildChain(), 6, 1.4), boardTex = texFrom(buildBackboard());
+  var nets = []; // opacity rises with renovation
+
+  /* basketball hoops at the two ends (x) */
   function hoop(sign) {
     var h = new THREE.Group();
-    var metal = new THREE.MeshStandardMaterial({ color: 0x9aa0aa, roughness: 0.6, metalness: 0.35 });
-    var pole = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 2.0, 12), metal);
-    pole.position.set(sign * 3.28, 1.0, 0); h.add(pole);
-    var board = new THREE.Mesh(new THREE.PlaneGeometry(0.95, 0.6), new THREE.MeshStandardMaterial({ color: 0xffffff, transparent: true, opacity: 0.82, side: THREE.DoubleSide }));
-    board.position.set(sign * 3.05, 1.72, 0); board.rotation.y = -sign * Math.PI / 2; h.add(board);
-    var rim = new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.025, 8, 24), new THREE.MeshStandardMaterial({ color: 0xF97316, roughness: 0.5 }));
-    rim.position.set(sign * 2.78, 1.52, 0); rim.rotation.x = Math.PI / 2; h.add(rim);
+    var metal = new THREE.MeshStandardMaterial({ color: 0x8b929c, roughness: 0.5, metalness: 0.4 });
+    var pole = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.06, 2.0, 12), metal); pole.position.set(sign * (CX / 2 + 0.18), 1.0, 0); h.add(pole);
+    var board = new THREE.Mesh(new THREE.PlaneGeometry(0.95, 0.62), new THREE.MeshStandardMaterial({ map: boardTex, transparent: true, side: THREE.DoubleSide })); board.position.set(sign * (CX / 2 + 0.02), 1.74, 0); board.rotation.y = -sign * Math.PI / 2; h.add(board);
+    var rimM = new THREE.Mesh(new THREE.TorusGeometry(0.21, 0.022, 8, 24), new THREE.MeshStandardMaterial({ color: 0xF97316, roughness: 0.4 })); rimM.position.set(sign * (CX / 2 - 0.22), 1.54, 0); rimM.rotation.x = Math.PI / 2; h.add(rimM);
+    var net = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.1, 0.32, 14, 1, true), new THREE.MeshBasicMaterial({ map: netTex, transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false })); net.position.set(sign * (CX / 2 - 0.22), 1.38, 0); h.add(net); nets.push(net);
     return h;
   }
   group.add(hoop(-1)); group.add(hoop(1));
 
-  /* ---------- ball + shadow ---------- */
-  var ball = new THREE.Mesh(new THREE.SphereGeometry(0.33, 28, 28), new THREE.MeshStandardMaterial({ color: 0xF97316, roughness: 0.55 }));
-  group.add(ball);
-  var shadow = new THREE.Mesh(new THREE.CircleGeometry(0.32, 24), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.26 }));
-  shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.012; group.add(shadow);
+  /* football goals on the two sides (z) */
+  function goal(sign) {
+    var g = new THREE.Group();
+    var wM = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.6 });
+    var gw = 1.3, gh = 0.62, r = 0.035;
+    var pl = new THREE.Mesh(new THREE.CylinderGeometry(r, r, gh, 10), wM); pl.position.set(-gw / 2, gh / 2, sign * (CZ / 2 + 0.1)); g.add(pl);
+    var pr = new THREE.Mesh(new THREE.CylinderGeometry(r, r, gh, 10), wM); pr.position.set(gw / 2, gh / 2, sign * (CZ / 2 + 0.1)); g.add(pr);
+    var bar = new THREE.Mesh(new THREE.CylinderGeometry(r, r, gw, 10), wM); bar.rotation.z = Math.PI / 2; bar.position.set(0, gh, sign * (CZ / 2 + 0.1)); g.add(bar);
+    var net = new THREE.Mesh(new THREE.PlaneGeometry(gw, gh), new THREE.MeshBasicMaterial({ map: netTex, transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false })); net.position.set(0, gh / 2, sign * (CZ / 2 + 0.1 + sign * 0.16)); g.add(net); nets.push(net);
+    var nb = new THREE.Mesh(new THREE.PlaneGeometry(gw, 0.18), new THREE.MeshBasicMaterial({ map: netTex, transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false })); nb.rotation.x = Math.PI / 2; nb.position.set(0, gh - 0.0, sign * (CZ / 2 + 0.18)); g.add(nb); nets.push(nb);
+    return g;
+  }
+  group.add(goal(-1)); group.add(goal(1));
 
-  /* ---------- particles ---------- */
-  var pcol = [0x10B981, 0xF97316, 0x0D9488, 0xffffff];
-  var pgeo = new THREE.SphereGeometry(0.045, 8, 8);
-  var parts = [];
-  function reset(m, init) { m.position.set((Math.random() - 0.5) * 7, init ? Math.random() * 4 : 0.05, (Math.random() - 0.5) * 4); m.userData.vy = 0.004 + Math.random() * 0.011; m.userData.sp = Math.random() * 6.28; }
-  for (var pi = 0; pi < 42; pi++) { var pm = new THREE.Mesh(pgeo, new THREE.MeshBasicMaterial({ color: pcol[pi % 4] })); reset(pm, true); group.add(pm); parts.push(pm); }
+  /* chain-link fence + posts */
+  var fenceMat = new THREE.MeshStandardMaterial({ map: chainTex, transparent: true, side: THREE.DoubleSide, roughness: 1 });
+  var fenceColG = new THREE.Color(0x6c6f76), fenceColV = new THREE.Color(0xaef0d8);
+  var fH = 0.7;
+  function fenceSeg(w, x, z, ry) { var m = new THREE.Mesh(new THREE.PlaneGeometry(w, fH), fenceMat); m.position.set(x, fH / 2, z); m.rotation.y = ry; group.add(m); }
+  fenceSeg(CX + 1.0, 0, -(CZ / 2 + 0.5), 0); fenceSeg(CX + 1.0, 0, (CZ / 2 + 0.5), 0);
+  fenceSeg(CZ + 1.0, -(CX / 2 + 0.5), 0, Math.PI / 2); fenceSeg(CZ + 1.0, (CX / 2 + 0.5), 0, Math.PI / 2);
+  var postMat = new THREE.MeshStandardMaterial({ color: 0x787b82, roughness: 0.8 });
+  [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(function (c) { var p = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, fH + 0.12, 8), postMat); p.position.set(c[0] * (CX / 2 + 0.5), (fH + 0.12) / 2, c[1] * (CZ / 2 + 0.5)); group.add(p); });
 
-  /* ---------- interaction ---------- */
-  var targetRot = 0, curRot = 0, dragging = false, lastX = 0, autoSpin = 0.0024;
+  /* two balls */
+  function makeBall(tex, rad) {
+    var b = new THREE.Mesh(new THREE.SphereGeometry(rad, 30, 22), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.55 }));
+    group.add(b);
+    var sh = new THREE.Mesh(new THREE.CircleGeometry(rad, 22), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.28 })); sh.rotation.x = -Math.PI / 2; sh.position.y = 0.015; group.add(sh);
+    return { mesh: b, shadow: sh, rad: rad };
+  }
+  var basket = makeBall(texFrom(buildBasketball()), 0.26); basket.x = -0.9; basket.z = 0.3; basket.vx = 0.011; basket.vz = 0.007; basket.ph = 0; basket.fr = 2.1; basket.hgt = 1.25;
+  var soccer = makeBall(texFrom(buildSoccer()), 0.24); soccer.x = 0.8; soccer.z = -0.4; soccer.vx = -0.009; soccer.vz = 0.012; soccer.ph = 1.4; soccer.fr = 1.7; soccer.hgt = 1.05;
+  var balls = [basket, soccer];
+
+  /* particles */
+  var brand = [0x10B981, 0xF97316, 0x0D9488, 0xffffff, 0xFACC15];
+  var pgeo = new THREE.SphereGeometry(0.045, 8, 8); var parts = [];
+  function rp(m, init) { m.position.set((Math.random() - 0.5) * (CX + 1.2), init ? Math.random() * 3.5 : 0.05, (Math.random() - 0.5) * (CZ + 1)); m.userData.vy = 0.004 + Math.random() * 0.012; m.userData.sp = Math.random() * 6.28; }
+  for (var pi = 0; pi < 46; pi++) { var col = new THREE.Color(brand[pi % brand.length]); var pm = new THREE.Mesh(pgeo, new THREE.MeshBasicMaterial({ color: 0x6b7280 })); pm.userData.brand = col; rp(pm, true); group.add(pm); parts.push(pm); }
+  var greyP = new THREE.Color(0x6b7280);
+
+  /* premium renovation kit: LED perimeter, floodlights, glow light, confetti */
+  var ledMat = new THREE.MeshStandardMaterial({ color: 0x062a22, emissive: new THREE.Color(0x10E0A0), emissiveIntensity: 0 });
+  function led(w, x, z, ry) { var m = new THREE.Mesh(new THREE.BoxGeometry(w, 0.05, 0.06), ledMat); m.position.set(x, 0.03, z); m.rotation.y = ry; group.add(m); }
+  led(CX + 0.5, 0, -(CZ / 2 + 0.2), 0); led(CX + 0.5, 0, (CZ / 2 + 0.2), 0); led(CZ + 0.5, -(CX / 2 + 0.2), 0, Math.PI / 2); led(CZ + 0.5, (CX / 2 + 0.2), 0, Math.PI / 2);
+  var lampMat = new THREE.MeshStandardMaterial({ color: 0x222633, emissive: new THREE.Color(0xfff0c0), emissiveIntensity: 0 });
+  [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(function (cc) {
+    var pole = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 1.7, 8), postMat); pole.position.set(cc[0] * (CX / 2 + 0.55), 0.85, cc[1] * (CZ / 2 + 0.55)); group.add(pole);
+    var head = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.12, 0.16), lampMat); head.position.set(cc[0] * (CX / 2 + 0.4), 1.72, cc[1] * (CZ / 2 + 0.4)); head.lookAt(0, 0.5, 0); group.add(head);
+  });
+  var luxLight = new THREE.PointLight(0xffe9c0, 0, 20); luxLight.position.set(0, 4.4, 0); scene.add(luxLight);
+  var confetti = [];
+  function burst() { for (var i = 0; i < 38; i++) { var m = new THREE.Mesh(pgeo, new THREE.MeshBasicMaterial({ color: brand[i % brand.length], transparent: true })); m.position.set((Math.random() - 0.5) * 1.6, 1.5, (Math.random() - 0.5) * 1.6); m.userData = { vx: (Math.random() - 0.5) * 0.07, vy: 0.06 + Math.random() * 0.07, vz: (Math.random() - 0.5) * 0.07, life: 1 }; group.add(m); confetti.push(m); } }
+
+  /* ---------- interaction: smooth touch rotate + inertia ---------- */
+  var rot = 0, rotVel = 0, dragging = false, lastX = 0, autoSpin = 0.0016;
   var hint = document.getElementById("hint");
-  function hideHint() { hint.style.opacity = "0"; }
-  renderer.domElement.addEventListener("pointerdown", function (e) { dragging = true; lastX = e.clientX; hideHint(); });
-  window.addEventListener("pointermove", function (e) { if (!dragging) return; targetRot += (e.clientX - lastX) * 0.006; lastX = e.clientX; });
-  window.addEventListener("pointerup", function () { dragging = false; });
-  setTimeout(hideHint, 4200);
+  var el = renderer.domElement;
+  el.addEventListener("pointerdown", function (e) { dragging = true; lastX = e.clientX; rotVel = 0; hint.style.opacity = "0"; if (el.setPointerCapture) { try { el.setPointerCapture(e.pointerId); } catch (x) {} } });
+  el.addEventListener("pointermove", function (e) { if (!dragging) return; var d = (e.clientX - lastX) / window.innerWidth * 2.0; lastX = e.clientX; rot += d; rotVel = d; });
+  function endDrag() { dragging = false; }
+  el.addEventListener("pointerup", endDrag); el.addEventListener("pointercancel", endDrag); el.addEventListener("pointerleave", endDrag);
+  setTimeout(function () { hint.style.opacity = "0"; }, 4500);
 
-  /* ---------- toast ---------- */
+  /* ---------- toast + buttons ---------- */
   var toastEl = document.getElementById("toast"), tt;
-  function showToast(msg) { toastEl.textContent = msg; toastEl.classList.add("show"); clearTimeout(tt); tt = setTimeout(function () { toastEl.classList.remove("show"); }, 2200); }
-
-  /* ---------- renovate toggle (no autoplay: the button is the trigger) ---------- */
+  function showToast(m) { toastEl.textContent = m; toastEl.classList.add("show"); clearTimeout(tt); tt = setTimeout(function () { toastEl.classList.remove("show"); }, 2200); }
   var prog = 0, progTarget = 0;
   var rbtn = document.getElementById("renovateBtn");
   function updateBtn() { rbtn.textContent = progTarget > 0.5 ? "↺ Înapoi la gri" : "▶ Renovează terenul"; }
-  rbtn.addEventListener("click", function () {
-    progTarget = progTarget > 0.5 ? 0 : 1; updateBtn();
-    showToast(progTarget > 0.5 ? "Se renovează terenul ✨" : "Înapoi la starea degradată");
-  });
+  rbtn.addEventListener("click", function () { progTarget = progTarget > 0.5 ? 0 : 1; updateBtn(); showToast(progTarget > 0.5 ? "Se renovează terenul ✨" : "Înapoi la starea degradată"); if (progTarget > 0.5) burst(); });
   updateBtn();
-
   document.getElementById("signBtn").addEventListener("click", function () { showToast("În site real: se deschide petiția ✍️"); });
 
   /* ---------- loop ---------- */
+  var keyCool = new THREE.Color(0xbfd0e0), keyWarm = new THREE.Color(0xfff1d6);
+  var fogG = new THREE.Color(0x15152a), fogV = new THREE.Color(0x1d2746);
   var t0 = performance.now();
   function animate(now) {
     var t = (now - t0) / 1000;
-    var by = 0.33 + Math.abs(Math.sin(t * 2.0)) * 1.35;
-    ball.position.set(Math.sin(t * 0.6) * 1.7, by, Math.cos(t * 0.6) * 0.85);
-    shadow.position.x = ball.position.x; shadow.position.z = ball.position.z;
-    var hf = (by - 0.33) / 1.35;
-    shadow.scale.setScalar(1.25 - hf * 0.5); shadow.material.opacity = 0.3 - hf * 0.2;
-    for (var a = 0; a < parts.length; a++) {
-      var p = parts[a]; p.position.y += p.userData.vy; p.position.x += Math.sin(t + p.userData.sp) * 0.0016;
-      if (p.position.y > 4) reset(p, false);
+    // balls
+    for (var i = 0; i < balls.length; i++) {
+      var bl = balls[i]; bl.x += bl.vx; bl.z += bl.vz;
+      if (Math.abs(bl.x) > CX / 2 - 0.3) bl.vx = -bl.vx; if (Math.abs(bl.z) > CZ / 2 - 0.2) bl.vz = -bl.vz;
+      var by = bl.rad + Math.abs(Math.sin(t * bl.fr + bl.ph)) * bl.hgt;
+      bl.mesh.position.set(bl.x, by, bl.z);
+      bl.mesh.rotation.x += bl.vz * 2.5; bl.mesh.rotation.z -= bl.vx * 2.5;
+      bl.shadow.position.set(bl.x, 0.015, bl.z);
+      var hf = (by - bl.rad) / bl.hgt; bl.shadow.scale.setScalar(1.25 - hf * 0.55); bl.shadow.material.opacity = 0.3 - hf * 0.2;
     }
-    if (!dragging) targetRot += autoSpin;
-    curRot += (targetRot - curRot) * 0.08; group.rotation.y = curRot;
-    if (Math.abs(prog - progTarget) > 0.001) { prog += (progTarget - prog) * 0.06; drawCourt(prog); }
+    // particles
+    for (var a = 0; a < parts.length; a++) { var p = parts[a]; p.position.y += p.userData.vy * (0.6 + prog * 0.8); p.position.x += Math.sin(t + p.userData.sp) * 0.0018; if (p.position.y > 3.6) rp(p, false); p.material.color.copy(greyP).lerp(p.userData.brand, prog); }
+    // rotation w/ inertia then gentle autospin
+    if (!dragging) { rot += rotVel; rotVel *= 0.93; if (Math.abs(rotVel) < 0.0003) { rotVel = 0; rot += autoSpin; } }
+    group.rotation.y = rot;
+    // renovate state lerps
+    if (Math.abs(prog - progTarget) > 0.001) {
+      prog += (progTarget - prog) * 0.055; drawCourt(prog);
+      for (var n = 0; n < nets.length; n++) nets[n].material.opacity = prog;
+      amb.intensity = lerp(0.55, 0.9, prog); key.intensity = lerp(0.42, 1.05, prog);
+      key.color.copy(keyCool).lerp(keyWarm, prog); scene.fog.color.copy(fogG).lerp(fogV, prog);
+      fenceMat.color.copy(fenceColG).lerp(fenceColV, prog);
+      courtMat.roughness = lerp(0.88, 0.22, prog); courtMat.metalness = lerp(0, 0.22, prog); courtMat.emissiveIntensity = lerp(0.04, 0.42, prog);
+      ledMat.emissiveIntensity = prog * 1.7; lampMat.emissiveIntensity = prog * 1.5; luxLight.intensity = prog * 0.75;
+    }
+    for (var ci = confetti.length - 1; ci >= 0; ci--) {
+      var cm = confetti[ci]; cm.userData.vy -= 0.0024; cm.position.x += cm.userData.vx; cm.position.y += cm.userData.vy; cm.position.z += cm.userData.vz;
+      cm.userData.life -= 0.012; cm.material.opacity = Math.max(0, cm.userData.life); cm.rotation.x += 0.25; cm.rotation.y += 0.2;
+      if (cm.userData.life <= 0 || cm.position.y < 0.02) { group.remove(cm); cm.material.dispose(); confetti.splice(ci, 1); }
+    }
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
   }
   requestAnimationFrame(animate);
 
-  /* ---------- resize ---------- */
   window.addEventListener("resize", function () {
-    camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight);
   });
 }
-/* ---------- load Three.js robustly (survives htmlpreview's script injection) ---------- */
+
+/* ---------- load Three.js robustly (survives htmlpreview & githack) ---------- */
 var CDNS = [
   "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js",
   "https://unpkg.com/three@0.128.0/build/three.min.js",
@@ -240,9 +413,8 @@ var CDNS = [
 ];
 function tryLoad(i) {
   if (typeof THREE !== "undefined") { init(); return; }
-  if (i >= CDNS.length) { document.getElementById("err").style.display = "flex"; return; }
-  var s = document.createElement("script");
-  s.src = CDNS[i];
+  if (i >= CDNS.length) { document.getElementById("loading").style.display = "none"; document.getElementById("err").style.display = "flex"; return; }
+  var s = document.createElement("script"); s.src = CDNS[i];
   s.onload = function () { typeof THREE !== "undefined" ? init() : tryLoad(i + 1); };
   s.onerror = function () { tryLoad(i + 1); };
   document.head.appendChild(s);
