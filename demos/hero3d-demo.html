@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>3D Hero — Demo · From Grey to Play</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root{--green:#10B981;--coral:#F97316;--teal:#0D9488;--dark:#1A1A2E}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{font-family:'Libre Franklin',sans-serif;background:radial-gradient(circle at 50% 8%, #25254d 0%, #1A1A2E 55%, #0c0c18 100%);color:#fff;overflow:hidden}
+#hero{position:fixed;inset:0}
+canvas{display:block}
+.topbar{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.2rem;pointer-events:none;z-index:5}
+.logo{font-family:'Space Mono',monospace;font-weight:700;color:var(--green);display:flex;gap:.5rem;align-items:center;font-size:.95rem}
+.logo .bar{width:4px;height:20px;background:var(--green);border-radius:2px}
+.badge-demo{font-family:'Space Mono',monospace;font-size:.7rem;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:.2rem .6rem}
+.overlay{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:2rem 1.3rem 2.4rem;pointer-events:none;z-index:5}
+.kicker{font-family:'Space Mono',monospace;color:var(--green);font-size:.78rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:.5rem}
+h1{font-family:'Space Mono',monospace;font-size:clamp(2.1rem,9vw,4rem);line-height:1.02;margin-bottom:.6rem;text-shadow:0 6px 34px rgba(0,0,0,.55)}
+h1 .grey{color:#9CA3AF}
+h1 .play{background:linear-gradient(90deg,var(--green),var(--teal),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:#C7CBD1;max-width:30rem;margin-bottom:1.2rem;font-size:.97rem;line-height:1.5}
+.cta{display:flex;gap:.6rem;flex-wrap:wrap;pointer-events:auto}
+.btn{font-family:'Space Mono',monospace;font-weight:700;border:none;border-radius:10px;padding:.72rem 1.2rem;font-size:.9rem;cursor:pointer;transition:transform .1s}
+.btn:active{transform:scale(.97)}
+.btn-green{background:var(--green);color:#06281d;box-shadow:0 8px 30px rgba(16,185,129,.35)}
+.btn-ghost{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(6px)}
+.hint{position:fixed;left:50%;top:38%;transform:translateX(-50%);font-size:.74rem;color:rgba(255,255,255,.45);font-family:'Space Mono',monospace;pointer-events:none;z-index:5;transition:opacity .5s;text-align:center}
+.toast{position:fixed;bottom:7.5rem;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.78);color:#fff;padding:.6rem 1rem;border-radius:8px;font-size:.85rem;opacity:0;transition:opacity .2s;pointer-events:none;z-index:6}
+.toast.show{opacity:1}
+.err{position:fixed;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:2rem;color:#C7CBD1;font-size:.9rem}
+</style>
+</head>
+<body>
+<div id="hero"></div>
+<div class="topbar">
+  <div class="logo"><span class="bar"></span> FROM GREY TO PLAY</div>
+  <span class="badge-demo">3D hero · demo</span>
+</div>
+<div class="hint" id="hint">trage pentru a roti</div>
+<div class="overlay">
+  <div class="kicker">Târgu Mureș · terenuri sportive</div>
+  <h1><span class="grey">From Grey</span><br>to <span class="play">Play</span></h1>
+  <p class="sub">De la asfalt crăpat la terenuri vii. Apasă <b>Renovează</b> și privește transformarea — exact ce cerem pentru cartierele periferice.</p>
+  <div class="cta">
+    <button class="btn btn-green" id="renovateBtn">▶ Renovează terenul</button>
+    <button class="btn btn-ghost" id="signBtn">Semnează petiția</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="err" id="err">Nu s-a putut încărca motorul 3D (Three.js). Verifică conexiunea și reîncarcă.</div>
+
+<script>
+if (typeof THREE === "undefined") {
+  document.getElementById("err").style.display = "flex";
+} else {
+  /* ---------- renderer / scene / camera ---------- */
+  var host = document.getElementById("hero");
+  var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  host.appendChild(renderer.domElement);
+
+  var scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0x12122a, 7.5, 17);
+  var camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.set(0, 3.4, 5.4);
+  camera.lookAt(0, 0.35, 0);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.85));
+  var dir = new THREE.DirectionalLight(0xffffff, 0.75);
+  dir.position.set(3, 8, 4);
+  scene.add(dir);
+
+  var group = new THREE.Group();
+  scene.add(group);
+
+  /* ---------- court texture (canvas) ---------- */
+  var CW = 1024, CH = 560, M = 48;
+  var cv = document.createElement("canvas"); cv.width = CW; cv.height = CH;
+  var cx = cv.getContext("2d");
+
+  // precompute cracks + mural shapes so they don't jitter on redraw
+  var cracks = [];
+  for (var i = 0; i < 13; i++) {
+    var pts = [], x = Math.random() * CW, y = Math.random() * CH, n = 4 + (Math.random() * 4 | 0);
+    for (var j = 0; j < n; j++) { pts.push([x, y]); x += (Math.random() - 0.5) * 130; y += (Math.random() - 0.5) * 130; }
+    cracks.push(pts);
+  }
+  var mcol = ["rgba(249,115,22,.55)", "rgba(255,255,255,.35)", "rgba(13,148,136,.5)", "rgba(16,185,129,.45)"];
+  var murals = [];
+  for (var k = 0; k < 14; k++) murals.push({ x: Math.random() * CW, y: Math.random() * CH, r: 22 + Math.random() * 72, c: mcol[k % 4], tri: Math.random() < 0.5 });
+
+  function lines(alpha, dashed) {
+    cx.strokeStyle = "rgba(255,255,255," + alpha + ")";
+    cx.lineWidth = 5; cx.setLineDash(dashed ? [16, 14] : []);
+    cx.strokeRect(M, M, CW - 2 * M, CH - 2 * M);                  // boundary
+    cx.beginPath(); cx.moveTo(CW / 2, M); cx.lineTo(CW / 2, CH - M); cx.stroke(); // center line
+    cx.beginPath(); cx.arc(CW / 2, CH / 2, 72, 0, Math.PI * 2); cx.stroke();      // center circle
+    // keys + free-throw circles + 3pt arcs, both ends
+    var keyW = 168, keyH = 196;
+    [[M, 1], [CW - M, -1]].forEach(function (e) {
+      var bx = e[0], s = e[1];
+      cx.strokeRect(s > 0 ? bx : bx - keyW, CH / 2 - keyH / 2, keyW, keyH);
+      cx.beginPath(); cx.arc(bx + s * keyW, CH / 2, 60, 0, Math.PI * 2); cx.stroke();
+      cx.beginPath(); cx.arc(bx, CH / 2, 232, s > 0 ? -Math.PI / 2.3 : Math.PI / 2.3, s > 0 ? Math.PI / 2.3 : -Math.PI / 2.3, s < 0); cx.stroke();
+      cx.beginPath(); cx.arc(bx + s * 34, CH / 2, 16, 0, Math.PI * 2); cx.stroke(); // hoop
+    });
+    cx.setLineDash([]);
+  }
+  function grey() {
+    var g = cx.createLinearGradient(0, 0, 0, CH);
+    g.addColorStop(0, "#5b616b"); g.addColorStop(1, "#3c4149");
+    cx.fillStyle = g; cx.fillRect(0, 0, CW, CH);
+    cx.lineCap = "round";
+    cracks.forEach(function (p) {
+      cx.strokeStyle = "rgba(18,18,24,.6)"; cx.lineWidth = 2.5; cx.setLineDash([]);
+      cx.beginPath(); cx.moveTo(p[0][0], p[0][1]); for (var q = 1; q < p.length; q++) cx.lineTo(p[q][0], p[q][1]); cx.stroke();
+    });
+    lines(0.22, true);
+  }
+  function vibrant() {
+    var g = cx.createLinearGradient(0, 0, CW, CH);
+    g.addColorStop(0, "#10B981"); g.addColorStop(1, "#0D9488");
+    cx.fillStyle = g; cx.fillRect(0, 0, CW, CH);
+    murals.forEach(function (m) {
+      cx.fillStyle = m.c;
+      if (m.tri) { cx.beginPath(); cx.moveTo(m.x, m.y - m.r); cx.lineTo(m.x + m.r, m.y + m.r); cx.lineTo(m.x - m.r, m.y + m.r); cx.closePath(); cx.fill(); }
+      else { cx.beginPath(); cx.arc(m.x, m.y, m.r, 0, Math.PI * 2); cx.fill(); }
+    });
+    lines(0.95, false);
+  }
+  function drawCourt(p) {
+    cx.clearRect(0, 0, CW, CH);
+    grey();
+    var split = p * CW;
+    if (split > 1) {
+      cx.save(); cx.beginPath(); cx.rect(0, 0, split, CH); cx.clip(); vibrant(); cx.restore();
+      if (p < 0.999) { // glowing renovation seam
+        var sg = cx.createLinearGradient(split - 46, 0, split + 12, 0);
+        sg.addColorStop(0, "rgba(255,255,255,0)"); sg.addColorStop(1, "rgba(255,255,255,.6)");
+        cx.fillStyle = sg; cx.fillRect(split - 46, 0, 58, CH);
+      }
+    }
+    tex.needsUpdate = true;
+  }
+  var tex = new THREE.CanvasTexture(cv);
+  tex.anisotropy = 4;
+  var court = new THREE.Mesh(new THREE.PlaneGeometry(6, 3.3), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.92, metalness: 0 }));
+  court.rotation.x = -Math.PI / 2;
+  group.add(court);
+  drawCourt(0);
+
+  /* ---------- hoops ---------- */
+  function hoop(sign) {
+    var h = new THREE.Group();
+    var metal = new THREE.MeshStandardMaterial({ color: 0x9aa0aa, roughness: 0.6, metalness: 0.35 });
+    var pole = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 2.0, 12), metal);
+    pole.position.set(sign * 3.28, 1.0, 0); h.add(pole);
+    var board = new THREE.Mesh(new THREE.PlaneGeometry(0.95, 0.6), new THREE.MeshStandardMaterial({ color: 0xffffff, transparent: true, opacity: 0.82, side: THREE.DoubleSide }));
+    board.position.set(sign * 3.05, 1.72, 0); board.rotation.y = -sign * Math.PI / 2; h.add(board);
+    var rim = new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.025, 8, 24), new THREE.MeshStandardMaterial({ color: 0xF97316, roughness: 0.5 }));
+    rim.position.set(sign * 2.78, 1.52, 0); rim.rotation.x = Math.PI / 2; h.add(rim);
+    return h;
+  }
+  group.add(hoop(-1)); group.add(hoop(1));
+
+  /* ---------- ball + shadow ---------- */
+  var ball = new THREE.Mesh(new THREE.SphereGeometry(0.33, 28, 28), new THREE.MeshStandardMaterial({ color: 0xF97316, roughness: 0.55 }));
+  group.add(ball);
+  var shadow = new THREE.Mesh(new THREE.CircleGeometry(0.32, 24), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.26 }));
+  shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.012; group.add(shadow);
+
+  /* ---------- particles ---------- */
+  var pcol = [0x10B981, 0xF97316, 0x0D9488, 0xffffff];
+  var pgeo = new THREE.SphereGeometry(0.045, 8, 8);
+  var parts = [];
+  function reset(m, init) { m.position.set((Math.random() - 0.5) * 7, init ? Math.random() * 4 : 0.05, (Math.random() - 0.5) * 4); m.userData.vy = 0.004 + Math.random() * 0.011; m.userData.sp = Math.random() * 6.28; }
+  for (var pi = 0; pi < 42; pi++) { var pm = new THREE.Mesh(pgeo, new THREE.MeshBasicMaterial({ color: pcol[pi % 4] })); reset(pm, true); group.add(pm); parts.push(pm); }
+
+  /* ---------- interaction ---------- */
+  var targetRot = 0, curRot = 0, dragging = false, lastX = 0, autoSpin = 0.0024;
+  var hint = document.getElementById("hint");
+  function hideHint() { hint.style.opacity = "0"; }
+  renderer.domElement.addEventListener("pointerdown", function (e) { dragging = true; lastX = e.clientX; hideHint(); });
+  window.addEventListener("pointermove", function (e) { if (!dragging) return; targetRot += (e.clientX - lastX) * 0.006; lastX = e.clientX; });
+  window.addEventListener("pointerup", function () { dragging = false; });
+  setTimeout(hideHint, 4200);
+
+  /* ---------- renovate toggle ---------- */
+  var prog = 0, progTarget = 0;
+  var rbtn = document.getElementById("renovateBtn");
+  function updateBtn() { rbtn.textContent = progTarget > 0.5 ? "↺ Înapoi la gri" : "▶ Renovează terenul"; }
+  rbtn.addEventListener("click", function () { progTarget = progTarget > 0.5 ? 0 : 1; updateBtn(); });
+  setTimeout(function () { progTarget = 1; updateBtn(); }, 1400); // auto-play once
+
+  var toast = document.getElementById("toast"), tt;
+  document.getElementById("signBtn").addEventListener("click", function () {
+    toast.textContent = "În site real: deschide formularul petiției ✍️";
+    toast.classList.add("show"); clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove("show"); }, 2400);
+  });
+
+  /* ---------- loop ---------- */
+  var t0 = performance.now();
+  function animate(now) {
+    var t = (now - t0) / 1000;
+    var by = 0.33 + Math.abs(Math.sin(t * 2.0)) * 1.35;
+    ball.position.set(Math.sin(t * 0.6) * 1.7, by, Math.cos(t * 0.6) * 0.85);
+    shadow.position.x = ball.position.x; shadow.position.z = ball.position.z;
+    var hf = (by - 0.33) / 1.35;
+    shadow.scale.setScalar(1.25 - hf * 0.5); shadow.material.opacity = 0.3 - hf * 0.2;
+    for (var a = 0; a < parts.length; a++) {
+      var p = parts[a]; p.position.y += p.userData.vy; p.position.x += Math.sin(t + p.userData.sp) * 0.0016;
+      if (p.position.y > 4) reset(p, false);
+    }
+    if (!dragging) targetRot += autoSpin;
+    curRot += (targetRot - curRot) * 0.08; group.rotation.y = curRot;
+    if (Math.abs(prog - progTarget) > 0.001) { prog += (progTarget - prog) * 0.06; drawCourt(prog); }
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+
+  /* ---------- resize ---------- */
+  window.addEventListener("resize", function () {
+    camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+}
+</script>
+</body>
+</html>
