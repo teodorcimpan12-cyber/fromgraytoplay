@@ -118,16 +118,24 @@ function buildGreyBump(W, H) {
 /* freshly resurfaced acrylic court (placeholder — to be matched to your reference image) */
 function buildVibrant(W, H) {
   var c = document.createElement("canvas"); c.width = W; c.height = H; var cx = c.getContext("2d");
-  var M = 64;
-  cx.fillStyle = "#3a4048"; cx.fillRect(0, 0, W, H);
-  var g = cx.createLinearGradient(0, M, 0, H - M); g.addColorStop(0, "#2f9e6b"); g.addColorStop(1, "#27895d");
-  cx.fillStyle = g; cx.fillRect(M, M, W - 2 * M, H - 2 * M);
-  for (var i = 0; i < 3000; i++) { var v = (Math.random() * 20 - 10) | 0; cx.fillStyle = "rgba(" + (47 + v) + "," + (158 + v) + "," + (107 + v) + ",.3)"; cx.fillRect(M + Math.random() * (W - 2 * M), M + Math.random() * (H - 2 * M), 2, 2); }
+  var M = 64, cyc = H / 2;
+  cx.fillStyle = "#18a69c"; cx.fillRect(0, 0, W, H);                  // teal surround
+  cx.fillStyle = "#1f2531"; cx.fillRect(M, M, W - 2 * M, H - 2 * M); // dark navy court
+  // concentric brand-colour fans (3pt semicircle) at each end
+  [[M + 44, 1], [W - M - 44, -1]].forEach(function (e) {
+    var hx = e[0], s = e[1];
+    function fan(R, col) { cx.fillStyle = col; cx.beginPath(); cx.moveTo(hx, cyc); cx.arc(hx, cyc, R, s > 0 ? -Math.PI / 2 : Math.PI / 2, s > 0 ? Math.PI / 2 : Math.PI * 1.5, false); cx.closePath(); cx.fill(); }
+    fan(298, "#10B981"); fan(228, "#0D9488"); fan(162, "#F97316"); fan(92, "#1f2531");
+  });
+  // free-throw lanes (navy) over the fans
   var keyLen = 244, keyW = 200;
-  [[M + 6, 1], [W - M - 6, -1]].forEach(function (e) { cx.fillStyle = "rgba(20,90,60,.5)"; cx.fillRect(e[1] > 0 ? e[0] : e[0] - keyLen, H / 2 - keyW / 2, keyLen, keyW); });
-  footyLines(cx, W, H, "rgba(249,115,22,.9)");
-  bballLines(cx, W, H, { color: "rgba(245,245,240,.96)", lw: 6 });
-  var vg = cx.createRadialGradient(W / 2, H / 2, H * 0.36, W / 2, H / 2, W * 0.72); vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,.2)"); cx.fillStyle = vg; cx.fillRect(0, 0, W, H);
+  [[M + 6, 1], [W - M - 6, -1]].forEach(function (e) { cx.fillStyle = "#1f2531"; cx.fillRect(e[1] > 0 ? e[0] : e[0] - keyLen, H / 2 - keyW / 2, keyLen, keyW); });
+  // white markings
+  bballLines(cx, W, H, { color: "rgba(246,248,247,.96)", lw: 6 });
+  // centre emblem + wordmark
+  cx.save(); cx.translate(W / 2, cyc); cx.strokeStyle = "#fff"; cx.lineWidth = 7; cx.beginPath(); cx.arc(0, 0, 48, 0, Math.PI * 2); cx.stroke();
+  cx.fillStyle = "#fff"; cx.font = "bold 44px 'Space Mono', monospace"; cx.textAlign = "center"; cx.textBaseline = "middle"; cx.fillText("G2P", 0, 2); cx.restore();
+  cx.fillStyle = "rgba(255,255,255,.85)"; cx.font = "bold 26px 'Space Mono', monospace"; cx.textAlign = "center"; cx.textBaseline = "middle"; cx.fillText("FROM GREY TO PLAY", W / 2, M + 30);
   return c;
 }
 function buildVibBump(W, H) {
@@ -220,7 +228,7 @@ function init() {
   var scene = new THREE.Scene();
   scene.fog = new THREE.Fog(0x252b33, 8, 24);
   var camera = new THREE.PerspectiveCamera(52, window.innerWidth / window.innerHeight, 0.1, 100);
-  camera.position.set(0, 2.5, 4.7); camera.lookAt(0, 0.25, 0);
+  camera.position.set(0, 3.7, 3.5); camera.lookAt(0, 0.05, 0);
 
   var hemi = new THREE.HemisphereLight(0xaec6dc, 0x33302a, 0.62); scene.add(hemi);
   var amb = new THREE.AmbientLight(0xffffff, 0.3); scene.add(amb);
@@ -237,8 +245,8 @@ function init() {
   cityGround.rotation.x = -Math.PI / 2; cityGround.position.y = GY - 0.012; cityGround.receiveShadow = true; world.add(cityGround);
   var luxLight = new THREE.PointLight(0xffe9c4, 0, 3.0); luxLight.position.set(0, 2.4, 0); world.add(luxLight);
 
-  var group = new THREE.Group(); world.add(group);   // the court — rotates
-  var city = new THREE.Group(); world.add(city);     // surroundings — static
+  var group = new THREE.Group(); world.add(group);   // the whole little world — rotates
+  var city = new THREE.Group(); group.add(city);     // surroundings rotate together with the court
 
   var CX = 3.375, CZ = 1.856, CW = 1280, CH = 704;
   var greyImg = buildGrey(CW, CH), vibImg = buildVibrant(CW, CH), greyBump = buildGreyBump(CW, CH), vibBump = buildVibBump(CW, CH);
@@ -263,7 +271,7 @@ function init() {
   slab.position.y = -0.06; slab.receiveShadow = true; group.add(slab);
 
   var netTex = texFrom(buildNet(), 1, 1), boardTex = texFrom(buildBackboard());
-  var nets = [];
+  var nets = [], hoops = [], lockerScreen = null;
   var steel = new THREE.MeshStandardMaterial({ color: 0xe8eaec, roughness: 0.4, metalness: 0.5 });
   function steelMesh(geo, x, y, z) { var m = new THREE.Mesh(geo, steel); m.position.set(x, y, z); m.castShadow = true; return m; }
 
@@ -288,6 +296,7 @@ function init() {
     var arm = steelMesh(new THREE.CylinderGeometry(0.016, 0.016, 0.18, 8), baseX + sign * 0.07, 0.78, 0); arm.rotation.z = Math.PI / 2; u.add(arm);
     var board = new THREE.Mesh(new THREE.PlaneGeometry(0.42, 0.28), new THREE.MeshStandardMaterial({ map: boardTex, transparent: true, side: THREE.DoubleSide })); board.position.set(baseX - sign * 0.02, 0.8, 0); board.rotation.y = -sign * Math.PI / 2; board.castShadow = true; u.add(board);
     var rim = new THREE.Mesh(new THREE.TorusGeometry(0.1, 0.012, 8, 22), new THREE.MeshStandardMaterial({ color: 0xE2552B, roughness: 0.45 })); rim.position.set(baseX - sign * 0.12, 0.69, 0); rim.rotation.x = Math.PI / 2; rim.castShadow = true; u.add(rim);
+    hoops.push({ x: baseX - sign * 0.12, y: 0.69, z: 0, r: 0.1 });
     var bnet = new THREE.Mesh(new THREE.CylinderGeometry(0.095, 0.05, 0.15, 12, 1, true), new THREE.MeshBasicMaterial({ map: netTex.clone(), transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false })); bnet.position.set(baseX - sign * 0.12, 0.61, 0); u.add(bnet); nets.push(bnet);
   }
   endUnit(-1); endUnit(1);
@@ -319,12 +328,33 @@ function init() {
   fenceSide((CX + 0.86) / 2 - 0.25, -(CX + 0.86) / 4 - 0.125, (CZ / 2 + 0.4), true);
   fenceSide((CX + 0.86) / 2 - 0.25, (CX + 0.86) / 4 + 0.125, (CZ / 2 + 0.4), true);
 
-  // floodlight poles
-  var lampMat = new THREE.MeshStandardMaterial({ color: 0x2a2c30, emissive: new THREE.Color(0xffe9c4), emissiveIntensity: 0 });
-  [[-1, -1], [1, 1]].forEach(function (cc) {
-    var pole = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.04, 1.6, 8), anth); pole.position.set(cc[0] * (CX / 2 + 0.58), GY + 0.8, cc[1] * (CZ / 2 + 0.52)); pole.castShadow = true; group.add(pole);
-    var head = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.1, 0.13), lampMat); head.position.set(cc[0] * (CX / 2 + 0.44), GY + 1.72, cc[1] * (CZ / 2 + 0.4)); head.lookAt(0, 0.4, 0); group.add(head);
-  });
+  // realistic floodlight masts: pole + bracket + multi-lamp head, aimed at the court
+  var lampMat = new THREE.MeshStandardMaterial({ color: 0x2a2c30, emissive: new THREE.Color(0xffeccd), emissiveIntensity: 0 });
+  var lampFrame = new THREE.MeshStandardMaterial({ color: 0x202329, roughness: 0.7, metalness: 0.4 });
+  function floodlight(px, pz) {
+    var g = new THREE.Group();
+    var pole = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.05, 1.95, 10), anth); pole.position.y = GY + 0.975; pole.castShadow = true; g.add(pole);
+    var bracket = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.04, 0.3), lampFrame); bracket.position.y = GY + 1.95; g.add(bracket);
+    var frame = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.25, 0.05), lampFrame); frame.position.set(0, GY + 2.0, 0.17); g.add(frame);
+    for (var lx = -1; lx <= 1; lx++) for (var ly = 0; ly < 2; ly++) { var lamp = new THREE.Mesh(new THREE.BoxGeometry(0.115, 0.1, 0.04), lampMat); lamp.position.set(lx * 0.13, GY + 1.95 + ly * 0.105, 0.2); g.add(lamp); }
+    g.position.set(px, 0, pz); g.rotation.y = Math.atan2(-px, -pz); group.add(g);
+  }
+  floodlight(-(CX / 2 + 0.55), -(CZ / 2 + 0.5)); floodlight(CX / 2 + 0.55, -(CZ / 2 + 0.5)); floodlight(-(CX / 2 + 0.55), CZ / 2 + 0.5); floodlight(CX / 2 + 0.55, CZ / 2 + 0.5);
+
+  // smart equipment locker (Flip-the-Court app-unlocked gear cabinet), human scale
+  (function locker() {
+    var g = new THREE.Group();
+    var bodyMat = new THREE.MeshStandardMaterial({ color: 0x39454f, roughness: 0.5, metalness: 0.5 });
+    var doorMat = new THREE.MeshStandardMaterial({ color: 0x2f3a44, roughness: 0.6, metalness: 0.4 });
+    var body = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.46, 0.2), bodyMat); body.position.y = GY + 0.29; body.castShadow = true; g.add(body);
+    var top = new THREE.Mesh(new THREE.BoxGeometry(0.37, 0.03, 0.23), bodyMat); top.position.y = GY + 0.52; g.add(top);
+    [[-0.08, 0.4], [0.08, 0.4], [-0.08, 0.18], [0.08, 0.18]].forEach(function (p) {
+      var d = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.19, 0.012), doorMat); d.position.set(p[0], GY + p[1] + 0.06, 0.103); g.add(d);
+      var hd = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.05, 6), new THREE.MeshStandardMaterial({ color: 0xcfd3d6, metalness: 0.7, roughness: 0.3 })); hd.rotation.z = Math.PI / 2; hd.position.set(p[0] + 0.045, GY + p[1] + 0.06, 0.11); g.add(hd);
+    });
+    var scr = new THREE.Mesh(new THREE.PlaneGeometry(0.17, 0.1), new THREE.MeshStandardMaterial({ color: 0x0a1a14, emissive: new THREE.Color(0x10B981), emissiveIntensity: 0 })); scr.position.set(0, GY + 0.47, 0.103); g.add(scr); lockerScreen = scr.material;
+    g.position.set(CX / 2 - 0.1, 0, CZ / 2 + 0.34); g.rotation.y = -0.6; group.add(g);
+  })();
 
   // ===== grey city (static; never changes when court is renovated) =====
   var RX = CX / 2 + 1.45, RZ = CZ / 2 + 1.25;
@@ -336,8 +366,6 @@ function init() {
   var blocPal = [["#8c8f8a", "#3a4046"], ["#a89c86", "#43474b"], ["#94a0a4", "#363b41"], ["#b0a596", "#40444a"], ["#8a8d92", "#34383d"]];
   var blocTex = blocPal.map(function (pp) { return buildBloc(pp[0], pp[1]); });
   function bldg(x, z) {
-    var ang = Math.atan2(Math.abs(x), z);
-    if (z > 0 && ang < 0.62) return; // leave the camera-facing side open
     var h = 0.8 + Math.random() * 1.5, w = 0.7 + Math.random() * 0.7, d = 0.55 + Math.random() * 0.45;
     var tx = texFrom(blocTex[(Math.random() * blocTex.length) | 0]); tx.wrapS = tx.wrapT = THREE.RepeatWrapping; tx.repeat.set(Math.max(1, Math.round(w * 2.2)), Math.max(2, Math.round(h * 3)));
     var b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshStandardMaterial({ map: tx, roughness: 1 })); b.position.set(x, GY + h / 2, z); city.add(b);
@@ -466,7 +494,10 @@ function init() {
     for (var fp = 0; fp < fencePanels.length; fp++) fencePanels[fp].color.copy(meshMatBase.fenceColG).lerp(meshMatBase.fenceColV, p);
     courtMat.roughness = lerp(0.74, 0.58, p);
     lampMat.emissiveIntensity = p * 0.85; luxLight.intensity = p * 0.8;
+    if (lockerScreen) lockerScreen.emissiveIntensity = p * 0.9;
   }
+  var scoreCD = 0;
+  function score(m) { if (scoreCD <= 0) { showToast(m); scoreCD = 1.2; } }
   var rbtn = document.getElementById("renovateBtn");
   function updateBtn() { rbtn.textContent = renovated ? "↺ Înapoi la gri" : "▶ Renovează terenul"; }
   rbtn.addEventListener("click", function () {
@@ -479,6 +510,7 @@ function init() {
   var t0 = performance.now(), prevN = t0;
   function animate(now) {
     var t = (now - t0) / 1000, dt = Math.min(0.05, (now - prevN) / 1000); prevN = now;
+    if (scoreCD > 0) scoreCD -= dt;
     for (var i = 0; i < balls.length; i++) {
       var bl = balls[i];
       if (bl.physics) {
@@ -487,9 +519,12 @@ function init() {
           bl.vy -= 3.2 * dt; bl.x += bl.vx * dt; bl.z += bl.vz * dt; bl.y += bl.vy * dt;
           if (bl.y <= bl.rad) { bl.y = bl.rad; if (bl.vy < 0) { bl.vy = -bl.vy * 0.6; bl.vx *= 0.84; bl.vz *= 0.84; if (Math.abs(bl.vy) < 0.3) bl.vy = 0; } }
           var bxx = CX / 2 - bl.rad, bzz = CZ / 2 - bl.rad;
-          if (bl.x > bxx) { bl.x = bxx; bl.vx = -bl.vx * 0.6; } else if (bl.x < -bxx) { bl.x = -bxx; bl.vx = -bl.vx * 0.6; }
           if (bl.z > bzz) { bl.z = bzz; bl.vz = -bl.vz * 0.6; } else if (bl.z < -bzz) { bl.z = -bzz; bl.vz = -bl.vz * 0.6; }
+          var inMouth = Math.abs(bl.z) < 0.32 && bl.y < 0.4; // between the posts, under the bar
+          if (bl.x > bxx) { if (inMouth) { if (bl.x > CX / 2 + 0.14) { bl.x = CX / 2 + 0.14; bl.vx = 0; bl.vz *= 0.4; score("⚽ Gol!"); } } else { bl.x = bxx; bl.vx = -bl.vx * 0.6; } }
+          else if (bl.x < -bxx) { if (inMouth) { if (bl.x < -(CX / 2 + 0.14)) { bl.x = -(CX / 2 + 0.14); bl.vx = 0; bl.vz *= 0.4; score("⚽ Gol!"); } } else { bl.x = -bxx; bl.vx = -bl.vx * 0.6; } }
           bl.vx *= 0.995; bl.vz *= 0.995;
+          for (var hh = 0; hh < hoops.length; hh++) { var Hp = hoops[hh], ddx = bl.x - Hp.x, ddz = bl.z - Hp.z; if (ddx * ddx + ddz * ddz < Hp.r * Hp.r * 0.9 && bl.vy < 0 && bl.y < Hp.y + 0.05 && bl.y > Hp.y - 0.14) score("🏀 Coș!"); }
           // come to rest -> resume idle bounce
           if (bl.y <= bl.rad + 0.001 && bl.vy === 0 && Math.abs(bl.vx) + Math.abs(bl.vz) < 0.06) { bl.rest += dt; if (bl.rest > 0.7) { bl.physics = false; bl.ph = -t * bl.fr; bl.vx = (Math.random() < 0.5 ? 1 : -1) * 0.007; bl.vz = (Math.random() < 0.5 ? 1 : -1) * 0.006; bl.rest = 0; } } else bl.rest = 0;
         }
