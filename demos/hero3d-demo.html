@@ -384,7 +384,7 @@ function init() {
   })();
 
   // ===== grey city (rotates with the world; never changes colour when renovated) =====
-  var RX = CX / 2 + 0.9, RZ = CZ / 2 + 0.9;                 // park grass radius
+  var RX = CX / 2 + 1.4, RZ = CZ / 2 + 1.4;                 // park grass radius (large, so poles/bench/trees sit on grass)
   var park = new THREE.Mesh(new THREE.CircleGeometry(1, 46), new THREE.MeshStandardMaterial({ map: texFrom(buildGrass(512, 512), 5, 5), roughness: 1 }));
   park.rotation.x = -Math.PI / 2; park.scale.set(RX, RZ, 1); park.position.y = GY + 0.003; park.receiveShadow = true; city.add(park);
   var road = new THREE.Mesh(new THREE.TorusGeometry(1, 0.16, 2, 80), new THREE.MeshStandardMaterial({ color: 0x303338, roughness: 1 }));
@@ -408,25 +408,24 @@ function init() {
     var fol = new THREE.MeshStandardMaterial({ color: 0x35632f, roughness: 1 });
     [[0, 0.62, 0, 0.3], [0.16, 0.55, 0.08, 0.2], [-0.13, 0.58, -0.06, 0.22], [0.05, 0.78, -0.04, 0.18]].forEach(function (f) { var s = new THREE.Mesh(new THREE.SphereGeometry(f[3], 10, 8), fol); s.position.set(x + f[0], GY + f[1], z + f[2]); s.castShadow = true; city.add(s); });
   }
-  tree(RX + 1.05, RZ + 1.05); tree(-(RX + 1.05), RZ + 1.05); tree(RX + 1.05, -(RZ + 1.05)); tree(-(RX + 1.05), -(RZ + 1.05));
+  tree(RX - 0.7, RZ - 0.95); tree(-(RX - 0.7), RZ - 0.95); tree(RX - 0.7, -(RZ - 0.95)); tree(-(RX - 0.7), -(RZ - 0.95));
   (function bench() {
     var g = new THREE.Group(); var wood = new THREE.MeshStandardMaterial({ color: 0x6f5436, roughness: 1 });
     var seat = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.04, 0.16), wood); seat.position.y = 0.16; seat.castShadow = true; g.add(seat);
     var bk = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.14, 0.03), wood); bk.position.set(0, 0.25, -0.07); g.add(bk);
     [-0.22, 0.22].forEach(function (lx) { var l = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.16, 0.14), new THREE.MeshStandardMaterial({ color: 0x3a3a3a })); l.position.set(lx, 0.08, 0); g.add(l); });
-    g.position.set(0.95, GY, RZ - 0.12); g.rotation.y = Math.PI; city.add(g);
+    g.position.set(1.0, GY, RZ - 0.85); g.rotation.y = Math.PI; city.add(g);
   })();
 
-  // campaign poster boards (the two proposals) on stands at the front, facing the viewer
-  function posterSign(x, z, ry, tex) {
+  // campaign posters hung on the back fence — appear only after renovation
+  function posterOnFence(x, z, tex) {
     var g = new THREE.Group();
-    var board = new THREE.Mesh(new THREE.PlaneGeometry(0.42, 0.55), new THREE.MeshStandardMaterial({ map: tex, side: THREE.DoubleSide, roughness: 0.85 })); board.position.y = GY + 0.56; board.castShadow = true; g.add(board);
-    var frame = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.59, 0.02), new THREE.MeshStandardMaterial({ color: 0x222831, roughness: 0.6, metalness: 0.4 })); frame.position.set(0, GY + 0.56, -0.013); g.add(frame);
-    [-0.16, 0.16].forEach(function (lx) { var p = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.016, 0.32, 8), new THREE.MeshStandardMaterial({ color: 0x2b2f36, metalness: 0.5, roughness: 0.6 })); p.position.set(lx, GY + 0.16, 0); p.castShadow = true; g.add(p); });
-    g.position.set(x, 0, z); g.rotation.y = ry; city.add(g);
+    var board = new THREE.Mesh(new THREE.PlaneGeometry(0.34, 0.44), new THREE.MeshStandardMaterial({ map: tex, side: THREE.DoubleSide, roughness: 0.85 })); g.add(board);
+    var frame = new THREE.Mesh(new THREE.BoxGeometry(0.37, 0.47, 0.012), new THREE.MeshStandardMaterial({ color: 0x222831, roughness: 0.6, metalness: 0.4 })); frame.position.z = -0.009; g.add(frame);
+    g.position.set(x, GY + 0.31, z); group.add(g); renovOnly.push(g);
   }
-  posterSign(-1.35, RZ - 0.05, 0, texFrom(buildPoster("FLIP THE COURT", "Renovăm terenurile existente din cartierele periferice.", "#10B981", "🏀")));
-  posterSign(1.35, RZ - 0.05, 0, texFrom(buildPoster("STREET CANVAS", "Murale comunitare alese de localnici prin vot.", "#F97316", "🎨")));
+  posterOnFence(-0.62, -(CZ / 2 + 0.38), texFrom(buildPoster("FLIP THE COURT", "Renovăm terenurile existente din cartierele periferice.", "#10B981", "🏀")));
+  posterOnFence(0.62, -(CZ / 2 + 0.38), texFrom(buildPoster("STREET CANVAS", "Murale comunitare alese de localnici prin vot.", "#F97316", "🎨")));
 
   // detailed cars on the ring road
   var carCols = [0x9498a0, 0x7a323c, 0x2f3b54, 0xb8b4aa, 0x39473d, 0xd0cfca, 0x4a4d52];
@@ -448,9 +447,9 @@ function init() {
   for (var c3 = 0; c3 < NCARS; c3++) { var car = makeCar(carCols[c3 % carCols.length]); car.userData = { th: c3 / NCARS * 6.28, spd: 0.32 * (c3 % 2 ? 1 : -1), lane: c3 % 2 ? 0.13 : -0.05 }; cars.push(car); }
 
   // two balls
-  function makeBall(tex, rad) { var b = new THREE.Mesh(new THREE.SphereGeometry(rad, 26, 18), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.6 })); b.castShadow = true; b.position.y = rad; group.add(b); return { mesh: b, rad: rad, x: 0, y: rad, z: 0, vx: 0, vy: 0, vz: 0, physics: false, grabbed: false, rest: 0, ph: 0, fr: 2, hgt: 0.4 }; }
-  var basket = makeBall(texFrom(buildBasketball()), 0.075); basket.x = -0.6; basket.z = 0.2; basket.vx = 0.009; basket.vz = 0.006; basket.fr = 2.4; basket.hgt = 0.5;
-  var soccer = makeBall(texFrom(buildSoccer()), 0.07); soccer.x = 0.5; soccer.z = -0.25; soccer.vx = -0.008; soccer.vz = 0.01; soccer.ph = 1.4; soccer.fr = 2.0; soccer.hgt = 0.42;
+  function makeBall(tex, rad, rough) { var b = new THREE.Mesh(new THREE.SphereGeometry(rad, 40, 26), new THREE.MeshStandardMaterial({ map: tex, roughness: rough, metalness: 0.03 })); b.castShadow = true; b.position.y = rad; group.add(b); return { mesh: b, rad: rad, x: 0, y: rad, z: 0, vx: 0, vy: 0, vz: 0, physics: false, grabbed: false, rest: 0, ph: 0, fr: 2, hgt: 0.4 }; }
+  var basket = makeBall(texFrom(buildBasketball()), 0.092, 0.9); basket.x = -0.6; basket.z = 0.2; basket.vx = 0.009; basket.vz = 0.006; basket.fr = 2.4; basket.hgt = 0.5;
+  var soccer = makeBall(texFrom(buildSoccer()), 0.086, 0.42); soccer.x = 0.5; soccer.z = -0.25; soccer.vx = -0.008; soccer.vz = 0.01; soccer.ph = 1.4; soccer.fr = 2.0; soccer.hgt = 0.42;
   var balls = [basket, soccer];
 
   // detailed, realistically-proportioned kids
