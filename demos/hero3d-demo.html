@@ -177,26 +177,28 @@ function buildBloc(base, win) {
   return c;
 }
 function buildBasketball() {
-  var c = document.createElement("canvas"); c.width = 512; c.height = 256; var cx = c.getContext("2d");
-  var g = cx.createLinearGradient(0, 0, 0, 256); g.addColorStop(0, "#E8821F"); g.addColorStop(0.5, "#D76B16"); g.addColorStop(1, "#BE5712");
-  cx.fillStyle = g; cx.fillRect(0, 0, 512, 256);
-  for (var i = 0; i < 5200; i++) { var v = (Math.random() * 36 - 18) | 0; cx.fillStyle = "rgba(" + (215 + v) + "," + (110 + v) + "," + (32 + v) + ",.5)"; cx.fillRect(Math.random() * 512, Math.random() * 256, 2, 2); }
-  cx.strokeStyle = "#140d05"; cx.lineCap = "round";
-  cx.lineWidth = 7; cx.beginPath(); cx.moveTo(0, 128); cx.lineTo(512, 128); cx.stroke();
-  cx.beginPath(); cx.moveTo(256, 0); cx.lineTo(256, 256); cx.stroke();
-  cx.lineWidth = 6;
-  cx.beginPath(); cx.moveTo(80, 0); cx.bezierCurveTo(150, 80, 150, 176, 80, 256); cx.stroke();
-  cx.beginPath(); cx.moveTo(432, 0); cx.bezierCurveTo(362, 80, 362, 176, 432, 256); cx.stroke();
+  var c = document.createElement("canvas"); c.width = 1024; c.height = 512; var cx = c.getContext("2d");
+  cx.fillStyle = "#D9681C"; cx.fillRect(0, 0, 1024, 512);
+  for (var i = 0; i < 14000; i++) { var v = (Math.random() * 30 - 15) | 0; cx.fillStyle = "rgba(" + (200 + v) + "," + (98 + v) + "," + (28 + v) + ",.45)"; cx.fillRect(Math.random() * 1024, Math.random() * 512, 3, 3); }
+  cx.strokeStyle = "#120c05"; cx.lineCap = "round";
+  cx.lineWidth = 12;
+  cx.beginPath(); cx.moveTo(0, 256); cx.lineTo(1024, 256); cx.stroke();   // equator
+  cx.beginPath(); cx.moveTo(256, 0); cx.lineTo(256, 512); cx.stroke();    // meridian
+  cx.beginPath(); cx.moveTo(768, 0); cx.lineTo(768, 512); cx.stroke();    // meridian (same great circle)
+  cx.lineWidth = 11;
+  cx.beginPath(); cx.moveTo(512, 0); cx.bezierCurveTo(624, 150, 624, 362, 512, 512); cx.stroke();
+  cx.beginPath(); cx.moveTo(0, 0); cx.bezierCurveTo(112, 150, 112, 362, 0, 512); cx.stroke();
+  cx.beginPath(); cx.moveTo(1024, 0); cx.bezierCurveTo(912, 150, 912, 362, 1024, 512); cx.stroke();
   return c;
 }
 function buildSoccer() {
-  var c = document.createElement("canvas"); c.width = 512; c.height = 256; var cx = c.getContext("2d");
-  cx.fillStyle = "#f4f4f2"; cx.fillRect(0, 0, 512, 256);
-  for (var i = 0; i < 1800; i++) { var v = (Math.random() * 16 - 8) | 0; cx.fillStyle = "rgba(" + (235 + v) + "," + (235 + v) + "," + (233 + v) + ",.4)"; cx.fillRect(Math.random() * 512, Math.random() * 256, 2, 2); }
-  function poly(x, y, r, n, rot, fill) { cx.beginPath(); for (var k = 0; k < n; k++) { var a = rot + k / n * Math.PI * 2 - Math.PI / 2; var px = x + Math.cos(a) * r, py = y + Math.sin(a) * r; k ? cx.lineTo(px, py) : cx.moveTo(px, py); } cx.closePath(); if (fill) { cx.fillStyle = "#15171b"; cx.fill(); } else { cx.strokeStyle = "rgba(46,46,50,.5)"; cx.lineWidth = 2; cx.stroke(); } }
-  var pts = [[70, 64], [196, 48], [320, 60], [446, 50], [128, 150], [256, 132], [384, 150], [70, 214], [200, 226], [330, 212], [456, 210]];
-  for (var h = 0; h < pts.length; h++) poly(pts[h][0], pts[h][1], 30, 6, 0.3, false);
-  for (var p = 0; p < pts.length; p++) poly(pts[p][0], pts[p][1], 17, 5, Math.random() * 1.2, true);
+  var c = document.createElement("canvas"); c.width = 1024; c.height = 512; var cx = c.getContext("2d");
+  cx.fillStyle = "#f2f2ef"; cx.fillRect(0, 0, 1024, 512);
+  for (var i = 0; i < 3600; i++) { var v = (Math.random() * 14 - 7) | 0; cx.fillStyle = "rgba(" + (232 + v) + "," + (232 + v) + "," + (230 + v) + ",.4)"; cx.fillRect(Math.random() * 1024, Math.random() * 512, 3, 3); }
+  function poly(x, y, r, n, rot, fill) { cx.beginPath(); for (var k = 0; k < n; k++) { var a = rot + k / n * Math.PI * 2 - Math.PI / 2; var px = x + Math.cos(a) * r, py = y + Math.sin(a) * r; k ? cx.lineTo(px, py) : cx.moveTo(px, py); } cx.closePath(); if (fill) { cx.fillStyle = "#15171b"; cx.fill(); } else { cx.strokeStyle = "rgba(70,70,74,.45)"; cx.lineWidth = 3; cx.stroke(); } }
+  var pts = [[110, 96], [320, 72], [520, 96], [726, 72], [930, 96], [200, 256], [420, 232], [620, 256], [824, 232], [110, 410], [330, 432], [540, 410], [760, 432], [950, 410]];
+  for (var h = 0; h < pts.length; h++) poly(pts[h][0], pts[h][1], 56, 6, 0.5, false);
+  for (var p = 0; p < pts.length; p++) poly(pts[p][0], pts[p][1], 30, 5, Math.random() * 1.2, true);
   return c;
 }
 function buildNet() {
@@ -298,29 +300,32 @@ function init() {
   var steel = new THREE.MeshStandardMaterial({ color: 0xe8eaec, roughness: 0.4, metalness: 0.5 });
   function steelMesh(geo, x, y, z) { var m = new THREE.Mesh(geo, steel); m.position.set(x, y, z); m.castShadow = true; return m; }
 
-  // combined goal + basketball end unit, with a properly draped net
+  // combined goal + basketball end unit: basketball mounts on the goal frame above the crossbar
   function endUnit(sign) {
     var u = new THREE.Group(); group.add(u);
-    var baseX = sign * (CX / 2 + 0.01), gw = 0.72, gh = 0.4, r = 0.02, depth = 0.24, backH = 0.22;
-    u.add(steelMesh(new THREE.CylinderGeometry(r, r, gh, 9), baseX, gh / 2, -gw / 2));
-    u.add(steelMesh(new THREE.CylinderGeometry(r, r, gh, 9), baseX, gh / 2, gw / 2));
-    var bar = steelMesh(new THREE.CylinderGeometry(r, r, gw, 9), baseX, gh, 0); bar.rotation.x = Math.PI / 2; u.add(bar);
+    var baseX = sign * (CX / 2 + 0.02), gw = 0.82, gh = 0.42, r = 0.022, postTop = gh + 0.36;
+    u.add(steelMesh(new THREE.CylinderGeometry(r, r, postTop, 10), baseX, postTop / 2, -gw / 2));
+    u.add(steelMesh(new THREE.CylinderGeometry(r, r, postTop, 10), baseX, postTop / 2, gw / 2));
+    var bar = steelMesh(new THREE.CylinderGeometry(r, r, gw, 10), baseX, gh, 0); bar.rotation.x = Math.PI / 2; u.add(bar);
+    var topbar = steelMesh(new THREE.CylinderGeometry(r * 0.8, r * 0.8, gw, 10), baseX, postTop, 0); topbar.rotation.x = Math.PI / 2; u.add(topbar);
     function netQuad(w, len, x, y, z, ex, ey) {
       ex = ex.clone().normalize(); ey = ey.clone().normalize(); var ez = new THREE.Vector3().crossVectors(ex, ey).normalize();
       var m = new THREE.Mesh(new THREE.PlaneGeometry(w, len), new THREE.MeshBasicMaterial({ map: netTex.clone(), transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false }));
       m.material.map.repeat.set(w * 7, len * 7); m.material.map.wrapS = m.material.map.wrapT = THREE.RepeatWrapping; m.material.map.needsUpdate = true;
       m.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(ex, ey, ez)); m.position.set(x, y, z); u.add(m); nets.push(m); return m;
     }
-    netQuad(gw, backH, baseX + sign * depth, backH / 2, 0, new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 1, 0)); // back
+    // goal net stays inside the mouth (back wall + sloped top), behind the baseline and below the crossbar
+    var depth = 0.28, backH = gh * 0.5;
+    netQuad(gw, backH, baseX + sign * depth, backH / 2, 0, new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 1, 0));
     var lx = sign * depth, ly = backH - gh, len = Math.hypot(lx, ly);
-    netQuad(gw, len, baseX + sign * depth / 2, (gh + backH) / 2, 0, new THREE.Vector3(0, 0, 1), new THREE.Vector3(lx, ly, 0)); // sloped roof
-    // small basketball hoop above
-    u.add(steelMesh(new THREE.CylinderGeometry(0.022, 0.028, 0.95, 10), baseX + sign * 0.16, 0.475, 0));
-    var arm = steelMesh(new THREE.CylinderGeometry(0.016, 0.016, 0.18, 8), baseX + sign * 0.07, 0.78, 0); arm.rotation.z = Math.PI / 2; u.add(arm);
-    var board = new THREE.Mesh(new THREE.PlaneGeometry(0.42, 0.28), new THREE.MeshStandardMaterial({ map: boardTex, transparent: true, side: THREE.DoubleSide })); board.position.set(baseX - sign * 0.02, 0.8, 0); board.rotation.y = -sign * Math.PI / 2; board.castShadow = true; u.add(board);
-    var rim = new THREE.Mesh(new THREE.TorusGeometry(0.1, 0.012, 8, 22), new THREE.MeshStandardMaterial({ color: 0xE2552B, roughness: 0.45 })); rim.position.set(baseX - sign * 0.12, 0.69, 0); rim.rotation.x = Math.PI / 2; rim.castShadow = true; u.add(rim);
-    hoops.push({ x: baseX - sign * 0.12, y: 0.69, z: 0, r: 0.1 });
-    var bnet = new THREE.Mesh(new THREE.CylinderGeometry(0.095, 0.05, 0.15, 12, 1, true), new THREE.MeshBasicMaterial({ map: netTex.clone(), transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false })); bnet.position.set(baseX - sign * 0.12, 0.61, 0); u.add(bnet); nets.push(bnet);
+    netQuad(gw, len, baseX + sign * depth / 2, (gh + backH) / 2, 0, new THREE.Vector3(0, 0, 1), new THREE.Vector3(lx, ly, 0));
+    // backboard on the frame above the crossbar, facing the court
+    var boardY = gh + 0.2;
+    var board = new THREE.Mesh(new THREE.PlaneGeometry(0.52, 0.32), new THREE.MeshStandardMaterial({ map: boardTex, transparent: true, side: THREE.DoubleSide })); board.position.set(baseX - sign * 0.015, boardY, 0); board.rotation.y = -sign * Math.PI / 2; board.castShadow = true; u.add(board);
+    var rimX = baseX - sign * 0.14, rimY = boardY - 0.07;
+    var rim = new THREE.Mesh(new THREE.TorusGeometry(0.11, 0.013, 8, 24), new THREE.MeshStandardMaterial({ color: 0xE2552B, roughness: 0.45 })); rim.position.set(rimX, rimY, 0); rim.rotation.x = Math.PI / 2; rim.castShadow = true; u.add(rim);
+    var bnet = new THREE.Mesh(new THREE.CylinderGeometry(0.105, 0.05, 0.17, 14, 1, true), new THREE.MeshBasicMaterial({ map: netTex.clone(), transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false })); bnet.position.set(rimX, rimY - 0.095, 0); u.add(bnet); nets.push(bnet);
+    hoops.push({ x: rimX, y: rimY, z: 0, r: 0.11 });
   }
   endUnit(-1); endUnit(1);
 
@@ -362,7 +367,7 @@ function init() {
     for (var lx = -1; lx <= 1; lx++) for (var ly = 0; ly < 2; ly++) { var lamp = new THREE.Mesh(new THREE.BoxGeometry(0.115, 0.1, 0.04), lampMat); lamp.position.set(lx * 0.13, GY + 1.95 + ly * 0.105, 0.2); g.add(lamp); }
     g.position.set(px, 0, pz); g.rotation.y = Math.atan2(-px, -pz); group.add(g); renovOnly.push(g);
   }
-  floodlight(-(CX / 2 + 0.55), -(CZ / 2 + 0.5)); floodlight(CX / 2 + 0.55, -(CZ / 2 + 0.5)); floodlight(-(CX / 2 + 0.55), CZ / 2 + 0.5); floodlight(CX / 2 + 0.55, CZ / 2 + 0.5);
+  floodlight(-(CX / 2 + 0.78), -(CZ / 2 + 0.66)); floodlight(CX / 2 + 0.78, -(CZ / 2 + 0.66)); floodlight(-(CX / 2 + 0.78), CZ / 2 + 0.66); floodlight(CX / 2 + 0.78, CZ / 2 + 0.66);
 
   // smart equipment locker (Flip-the-Court app-unlocked gear cabinet) — modern, human scale, appears only when renovated
   (function locker() {
@@ -380,7 +385,7 @@ function init() {
       var hnd = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.05, 0.012), new THREE.MeshStandardMaterial({ color: 0xc8ccd0, metalness: 0.7, roughness: 0.3 })); hnd.position.set(px2 + 0.06, py2, Dl / 2 + 0.012); g.add(hnd);
     }
     var scr = new THREE.Mesh(new THREE.PlaneGeometry(0.22, 0.13), new THREE.MeshStandardMaterial({ color: 0x07120d, emissive: new THREE.Color(0x10B981), emissiveIntensity: 0, roughness: 0.15, metalness: 0.4 })); scr.position.set(0, GY + Hl - 0.17, Dl / 2 + 0.006); g.add(scr); lockerScreen = scr.material;
-    g.position.set(-0.55, 0, -(CZ / 2 + 0.92)); group.add(g); renovOnly.push(g);
+    g.position.set(-1.3, 0, -(CZ / 2 + 0.19)); group.add(g); renovOnly.push(g);
   })();
 
   // ===== grey city (rotates with the world; never changes colour when renovated) =====
@@ -408,7 +413,7 @@ function init() {
     var fol = new THREE.MeshStandardMaterial({ color: 0x35632f, roughness: 1 });
     [[0, 0.62, 0, 0.3], [0.16, 0.55, 0.08, 0.2], [-0.13, 0.58, -0.06, 0.22], [0.05, 0.78, -0.04, 0.18]].forEach(function (f) { var s = new THREE.Mesh(new THREE.SphereGeometry(f[3], 10, 8), fol); s.position.set(x + f[0], GY + f[1], z + f[2]); s.castShadow = true; city.add(s); });
   }
-  tree(RX - 0.7, RZ - 0.95); tree(-(RX - 0.7), RZ - 0.95); tree(RX - 0.7, -(RZ - 0.95)); tree(-(RX - 0.7), -(RZ - 0.95));
+  tree(RX - 0.35, 0); tree(-(RX - 0.35), 0); tree(0, RZ - 0.35); tree(0, -(RZ - 0.35));
   (function bench() {
     var g = new THREE.Group(); var wood = new THREE.MeshStandardMaterial({ color: 0x6f5436, roughness: 1 });
     var seat = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.04, 0.16), wood); seat.position.y = 0.16; seat.castShadow = true; g.add(seat);
@@ -424,8 +429,8 @@ function init() {
     var frame = new THREE.Mesh(new THREE.BoxGeometry(0.37, 0.47, 0.012), new THREE.MeshStandardMaterial({ color: 0x222831, roughness: 0.6, metalness: 0.4 })); frame.position.z = -0.009; g.add(frame);
     g.position.set(x, GY + 0.31, z); group.add(g); renovOnly.push(g);
   }
-  posterOnFence(-0.62, -(CZ / 2 + 0.38), texFrom(buildPoster("FLIP THE COURT", "Renovăm terenurile existente din cartierele periferice.", "#10B981", "🏀")));
-  posterOnFence(0.62, -(CZ / 2 + 0.38), texFrom(buildPoster("STREET CANVAS", "Murale comunitare alese de localnici prin vot.", "#F97316", "🎨")));
+  posterOnFence(-0.55, -(CZ / 2 + 0.33), texFrom(buildPoster("FLIP THE COURT", "Renovăm terenurile existente din cartierele periferice.", "#10B981", "🏀")));
+  posterOnFence(0.55, -(CZ / 2 + 0.33), texFrom(buildPoster("STREET CANVAS", "Murale comunitare alese de localnici prin vot.", "#F97316", "🎨")));
 
   // detailed cars on the ring road
   var carCols = [0x9498a0, 0x7a323c, 0x2f3b54, 0xb8b4aa, 0x39473d, 0xd0cfca, 0x4a4d52];
