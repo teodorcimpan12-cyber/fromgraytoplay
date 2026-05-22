@@ -108,6 +108,30 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .text-sm{font-size:.85rem}.text-xs{font-size:.75rem}.font-bold{font-weight:700}
 .mt-1{margin-top:.5rem}.mt-2{margin-top:1rem}.mt-3{margin-top:1.5rem}.mb-1{margin-bottom:.5rem}.mb-2{margin-bottom:1rem}
 .text-green{color:var(--green)}.text-red{color:var(--red)}
+/* FAB */
+.fab{position:fixed;bottom:1.5rem;right:1.2rem;z-index:150;background:var(--green);color:#fff;border:none;border-radius:28px;padding:.7rem 1.25rem;font-family:'Space Mono',monospace;font-weight:700;font-size:.85rem;display:flex;align-items:center;gap:.4rem;box-shadow:0 6px 24px rgba(16,185,129,.4);cursor:pointer;transition:transform .15s,box-shadow .2s}
+.fab:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(16,185,129,.5)}
+.fab:active{transform:scale(.95)}
+/* Report status */
+.badge-received{background:rgba(100,116,139,.15);color:#64748B}
+.badge-analyzing{background:rgba(249,115,22,.15);color:var(--coral)}
+.badge-planned{background:rgba(13,148,136,.15);color:var(--teal)}
+.badge-resolved{background:rgba(16,185,129,.15);color:var(--green)}
+/* Report timeline */
+.report-timeline{display:flex;align-items:flex-start;gap:0;margin:.6rem 0}
+.rt-step{display:flex;flex-direction:column;align-items:center;flex:1;position:relative}
+.rt-step::after{content:'';position:absolute;top:10px;left:calc(50% + 11px);right:calc(-50% + 11px);height:2px;background:var(--border);z-index:0}
+.rt-step:last-child::after{display:none}
+.rt-dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);background:var(--bgCard);z-index:1;display:flex;align-items:center;justify-content:center;font-size:.6rem;flex-shrink:0}
+.rt-dot.done{background:var(--green);border-color:var(--green);color:#fff}
+.rt-dot.active{background:var(--coral);border-color:var(--coral);color:#fff;box-shadow:0 0 0 3px rgba(249,115,22,.2)}
+.rt-label{font-size:.58rem;color:var(--textSec);margin-top:.2rem;text-align:center;line-height:1.2;max-width:52px}
+/* Report category picker */
+.rcat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.5rem;margin:.5rem 0}
+.rcat-btn{padding:.55rem .5rem;border-radius:8px;border:2px solid var(--border);background:var(--bgCard);cursor:pointer;text-align:center;transition:all .15s;font-size:.78rem;font-weight:600;color:var(--text)}
+.rcat-btn:hover,.rcat-btn.sel{border-color:var(--green);background:rgba(16,185,129,.08);color:var(--green)}
+/* Official badge */
+.badge-official{background:rgba(16,185,129,.12);color:var(--green);border:1px solid rgba(16,185,129,.3)}
 .leaflet-container{font-family:inherit;z-index:1}
 /* Admin */
 .admin-shell{min-height:100vh;background:#0B0E18;color:#E5E7EB}
@@ -650,6 +674,98 @@ T.hu.heroGoal = "⚽ Gól!"; T.hu.heroBasket = "🏀 Kosár!";
 T.hu.heroBriefs = { flip: { title: "Flip the Court", body: "A külső negyedekben már meglévő sportpályákat újítjuk fel — nem a nulláról építünk, hanem életre keltjük azt, amit hagytak leromlani: új burkolat, javított palánkok és kapuk, friss felfestés és kerítés. A pályákat a lakók szavazata választja ki, a finanszírozás átlátható." }, canvas: { title: "Street Canvas", body: "A pálya körüli szürke falakat helyi művészek muráljaivá alakítjuk, a közösség által javasolt és megszavazott témákban. Szín a repedezett beton helyett — egy tér, amelyet a negyed a magáénak érez." }, locker: { title: "Okos szekrény", body: "Egy felszereléses szekrény (labdák, hálók, pumpa), amelyet ingyen oldasz fel a Flip the Court alkalmazásból. Kölcsönözöl, játszol, visszaviszed — minden digitálisan követve, hogy a pálya felügyelő nélkül is felszerelt maradjon." } };
 
 
+/* === Phase 1 — B1+A1 strings === */
+T.ro.reportPageTitle = "Sesizări";
+T.ro.reportNew = "Sesizare nouă";
+T.ro.catSurface = "Suprafață";
+T.ro.catHoop = "Coș / Poartă";
+T.ro.catFence = "Gard";
+T.ro.catLighting = "Iluminat";
+T.ro.catTrash = "Gunoi";
+T.ro.catSafety = "Siguranță";
+T.ro.catOther = "Altele";
+T.ro.statusReceived = "Primit";
+T.ro.statusAnalyzing = "În analiză";
+T.ro.statusPlanned = "Planificat";
+T.ro.statusResolved = "Rezolvat";
+T.ro.reportSubmitted = "Sesizare trimisă! Mulțumim.";
+T.ro.reportSelectCourt = "Selectează terenul";
+T.ro.allReports = "Toate sesizările";
+T.ro.myReportsOnly = "Ale mele";
+T.ro.noReports = "Nicio sesizare încă.";
+T.ro.officialResponse = "Răspuns oficial";
+T.ro.addOfficialNote = "Adaugă notă oficială";
+T.ro.reportFab = "Raportează";
+T.ro.step1Category = "Categoria problemei";
+T.ro.step2Details = "Detalii";
+T.ro.step3Location = "Locație";
+T.ro.addPhotoOpt = "Adaugă fotografie (opțional)";
+T.ro.geolocate = "Localizare automată";
+T.ro.nextStep = "Continuă →";
+T.ro.prevStep = "← Înapoi";
+T.ro.feedStatusChange = "Status actualizat: {court} → {status}";
+
+T.en.reportPageTitle = "Reports";
+T.en.reportNew = "New report";
+T.en.catSurface = "Surface";
+T.en.catHoop = "Hoop / Goal";
+T.en.catFence = "Fence";
+T.en.catLighting = "Lighting";
+T.en.catTrash = "Trash";
+T.en.catSafety = "Safety";
+T.en.catOther = "Other";
+T.en.statusReceived = "Received";
+T.en.statusAnalyzing = "Analyzing";
+T.en.statusPlanned = "Planned";
+T.en.statusResolved = "Resolved";
+T.en.reportSubmitted = "Report submitted! Thank you.";
+T.en.reportSelectCourt = "Select court";
+T.en.allReports = "All reports";
+T.en.myReportsOnly = "Mine";
+T.en.noReports = "No reports yet.";
+T.en.officialResponse = "Official response";
+T.en.addOfficialNote = "Add official note";
+T.en.reportFab = "Report";
+T.en.step1Category = "Problem category";
+T.en.step2Details = "Details";
+T.en.step3Location = "Location";
+T.en.addPhotoOpt = "Add photo (optional)";
+T.en.geolocate = "Auto-locate";
+T.en.nextStep = "Next →";
+T.en.prevStep = "← Back";
+T.en.feedStatusChange = "Status updated: {court} → {status}";
+
+// TODO: HU review
+T.hu.reportPageTitle = "Bejelentések";
+T.hu.reportNew = "Új bejelentés";
+T.hu.catSurface = "Felület";
+T.hu.catHoop = "Kosár / Kapu";
+T.hu.catFence = "Kerítés";
+T.hu.catLighting = "Világítás";
+T.hu.catTrash = "Szemét";
+T.hu.catSafety = "Biztonság";
+T.hu.catOther = "Egyéb";
+T.hu.statusReceived = "Beérkezett";
+T.hu.statusAnalyzing = "Elemzés alatt";
+T.hu.statusPlanned = "Tervezett";
+T.hu.statusResolved = "Megoldva";
+T.hu.reportSubmitted = "Bejelentés elküldve! Köszönjük.";
+T.hu.reportSelectCourt = "Válassz pályát";
+T.hu.allReports = "Összes bejelentés";
+T.hu.myReportsOnly = "Saját";
+T.hu.noReports = "Még nincs bejelentés.";
+T.hu.officialResponse = "Hivatalos válasz";
+T.hu.addOfficialNote = "Hivatalos megjegyzés hozzáadása";
+T.hu.reportFab = "Bejelentés";
+T.hu.step1Category = "Probléma kategóriája";
+T.hu.step2Details = "Részletek";
+T.hu.step3Location = "Helyszín";
+T.hu.addPhotoOpt = "Fénykép hozzáadása (opcionális)";
+T.hu.geolocate = "Automatikus helymeghatározás";
+T.hu.nextStep = "Tovább →";
+T.hu.prevStep = "← Vissza";
+T.hu.feedStatusChange = "Állapot frissítve: {court} → {status}";
+
 /* === Court weather helper (#12 from build brief) === */
 /* Maps the existing 1-5 condition score to a weather chip. */
 function getCourtWeather(condition, t) {
@@ -1069,6 +1185,9 @@ function Navbar() {
   }, {
     k: "courts",
     l: t.courts
+  }, {
+    k: "reports",
+    l: t.reportPageTitle
   }, {
     k: "petition",
     l: t.petition
@@ -2055,7 +2174,8 @@ function HomePage() {
   }, "\uD83D\uDCCD ", t.courtsReported), /*#__PURE__*/React.createElement(MapView, {
     courts: COURTS,
     height: "320px"
-  }))));
+  }))),
+  React.createElement(QuickReportFAB, null));
 }
 
 /* === Courts === */
@@ -4590,6 +4710,7 @@ function AdminPanel({
   const ev = useFirebase("events");
   const lb = useFirebase("leaderboard");
   const us = useFirebase("users");
+  const re = useFirebase("reports");
   const sl = su ? Object.entries(su).map(([id, s]) => ({
     id,
     ...s
@@ -4614,6 +4735,9 @@ function AdminPanel({
     id,
     ...u
   })) : [];
+  const rl = re ? Object.entries(re).map(([id, r]) => ({ id, ...r })).sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || "")) : [];
+  const [noteId, setNoteId] = useState(null);
+  const [noteText, setNoteText] = useState("");
   const flip = vo?.flip || 0,
     mural = vo?.mural || 0,
     both = vo?.both || 0,
@@ -4662,6 +4786,9 @@ function AdminPanel({
   }, {
     k: "votes",
     l: "✊ Votes (" + tv + ")"
+  }, {
+    k: "reports",
+    l: "⚠️ Reports (" + rl.length + ")"
   }, {
     k: "courts",
     l: "🏟️ Courts (" + cl.length + ")"
@@ -4826,7 +4953,59 @@ function AdminPanel({
       background: x.c,
       borderRadius: 3
     }
-  })))))), tab === "courts" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Court Reports"), /*#__PURE__*/React.createElement("button", {
+  })))))),
+  tab === "reports" && React.createElement("div", null,
+    React.createElement("h2", null, "⚠️ Reports (" + rl.length + ")"),
+    React.createElement("div", { className: "a-stats" },
+      ["received","analyzing","planned","resolved"].map(s => React.createElement("div", { key: s, className: "a-stat" },
+        React.createElement("div", { className: "n", style: { color: s === "resolved" ? "#10B981" : s === "planned" ? "#0D9488" : s === "analyzing" ? "#F97316" : "#9CA3AF" } }, rl.filter(r => r.status === s).length),
+        React.createElement("div", { className: "l" }, s)
+      ))
+    ),
+    rl.length ? React.createElement("div", { className: "a-table-wrap" },
+      React.createElement("table", { className: "a-table" },
+        React.createElement("thead", null, React.createElement("tr", null,
+          React.createElement("th", null, "Court"), React.createElement("th", null, "Category"), React.createElement("th", null, "Description"), React.createElement("th", null, "User"), React.createElement("th", null, "Status"), React.createElement("th", null, "Date"), React.createElement("th", null, "Actions")
+        )),
+        React.createElement("tbody", null, rl.map(r => React.createElement(React.Fragment, { key: r.id },
+          React.createElement("tr", null,
+            React.createElement("td", null, r.courtName || r.courtId),
+            React.createElement("td", null, r.category),
+            React.createElement("td", { style: { maxWidth: 160, overflow: "hidden", textOverflow: "ellipsis" } }, r.description),
+            React.createElement("td", null, r.userName || "Anonim"),
+            React.createElement("td", null, React.createElement("span", { className: "a-badge " + (r.status === "resolved" ? "a-badge-g" : r.status === "analyzing" ? "a-badge-o" : r.status === "planned" ? "a-badge-t" : "") }, r.status)),
+            React.createElement("td", null, r.createdAt ? new Date(r.createdAt).toLocaleDateString() : ""),
+            React.createElement("td", { className: "acts" },
+              React.createElement("select", {
+                value: r.status,
+                onChange: e => { const now = new Date().toISOString(); db.ref("reports/" + r.id).update({ status: e.target.value, updatedAt: now }); db.ref("activity").push({ type: "statusChange", courtName: r.courtName, status: e.target.value, timestamp: now }); },
+                style: { background: "#1A1D2E", border: "1px solid #1E2235", color: "#E5E7EB", borderRadius: 4, padding: ".15rem .3rem", fontSize: ".7rem", cursor: "pointer" }
+              },
+                React.createElement("option", { value: "received" }, "received"),
+                React.createElement("option", { value: "analyzing" }, "analyzing"),
+                React.createElement("option", { value: "planned" }, "planned"),
+                React.createElement("option", { value: "resolved" }, "resolved")
+              ),
+              React.createElement("button", { onClick: () => { setNoteId(noteId === r.id ? null : r.id); setNoteText(r.official ? r.official.note : ""); } }, "📝"),
+              React.createElement("button", { className: "dng", onClick: () => { if (confirm("Delete?")) db.ref("reports/" + r.id).remove(); } }, "✕")
+            )
+          ),
+          noteId === r.id && React.createElement("tr", null,
+            React.createElement("td", { colSpan: 7, style: { padding: ".5rem .7rem" } },
+              React.createElement("div", { style: { display: "flex", gap: ".4rem" } },
+                React.createElement("input", { value: noteText, onChange: e => setNoteText(e.target.value), placeholder: "Official note / răspuns oficial...", style: { flex: 1, background: "#1A1D2E", border: "1px solid #1E2235", color: "#E5E7EB", borderRadius: 6, padding: ".35rem .6rem", fontSize: ".8rem" } }),
+                React.createElement("button", {
+                  style: { background: "#10B981", color: "#fff", border: "none", borderRadius: 6, padding: ".35rem .7rem", cursor: "pointer", fontSize: ".78rem", fontWeight: 700 },
+                  onClick: () => { db.ref("reports/" + r.id + "/official").set({ note: noteText, at: new Date().toISOString(), by: "Admin" }); setNoteId(null); }
+                }, "Save")
+              )
+            )
+          )
+        )))
+      )
+    ) : React.createElement("p", { style: { color: "#6B7280" } }, "No reports yet")
+  ),
+  tab === "courts" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Court Reports"), /*#__PURE__*/React.createElement("button", {
     onClick: () => csv(cl.map(c => ({
       name: c.name,
       address: c.address,
@@ -5020,6 +5199,242 @@ function AdminPanel({
   }, "No users")))));
 }
 
+/* === voterKey helper === */
+function getVoterKey() {
+  let k = localStorage.getItem("g2p_vk");
+  if (!k) { k = "vk_" + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem("g2p_vk", k); }
+  return k;
+}
+
+/* === Quick Report FAB + 3-step Modal === */
+function QuickReportFAB() {
+  const { t } = useApp();
+  const [open, setOpen] = useState(false);
+  return React.createElement(React.Fragment, null,
+    React.createElement("button", { className: "fab", onClick: () => setOpen(true) }, "＋ ", t.reportFab),
+    open && React.createElement(QuickReportModal, { onClose: () => setOpen(false) })
+  );
+}
+function QuickReportModal({ onClose }) {
+  const { t, user, toast } = useApp();
+  const fbCourts = useFirebase("courts");
+  const [step, setStep] = useState(1);
+  const [f, setF] = useState({ category: "", description: "", photoDataUrl: null, courtId: "", courtName: "", neighborhood: "", lat: null, lng: null });
+  const [locating, setLocating] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const allCourts = [...COURTS, ...(fbCourts ? Object.entries(fbCourts).map(([id, c]) => ({ id, ...c })) : [])];
+  const cats = [
+    { k: "surface", e: "🏗️", l: t.catSurface },
+    { k: "hoop",    e: "🏀", l: t.catHoop },
+    { k: "fence",   e: "🚧", l: t.catFence },
+    { k: "lighting",e: "💡", l: t.catLighting },
+    { k: "trash",   e: "🗑️", l: t.catTrash },
+    { k: "safety",  e: "⚠️", l: t.catSafety },
+    { k: "other",   e: "📌", l: t.catOther }
+  ];
+  const geolocate = () => {
+    if (!navigator.geolocation) return;
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      p => { setF(o => ({ ...o, lat: p.coords.latitude, lng: p.coords.longitude })); setLocating(false); },
+      () => setLocating(false)
+    );
+  };
+  const pickPhoto = async e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const data = await compressImage(file, 900, 0.7);
+    setF(o => ({ ...o, photoDataUrl: data }));
+  };
+  const selectCourt = id => {
+    const c = allCourts.find(x => x.id === id);
+    setF(o => ({ ...o, courtId: id, courtName: c ? c.name : "", neighborhood: c ? (c.neighbourhood || "") : "" }));
+  };
+  const submit = () => {
+    if (!f.category || !f.description.trim() || !f.courtId) { toast(t.error); return; }
+    setSubmitting(true);
+    const vk = getVoterKey();
+    const now = new Date().toISOString();
+    const payload = { courtId: f.courtId, courtName: f.courtName, neighborhood: f.neighborhood, category: f.category, description: f.description, status: "received", createdAt: now, updatedAt: now, voterKey: vk, userName: user ? user.name : "Anonim" };
+    if (f.photoDataUrl) payload.photoDataUrl = f.photoDataUrl;
+    if (f.lat) { payload.lat = f.lat; payload.lng = f.lng; }
+    db.ref("reports").push(payload).then(() => {
+      db.ref("activity").push({ type: "report", userName: payload.userName, courtId: f.courtId, courtName: f.courtName, timestamp: now });
+      toast(t.reportSubmitted);
+      setSubmitting(false);
+      onClose();
+    });
+  };
+  const dots = [1,2,3];
+  return React.createElement("div", { className: "modal-overlay", onClick: onClose },
+    React.createElement("div", { className: "modal modal-lg", onClick: e => e.stopPropagation() },
+      React.createElement("div", { className: "flex justify-between items-center mb-1" },
+        React.createElement("h2", { style: { fontSize: "1rem" } }, "⚠️ ", t.reportNew, " (", step, "/3)"),
+        React.createElement("button", { className: "btn btn-sm btn-outline", onClick: onClose }, t.cancel)
+      ),
+      React.createElement("div", { className: "flex gap-1 mb-2", style: { justifyContent: "center" } },
+        dots.map(s => React.createElement("div", { key: s, style: { width: 10, height: 10, borderRadius: "50%", background: s <= step ? "var(--green)" : "var(--border)", transition: "background .2s" } }))
+      ),
+      step === 1 && React.createElement("div", null,
+        React.createElement("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, t.step1Category),
+        React.createElement("div", { className: "rcat-grid" },
+          cats.map(c => React.createElement("button", { key: c.k, className: "rcat-btn" + (f.category === c.k ? " sel" : ""), onClick: () => setF(o => ({ ...o, category: c.k })) },
+            React.createElement("div", { style: { fontSize: "1.4rem", marginBottom: ".2rem" } }, c.e), c.l))
+        ),
+        React.createElement("button", { className: "btn btn-green btn-block mt-2", disabled: !f.category, onClick: () => setStep(2) }, t.nextStep)
+      ),
+      step === 2 && React.createElement("div", null,
+        React.createElement("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, t.step2Details),
+        React.createElement("textarea", { placeholder: t.description + "...", value: f.description, onChange: e => setF(o => ({ ...o, description: e.target.value })), rows: 4, className: "mb-1", style: { resize: "vertical" } }),
+        React.createElement("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, t.addPhotoOpt),
+        f.photoDataUrl
+          ? React.createElement("div", { style: { position: "relative", marginBottom: ".5rem" } },
+              React.createElement("img", { src: f.photoDataUrl, alt: "prev", style: { width: "100%", borderRadius: 8, maxHeight: 160, objectFit: "cover" } }),
+              React.createElement("button", { onClick: () => setF(o => ({ ...o, photoDataUrl: null })), style: { position: "absolute", top: 4, right: 4, background: "rgba(0,0,0,.5)", color: "#fff", border: "none", borderRadius: "50%", width: 24, height: 24, cursor: "pointer", fontSize: ".8rem" } }, "✕")
+            )
+          : React.createElement("label", { style: { display: "block", cursor: "pointer", marginBottom: ".5rem" } },
+              React.createElement("div", { className: "card", style: { textAlign: "center", padding: ".7rem", border: "2px dashed var(--border)", boxShadow: "none" } }, "📷 ", t.choosePhoto),
+              React.createElement("input", { type: "file", accept: "image/*", capture: "environment", style: { display: "none" }, onChange: pickPhoto })
+            ),
+        React.createElement("div", { className: "flex gap-1 mt-1" },
+          React.createElement("button", { className: "btn btn-outline", onClick: () => setStep(1) }, t.prevStep),
+          React.createElement("button", { className: "btn btn-green", style: { flex: 1 }, disabled: !f.description.trim(), onClick: () => setStep(3) }, t.nextStep)
+        )
+      ),
+      step === 3 && React.createElement("div", null,
+        React.createElement("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, t.step3Location),
+        React.createElement("select", { value: f.courtId, onChange: e => selectCourt(e.target.value), className: "mb-1" },
+          React.createElement("option", { value: "" }, "— " + t.reportSelectCourt + " —"),
+          allCourts.map(c => React.createElement("option", { key: c.id, value: c.id }, c.name))
+        ),
+        React.createElement("button", { className: "btn btn-sm btn-outline mb-1", onClick: geolocate, disabled: locating }, locating ? "..." : "📍 " + t.geolocate),
+        f.lat && React.createElement("p", { className: "text-xs mb-1", style: { color: "var(--green)" } }, "📍 " + f.lat.toFixed(4) + ", " + f.lng.toFixed(4)),
+        React.createElement("div", { className: "flex gap-1 mt-2" },
+          React.createElement("button", { className: "btn btn-outline", onClick: () => setStep(2) }, t.prevStep),
+          React.createElement("button", { className: "btn btn-green", style: { flex: 1 }, disabled: !f.courtId || submitting, onClick: submit }, submitting ? "..." : t.submit)
+        )
+      )
+    )
+  );
+}
+
+/* === Report Status Timeline === */
+function ReportTimeline({ status }) {
+  const { t } = useApp();
+  const steps = [
+    { k: "received", l: t.statusReceived },
+    { k: "analyzing", l: t.statusAnalyzing },
+    { k: "planned", l: t.statusPlanned },
+    { k: "resolved", l: t.statusResolved }
+  ];
+  const idx = steps.findIndex(s => s.k === status);
+  return React.createElement("div", { className: "report-timeline" },
+    steps.map((s, i) => React.createElement("div", { key: s.k, className: "rt-step" },
+      React.createElement("div", { className: "rt-dot" + (i < idx ? " done" : i === idx ? " active" : "") }, i < idx ? "✓" : ""),
+      React.createElement("div", { className: "rt-label" }, s.l)
+    ))
+  );
+}
+
+/* === Reports Page === */
+function ReportsPage() {
+  const { t, lang } = useApp();
+  const [tab, setTab] = useState("all");
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [filterHood, setFilterHood] = useState("all");
+  const [filterCat, setFilterCat] = useState("all");
+  const fbReports = useFirebase("reports");
+  const vk = getVoterKey();
+  const allReps = fbReports
+    ? Object.entries(fbReports).map(([id, r]) => ({ id, ...r })).sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""))
+    : [];
+  const catEmoji = { surface: "🏗️", hoop: "🏀", fence: "🚧", lighting: "💡", trash: "🗑️", safety: "⚠️", other: "📌" };
+  const catLabel = k => ({ surface: t.catSurface, hoop: t.catHoop, fence: t.catFence, lighting: t.catLighting, trash: t.catTrash, safety: t.catSafety, other: t.catOther }[k] || k);
+  const sBadge = { received: "badge-received", analyzing: "badge-analyzing", planned: "badge-planned", resolved: "badge-resolved" };
+  const sLabel = k => ({ received: t.statusReceived, analyzing: t.statusAnalyzing, planned: t.statusPlanned, resolved: t.statusResolved }[k] || k);
+  const visible = allReps.filter(r => {
+    if (tab === "mine" && r.voterKey !== vk) return false;
+    if (filterStatus !== "all" && r.status !== filterStatus) return false;
+    if (filterHood !== "all" && r.neighborhood !== filterHood) return false;
+    if (filterCat !== "all" && r.category !== filterCat) return false;
+    return true;
+  });
+  const subText = { ro: "Sesizările cetățenilor — stadiu transparent, actualizat \xeen timp real.", en: "Citizens’ reports — transparent status, updated in real time.", hu: "A polg\xe1rok bejelent\xe9sei — \xe1tl\xe1that\xf3 \xe1llapot, val\xf3s idejű friss\xedt\xe9ssel." };
+  return React.createElement("div", { className: "animate-in" },
+    React.createElement("section", { className: "section" },
+      React.createElement("div", { className: "container" },
+        React.createElement("div", { className: "flex justify-between items-center mb-2" },
+          React.createElement("div", null,
+            React.createElement("h2", { className: "section-title" }, "⚠️ ", t.reportPageTitle),
+            React.createElement("p", { className: "section-sub" }, subText[lang] || subText.ro)
+          ),
+          React.createElement("div", { className: "flex gap-2", style: { flexShrink: 0 } },
+            React.createElement("div", { style: { textAlign: "center" } },
+              React.createElement("div", { className: "stat-number", style: { fontSize: "1.3rem" } }, allReps.length),
+              React.createElement("div", { className: "stat-label" }, "Total")
+            ),
+            React.createElement("div", { style: { textAlign: "center" } },
+              React.createElement("div", { className: "stat-number", style: { fontSize: "1.3rem", color: "var(--green)" } }, allReps.filter(r => r.status === "resolved").length),
+              React.createElement("div", { className: "stat-label" }, t.statusResolved)
+            )
+          )
+        ),
+        React.createElement("div", { className: "tabs mb-2" },
+          React.createElement("button", { className: tab === "all" ? "active" : "", onClick: () => setTab("all") }, t.allReports),
+          React.createElement("button", { className: tab === "mine" ? "active" : "", onClick: () => setTab("mine") }, t.myReportsOnly)
+        ),
+        React.createElement("div", { className: "flex gap-1 mb-2", style: { flexWrap: "wrap" } },
+          React.createElement("select", { value: filterStatus, onChange: e => setFilterStatus(e.target.value), style: { width: "auto", padding: ".3rem .5rem", fontSize: ".82rem" } },
+            React.createElement("option", { value: "all" }, t.allStatus),
+            ["received","analyzing","planned","resolved"].map(s => React.createElement("option", { key: s, value: s }, sLabel(s)))
+          ),
+          React.createElement("select", { value: filterHood, onChange: e => setFilterHood(e.target.value), style: { width: "auto", padding: ".3rem .5rem", fontSize: ".82rem" } },
+            React.createElement("option", { value: "all" }, t.neighbourhood),
+            React.createElement("option", { value: "tudor" }, t.tudor),
+            React.createElement("option", { value: "auchan" }, t.auchan),
+            React.createElement("option", { value: "sportcomplex" }, t.sportcomplex),
+            React.createElement("option", { value: "center" }, t.center)
+          ),
+          React.createElement("select", { value: filterCat, onChange: e => setFilterCat(e.target.value), style: { width: "auto", padding: ".3rem .5rem", fontSize: ".82rem" } },
+            React.createElement("option", { value: "all" }, lang === "ro" ? "Categorie" : lang === "hu" ? "Kateg\xf3ria" : "Category"),
+            Object.keys(catEmoji).map(k => React.createElement("option", { key: k, value: k }, catEmoji[k] + " " + catLabel(k)))
+          )
+        ),
+        visible.length === 0
+          ? React.createElement("div", { className: "card", style: { textAlign: "center", padding: "2rem" } },
+              React.createElement("p", { style: { color: "var(--textSec)" } }, t.noReports)
+            )
+          : React.createElement("div", { className: "grid gap-1" },
+              visible.map(r => React.createElement("div", { key: r.id, className: "card card-accent" },
+                React.createElement("div", { className: "flex justify-between items-center mb-1" },
+                  React.createElement("div", { className: "flex gap-1 items-center" },
+                    React.createElement("span", { style: { fontSize: "1.2rem" } }, catEmoji[r.category] || "📌"),
+                    React.createElement("div", null,
+                      React.createElement("div", { style: { fontWeight: 700, fontSize: ".9rem" } }, r.courtName || r.courtId),
+                      React.createElement("div", { style: { fontSize: ".75rem", color: "var(--textSec)" } }, catLabel(r.category), " · ", r.userName || "Anonim")
+                    )
+                  ),
+                  React.createElement("span", { className: "badge " + (sBadge[r.status] || "badge-received") }, sLabel(r.status))
+                ),
+                React.createElement("p", { style: { fontSize: ".85rem", marginBottom: ".5rem" } }, r.description),
+                r.photoDataUrl && React.createElement("img", { src: r.photoDataUrl, alt: "report", style: { width: "100%", borderRadius: 8, maxHeight: 150, objectFit: "cover", marginBottom: ".5rem" } }),
+                React.createElement(ReportTimeline, { status: r.status }),
+                r.official && r.official.note && React.createElement("div", { className: "card mt-1", style: { background: "rgba(16,185,129,.06)", border: "1px solid rgba(16,185,129,.2)", padding: ".6rem", boxShadow: "none" } },
+                  React.createElement("div", { className: "flex gap-1 items-center mb-1" },
+                    React.createElement("span", { className: "badge badge-official" }, "🏛️ " + t.officialResponse)
+                  ),
+                  React.createElement("p", { style: { fontSize: ".85rem" } }, r.official.note),
+                  r.official.at && React.createElement("p", { style: { fontSize: ".72rem", color: "var(--textSec)", marginTop: ".2rem" } }, new Date(r.official.at).toLocaleDateString())
+                ),
+                React.createElement("p", { style: { fontSize: ".7rem", color: "var(--textSec)", marginTop: ".35rem" } }, r.createdAt ? new Date(r.createdAt).toLocaleDateString() : "")
+              ))
+            )
+      )
+    ),
+    React.createElement(QuickReportFAB, null)
+  );
+}
+
 /* === Footer === */
 function Footer() {
   const {
@@ -5136,6 +5551,8 @@ function App() {
     switch (page) {
       case "courts":
         return /*#__PURE__*/React.createElement(CourtsPage, null);
+      case "reports":
+        return /*#__PURE__*/React.createElement(ReportsPage, null);
       case "petition":
         return /*#__PURE__*/React.createElement(PetitionPage, null);
       case "community":
