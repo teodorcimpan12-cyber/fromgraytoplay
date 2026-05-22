@@ -18,6 +18,8 @@ body{font-family:'Libre Franklin',sans-serif;background:linear-gradient(180deg,#
 .logo{font-family:'Space Mono',monospace;font-weight:700;color:var(--green);display:flex;gap:.5rem;align-items:center;font-size:.95rem}
 .logo .bar{width:4px;height:20px;background:var(--green);border-radius:2px}
 .badge-demo{font-family:'Space Mono',monospace;font-size:.7rem;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:.2rem .6rem}
+.lang{font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:1px;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:.3rem .7rem;cursor:pointer;pointer-events:auto;backdrop-filter:blur(6px)}
+.lang:active{transform:scale(.96)}
 .overlay{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:2rem 1.3rem 2.4rem;pointer-events:none;z-index:5}
 .kicker{font-family:'Space Mono',monospace;color:var(--green);font-size:.78rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:.5rem}
 h1{font-family:'Space Mono',monospace;font-size:clamp(2.1rem,9vw,4rem);line-height:1.02;margin-bottom:.6rem;text-shadow:0 6px 34px rgba(0,0,0,.6)}
@@ -56,7 +58,7 @@ h1 .play{background:linear-gradient(90deg,var(--green),var(--teal),var(--coral))
 <div class="scrim"></div>
 <div class="topbar">
   <div class="logo"><span class="bar"></span> FROM GREY TO PLAY</div>
-  <span class="badge-demo">3D hero · demo</span>
+  <button class="lang" id="langBtn">🌐 RO</button>
 </div>
 <div class="hint" id="hint">trage pentru a roti · atinge mingile</div>
 <div class="loading" id="loading"><div class="spin"></div><div>se încarcă scena 3D…</div></div>
@@ -84,6 +86,56 @@ h1 .play{background:linear-gradient(90deg,var(--green),var(--teal),var(--coral))
 <div class="err" id="err">Nu s-a putut încărca motorul 3D (Three.js).<br>Verifică conexiunea și reîncarcă.</div>
 
 <script>
+// ---- i18n (RO / EN / HU). HU is draft — // TODO: HU review ----
+var ICON = { flip: "🏀", canvas: "🎨", locker: "📲" };
+var STR = {
+  ro: {
+    kicker: "Târgu Mureș · teren multifuncțional",
+    sub: "O oază de joacă într-un oraș gri. Apasă <b>Renovează</b> și privește transformarea.",
+    renovate: "▶ Renovează terenul", back: "↺ Înapoi la gri", sign: "Semnează petiția",
+    hint: "trage pentru a roti · atinge mingile", loading: "se încarcă scena 3D…",
+    err: "Nu s-a putut încărca motorul 3D (Three.js).<br>Verifică conexiunea și reîncarcă.",
+    tRenov: "Se renovează terenul ✨", tGrey: "Înapoi la starea degradată",
+    tTap: "Atinge afișele sau dulapul ℹ️", tPet: "În site real: se deschide petiția ✍️",
+    goal: "⚽ Gol!", basket: "🏀 Coș!",
+    briefs: {
+      flip: { title: "Flip the Court", body: "Renovăm terenurile sportive deja existente din cartierele periferice — nu construim de la zero, ci readucem la viață ce a fost lăsat în paragină: suprafață nouă, coșuri și porți reparate, marcaje și gard. Terenurile sunt alese prin votul locuitorilor și finanțate transparent." },
+      canvas: { title: "Street Canvas", body: "Transformăm zidurile gri din jurul terenului în murale create de artiști locali, pe teme propuse și votate de comunitate. Culoare în locul betonului crăpat — un spațiu pe care cartierul îl simte al lui." },
+      locker: { title: "Dulap inteligent", body: "Un cabinet cu echipament (mingi, plase, pompă) pe care îl deblochezi gratuit din aplicația Flip the Court. Împrumuți, te joci, returnezi — totul urmărit digital, ca terenul să rămână echipat fără supraveghetor." }
+    }
+  },
+  en: {
+    kicker: "Târgu Mureș · multi-use court",
+    sub: "A pocket of play in a grey city. Tap <b>Renovate</b> and watch it transform.",
+    renovate: "▶ Renovate the court", back: "↺ Back to grey", sign: "Sign the petition",
+    hint: "drag to rotate · tap the balls", loading: "loading the 3D scene…",
+    err: "Couldn't load the 3D engine (Three.js).<br>Check your connection and reload.",
+    tRenov: "Renovating the court ✨", tGrey: "Back to the degraded state",
+    tTap: "Tap the posters or the locker ℹ️", tPet: "In the live site: the petition opens ✍️",
+    goal: "⚽ Goal!", basket: "🏀 Basket!",
+    briefs: {
+      flip: { title: "Flip the Court", body: "We renovate the sports courts that already exist in the outer neighbourhoods — we don't build from scratch, we bring back to life what was left to decay: new surface, repaired hoops and goals, fresh markings and a fence. Courts are chosen by residents' vote and funded transparently." },
+      canvas: { title: "Street Canvas", body: "We turn the grey walls around the court into murals made by local artists, on themes proposed and voted by the community. Colour instead of cracked concrete — a space the neighbourhood feels is its own." },
+      locker: { title: "Smart locker", body: "A cabinet with gear (balls, nets, pump) you unlock for free from the Flip the Court app. Borrow, play, return — all tracked digitally, so the court stays equipped without an attendant." }
+    }
+  },
+  hu: { // TODO: HU review
+    kicker: "Marosvásárhely · multifunkciós pálya",
+    sub: "Egy játéksziget a szürke városban. Nyomd meg a <b>Felújítás</b> gombot, és nézd a változást.",
+    renovate: "▶ Pálya felújítása", back: "↺ Vissza a szürkéhez", sign: "Aláírom a petíciót",
+    hint: "húzd az elforgatáshoz · érintsd a labdákat", loading: "a 3D-jelenet betöltése…",
+    err: "Nem sikerült betölteni a 3D-motort (Three.js).<br>Ellenőrizd a kapcsolatot, és tölts újra.",
+    tRenov: "A pálya felújítása ✨", tGrey: "Vissza a leromlott állapothoz",
+    tTap: "Érintsd a plakátokat vagy a szekrényt ℹ️", tPet: "Az éles oldalon: megnyílik a petíció ✍️",
+    goal: "⚽ Gól!", basket: "🏀 Kosár!",
+    briefs: {
+      flip: { title: "Flip the Court", body: "A külső negyedekben már meglévő sportpályákat újítjuk fel — nem a nulláról építünk, hanem életre keltjük azt, amit hagytak leromlani: új burkolat, javított palánkok és kapuk, friss felfestés és kerítés. A pályákat a lakók szavazata választja ki, a finanszírozás átlátható." },
+      canvas: { title: "Street Canvas", body: "A pálya körüli szürke falakat helyi művészek muráljaivá alakítjuk, a közösség által javasolt és megszavazott témákban. Szín a repedezett beton helyett — egy tér, amelyet a negyed a magáénak érez." },
+      locker: { title: "Okos szekrény", body: "Egy felszereléses szekrény (labdák, hálók, pumpa), amelyet ingyen oldasz fel a Flip the Court alkalmazásból. Kölcsönzöl, játszol, visszaviszed — minden digitálisan követve, hogy a pálya felügyelő nélkül is felszerelt maradjon." }
+    }
+  }
+};
+var L = "ro";
 function lerp(a, b, t) { return a + (b - a) * t; }
 function texFrom(canvas, rx, ry) {
   var t = new THREE.CanvasTexture(canvas);
@@ -451,6 +503,7 @@ function init() {
       var d = new THREE.Mesh(new THREE.BoxGeometry(0.185, 0.15, 0.014), doorMat); d.position.set(px2, py2, Dl / 2); g.add(d);
       var hnd = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.05, 6), new THREE.MeshStandardMaterial({ color: 0xcfd3d6, metalness: 0.7, roughness: 0.3 })); hnd.rotation.z = Math.PI / 2; hnd.position.set(px2 + 0.05, py2, Dl / 2 + 0.012); g.add(hnd);
     }
+    var lhit = new THREE.Mesh(new THREE.BoxGeometry(0.64, 0.8, 0.52), new THREE.MeshBasicMaterial({ visible: false })); lhit.position.y = GY + 0.34; g.add(lhit); // enlarged tap target
     g.position.set(-1.12, 0, -(CZ / 2 + 0.14)); g.userData.brief = "locker"; interactives.push(g);
     group.add(g); renovOnly.push(g);
   })();
@@ -496,7 +549,7 @@ function init() {
       var back = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.32, 0.03), metal); back.position.set(lx, GY + 0.16, -0.1); back.castShadow = true; g.add(back);
       var foot = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.02, 0.24), metal); foot.position.set(lx, GY + 0.01, -0.01); g.add(foot);
     });
-    g.position.set(1.0, 0, RZ - 0.85); g.rotation.y = Math.PI; city.add(g);
+    g.position.set(1.0, 0, RZ - 0.1); g.rotation.y = Math.PI; city.add(g);
   })();
 
   // campaign posters hung on the back fence — appear only after renovation
@@ -504,6 +557,7 @@ function init() {
     var g = new THREE.Group();
     var board = new THREE.Mesh(new THREE.PlaneGeometry(0.34, 0.44), new THREE.MeshStandardMaterial({ map: tex, side: THREE.DoubleSide, roughness: 0.85 })); g.add(board);
     var frame = new THREE.Mesh(new THREE.BoxGeometry(0.37, 0.47, 0.012), new THREE.MeshStandardMaterial({ color: 0x222831, roughness: 0.6, metalness: 0.4 })); frame.position.z = -0.009; g.add(frame);
+    var hit = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.72, 0.22), new THREE.MeshBasicMaterial({ visible: false })); hit.position.z = 0.08; g.add(hit); // enlarged tap target
     g.position.set(x, GY + 0.31, z); g.userData.brief = key; interactives.push(g); group.add(g); renovOnly.push(g);
   }
   posterOnFence(-0.55, -(CZ / 2 + 0.33), texFrom(buildPoster("FLIP THE COURT", "Renovăm terenurile existente din cartierele periferice.", "#10B981", "🏀")), "flip");
@@ -609,18 +663,14 @@ function init() {
   function showToast(m) { toastEl.textContent = m; toastEl.classList.add("show"); clearTimeout(tt); tt = setTimeout(function () { toastEl.classList.remove("show"); }, 2200); }
 
   // briefing cards for the campaign posters + smart locker (tap them once renovated)
-  var BRIEFS = {
-    flip: { icon: "🏀", title: "Flip the Court", body: "Renovăm terenurile sportive deja existente din cartierele periferice — nu construim de la zero, ci readucem la viață ce a fost lăsat în paragină: suprafață nouă, coșuri și porți reparate, marcaje și gard. Terenurile sunt alese prin votul locuitorilor și finanțate transparent." },
-    canvas: { icon: "🎨", title: "Street Canvas", body: "Transformăm zidurile gri din jurul terenului în murale create de artiști locali, pe teme propuse și votate de comunitate. Culoare în locul betonului crăpat — un spațiu pe care cartierul îl simte al lui." },
-    locker: { icon: "📲", title: "Dulap inteligent", body: "Un cabinet cu echipament (mingi, plase, pompă) pe care îl deblochezi gratuit din aplicația Flip the Court. Împrumuți, te joci, returnezi — totul urmărit digital, ca terenul să rămână echipat fără supraveghetor." }
-  };
-  var modal = document.getElementById("modal"), mIcon = document.getElementById("mIcon"), mTitle = document.getElementById("mTitle"), mBody = document.getElementById("mBody");
-  function openBrief(k) { var b = BRIEFS[k]; if (!b) return; mIcon.textContent = b.icon; mTitle.textContent = b.title; mBody.textContent = b.body; modal.classList.add("show"); }
-  function closeBrief() { modal.classList.remove("show"); }
+  var modal = document.getElementById("modal"), mIcon = document.getElementById("mIcon"), mTitle = document.getElementById("mTitle"), mBody = document.getElementById("mBody"), mCta = document.getElementById("mCta");
+  var currentBrief = null;
+  function openBrief(k) { var b = STR[L].briefs[k]; if (!b) return; currentBrief = k; mIcon.textContent = ICON[k]; mTitle.textContent = b.title; mBody.textContent = b.body; modal.classList.add("show"); }
+  function closeBrief() { currentBrief = null; modal.classList.remove("show"); }
   document.getElementById("modalX").addEventListener("click", closeBrief);
   document.getElementById("sheet").addEventListener("click", function (e) { e.stopPropagation(); });
   modal.addEventListener("click", function (e) { if (e.target === modal) closeBrief(); });
-  document.getElementById("mCta").addEventListener("click", function () { closeBrief(); showToast("În site real: se deschide petiția ✍️"); });
+  mCta.addEventListener("click", function () { closeBrief(); showToast(STR[L].tPet); });
   var prog = 0, progTarget = 0, renovated = false;
   var flashEl = document.getElementById("flash");
   var renov = { active: false, t: 0, swapped: false };
@@ -638,13 +688,31 @@ function init() {
   var scoreCD = 0;
   function score(m) { if (scoreCD <= 0) { showToast(m); scoreCD = 1.2; } }
   var rbtn = document.getElementById("renovateBtn");
-  function updateBtn() { rbtn.textContent = renovated ? "↺ Înapoi la gri" : "▶ Renovează terenul"; }
+  function updateBtn() { rbtn.textContent = renovated ? STR[L].back : STR[L].renovate; }
   rbtn.addEventListener("click", function () {
-    if (!renovated) { renovated = true; updateBtn(); showToast("Se renovează terenul ✨"); renov.active = true; renov.t = 0; renov.swapped = false; }
-    else { renovated = false; updateBtn(); showToast("Înapoi la starea degradată"); progTarget = 0; }
+    if (!renovated) { renovated = true; updateBtn(); showToast(STR[L].tRenov); renov.active = true; renov.t = 0; renov.swapped = false; }
+    else { renovated = false; updateBtn(); showToast(STR[L].tGrey); progTarget = 0; }
   });
-  updateBtn(); applyRenovState(0);
-  document.getElementById("signBtn").addEventListener("click", function () { showToast("În site real: se deschide petiția ✍️"); });
+  document.getElementById("signBtn").addEventListener("click", function () { showToast(STR[L].tPet); });
+
+  // language switch (top-right): cycles RO -> EN -> HU -> RO
+  var langBtn = document.getElementById("langBtn"), langOrder = ["ro", "en", "hu"];
+  function applyLang() {
+    var d = STR[L];
+    document.documentElement.lang = L;
+    document.querySelector(".kicker").textContent = d.kicker;
+    document.querySelector(".sub").innerHTML = d.sub;
+    document.getElementById("signBtn").textContent = d.sign;
+    document.getElementById("hint").textContent = d.hint;
+    document.getElementById("err").innerHTML = d.err;
+    mCta.textContent = d.sign;
+    var lt = document.querySelector("#loading div:last-child"); if (lt) lt.textContent = d.loading;
+    langBtn.textContent = "🌐 " + L.toUpperCase();
+    updateBtn();
+    if (currentBrief) openBrief(currentBrief);
+  }
+  langBtn.addEventListener("click", function () { L = langOrder[(langOrder.indexOf(L) + 1) % langOrder.length]; applyLang(); });
+  updateBtn(); applyRenovState(0); applyLang();
 
   var t0 = performance.now(), prevN = t0;
   function animate(now) {
@@ -660,10 +728,10 @@ function init() {
           var bxx = CX / 2 - bl.rad, bzz = CZ / 2 - bl.rad;
           if (bl.z > bzz) { bl.z = bzz; bl.vz = -bl.vz * 0.6; } else if (bl.z < -bzz) { bl.z = -bzz; bl.vz = -bl.vz * 0.6; }
           var inMouth = Math.abs(bl.z) < 0.32 && bl.y < 0.4; // between the posts, under the bar
-          if (bl.x > bxx) { if (inMouth) { if (bl.x > CX / 2 + 0.14) { bl.x = CX / 2 + 0.14; bl.vx = 0; bl.vz *= 0.4; score("⚽ Gol!"); } } else { bl.x = bxx; bl.vx = -bl.vx * 0.6; } }
-          else if (bl.x < -bxx) { if (inMouth) { if (bl.x < -(CX / 2 + 0.14)) { bl.x = -(CX / 2 + 0.14); bl.vx = 0; bl.vz *= 0.4; score("⚽ Gol!"); } } else { bl.x = -bxx; bl.vx = -bl.vx * 0.6; } }
+          if (bl.x > bxx) { if (inMouth) { if (bl.x > CX / 2 + 0.14) { bl.x = CX / 2 + 0.14; bl.vx = 0; bl.vz *= 0.4; score(STR[L].goal); } } else { bl.x = bxx; bl.vx = -bl.vx * 0.6; } }
+          else if (bl.x < -bxx) { if (inMouth) { if (bl.x < -(CX / 2 + 0.14)) { bl.x = -(CX / 2 + 0.14); bl.vx = 0; bl.vz *= 0.4; score(STR[L].goal); } } else { bl.x = -bxx; bl.vx = -bl.vx * 0.6; } }
           bl.vx *= 0.995; bl.vz *= 0.995;
-          for (var hh = 0; hh < hoops.length; hh++) { var Hp = hoops[hh], ddx = bl.x - Hp.x, ddz = bl.z - Hp.z; if (ddx * ddx + ddz * ddz < Hp.r * Hp.r * 0.9 && bl.vy < 0 && bl.y < Hp.y + 0.05 && bl.y > Hp.y - 0.14) score("🏀 Coș!"); }
+          for (var hh = 0; hh < hoops.length; hh++) { var Hp = hoops[hh], ddx = bl.x - Hp.x, ddz = bl.z - Hp.z; if (ddx * ddx + ddz * ddz < Hp.r * Hp.r * 0.9 && bl.vy < 0 && bl.y < Hp.y + 0.05 && bl.y > Hp.y - 0.14) score(STR[L].basket); }
           // come to rest -> resume idle bounce
           if (bl.y <= bl.rad + 0.001 && bl.vy === 0 && Math.abs(bl.vx) + Math.abs(bl.vz) < 0.06) { bl.rest += dt; if (bl.rest > 0.7) { bl.physics = false; bl.ph = -t * bl.fr; bl.vx = (Math.random() < 0.5 ? 1 : -1) * 0.007; bl.vz = (Math.random() < 0.5 ? 1 : -1) * 0.006; bl.rest = 0; } } else bl.rest = 0;
         }
@@ -679,7 +747,7 @@ function init() {
     if (renov.active) {
       renov.t += dt; var T = renov.t;
       spinBoost = T < 0.55 ? (T / 0.55) * 0.11 : Math.max(0, 0.11 * (1 - (T - 0.55) / 0.95));
-      if (T >= 0.55 && !renov.swapped) { prog = 1; progTarget = 1; drawCourt(1); applyRenovState(1); burst(); renov.swapped = true; setTimeout(function () { if (renovated) showToast("Atinge afișele sau dulapul ℹ️"); }, 900); }
+      if (T >= 0.55 && !renov.swapped) { prog = 1; progTarget = 1; drawCourt(1); applyRenovState(1); burst(); renov.swapped = true; setTimeout(function () { if (renovated) showToast(STR[L].tTap); }, 900); }
       var fl = T < 0.55 ? 0 : (T < 0.78 ? (T - 0.55) / 0.23 : Math.max(0, 1 - (T - 0.78) / 0.72));
       flashEl.style.opacity = fl;
       if (T > 1.55) { renov.active = false; flashEl.style.opacity = 0; }
