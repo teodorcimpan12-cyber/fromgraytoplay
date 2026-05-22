@@ -3,6 +3,18 @@
 Civic PWA documenting the inequality between central and peripheral
 sports courts in Târgu Mureș. Live at https://fromgraytoplay.netlify.app/.
 
+## Knowledge Graph
+
+**Înainte de a genera cod sau arhitectură, citește `graphify-out/graph.json`.**
+Fișierul conține graful complet al proiectului: componente, pagini, Firebase paths,
+utilitare, rute, clase CSS și design tokens — cu relațiile dintre ele.
+
+Utilizare:
+- Verifică în `edges[]` ce scrie/citește o componentă înainte să adaugi logică nouă.
+- Verifică în `routes{}` ce componentă corespunde unei pagini.
+- Nu cere copy-paste din repository dacă informația există în graf.
+- După ce adaugi o componentă sau cale Firebase nouă, actualizează `graphify-out/graph.json`.
+
 ## Architecture
 
 - **Single-file PWA.** Everything lives in `index.html` at repo root. Build
