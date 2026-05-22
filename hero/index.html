@@ -549,7 +549,7 @@ function init() {
       var back = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.32, 0.03), metal); back.position.set(lx, GY + 0.16, -0.1); back.castShadow = true; g.add(back);
       var foot = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.02, 0.24), metal); foot.position.set(lx, GY + 0.01, -0.01); g.add(foot);
     });
-    g.position.set(1.0, 0, RZ - 0.1); g.rotation.y = Math.PI; city.add(g);
+    g.position.set(1.0, 0, RZ - 0.42); g.rotation.y = Math.PI; city.add(g);
   })();
 
   // campaign posters hung on the back fence — appear only after renovation
