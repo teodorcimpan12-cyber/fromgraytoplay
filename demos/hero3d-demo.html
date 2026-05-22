@@ -37,10 +37,14 @@ h1 .play{background:linear-gradient(90deg,var(--green),var(--teal),var(--coral))
 .err{display:none}
 .spin{width:34px;height:34px;border:3px solid rgba(255,255,255,.18);border-top-color:var(--green);border-radius:50%;animation:sp 1s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
+.scrim{position:fixed;left:0;right:0;bottom:0;height:56%;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(13,16,21,0) 0%,rgba(13,16,21,.45) 46%,rgba(13,16,21,.86) 100%)}
+.scrim-top{position:fixed;left:0;right:0;top:0;height:16%;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(13,16,21,.6) 0%,rgba(13,16,21,0) 100%)}
 </style>
 </head>
 <body>
 <div id="hero"></div>
+<div class="scrim-top"></div>
+<div class="scrim"></div>
 <div class="topbar">
   <div class="logo"><span class="bar"></span> FROM GREY TO PLAY</div>
   <span class="badge-demo">3D hero · demo</span>
@@ -425,10 +429,13 @@ function init() {
   for (var gz = -(frontZ - 0.8); gz <= frontZ - 0.8; gz += 0.9) { bldg(-(sideX + Math.random() * 0.5), gz); bldg(sideX + Math.random() * 0.5, gz); }
 
   // trees in the corner gaps (between road and blocks) + a bench on the grass
+  var folMats = [0x2c5226, 0x386b30, 0x46823c].map(function (c) { return new THREE.MeshStandardMaterial({ color: c, roughness: 1 }); });
   function tree(x, z) {
-    var trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.07, 0.5, 7), new THREE.MeshStandardMaterial({ color: 0x5a4030, roughness: 1 })); trunk.position.set(x, GY + 0.25, z); trunk.castShadow = true; city.add(trunk);
-    var fol = new THREE.MeshStandardMaterial({ color: 0x35632f, roughness: 1 });
-    [[0, 0.62, 0, 0.3], [0.16, 0.55, 0.08, 0.2], [-0.13, 0.58, -0.06, 0.22], [0.05, 0.78, -0.04, 0.18]].forEach(function (f) { var s = new THREE.Mesh(new THREE.SphereGeometry(f[3], 10, 8), fol); s.position.set(x + f[0], GY + f[1], z + f[2]); s.castShadow = true; city.add(s); });
+    var g = new THREE.Group();
+    var trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.075, 0.6, 8), new THREE.MeshStandardMaterial({ color: 0x5a4030, roughness: 1 })); trunk.position.y = GY + 0.3; trunk.castShadow = true; g.add(trunk);
+    // layered, slightly irregular oval crown (taller than wide) with light/dark greens for depth
+    [[0, 0.66, 0, 0.26, 0], [0.17, 0.6, 0.05, 0.19, 0], [-0.15, 0.62, -0.06, 0.2, 0], [0.04, 0.82, -0.02, 0.22, 2], [-0.09, 0.78, 0.1, 0.17, 1], [0.13, 0.76, -0.1, 0.16, 2], [0, 0.96, 0.02, 0.15, 2]].forEach(function (f) { var s = new THREE.Mesh(new THREE.SphereGeometry(f[3], 12, 10), folMats[f[4]]); s.position.set(f[0], GY + f[1], f[2]); s.castShadow = true; g.add(s); });
+    g.position.set(x, 0, z); city.add(g);
   }
   // trees behind the goals + one at the back — none in front of the entrance
   tree(RX - 0.5, 0); tree(-(RX - 0.5), 0); tree(0, -(RZ - 0.45));
