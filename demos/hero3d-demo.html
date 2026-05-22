@@ -39,6 +39,15 @@ h1 .play{background:linear-gradient(90deg,var(--green),var(--teal),var(--coral))
 @keyframes sp{to{transform:rotate(360deg)}}
 .scrim{position:fixed;left:0;right:0;bottom:0;height:56%;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(13,16,21,0) 0%,rgba(13,16,21,.45) 46%,rgba(13,16,21,.86) 100%)}
 .scrim-top{position:fixed;left:0;right:0;top:0;height:16%;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(13,16,21,.6) 0%,rgba(13,16,21,0) 100%)}
+.modal{position:fixed;inset:0;z-index:9;display:flex;align-items:flex-end;justify-content:center;padding:1.1rem;background:rgba(8,10,14,.55);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .22s}
+.modal.show{opacity:1;pointer-events:auto}
+.sheet{position:relative;width:100%;max-width:30rem;background:#16213E;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:1.5rem 1.3rem 1.5rem;box-shadow:0 20px 60px rgba(0,0,0,.5);transform:translateY(18px);transition:transform .22s}
+.modal.show .sheet{transform:none}
+.sheet .x{position:absolute;top:.7rem;right:.75rem;background:rgba(255,255,255,.08);border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:.85rem;cursor:pointer}
+.m-ic{font-size:2.4rem;line-height:1;margin-bottom:.45rem}
+.m-tag{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:2px;color:var(--green);text-transform:uppercase;margin-bottom:.35rem}
+.m-title{font-family:'Space Mono',monospace;font-size:1.35rem;line-height:1.1;margin-bottom:.6rem}
+.m-body{color:#C7CBD1;font-size:.92rem;line-height:1.55;margin-bottom:1.15rem}
 </style>
 </head>
 <body>
@@ -58,6 +67,16 @@ h1 .play{background:linear-gradient(90deg,var(--green),var(--teal),var(--coral))
   <div class="cta">
     <button class="btn btn-green" id="renovateBtn">▶ Renovează terenul</button>
     <button class="btn btn-ghost" id="signBtn">Semnează petiția</button>
+  </div>
+</div>
+<div class="modal" id="modal">
+  <div class="sheet" id="sheet">
+    <button class="x" id="modalX" aria-label="Închide">✕</button>
+    <div class="m-ic" id="mIcon">🏀</div>
+    <div class="m-tag">From Grey to Play</div>
+    <h2 class="m-title" id="mTitle"></h2>
+    <p class="m-body" id="mBody"></p>
+    <button class="btn btn-green" id="mCta">Semnează petiția</button>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -306,18 +325,25 @@ function init() {
   slab.position.y = -0.06; slab.receiveShadow = true; group.add(slab);
 
   var netTex = texFrom(buildNet(), 1, 1), boardTex = texFrom(buildBackboard());
-  var nets = [], hoops = [], lockerScreen = null, renovOnly = [];
+  var nets = [], hoops = [], lockerScreen = null, renovOnly = [], interactives = [];
   var steel = new THREE.MeshStandardMaterial({ color: 0xe8eaec, roughness: 0.4, metalness: 0.5 });
   function steelMesh(geo, x, y, z) { var m = new THREE.Mesh(geo, steel); m.position.set(x, y, z); m.castShadow = true; return m; }
 
-  // combined goal + basketball end unit: basketball mounts on the goal frame above the crossbar
+  // combined goal + basketball end unit. Damaged (grey) -> pristine (renovated):
+  // the whole frame leans, the backboard hangs crooked, the rim is bent and rusty.
+  var endUnits = [];
+  var rimClean = new THREE.Color(0xE2552B), rimRust = new THREE.Color(0x7c4a32);
+  var boardClean = new THREE.Color(0xffffff), boardGrime = new THREE.Color(0x9a978c);
+  var steelClean = new THREE.Color(0xe8eaec), steelRust = new THREE.Color(0x6f6052);
   function endUnit(sign) {
     var u = new THREE.Group(); group.add(u);
     var baseX = sign * (CX / 2 + 0.02), gw = 0.82, gh = 0.42, r = 0.022, postTop = gh + 0.36;
-    u.add(steelMesh(new THREE.CylinderGeometry(r, r, postTop, 10), baseX, postTop / 2, -gw / 2));
-    u.add(steelMesh(new THREE.CylinderGeometry(r, r, postTop, 10), baseX, postTop / 2, gw / 2));
-    var bar = steelMesh(new THREE.CylinderGeometry(r, r, gw, 10), baseX, gh, 0); bar.rotation.x = Math.PI / 2; u.add(bar);
-    var topbar = steelMesh(new THREE.CylinderGeometry(r * 0.8, r * 0.8, gw, 10), baseX, postTop, 0); topbar.rotation.x = Math.PI / 2; u.add(topbar);
+    // frame anchored at the goal base so it can lean about its feet (no floating/sinking)
+    var frame = new THREE.Group(); frame.position.set(baseX, 0, 0); u.add(frame);
+    frame.add(steelMesh(new THREE.CylinderGeometry(r, r, postTop, 10), 0, postTop / 2, -gw / 2));
+    frame.add(steelMesh(new THREE.CylinderGeometry(r, r, postTop, 10), 0, postTop / 2, gw / 2));
+    var bar = steelMesh(new THREE.CylinderGeometry(r, r, gw, 10), 0, gh, 0); bar.rotation.x = Math.PI / 2; frame.add(bar);
+    var topbar = steelMesh(new THREE.CylinderGeometry(r * 0.8, r * 0.8, gw, 10), 0, postTop, 0); topbar.rotation.x = Math.PI / 2; frame.add(topbar);
     function netQuad(w, len, x, y, z, ex, ey) {
       ex = ex.clone().normalize(); ey = ey.clone().normalize(); var ez = new THREE.Vector3().crossVectors(ex, ey).normalize();
       var m = new THREE.Mesh(new THREE.PlaneGeometry(w, len), new THREE.MeshBasicMaterial({ map: netTex.clone(), transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false }));
@@ -338,15 +364,32 @@ function init() {
       var m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map: t, transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false })); u.add(m); nets.push(m);
     }
     netSide(-gw / 2); netSide(gw / 2);
-    // backboard on the frame above the crossbar, facing the court
+    // backboard + rim grouped at the mount so they can hang crooked when damaged
     var boardY = gh + 0.2;
-    var board = new THREE.Mesh(new THREE.PlaneGeometry(0.52, 0.32), new THREE.MeshStandardMaterial({ map: boardTex, transparent: true, side: THREE.DoubleSide })); board.position.set(baseX - sign * 0.015, boardY, 0); board.rotation.y = -sign * Math.PI / 2; board.castShadow = true; u.add(board);
-    var rimX = baseX - sign * 0.14, rimY = boardY - 0.07;
-    var rim = new THREE.Mesh(new THREE.TorusGeometry(0.11, 0.013, 8, 24), new THREE.MeshStandardMaterial({ color: 0xE2552B, roughness: 0.45 })); rim.position.set(rimX, rimY, 0); rim.rotation.x = Math.PI / 2; rim.castShadow = true; u.add(rim);
-    var bnet = new THREE.Mesh(new THREE.CylinderGeometry(0.105, 0.05, 0.17, 14, 1, true), new THREE.MeshBasicMaterial({ map: netTex.clone(), transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false })); bnet.position.set(rimX, rimY - 0.095, 0); u.add(bnet); nets.push(bnet);
-    hoops.push({ x: rimX, y: rimY, z: 0, r: 0.11 });
+    var hoop = new THREE.Group(); hoop.position.set(0, boardY, 0); frame.add(hoop);
+    var boardMat = new THREE.MeshStandardMaterial({ map: boardTex, transparent: true, side: THREE.DoubleSide });
+    var board = new THREE.Mesh(new THREE.PlaneGeometry(0.52, 0.32), boardMat); board.position.set(-sign * 0.015, 0, 0); board.rotation.y = -sign * Math.PI / 2; board.castShadow = true; hoop.add(board);
+    var rimMat = new THREE.MeshStandardMaterial({ color: 0xE2552B, roughness: 0.45 });
+    var rim = new THREE.Mesh(new THREE.TorusGeometry(0.11, 0.013, 8, 24), rimMat); rim.position.set(-sign * 0.14, -0.07, 0); rim.rotation.x = Math.PI / 2; rim.castShadow = true; hoop.add(rim);
+    var bnet = new THREE.Mesh(new THREE.CylinderGeometry(0.105, 0.05, 0.17, 14, 1, true), new THREE.MeshBasicMaterial({ map: netTex.clone(), transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false })); bnet.position.set(-sign * 0.14, -0.07 - 0.095, 0); hoop.add(bnet); nets.push(bnet);
+    hoops.push({ x: baseX - sign * 0.14, y: boardY - 0.07, z: 0, r: 0.11 });
+    endUnits.push({ frame: frame, hoop: hoop, rim: rim, rimMat: rimMat, boardMat: boardMat, sign: sign, lean: sign > 0 ? -0.1 : 0.08 });
   }
   endUnit(-1); endUnit(1);
+  // d = 1 fully damaged (grey), 0 pristine (renovated)
+  function applyGoalDamage(d) {
+    for (var i = 0; i < endUnits.length; i++) {
+      var eu = endUnits[i];
+      eu.frame.rotation.z = d * eu.lean;
+      eu.hoop.rotation.z = d * 0.18 * eu.sign;
+      eu.rim.rotation.x = Math.PI / 2 + d * 0.5;
+      eu.rim.rotation.z = d * 0.32;
+      eu.rim.position.y = -0.07 - d * 0.03;
+      eu.rimMat.color.copy(rimClean).lerp(rimRust, d);
+      eu.boardMat.color.copy(boardClean).lerp(boardGrime, d);
+    }
+    steel.color.copy(steelClean).lerp(steelRust, d);
+  }
 
   // modern anthracite fence (posts + rails + welded mesh + kickboard) on all sides, gate gap at the back
   var meshTex = buildMesh();
@@ -354,26 +397,28 @@ function init() {
   var meshMatBase = { color: 0x2c3037, fenceColG: new THREE.Color(0x2c3037), fenceColV: new THREE.Color(0x3a4750) };
   var fenceMeshMat = new THREE.MeshStandardMaterial({ map: texFrom(meshTex, 1, 1), transparent: true, opacity: 0.55, side: THREE.DoubleSide, roughness: 0.8, color: 0x2c3037 });
   var fH = 0.52;
+  // fence is part of the renovation: it appears (with posters + locker) only once renovated
+  var fenceGroup = new THREE.Group(); city.add(fenceGroup);
+  var fencePanels = [];
   function fenceSide(len, cx, cz, horiz, gate) {
-    var ax = horiz ? "x" : "z";
     // kickboard (solid rebound board)
-    var kb = new THREE.Mesh(horiz ? new THREE.BoxGeometry(len, 0.1, 0.03) : new THREE.BoxGeometry(0.03, 0.1, len), anth); kb.position.set(cx, GY + 0.05, cz); kb.castShadow = true; city.add(kb);
+    var kb = new THREE.Mesh(horiz ? new THREE.BoxGeometry(len, 0.1, 0.03) : new THREE.BoxGeometry(0.03, 0.1, len), anth); kb.position.set(cx, GY + 0.05, cz); kb.castShadow = true; fenceGroup.add(kb);
     // top rail
-    var tr = new THREE.Mesh(horiz ? new THREE.BoxGeometry(len, 0.035, 0.05) : new THREE.BoxGeometry(0.05, 0.035, len), anth); tr.position.set(cx, GY + fH, cz); city.add(tr);
+    var tr = new THREE.Mesh(horiz ? new THREE.BoxGeometry(len, 0.035, 0.05) : new THREE.BoxGeometry(0.05, 0.035, len), anth); tr.position.set(cx, GY + fH, cz); fenceGroup.add(tr);
     // welded mesh panel
     var mt = fenceMeshMat.clone(); mt.map = mt.map.clone(); mt.map.wrapS = mt.map.wrapT = THREE.RepeatWrapping; mt.map.repeat.set(len * 5, 3); mt.map.needsUpdate = true;
-    var panel = new THREE.Mesh(new THREE.PlaneGeometry(len, fH - 0.12), mt); panel.position.set(cx, GY + 0.1 + (fH - 0.12) / 2, cz); if (!horiz) panel.rotation.y = Math.PI / 2; city.add(panel); fencePanels.push(mt);
+    var panel = new THREE.Mesh(new THREE.PlaneGeometry(len, fH - 0.12), mt); panel.position.set(cx, GY + 0.1 + (fH - 0.12) / 2, cz); if (!horiz) panel.rotation.y = Math.PI / 2; fenceGroup.add(panel); fencePanels.push(mt);
     // posts
     var n = Math.max(2, Math.round(len / 0.55));
-    for (var i = 0; i <= n; i++) { var f = i / n - 0.5; var p = new THREE.Mesh(new THREE.BoxGeometry(0.05, fH + 0.12, 0.05), anth); p.position.set(horiz ? cx + f * len : cx, GY + (fH + 0.12) / 2, horiz ? cz : cz + f * len); p.castShadow = true; city.add(p); }
+    for (var i = 0; i <= n; i++) { var f = i / n - 0.5; var p = new THREE.Mesh(new THREE.BoxGeometry(0.05, fH + 0.12, 0.05), anth); p.position.set(horiz ? cx + f * len : cx, GY + (fH + 0.12) / 2, horiz ? cz : cz + f * len); p.castShadow = true; fenceGroup.add(p); }
   }
-  var fencePanels = [];
   fenceSide(CX + 0.86, 0, -(CZ / 2 + 0.4), true);     // back side (full)
   fenceSide(CZ + 0.7, -(CX / 2 + 0.43), 0, false);    // left
   fenceSide(CZ + 0.7, (CX / 2 + 0.43), 0, false);     // right
   // front side: two short panels leaving a central gate gap
   fenceSide((CX + 0.86) / 2 - 0.25, -(CX + 0.86) / 4 - 0.125, (CZ / 2 + 0.4), true);
   fenceSide((CX + 0.86) / 2 - 0.25, (CX + 0.86) / 4 + 0.125, (CZ / 2 + 0.4), true);
+  renovOnly.push(fenceGroup);
 
   // realistic floodlight masts: pole + bracket + multi-lamp head, aimed at the court
   var lampMat = new THREE.MeshStandardMaterial({ color: 0x2a2c30, emissive: new THREE.Color(0xffeccd), emissiveIntensity: 0 });
@@ -406,7 +451,8 @@ function init() {
       var d = new THREE.Mesh(new THREE.BoxGeometry(0.185, 0.15, 0.014), doorMat); d.position.set(px2, py2, Dl / 2); g.add(d);
       var hnd = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.05, 6), new THREE.MeshStandardMaterial({ color: 0xcfd3d6, metalness: 0.7, roughness: 0.3 })); hnd.rotation.z = Math.PI / 2; hnd.position.set(px2 + 0.05, py2, Dl / 2 + 0.012); g.add(hnd);
     }
-    g.position.set(-1.3, 0, -(CZ / 2 + 0.19)); group.add(g); renovOnly.push(g);
+    g.position.set(-1.12, 0, -(CZ / 2 + 0.14)); g.userData.brief = "locker"; interactives.push(g);
+    group.add(g); renovOnly.push(g);
   })();
 
   // ===== grey city (rotates with the world; never changes colour when renovated) =====
@@ -454,14 +500,14 @@ function init() {
   })();
 
   // campaign posters hung on the back fence — appear only after renovation
-  function posterOnFence(x, z, tex) {
+  function posterOnFence(x, z, tex, key) {
     var g = new THREE.Group();
     var board = new THREE.Mesh(new THREE.PlaneGeometry(0.34, 0.44), new THREE.MeshStandardMaterial({ map: tex, side: THREE.DoubleSide, roughness: 0.85 })); g.add(board);
     var frame = new THREE.Mesh(new THREE.BoxGeometry(0.37, 0.47, 0.012), new THREE.MeshStandardMaterial({ color: 0x222831, roughness: 0.6, metalness: 0.4 })); frame.position.z = -0.009; g.add(frame);
-    g.position.set(x, GY + 0.31, z); group.add(g); renovOnly.push(g);
+    g.position.set(x, GY + 0.31, z); g.userData.brief = key; interactives.push(g); group.add(g); renovOnly.push(g);
   }
-  posterOnFence(-0.55, -(CZ / 2 + 0.33), texFrom(buildPoster("FLIP THE COURT", "Renovăm terenurile existente din cartierele periferice.", "#10B981", "🏀")));
-  posterOnFence(0.55, -(CZ / 2 + 0.33), texFrom(buildPoster("STREET CANVAS", "Murale comunitare alese de localnici prin vot.", "#F97316", "🎨")));
+  posterOnFence(-0.55, -(CZ / 2 + 0.33), texFrom(buildPoster("FLIP THE COURT", "Renovăm terenurile existente din cartierele periferice.", "#10B981", "🏀")), "flip");
+  posterOnFence(0.55, -(CZ / 2 + 0.33), texFrom(buildPoster("STREET CANVAS", "Murale comunitare alese de localnici prin vot.", "#F97316", "🎨")), "canvas");
 
   // detailed cars on the ring road
   var carCols = [0x9498a0, 0x7a323c, 0x2f3b54, 0xb8b4aa, 0x39473d, 0xd0cfca, 0x4a4d52];
@@ -521,6 +567,10 @@ function init() {
   function setNDC(e) { ndc.x = e.clientX / window.innerWidth * 2 - 1; ndc.y = -(e.clientY / window.innerHeight * 2 - 1); }
   el.addEventListener("pointerdown", function (e) {
     hint.style.opacity = "0"; setNDC(e); ray.setFromCamera(ndc, camera);
+    if (renovated) {
+      var ih = ray.intersectObjects(interactives, true);
+      if (ih.length) { var o = ih[0].object; while (o && !(o.userData && o.userData.brief)) o = o.parent; if (o) { openBrief(o.userData.brief); return; } }
+    }
     var hit = ray.intersectObjects([balls[0].mesh, balls[1].mesh], false);
     if (hit.length) {
       for (var b = 0; b < balls.length; b++) if (balls[b].mesh === hit[0].object) grabbed = balls[b];
@@ -557,6 +607,20 @@ function init() {
   // toast + renovate
   var toastEl = document.getElementById("toast"), tt;
   function showToast(m) { toastEl.textContent = m; toastEl.classList.add("show"); clearTimeout(tt); tt = setTimeout(function () { toastEl.classList.remove("show"); }, 2200); }
+
+  // briefing cards for the campaign posters + smart locker (tap them once renovated)
+  var BRIEFS = {
+    flip: { icon: "🏀", title: "Flip the Court", body: "Renovăm terenurile sportive deja existente din cartierele periferice — nu construim de la zero, ci readucem la viață ce a fost lăsat în paragină: suprafață nouă, coșuri și porți reparate, marcaje și gard. Terenurile sunt alese prin votul locuitorilor și finanțate transparent." },
+    canvas: { icon: "🎨", title: "Street Canvas", body: "Transformăm zidurile gri din jurul terenului în murale create de artiști locali, pe teme propuse și votate de comunitate. Culoare în locul betonului crăpat — un spațiu pe care cartierul îl simte al lui." },
+    locker: { icon: "📲", title: "Dulap inteligent", body: "Un cabinet cu echipament (mingi, plase, pompă) pe care îl deblochezi gratuit din aplicația Flip the Court. Împrumuți, te joci, returnezi — totul urmărit digital, ca terenul să rămână echipat fără supraveghetor." }
+  };
+  var modal = document.getElementById("modal"), mIcon = document.getElementById("mIcon"), mTitle = document.getElementById("mTitle"), mBody = document.getElementById("mBody");
+  function openBrief(k) { var b = BRIEFS[k]; if (!b) return; mIcon.textContent = b.icon; mTitle.textContent = b.title; mBody.textContent = b.body; modal.classList.add("show"); }
+  function closeBrief() { modal.classList.remove("show"); }
+  document.getElementById("modalX").addEventListener("click", closeBrief);
+  document.getElementById("sheet").addEventListener("click", function (e) { e.stopPropagation(); });
+  modal.addEventListener("click", function (e) { if (e.target === modal) closeBrief(); });
+  document.getElementById("mCta").addEventListener("click", function () { closeBrief(); showToast("În site real: se deschide petiția ✍️"); });
   var prog = 0, progTarget = 0, renovated = false;
   var flashEl = document.getElementById("flash");
   var renov = { active: false, t: 0, swapped: false };
@@ -566,6 +630,7 @@ function init() {
     scene.fog.color.copy(fogG).lerp(fogV, p);
     for (var fp = 0; fp < fencePanels.length; fp++) fencePanels[fp].color.copy(meshMatBase.fenceColG).lerp(meshMatBase.fenceColV, p);
     courtMat.roughness = lerp(0.74, 0.58, p);
+    applyGoalDamage(1 - p);
     lampMat.emissiveIntensity = p * 0.85; luxLight.intensity = p * 0.8;
     if (lockerScreen) lockerScreen.emissiveIntensity = p * 0.9;
     for (var ro = 0; ro < renovOnly.length; ro++) { renovOnly[ro].visible = p > 0.02; renovOnly[ro].scale.setScalar(p < 0.02 ? 0.0001 : p); }
@@ -614,7 +679,7 @@ function init() {
     if (renov.active) {
       renov.t += dt; var T = renov.t;
       spinBoost = T < 0.55 ? (T / 0.55) * 0.11 : Math.max(0, 0.11 * (1 - (T - 0.55) / 0.95));
-      if (T >= 0.55 && !renov.swapped) { prog = 1; progTarget = 1; drawCourt(1); applyRenovState(1); burst(); renov.swapped = true; }
+      if (T >= 0.55 && !renov.swapped) { prog = 1; progTarget = 1; drawCourt(1); applyRenovState(1); burst(); renov.swapped = true; setTimeout(function () { if (renovated) showToast("Atinge afișele sau dulapul ℹ️"); }, 900); }
       var fl = T < 0.55 ? 0 : (T < 0.78 ? (T - 0.55) / 0.23 : Math.max(0, 1 - (T - 0.78) / 0.72));
       flashEl.style.opacity = fl;
       if (T > 1.55) { renov.active = false; flashEl.style.opacity = 0; }
