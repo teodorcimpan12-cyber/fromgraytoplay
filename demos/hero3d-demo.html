@@ -236,6 +236,12 @@ function buildPoster(title, sub, accent, icon) {
   cx.fillText(line, 128, y);
   return c;
 }
+function buildWood() {
+  var c = document.createElement("canvas"); c.width = 256; c.height = 64; var cx = c.getContext("2d");
+  cx.fillStyle = "#6b4a2c"; cx.fillRect(0, 0, 256, 64);
+  for (var i = 0; i < 40; i++) { var y = Math.random() * 64; cx.strokeStyle = "rgba(" + (60 + (Math.random() * 50 | 0)) + "," + (40 + (Math.random() * 36 | 0)) + "," + (20 + (Math.random() * 24 | 0)) + ",.5)"; cx.lineWidth = 0.5 + Math.random() * 1.5; cx.beginPath(); cx.moveTo(0, y); cx.bezierCurveTo(85, y + (Math.random() - 0.5) * 6, 170, y + (Math.random() - 0.5) * 6, 256, y + (Math.random() - 0.5) * 4); cx.stroke(); }
+  return c;
+}
 
 function init() {
   document.getElementById("loading").style.display = "none";
@@ -319,6 +325,15 @@ function init() {
     netQuad(gw, backH, baseX + sign * depth, backH / 2, 0, new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 1, 0));
     var lx = sign * depth, ly = backH - gh, len = Math.hypot(lx, ly);
     netQuad(gw, len, baseX + sign * depth / 2, (gh + backH) / 2, 0, new THREE.Vector3(0, 0, 1), new THREE.Vector3(lx, ly, 0));
+    function netSide(zs) {
+      var geo = new THREE.BufferGeometry();
+      geo.setAttribute("position", new THREE.BufferAttribute(new Float32Array([baseX, 0, zs, baseX, gh, zs, baseX + sign * depth, backH, zs, baseX, 0, zs, baseX + sign * depth, backH, zs, baseX + sign * depth, 0, zs]), 3));
+      geo.setAttribute("uv", new THREE.BufferAttribute(new Float32Array([0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0]), 2));
+      geo.computeVertexNormals();
+      var t = netTex.clone(); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(4, 4); t.needsUpdate = true;
+      var m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map: t, transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false })); u.add(m); nets.push(m);
+    }
+    netSide(-gw / 2); netSide(gw / 2);
     // backboard on the frame above the crossbar, facing the court
     var boardY = gh + 0.2;
     var board = new THREE.Mesh(new THREE.PlaneGeometry(0.52, 0.32), new THREE.MeshStandardMaterial({ map: boardTex, transparent: true, side: THREE.DoubleSide })); board.position.set(baseX - sign * 0.015, boardY, 0); board.rotation.y = -sign * Math.PI / 2; board.castShadow = true; u.add(board);
@@ -367,24 +382,26 @@ function init() {
     for (var lx = -1; lx <= 1; lx++) for (var ly = 0; ly < 2; ly++) { var lamp = new THREE.Mesh(new THREE.BoxGeometry(0.115, 0.1, 0.04), lampMat); lamp.position.set(lx * 0.13, GY + 1.95 + ly * 0.105, 0.2); g.add(lamp); }
     g.position.set(px, 0, pz); g.rotation.y = Math.atan2(-px, -pz); group.add(g); renovOnly.push(g);
   }
-  floodlight(-(CX / 2 + 0.78), -(CZ / 2 + 0.66)); floodlight(CX / 2 + 0.78, -(CZ / 2 + 0.66)); floodlight(-(CX / 2 + 0.78), CZ / 2 + 0.66); floodlight(CX / 2 + 0.78, CZ / 2 + 0.66);
+  floodlight(-(CX / 2 - 0.2), -(CZ / 2 + 0.5)); floodlight(CX / 2 - 0.2, -(CZ / 2 + 0.5)); floodlight(-(CX / 2 - 0.2), CZ / 2 + 0.5); floodlight(CX / 2 - 0.2, CZ / 2 + 0.5);
 
   // smart equipment locker (Flip-the-Court app-unlocked gear cabinet) — modern, human scale, appears only when renovated
   (function locker() {
     var g = new THREE.Group();
-    var Wl = 0.4, Hl = 0.5, Dl = 0.22;
-    var steelB = new THREE.MeshStandardMaterial({ color: 0x2f343b, roughness: 0.35, metalness: 0.6 });
-    var doorM = new THREE.MeshStandardMaterial({ color: 0x3b424b, roughness: 0.45, metalness: 0.55 });
-    var accent = new THREE.MeshStandardMaterial({ color: 0x10B981, roughness: 0.5, emissive: new THREE.Color(0x10B981), emissiveIntensity: 0.3 });
-    var body = new THREE.Mesh(new THREE.BoxGeometry(Wl, Hl, Dl), steelB); body.position.y = GY + Hl / 2 + 0.02; body.castShadow = true; g.add(body);
-    var roof = new THREE.Mesh(new THREE.BoxGeometry(Wl + 0.06, 0.04, Dl + 0.1), steelB); roof.position.set(0, GY + Hl + 0.04, -0.02); roof.rotation.x = -0.12; roof.castShadow = true; g.add(roof);
-    var stripe = new THREE.Mesh(new THREE.BoxGeometry(Wl, 0.035, 0.006), accent); stripe.position.set(0, GY + Hl - 0.05, Dl / 2 + 0.002); g.add(stripe);
-    for (var dx = 0; dx < 2; dx++) for (var dy = 0; dy < 3; dy++) {
-      var px2 = -0.1 + dx * 0.2, py2 = GY + 0.12 + dy * 0.135;
-      var d = new THREE.Mesh(new THREE.BoxGeometry(0.17, 0.12, 0.012), doorM); d.position.set(px2, py2, Dl / 2); g.add(d);
-      var hnd = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.05, 0.012), new THREE.MeshStandardMaterial({ color: 0xc8ccd0, metalness: 0.7, roughness: 0.3 })); hnd.position.set(px2 + 0.06, py2, Dl / 2 + 0.012); g.add(hnd);
+    var Wl = 0.42, Hl = 0.52, Dl = 0.24;
+    var bodyMat = new THREE.MeshStandardMaterial({ color: 0x33383f, roughness: 0.4, metalness: 0.5 });
+    var doorMat = new THREE.MeshStandardMaterial({ color: 0x3d444c, roughness: 0.5, metalness: 0.45 });
+    var accent = new THREE.MeshStandardMaterial({ color: 0x10B981, emissive: new THREE.Color(0x10B981), emissiveIntensity: 0.35, roughness: 0.5 });
+    var base = new THREE.Mesh(new THREE.BoxGeometry(Wl + 0.04, 0.05, Dl + 0.04), new THREE.MeshStandardMaterial({ color: 0x202327, roughness: 0.7 })); base.position.y = GY + 0.025; g.add(base);
+    var body = new THREE.Mesh(new THREE.BoxGeometry(Wl, Hl, Dl), bodyMat); body.position.y = GY + 0.05 + Hl / 2; body.castShadow = true; g.add(body);
+    var cap = new THREE.Mesh(new THREE.BoxGeometry(Wl + 0.05, 0.04, Dl + 0.05), bodyMat); cap.position.y = GY + 0.05 + Hl + 0.02; cap.castShadow = true; g.add(cap);
+    var top = GY + 0.05 + Hl;
+    var header = new THREE.Mesh(new THREE.BoxGeometry(Wl, 0.1, 0.006), accent); header.position.set(0, top - 0.08, Dl / 2 + 0.002); g.add(header);
+    var scr = new THREE.Mesh(new THREE.PlaneGeometry(0.16, 0.07), new THREE.MeshStandardMaterial({ color: 0x06140e, emissive: new THREE.Color(0x10B981), emissiveIntensity: 0, roughness: 0.15, metalness: 0.4 })); scr.position.set(0, top - 0.08, Dl / 2 + 0.006); g.add(scr); lockerScreen = scr.material;
+    for (var dx = 0; dx < 2; dx++) for (var dy = 0; dy < 2; dy++) {
+      var px2 = -0.105 + dx * 0.21, py2 = GY + 0.17 + dy * 0.17;
+      var d = new THREE.Mesh(new THREE.BoxGeometry(0.185, 0.15, 0.014), doorMat); d.position.set(px2, py2, Dl / 2); g.add(d);
+      var hnd = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.05, 6), new THREE.MeshStandardMaterial({ color: 0xcfd3d6, metalness: 0.7, roughness: 0.3 })); hnd.rotation.z = Math.PI / 2; hnd.position.set(px2 + 0.05, py2, Dl / 2 + 0.012); g.add(hnd);
     }
-    var scr = new THREE.Mesh(new THREE.PlaneGeometry(0.22, 0.13), new THREE.MeshStandardMaterial({ color: 0x07120d, emissive: new THREE.Color(0x10B981), emissiveIntensity: 0, roughness: 0.15, metalness: 0.4 })); scr.position.set(0, GY + Hl - 0.17, Dl / 2 + 0.006); g.add(scr); lockerScreen = scr.material;
     g.position.set(-1.3, 0, -(CZ / 2 + 0.19)); group.add(g); renovOnly.push(g);
   })();
 
@@ -413,13 +430,20 @@ function init() {
     var fol = new THREE.MeshStandardMaterial({ color: 0x35632f, roughness: 1 });
     [[0, 0.62, 0, 0.3], [0.16, 0.55, 0.08, 0.2], [-0.13, 0.58, -0.06, 0.22], [0.05, 0.78, -0.04, 0.18]].forEach(function (f) { var s = new THREE.Mesh(new THREE.SphereGeometry(f[3], 10, 8), fol); s.position.set(x + f[0], GY + f[1], z + f[2]); s.castShadow = true; city.add(s); });
   }
-  tree(RX - 0.35, 0); tree(-(RX - 0.35), 0); tree(0, RZ - 0.35); tree(0, -(RZ - 0.35));
+  // trees behind the goals + one at the back — none in front of the entrance
+  tree(RX - 0.5, 0); tree(-(RX - 0.5), 0); tree(0, -(RZ - 0.45));
   (function bench() {
-    var g = new THREE.Group(); var wood = new THREE.MeshStandardMaterial({ color: 0x6f5436, roughness: 1 });
-    var seat = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.04, 0.16), wood); seat.position.y = 0.16; seat.castShadow = true; g.add(seat);
-    var bk = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.14, 0.03), wood); bk.position.set(0, 0.25, -0.07); g.add(bk);
-    [-0.22, 0.22].forEach(function (lx) { var l = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.16, 0.14), new THREE.MeshStandardMaterial({ color: 0x3a3a3a })); l.position.set(lx, 0.08, 0); g.add(l); });
-    g.position.set(1.0, GY, RZ - 0.85); g.rotation.y = Math.PI; city.add(g);
+    var g = new THREE.Group();
+    var wood = new THREE.MeshStandardMaterial({ map: texFrom(buildWood(), 1, 1), roughness: 0.85 });
+    var metal = new THREE.MeshStandardMaterial({ color: 0x33373d, roughness: 0.5, metalness: 0.6 });
+    for (var s = 0; s < 3; s++) { var pl = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.025, 0.07), wood); pl.position.set(0, GY + 0.2, -0.08 + s * 0.08); pl.castShadow = true; g.add(pl); }
+    for (var b2 = 0; b2 < 3; b2++) { var bs = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.045, 0.02), wood); bs.position.set(0, GY + 0.29 + b2 * 0.06, -0.1); bs.castShadow = true; g.add(bs); }
+    [-0.26, 0.26].forEach(function (lx) {
+      var front = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.2, 0.03), metal); front.position.set(lx, GY + 0.1, 0.08); front.castShadow = true; g.add(front);
+      var back = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.32, 0.03), metal); back.position.set(lx, GY + 0.16, -0.1); back.castShadow = true; g.add(back);
+      var foot = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.02, 0.24), metal); foot.position.set(lx, GY + 0.01, -0.01); g.add(foot);
+    });
+    g.position.set(1.0, 0, RZ - 0.85); g.rotation.y = Math.PI; city.add(g);
   })();
 
   // campaign posters hung on the back fence — appear only after renovation
@@ -453,7 +477,7 @@ function init() {
 
   // two balls
   function makeBall(tex, rad, rough) { var b = new THREE.Mesh(new THREE.SphereGeometry(rad, 40, 26), new THREE.MeshStandardMaterial({ map: tex, roughness: rough, metalness: 0.03 })); b.castShadow = true; b.position.y = rad; group.add(b); return { mesh: b, rad: rad, x: 0, y: rad, z: 0, vx: 0, vy: 0, vz: 0, physics: false, grabbed: false, rest: 0, ph: 0, fr: 2, hgt: 0.4 }; }
-  var basket = makeBall(texFrom(buildBasketball()), 0.092, 0.9); basket.x = -0.6; basket.z = 0.2; basket.vx = 0.009; basket.vz = 0.006; basket.fr = 2.4; basket.hgt = 0.5;
+  var basket = makeBall(texFrom(buildBasketball()), 0.092, 0.82); basket.x = -0.6; basket.z = 0.2; basket.vx = 0.009; basket.vz = 0.006; basket.fr = 2.4; basket.hgt = 0.5;
   var soccer = makeBall(texFrom(buildSoccer()), 0.086, 0.42); soccer.x = 0.5; soccer.z = -0.25; soccer.vx = -0.008; soccer.vz = 0.01; soccer.ph = 1.4; soccer.fr = 2.0; soccer.hgt = 0.42;
   var balls = [basket, soccer];
 
