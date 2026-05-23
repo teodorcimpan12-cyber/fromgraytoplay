@@ -657,6 +657,56 @@ T.en.feedCheckin = "{name} checked in at {court}";
 T.en.feedPetition = "{name} signed the petition";
 T.en.feedReport = "{name} reported a problem at {court}";
 
+/* B2 — Play Now / pickup games */
+T.ro.playNow = "Joc acum";
+T.ro.playNowSub = "Organizează un joc spontan";
+T.ro.sport = "Sport";
+T.ro.maxPlayers = "Jucători maxim";
+T.ro.gameNote = "Notă (opțional)";
+T.ro.gameNotePh = "ex: nivelul e mediu, aduceți minge...";
+T.ro.startGame = "Pornește jocul";
+T.ro.joinGame = "Alătură-te";
+T.ro.activeGames = "Jocuri active";
+T.ro.noGames = "Niciun joc activ momentan.";
+T.ro.players = "jucători";
+T.ro.gameCreated = "Joc creat! Succes!";
+T.ro.gameJoined = "Te-ai alăturat jocului!";
+T.ro.gameFull = "Jocul e complet!";
+T.ro.feedGame = "{name} a pornit un joc la {court}";
+T.ro.feedJoin = "{name} s-a alăturat unui joc la {court}";
+T.en.playNow = "Play now";
+T.en.playNowSub = "Organise a pickup game";
+T.en.sport = "Sport";
+T.en.maxPlayers = "Max players";
+T.en.gameNote = "Note (optional)";
+T.en.gameNotePh = "e.g. mid level, bring a ball...";
+T.en.startGame = "Start game";
+T.en.joinGame = "Join";
+T.en.activeGames = "Active games";
+T.en.noGames = "No active games right now.";
+T.en.players = "players";
+T.en.gameCreated = "Game started! Good luck!";
+T.en.gameJoined = "You joined the game!";
+T.en.gameFull = "Game is full!";
+T.en.feedGame = "{name} started a game at {court}";
+T.en.feedJoin = "{name} joined a game at {court}";
+T.hu.playNow = "Játszani most"; // TODO: HU review
+T.hu.playNowSub = "Szervezz alkalmi meccset"; // TODO: HU review
+T.hu.sport = "Sport";
+T.hu.maxPlayers = "Max játékos";
+T.hu.gameNote = "Megjegyzés (opcionális)";
+T.hu.gameNotePh = "pl. közepes szint, hozzatok labdát...";
+T.hu.startGame = "Játék indítása";
+T.hu.joinGame = "Csatlakozás";
+T.hu.activeGames = "Aktív játékok";
+T.hu.noGames = "Nincs aktív játék most.";
+T.hu.players = "játékos";
+T.hu.gameCreated = "Játék elindítva!";
+T.hu.gameJoined = "Csatlakoztál a játékhoz!";
+T.hu.gameFull = "A játék megtelt!";
+T.hu.feedGame = "{name} játékot indított: {court}"; // TODO: HU review
+T.hu.feedJoin = "{name} csatlakozott egy játékhoz: {court}"; // TODO: HU review
+
 
 /* === 3D hero strings (RO/EN/HU). HU draft — // TODO: HU review === */
 T.ro.heroKicker = "Târgu Mureş · teren multifuncțional";
@@ -2202,12 +2252,14 @@ function CourtsPage() {
   const [showRep, setShowRep] = useState(false);
   const [showBook, setShowBook] = useState(false);
   const fbCourts = useFirebase("courts");
+  const allGames = useFirebase("games");
   const extra = fbCourts ? Object.entries(fbCourts).map(([id, c]) => ({
     id,
     ...c
   })) : [];
   const all = [...COURTS, ...extra];
   const filtered = all.filter(c => (filter === "all" || c.status === filter) && (hood === "all" || c.neighbourhood === hood));
+  const gameCountFor = id => allGames && allGames[id] ? Object.keys(allGames[id]).length : 0;
   return /*#__PURE__*/React.createElement("div", {
     className: "animate-in"
   }, /*#__PURE__*/React.createElement("section", {
@@ -2295,7 +2347,12 @@ function CourtsPage() {
     style: { background: getCourtWeather(c.condition, t).color + "22", color: getCourtWeather(c.condition, t).color, marginRight: ".3rem" }
   }, getCourtWeather(c.condition, t).icon, " ", getCourtWeather(c.condition, t).label), /*#__PURE__*/React.createElement("span", {
     className: `badge ${c.status === "degraded" ? "badge-red" : c.status === "inProgress" ? "badge-coral" : "badge-green"}`
-  }, c.status === "degraded" ? t.degraded : c.status === "inProgress" ? t.inProgress : t.renovated)), /*#__PURE__*/React.createElement("div", {
+  }, c.status === "degraded" ? t.degraded : c.status === "inProgress" ? t.inProgress : t.renovated),
+  gameCountFor(c.id) > 0 && /*#__PURE__*/React.createElement("span", {
+    className: "badge badge-coral",
+    style: { animation: "livePing 1.5s infinite" }
+  }, "⚽ ", gameCountFor(c.id), " ", t.activeGames)
+  ), /*#__PURE__*/React.createElement("div", {
     className: "progress-bar mt-1"
   }, /*#__PURE__*/React.createElement("div", {
     className: "progress-fill",
@@ -2345,8 +2402,11 @@ function CourtDetail({
     user
   } = useApp();
   const [ci, setCi] = useState(false);
+  const [showPlay, setShowPlay] = useState(false);
   const liveCI = useFirebase("courts/" + c.id + "/checkins");
   const cnt = liveCI ? Object.keys(liveCI).length : 0;
+  const liveGames = useFirebase("games/" + c.id);
+  const gameCount = liveGames ? Object.keys(liveGames).length : 0;
   const gallery = useFirebase("gallery");
   const courtPhotos = gallery ? Object.entries(gallery).map(([id, g]) => ({ id, ...g })).filter(p => p.courtId === c.id).reverse() : [];
   const occ = cnt === 0 ? "empty" : cnt < 5 ? "active" : "full";
@@ -2439,12 +2499,22 @@ function CourtDetail({
       height: 110,
       borderRadius: 8
     }
-  }), /*#__PURE__*/React.createElement("div", {
+  }),
+  React.createElement("h4", { className: "mb-1 mt-2" },
+    React.createElement("span", { className: "live-dot", style:{ display:"inline-block", verticalAlign:"middle", marginRight:".35rem" } }),
+    t.activeGames, gameCount > 0 ? " (" + gameCount + ")" : ""
+  ),
+  React.createElement(ActiveGames, { court: c }),
+  /*#__PURE__*/React.createElement("div", {
     className: "flex gap-1 mt-2"
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-green btn-sm",
     onClick: onBook
-  }, "\uD83D\uDCC5 ", t.bookCourt), !ci ? /*#__PURE__*/React.createElement("button", {
+  }, "\uD83D\uDCC5 ", t.bookCourt), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm",
+    style: { background: "var(--coral)", color: "#fff" },
+    onClick: () => setShowPlay(true)
+  }, "\u26BD ", t.playNow), !ci ? /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline btn-sm",
     onClick: doCI
   }, "\uD83D\uDCCD ", t.checkIn) : /*#__PURE__*/React.createElement("button", {
@@ -2454,7 +2524,9 @@ function CourtDetail({
       color: "#fff"
     },
     onClick: doCO
-  }, "\uD83D\uDCCD ", t.checkOut))));
+  }, "\uD83D\uDCCD ", t.checkOut))),
+  showPlay && React.createElement(PlayNowModal, { court: c, onClose: () => setShowPlay(false) })
+  );
 }
 
 /* === Report Modal === */
@@ -2711,6 +2783,98 @@ function BookingModal({
     className: "btn btn-outline",
     onClick: onClose
   }, t.cancel))));
+}
+
+/* === Play Now Modal (B2) === */
+function PlayNowModal({ court, onClose }) {
+  const { t, toast, user } = useApp();
+  const SPORTS = ["basketball","football","handball","tennis","multiuse"];
+  const [sport, setSport] = useState("basketball");
+  const [max, setMax] = useState(6);
+  const [note, setNote] = useState("");
+  const [busy, setBusy] = useState(false);
+  const submit = () => {
+    setBusy(true);
+    const name = user?.name || "Anonim";
+    const ref = db.ref("games/" + court.id).push({
+      sport, maxPlayers: max, note: note.trim(),
+      createdBy: name, playerCount: 1, timestamp: Date.now()
+    });
+    logActivity("game", name, court.id);
+    setTimeout(() => ref.remove(), 7200000);
+    toast(t.gameCreated);
+    setBusy(false);
+    onClose();
+  };
+  return React.createElement("div", { className: "modal-overlay", onClick: onClose },
+    React.createElement("div", { className: "modal", onClick: e => e.stopPropagation() },
+      React.createElement("div", { className: "flex justify-between items-center mb-2" },
+        React.createElement("h2", null, "⚽ ", t.playNow),
+        React.createElement("button", { onClick: onClose, style: { background:"none",border:"none",fontSize:"1.4rem",color:"var(--text)" } }, "✕")
+      ),
+      React.createElement("p", { className: "text-sm mb-2", style: { color:"var(--textSec)" } }, t.playNowSub, " — ", court.name),
+      React.createElement("label", { className: "text-xs mb-1", style: { display:"block", fontWeight:600 } }, t.sport),
+      React.createElement("div", { className: "flex gap-1 mb-2", style: { flexWrap:"wrap" } },
+        SPORTS.map(s => React.createElement("button", {
+          key: s,
+          className: "btn btn-sm " + (sport === s ? "btn-green" : "btn-outline"),
+          onClick: () => setSport(s)
+        }, t[s]))
+      ),
+      React.createElement("label", { className: "text-xs mb-1", style: { display:"block", fontWeight:600 } }, t.maxPlayers),
+      React.createElement("div", { className: "flex gap-1 mb-2", style: { flexWrap:"wrap" } },
+        [2,4,6,8,10].map(n => React.createElement("button", {
+          key: n,
+          className: "btn btn-sm " + (max === n ? "btn-green" : "btn-outline"),
+          onClick: () => setMax(n)
+        }, n))
+      ),
+      React.createElement("input", {
+        placeholder: t.gameNotePh,
+        value: note, onChange: e => setNote(e.target.value),
+        className: "mb-2"
+      }),
+      React.createElement("div", { className: "flex gap-1" },
+        React.createElement("button", { className: "btn btn-green btn-block", onClick: submit, disabled: busy }, t.startGame),
+        React.createElement("button", { className: "btn btn-outline", onClick: onClose }, t.cancel)
+      )
+    )
+  );
+}
+
+/* === Active Games list shown inside CourtDetail (B2) === */
+function ActiveGames({ court }) {
+  const { t, toast, user } = useApp();
+  const raw = useFirebase("games/" + court.id);
+  const games = raw ? Object.entries(raw).map(([id, g]) => ({ id, ...g })) : [];
+  if (games.length === 0) return React.createElement("p", { className: "text-sm", style: { color:"var(--textSec)" } }, t.noGames);
+  const join = (g) => {
+    if (g.playerCount >= g.maxPlayers) { toast(t.gameFull); return; }
+    db.ref("games/" + court.id + "/" + g.id + "/playerCount").transaction(v => (v || 0) + 1);
+    logActivity("join", user?.name || "Anonim", court.id);
+    toast(t.gameJoined);
+  };
+  return React.createElement("div", { className: "grid gap-1" },
+    games.map(g => React.createElement("div", { key: g.id, className: "card", style: { padding:".6rem .9rem" } },
+      React.createElement("div", { className: "flex justify-between items-center" },
+        React.createElement("div", null,
+          React.createElement("span", { className: "badge badge-green", style:{ marginRight:".4rem" } }, t[g.sport] || g.sport),
+          React.createElement("span", { className: "text-xs", style:{ color:"var(--textSec)" } }, g.createdBy)
+        ),
+        React.createElement("div", { className: "flex items-center gap-1" },
+          React.createElement("span", { className: "barlow", style:{ fontSize:"1rem", fontWeight:700 } },
+            g.playerCount, "/", g.maxPlayers, " ", t.players),
+          React.createElement("button", {
+            className: "btn btn-green btn-sm",
+            onClick: () => join(g),
+            disabled: g.playerCount >= g.maxPlayers,
+            style: { opacity: g.playerCount >= g.maxPlayers ? .5 : 1 }
+          }, t.joinGame)
+        )
+      ),
+      g.note ? React.createElement("p", { className: "text-xs mt-1", style:{ color:"var(--textSec)" } }, g.note) : null
+    ))
+  );
 }
 
 /* === Petition === */
@@ -3090,7 +3254,7 @@ function ActivityFeed() {
     ? Object.entries(data).map(([id, a]) => ({ id, ...a })).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).slice(0, 30)
     : [];
   const COURT_NAMES = COURTS.reduce((acc, c) => (acc[c.id] = c.name, acc), {});
-  const ICONS = { "check-in": "🏀", petition: "✍️", photo: "📸", report: "⚠️", game: "🎯" };
+  const ICONS = { "check-in": "🏀", petition: "✍️", photo: "📸", report: "⚠️", game: "⚽", join: "🤝" };
   const msgFor = a => {
     const courtName = a.courtId ? (COURT_NAMES[a.courtId] || a.courtId) : "";
     const tplKey = "feed" + (a.type === "check-in" ? "Checkin" : (a.type || "").charAt(0).toUpperCase() + (a.type || "").slice(1));

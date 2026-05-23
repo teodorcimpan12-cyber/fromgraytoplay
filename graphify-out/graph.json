@@ -34,6 +34,8 @@
     { "id": "ActivityFeed",  "type": "component", "line": 3086, "desc": "Feed live activity/ Firebase (ultimele 30). Live-dot pe cel mai recent." },
     { "id": "QuickReportFAB","type": "component", "line": 5220, "desc": "FAB verde fix bottom-right. Deschide QuickReportModal." },
     { "id": "QuickReportModal","type":"component","line": 5228, "desc": "Modal 3 pași: categorie → descriere+foto → teren+geo. Scrie în reports/ și activity/." },
+    { "id": "PlayNowModal",  "type": "component", "line": 2767, "desc": "Modal B2: creează un joc spontan. Sport, maxPlayers, notă. Scrie în games/{courtId}/ + activity/." },
+    { "id": "ActiveGames",   "type": "component", "line": 2824, "desc": "Lista jocuri active dintr-un teren. Join incrementează playerCount via transaction. Citit în CourtDetail." },
     { "id": "ReportTimeline","type": "component", "line": 5332, "desc": "Timeline vizual 4 pași: Primit→Analiză→Planificat→Rezolvat." },
     { "id": "Footer",        "type": "component", "line": 5449, "desc": "Footer static cu link-uri." },
 
@@ -71,7 +73,8 @@
     { "id": "fb/leaderboard",  "type": "firebase", "desc": "{ name, points, actions }. Actualizat la petition + help signups." },
     { "id": "fb/courts",       "type": "firebase", "desc": "Terenuri adăugate din AdminPanel (suplimentar față de COURTS static)." },
     { "id": "fb/users",        "type": "firebase", "desc": "{ name, avatar, bio, ... }. Actualizat din ProfilePage." },
-    { "id": "fb/partnerRequests","type":"firebase","desc": "Cereri parteneriat din AboutPage." }
+    { "id": "fb/partnerRequests","type":"firebase","desc": "Cereri parteneriat din AboutPage." },
+    { "id": "fb/games",          "type": "firebase", "desc": "{ sport, maxPlayers, playerCount, createdBy, note, timestamp }. Scoped per courtId: games/{courtId}/{gameId}. Auto-remove după 2h. B2." }
   ],
 
   "edges": [
@@ -83,11 +86,19 @@
     { "from": "CourtsPage",     "to": "MapView",         "rel": "renders" },
     { "from": "CourtsPage",     "to": "CourtDetail",     "rel": "navigates-to" },
     { "from": "CourtsPage",     "to": "fb/courts",       "rel": "reads" },
+    { "from": "CourtsPage",     "to": "fb/games",        "rel": "reads" },
     { "from": "CourtDetail",    "to": "ReportModal",     "rel": "renders" },
     { "from": "CourtDetail",    "to": "BookingModal",    "rel": "renders" },
     { "from": "CourtDetail",    "to": "LetterModal",     "rel": "renders" },
+    { "from": "CourtDetail",    "to": "PlayNowModal",    "rel": "renders" },
+    { "from": "CourtDetail",    "to": "ActiveGames",     "rel": "renders" },
     { "from": "CourtDetail",    "to": "fb/courts/{id}/checkins", "rel": "reads+writes" },
+    { "from": "CourtDetail",    "to": "fb/games",        "rel": "reads" },
     { "from": "CourtDetail",    "to": "fb/gallery",      "rel": "reads" },
+    { "from": "PlayNowModal",   "to": "fb/games",        "rel": "writes" },
+    { "from": "PlayNowModal",   "to": "fb/activity",     "rel": "writes" },
+    { "from": "ActiveGames",    "to": "fb/games",        "rel": "reads+writes" },
+    { "from": "ActiveGames",    "to": "fb/activity",     "rel": "writes" },
     { "from": "CourtDetail",    "to": "logActivity",     "rel": "calls" },
 
     { "from": "ReportsPage",    "to": "QuickReportFAB",  "rel": "renders" },
