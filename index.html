@@ -241,6 +241,20 @@ function useFirebase(path) {
   return data;
 }
 
+/* B3 — follow / unfollow per voterKey */
+function useFollows() {
+  const vk = getVoterKey ? getVoterKey() : (localStorage.getItem("g2p_vk") || "");
+  const raw = useFirebase(vk ? "follows/" + vk : null);
+  const follows = raw || {};
+  const isFollowing = id => !!follows[id];
+  const toggle = id => {
+    if (!vk) return;
+    if (follows[id]) db.ref("follows/" + vk + "/" + id).remove();
+    else db.ref("follows/" + vk + "/" + id).set(true);
+  };
+  return { follows, isFollowing, toggle };
+}
+
 /* === i18n === */
 const T = {
   ro: {
@@ -706,6 +720,26 @@ T.hu.gameJoined = "Csatlakoztál a játékhoz!";
 T.hu.gameFull = "A játék megtelt!";
 T.hu.feedGame = "{name} játékot indított: {court}"; // TODO: HU review
 T.hu.feedJoin = "{name} csatlakozott egy játékhoz: {court}"; // TODO: HU review
+
+/* B3 — Follow court + notifications */
+T.ro.follow = "Urmărește";
+T.ro.unfollow = "Urmărești";
+T.ro.notifications = "Notificări";
+T.ro.notifNone = "Nicio activitate la terenurile urmărite.";
+T.ro.followedCourts = "Terenuri urmărite";
+T.ro.markRead = "Marchează toate citite";
+T.en.follow = "Follow";
+T.en.unfollow = "Following";
+T.en.notifications = "Notifications";
+T.en.notifNone = "No activity at your followed courts.";
+T.en.followedCourts = "Followed courts";
+T.en.markRead = "Mark all read";
+T.hu.follow = "Követés"; // TODO: HU review
+T.hu.unfollow = "Követed"; // TODO: HU review
+T.hu.notifications = "Értesítések"; // TODO: HU review
+T.hu.notifNone = "Nincs tevékenység a követett pályákon."; // TODO: HU review
+T.hu.followedCourts = "Követett pályák"; // TODO: HU review
+T.hu.markRead = "Mind olvasottnak jelöl"; // TODO: HU review
 
 
 /* === 3D hero strings (RO/EN/HU). HU draft — // TODO: HU review === */
@@ -1225,6 +1259,69 @@ function InstallBanner({
 }
 
 /* === Navbar === */
+/* B3 — Notifications panel */
+function NotifPanel({ onClose }) {
+  const { t } = useApp();
+  const { follows } = useFollows();
+  const followedIds = Object.keys(follows);
+  const actData = useFirebase("activity");
+  const COURT_NAMES = COURTS.reduce((acc, c) => (acc[c.id] = c.name, acc), {});
+  const ICONS = { "check-in": "🏀", petition: "✍️", photo: "📸", report: "⚠️", game: "⚽", join: "🤝" };
+  const seen = parseInt(localStorage.getItem("g2p_notif_seen") || "0", 10);
+  const items = actData
+    ? Object.entries(actData)
+        .map(([id, a]) => ({ id, ...a }))
+        .filter(a => a.courtId && followedIds.includes(a.courtId))
+        .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))
+        .slice(0, 20)
+    : [];
+  const markRead = () => {
+    localStorage.setItem("g2p_notif_seen", String(Date.now()));
+    onClose();
+  };
+  const ago = ts => {
+    if (!ts) return "—";
+    const s = Math.floor((Date.now() - ts) / 1000);
+    if (s < 60) return s + "s";
+    if (s < 3600) return Math.floor(s / 60) + "m";
+    if (s < 86400) return Math.floor(s / 3600) + "h";
+    return Math.floor(s / 86400) + "d";
+  };
+  return React.createElement("div", {
+    style: {
+      position: "fixed", top: "64px", right: "1rem", width: "320px", maxWidth: "calc(100vw - 2rem)",
+      background: "var(--bgCard)", border: "1px solid var(--border)", borderRadius: "var(--radius)",
+      boxShadow: "0 8px 32px rgba(0,0,0,.18)", zIndex: 400, maxHeight: "70vh", display: "flex", flexDirection: "column"
+    }
+  },
+    React.createElement("div", { style: { padding: ".8rem 1rem", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" } },
+      React.createElement("strong", { style: { fontFamily: "'Space Mono',monospace", fontSize: ".9rem" } }, "🔔 ", t.notifications),
+      React.createElement("button", { onClick: markRead, style: { background: "none", border: "none", fontSize: ".75rem", color: "var(--green)", cursor: "pointer", fontWeight: 600 } }, t.markRead)
+    ),
+    React.createElement("div", { style: { overflowY: "auto", flex: 1 } },
+      items.length === 0
+        ? React.createElement("p", { style: { padding: "1rem", color: "var(--textSec)", fontSize: ".88rem" } }, t.notifNone)
+        : items.map(a => React.createElement("div", {
+            key: a.id,
+            style: {
+              display: "flex", gap: ".6rem", alignItems: "center", padding: ".65rem 1rem",
+              borderBottom: "1px solid var(--border)",
+              background: (a.timestamp || 0) > seen ? "var(--green)12" : "transparent"
+            }
+          },
+            React.createElement("span", { style: { fontSize: "1.1rem", flexShrink: 0 } }, ICONS[a.type] || "•"),
+            React.createElement("div", { style: { flex: 1, minWidth: 0 } },
+              React.createElement("p", { style: { margin: 0, fontSize: ".82rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } },
+                React.createElement("strong", null, COURT_NAMES[a.courtId] || a.courtId), " · ", a.userName || "Anon"
+              ),
+              React.createElement("time", { style: { fontSize: ".7rem", color: "var(--textSec)", fontFamily: "'Space Mono',monospace" } }, ago(a.timestamp), " ago")
+            ),
+            (a.timestamp || 0) > seen && React.createElement("span", { style: { width: 8, height: 8, borderRadius: "50%", background: "var(--green)", flexShrink: 0 } })
+          ))
+    )
+  );
+}
+
 function Navbar() {
   const {
     t,
@@ -1237,6 +1334,14 @@ function Navbar() {
     user
   } = useApp();
   const [mob, setMob] = useState(false);
+  const [showNotif, setShowNotif] = useState(false);
+  const { follows } = useFollows();
+  const followedIds = Object.keys(follows);
+  const actData = useFirebase(followedIds.length > 0 ? "activity" : null);
+  const seen = parseInt(localStorage.getItem("g2p_notif_seen") || "0", 10);
+  const unreadCount = actData && followedIds.length > 0
+    ? Object.values(actData).filter(a => a.courtId && followedIds.includes(a.courtId) && (a.timestamp || 0) > seen).length
+    : 0;
   const navs = [{
     k: "home",
     l: t.home
@@ -1296,14 +1401,25 @@ function Navbar() {
     l: n.l
   })), /*#__PURE__*/React.createElement("button", {
     onClick: () => setPage("profile")
-  }, user ? "👤 " + (user.name || t.profile) : t.signIn), /*#__PURE__*/React.createElement("button", {
+  }, user ? "👤 " + (user.name || t.profile) : t.signIn),
+  /*#__PURE__*/React.createElement("button", {
+    onClick: () => setShowNotif(v => !v),
+    style: { position: "relative" },
+    title: t.notifications
+  }, "🔔", unreadCount > 0 && /*#__PURE__*/React.createElement("span", {
+    style: { position:"absolute", top:"-4px", right:"-6px", background:"var(--coral)", color:"#fff", borderRadius:"50%", fontSize:".6rem", fontWeight:700, minWidth:"16px", height:"16px", lineHeight:"16px", textAlign:"center", padding:"0 2px" }
+  }, unreadCount > 9 ? "9+" : unreadCount)),
+  /*#__PURE__*/React.createElement("button", {
     onClick: () => setLang(nextLang(lang))
   }, t.language), /*#__PURE__*/React.createElement("button", {
     onClick: () => setTheme(theme === "dark" ? "light" : "dark")
   }, theme === "dark" ? "☀️" : "🌙")), /*#__PURE__*/React.createElement("button", {
     className: "hamburger",
     onClick: () => setMob(true)
-  }, "\u2630"))), mob && /*#__PURE__*/React.createElement("div", {
+  }, "\u2630"))),
+  showNotif && /*#__PURE__*/React.createElement(NotifPanel, { onClose: () => setShowNotif(false) }),
+  showNotif && /*#__PURE__*/React.createElement("div", { style: { position:"fixed",inset:0,zIndex:399 }, onClick: () => setShowNotif(false) }),
+  mob && /*#__PURE__*/React.createElement("div", {
     className: "mobile-menu"
   }, /*#__PURE__*/React.createElement("button", {
     className: "mobile-close",
@@ -2403,6 +2519,8 @@ function CourtDetail({
   } = useApp();
   const [ci, setCi] = useState(false);
   const [showPlay, setShowPlay] = useState(false);
+  const { isFollowing, toggle: toggleFollow } = useFollows();
+  const following = isFollowing(c.id);
   const liveCI = useFirebase("courts/" + c.id + "/checkins");
   const cnt = liveCI ? Object.keys(liveCI).length : 0;
   const liveGames = useFirebase("games/" + c.id);
@@ -2524,7 +2642,13 @@ function CourtDetail({
       color: "#fff"
     },
     onClick: doCO
-  }, "\uD83D\uDCCD ", t.checkOut))),
+  }, "\uD83D\uDCCD ", t.checkOut),
+  /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-sm " + (following ? "btn-outline" : ""),
+    style: following ? { borderColor:"var(--teal)", color:"var(--teal)" } : { background:"var(--teal)", color:"#fff" },
+    onClick: () => toggleFollow(c.id),
+    title: following ? t.unfollow : t.follow
+  }, following ? "\uD83D\uDD15 " + t.unfollow : "\uD83D\uDD14 " + t.follow))),
   showPlay && React.createElement(PlayNowModal, { court: c, onClose: () => setShowPlay(false) })
   );
 }

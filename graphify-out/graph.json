@@ -34,8 +34,10 @@
     { "id": "ActivityFeed",  "type": "component", "line": 3086, "desc": "Feed live activity/ Firebase (ultimele 30). Live-dot pe cel mai recent." },
     { "id": "QuickReportFAB","type": "component", "line": 5220, "desc": "FAB verde fix bottom-right. Deschide QuickReportModal." },
     { "id": "QuickReportModal","type":"component","line": 5228, "desc": "Modal 3 pași: categorie → descriere+foto → teren+geo. Scrie în reports/ și activity/." },
-    { "id": "PlayNowModal",  "type": "component", "line": 2767, "desc": "Modal B2: creează un joc spontan. Sport, maxPlayers, notă. Scrie în games/{courtId}/ + activity/." },
-    { "id": "ActiveGames",   "type": "component", "line": 2824, "desc": "Lista jocuri active dintr-un teren. Join incrementează playerCount via transaction. Citit în CourtDetail." },
+    { "id": "PlayNowModal",  "type": "component", "line": 2930, "desc": "Modal B2: creează un joc spontan. Sport, maxPlayers, notă. Scrie în games/{courtId}/ + activity/." },
+    { "id": "ActiveGames",   "type": "component", "line": 2987, "desc": "Lista jocuri active dintr-un teren. Join incrementează playerCount via transaction. Citit în CourtDetail." },
+    { "id": "NotifPanel",    "type": "component", "line": 1262, "desc": "B3: panou notificări dropdown în Navbar. Filtrează activity/ după follows/{vk}. Unread = newer than g2p_notif_seen." },
+    { "id": "useFollows",    "type": "hook",      "line": 245,  "desc": "B3: citește follows/{voterKey}/ din Firebase. Returnează { follows, isFollowing(id), toggle(id) }." },
     { "id": "ReportTimeline","type": "component", "line": 5332, "desc": "Timeline vizual 4 pași: Primit→Analiză→Planificat→Rezolvat." },
     { "id": "Footer",        "type": "component", "line": 5449, "desc": "Footer static cu link-uri." },
 
@@ -74,7 +76,8 @@
     { "id": "fb/courts",       "type": "firebase", "desc": "Terenuri adăugate din AdminPanel (suplimentar față de COURTS static)." },
     { "id": "fb/users",        "type": "firebase", "desc": "{ name, avatar, bio, ... }. Actualizat din ProfilePage." },
     { "id": "fb/partnerRequests","type":"firebase","desc": "Cereri parteneriat din AboutPage." },
-    { "id": "fb/games",          "type": "firebase", "desc": "{ sport, maxPlayers, playerCount, createdBy, note, timestamp }. Scoped per courtId: games/{courtId}/{gameId}. Auto-remove după 2h. B2." }
+    { "id": "fb/games",          "type": "firebase", "desc": "{ sport, maxPlayers, playerCount, createdBy, note, timestamp }. Scoped per courtId: games/{courtId}/{gameId}. Auto-remove după 2h. B2." },
+    { "id": "fb/follows",        "type": "firebase", "desc": "follows/{voterKey}/{courtId}: true. Toggle din CourtDetail. Citit de Navbar și NotifPanel pentru badge unread. B3." }
   ],
 
   "edges": [
@@ -92,6 +95,12 @@
     { "from": "CourtDetail",    "to": "LetterModal",     "rel": "renders" },
     { "from": "CourtDetail",    "to": "PlayNowModal",    "rel": "renders" },
     { "from": "CourtDetail",    "to": "ActiveGames",     "rel": "renders" },
+    { "from": "CourtDetail",    "to": "fb/follows",      "rel": "reads+writes" },
+    { "from": "Navbar",         "to": "NotifPanel",      "rel": "renders" },
+    { "from": "Navbar",         "to": "fb/activity",     "rel": "reads" },
+    { "from": "Navbar",         "to": "fb/follows",      "rel": "reads" },
+    { "from": "NotifPanel",     "to": "fb/activity",     "rel": "reads" },
+    { "from": "NotifPanel",     "to": "fb/follows",      "rel": "reads" },
     { "from": "CourtDetail",    "to": "fb/courts/{id}/checkins", "rel": "reads+writes" },
     { "from": "CourtDetail",    "to": "fb/games",        "rel": "reads" },
     { "from": "CourtDetail",    "to": "fb/gallery",      "rel": "reads" },
