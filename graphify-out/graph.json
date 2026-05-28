@@ -397,6 +397,59 @@
       "type": "util",
       "line": 945,
       "desc": "B8: Web Share API cu fallback clipboard. shareCourt(court, t, toast) → navigator.share sau clipboard.writeText."
+    },
+    {
+      "id": "useCountUp",
+      "type": "hook",
+      "line": 319,
+      "desc": "Polish: animație count-up cu requestAnimationFrame, ease-out cubic. Respectă prefers-reduced-motion."
+    },
+    {
+      "id": "useReveal",
+      "type": "hook",
+      "line": 342,
+      "desc": "Polish: IntersectionObserver scroll-reveal. Atașează ref, adaugă clasa .in la intrare în viewport."
+    },
+    {
+      "id": "StatTile",
+      "type": "component",
+      "line": 2369,
+      "desc": "Polish: tile statistică cu count-up + glow colorat. Folosit în hero HomePage."
+    },
+    {
+      "id": "RadarChart",
+      "type": "component",
+      "line": 2668,
+      "desc": "#3.1: radar chart SVG pur (fără librărie) pentru 4 dimensiuni rating."
+    },
+    {
+      "id": "StarPicker",
+      "type": "component",
+      "line": 2690,
+      "desc": "#3.1: input stele 1-5 pentru o dimensiune de rating."
+    },
+    {
+      "id": "RatingSection",
+      "type": "component",
+      "line": 2700,
+      "desc": "#3.1: secțiune evaluare teren (suprafață/iluminat/echipament/siguranță). Radar + bare medii. Scrie ratings/{courtId}/{voterKey}. În CourtDetail."
+    },
+    {
+      "id": "DossierButton",
+      "type": "component",
+      "line": 4294,
+      "desc": "#2.3: generează dosar PDF complet (cover, stats, terenuri, sesizări, dovezi foto) cu jsPDF. În ImpactPage."
+    },
+    {
+      "id": "fb/ratings",
+      "type": "firebase",
+      "desc": "ratings/{courtId}/{voterKey}: {surface,lighting,equipment,safety,userName,ts}. Scris de RatingSection. #3.1."
+    },
+    {
+      "id": "jsPDF",
+      "type": "external",
+      "line": 0,
+      "desc": "window.jspdf.jsPDF (CDN unpkg). Folosit pentru export PDF: LetterModal + DossierButton."
     }
   ],
   "edges": [
@@ -788,6 +841,76 @@
     {
       "from": "CourtDetail",
       "to": "shareCourt",
+      "rel": "calls"
+    },
+    {
+      "from": "HomePage",
+      "to": "StatTile",
+      "rel": "renders"
+    },
+    {
+      "from": "StatTile",
+      "to": "useCountUp",
+      "rel": "calls"
+    },
+    {
+      "from": "HomePage",
+      "to": "useReveal",
+      "rel": "calls"
+    },
+    {
+      "from": "CourtDetail",
+      "to": "RatingSection",
+      "rel": "renders"
+    },
+    {
+      "from": "RatingSection",
+      "to": "RadarChart",
+      "rel": "renders"
+    },
+    {
+      "from": "RatingSection",
+      "to": "StarPicker",
+      "rel": "renders"
+    },
+    {
+      "from": "RatingSection",
+      "to": "fb/ratings",
+      "rel": "reads+writes"
+    },
+    {
+      "from": "ImpactPage",
+      "to": "DossierButton",
+      "rel": "renders"
+    },
+    {
+      "from": "DossierButton",
+      "to": "fb/votes",
+      "rel": "reads"
+    },
+    {
+      "from": "DossierButton",
+      "to": "fb/signups",
+      "rel": "reads"
+    },
+    {
+      "from": "DossierButton",
+      "to": "fb/reports",
+      "rel": "reads"
+    },
+    {
+      "from": "DossierButton",
+      "to": "fb/gallery",
+      "rel": "reads"
+    },
+    {
+      "from": "LetterModal",
+      "to": "jsPDF",
+      "rel": "calls"
+    },
+    {
+      "from": "DossierButton",
+      "to": "jsPDF",
       "rel": "calls"
     }
   ],

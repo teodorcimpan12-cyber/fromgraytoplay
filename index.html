@@ -888,6 +888,61 @@ T.hu.allCourts = "Mind"; // TODO: HU review
 T.hu.noEvidence = "Még nincs fotóbizonyíték. Légy az első!"; // TODO: HU review
 T.hu.evidenceTab = "📸 Bizonyíték"; // TODO: HU review
 
+/* #3.1 — Court ratings */
+T.ro.ratings = "Evaluări";
+T.ro.rateThis = "Evaluează acest teren";
+T.ro.rateSurface = "Suprafață";
+T.ro.rateLighting = "Iluminat";
+T.ro.rateEquipment = "Echipament";
+T.ro.rateSafety = "Siguranță";
+T.ro.rateSubmit = "Trimite evaluarea";
+T.ro.rateThanks = "Mulțumim pentru evaluare!";
+T.ro.ratingCount = "evaluări";
+T.ro.noRatings = "Niciun rating încă. Fii primul!";
+T.ro.avgRating = "Medie";
+T.en.ratings = "Ratings";
+T.en.rateThis = "Rate this court";
+T.en.rateSurface = "Surface";
+T.en.rateLighting = "Lighting";
+T.en.rateEquipment = "Equipment";
+T.en.rateSafety = "Safety";
+T.en.rateSubmit = "Submit rating";
+T.en.rateThanks = "Thanks for rating!";
+T.en.ratingCount = "ratings";
+T.en.noRatings = "No ratings yet. Be the first!";
+T.en.avgRating = "Average";
+T.hu.ratings = "Értékelések"; // TODO: HU review
+T.hu.rateThis = "Értékeld ezt a pályát"; // TODO: HU review
+T.hu.rateSurface = "Felület"; // TODO: HU review
+T.hu.rateLighting = "Világítás"; // TODO: HU review
+T.hu.rateEquipment = "Felszerelés"; // TODO: HU review
+T.hu.rateSafety = "Biztonság"; // TODO: HU review
+T.hu.rateSubmit = "Értékelés küldése"; // TODO: HU review
+T.hu.rateThanks = "Köszönjük az értékelést!"; // TODO: HU review
+T.hu.ratingCount = "értékelés"; // TODO: HU review
+T.hu.noRatings = "Még nincs értékelés. Légy az első!"; // TODO: HU review
+T.hu.avgRating = "Átlag"; // TODO: HU review
+
+/* #2.3 — Auto-dossier export */
+T.ro.dossier = "Generează dosar PDF";
+T.ro.dossierSub = "Un raport complet pentru consiliul local — statistici, terenuri, sesizări, dovezi foto.";
+T.ro.dossierGenerating = "Se generează dosarul...";
+T.ro.dossierReady = "Dosar generat!";
+T.ro.dossierTitle = "DOSAR CIVIC";
+T.ro.dossierForCouncil = "Pentru Consiliul Local și Primăria Municipiului Târgu Mureș";
+T.en.dossier = "Generate PDF dossier";
+T.en.dossierSub = "A complete report for the city council — statistics, courts, reports, photo evidence.";
+T.en.dossierGenerating = "Generating dossier...";
+T.en.dossierReady = "Dossier generated!";
+T.en.dossierTitle = "CIVIC DOSSIER";
+T.en.dossierForCouncil = "For the Târgu Mureș City Council and City Hall";
+T.hu.dossier = "PDF dosszié generálása"; // TODO: HU review
+T.hu.dossierSub = "Teljes jelentés a helyi tanácsnak — statisztikák, pályák, bejelentések, fotóbizonyítékok."; // TODO: HU review
+T.hu.dossierGenerating = "Dosszié generálása..."; // TODO: HU review
+T.hu.dossierReady = "Dosszié kész!"; // TODO: HU review
+T.hu.dossierTitle = "CIVIL DOSSZIÉ"; // TODO: HU review
+T.hu.dossierForCouncil = "A Marosvásárhelyi Helyi Tanács és Polgármesteri Hivatal részére"; // TODO: HU review
+
 
 /* === 3D hero strings (RO/EN/HU). HU draft — // TODO: HU review === */
 T.ro.heroKicker = "Târgu Mureş · teren multifuncțional";
@@ -2630,6 +2685,91 @@ function CourtsPage() {
   }));
 }
 
+/* === Court Ratings + Radar (#3.1) === */
+const RATE_DIMS = ["surface", "lighting", "equipment", "safety"];
+function RadarChart({ values, labels, size }) {
+  const S = size || 200;
+  const cx = S / 2, cy = S / 2, R = S / 2 - 34;
+  const n = RATE_DIMS.length;
+  const angle = i => (Math.PI * 2 * i / n) - Math.PI / 2;
+  const point = (i, r) => [cx + Math.cos(angle(i)) * R * r, cy + Math.sin(angle(i)) * R * r];
+  const ringPath = r => RATE_DIMS.map((_, i) => { const [x, y] = point(i, r); return (i ? "L" : "M") + x.toFixed(1) + "," + y.toFixed(1); }).join(" ") + "Z";
+  const dataPath = RATE_DIMS.map((k, i) => { const [x, y] = point(i, (values[k] || 0) / 5); return (i ? "L" : "M") + x.toFixed(1) + "," + y.toFixed(1); }).join(" ") + "Z";
+  return React.createElement("svg", { width: S, height: S, viewBox: "0 0 " + S + " " + S, style: { display: "block" } },
+    [0.25, 0.5, 0.75, 1].map(r => React.createElement("path", { key: r, d: ringPath(r), fill: "none", stroke: "var(--border)", strokeWidth: 1 })),
+    RATE_DIMS.map((_, i) => { const [x, y] = point(i, 1); return React.createElement("line", { key: i, x1: cx, y1: cy, x2: x, y2: y, stroke: "var(--border)", strokeWidth: 1 }); }),
+    React.createElement("path", { d: dataPath, fill: "rgba(16,185,129,.25)", stroke: "var(--green)", strokeWidth: 2, strokeLinejoin: "round" }),
+    RATE_DIMS.map((k, i) => { const [x, y] = point(i, (values[k] || 0) / 5); return React.createElement("circle", { key: k, cx: x, cy: y, r: 3.5, fill: "var(--green)" }); }),
+    RATE_DIMS.map((k, i) => {
+      const [x, y] = point(i, 1.22);
+      return React.createElement("text", { key: k, x: x, y: y, fill: "var(--textSec)", fontSize: 10, fontWeight: 600, textAnchor: "middle", dominantBaseline: "middle" }, labels[k]);
+    })
+  );
+}
+function StarPicker({ value, onChange }) {
+  return React.createElement("div", { className: "rate-stars" },
+    [1, 2, 3, 4, 5].map(s => React.createElement("button", {
+      key: s, type: "button",
+      className: "rate-star" + (s <= value ? " on" : ""),
+      onClick: () => onChange(s),
+      "aria-label": s + " stars"
+    }, s <= value ? "★" : "☆"))
+  );
+}
+function RatingSection({ court }) {
+  const { t, toast, user } = useApp();
+  const raw = useFirebase("ratings/" + court.id);
+  const entries = raw ? Object.values(raw) : [];
+  const vk = getVoterKey();
+  const mine = raw && raw[vk];
+  const [form, setForm] = useState(() => mine || { surface: 0, lighting: 0, equipment: 0, safety: 0 });
+  const [open, setOpen] = useState(false);
+  const labels = { surface: t.rateSurface, lighting: t.rateLighting, equipment: t.rateEquipment, safety: t.rateSafety };
+  const avg = {};
+  RATE_DIMS.forEach(k => { avg[k] = entries.length ? entries.reduce((s, e) => s + (e[k] || 0), 0) / entries.length : 0; });
+  const overall = entries.length ? (RATE_DIMS.reduce((s, k) => s + avg[k], 0) / RATE_DIMS.length) : 0;
+  const canSubmit = RATE_DIMS.every(k => form[k] > 0);
+  const submit = () => {
+    if (!canSubmit) return;
+    db.ref("ratings/" + court.id + "/" + vk).set({ ...form, userName: anonName(user?.name || "Anonim"), ts: Date.now() });
+    toast(t.rateThanks);
+    setOpen(false);
+  };
+  return React.createElement("div", { className: "mt-2" },
+    React.createElement("h4", { className: "mb-1 flex items-center", style: { gap: ".4rem" } },
+      "⭐ ", t.ratings,
+      entries.length > 0 && React.createElement("span", { className: "badge badge-coral" }, overall.toFixed(1), " · ", entries.length, " ", t.ratingCount)
+    ),
+    entries.length === 0
+      ? React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } }, t.noRatings)
+      : React.createElement("div", { style: { display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center" } },
+          React.createElement("div", { className: "radar-wrap" }, React.createElement(RadarChart, { values: avg, labels: labels, size: 200 })),
+          React.createElement("div", { style: { flex: 1, minWidth: 160 } },
+            RATE_DIMS.map(k => React.createElement("div", { key: k, className: "rate-row" },
+              React.createElement("span", { className: "rate-label" }, labels[k]),
+              React.createElement("div", { className: "rate-bar" }, React.createElement("div", { className: "rate-bar-fill", style: { width: (avg[k] / 5 * 100) + "%" } })),
+              React.createElement("span", { className: "rate-num", style: { color: "var(--green)" } }, avg[k].toFixed(1))
+            ))
+          )
+        ),
+    React.createElement("button", {
+      className: "btn btn-outline btn-sm mt-1",
+      onClick: () => setOpen(v => !v)
+    }, open ? "✕ " + t.cancel : (mine ? "✎ " : "⭐ ") + t.rateThis),
+    open && React.createElement("div", { className: "card mt-1", style: { borderLeft: "3px solid var(--coral)" } },
+      RATE_DIMS.map(k => React.createElement("div", { key: k, className: "rate-row" },
+        React.createElement("span", { className: "rate-label" }, labels[k]),
+        React.createElement(StarPicker, { value: form[k], onChange: v => setForm(f => ({ ...f, [k]: v })) })
+      )),
+      React.createElement("button", {
+        className: "btn btn-green btn-block mt-1",
+        onClick: submit, disabled: !canSubmit,
+        style: { opacity: canSubmit ? 1 : .5, cursor: canSubmit ? "pointer" : "not-allowed" }
+      }, t.rateSubmit)
+    )
+  );
+}
+
 /* === Court Detail === */
 function CourtDetail({
   court: c,
@@ -2748,6 +2888,7 @@ function CourtDetail({
     t.activeGames, gameCount > 0 ? " (" + gameCount + ")" : ""
   ),
   React.createElement(ActiveGames, { court: c }),
+  React.createElement(RatingSection, { court: c }),
   /*#__PURE__*/React.createElement("div", {
     className: "flex gap-1 mt-2"
   }, /*#__PURE__*/React.createElement("button", {
@@ -3434,14 +3575,48 @@ function LetterModal({
     return `TO: Târgu Mureș City Council and City Hall\n\nI, ${n || "___"}, residing at ${a || areaLabel},\n\nas a resident of the ${areaLabel} area, I request the renovation of peripheral sports courts, in particular "${court.name}".\n${why ? "\nWhy this matters to me: " + why + "\n" : ""}\nArguments:\n- ${total} citizens signed the online petition (${web})\n- 12 of 15 residents consider the courts too degraded\n- 5,000,000 lei frozen by an administrative error\n- 0% of peripheral courts have been renovated\n- This investment fits the Integrated Urban Development Strategy (SIDU)\n\nConcrete proposals:\n1. Flip-the-Court — renovate existing courts\n2. Street Canvas — community-voted mural\n\nSincerely,\n${n || "___"}\nDate: ${new Date().toLocaleDateString("en-GB")}`;
   };
   const dl = () => {
-    const b = new Blob([buildLetter()], {
-      type: "text/plain"
+    const text = buildLetter();
+    const JsPDF = window.jspdf && window.jspdf.jsPDF;
+    if (!JsPDF) {
+      const b = new Blob([text], { type: "text/plain" });
+      const el = document.createElement("a");
+      el.href = URL.createObjectURL(b);
+      el.download = "scrisoare_g2p.txt";
+      el.click();
+      return;
+    }
+    const doc = new JsPDF({ unit: "mm", format: "a4" });
+    const W = 210, M = 20, maxW = W - M * 2;
+    // Brand header bar
+    doc.setFillColor(16, 185, 129);
+    doc.rect(0, 0, W, 16, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(13);
+    doc.text("FROM GREY TO PLAY", M, 10.5);
+    doc.setFontSize(8);
+    doc.setFont("helvetica", "normal");
+    doc.text(SITE.replace("https://", ""), W - M, 10.5, { align: "right" });
+    // Body
+    doc.setTextColor(30, 30, 40);
+    doc.setFontSize(10.5);
+    let y = 28;
+    text.split("\n").forEach(line => {
+      const wrapped = doc.splitTextToSize(line || " ", maxW);
+      wrapped.forEach(w => {
+        if (y > 280) { doc.addPage(); y = 22; }
+        doc.text(w, M, y);
+        y += 5.4;
+      });
     });
-    const u = URL.createObjectURL(b);
-    const el = document.createElement("a");
-    el.href = u;
-    el.download = "petitie_g2p.txt";
-    el.click();
+    // Footer
+    doc.setDrawColor(220, 220, 225);
+    doc.line(M, 288, W - M, 288);
+    doc.setFontSize(7.5);
+    doc.setTextColor(140, 140, 150);
+    doc.text("Generat prin From Grey to Play · " + new Date().toLocaleDateString("ro-RO"), M, 293);
+    doc.save("scrisoare_consiliu_g2p.pdf");
+    toast(t.success);
   };
   const email = () => {
     const subj = lang === "ro" ? "Renovarea terenurilor sportive — Târgu Mureș" : lang === "hu" ? "Sportpályák felújítása — Marosvásárhely" : "Renovation of sports courts — Târgu Mureș";
@@ -4116,6 +4291,148 @@ function LBTab() {
 }
 
 /* === Impact === */
+/* === Auto-dossier PDF generator (#2.3) === */
+function DossierButton() {
+  const { t, lang, toast } = useApp();
+  const votes = useFirebase("votes");
+  const signups = useFirebase("signups");
+  const reports = useFirebase("reports");
+  const gallery = useFirebase("gallery");
+  const ratings = useFirebase("ratings");
+  const [busy, setBusy] = useState(false);
+  const generate = async () => {
+    const JsPDF = window.jspdf && window.jspdf.jsPDF;
+    if (!JsPDF) { toast(t.error); return; }
+    setBusy(true);
+    toast(t.dossierGenerating);
+    try {
+      const doc = new JsPDF({ unit: "mm", format: "a4" });
+      const W = 210, H = 297, M = 18, maxW = W - M * 2;
+      const green = [16, 185, 129], coral = [249, 115, 22], dark = [26, 26, 46];
+      const tv = votes ? (votes.flip || 0) + (votes.mural || 0) + (votes.both || 0) : 0;
+      const sCount = signups ? Object.keys(signups).length : 0;
+      const vCount = signups ? Object.values(signups).filter(s => s.volunteer).length : 0;
+      const repList = reports ? Object.values(reports) : [];
+      const resolved = repList.filter(r => r.status === "resolved").length;
+      const photos = gallery ? Object.values(gallery) : [];
+      // ---- Cover page ----
+      doc.setFillColor(...dark); doc.rect(0, 0, W, H, "F");
+      doc.setFillColor(...green); doc.rect(0, 110, W, 3, "F");
+      doc.setTextColor(255, 255, 255);
+      doc.setFont("helvetica", "bold"); doc.setFontSize(11);
+      doc.text("FROM GREY TO PLAY", M, 30);
+      doc.setFontSize(34); doc.setTextColor(...green);
+      doc.text(t.dossierTitle, M, 95);
+      doc.setTextColor(200, 200, 210); doc.setFont("helvetica", "normal"); doc.setFontSize(11);
+      doc.splitTextToSize(t.dossierForCouncil, maxW).forEach((l, i) => doc.text(l, M, 126 + i * 6));
+      doc.setFontSize(9); doc.setTextColor(150, 150, 160);
+      doc.text(new Date().toLocaleDateString("ro-RO") + " · " + SITE.replace("https://", ""), M, H - 20);
+      // ---- Stats page ----
+      doc.addPage();
+      let y = 24;
+      const heading = (txt) => { doc.setFillColor(...green); doc.rect(M, y - 5, 3, 7, "F"); doc.setTextColor(...dark); doc.setFont("helvetica", "bold"); doc.setFontSize(15); doc.text(txt, M + 6, y); y += 11; };
+      heading(lang === "ro" ? "Sumar executiv" : lang === "hu" ? "Vezetői összefoglaló" : "Executive summary");
+      const stats = [
+        [String(COURTS.length), t.courtsReported],
+        [String(tv), t.petitionVotes],
+        [String(sCount), lang === "ro" ? "Semnături" : "Signatures"],
+        [String(vCount), t.volunteers],
+        [String(repList.length), lang === "ro" ? "Sesizări" : "Reports"],
+        [String(resolved), t.statusResolved || "Resolved"]
+      ];
+      const cardW = (maxW - 10) / 3;
+      stats.forEach((s, i) => {
+        const col = i % 3, row = Math.floor(i / 3);
+        const x = M + col * (cardW + 5), cy = y + row * 26;
+        doc.setFillColor(245, 247, 250); doc.roundedRect(x, cy, cardW, 22, 2, 2, "F");
+        doc.setTextColor(...green); doc.setFont("helvetica", "bold"); doc.setFontSize(18);
+        doc.text(s[0], x + 4, cy + 10);
+        doc.setTextColor(90, 90, 100); doc.setFont("helvetica", "normal"); doc.setFontSize(8);
+        doc.splitTextToSize(s[1], cardW - 6).forEach((l, j) => doc.text(l, x + 4, cy + 16 + j * 4));
+      });
+      y += 26 * Math.ceil(stats.length / 3) + 8;
+      // ---- Courts list ----
+      heading(lang === "ro" ? "Terenuri documentate" : lang === "hu" ? "Dokumentált pályák" : "Documented courts");
+      doc.setFontSize(9.5);
+      COURTS.forEach(c => {
+        if (y > 275) { doc.addPage(); y = 24; }
+        const sc = c.status === "degraded" ? coral : green;
+        doc.setFillColor(...sc); doc.circle(M + 1.5, y - 1.5, 1.5, "F");
+        doc.setTextColor(40, 40, 50); doc.setFont("helvetica", "bold");
+        doc.text(c.name, M + 6, y);
+        doc.setFont("helvetica", "normal"); doc.setTextColor(120, 120, 130); doc.setFontSize(8);
+        const sLabel = c.status === "degraded" ? t.degraded : c.status === "inProgress" ? t.inProgress : t.renovated;
+        doc.text(sLabel + " · " + (c.address || ""), M + 6, y + 4);
+        doc.setFontSize(9.5);
+        y += 9;
+      });
+      y += 4;
+      // ---- Reports summary ----
+      if (repList.length) {
+        if (y > 250) { doc.addPage(); y = 24; }
+        heading(lang === "ro" ? "Sesizări recente" : lang === "hu" ? "Friss bejelentések" : "Recent reports");
+        doc.setFontSize(9);
+        repList.slice(0, 12).forEach(r => {
+          if (y > 278) { doc.addPage(); y = 24; }
+          doc.setTextColor(60, 60, 70); doc.setFont("helvetica", "bold");
+          doc.text("• " + (r.courtName || r.courtId || "?"), M, y);
+          doc.setFont("helvetica", "normal"); doc.setTextColor(120, 120, 130);
+          const desc = doc.splitTextToSize((r.description || "").slice(0, 120), maxW - 4);
+          doc.text(desc[0] || "", M + 4, y + 4);
+          y += 9;
+        });
+        y += 4;
+      }
+      // ---- Evidence photos ----
+      const evidencePhotos = photos.filter(p => p.img).slice(0, 6);
+      if (evidencePhotos.length) {
+        doc.addPage(); y = 24;
+        heading(lang === "ro" ? "Dovezi fotografice" : lang === "hu" ? "Fotóbizonyítékok" : "Photo evidence");
+        const pw = (maxW - 6) / 2, ph = 40;
+        for (let i = 0; i < evidencePhotos.length; i++) {
+          const col = i % 2, row = Math.floor(i / 2);
+          const x = M + col * (pw + 6), cy = y + row * (ph + 12);
+          if (cy + ph > 280) break;
+          try {
+            const fmt = evidencePhotos[i].img.includes("png") ? "PNG" : "JPEG";
+            doc.addImage(evidencePhotos[i].img, fmt, x, cy, pw, ph, undefined, "FAST");
+          } catch (e) { /* skip bad image */ }
+          const cap = evidencePhotos[i].caption || evidencePhotos[i].courtName || "";
+          if (cap) { doc.setFontSize(7.5); doc.setTextColor(120, 120, 130); doc.text(doc.splitTextToSize(cap, pw)[0] || "", x, cy + ph + 4); }
+        }
+      }
+      // ---- Footer on all pages ----
+      const pages = doc.getNumberOfPages();
+      for (let p = 1; p <= pages; p++) {
+        doc.setPage(p);
+        if (p === 1) continue;
+        doc.setDrawColor(225, 225, 230); doc.line(M, H - 12, W - M, H - 12);
+        doc.setFontSize(7); doc.setTextColor(150, 150, 160);
+        doc.text("From Grey to Play · " + SITE.replace("https://", ""), M, H - 8);
+        doc.text(p + " / " + pages, W - M, H - 8, { align: "right" });
+      }
+      doc.save("dosar_civic_g2p.pdf");
+      toast(t.dossierReady);
+    } catch (e) {
+      toast(t.error);
+    }
+    setBusy(false);
+  };
+  return React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--green)" } },
+    React.createElement("div", { className: "flex justify-between items-center", style: { gap: "1rem", flexWrap: "wrap" } },
+      React.createElement("div", { style: { flex: 1, minWidth: 180 } },
+        React.createElement("h3", { className: "barlow", style: { fontSize: "1.15rem", marginBottom: ".25rem" } }, "📋 ", t.dossier),
+        React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } }, t.dossierSub)
+      ),
+      React.createElement("button", {
+        className: "btn btn-dossier",
+        onClick: generate, disabled: busy,
+        style: { opacity: busy ? .7 : 1, whiteSpace: "nowrap" }
+      }, busy ? t.dossierGenerating : "📥 " + t.dossier)
+    )
+  );
+}
+
 function ImpactPage() {
   const {
     t,
@@ -4130,7 +4447,7 @@ function ImpactPage() {
     className: "container"
   }, /*#__PURE__*/React.createElement("h2", {
     className: "section-title"
-  }, "\uD83D\uDCCA ", t.impact), /*#__PURE__*/React.createElement("div", {
+  }, "\uD83D\uDCCA ", t.impact), /*#__PURE__*/React.createElement(DossierButton, null), /*#__PURE__*/React.createElement("div", {
     className: "tabs"
   }, /*#__PURE__*/React.createElement("button", {
     className: tab === "calc" ? "active" : "",
