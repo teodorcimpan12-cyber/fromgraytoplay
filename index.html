@@ -268,7 +268,52 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .btn-dossier{background:linear-gradient(100deg,var(--green),var(--teal));color:#fff;position:relative;overflow:hidden}
 .btn-dossier::after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-20deg);animation:sheen 3.5s ease-in-out infinite}
 @keyframes sheen{0%,100%{left:-60%}50%{left:120%}}
-@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.hero-mesh,.btn-dossier::after,.skeleton::after{animation:none}.animate-in{animation:none}}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.hero-mesh,.btn-dossier::after,.skeleton::after,.hero-particle,.wn-pill,.radar-anim{animation:none}.animate-in,.stagger-list>.stagger-item{animation:none;opacity:1;transform:none}.ripple-el{display:none}}
+/* === What's New Banner === */
+.wn-banner{background:linear-gradient(100deg,#0a1628,#0f2a1e,#162030);color:#fff;padding:.65rem 0;position:relative;overflow:hidden;animation:slideDown .5s cubic-bezier(.22,1,.36,1) both}
+.wn-banner::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(16,185,129,.18),transparent 50%,rgba(249,115,22,.12));pointer-events:none}
+.wn-inner{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;position:relative;z-index:1}
+.wn-pill{font-family:'Space Mono',monospace;font-size:.62rem;font-weight:700;letter-spacing:2.5px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.4);color:#10B981;padding:.22rem .65rem;border-radius:20px;white-space:nowrap;flex-shrink:0;animation:pulse 2.5s ease-in-out infinite}
+.wn-items{display:flex;gap:.35rem;flex-wrap:wrap;flex:1}
+.wn-item{display:inline-flex;align-items:center;gap:.32rem;padding:.28rem .7rem;border-radius:20px;font-size:.76rem;font-weight:600;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);color:#e5e7eb;cursor:pointer;transition:background .18s,transform .15s,border-color .18s}
+.wn-item:hover{background:rgba(16,185,129,.18);border-color:rgba(16,185,129,.5);transform:translateY(-1px)}
+.wn-icon{font-size:.95rem;line-height:1}
+.wn-close{background:none;border:none;color:rgba(255,255,255,.5);font-size:1.25rem;padding:.15rem .4rem;cursor:pointer;margin-left:auto;flex-shrink:0;line-height:1;transition:color .15s;border-radius:4px}
+.wn-close:hover{color:#fff;background:rgba(255,255,255,.1)}
+/* === Press Kit full rework === */
+.pk-hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#080d1a,#1a0a30 45%,#061815);color:#fff;padding:2.2rem 0 2.6rem;border-radius:var(--radius);margin-bottom:1.2rem}
+.pk-hero-inner{position:relative;z-index:1;padding:0 1.4rem}
+.pk-wrap{display:flex;flex-direction:column;gap:1.2rem}
+.pk-quote{border-left:4px solid var(--green);transition:transform .2s,box-shadow .2s}
+.pk-quote:hover{transform:translateX(3px);box-shadow:0 6px 20px rgba(16,185,129,.12)}
+.pk-quote-text{font-size:.96rem;line-height:1.65;font-style:italic;color:var(--text);margin-bottom:.55rem}
+.pk-quote-meta{display:flex;align-items:center;gap:.5rem}
+.pk-dl-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
+.pk-contact{display:flex;flex-wrap:wrap;gap:.55rem;padding-top:.9rem;border-top:1px solid var(--border)}
+.pk-contact-item{display:flex;align-items:center;gap:.4rem;font-size:.87rem}
+/* === Micro-interaction ripple === */
+.btn{position:relative;overflow:hidden}
+.ripple-el{position:absolute;border-radius:50%;background:rgba(255,255,255,.35);transform:scale(0);animation:rippleAnim .55s linear forwards;pointer-events:none}
+@keyframes rippleAnim{to{transform:scale(4);opacity:0}}
+/* === Input focus glow === */
+input:focus,textarea:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(16,185,129,.14);transition:border-color .18s,box-shadow .18s}
+/* === Stagger list animations === */
+.stagger-list>.stagger-item{opacity:0;transform:translateY(12px);animation:pageEnter .38s cubic-bezier(.22,1,.36,1) both}
+.stagger-list>.stagger-item:nth-child(1){animation-delay:20ms}
+.stagger-list>.stagger-item:nth-child(2){animation-delay:70ms}
+.stagger-list>.stagger-item:nth-child(3){animation-delay:120ms}
+.stagger-list>.stagger-item:nth-child(4){animation-delay:170ms}
+.stagger-list>.stagger-item:nth-child(5){animation-delay:220ms}
+.stagger-list>.stagger-item:nth-child(6){animation-delay:265ms}
+.stagger-list>.stagger-item:nth-child(n+7){animation-delay:300ms}
+/* === SVG radar draw animation === */
+@keyframes svgDraw{from{stroke-dashoffset:var(--len,800)}to{stroke-dashoffset:0}}
+.radar-anim{stroke-dasharray:800;stroke-dashoffset:800;animation:svgDraw .9s cubic-bezier(.22,1,.36,1) .1s both}
+/* === Floating particles for hero === */
+@keyframes floatUp{0%{opacity:0;transform:translateY(0) scale(0)}15%{opacity:.7}80%{opacity:.2}100%{opacity:0;transform:translateY(-160px) scale(1.1)}}
+.hero-particle{position:absolute;border-radius:50%;background:var(--p-color,rgba(16,185,129,.6));pointer-events:none;animation:floatUp var(--dur,6s) ease-in var(--delay,0s) infinite;width:var(--sz,5px);height:var(--sz,5px)}
+/* === Page transition enhanced === */
+.animate-in{animation:pageEnter .45s cubic-bezier(.22,1,.36,1) both}
 </style>
 </head>
 <body>
@@ -942,6 +987,29 @@ T.hu.dossierGenerating = "Dosszié generálása..."; // TODO: HU review
 T.hu.dossierReady = "Dosszié kész!"; // TODO: HU review
 T.hu.dossierTitle = "CIVIL DOSSZIÉ"; // TODO: HU review
 T.hu.dossierForCouncil = "A Marosvásárhelyi Helyi Tanács és Polgármesteri Hivatal részére"; // TODO: HU review
+/* Press Kit rework + What's New banner */
+T.ro.pressKitSub = "Pachet complet pentru jurnalişti — statistici, citate, context civic.";
+T.en.pressKitSub = "Complete pack for journalists — statistics, quotes, civic context.";
+T.hu.pressKitSub = "Teljes csomag újságíróknak — statisztikák, idézetek, kontextus."; // TODO: HU review
+T.ro.pkQuotes = "Citate gata de publicat";
+T.en.pkQuotes = "Ready-to-publish quotes";
+T.hu.pkQuotes = "Közlésre kész idézetek"; // TODO: HU review
+T.ro.pkDownload = "Descărcă Press Kit PDF";
+T.en.pkDownload = "Download Press Kit PDF";
+T.hu.pkDownload = "Sajtócsomag PDF letöltése"; // TODO: HU review
+T.ro.whatsNew = "✨ NOU";
+T.en.whatsNew = "✨ NEW";
+T.hu.whatsNew = "✨ ÚJ"; // TODO: HU review
+T.ro.wnRatings = "Evaluează terenul ⭐";
+T.en.wnRatings = "Rate your court ⭐";
+T.hu.wnRatings = "Értékeld a pályát ⭐"; // TODO: HU review
+T.ro.wnDossier = "Dosar PDF 📄";
+T.en.wnDossier = "PDF Dossier 📄";
+T.hu.wnDossier = "PDF Dosszié 📄"; // TODO: HU review
+T.ro.wnEvidence = "Dovezi foto 📸";
+T.en.wnEvidence = "Photo evidence 📸";
+T.hu.wnEvidence = "Foto bizonyíték 📸"; // TODO: HU review
+
 
 
 /* === 3D hero strings (RO/EN/HU). HU draft — // TODO: HU review === */
@@ -1325,6 +1393,24 @@ const CITIES = {
     r: 42
   }
 };
+const PRESS_QUOTES = {
+  ro: [
+    { text: "80% din terenurile periferice prezintã degradare criticã, în timp ce terenurile centrale au primit renovãri complete. Inegalitatea infrastructurii sportive este documentatã şi cuantificatã.", ctx: "Constatare cheie" },
+    { text: "O eroare de alocare bugetarã de 5 milioane de lei a lãsat cartierele periferice fãrã infrastructurã sportivã timp de peste 3 ani. Banii existã — deciziile lipsesc.", ctx: "Date factuale" },
+    { text: "Platforma oferã rezidenților un canal civic direct: de la fotografierea degradãrii pânã la generarea unui dosar complet pentru consiliul local.", ctx: "Misiunea proiectului" }
+  ],
+  en: [
+    { text: "80% of peripheral courts show critical degradation while central courts received full renovations. Sports infrastructure inequality is documented and quantified.", ctx: "Key finding" },
+    { text: "A 5 million lei budget allocation error left peripheral neighbourhoods without sports infrastructure for over 3 years. The money exists — the decisions don’t.", ctx: "Data point" },
+    { text: "The platform gives residents a direct civic channel: from photographing degradation to generating a complete dossier for city council.", ctx: "Project mission" }
+  ],
+  hu: [
+    { text: "A külvárosi pályák 80%-a kritikus romlást mutat, míg a központi pályák teljes felújítást kaptak. A sportinfrastruktúra egyenlőtlensége dokumentumált.", ctx: "Fő megállapítás" },
+    { text: "Egy 5 millió lejes költségvetési hiba évekre megfoszotta a külvárosi negyedeket a sportinfrastruktúrától. A pénz megvan — a döntések hiányoznak.", ctx: "Adatpont" },
+    { text: "A platform közvetlen polgári csatornát biztosít a lakóknak: a romlás dokumentálásától a helyi tanácsnak szóló teljes dosszié genrálásáig.", ctx: "A projekt küldetése" }
+  ]
+};
+
 const TIMELINE = [{
   y: 2013,
   ro: "Ultima renovare majoră a terenurilor periferice",
@@ -2432,6 +2518,31 @@ function StatTile({ value, label, color }) {
   );
 }
 
+function WhatsNewBanner() {
+  var _useApp = useApp(), t = _useApp.t, setPage = _useApp.setPage;
+  var _React$useState = React.useState(!localStorage.getItem("g2p_wb_seen")), vis = _React$useState[0], setVis = _React$useState[1];
+  if (!vis) return null;
+  var dismiss = function() { localStorage.setItem("g2p_wb_seen","1"); setVis(false); };
+  return React.createElement("div", { className: "wn-banner" },
+    React.createElement("div", { className: "container" },
+      React.createElement("div", { className: "wn-inner" },
+        React.createElement("div", { className: "wn-pill" }, t.whatsNew || "\u2728 NOU"),
+        React.createElement("div", { className: "wn-items" },
+          React.createElement("button", { className: "wn-item", onClick: function() { setPage("courts"); } },
+            React.createElement("span", { className: "wn-icon" }, "\u2B50"),
+            React.createElement("span", null, t.wnRatings || "Evalueaz\u0103 terenul")),
+          React.createElement("button", { className: "wn-item", onClick: function() { setPage("impact"); } },
+            React.createElement("span", { className: "wn-icon" }, "\uD83D\uDCC4"),
+            React.createElement("span", null, t.wnDossier || "Dosar PDF")),
+          React.createElement("button", { className: "wn-item", onClick: function() { setPage("reports"); } },
+            React.createElement("span", { className: "wn-icon" }, "\uD83D\uDCF8"),
+            React.createElement("span", null, t.wnEvidence || "Dovezi foto"))),
+        React.createElement("button", { className: "wn-close", "aria-label": "dismiss", onClick: dismiss }, "\u00D7")
+      )
+    )
+  );
+}
+
 function HomePage() {
   const {
     t,
@@ -2445,10 +2556,18 @@ function HomePage() {
   const heroRef = useReveal();
   return /*#__PURE__*/React.createElement("div", {
     className: "animate-in"
-  }, /*#__PURE__*/React.createElement(Hero3D, null), /*#__PURE__*/React.createElement("section", {
+  }, React.createElement(WhatsNewBanner, null), /*#__PURE__*/React.createElement(Hero3D, null), /*#__PURE__*/React.createElement("section", {
     className: "hero-premium"
   }, /*#__PURE__*/React.createElement("div", { className: "hero-mesh" }),
      /*#__PURE__*/React.createElement("div", { className: "hero-grid-lines" }),
+     ...[
+       { left:"8%",  top:"65%", sz:"4px", dur:"7s",  dl:"0s",   col:"rgba(16,185,129,.7)" },
+       { left:"25%", top:"50%", sz:"3px", dur:"5s",  dl:"1.8s", col:"rgba(249,115,22,.6)" },
+       { left:"58%", top:"78%", sz:"5px", dur:"8s",  dl:"0.6s", col:"rgba(16,185,129,.5)" },
+       { left:"77%", top:"58%", sz:"3px", dur:"6s",  dl:"2.5s", col:"rgba(13,148,136,.7)" },
+       { left:"90%", top:"72%", sz:"4px", dur:"9s",  dl:"0.3s", col:"rgba(249,115,22,.4)" },
+       { left:"43%", top:"82%", sz:"4px", dur:"7.5s",dl:"3.2s", col:"rgba(16,185,129,.6)" }
+     ].map((p,i) => React.createElement("div", { key:i, className:"hero-particle", style:{ left:p.left, top:p.top, "--sz":p.sz, "--dur":p.dur, "--delay":p.dl, "--p-color":p.col } })),
      /*#__PURE__*/React.createElement("div", {
     className: "container",
     style: { position: "relative", zIndex: 1 }
@@ -2620,10 +2739,10 @@ function CourtsPage() {
     courts: filtered,
     onSelect: setSel
   }), tab === "list" && /*#__PURE__*/React.createElement("div", {
-    className: "grid gap-1"
-  }, filtered.map(c => /*#__PURE__*/React.createElement("div", {
+    className: "grid gap-1 stagger-list"
+  }, filtered.map((c, _idx) => /*#__PURE__*/React.createElement("div", {
     key: c.id,
-    className: "card card-accent card-link",
+    className: "card card-accent card-link stagger-item",
     onClick: () => setSel(c)
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex justify-between items-center"
@@ -2680,7 +2799,7 @@ function RadarChart({ values, labels, size }) {
   return React.createElement("svg", { width: S, height: S, viewBox: "0 0 " + S + " " + S, style: { display: "block" } },
     [0.25, 0.5, 0.75, 1].map(r => React.createElement("path", { key: r, d: ringPath(r), fill: "none", stroke: "var(--border)", strokeWidth: 1 })),
     RATE_DIMS.map((_, i) => { const [x, y] = point(i, 1); return React.createElement("line", { key: i, x1: cx, y1: cy, x2: x, y2: y, stroke: "var(--border)", strokeWidth: 1 }); }),
-    React.createElement("path", { d: dataPath, fill: "rgba(16,185,129,.25)", stroke: "var(--green)", strokeWidth: 2, strokeLinejoin: "round" }),
+    React.createElement("path", { d: dataPath, fill: "rgba(16,185,129,.2)", stroke: "var(--green)", strokeWidth: 2.5, strokeLinejoin: "round", className: "radar-anim" }),
     RATE_DIMS.map((k, i) => { const [x, y] = point(i, (values[k] || 0) / 5); return React.createElement("circle", { key: k, cx: x, cy: y, r: 3.5, fill: "var(--green)" }); }),
     RATE_DIMS.map((k, i) => {
       const [x, y] = point(i, 1.22);
@@ -5164,25 +5283,123 @@ function AboutPage() {
   }), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-green btn-block",
     onClick: subPartner
-  }, t.submit))), tab === "press" && /*#__PURE__*/React.createElement("div", {
-    className: "card"
-  }, /*#__PURE__*/React.createElement("h3", {
-    className: "mb-2"
-  }, "\uD83D\uDCF0 ", t.pressKit), /*#__PURE__*/React.createElement("p", {
-    className: "mb-2"
-  }, lang === "ro" ? "Pachet pentru presă" : "Press pack"), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-green",
-    onClick: () => {
-      const c = `FROM GREY TO PLAY — Press Kit\n\nProject: Civic initiative — Târgu Mureș\nOwner: Cimpan Teodor\nWeb: ${SITE.replace("https://", "")}\n\nKey Stats:\n- 12/15 residents say courts too degraded\n- 5M lei frozen by admin error\n- 0% peripheral courts renovated\n- 3km gap\n\nProposals:\n1. Flip-the-Court\n2. Street Canvas\n\nContact: fromgreytoplay@gmail.com`;
-      const b = new Blob([c], {
-        type: "text/plain"
-      });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(b);
-      a.download = "press_kit_g2p.txt";
-      a.click();
-    }
-  }, "\uD83D\uDCE5 ", lang === "ro" ? "Descarcă" : "Download")))));
+  }, t.submit))), tab === "press" && React.createElement("div", { className: "pk-wrap" },
+  React.createElement("div", { className: "pk-hero" },
+    React.createElement("div", { className: "hero-mesh" }),
+    React.createElement("div", { className: "hero-grid-lines" }),
+    React.createElement("div", { className: "pk-hero-inner" },
+      React.createElement("div", { className: "hero-pill" }, "📰 PRESS KIT 2026"),
+      React.createElement("h2", { className: "hero-title", style: { marginBottom: ".4rem" } },
+        React.createElement("span", { className: "grad-text" }, "From Grey to Play")),
+      React.createElement("p", { style: { color: "#9CA3AF", maxWidth: 540, marginTop: ".5rem", fontSize: ".94rem", lineHeight: 1.55 } },
+        lang === "ro" ? "Inițiativă civică — Târgu Mureş, România · Documentare inegalitate spații sportive"
+                      : "Civic initiative — Târgu Mureş, Romania · Documenting sports space inequality")
+    )
+  ),
+  React.createElement("div", { className: "grid grid-4" },
+    [
+      { v: "12/15", l: lang === "ro" ? "rezidenți nemulțumiți" : "residents dissatisfied", col: "var(--coral)" },
+      { v: "5M lei", l: lang === "ro" ? "blocați de eroare" : "frozen by error", col: "var(--red)" },
+      { v: "0%", l: lang === "ro" ? "terenuri periferice renovate" : "peripheral courts renovated", col: "var(--teal)" },
+      { v: "3km", l: lang === "ro" ? "decalaj centru ↔ periferie" : "centre ↔ periphery gap", col: "var(--green)" }
+    ].map(function(x, i) {
+      return React.createElement("div", { key: i, className: "stat-tile", style: { borderTop: "3px solid " + x.col } },
+        React.createElement("div", { className: "stat-glow", style: { background: x.col } }),
+        React.createElement("div", { className: "stat-number", style: { color: x.col } }, x.v),
+        React.createElement("div", { className: "stat-label" }, x.l)
+      );
+    })
+  ),
+  React.createElement("div", { className: "card" },
+    React.createElement("h3", { className: "mb-2" }, "💬 ",
+      lang === "ro" ? (t.pkQuotes || "Citate gata de publicat") : (t.pkQuotes || "Ready-to-publish quotes")),
+    React.createElement("div", { className: "grid gap-1" },
+      (PRESS_QUOTES[lang] || PRESS_QUOTES.ro).map(function(q, i) {
+        return React.createElement("div", { key: i, className: "pk-quote card" },
+          React.createElement("p", { className: "pk-quote-text" }, "“" + q.text + "”"),
+          React.createElement("div", { className: "pk-quote-meta" },
+            React.createElement("span", { className: "badge badge-green" }, q.ctx))
+        );
+      })
+    )
+  ),
+  React.createElement("div", { className: "card" },
+    React.createElement("div", { className: "pk-dl-row" },
+      React.createElement("div", null,
+        React.createElement("h3", null, "📥 ",
+          lang === "ro" ? (t.pkDownload || "Descărcă Press Kit PDF") : (t.pkDownload || "Download Press Kit PDF")),
+        React.createElement("p", { className: "mt-1", style: { color: "var(--textSec)", fontSize: ".84rem" } },
+          lang === "ro"
+            ? "Statistici, citate, context civic — format A4, gata de trimis redacțiilor"
+            : "Stats, quotes, civic context — A4 format, ready to send to newsrooms")
+      ),
+      React.createElement("button", { className: "btn btn-dossier", onClick: function() {
+        if (window.jspdf) {
+          try {
+            var _j = window.jspdf; var jsPDF = _j.jsPDF;
+            var doc = new jsPDF({ unit: "mm", format: "a4" });
+            var W = 210, M = 18;
+            doc.setFillColor(16,185,129); doc.rect(0,0,W,22,"F");
+            doc.setFillColor(15,20,40); doc.rect(0,22,W,255,"F");
+            doc.setTextColor(255,255,255); doc.setFont("helvetica","bold"); doc.setFontSize(18);
+            doc.text("FROM GREY TO PLAY", M, 14);
+            doc.setFontSize(9); doc.text("PRESS KIT 2026", W-M, 14, { align:"right" });
+            doc.setFontSize(26); doc.setTextColor(16,185,129);
+            doc.text("From Grey to Play", M, 47);
+            doc.setFontSize(11); doc.setTextColor(156,163,175);
+            doc.text(lang==="ro" ? "Inițiativă civică — Târgu Mureş, România" : "Civic initiative — Târgu Mureş, Romania", M, 56);
+            doc.setFontSize(14); doc.setTextColor(255,255,255); doc.setFont("helvetica","bold");
+            doc.text(lang==="ro" ? "DATE CHEIE" : "KEY FACTS", M, 75);
+            var facts = [
+              ["12/15", lang==="ro" ? "rezidenți: terenuri degradate" : "residents: degraded courts"],
+              ["5M lei", lang==="ro" ? "blocați de eroare administrativă" : "frozen by administrative error"],
+              ["0%", lang==="ro" ? "terenuri periferice renovate" : "peripheral courts renovated"],
+              ["3km", lang==="ro" ? "decalaj centru ↔ periferie" : "centre vs periphery gap"]
+            ];
+            facts.forEach(function(row,i) {
+              var y = 86+i*13;
+              doc.setFontSize(13); doc.setTextColor(16,185,129); doc.setFont("helvetica","bold");
+              doc.text(row[0], M, y);
+              doc.setFontSize(10); doc.setTextColor(209,213,219); doc.setFont("helvetica","normal");
+              doc.text(row[1], M+26, y);
+            });
+            doc.setFontSize(14); doc.setTextColor(255,255,255); doc.setFont("helvetica","bold");
+            doc.text(lang==="ro" ? "CITATE" : "QUOTES", M, 148);
+            var quotes = PRESS_QUOTES[lang] || PRESS_QUOTES.ro;
+            quotes.forEach(function(q,i) {
+              var y = 158+i*24;
+              doc.setFontSize(9); doc.setTextColor(209,213,219); doc.setFont("helvetica","italic");
+              var lines = doc.splitTextToSize("“" + q.text.substring(0,130) + "…”", W-M*2);
+              doc.text(lines.slice(0,2), M, y);
+              doc.setFontSize(8); doc.setTextColor(16,185,129); doc.setFont("helvetica","bold");
+              if (y+9 < 220) doc.text(q.ctx, M, y+9);
+            });
+            doc.setFontSize(13); doc.setTextColor(255,255,255); doc.setFont("helvetica","bold");
+            doc.text("CONTACT", M, 230);
+            doc.setFontSize(10); doc.setTextColor(156,163,175); doc.setFont("helvetica","normal");
+            doc.text("fromgreytoplay@gmail.com", M, 239);
+            doc.text("fromgraytoplay.netlify.app", M, 246);
+            doc.text("Târgu Mureş, România", M, 253);
+            doc.setFontSize(8); doc.setTextColor(75,85,99);
+            doc.text("From Grey to Play © 2026 · fromgraytoplay.netlify.app", W/2, 287, { align:"center" });
+            doc.save("press_kit_from_grey_to_play_2026.pdf");
+          } catch(e) { console.warn("PDF err",e); }
+        }
+      } }, "📄 Press Kit PDF")
+    ),
+    React.createElement("div", { className: "pk-contact" },
+      React.createElement("div", { className: "pk-contact-item" },
+        React.createElement("span", { className: "badge badge-green" }, "✉️"),
+        React.createElement("a", { href: "mailto:fromgreytoplay@gmail.com" }, "fromgreytoplay@gmail.com")),
+      React.createElement("div", { className: "pk-contact-item" },
+        React.createElement("span", { className: "badge badge-teal" }, "🌐"),
+        React.createElement("a", { href: "https://fromgraytoplay.netlify.app", target: "_blank", rel: "noopener" }, "fromgraytoplay.netlify.app")),
+      React.createElement("div", { className: "pk-contact-item" },
+        React.createElement("span", { className: "badge badge-coral" }, "📍"),
+        React.createElement("span", null, "Târgu Mureş, România"))
+    )
+  )
+))));
 }
 
 /* === Profile === */
