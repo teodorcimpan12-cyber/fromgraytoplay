@@ -741,6 +741,52 @@ T.hu.notifNone = "Nincs tevékenység a követett pályákon."; // TODO: HU revi
 T.hu.followedCourts = "Követett pályák"; // TODO: HU review
 T.hu.markRead = "Mind olvasottnak jelöl"; // TODO: HU review
 
+/* B8 — Share */
+T.ro.shareCourt = "Distribuie";
+T.ro.copiedLink = "Link copiat!";
+T.en.shareCourt = "Share";
+T.en.copiedLink = "Link copied!";
+T.hu.shareCourt = "Megosztás"; // TODO: HU review
+T.hu.copiedLink = "Link másolva!"; // TODO: HU review
+
+/* #2.1 — Evidence Wall */
+T.ro.evidenceWall = "Perete dovezi";
+T.ro.evidenceSub = "Fotografii reale de la cetățeni — dovezi documentate pentru dosar.";
+T.ro.addEvidence = "Adaugă dovadă foto";
+T.ro.evidenceAdded = "Dovadă adăugată! Mulțumim!";
+T.ro.witnessCount = "martori";
+T.ro.courtsDocumented = "doc.";
+T.ro.captureGps = "GPS";
+T.ro.gpsAdded = "GPS salvat!";
+T.ro.gpsOptional = "Adaugă coordonate GPS";
+T.ro.allCourts = "Toate";
+T.ro.noEvidence = "Nicio dovadă fotografică încă. Fii primul!";
+T.ro.evidenceTab = "📸 Dovezi";
+T.en.evidenceWall = "Evidence Wall";
+T.en.evidenceSub = "Real photos from residents — documented evidence for the dossier.";
+T.en.addEvidence = "Add photo evidence";
+T.en.evidenceAdded = "Evidence added! Thank you!";
+T.en.witnessCount = "witnesses";
+T.en.courtsDocumented = "doc.";
+T.en.captureGps = "GPS";
+T.en.gpsAdded = "GPS saved!";
+T.en.gpsOptional = "Add GPS coordinates";
+T.en.allCourts = "All";
+T.en.noEvidence = "No photo evidence yet. Be the first!";
+T.en.evidenceTab = "📸 Evidence";
+T.hu.evidenceWall = "Bizonyítékok fala"; // TODO: HU review
+T.hu.evidenceSub = "Valódi fotók a polgároktól — dokumentált bizonyítékok."; // TODO: HU review
+T.hu.addEvidence = "Bizonyíték hozzáadása"; // TODO: HU review
+T.hu.evidenceAdded = "Bizonyíték hozzáadva! Köszönjük!"; // TODO: HU review
+T.hu.witnessCount = "tanú"; // TODO: HU review
+T.hu.courtsDocumented = "dok."; // TODO: HU review
+T.hu.captureGps = "GPS";
+T.hu.gpsAdded = "GPS mentve!"; // TODO: HU review
+T.hu.gpsOptional = "GPS koordináták hozzáadása"; // TODO: HU review
+T.hu.allCourts = "Mind"; // TODO: HU review
+T.hu.noEvidence = "Még nincs fotóbizonyíték. Légy az első!"; // TODO: HU review
+T.hu.evidenceTab = "📸 Bizonyíték"; // TODO: HU review
+
 
 /* === 3D hero strings (RO/EN/HU). HU draft — // TODO: HU review === */
 T.ro.heroKicker = "Târgu Mureş · teren multifuncțional";
@@ -896,6 +942,17 @@ function logActivity(type, userName, courtId) {
 // Downscale + JPEG-compress a File so it fits in RTDB as a data URL (~80-150KB).
 // Storage bucket isn't configured (config has only databaseURL), so photos live
 // in the gallery/ node for now; migrating to Firebase Storage is the future step.
+function shareCourt(court, t, toast) {
+  const url = SITE + "/#court-" + court.id;
+  const title = "From Grey to Play · " + court.name;
+  const text = court.name + " · " + (court.address || "Târgu Mureș");
+  if (navigator.share) {
+    navigator.share({ title, text, url }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(url).then(() => toast(t.copiedLink)).catch(() => toast(t.error));
+  }
+}
+
 function compressImage(file, maxDim, quality) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -2648,7 +2705,12 @@ function CourtDetail({
     style: following ? { borderColor:"var(--teal)", color:"var(--teal)" } : { background:"var(--teal)", color:"#fff" },
     onClick: () => toggleFollow(c.id),
     title: following ? t.unfollow : t.follow
-  }, following ? "\uD83D\uDD15 " + t.unfollow : "\uD83D\uDD14 " + t.follow))),
+  }, following ? "\uD83D\uDD15 " + t.unfollow : "\uD83D\uDD14 " + t.follow),
+  /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline btn-sm",
+    onClick: () => shareCourt(c, t, toast),
+    title: t.shareCourt
+  }, "\uD83D\uDD17 " + t.shareCourt))),
   showPlay && React.createElement(PlayNowModal, { court: c, onClose: () => setShowPlay(false) })
   );
 }
@@ -5635,6 +5697,139 @@ function ReportTimeline({ status }) {
 }
 
 /* === Reports Page === */
+/* === Evidence Wall (#2.1) === */
+function EvidenceWall() {
+  const { t, toast, user } = useApp();
+  const [filterCourt, setFilterCourt] = useState("all");
+  const [busy, setBusy] = useState(false);
+  const [preview, setPreview] = useState(null);
+  const [selCourt, setSelCourt] = useState(COURTS[0].id);
+  const [caption, setCaption] = useState("");
+  const [gps, setGps] = useState(null);
+  const [showUpload, setShowUpload] = useState(false);
+  const fileRef = useRef(null);
+  const gallery = useFirebase("gallery");
+  const imgs = gallery
+    ? Object.entries(gallery).map(([id, g]) => ({ id, ...g })).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))
+    : [];
+  const filtered = filterCourt === "all" ? imgs : imgs.filter(p => p.courtId === filterCourt);
+  const uniqueWitnesses = new Set(imgs.map(p => p.author || "?")).size;
+  const courtsDoc = new Set(imgs.filter(p => p.courtId).map(p => p.courtId)).size;
+  const statusColor = s => s === "degraded" ? "var(--red)" : s === "inProgress" ? "var(--coral)" : "var(--green)";
+  const statusLabel = s => s === "degraded" ? t.degraded : s === "inProgress" ? t.inProgress : t.renovated;
+  const onFile = async e => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try { setPreview(await compressImage(file, 900, 0.72)); }
+    catch { toast(t.error); }
+  };
+  const captureGps = () => {
+    if (!navigator.geolocation) { toast(t.error); return; }
+    navigator.geolocation.getCurrentPosition(
+      pos => { setGps({ lat: pos.coords.latitude.toFixed(5), lng: pos.coords.longitude.toFixed(5) }); toast(t.gpsAdded); },
+      () => toast(t.error)
+    );
+  };
+  const upload = () => {
+    if (!preview) { toast(t.needPhoto); return; }
+    setBusy(true);
+    const c = COURTS.find(x => x.id === selCourt) || COURTS[0];
+    db.ref("gallery").push({
+      courtId: selCourt, courtName: c.name, neighbourhood: c.neighbourhood, status: c.status,
+      caption: caption.trim(), img: preview,
+      author: anonName(user?.name || "Anonim"), voterKey: getVoterKey(),
+      gps: gps || null, isEvidence: true, votes: 0, timestamp: Date.now()
+    }).then(() => {
+      logActivity("photo", user?.name || "Anonim", selCourt);
+      toast(t.evidenceAdded);
+      setPreview(null); setCaption(""); setGps(null); setBusy(false); setShowUpload(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }).catch(() => { toast(t.error); setBusy(false); });
+  };
+  const courtsWithPhotos = COURTS.filter(c => imgs.some(p => p.courtId === c.id));
+  return React.createElement("div", null,
+    React.createElement("div", { className: "flex gap-2 mb-2", style: { flexWrap: "wrap" } },
+      [
+        [imgs.length, "📸", null],
+        [uniqueWitnesses, t.witnessCount, null],
+        [courtsDoc, t.courtsDocumented, "var(--coral)"]
+      ].map(([val, label, color], i) =>
+        React.createElement("div", { key: i, className: "card", style: { flex: 1, minWidth: 70, textAlign: "center", padding: ".6rem .4rem" } },
+          React.createElement("div", { className: "stat-number", style: { fontSize: "1.5rem", color: color || "inherit" } }, val),
+          React.createElement("div", { className: "stat-label", style: { fontSize: ".72rem" } }, label)
+        )
+      )
+    ),
+    React.createElement("button", {
+      className: "btn btn-block mb-2",
+      style: { background: showUpload ? "var(--border)" : "var(--green)", color: "#fff" },
+      onClick: () => setShowUpload(v => !v)
+    }, showUpload ? "✕ " + t.cancel : "📷 " + t.addEvidence),
+    showUpload && React.createElement("div", { className: "card mb-2", style: { borderLeft: "3px solid var(--green)" } },
+      React.createElement("label", {
+        htmlFor: "ew-photo",
+        style: { display: "block", border: "2px dashed var(--border)", borderRadius: 10, padding: ".8rem", cursor: "pointer", textAlign: "center", marginBottom: ".6rem" }
+      },
+        preview
+          ? React.createElement("img", { src: preview, alt: "preview", style: { width: "100%", maxHeight: 200, objectFit: "cover", borderRadius: 8 } })
+          : React.createElement("div", null,
+              React.createElement("div", { style: { fontSize: "2.2rem" } }, "📷"),
+              React.createElement("div", { className: "text-sm", style: { color: "var(--textSec)" } }, t.choosePhoto)
+            )
+      ),
+      React.createElement("input", { id: "ew-photo", ref: fileRef, type: "file", accept: "image/*", capture: "environment", onChange: onFile, style: { display: "none" } }),
+      React.createElement("select", { value: selCourt, onChange: e => setSelCourt(e.target.value), className: "mb-1" },
+        COURTS.map(c => React.createElement("option", { key: c.id, value: c.id }, c.name))
+      ),
+      React.createElement("textarea", { value: caption, onChange: e => setCaption(e.target.value), rows: 2, placeholder: t.photoCaptionPh, className: "mb-1" }),
+      React.createElement("div", { className: "flex gap-1" },
+        React.createElement("button", {
+          className: "btn btn-sm " + (gps ? "btn-green" : "btn-outline"),
+          onClick: captureGps, title: t.gpsOptional
+        }, "📍", gps ? " ✓" : " GPS"),
+        React.createElement("button", {
+          className: "btn btn-green", style: { flex: 1 },
+          onClick: upload, disabled: busy || !preview,
+          style: { flex: 1, opacity: !preview ? .5 : 1, cursor: !preview ? "not-allowed" : "pointer" }
+        }, busy ? "..." : t.addToWall)
+      )
+    ),
+    imgs.length > 0 && React.createElement("div", { className: "flex gap-1 mb-2", style: { overflowX: "auto", paddingBottom: ".3rem" } },
+      React.createElement("button", { className: "btn btn-sm " + (filterCourt === "all" ? "btn-green" : "btn-outline"), onClick: () => setFilterCourt("all") }, t.allCourts),
+      courtsWithPhotos.map(c => React.createElement("button", {
+        key: c.id,
+        className: "btn btn-sm " + (filterCourt === c.id ? "btn-green" : "btn-outline"),
+        style: { whiteSpace: "nowrap", flexShrink: 0 },
+        onClick: () => setFilterCourt(c.id)
+      }, c.name.split(" ").slice(0, 2).join(" ")))
+    ),
+    filtered.length === 0
+      ? React.createElement("p", { style: { color: "var(--textSec)", textAlign: "center", padding: "2rem 0" } }, t.noEvidence)
+      : React.createElement("div", { style: { columns: "2 150px", gap: ".5rem" } },
+          filtered.map(p => {
+            const c = COURTS.find(x => x.id === p.courtId);
+            return React.createElement("div", { key: p.id, className: "card", style: { breakInside: "avoid", marginBottom: ".5rem", padding: 0, overflow: "hidden" } },
+              React.createElement("img", { src: p.img, alt: p.caption || "evidence", loading: "lazy", style: { width: "100%", display: "block", objectFit: "cover", maxHeight: 220, minHeight: 80 } }),
+              React.createElement("div", { style: { padding: ".45rem .6rem" } },
+                c && React.createElement("div", { className: "flex gap-1 mb-1", style: { flexWrap: "wrap" } },
+                  React.createElement("span", { className: "badge", style: { background: statusColor(c.status) + "22", color: statusColor(c.status), fontSize: ".7rem" } }, c.name.split(" ").slice(0,2).join(" ")),
+                  React.createElement("span", { className: "badge " + (c.status === "degraded" ? "badge-red" : c.status === "inProgress" ? "badge-coral" : "badge-green"), style: { fontSize: ".7rem" } }, statusLabel(c.status))
+                ),
+                p.caption && React.createElement("p", { style: { fontSize: ".78rem", marginBottom: ".25rem", lineHeight: 1.3 } }, p.caption),
+                React.createElement("div", { className: "flex justify-between" },
+                  React.createElement("span", { style: { fontSize: ".68rem", color: "var(--textSec)" } }, p.author || "Anonim"),
+                  React.createElement("span", { style: { fontSize: ".68rem", color: "var(--textSec)" } },
+                    p.gps ? "📍 " : "",
+                    p.timestamp ? new Date(p.timestamp).toLocaleDateString() : ""
+                  )
+                )
+              )
+            );
+          })
+        )
+  );
+}
+
 function ReportsPage() {
   const { t, lang } = useApp();
   const [tab, setTab] = useState("all");
@@ -5679,8 +5874,11 @@ function ReportsPage() {
         ),
         React.createElement("div", { className: "tabs mb-2" },
           React.createElement("button", { className: tab === "all" ? "active" : "", onClick: () => setTab("all") }, t.allReports),
-          React.createElement("button", { className: tab === "mine" ? "active" : "", onClick: () => setTab("mine") }, t.myReportsOnly)
+          React.createElement("button", { className: tab === "mine" ? "active" : "", onClick: () => setTab("mine") }, t.myReportsOnly),
+          React.createElement("button", { className: tab === "evidence" ? "active" : "", onClick: () => setTab("evidence") }, t.evidenceTab)
         ),
+        tab === "evidence" ? React.createElement(EvidenceWall, null) :
+        React.createElement(React.Fragment, null,
         React.createElement("div", { className: "flex gap-1 mb-2", style: { flexWrap: "wrap" } },
           React.createElement("select", { value: filterStatus, onChange: e => setFilterStatus(e.target.value), style: { width: "auto", padding: ".3rem .5rem", fontSize: ".82rem" } },
             React.createElement("option", { value: "all" }, t.allStatus),
@@ -5728,6 +5926,7 @@ function ReportsPage() {
               ))
             )
       )
+        )
     ),
     React.createElement(QuickReportFAB, null)
   );
