@@ -11,3 +11,7 @@ coverage
 .idea
 .vscode/*
 !.vscode/extensions.json
+
+# Python bytecode cache
+__pycache__/
+*.pyc
