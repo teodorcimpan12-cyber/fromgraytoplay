@@ -22,6 +22,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--dark:#1A1A2E;--darkCard:#16213E;--green:#10B981;--coral:#F97316;--teal:#0D9488;--grey:#6B7280;--darkGrey:#374151;--light:#F8FAFC;--lightGrey:#D1D5DB;--white:#FFFFFF;--red:#DC2626;--bg:var(--light);--bgCard:var(--white);--text:var(--darkGrey);--textSec:var(--grey);--border:var(--lightGrey);--navBg:var(--white);--shadow:0 2px 12px rgba(0,0,0,.08);--radius:12px}
@@ -208,6 +209,66 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .h3d-mtitle{font-family:'Space Mono',monospace;font-size:1.3rem;line-height:1.1;margin-bottom:.55rem}
 .h3d-mbody{color:var(--textSec);font-size:.92rem;line-height:1.55;margin-bottom:1rem}
 .h3d-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#C7CBD1;font-size:.85rem;font-family:'Space Mono',monospace;z-index:4;pointer-events:none}
+
+/* ============================================================
+   POLISH LAYER — glassmorphism, scroll reveal, skeleton, radar,
+   premium hero, refined cards. Keeps brand tokens (green/coral/teal).
+   ============================================================ */
+/* Refined card depth + smooth lift */
+.card{transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s cubic-bezier(.22,1,.36,1),border-color .2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(0,0,0,.14)}
+[data-theme="dark"] .card:hover{box-shadow:0 14px 40px rgba(0,0,0,.5)}
+/* Glassmorphism surface */
+.glass{background:rgba(255,255,255,.72);-webkit-backdrop-filter:blur(14px) saturate(150%);backdrop-filter:blur(14px) saturate(150%);border:1px solid rgba(255,255,255,.5);box-shadow:0 8px 32px rgba(0,0,0,.1)}
+[data-theme="dark"] .glass{background:rgba(22,33,62,.6);border:1px solid rgba(255,255,255,.08)}
+/* Gradient text utility */
+.grad-text{background:linear-gradient(100deg,var(--green),var(--teal) 55%,var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+/* Scroll reveal — base hidden, .in reveals. Stagger via --d */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1);transition-delay:var(--d,0ms)}
+.reveal.in{opacity:1;transform:none}
+/* Skeleton shimmer */
+.skeleton{position:relative;overflow:hidden;background:var(--border);border-radius:8px}
+.skeleton::after{content:'';position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);animation:shimmer 1.4s infinite}
+[data-theme="dark"] .skeleton::after{background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent)}
+@keyframes shimmer{100%{transform:translateX(100%)}}
+/* Premium stat tiles */
+.stat-tile{position:relative;border-radius:16px;padding:1.3rem 1.1rem;overflow:hidden;border:1px solid var(--border);background:var(--bgCard);transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s}
+.stat-tile:hover{transform:translateY(-3px)}
+.stat-tile .stat-glow{position:absolute;width:120px;height:120px;border-radius:50%;filter:blur(40px);opacity:.18;top:-30px;right:-30px}
+.stat-tile .stat-number{font-size:2.6rem;line-height:1;position:relative}
+/* Premium hero with animated gradient mesh */
+.hero-premium{position:relative;overflow:hidden;background:linear-gradient(135deg,#0F1428,#16213E 60%,#0D2A2A);color:#fff;padding:3rem 0 3.2rem}
+.hero-mesh{position:absolute;inset:0;z-index:0;opacity:.6;background:
+  radial-gradient(circle at 18% 25%,rgba(16,185,129,.32),transparent 42%),
+  radial-gradient(circle at 82% 18%,rgba(249,115,22,.22),transparent 40%),
+  radial-gradient(circle at 70% 88%,rgba(13,148,136,.30),transparent 45%);
+  animation:meshFloat 16s ease-in-out infinite}
+@keyframes meshFloat{0%,100%{transform:translate3d(0,0,0) scale(1)}33%{transform:translate3d(-3%,2%,0) scale(1.06)}66%{transform:translate3d(2%,-2%,0) scale(1.03)}}
+.hero-grid-lines{position:absolute;inset:0;z-index:0;opacity:.06;background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);background-size:44px 44px}
+.hero-title{font-family:'Barlow Condensed','Space Mono',monospace;font-weight:800;font-size:clamp(2.2rem,7vw,3.6rem);line-height:.98;letter-spacing:-1px;margin-bottom:.6rem}
+.hero-pill{display:inline-flex;align-items:center;gap:.45rem;font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:#10B981;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);padding:.35rem .8rem;border-radius:20px;margin-bottom:1rem}
+/* Radar chart (court ratings) */
+.radar-wrap{display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.rate-stars{display:inline-flex;gap:.15rem}
+.rate-star{cursor:pointer;font-size:1.5rem;line-height:1;color:var(--border);transition:transform .12s,color .15s;background:none;border:none;padding:0}
+.rate-star.on{color:var(--coral)}
+.rate-star:hover{transform:scale(1.18)}
+.rate-row{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.4rem 0;border-bottom:1px solid var(--border)}
+.rate-row:last-child{border-bottom:none}
+.rate-label{font-size:.85rem;font-weight:600}
+.rate-bar{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;max-width:120px}
+.rate-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--coral),var(--green));transition:width .8s cubic-bezier(.22,1,.36,1)}
+.rate-num{font-family:'Barlow Condensed',monospace;font-weight:800;font-size:1.1rem;min-width:30px;text-align:right}
+/* Section title accent bar */
+.section-title{position:relative}
+/* Smooth page enter */
+.animate-in{animation:pageEnter .45s cubic-bezier(.22,1,.36,1) both}
+@keyframes pageEnter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+/* Dossier button glow */
+.btn-dossier{background:linear-gradient(100deg,var(--green),var(--teal));color:#fff;position:relative;overflow:hidden}
+.btn-dossier::after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-20deg);animation:sheen 3.5s ease-in-out infinite}
+@keyframes sheen{0%,100%{left:-60%}50%{left:120%}}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.hero-mesh,.btn-dossier::after,.skeleton::after{animation:none}.animate-in{animation:none}}
 </style>
 </head>
 <body>
@@ -253,6 +314,46 @@ function useFollows() {
     else db.ref("follows/" + vk + "/" + id).set(true);
   };
   return { follows, isFollowing, toggle };
+}
+
+/* Polish: animated count-up for stat numbers */
+function useCountUp(target, duration) {
+  const [val, setVal] = useState(0);
+  const ref = useRef(target);
+  ref.current = target;
+  useEffect(() => {
+    const end = Number(target) || 0;
+    if (end === 0) { setVal(0); return; }
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches) { setVal(end); return; }
+    let raf, start;
+    const dur = duration || 1100;
+    const step = ts => {
+      if (!start) start = ts;
+      const p = Math.min((ts - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setVal(Math.round(eased * end));
+      if (p < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [target, duration]);
+  return val;
+}
+
+/* Polish: scroll-reveal via IntersectionObserver. Attach ref to any element. */
+function useReveal() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (!("IntersectionObserver" in window)) { el.classList.add("in"); return; }
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return ref;
 }
 
 /* === i18n === */
@@ -2266,6 +2367,16 @@ function Hero3D() {
   );
 }
 
+/* Polish: animated stat tile with count-up + colored glow */
+function StatTile({ value, label, color }) {
+  const n = useCountUp(value);
+  return React.createElement("div", { className: "stat-tile" },
+    React.createElement("div", { className: "stat-glow", style: { background: color } }),
+    React.createElement("div", { className: "stat-number", style: { color } }, n),
+    React.createElement("div", { className: "stat-label" }, label)
+  );
+}
+
 function HomePage() {
   const {
     t,
@@ -2276,36 +2387,23 @@ function HomePage() {
   const signups = useFirebase("signups");
   const tv = votes ? (votes.flip || 0) + (votes.mural || 0) + (votes.both || 0) : 0;
   const vc = signups ? Object.values(signups).filter(s => s.volunteer).length : 0;
+  const heroRef = useReveal();
   return /*#__PURE__*/React.createElement("div", {
     className: "animate-in"
   }, /*#__PURE__*/React.createElement(Hero3D, null), /*#__PURE__*/React.createElement("section", {
-    style: {
-      background: "linear-gradient(135deg,var(--dark),#16213E)",
-      color: "#fff",
-      padding: "2.5rem 0",
-      position: "relative",
-      overflow: "hidden"
-    }
+    className: "hero-premium"
+  }, /*#__PURE__*/React.createElement("div", { className: "hero-mesh" }),
+     /*#__PURE__*/React.createElement("div", { className: "hero-grid-lines" }),
+     /*#__PURE__*/React.createElement("div", {
+    className: "container",
+    style: { position: "relative", zIndex: 1 }
   }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: "absolute",
-      top: "-20px",
-      right: "-20px",
-      fontSize: "7rem",
-      opacity: .06
-    }
-  }, "\uD83C\uDFC0"), /*#__PURE__*/React.createElement("div", {
-    className: "container"
+    ref: heroRef,
+    className: "reveal"
   }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      borderLeft: "6px solid var(--green)",
-      paddingLeft: "1rem"
-    }
-  }, /*#__PURE__*/React.createElement("h1", {
-    style: {
-      fontSize: "2rem",
-      marginBottom: ".4rem"
-    }
+    className: "hero-pill"
+  }, /*#__PURE__*/React.createElement("span", { className: "live-dot" }), " 2026"), /*#__PURE__*/React.createElement("h1", {
+    className: "hero-title"
   }, lang === "ro" ? "Terenurile tale contează" : "Your courts matter"), /*#__PURE__*/React.createElement("p", {
     style: {
       color: "#9CA3AF",
@@ -2313,43 +2411,13 @@ function HomePage() {
     }
   }, lang === "ro" ? "Documentăm inegalitatea infrastructurii sportive din Târgu Mureș. Semnează petiția, raportează terenuri degradate." : "Documenting sports infrastructure inequality in Târgu Mureș. Sign the petition, report degraded courts.")), /*#__PURE__*/React.createElement("div", {
     className: "grid grid-3 mt-3"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "card",
-    style: {
-      background: "rgba(16,185,129,.1)",
-      borderLeft: "4px solid var(--green)"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "stat-number"
-  }, COURTS.length), /*#__PURE__*/React.createElement("div", {
-    className: "stat-label"
-  }, t.courtsReported)), /*#__PURE__*/React.createElement("div", {
-    className: "card",
-    style: {
-      background: "rgba(249,115,22,.1)",
-      borderLeft: "4px solid var(--coral)"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "stat-number",
-    style: {
-      color: "var(--coral)"
-    }
-  }, tv), /*#__PURE__*/React.createElement("div", {
-    className: "stat-label"
-  }, t.petitionVotes)), /*#__PURE__*/React.createElement("div", {
-    className: "card",
-    style: {
-      background: "rgba(13,148,136,.1)",
-      borderLeft: "4px solid var(--teal)"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "stat-number",
-    style: {
-      color: "var(--teal)"
-    }
-  }, vc), /*#__PURE__*/React.createElement("div", {
-    className: "stat-label"
-  }, t.volunteers))))), /*#__PURE__*/React.createElement("section", {
+  }, /*#__PURE__*/React.createElement(StatTile, {
+    value: COURTS.length, label: t.courtsReported, color: "var(--green)"
+  }), /*#__PURE__*/React.createElement(StatTile, {
+    value: tv, label: t.petitionVotes, color: "var(--coral)"
+  }), /*#__PURE__*/React.createElement(StatTile, {
+    value: vc, label: t.volunteers, color: "var(--teal)"
+  })))), /*#__PURE__*/React.createElement("section", {
     className: "section"
   }, /*#__PURE__*/React.createElement("div", {
     className: "container"
