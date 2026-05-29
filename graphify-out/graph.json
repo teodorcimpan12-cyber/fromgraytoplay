@@ -450,6 +450,36 @@
       "type": "external",
       "line": 0,
       "desc": "window.jspdf.jsPDF (CDN unpkg). Folosit pentru export PDF: LetterModal + DossierButton."
+    },
+    {
+      "id": "WhatsNewBanner",
+      "type": "component",
+      "description": "Dismissible 'What's New' banner with shortcuts to Ratings, Dossier, Evidence"
+    },
+    {
+      "id": "PRESS_QUOTES",
+      "type": "constant",
+      "description": "Press-ready quotes in ro/en/hu for the media kit"
+    },
+    {
+      "id": "rippleEffect",
+      "type": "util",
+      "description": "Global click handler that creates ripple animation on .btn elements"
+    },
+    {
+      "id": "heroParticles",
+      "type": "component",
+      "description": "Floating CSS particles in the hero-premium section"
+    },
+    {
+      "id": "staggerList",
+      "type": "css",
+      "description": ".stagger-list + .stagger-item — sequential enter animations for lists"
+    },
+    {
+      "id": "radarAnim",
+      "type": "css",
+      "description": ".radar-anim — SVG stroke-dashoffset draw animation on RadarChart polygon"
     }
   ],
   "edges": [
@@ -912,6 +942,41 @@
       "from": "DossierButton",
       "to": "jsPDF",
       "rel": "calls"
+    },
+    {
+      "from": "WhatsNewBanner",
+      "to": "HomePage",
+      "rel": "child"
+    },
+    {
+      "from": "WhatsNewBanner",
+      "to": "useApp",
+      "rel": "reads"
+    },
+    {
+      "from": "PRESS_QUOTES",
+      "to": "AboutPage",
+      "rel": "reads"
+    },
+    {
+      "from": "rippleEffect",
+      "to": "btn",
+      "rel": "enhances"
+    },
+    {
+      "from": "heroParticles",
+      "to": "HomePage",
+      "rel": "child"
+    },
+    {
+      "from": "staggerList",
+      "to": "CourtsPage",
+      "rel": "enhances"
+    },
+    {
+      "from": "radarAnim",
+      "to": "RadarChart",
+      "rel": "enhances"
     }
   ],
   "routes": {
