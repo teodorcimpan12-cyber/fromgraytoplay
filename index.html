@@ -181,6 +181,32 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .admin-login-box .ab{width:100%;padding:.65rem;background:#10B981;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer}
 .admin-login-box .err{color:#DC2626;font-size:.78rem;margin-bottom:.5rem}
 @media(max-width:700px){.admin-side{display:none}}
+.admin-kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.65rem;margin-bottom:1.2rem}
+.admin-kpi{background:#151828;border:1px solid #1E2235;border-radius:10px;padding:.8rem 1rem}
+.admin-kpi .k-val{font-size:2rem;font-family:'Space Mono',monospace;font-weight:900;line-height:1}
+.admin-kpi .k-lbl{color:#6B7280;font-size:.7rem;margin-top:.25rem;text-transform:uppercase;letter-spacing:.4px}
+.admin-search{background:#1A1D2E;border:1px solid #1E2235;color:#E5E7EB;border-radius:8px;padding:.4rem .7rem;font-size:.82rem;width:100%;margin-bottom:.8rem;display:block}
+.admin-search:focus{outline:none;border-color:#10B981}
+.a-chip-row{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.8rem}
+.a-chip{padding:.2rem .65rem;border-radius:20px;font-size:.72rem;cursor:pointer;border:1px solid #1E2235;background:#1A1D2E;color:#9CA3AF;user-select:none}
+.a-chip.on{background:#10B981;color:#fff;border-color:#10B981;font-weight:600}
+.a-mini-feed{background:#151828;border:1px solid #1E2235;border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem}
+.a-mini-feed h3{font-size:.8rem;color:#10B981;margin-bottom:.6rem;font-family:'Space Mono',monospace}
+.a-feed-item{font-size:.75rem;color:#9CA3AF;padding:.28rem 0;border-bottom:1px solid #1E2235;display:flex;gap:.6rem;align-items:baseline}
+.a-feed-item:last-child{border-bottom:none}
+.a-bcast{background:#151828;border:1px solid #1E2235;border-radius:12px;padding:1.2rem}
+.a-bcast textarea{width:100%;background:#1A1D2E;border:1px solid #1E2235;color:#E5E7EB;border-radius:8px;padding:.6rem .8rem;font-size:.85rem;resize:vertical;min-height:90px;display:block}
+.a-bcast textarea:focus{outline:none;border-color:#10B981}
+.a-config-row{display:flex;align-items:center;gap:.7rem;margin-bottom:.7rem;padding:.7rem 1rem;background:#151828;border:1px solid #1E2235;border-radius:8px}
+.a-config-row label{color:#9CA3AF;font-size:.78rem;min-width:170px;text-transform:uppercase;letter-spacing:.3px}
+.a-config-row input{flex:1;background:#1A1D2E;border:1px solid #1E2235;color:#E5E7EB;border-radius:6px;padding:.35rem .6rem;font-size:.82rem}
+.a-config-row input:focus{outline:none;border-color:#10B981}
+.a-danger-zone{background:#1a0808;border:1px solid #7f1d1d;border-radius:10px;padding:1rem 1.1rem;margin-top:1.5rem}
+.a-danger-zone h3{color:#DC2626;font-size:.82rem;font-family:'Space Mono',monospace;margin-bottom:.5rem}
+/* Site-wide announcement banner */
+.ann-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:linear-gradient(90deg,#10B981,#0D9488);color:#fff;padding:.55rem 1.2rem;display:flex;align-items:center;gap:.8rem;font-size:.85rem;font-weight:600;box-shadow:0 2px 12px rgba(16,185,129,.35)}
+.ann-banner span{flex:1}
+.ann-banner button{background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:4px;padding:.15rem .5rem;cursor:pointer;font-size:.8rem}
 
 /* ===== 3D hero (scoped .h3d-*) ===== */
 .h3d-hero{position:relative;width:100%;height:72vh;min-height:460px;max-height:760px;overflow:hidden;background:linear-gradient(180deg,#39414c,#262b33 50%,#161a20);color:#fff;font-family:'Libre Franklin',sans-serif}
@@ -2541,6 +2567,16 @@ function StatTile({ value, label, color }) {
     React.createElement("div", { className: "stat-glow", style: { background: color } }),
     React.createElement("div", { className: "stat-number", style: { color } }, n),
     React.createElement("div", { className: "stat-label" }, label)
+  );
+}
+
+function AnnouncementBanner() {
+  var ann = useFirebase("announcement");
+  var _dis = React.useState(false), dismissed = _dis[0], setDismissed = _dis[1];
+  if (!ann || !ann.active || dismissed) return null;
+  return React.createElement("div", { className: "ann-banner" },
+    React.createElement("span", null, ann.msg),
+    React.createElement("button", { onClick: function() { setDismissed(true); } }, "✕")
   );
 }
 
@@ -5672,7 +5708,7 @@ function AdminLogin({
 function AdminPanel({
   onExit
 }) {
-  const [tab, setTab] = useState("signups");
+  const [tab, setTab] = React.useState("overview");
   const su = useFirebase("signups");
   const vo = useFirebase("votes");
   const co = useFirebase("courts");
@@ -5681,493 +5717,446 @@ function AdminPanel({
   const lb = useFirebase("leaderboard");
   const us = useFirebase("users");
   const re = useFirebase("reports");
-  const sl = su ? Object.entries(su).map(([id, s]) => ({
-    id,
-    ...s
-  })) : [];
-  const cl = co ? Object.entries(co).map(([id, c]) => ({
-    id,
-    ...c
-  })) : [];
-  const fl = fo ? Object.entries(fo).map(([id, p]) => ({
-    id,
-    ...p
-  })) : [];
-  const el = ev ? Object.entries(ev).map(([id, e]) => ({
-    id,
-    ...e
-  })) : [];
-  const ll = lb ? Object.entries(lb).map(([id, u]) => ({
-    id,
-    ...u
-  })).sort((a, b) => (b.points || 0) - (a.points || 0)) : [];
-  const ul = us ? Object.entries(us).map(([id, u]) => ({
-    id,
-    ...u
-  })) : [];
-  const rl = re ? Object.entries(re).map(([id, r]) => ({ id, ...r })).sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || "")) : [];
-  const [noteId, setNoteId] = useState(null);
-  const [noteText, setNoteText] = useState("");
-  const flip = vo?.flip || 0,
-    mural = vo?.mural || 0,
-    both = vo?.both || 0,
-    tv = flip + mural + both;
+  const act = useFirebase("activity");
+
+  const sl = su ? Object.entries(su).map(([id,s])=>({id,...s})) : [];
+  const cl = co ? Object.entries(co).map(([id,c])=>({id,...c})) : [];
+  const fl = fo ? Object.entries(fo).map(([id,p])=>({id,...p})) : [];
+  const el = ev ? Object.entries(ev).map(([id,e])=>({id,...e})) : [];
+  const ll = lb ? Object.entries(lb).map(([id,u])=>({id,...u})).sort((a,b)=>(b.points||0)-(a.points||0)) : [];
+  const ul = us ? Object.entries(us).map(([id,u])=>({id,...u})) : [];
+  const rl = re ? Object.entries(re).map(([id,r])=>({id,...r})).sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||"")) : [];
+  const al = act ? Object.entries(act).map(([id,a])=>({id,...a})).sort((a,b)=>(b.timestamp||"").localeCompare(a.timestamp||"")).slice(0,100) : [];
+
+  const flip=vo?.flip||0, mural=vo?.mural||0, both=vo?.both||0, tv=flip+mural+both;
+
+  const [noteId, setNoteId] = React.useState(null);
+  const [noteText, setNoteText] = React.useState("");
+  const [search, setSearch] = React.useState("");
+  const [sigFilter, setSigFilter] = React.useState("all");
+  const COURT_DEFAULT = {name:"",address:"",status:"degraded",condition:3,lat:"",lng:"",type:"basketball"};
+  const [courtForm, setCourtForm] = React.useState(COURT_DEFAULT);
+  const [editCourtId, setEditCourtId] = React.useState(null);
+  const [ef, setEf] = React.useState({title:"",desc:"",date:"",location:"",type:"volunteerDay"});
+  const [editId, setEditId] = React.useState(null);
+  const [bcastMsg, setBcastMsg] = React.useState("");
+  const [bcastSent, setBcastSent] = React.useState(false);
+  const [cfgForm, setCfgForm] = React.useState({petitionTarget:"500",banner:"",featuredCourt:""});
+
   const csv = (rows, fn) => {
     if (!rows.length) return;
-    const ks = Object.keys(rows[0]).filter(k => k !== "id");
-    const h = ks.join(",");
-    const b = rows.map(r => ks.map(k => String(r[k] || "").includes(",") ? `"${r[k]}"` : String(r[k] || "")).join(",")).join("\n");
-    const bl = new Blob([h + "\n" + b], {
-      type: "text/csv"
-    });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(bl);
-    a.download = fn;
-    a.click();
+    const ks = Object.keys(rows[0]).filter(k=>k!=="id");
+    const b = rows.map(r=>ks.map(k=>String(r[k]||"").includes(",") ? `"${r[k]}"` : String(r[k]||"")).join(",")).join("\n");
+    const bl = new Blob([ks.join(",")+"\n"+b],{type:"text/csv"});
+    const a=document.createElement("a"); a.href=URL.createObjectURL(bl); a.download=fn; a.click();
   };
-  const [ef, setEf] = useState({
-    title: "",
-    desc: "",
-    date: "",
-    location: "",
-    type: "volunteerDay"
-  });
-  const [editId, setEditId] = useState(null);
   const saveEv = () => {
-    if (!ef.title || !ef.date) return;
-    if (editId) {
-      db.ref("events/" + editId).update(ef);
-      setEditId(null);
-    } else db.ref("events").push({
-      ...ef,
-      attendeeCount: 0
-    });
-    setEf({
-      title: "",
-      desc: "",
-      date: "",
-      location: "",
-      type: "volunteerDay"
-    });
+    if (!ef.title||!ef.date) return;
+    if (editId) { db.ref("events/"+editId).update(ef); setEditId(null); }
+    else db.ref("events").push({...ef,attendeeCount:0});
+    setEf({title:"",desc:"",date:"",location:"",type:"volunteerDay"});
   };
-  const tabs = [{
-    k: "signups",
-    l: "📋 Signups (" + sl.length + ")"
-  }, {
-    k: "votes",
-    l: "✊ Votes (" + tv + ")"
-  }, {
-    k: "reports",
-    l: "⚠️ Reports (" + rl.length + ")"
-  }, {
-    k: "courts",
-    l: "🏟️ Courts (" + cl.length + ")"
-  }, {
-    k: "forum",
-    l: "💬 Forum (" + fl.length + ")"
-  }, {
-    k: "events",
-    l: "📅 Events (" + el.length + ")"
-  }, {
-    k: "leaderboard",
-    l: "🏆 Leaderboard"
-  }, {
-    k: "users",
-    l: "👥 Users (" + ul.length + ")"
-  }];
-  return /*#__PURE__*/React.createElement("div", {
-    className: "admin-shell"
-  }, /*#__PURE__*/React.createElement("header", {
-    className: "admin-hdr"
-  }, /*#__PURE__*/React.createElement("h1", null, "\uD83D\uDD12 ADMIN \u2014 From Grey to Play"), /*#__PURE__*/React.createElement("button", {
-    onClick: onExit,
-    style: {
-      background: "none",
-      border: "1px solid #1E2235",
-      color: "#9CA3AF",
-      padding: ".3rem .7rem",
-      borderRadius: 6,
-      fontSize: ".78rem",
-      cursor: "pointer"
-    }
-  }, "\u2715 Exit")), /*#__PURE__*/React.createElement("div", {
-    className: "admin-body"
-  }, /*#__PURE__*/React.createElement("nav", {
-    className: "admin-side"
-  }, tabs.map(tb => /*#__PURE__*/React.createElement("button", {
-    key: tb.k,
-    className: tab === tb.k ? "active" : "",
-    onClick: () => setTab(tb.k)
-  }, tb.l))), /*#__PURE__*/React.createElement("div", {
-    className: "admin-main"
-  }, tab === "signups" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Petition Signups"), /*#__PURE__*/React.createElement("div", {
-    className: "a-stats"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "a-stat"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "n",
-    style: {
-      color: "#10B981"
-    }
-  }, sl.length), /*#__PURE__*/React.createElement("div", {
-    className: "l"
-  }, "Total")), /*#__PURE__*/React.createElement("div", {
-    className: "a-stat"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "n",
-    style: {
-      color: "#F97316"
-    }
-  }, sl.filter(s => s.volunteer).length), /*#__PURE__*/React.createElement("div", {
-    className: "l"
-  }, "Volunteers"))), /*#__PURE__*/React.createElement("button", {
-    onClick: () => csv(sl, "signups.csv"),
-    className: "btn btn-sm btn-green mb-1"
-  }, "\uD83D\uDCE5 CSV"), sl.length ? /*#__PURE__*/React.createElement("div", {
-    className: "a-table-wrap"
-  }, /*#__PURE__*/React.createElement("table", {
-    className: "a-table"
-  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "#"), /*#__PURE__*/React.createElement("th", null, "Name"), /*#__PURE__*/React.createElement("th", null, "Email"), /*#__PURE__*/React.createElement("th", null, "Choice"), /*#__PURE__*/React.createElement("th", null, "Vol"), /*#__PURE__*/React.createElement("th", null, "Date"))), /*#__PURE__*/React.createElement("tbody", null, sl.map((s, i) => /*#__PURE__*/React.createElement("tr", {
-    key: s.id
-  }, /*#__PURE__*/React.createElement("td", null, i + 1), /*#__PURE__*/React.createElement("td", null, s.name), /*#__PURE__*/React.createElement("td", null, s.email), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("span", {
-    className: `a-badge ${s.choice === "flip" ? "a-badge-g" : s.choice === "mural" ? "a-badge-o" : "a-badge-t"}`
-  }, s.choice)), /*#__PURE__*/React.createElement("td", null, s.volunteer ? "✓" : ""), /*#__PURE__*/React.createElement("td", null, s.date ? new Date(s.date).toLocaleDateString() : "")))))) : /*#__PURE__*/React.createElement("p", {
-    style: {
-      color: "#6B7280"
-    }
-  }, "No signups yet")), tab === "votes" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Votes"), /*#__PURE__*/React.createElement("div", {
-    className: "a-stats"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "a-stat"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "n",
-    style: {
-      color: "#10B981"
-    }
-  }, tv), /*#__PURE__*/React.createElement("div", {
-    className: "l"
-  }, "Total")), /*#__PURE__*/React.createElement("div", {
-    className: "a-stat"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "n",
-    style: {
-      color: "#10B981"
-    }
-  }, flip), /*#__PURE__*/React.createElement("div", {
-    className: "l"
-  }, "Flip")), /*#__PURE__*/React.createElement("div", {
-    className: "a-stat"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "n",
-    style: {
-      color: "#F97316"
-    }
-  }, mural), /*#__PURE__*/React.createElement("div", {
-    className: "l"
-  }, "Canvas")), /*#__PURE__*/React.createElement("div", {
-    className: "a-stat"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "n",
-    style: {
-      color: "#0D9488"
-    }
-  }, both), /*#__PURE__*/React.createElement("div", {
-    className: "l"
-  }, "Both"))), tv > 0 && /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: "#151828",
-      border: "1px solid #1E2235",
-      borderRadius: 10,
-      padding: "1rem"
-    }
-  }, [{
-    l: "Flip-the-Court",
-    v: flip,
-    c: "#10B981"
-  }, {
-    l: "Street Canvas",
-    v: mural,
-    c: "#F97316"
-  }, {
-    l: "Both",
-    v: both,
-    c: "#0D9488"
-  }].map(x => /*#__PURE__*/React.createElement("div", {
-    key: x.l,
-    style: {
-      marginBottom: ".5rem"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      justifyContent: "space-between",
-      fontSize: ".82rem",
-      marginBottom: ".2rem"
-    }
-  }, /*#__PURE__*/React.createElement("span", null, x.l), /*#__PURE__*/React.createElement("span", {
-    style: {
-      color: x.c,
-      fontWeight: 700
-    }
-  }, (x.v / tv * 100).toFixed(1), "%")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      height: 5,
-      background: "#1E2235",
-      borderRadius: 3,
-      overflow: "hidden"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      height: "100%",
-      width: x.v / tv * 100 + "%",
-      background: x.c,
-      borderRadius: 3
-    }
-  })))))),
-  tab === "reports" && React.createElement("div", null,
-    React.createElement("h2", null, "⚠️ Reports (" + rl.length + ")"),
-    React.createElement("div", { className: "a-stats" },
-      ["received","analyzing","planned","resolved"].map(s => React.createElement("div", { key: s, className: "a-stat" },
-        React.createElement("div", { className: "n", style: { color: s === "resolved" ? "#10B981" : s === "planned" ? "#0D9488" : s === "analyzing" ? "#F97316" : "#9CA3AF" } }, rl.filter(r => r.status === s).length),
-        React.createElement("div", { className: "l" }, s)
-      ))
+  const saveCourt = () => {
+    if (!courtForm.name) return;
+    if (editCourtId) { db.ref("courts/"+editCourtId).update(courtForm); setEditCourtId(null); }
+    else db.ref("courts").push({...courtForm,date:new Date().toISOString()});
+    setCourtForm(COURT_DEFAULT);
+  };
+  const sendBcast = () => {
+    if (!bcastMsg.trim()) return;
+    db.ref("announcement").set({msg:bcastMsg.trim(),at:new Date().toISOString(),active:true});
+    db.ref("activity").push({type:"announcement",message:bcastMsg.trim(),timestamp:new Date().toISOString()});
+    setBcastSent(true); setTimeout(()=>setBcastSent(false),3000);
+  };
+
+  const tabs = [
+    {k:"overview",  l:"📊 Overview"},
+    {k:"signups",   l:"📋 Signups ("+sl.length+")"},
+    {k:"votes",     l:"✊ Votes ("+tv+")"},
+    {k:"reports",   l:"⚠️ Reports ("+rl.length+")"},
+    {k:"courts",    l:"🏟 Courts ("+cl.length+")"},
+    {k:"forum",     l:"💬 Forum ("+fl.length+")"},
+    {k:"events",    l:"📅 Events ("+el.length+")"},
+    {k:"leaderboard",l:"🏆 Leaderboard"},
+    {k:"users",     l:"👥 Users ("+ul.length+")"},
+    {k:"activity",  l:"📡 Activity"},
+    {k:"broadcast", l:"📢 Broadcast"},
+    {k:"config",    l:"⚙️ Config"},
+  ];
+
+  return React.createElement("div",{className:"admin-shell"},
+    React.createElement("header",{className:"admin-hdr"},
+      React.createElement("h1",null,"🔒 ADMIN — From Grey to Play"),
+      React.createElement("button",{onClick:onExit,style:{background:"none",border:"1px solid #1E2235",color:"#9CA3AF",padding:".3rem .7rem",borderRadius:6,fontSize:".78rem",cursor:"pointer"}},"✕ Exit")
     ),
-    rl.length ? React.createElement("div", { className: "a-table-wrap" },
-      React.createElement("table", { className: "a-table" },
-        React.createElement("thead", null, React.createElement("tr", null,
-          React.createElement("th", null, "Court"), React.createElement("th", null, "Category"), React.createElement("th", null, "Description"), React.createElement("th", null, "User"), React.createElement("th", null, "Status"), React.createElement("th", null, "Date"), React.createElement("th", null, "Actions")
-        )),
-        React.createElement("tbody", null, rl.map(r => React.createElement(React.Fragment, { key: r.id },
-          React.createElement("tr", null,
-            React.createElement("td", null, r.courtName || r.courtId),
-            React.createElement("td", null, r.category),
-            React.createElement("td", { style: { maxWidth: 160, overflow: "hidden", textOverflow: "ellipsis" } }, r.description),
-            React.createElement("td", null, r.userName || "Anonim"),
-            React.createElement("td", null, React.createElement("span", { className: "a-badge " + (r.status === "resolved" ? "a-badge-g" : r.status === "analyzing" ? "a-badge-o" : r.status === "planned" ? "a-badge-t" : "") }, r.status)),
-            React.createElement("td", null, r.createdAt ? new Date(r.createdAt).toLocaleDateString() : ""),
-            React.createElement("td", { className: "acts" },
-              React.createElement("select", {
-                value: r.status,
-                onChange: e => { const now = new Date().toISOString(); db.ref("reports/" + r.id).update({ status: e.target.value, updatedAt: now }); db.ref("activity").push({ type: "statusChange", courtName: r.courtName, status: e.target.value, timestamp: now }); },
-                style: { background: "#1A1D2E", border: "1px solid #1E2235", color: "#E5E7EB", borderRadius: 4, padding: ".15rem .3rem", fontSize: ".7rem", cursor: "pointer" }
-              },
-                React.createElement("option", { value: "received" }, "received"),
-                React.createElement("option", { value: "analyzing" }, "analyzing"),
-                React.createElement("option", { value: "planned" }, "planned"),
-                React.createElement("option", { value: "resolved" }, "resolved")
-              ),
-              React.createElement("button", { onClick: () => { setNoteId(noteId === r.id ? null : r.id); setNoteText(r.official ? r.official.note : ""); } }, "📝"),
-              React.createElement("button", { className: "dng", onClick: () => { if (confirm("Delete?")) db.ref("reports/" + r.id).remove(); } }, "✕")
-            )
+    React.createElement("div",{className:"admin-body"},
+      React.createElement("nav",{className:"admin-side"},
+        tabs.map(tb=>React.createElement("button",{key:tb.k,className:tab===tb.k?"active":"",onClick:()=>{setTab(tb.k);setSearch("");}},tb.l))
+      ),
+      React.createElement("div",{className:"admin-main"},
+
+        /* ── OVERVIEW ──────────────────────────────────────────────── */
+        tab==="overview"&&React.createElement("div",null,
+          React.createElement("h2",null,"Mission Control"),
+          React.createElement("div",{className:"admin-kpi-grid"},
+            [{val:sl.length,label:"Petition Signups",color:"#10B981"},
+             {val:tv,label:"Total Votes",color:"#10B981"},
+             {val:rl.filter(r=>r.status!=="resolved").length,label:"Open Reports",color:"#F97316"},
+             {val:cl.filter(c=>c.status==="renovated").length,label:"Renovated Courts",color:"#0D9488"},
+             {val:sl.filter(s=>s.volunteer).length,label:"Volunteers",color:"#10B981"},
+             {val:al.length,label:"Activity Events",color:"#9CA3AF"},
+            ].map(k=>React.createElement("div",{key:k.label,className:"admin-kpi"},
+              React.createElement("div",{className:"k-val",style:{color:k.color}},k.val),
+              React.createElement("div",{className:"k-lbl"},k.label)
+            ))
           ),
-          noteId === r.id && React.createElement("tr", null,
-            React.createElement("td", { colSpan: 7, style: { padding: ".5rem .7rem" } },
-              React.createElement("div", { style: { display: "flex", gap: ".4rem" } },
-                React.createElement("input", { value: noteText, onChange: e => setNoteText(e.target.value), placeholder: "Official note / răspuns oficial...", style: { flex: 1, background: "#1A1D2E", border: "1px solid #1E2235", color: "#E5E7EB", borderRadius: 6, padding: ".35rem .6rem", fontSize: ".8rem" } }),
-                React.createElement("button", {
-                  style: { background: "#10B981", color: "#fff", border: "none", borderRadius: 6, padding: ".35rem .7rem", cursor: "pointer", fontSize: ".78rem", fontWeight: 700 },
-                  onClick: () => { db.ref("reports/" + r.id + "/official").set({ note: noteText, at: new Date().toISOString(), by: "Admin" }); setNoteId(null); }
-                }, "Save")
+          React.createElement("div",{className:"a-mini-feed"},
+            React.createElement("h3",null,"Live Activity"),
+            al.slice(0,12).length?al.slice(0,12).map(a=>React.createElement("div",{key:a.id,className:"a-feed-item"},
+              React.createElement("span",{style:{color:"#10B981",minWidth:90}},a.type),
+              React.createElement("span",null,a.userName||a.message||"—"),
+              React.createElement("span",{style:{marginLeft:"auto",color:"#4B5563",fontSize:".7rem"}},a.timestamp?new Date(a.timestamp).toLocaleString():"")
+            )):React.createElement("p",{style:{color:"#6B7280",fontSize:".8rem"}},"No activity yet")
+          ),
+          React.createElement("div",{style:{display:"flex",gap:".6rem",marginTop:"1rem",flexWrap:"wrap"}},
+            React.createElement("button",{className:"btn btn-sm btn-green",onClick:()=>csv(sl,"signups.csv")},"⬇ Export Signups"),
+            React.createElement("button",{className:"btn btn-sm",style:{background:"#F97316",color:"#fff"},onClick:()=>csv(rl,"reports.csv")},"⬇ Export Reports"),
+            React.createElement("button",{className:"btn btn-sm",style:{background:"#1A1D2E",color:"#DC2626",border:"1px solid #7f1d1d"},onClick:()=>{if(confirm("Reset ALL votes to zero?"))db.ref("votes").set({flip:0,mural:0,both:0});}},"🔄 Reset Votes")
+          )
+        ),
+
+        /* ── SIGNUPS ───────────────────────────────────────────────── */
+        tab==="signups"&&React.createElement("div",null,
+          React.createElement("h2",null,"Petition Signups"),
+          React.createElement("div",{className:"a-stats"},
+            React.createElement("div",{className:"a-stat"},React.createElement("div",{className:"n",style:{color:"#10B981"}},sl.length),React.createElement("div",{className:"l"},"Total")),
+            React.createElement("div",{className:"a-stat"},React.createElement("div",{className:"n",style:{color:"#F97316"}},sl.filter(s=>s.volunteer).length),React.createElement("div",{className:"l"},"Volunteers")),
+            React.createElement("div",{className:"a-stat"},React.createElement("div",{className:"n",style:{color:"#0D9488"}},sl.filter(s=>s.choice==="flip").length),React.createElement("div",{className:"l"},"Flip")),
+            React.createElement("div",{className:"a-stat"},React.createElement("div",{className:"n",style:{color:"#F97316"}},sl.filter(s=>s.choice==="mural").length),React.createElement("div",{className:"l"},"Canvas"))
+          ),
+          React.createElement("input",{className:"admin-search",placeholder:"Search name / email…",value:search,onChange:e=>setSearch(e.target.value)}),
+          React.createElement("div",{className:"a-chip-row"},
+            ["all","flip","mural","both"].map(f=>React.createElement("span",{key:f,className:"a-chip"+(sigFilter===f?" on":""),onClick:()=>setSigFilter(f)},f))
+          ),
+          React.createElement("div",{style:{display:"flex",gap:".4rem",marginBottom:".8rem"}},
+            React.createElement("button",{onClick:()=>csv(sl,"signups.csv"),className:"btn btn-sm btn-green"},"⬇ CSV All"),
+            React.createElement("button",{onClick:()=>csv(sl.filter(s=>s.volunteer),"volunteers.csv"),className:"btn btn-sm",style:{background:"#F97316",color:"#fff"}},"⬇ Volunteers Only")
+          ),
+          React.createElement("div",{className:"a-table-wrap"},
+            React.createElement("table",{className:"a-table"},
+              React.createElement("thead",null,React.createElement("tr",null,
+                React.createElement("th",null,"#"),React.createElement("th",null,"Name"),React.createElement("th",null,"Email"),React.createElement("th",null,"Choice"),React.createElement("th",null,"Vol"),React.createElement("th",null,"Date"),React.createElement("th",null,"✕")
+              )),
+              React.createElement("tbody",null,
+                sl.filter(s=>{const q=search.toLowerCase();if(q&&!(s.name||"").toLowerCase().includes(q)&&!(s.email||"").toLowerCase().includes(q))return false;if(sigFilter!=="all"&&s.choice!==sigFilter)return false;return true;}).map((s,i)=>
+                  React.createElement("tr",{key:s.id},
+                    React.createElement("td",null,i+1),
+                    React.createElement("td",null,s.name),
+                    React.createElement("td",null,s.email),
+                    React.createElement("td",null,React.createElement("span",{className:"a-badge "+(s.choice==="flip"?"a-badge-g":s.choice==="mural"?"a-badge-o":"a-badge-t")},s.choice)),
+                    React.createElement("td",null,s.volunteer?"✓":""),
+                    React.createElement("td",null,s.date?new Date(s.date).toLocaleDateString():""),
+                    React.createElement("td",{className:"acts"},React.createElement("button",{className:"dng",onClick:()=>{if(confirm("Delete this signup?"))db.ref("signups/"+s.id).remove();}},"✕"))
+                  )
+                )
               )
             )
           )
-        )))
+        ),
+
+        /* ── VOTES ─────────────────────────────────────────────────── */
+        tab==="votes"&&React.createElement("div",null,
+          React.createElement("h2",null,"Votes"),
+          React.createElement("div",{className:"a-stats"},
+            React.createElement("div",{className:"a-stat"},React.createElement("div",{className:"n",style:{color:"#10B981"}},tv),React.createElement("div",{className:"l"},"Total")),
+            React.createElement("div",{className:"a-stat"},React.createElement("div",{className:"n",style:{color:"#10B981"}},flip),React.createElement("div",{className:"l"},"Flip")),
+            React.createElement("div",{className:"a-stat"},React.createElement("div",{className:"n",style:{color:"#F97316"}},mural),React.createElement("div",{className:"l"},"Canvas")),
+            React.createElement("div",{className:"a-stat"},React.createElement("div",{className:"n",style:{color:"#0D9488"}},both),React.createElement("div",{className:"l"},"Both"))
+          ),
+          tv>0&&React.createElement("div",{style:{background:"#151828",border:"1px solid #1E2235",borderRadius:10,padding:"1rem",marginBottom:"1rem"}},
+            [{l:"Flip-the-Court",v:flip,c:"#10B981"},{l:"Street Canvas",v:mural,c:"#F97316"},{l:"Both",v:both,c:"#0D9488"}].map(x=>
+              React.createElement("div",{key:x.l,style:{marginBottom:".5rem"}},
+                React.createElement("div",{style:{display:"flex",justifyContent:"space-between",fontSize:".82rem",marginBottom:".2rem"}},
+                  React.createElement("span",null,x.l),
+                  React.createElement("span",{style:{color:x.c,fontWeight:700}},(x.v/tv*100).toFixed(1),"%")
+                ),
+                React.createElement("div",{style:{height:5,background:"#1E2235",borderRadius:3,overflow:"hidden"}},
+                  React.createElement("div",{style:{height:"100%",width:x.v/tv*100+"%",background:x.c,borderRadius:3}})
+                )
+              )
+            )
+          ),
+          React.createElement("div",{className:"a-danger-zone"},
+            React.createElement("h3",null,"⚠ Danger Zone"),
+            React.createElement("button",{className:"btn btn-sm",style:{background:"#DC2626",color:"#fff"},onClick:()=>{if(confirm("Reset ALL votes to zero? This cannot be undone."))db.ref("votes").set({flip:0,mural:0,both:0});}},"🔄 Reset All Votes")
+          )
+        ),
+
+        /* ── REPORTS ───────────────────────────────────────────────── */
+        tab==="reports"&&React.createElement("div",null,
+          React.createElement("h2",null,"Reports ("+rl.length+")"),
+          React.createElement("div",{className:"a-stats"},
+            ["received","analyzing","planned","resolved"].map(s=>React.createElement("div",{key:s,className:"a-stat"},
+              React.createElement("div",{className:"n",style:{color:s==="resolved"?"#10B981":s==="planned"?"#0D9488":s==="analyzing"?"#F97316":"#9CA3AF"}},rl.filter(r=>r.status===s).length),
+              React.createElement("div",{className:"l"},s)
+            ))
+          ),
+          React.createElement("button",{onClick:()=>csv(rl,"reports.csv"),className:"btn btn-sm btn-green mb-1"},"⬇ CSV"),
+          rl.length?React.createElement("div",{className:"a-table-wrap"},
+            React.createElement("table",{className:"a-table"},
+              React.createElement("thead",null,React.createElement("tr",null,
+                React.createElement("th",null,"Court"),React.createElement("th",null,"Category"),React.createElement("th",null,"Description"),React.createElement("th",null,"User"),React.createElement("th",null,"Status"),React.createElement("th",null,"Date"),React.createElement("th",null,"Actions")
+              )),
+              React.createElement("tbody",null,rl.map(r=>React.createElement(React.Fragment,{key:r.id},
+                React.createElement("tr",null,
+                  React.createElement("td",null,r.courtName||r.courtId),
+                  React.createElement("td",null,r.category),
+                  React.createElement("td",{style:{maxWidth:160,overflow:"hidden",textOverflow:"ellipsis"}},r.description),
+                  React.createElement("td",null,r.userName||"Anonim"),
+                  React.createElement("td",null,React.createElement("span",{className:"a-badge "+(r.status==="resolved"?"a-badge-g":r.status==="analyzing"?"a-badge-o":r.status==="planned"?"a-badge-t":"")},r.status)),
+                  React.createElement("td",null,r.createdAt?new Date(r.createdAt).toLocaleDateString():""),
+                  React.createElement("td",{className:"acts"},
+                    React.createElement("select",{value:r.status,onChange:e=>{const now=new Date().toISOString();db.ref("reports/"+r.id).update({status:e.target.value,updatedAt:now});db.ref("activity").push({type:"statusChange",courtName:r.courtName,status:e.target.value,timestamp:now});},style:{background:"#1A1D2E",border:"1px solid #1E2235",color:"#E5E7EB",borderRadius:4,padding:".15rem .3rem",fontSize:".7rem",cursor:"pointer"}},
+                      React.createElement("option",{value:"received"},"received"),
+                      React.createElement("option",{value:"analyzing"},"analyzing"),
+                      React.createElement("option",{value:"planned"},"planned"),
+                      React.createElement("option",{value:"resolved"},"resolved")
+                    ),
+                    React.createElement("button",{onClick:()=>{setNoteId(noteId===r.id?null:r.id);setNoteText(r.official?r.official.note:"");}},"📝"),
+                    React.createElement("button",{className:"dng",onClick:()=>{if(confirm("Delete?"))db.ref("reports/"+r.id).remove();}},"✕")
+                  )
+                ),
+                noteId===r.id&&React.createElement("tr",null,
+                  React.createElement("td",{colSpan:7,style:{padding:".5rem .7rem"}},
+                    React.createElement("div",{style:{display:"flex",gap:".4rem"}},
+                      React.createElement("input",{value:noteText,onChange:e=>setNoteText(e.target.value),placeholder:"Official note / răspuns oficial…",style:{flex:1,background:"#1A1D2E",border:"1px solid #1E2235",color:"#E5E7EB",borderRadius:6,padding:".35rem .6rem",fontSize:".8rem"}}),
+                      React.createElement("button",{style:{background:"#10B981",color:"#fff",border:"none",borderRadius:6,padding:".35rem .7rem",cursor:"pointer",fontSize:".78rem",fontWeight:700},onClick:()=>{db.ref("reports/"+r.id+"/official").set({note:noteText,at:new Date().toISOString(),by:"Admin"});setNoteId(null);}},"Save")
+                    )
+                  )
+                )
+              )))
+            )
+          ):React.createElement("p",{style:{color:"#6B7280"}},"No reports yet")
+        ),
+
+        /* ── COURTS ────────────────────────────────────────────────── */
+        tab==="courts"&&React.createElement("div",null,
+          React.createElement("h2",null,"Courts"),
+          React.createElement("div",{className:"a-form",style:{marginBottom:"1rem"}},
+            React.createElement("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:".4rem"}},
+              React.createElement("div",null,React.createElement("label",null,"Name"),React.createElement("input",{value:courtForm.name,placeholder:"e.g. Teren Tudor",onChange:e=>setCourtForm({...courtForm,name:e.target.value})})),
+              React.createElement("div",null,React.createElement("label",null,"Address"),React.createElement("input",{value:courtForm.address,placeholder:"Str. …",onChange:e=>setCourtForm({...courtForm,address:e.target.value})})),
+              React.createElement("div",null,React.createElement("label",null,"Status"),React.createElement("select",{value:courtForm.status,onChange:e=>setCourtForm({...courtForm,status:e.target.value})},
+                React.createElement("option",{value:"degraded"},"Degraded"),
+                React.createElement("option",{value:"inProgress"},"In Progress"),
+                React.createElement("option",{value:"renovated"},"Renovated")
+              )),
+              React.createElement("div",null,React.createElement("label",null,"Condition (1-5)"),React.createElement("input",{type:"number",min:1,max:5,value:courtForm.condition,onChange:e=>setCourtForm({...courtForm,condition:Number(e.target.value)})})),
+              React.createElement("div",null,React.createElement("label",null,"Lat"),React.createElement("input",{value:courtForm.lat,placeholder:"46.54…",onChange:e=>setCourtForm({...courtForm,lat:e.target.value})})),
+              React.createElement("div",null,React.createElement("label",null,"Lng"),React.createElement("input",{value:courtForm.lng,placeholder:"24.56…",onChange:e=>setCourtForm({...courtForm,lng:e.target.value})}))
+            ),
+            React.createElement("div",{style:{display:"flex",gap:".4rem",marginTop:".4rem"}},
+              React.createElement("button",{className:"btn btn-sm",style:{background:"#10B981",color:"#fff"},onClick:saveCourt},editCourtId?"💾 Update Court":"+ Add Court"),
+              editCourtId&&React.createElement("button",{className:"btn btn-sm",style:{background:"#1A1D2E"},onClick:()=>{setEditCourtId(null);setCourtForm(COURT_DEFAULT);}},"Cancel")
+            )
+          ),
+          React.createElement("button",{onClick:()=>csv(cl.map(c=>({name:c.name,address:c.address,status:c.status,condition:c.condition})),"courts.csv"),className:"btn btn-sm btn-green mb-1"},"⬇ CSV"),
+          cl.length?React.createElement("div",{className:"a-table-wrap"},
+            React.createElement("table",{className:"a-table"},
+              React.createElement("thead",null,React.createElement("tr",null,
+                React.createElement("th",null,"Name"),React.createElement("th",null,"Address"),React.createElement("th",null,"Status"),React.createElement("th",null,"Cond"),React.createElement("th",null,"Date"),React.createElement("th",null,"Actions")
+              )),
+              React.createElement("tbody",null,cl.map(c=>React.createElement("tr",{key:c.id},
+                React.createElement("td",null,c.name),
+                React.createElement("td",null,c.address||"—"),
+                React.createElement("td",null,React.createElement("span",{className:"a-badge "+(c.status==="degraded"?"a-badge-r":c.status==="inProgress"?"a-badge-o":"a-badge-g")},c.status)),
+                React.createElement("td",null,c.condition,"/5"),
+                React.createElement("td",null,c.date?new Date(c.date).toLocaleDateString():""),
+                React.createElement("td",{className:"acts"},
+                  React.createElement("button",{onClick:()=>{setEditCourtId(c.id);setCourtForm({name:c.name||"",address:c.address||"",status:c.status||"degraded",condition:c.condition||3,lat:c.lat||"",lng:c.lng||"",type:c.type||"basketball"});}},"✏️"),
+                  React.createElement("button",{onClick:()=>db.ref("courts/"+c.id+"/status").set("inProgress")},"→ WIP"),
+                  React.createElement("button",{onClick:()=>db.ref("courts/"+c.id+"/status").set("renovated")},"✓"),
+                  React.createElement("button",{className:"dng",onClick:()=>{if(confirm("Delete court?"))db.ref("courts/"+c.id).remove();}},"✕")
+                )
+              )))
+            )
+          ):React.createElement("p",{style:{color:"#6B7280"}},"No courts yet")
+        ),
+
+        /* ── FORUM ─────────────────────────────────────────────────── */
+        tab==="forum"&&React.createElement("div",null,
+          React.createElement("h2",null,"Forum Moderation"),
+          fl.length?React.createElement("div",{className:"a-table-wrap"},
+            React.createElement("table",{className:"a-table"},
+              React.createElement("thead",null,React.createElement("tr",null,
+                React.createElement("th",null,"📌"),React.createElement("th",null,"Type"),React.createElement("th",null,"Title"),React.createElement("th",null,"Author"),React.createElement("th",null,"↑"),React.createElement("th",null,"↓"),React.createElement("th",null,"Actions")
+              )),
+              React.createElement("tbody",null,fl.map(p=>React.createElement("tr",{key:p.id},
+                React.createElement("td",null,p.pinned?"📌":""),
+                React.createElement("td",null,React.createElement("span",{className:"a-badge a-badge-t"},p.type)),
+                React.createElement("td",null,p.title),
+                React.createElement("td",null,p.author),
+                React.createElement("td",{style:{color:"#10B981"}},p.upvotes||0),
+                React.createElement("td",{style:{color:"#DC2626"}},p.downvotes||0),
+                React.createElement("td",{className:"acts"},
+                  React.createElement("button",{onClick:()=>db.ref("forum/"+p.id+"/pinned").set(!p.pinned)},p.pinned?"Unpin":"Pin"),
+                  React.createElement("button",{onClick:()=>db.ref("forum/"+p.id+"/locked").set(!p.locked)},p.locked?"🔓":"🔒"),
+                  React.createElement("button",{className:"dng",onClick:()=>{if(confirm("Delete post?"))db.ref("forum/"+p.id).remove();}},"🗑")
+                )
+              )))
+            )
+          ):React.createElement("p",{style:{color:"#6B7280"}},"No posts")
+        ),
+
+        /* ── EVENTS ────────────────────────────────────────────────── */
+        tab==="events"&&React.createElement("div",null,
+          React.createElement("h2",null,"Events"),
+          React.createElement("div",{className:"a-form"},
+            React.createElement("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:".4rem"}},
+              React.createElement("div",null,React.createElement("label",null,"Title"),React.createElement("input",{value:ef.title,onChange:e=>setEf({...ef,title:e.target.value})})),
+              React.createElement("div",null,React.createElement("label",null,"Date"),React.createElement("input",{type:"date",value:ef.date,onChange:e=>setEf({...ef,date:e.target.value})})),
+              React.createElement("div",null,React.createElement("label",null,"Location"),React.createElement("input",{value:ef.location,onChange:e=>setEf({...ef,location:e.target.value})})),
+              React.createElement("div",null,React.createElement("label",null,"Type"),React.createElement("select",{value:ef.type,onChange:e=>setEf({...ef,type:e.target.value})},
+                React.createElement("option",{value:"volunteerDay"},"Volunteer Day"),
+                React.createElement("option",{value:"muralPainting"},"Mural Painting"),
+                React.createElement("option",{value:"tournament"},"Tournament"),
+                React.createElement("option",{value:"meeting"},"Meeting")
+              ))
+            ),
+            React.createElement("label",null,"Description"),
+            React.createElement("textarea",{value:ef.desc,onChange:e=>setEf({...ef,desc:e.target.value}),rows:2}),
+            React.createElement("button",{onClick:saveEv,className:"btn btn-sm",style:{background:"#10B981",color:"#fff"}},editId?"💾 Update":"+ Create")
+          ),
+          el.length?React.createElement("div",{className:"a-table-wrap"},
+            React.createElement("table",{className:"a-table"},
+              React.createElement("thead",null,React.createElement("tr",null,
+                React.createElement("th",null,"Title"),React.createElement("th",null,"Date"),React.createElement("th",null,"Location"),React.createElement("th",null,"RSVPs"),React.createElement("th",null,"Actions")
+              )),
+              React.createElement("tbody",null,el.map(e=>React.createElement("tr",{key:e.id},
+                React.createElement("td",null,e.title),
+                React.createElement("td",null,e.date),
+                React.createElement("td",null,e.location),
+                React.createElement("td",null,e.attendeeCount||0),
+                React.createElement("td",{className:"acts"},
+                  React.createElement("button",{onClick:()=>{setEditId(e.id);setEf({title:e.title||"",desc:e.desc||"",date:e.date||"",location:e.location||"",type:e.type||"volunteerDay"});}},"✏️"),
+                  React.createElement("button",{className:"dng",onClick:()=>{if(confirm("Delete event?"))db.ref("events/"+e.id).remove();}},"🗑")
+                )
+              )))
+            )
+          ):React.createElement("p",{style:{color:"#6B7280"}},"No events")
+        ),
+
+        /* ── LEADERBOARD ───────────────────────────────────────────── */
+        tab==="leaderboard"&&React.createElement("div",null,
+          React.createElement("h2",null,"Leaderboard"),
+          ll.length?React.createElement("div",{className:"a-table-wrap"},
+            React.createElement("table",{className:"a-table"},
+              React.createElement("thead",null,React.createElement("tr",null,
+                React.createElement("th",null,"#"),React.createElement("th",null,"Name"),React.createElement("th",null,"Points"),React.createElement("th",null,"Adjust")
+              )),
+              React.createElement("tbody",null,ll.map((u,i)=>React.createElement("tr",{key:u.id},
+                React.createElement("td",{style:{color:i<3?"#10B981":"inherit"}},i+1),
+                React.createElement("td",null,u.name||u.id),
+                React.createElement("td",{style:{fontFamily:"'Space Mono',monospace",fontWeight:700}},u.points||0),
+                React.createElement("td",{className:"acts"},
+                  React.createElement("button",{onClick:()=>db.ref("leaderboard/"+u.id+"/points").transaction(v=>Math.max(0,(v||0)+10))},"+10"),
+                  React.createElement("button",{onClick:()=>db.ref("leaderboard/"+u.id+"/points").transaction(v=>Math.max(0,(v||0)+50))},"+50"),
+                  React.createElement("button",{onClick:()=>db.ref("leaderboard/"+u.id+"/points").transaction(v=>Math.max(0,(v||0)-10))},"-10"),
+                  React.createElement("button",{className:"dng",onClick:()=>db.ref("leaderboard/"+u.id+"/points").set(0)},"Reset")
+                )
+              )))
+            )
+          ):React.createElement("p",{style:{color:"#6B7280"}},"Empty")
+        ),
+
+        /* ── USERS ─────────────────────────────────────────────────── */
+        tab==="users"&&React.createElement("div",null,
+          React.createElement("h2",null,"Users"),
+          React.createElement("input",{className:"admin-search",placeholder:"Search name / email…",value:search,onChange:e=>setSearch(e.target.value)}),
+          React.createElement("div",{style:{display:"flex",gap:".4rem",marginBottom:".8rem"}},
+            React.createElement("button",{onClick:()=>csv(ul.map(u=>({name:u.name,email:u.email,points:u.points,volunteer:u.volunteer?"Yes":"No"})),"users.csv"),className:"btn btn-sm btn-green"},"⬇ CSV"),
+            React.createElement("button",{onClick:()=>csv(ul.filter(u=>u.volunteer).map(u=>({name:u.name,email:u.email})),"volunteer_emails.csv"),className:"btn btn-sm",style:{background:"#F97316",color:"#fff"}},"⬇ Volunteer Emails")
+          ),
+          React.createElement("div",{className:"a-table-wrap"},
+            React.createElement("table",{className:"a-table"},
+              React.createElement("thead",null,React.createElement("tr",null,
+                React.createElement("th",null,"Name"),React.createElement("th",null,"Email"),React.createElement("th",null,"Points"),React.createElement("th",null,"Vol"),React.createElement("th",null,"Actions")
+              )),
+              React.createElement("tbody",null,ul.filter(u=>{const q=search.toLowerCase();return!q||(u.name||"").toLowerCase().includes(q)||(u.email||"").toLowerCase().includes(q);}).map(u=>React.createElement("tr",{key:u.id},
+                React.createElement("td",null,u.name),
+                React.createElement("td",null,u.email),
+                React.createElement("td",null,u.points||0),
+                React.createElement("td",null,u.volunteer?"✓":""),
+                React.createElement("td",{className:"acts"},
+                  React.createElement("button",{onClick:()=>db.ref("users/"+u.id+"/points").transaction(v=>(v||0)+50)},"+50 pts"),
+                  React.createElement("button",{onClick:()=>db.ref("users/"+u.id+"/volunteer").set(!u.volunteer)},u.volunteer?"Unvol":"Vol✓"),
+                  React.createElement("button",{className:"dng",onClick:()=>{if(confirm("Delete user?"))db.ref("users/"+u.id).remove();}},"✕")
+                )
+              )))
+            )
+          )
+        ),
+
+        /* ── ACTIVITY ──────────────────────────────────────────────── */
+        tab==="activity"&&React.createElement("div",null,
+          React.createElement("h2",null,"Activity Log"),
+          React.createElement("input",{className:"admin-search",placeholder:"Filter by type or user…",value:search,onChange:e=>setSearch(e.target.value)}),
+          React.createElement("div",{className:"a-table-wrap"},
+            React.createElement("table",{className:"a-table"},
+              React.createElement("thead",null,React.createElement("tr",null,
+                React.createElement("th",null,"Type"),React.createElement("th",null,"User / Info"),React.createElement("th",null,"Court"),React.createElement("th",null,"Time"),React.createElement("th",null,"✕")
+              )),
+              React.createElement("tbody",null,al.filter(a=>{const q=search.toLowerCase();return!q||(a.type||"").includes(q)||(a.userName||"").toLowerCase().includes(q);}).map(a=>React.createElement("tr",{key:a.id},
+                React.createElement("td",null,React.createElement("span",{className:"a-badge a-badge-t"},a.type)),
+                React.createElement("td",null,a.userName||a.message||""),
+                React.createElement("td",null,a.courtId||a.courtName||""),
+                React.createElement("td",null,a.timestamp?new Date(a.timestamp).toLocaleString():""),
+                React.createElement("td",{className:"acts"},React.createElement("button",{className:"dng",onClick:()=>db.ref("activity/"+a.id).remove()},"✕"))
+              )))
+            )
+          )
+        ),
+
+        /* ── BROADCAST ─────────────────────────────────────────────── */
+        tab==="broadcast"&&React.createElement("div",null,
+          React.createElement("h2",null,"Broadcast Announcement"),
+          React.createElement("div",{className:"a-bcast"},
+            React.createElement("p",{style:{color:"#9CA3AF",fontSize:".82rem",marginBottom:".6rem"}},"Push a live banner to ALL site visitors. Appears instantly. Clear to hide."),
+            React.createElement("textarea",{value:bcastMsg,onChange:e=>setBcastMsg(e.target.value),placeholder:"🎉 Renovation started on Teren Tudor! Follow updates on the map…"}),
+            React.createElement("div",{style:{display:"flex",gap:".5rem",marginTop:".4rem"}},
+              React.createElement("button",{className:"btn",style:{background:bcastSent?"#0D9488":"#10B981",color:"#fff",border:"none",padding:".55rem 1.2rem",borderRadius:8,fontWeight:700,cursor:"pointer"},onClick:sendBcast},bcastSent?"✓ Broadcasted!":"📢 Go Live"),
+              React.createElement("button",{className:"btn",style:{background:"#DC2626",color:"#fff",border:"none",padding:".55rem 1rem",borderRadius:8,fontWeight:700,cursor:"pointer"},onClick:()=>db.ref("announcement").set(null)},"✕ Clear Banner")
+            )
+          )
+        ),
+
+        /* ── CONFIG ────────────────────────────────────────────────── */
+        tab==="config"&&React.createElement("div",null,
+          React.createElement("h2",null,"Site Config"),
+          [
+            {key:"petitionTarget",label:"Petition Target",placeholder:"500",type:"number"},
+            {key:"banner",label:"Persistent Banner Text",placeholder:"📢 Campaign active — sign the petition!"},
+            {key:"featuredCourt",label:"Featured Court ID",placeholder:"court_tudor_1"},
+          ].map(f=>React.createElement("div",{key:f.key,className:"a-config-row"},
+            React.createElement("label",null,f.label),
+            React.createElement("input",{type:f.type||"text",value:cfgForm[f.key]||"",placeholder:f.placeholder,onChange:e=>setCfgForm({...cfgForm,[f.key]:e.target.value})})
+          )),
+          React.createElement("button",{className:"btn btn-sm",style:{background:"#10B981",color:"#fff"},onClick:()=>db.ref("config").update(cfgForm)},"💾 Save Config"),
+          React.createElement("div",{className:"a-danger-zone"},
+            React.createElement("h3",null,"⚠ Danger Zone — Irreversible"),
+            React.createElement("div",{style:{display:"flex",gap:".5rem",flexWrap:"wrap"}},
+              React.createElement("button",{className:"btn btn-sm",style:{background:"#DC2626",color:"#fff"},onClick:()=>{if(confirm("WIPE entire activity log? Cannot be undone."))db.ref("activity").set(null);}},"🗑 Wipe Activity Log"),
+              React.createElement("button",{className:"btn btn-sm",style:{background:"#DC2626",color:"#fff"},onClick:()=>{if(confirm("WIPE ALL SIGNUPS? Cannot be undone."))db.ref("signups").set(null);}},"🗑 Wipe Signups"),
+              React.createElement("button",{className:"btn btn-sm",style:{background:"#DC2626",color:"#fff"},onClick:()=>{if(confirm("RESET ALL VOTES to zero?"))db.ref("votes").set({flip:0,mural:0,both:0});}},"🔄 Reset Votes")
+            )
+          )
+        )
+
       )
-    ) : React.createElement("p", { style: { color: "#6B7280" } }, "No reports yet")
-  ),
-  tab === "courts" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Court Reports"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => csv(cl.map(c => ({
-      name: c.name,
-      address: c.address,
-      status: c.status,
-      condition: c.condition
-    })), "courts.csv"),
-    className: "btn btn-sm btn-green mb-1"
-  }, "\uD83D\uDCE5 CSV"), cl.length ? /*#__PURE__*/React.createElement("div", {
-    className: "a-table-wrap"
-  }, /*#__PURE__*/React.createElement("table", {
-    className: "a-table"
-  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Name"), /*#__PURE__*/React.createElement("th", null, "Status"), /*#__PURE__*/React.createElement("th", null, "Cond"), /*#__PURE__*/React.createElement("th", null, "Date"), /*#__PURE__*/React.createElement("th", null, "Actions"))), /*#__PURE__*/React.createElement("tbody", null, cl.map(c => /*#__PURE__*/React.createElement("tr", {
-    key: c.id
-  }, /*#__PURE__*/React.createElement("td", null, c.name), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("span", {
-    className: `a-badge ${c.status === "degraded" ? "a-badge-r" : "a-badge-g"}`
-  }, c.status)), /*#__PURE__*/React.createElement("td", null, c.condition, "/5"), /*#__PURE__*/React.createElement("td", null, c.date ? new Date(c.date).toLocaleDateString() : ""), /*#__PURE__*/React.createElement("td", {
-    className: "acts"
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => db.ref("courts/" + c.id + "/status").set("inProgress")
-  }, "\u2192 WIP"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => db.ref("courts/" + c.id + "/status").set("renovated")
-  }, "\u2713"), /*#__PURE__*/React.createElement("button", {
-    className: "dng",
-    onClick: () => {
-      if (confirm("Delete?")) db.ref("courts/" + c.id).remove();
-    }
-  }, "\u2715"))))))) : /*#__PURE__*/React.createElement("p", {
-    style: {
-      color: "#6B7280"
-    }
-  }, "No reports")), tab === "forum" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Forum Moderation"), fl.length ? /*#__PURE__*/React.createElement("div", {
-    className: "a-table-wrap"
-  }, /*#__PURE__*/React.createElement("table", {
-    className: "a-table"
-  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "\uD83D\uDCCC"), /*#__PURE__*/React.createElement("th", null, "Type"), /*#__PURE__*/React.createElement("th", null, "Title"), /*#__PURE__*/React.createElement("th", null, "Author"), /*#__PURE__*/React.createElement("th", null, "\u2191"), /*#__PURE__*/React.createElement("th", null, "\u2193"), /*#__PURE__*/React.createElement("th", null, "Actions"))), /*#__PURE__*/React.createElement("tbody", null, fl.map(p => /*#__PURE__*/React.createElement("tr", {
-    key: p.id
-  }, /*#__PURE__*/React.createElement("td", null, p.pinned ? "📌" : ""), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("span", {
-    className: "a-badge a-badge-t"
-  }, p.type)), /*#__PURE__*/React.createElement("td", null, p.title), /*#__PURE__*/React.createElement("td", null, p.author), /*#__PURE__*/React.createElement("td", {
-    style: {
-      color: "#10B981"
-    }
-  }, p.upvotes || 0), /*#__PURE__*/React.createElement("td", {
-    style: {
-      color: "#DC2626"
-    }
-  }, p.downvotes || 0), /*#__PURE__*/React.createElement("td", {
-    className: "acts"
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => db.ref("forum/" + p.id + "/pinned").set(!p.pinned)
-  }, p.pinned ? "Unpin" : "Pin"), /*#__PURE__*/React.createElement("button", {
-    className: "dng",
-    onClick: () => {
-      if (confirm("Delete?")) db.ref("forum/" + p.id).remove();
-    }
-  }, "\uD83D\uDDD1"))))))) : /*#__PURE__*/React.createElement("p", {
-    style: {
-      color: "#6B7280"
-    }
-  }, "No posts")), tab === "events" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Events"), /*#__PURE__*/React.createElement("div", {
-    className: "a-form"
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "grid",
-      gridTemplateColumns: "1fr 1fr",
-      gap: ".4rem"
-    }
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", null, "Title"), /*#__PURE__*/React.createElement("input", {
-    value: ef.title,
-    onChange: e => setEf({
-      ...ef,
-      title: e.target.value
-    })
-  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", null, "Date"), /*#__PURE__*/React.createElement("input", {
-    type: "date",
-    value: ef.date,
-    onChange: e => setEf({
-      ...ef,
-      date: e.target.value
-    })
-  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", null, "Location"), /*#__PURE__*/React.createElement("input", {
-    value: ef.location,
-    onChange: e => setEf({
-      ...ef,
-      location: e.target.value
-    })
-  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", null, "Type"), /*#__PURE__*/React.createElement("select", {
-    value: ef.type,
-    onChange: e => setEf({
-      ...ef,
-      type: e.target.value
-    })
-  }, /*#__PURE__*/React.createElement("option", {
-    value: "volunteerDay"
-  }, "Volunteer Day"), /*#__PURE__*/React.createElement("option", {
-    value: "muralPainting"
-  }, "Mural Painting"), /*#__PURE__*/React.createElement("option", {
-    value: "tournament"
-  }, "Tournament"), /*#__PURE__*/React.createElement("option", {
-    value: "meeting"
-  }, "Meeting")))), /*#__PURE__*/React.createElement("label", null, "Description"), /*#__PURE__*/React.createElement("textarea", {
-    value: ef.desc,
-    onChange: e => setEf({
-      ...ef,
-      desc: e.target.value
-    }),
-    rows: 2
-  }), /*#__PURE__*/React.createElement("button", {
-    onClick: saveEv,
-    className: "btn btn-sm",
-    style: {
-      background: "#10B981",
-      color: "#fff"
-    }
-  }, editId ? "💾 Update" : "+ Create")), el.length ? /*#__PURE__*/React.createElement("div", {
-    className: "a-table-wrap"
-  }, /*#__PURE__*/React.createElement("table", {
-    className: "a-table"
-  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Title"), /*#__PURE__*/React.createElement("th", null, "Date"), /*#__PURE__*/React.createElement("th", null, "Location"), /*#__PURE__*/React.createElement("th", null, "RSVPs"), /*#__PURE__*/React.createElement("th", null, "Actions"))), /*#__PURE__*/React.createElement("tbody", null, el.map(e => /*#__PURE__*/React.createElement("tr", {
-    key: e.id
-  }, /*#__PURE__*/React.createElement("td", null, e.title), /*#__PURE__*/React.createElement("td", null, e.date), /*#__PURE__*/React.createElement("td", null, e.location), /*#__PURE__*/React.createElement("td", null, e.attendeeCount || 0), /*#__PURE__*/React.createElement("td", {
-    className: "acts"
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => {
-      setEditId(e.id);
-      setEf({
-        title: e.title || "",
-        desc: e.desc || "",
-        date: e.date || "",
-        location: e.location || "",
-        type: e.type || "volunteerDay"
-      });
-    }
-  }, "\u270F\uFE0F"), /*#__PURE__*/React.createElement("button", {
-    className: "dng",
-    onClick: () => {
-      if (confirm("Delete?")) db.ref("events/" + e.id).remove();
-    }
-  }, "\uD83D\uDDD1"))))))) : /*#__PURE__*/React.createElement("p", {
-    style: {
-      color: "#6B7280"
-    }
-  }, "No events")), tab === "leaderboard" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Leaderboard"), ll.length ? /*#__PURE__*/React.createElement("div", {
-    className: "a-table-wrap"
-  }, /*#__PURE__*/React.createElement("table", {
-    className: "a-table"
-  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "#"), /*#__PURE__*/React.createElement("th", null, "Name"), /*#__PURE__*/React.createElement("th", null, "Points"), /*#__PURE__*/React.createElement("th", null, "Adjust"))), /*#__PURE__*/React.createElement("tbody", null, ll.map((u, i) => /*#__PURE__*/React.createElement("tr", {
-    key: u.id
-  }, /*#__PURE__*/React.createElement("td", {
-    style: {
-      color: i < 3 ? "#10B981" : "inherit"
-    }
-  }, i + 1), /*#__PURE__*/React.createElement("td", null, u.name || u.id), /*#__PURE__*/React.createElement("td", {
-    style: {
-      fontFamily: "'Space Mono',monospace",
-      fontWeight: 700
-    }
-  }, u.points || 0), /*#__PURE__*/React.createElement("td", {
-    className: "acts"
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => db.ref("leaderboard/" + u.id + "/points").transaction(v => Math.max(0, (v || 0) + 10))
-  }, "+10"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => db.ref("leaderboard/" + u.id + "/points").transaction(v => Math.max(0, (v || 0) + 50))
-  }, "+50"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => db.ref("leaderboard/" + u.id + "/points").transaction(v => Math.max(0, (v || 0) - 10))
-  }, "-10"), /*#__PURE__*/React.createElement("button", {
-    className: "dng",
-    onClick: () => db.ref("leaderboard/" + u.id + "/points").set(0)
-  }, "Reset"))))))) : /*#__PURE__*/React.createElement("p", {
-    style: {
-      color: "#6B7280"
-    }
-  }, "Empty")), tab === "users" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Users"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => csv(ul.map(u => ({
-      name: u.name,
-      email: u.email,
-      points: u.points,
-      volunteer: u.volunteer ? "Yes" : "No"
-    })), "users.csv"),
-    className: "btn btn-sm btn-green mb-1"
-  }, "\uD83D\uDCE5 CSV"), ul.length ? /*#__PURE__*/React.createElement("div", {
-    className: "a-table-wrap"
-  }, /*#__PURE__*/React.createElement("table", {
-    className: "a-table"
-  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Name"), /*#__PURE__*/React.createElement("th", null, "Email"), /*#__PURE__*/React.createElement("th", null, "Points"), /*#__PURE__*/React.createElement("th", null, "Vol"))), /*#__PURE__*/React.createElement("tbody", null, ul.map(u => /*#__PURE__*/React.createElement("tr", {
-    key: u.id
-  }, /*#__PURE__*/React.createElement("td", null, u.name), /*#__PURE__*/React.createElement("td", null, u.email), /*#__PURE__*/React.createElement("td", null, u.points || 0), /*#__PURE__*/React.createElement("td", null, u.volunteer ? "✓" : "")))))) : /*#__PURE__*/React.createElement("p", {
-    style: {
-      color: "#6B7280"
-    }
-  }, "No users")))));
+    )
+  );
 }
+
 
 /* === voterKey helper === */
 function getVoterKey() {
@@ -6678,7 +6667,7 @@ function App() {
   };
   return /*#__PURE__*/React.createElement(AppCtx.Provider, {
     value: ctx
-  }, /*#__PURE__*/React.createElement(InstallBanner, {
+  }, React.createElement(AnnouncementBanner, null), /*#__PURE__*/React.createElement(InstallBanner, {
     lang: lang
   }), /*#__PURE__*/React.createElement(Navbar, null), /*#__PURE__*/React.createElement("main", {
     style: {
