@@ -2271,7 +2271,29 @@ function mountHero3D(host, opts) {
   // confetti
   var confCols = [0xE63946, 0xF4A261, 0xE9C46A, 0x4CAF50, 0xffffff, 0xEC6FA0];
   var cgeo = new THREE.PlaneGeometry(0.05, 0.05), confetti = [];
-  function burst() { for (var i = 0; i < 42; i++) { var m = new THREE.Mesh(cgeo, new THREE.MeshBasicMaterial({ color: confCols[i % confCols.length], side: THREE.DoubleSide, transparent: true })); m.position.set((Math.random() - 0.5) * 1.4, 1.3, (Math.random() - 0.5) * 1.0); m.userData = { vx: (Math.random() - 0.5) * 0.05, vy: 0.04 + Math.random() * 0.06, vz: (Math.random() - 0.5) * 0.05, life: 1 }; group.add(m); confetti.push(m); } }
+  function burst() { addShockwave(); shakeT = 0.65; for (var i = 0; i < 42; i++) { var m = new THREE.Mesh(cgeo, new THREE.MeshBasicMaterial({ color: confCols[i % confCols.length], side: THREE.DoubleSide, transparent: true })); m.position.set((Math.random() - 0.5) * 1.4, 1.3, (Math.random() - 0.5) * 1.0); m.userData = { vx: (Math.random() - 0.5) * 0.05, vy: 0.04 + Math.random() * 0.06, vz: (Math.random() - 0.5) * 0.05, life: 1 }; group.add(m); confetti.push(m); } }
+
+  // === ambient particle cloud (fireflies / light orbs) ===
+  var ptCount = 72, ptGeo = new THREE.BufferGeometry();
+  var ptPos = new Float32Array(ptCount * 3), ptVel = [];
+  for (var pIdx = 0; pIdx < ptCount; pIdx++) {
+    ptPos[pIdx*3]=(Math.random()-0.5)*5.2; ptPos[pIdx*3+1]=0.2+Math.random()*2.2; ptPos[pIdx*3+2]=(Math.random()-0.5)*3.6;
+    ptVel.push({vx:(Math.random()-0.5)*0.18,vz:(Math.random()-0.5)*0.18,ph:Math.random()*6.28});
+  }
+  ptGeo.setAttribute("position",new THREE.BufferAttribute(ptPos,3));
+  var ptMat=new THREE.PointsMaterial({size:0.042,transparent:true,opacity:0.48,depthWrite:false,blending:THREE.AdditiveBlending,color:0x88b8d0});
+  var ptCloud=new THREE.Points(ptGeo,ptMat); scene.add(ptCloud);
+  var ptColG=new THREE.Color(0x88b8d0), ptColV=new THREE.Color(0x40ffb8);
+  // === renovation shockwave ===
+  var swaves=[];
+  function addShockwave(){
+    var sg=new THREE.TorusGeometry(0.25,0.026,8,64);
+    var sm=new THREE.MeshBasicMaterial({color:0x10B981,transparent:true,opacity:0.88,side:THREE.DoubleSide});
+    var swv=new THREE.Mesh(sg,sm); swv.rotation.x=Math.PI/2; swv.position.y=0.07; swv.userData.age=0;
+    group.add(swv); swaves.push(swv);
+  }
+  var keyColD=new THREE.Color(0xfff2e0), keyColV=new THREE.Color(0x9ad4ff);
+  var camBase=camera.position.clone(), shakeT=0, shakeAmp=0.032;
 
   // ---- interaction: rotate the court, OR grab & flick a ball ----
   var rot = 0, rotVel = 0, dragging = false, lastX = 0, autoSpin = 0.0013;
@@ -2372,6 +2394,7 @@ function mountHero3D(host, opts) {
       }
     }
     var spinBoost = 0;
+    if (shakeT > 0) { shakeT -= dt; var sf = shakeT / 0.65; camera.position.set(camBase.x+(Math.random()-0.5)*shakeAmp*sf, camBase.y+(Math.random()-0.5)*shakeAmp*sf*0.4, camBase.z+(Math.random()-0.5)*shakeAmp*sf); if (shakeT <= 0) camera.position.copy(camBase); }
     if (renov.active) {
       renov.t += dt; var T = renov.t;
       spinBoost = T < 0.55 ? (T / 0.55) * 0.11 : Math.max(0, 0.11 * (1 - (T - 0.55) / 0.95));
@@ -2388,6 +2411,9 @@ function mountHero3D(host, opts) {
       cm.userData.life -= 0.011; cm.material.opacity = Math.max(0, cm.userData.life); cm.rotation.x += 0.25; cm.rotation.y += 0.2;
       if (cm.userData.life <= 0 || cm.position.y < 0.02) { group.remove(cm); cm.material.dispose(); confetti.splice(ci, 1); }
     }
+    for (var swi2 = swaves.length-1; swi2 >= 0; swi2--) { var swm2=swaves[swi2]; swm2.userData.age+=dt; var swp=Math.min(1,swm2.userData.age/1.1); swm2.scale.setScalar(0.3+swp*22); swm2.material.opacity=0.82*(1-swp); if (swp>=1) { group.remove(swm2); swm2.material.dispose(); swm2.geometry.dispose(); swaves.splice(swi2,1); } }
+    var ptA=ptCloud.geometry.attributes.position.array; for (var pAni=0; pAni<ptCount; pAni++) { ptA[pAni*3]+=ptVel[pAni].vx*dt; ptA[pAni*3+1]+=Math.sin(t*0.7+ptVel[pAni].ph)*0.0038; ptA[pAni*3+2]+=ptVel[pAni].vz*dt; if(ptA[pAni*3]>2.8)ptA[pAni*3]=-2.8; if(ptA[pAni*3]<-2.8)ptA[pAni*3]=2.8; if(ptA[pAni*3+2]>2.1)ptA[pAni*3+2]=-2.1; if(ptA[pAni*3+2]<-2.1)ptA[pAni*3+2]=2.1; } ptCloud.geometry.attributes.position.needsUpdate=true; ptMat.color.copy(ptColG).lerp(ptColV,prog); ptMat.opacity=0.4+prog*0.3;
+    key.color.copy(keyColD).lerp(keyColV,prog*0.45+Math.sin(t*0.18)*0.04);
     for (var ki = 0; ki < children.length; ki++) {
       var kch = children[ki], u = kch.userData, ksc = prog * 1.3; kch.scale.setScalar(ksc); kch.visible = prog > 0.02;
       if (ksc <= 0.02) continue;
