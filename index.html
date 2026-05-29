@@ -16,7 +16,11 @@
 <title>From Grey to Play</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Libre+Franklin:wght@300;400;500;600;700;900&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -142,6 +146,28 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 /* Official badge */
 .badge-official{background:rgba(16,185,129,.12);color:var(--green);border:1px solid rgba(16,185,129,.3)}
 .leaflet-container{font-family:inherit;z-index:1}
+/* map upgrade */
+.map-wrap{position:relative}
+.map-pin{width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center}
+.map-pin span{transform:rotate(45deg);font-size:12px;color:#fff;line-height:1}
+.map-cluster{width:36px;height:36px;background:#10B981;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:900;border:3px solid rgba(255,255,255,.85);box-shadow:0 2px 10px rgba(0,0,0,.35)}
+.map-user-dot{width:18px;height:18px;background:#3b82f6;border-radius:50%;border:3px solid #fff;animation:userPing 1.6s ease-out infinite}
+@keyframes userPing{0%,100%{box-shadow:0 0 0 3px rgba(59,130,246,.3)}50%{box-shadow:0 0 0 10px rgba(59,130,246,.08)}}
+.map-locate-btn{position:absolute;bottom:16px;right:12px;z-index:1000;background:#10B981;color:#fff;border:none;border-radius:8px;padding:.45rem .9rem;font-size:.8rem;font-weight:700;cursor:pointer;box-shadow:0 2px 10px rgba(16,185,129,.5);display:flex;align-items:center;gap:.3rem}
+.map-locate-btn:hover{background:#0ea572}
+.map-layer-btns{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;gap:.3rem;background:rgba(22,27,46,.92);border-radius:20px;padding:.25rem .4rem;backdrop-filter:blur(6px)}
+.map-layer-btn{padding:.28rem .7rem;border-radius:14px;border:none;background:transparent;color:#9CA3AF;font-size:.72rem;font-weight:600;cursor:pointer;transition:all .15s}
+.map-layer-btn.on{background:#10B981;color:#fff}
+.mp-popup{font-family:'Libre Franklin',sans-serif;min-width:170px;padding:.1rem}
+.mp-name{font-weight:700;font-size:.88rem;margin-bottom:.15rem;color:#E5E7EB}
+.mp-addr{color:#9CA3AF;font-size:.72rem;margin-bottom:.35rem}
+.mp-row{display:flex;align-items:center;gap:.4rem;margin-top:.25rem}
+.mp-badge{padding:.1rem .42rem;border-radius:4px;font-size:.67rem;font-weight:700}
+.leaflet-popup-content-wrapper{background:#1A1D2E!important;border:1px solid #1E2235!important;border-radius:10px!important;color:#E5E7EB!important;box-shadow:0 4px 20px rgba(0,0,0,.5)!important}
+.leaflet-popup-tip-container .leaflet-popup-tip{background:#1A1D2E!important}
+.leaflet-popup-close-button{color:#6B7280!important}
+.leaflet-control-layers{background:#1A1D2E!important;border:1px solid #1E2235!important;color:#E5E7EB!important;border-radius:8px!important}
+.leaflet-control-layers label{color:#E5E7EB}
 /* Admin */
 .admin-shell{min-height:100vh;background:#0B0E18;color:#E5E7EB}
 .admin-hdr{background:#10131F;border-bottom:1px solid #1E2235;padding:.7rem 1.2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
@@ -1776,50 +1802,164 @@ function Navbar() {
 }
 
 /* === Map === */
-function MapView({
-  courts,
-  height = "380px",
-  onSelect
-}) {
-  const ref = useRef(null);
-  const mapRef = useRef(null);
-  const {
-    t
-  } = useApp();
-  useEffect(() => {
+function MapView({ courts, height = "420px", onSelect }) {
+  var ref = React.useRef(null);
+  var mapRef = React.useRef(null);
+  var userMkRef = React.useRef(null);
+  var routeRef = React.useRef(null);
+  var layersRef = React.useRef({});
+  var [activeLayer, setActiveLayer] = React.useState("all");
+
+  React.useEffect(function() {
     if (!ref.current || mapRef.current) return;
-    const m = L.map(ref.current).setView([46.5455, 24.5625], 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OSM'
+
+    var m = L.map(ref.current, { zoomControl: true }).setView([46.5455, 24.5625], 13);
+
+    // Dark CartoDB tiles
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://osm.org">OSM</a> &copy; <a href="https://carto.com">CARTO</a>',
+      maxZoom: 19
     }).addTo(m);
-    courts.forEach(c => {
-      const col = c.status === "degraded" ? "#DC2626" : c.status === "inProgress" ? "#F97316" : "#10B981";
-      const icon = L.divIcon({
-        html: `<div style="width:14px;height:14px;border-radius:50%;background:${col};border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3)"></div>`,
-        className: "",
-        iconSize: [14, 14]
+
+    // Marker cluster group
+    var clusterGroup = typeof L.markerClusterGroup === "function"
+      ? L.markerClusterGroup({
+          maxClusterRadius: 50,
+          iconCreateFunction: function(cluster) {
+            return L.divIcon({ html: '<div class="map-cluster">' + cluster.getChildCount() + '</div>', className: '', iconSize: [36, 36] });
+          }
+        })
+      : L.layerGroup();
+
+    // Build markers
+    courts.forEach(function(c) {
+      if (!c.lat || !c.lng) return;
+      var col = c.status === "degraded" ? "#DC2626" : c.status === "inProgress" ? "#F97316" : "#10B981";
+      var ico = c.status === "degraded" ? "!" : c.status === "inProgress" ? "↻" : "✓";
+      var icon = L.divIcon({
+        html: '<div class="map-pin" style="background:' + col + '"><span>' + ico + '</span></div>',
+        className: '', iconSize: [30, 30], iconAnchor: [15, 30], popupAnchor: [0, -33]
       });
-      const mk = L.marker([c.lat, c.lng], {
-        icon
-      }).addTo(m);
-      mk.bindPopup(`<b>${c.name}</b><br>${c.address}`);
-      if (onSelect) mk.on('click', () => onSelect(c));
+      var mk = L.marker([Number(c.lat), Number(c.lng)], { icon: icon });
+      var cond = c.condition ? c.condition + "/5" : "—";
+      mk.bindPopup(
+        '<div class="mp-popup">' +
+        '<div class="mp-name">' + c.name + '</div>' +
+        '<div class="mp-addr">' + (c.address || '') + '</div>' +
+        '<div class="mp-row"><span class="mp-badge" style="background:' + col + '22;color:' + col + '">' + (c.status || '') + '</span>' +
+        '<span style="font-size:.72rem;color:#9CA3AF">Cond: ' + cond + '</span></div>' +
+        '</div>'
+      );
+      if (onSelect) mk.on('click', function() { onSelect(c); });
+      clusterGroup.addLayer(mk);
     });
+    m.addLayer(clusterGroup);
+
+    // Heatmap (degraded + in-progress courts, intensity = inverse condition)
+    var heatData = courts
+      .filter(function(c) { return c.lat && c.lng && c.status !== "renovated"; })
+      .map(function(c) { return [Number(c.lat), Number(c.lng), (6 - (Number(c.condition) || 3)) / 5]; });
+    var heatLayer = typeof L.heatLayer === "function"
+      ? L.heatLayer(heatData, { radius: 38, blur: 22, maxZoom: 15, gradient: { 0.25: '#10B981', 0.55: '#F97316', 1.0: '#DC2626' } })
+      : null;
+
+    // Degraded-only layer
+    var degradedGroup = L.layerGroup();
+    courts.filter(function(c) { return c.lat && c.lng && c.status === "degraded"; }).forEach(function(c) {
+      var icon = L.divIcon({
+        html: '<div class="map-pin" style="background:#DC2626"><span>!</span></div>',
+        className: '', iconSize: [30, 30], iconAnchor: [15, 30], popupAnchor: [0, -33]
+      });
+      L.marker([Number(c.lat), Number(c.lng)], { icon: icon })
+        .bindPopup('<div class="mp-popup"><div class="mp-name">' + c.name + '</div><div class="mp-addr">' + (c.address || '') + '</div></div>')
+        .addTo(degradedGroup);
+    });
+
+    // Renovated layer
+    var renovGroup = L.layerGroup();
+    courts.filter(function(c) { return c.lat && c.lng && c.status === "renovated"; }).forEach(function(c) {
+      var icon = L.divIcon({
+        html: '<div class="map-pin" style="background:#10B981"><span>✓</span></div>',
+        className: '', iconSize: [30, 30], iconAnchor: [15, 30], popupAnchor: [0, -33]
+      });
+      L.marker([Number(c.lat), Number(c.lng)], { icon: icon })
+        .bindPopup('<div class="mp-popup"><div class="mp-name">' + c.name + '</div></div>')
+        .addTo(renovGroup);
+    });
+
     mapRef.current = m;
-    setTimeout(() => m.invalidateSize(), 200);
-    return () => {
-      m.remove();
-      mapRef.current = null;
-    };
+    layersRef.current = { clusterGroup, heatLayer, degradedGroup, renovGroup };
+    setTimeout(function() { m.invalidateSize(); }, 200);
+
+    return function() { m.remove(); mapRef.current = null; };
   }, [courts]);
-  return /*#__PURE__*/React.createElement("div", {
-    ref: ref,
-    className: "map-box",
-    style: {
-      height
-    }
-  });
+
+  // Layer toggle effect
+  React.useEffect(function() {
+    var m = mapRef.current;
+    if (!m) return;
+    var lr = layersRef.current;
+    if (!lr.clusterGroup) return;
+    [lr.clusterGroup, lr.heatLayer, lr.degradedGroup, lr.renovGroup].forEach(function(l) { if (l && m.hasLayer(l)) m.removeLayer(l); });
+    if (activeLayer === "all") { m.addLayer(lr.clusterGroup); }
+    else if (activeLayer === "heat") { if (lr.heatLayer) m.addLayer(lr.heatLayer); }
+    else if (activeLayer === "degraded") { m.addLayer(lr.degradedGroup); }
+    else if (activeLayer === "renov") { m.addLayer(lr.renovGroup); }
+  }, [activeLayer]);
+
+  // Find nearest degraded court
+  function findNearest() {
+    if (!mapRef.current || !navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(function(pos) {
+      var ulat = pos.coords.latitude, ulng = pos.coords.longitude;
+      var m = mapRef.current;
+      if (userMkRef.current) { userMkRef.current.remove(); }
+      if (routeRef.current) { routeRef.current.remove(); }
+      var userIcon = L.divIcon({ html: '<div class="map-user-dot"></div>', className: '', iconSize: [18, 18], iconAnchor: [9, 9] });
+      userMkRef.current = L.marker([ulat, ulng], { icon: userIcon }).addTo(m);
+      userMkRef.current.bindPopup('📍 Locația ta').openPopup();
+      var degraded = courts.filter(function(c) { return c.lat && c.lng && c.status === "degraded"; });
+      if (!degraded.length) return;
+      var nearest = null, minD = Infinity;
+      degraded.forEach(function(c) {
+        var d = Math.hypot(Number(c.lat) - ulat, Number(c.lng) - ulng);
+        if (d < minD) { minD = d; nearest = c; }
+      });
+      if (nearest) {
+        var km = (minD * 111).toFixed(2);
+        routeRef.current = L.polyline([[ulat, ulng], [Number(nearest.lat), Number(nearest.lng)]], {
+          color: '#10B981', weight: 3, dashArray: '9,7', opacity: 0.9
+        }).addTo(m);
+        m.fitBounds([[ulat, ulng], [Number(nearest.lat), Number(nearest.lng)]], { padding: [60, 60] });
+        L.popup().setLatLng([Number(nearest.lat), Number(nearest.lng)])
+          .setContent('<div class="mp-popup"><div class="mp-name">' + nearest.name + '</div><div style="color:#10B981;font-size:.8rem;margin-top:.3rem">~' + km + ' km distanță</div></div>')
+          .openOn(m);
+      }
+    }, function(err) { alert("Localizare eșuată: " + err.message); });
+  }
+
+  var layers = [
+    { k: "all", l: "🗺 Toate" },
+    { k: "heat", l: "🌡 Heat" },
+    { k: "degraded", l: "🔴 Degradate" },
+    { k: "renov", l: "✅ Renovate" },
+  ];
+
+  return React.createElement("div", { className: "map-wrap" },
+    React.createElement("div", { ref: ref, className: "map-box", style: { height: height } }),
+    React.createElement("div", { className: "map-layer-btns" },
+      layers.map(function(ly) {
+        return React.createElement("button", {
+          key: ly.k,
+          className: "map-layer-btn" + (activeLayer === ly.k ? " on" : ""),
+          onClick: function() { setActiveLayer(ly.k); }
+        }, ly.l);
+      })
+    ),
+    React.createElement("button", { className: "map-locate-btn", onClick: findNearest }, "📍 Cel mai aproape")
+  );
 }
+
 
 /* === Home === */
 
