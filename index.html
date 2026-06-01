@@ -268,6 +268,26 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .btn-dossier{background:linear-gradient(100deg,var(--green),var(--teal));color:#fff;position:relative;overflow:hidden}
 .btn-dossier::after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-20deg);animation:sheen 3.5s ease-in-out infinite}
 @keyframes sheen{0%,100%{left:-60%}50%{left:120%}}
+/* === Milestone progress bar === */
+.milestone-bar{position:relative;height:12px;background:var(--border);border-radius:6px;overflow:visible;margin:1rem 0 1.8rem}
+.milestone-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--green),var(--teal));transition:width 1s cubic-bezier(.22,1,.36,1)}
+.milestone-marker{position:absolute;top:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;border:2px solid var(--bgCard);z-index:2;cursor:default}
+.milestone-marker.ms-reached{background:var(--green);box-shadow:0 0 0 3px rgba(16,185,129,.22)}
+.milestone-marker.ms-next{background:var(--border)}
+.milestone-label{position:absolute;top:17px;left:50%;transform:translateX(-50%);font-size:.6rem;white-space:nowrap;color:var(--textSec);font-family:'Space Mono',monospace;font-weight:700}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(800deg);opacity:0}}
+.confetti-overlay{position:fixed;inset:0;pointer-events:none;z-index:9998;overflow:hidden}
+.confetti-dot{position:absolute;animation:confettiFall linear forwards}
+@keyframes mileBounce{0%{transform:scale(.5) rotate(-4deg);opacity:0}65%{transform:scale(1.06) rotate(1deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+.milestone-cel{background:linear-gradient(135deg,rgba(16,185,129,.13),rgba(13,148,136,.08));border:2px solid var(--green);border-radius:16px;padding:1.5rem 1.2rem;text-align:center;animation:mileBounce .5s cubic-bezier(.34,1.56,.64,1) both;margin-bottom:1rem}
+/* Neighbourhood inequality chart */
+.hood-chart-row{display:flex;align-items:center;gap:.65rem;margin-bottom:.8rem}
+.hood-chart-label{width:128px;font-size:.8rem;font-weight:600;color:var(--text);flex-shrink:0;line-height:1.2}
+.hood-chart-bar-wrap{flex:1;background:var(--border);border-radius:5px;overflow:hidden}
+.hood-chart-bar{height:22px;border-radius:5px;transition:width 1.3s cubic-bezier(.22,1,.36,1)}
+.hood-chart-val{font-family:'Barlow Condensed',monospace;font-weight:800;font-size:1rem;width:38px;text-align:right;flex-shrink:0}
+.hood-gap-callout{background:linear-gradient(130deg,rgba(220,38,38,.07) 0%,rgba(16,185,129,.07) 100%);border:1px solid rgba(220,38,38,.2);border-radius:12px;padding:.85rem 1rem;margin-bottom:1rem}
+.share-canvas{width:100%;border-radius:10px;border:1px solid var(--border);display:block}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.hero-mesh,.btn-dossier::after,.skeleton::after{animation:none}.animate-in{animation:none}}
 </style>
 </head>
@@ -1133,6 +1153,20 @@ function compressImage(file, maxDim, quality) {
 }
 
 /* === Data === */
+/* === Milestone & neighbourhood chart strings === */
+T.ro.signaturesLabel = "semnături";
+T.ro.hoodChart = "Inegalitate pe cartiere";
+T.ro.hoodGap = "Decalaj documentat";
+T.ro.downloadPng = "Descarcă PNG";
+T.en.signaturesLabel = "signatures";
+T.en.hoodChart = "Inequality by neighbourhood";
+T.en.hoodGap = "Documented gap";
+T.en.downloadPng = "Download PNG";
+T.hu.signaturesLabel = "aláírás"; // TODO: HU review
+T.hu.hoodChart = "Egyenlőtlenség kerületenként"; // TODO: HU review
+T.hu.hoodGap = "Dokumentált különbség"; // TODO: HU review
+T.hu.downloadPng = "PNG letöltése"; // TODO: HU review
+
 const COURTS = [{
   id: "c1",
   name: "Teren Tudor 1",
@@ -3273,6 +3307,179 @@ function ActiveGames({ court }) {
 }
 
 /* === Petition === */
+const MILESTONES = [50, 100, 250, 500, 1000];
+const CONFETTI_COLS = ["#10B981","#F97316","#0D9488","#F59E0B","#EC4899","#8B5CF6","#3B82F6","#EF4444"];
+
+function MilestoneConfetti({ onDone }) {
+  var pieces = [];
+  for (var _i = 0; _i < 90; _i++) {
+    pieces.push({
+      id: _i,
+      left: Math.random() * 100,
+      delay: (Math.random() * 1.8).toFixed(2),
+      dur: (2.2 + Math.random() * 2.2).toFixed(2),
+      color: CONFETTI_COLS[_i % CONFETTI_COLS.length],
+      size: 7 + Math.floor(Math.random() * 9),
+      radius: Math.random() > 0.55 ? "50%" : "2px",
+      rot: Math.floor(Math.random() * 360)
+    });
+  }
+  useEffect(function() {
+    var _t = setTimeout(onDone, 4200);
+    return function() { clearTimeout(_t); };
+  }, []);
+  return React.createElement("div", { className: "confetti-overlay" },
+    pieces.map(function(p) {
+      return React.createElement("div", {
+        key: p.id,
+        className: "confetti-dot",
+        style: {
+          left: p.left + "%",
+          top: -30,
+          width: p.size,
+          height: p.size,
+          background: p.color,
+          borderRadius: p.radius,
+          animationDelay: p.delay + "s",
+          animationDuration: p.dur + "s",
+          transform: "rotate(" + p.rot + "deg)"
+        }
+      });
+    })
+  );
+}
+
+function PetitionMilestoneBar({ total }) {
+  var app = useApp();
+  var lang = app.lang;
+  var nextMs = MILESTONES.find(function(m) { return m > total; }) || null;
+  var barMax = nextMs || MILESTONES[MILESTONES.length - 1];
+  var pct = Math.min((total / barMax) * 100, 100);
+  return React.createElement("div", { className: "card mb-3", style: { borderLeft: "3px solid var(--green)" } },
+    React.createElement("div", { className: "flex justify-between items-center mb-1" },
+      React.createElement("span", { style: { fontWeight: 700, fontSize: ".88rem" } },
+        "🎯 ", lang === "ro" ? "Progres petiție" : lang === "hu" ? "Petíció állapota" : "Petition progress"
+      ),
+      React.createElement("span", {
+        style: { fontFamily: "'Barlow Condensed',monospace", fontSize: "1.4rem", fontWeight: 800, color: "var(--green)" }
+      },
+        total,
+        React.createElement("span", { style: { fontSize: ".74rem", color: "var(--textSec)", fontFamily: "inherit", marginLeft: 4 } },
+          lang === "ro" ? "sem." : lang === "hu" ? "al." : "sig."
+        )
+      )
+    ),
+    React.createElement("div", { className: "milestone-bar" },
+      React.createElement("div", { className: "milestone-fill", style: { width: pct + "%" } }),
+      MILESTONES.filter(function(m) { return m <= barMax; }).map(function(m) {
+        var pos = (m / barMax) * 100;
+        var reached = total >= m;
+        return React.createElement("div", {
+          key: m,
+          className: "milestone-marker " + (reached ? "ms-reached" : "ms-next"),
+          style: { left: pos + "%" },
+          title: m + (lang === "ro" ? " semnături" : " signatures")
+        },
+          React.createElement("span", { className: "milestone-label" }, m >= 1000 ? "1K" : m)
+        );
+      })
+    ),
+    nextMs
+      ? React.createElement("p", { style: { fontSize: ".76rem", color: "var(--textSec)", marginTop: "1.4rem" } },
+          (nextMs - total) + " " + (lang === "ro" ? "până la " + nextMs + " semnături" : lang === "hu" ? "a(z) " + nextMs + "-ig" : "until " + nextMs + " signatures")
+        )
+      : React.createElement("p", { style: { fontSize: ".76rem", color: "var(--green)", marginTop: "1.4rem", fontWeight: 700 } },
+          lang === "ro" ? "🏆 Toate reperele atinse! Incredibil!" : "🏆 All milestones reached! Incredible!"
+        )
+  );
+}
+
+function ShareCardCanvas({ total }) {
+  var app = useApp();
+  var lang = app.lang;
+  var canvasRef = useRef(null);
+  var readySt = useState(false);
+  var ready = readySt[0], setReady = readySt[1];
+
+  useEffect(function() {
+    var canvas = canvasRef.current;
+    if (!canvas) return;
+    var W = 1200, H = 630;
+    canvas.width = W; canvas.height = H;
+    var ctx = canvas.getContext("2d");
+
+    ctx.fillStyle = "#0F1428";
+    ctx.fillRect(0, 0, W, H);
+
+    var g1 = ctx.createRadialGradient(220, 160, 20, 220, 160, 420);
+    g1.addColorStop(0, "rgba(16,185,129,.38)"); g1.addColorStop(1, "transparent");
+    ctx.fillStyle = g1; ctx.fillRect(0, 0, W, H);
+
+    var g2 = ctx.createRadialGradient(990, 500, 20, 990, 500, 350);
+    g2.addColorStop(0, "rgba(249,115,22,.28)"); g2.addColorStop(1, "transparent");
+    ctx.fillStyle = g2; ctx.fillRect(0, 0, W, H);
+
+    ctx.fillStyle = "#10B981"; ctx.fillRect(0, 0, 8, H);
+
+    ctx.fillStyle = "rgba(16,185,129,.15)";
+    ctx.beginPath(); ctx.roundRect(80, 58, 245, 34, 17); ctx.fill();
+    ctx.fillStyle = "#10B981"; ctx.font = "bold 14px monospace";
+    ctx.fillText("CIVIC INITIATIVE  ·  TÂRGU MUREȘ", 100, 81);
+
+    ctx.fillStyle = "#10B981"; ctx.font = "bold 56px monospace";
+    ctx.fillText("FROM GREY TO PLAY", 80, 140);
+    ctx.fillStyle = "#6B7280"; ctx.font = "22px sans-serif";
+    ctx.fillText("Sports court inequality — documented by citizens", 80, 177);
+
+    ctx.strokeStyle = "rgba(255,255,255,.07)"; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(80, 208); ctx.lineTo(1120, 208); ctx.stroke();
+
+    ctx.fillStyle = "#FFFFFF"; ctx.font = "bold 148px monospace";
+    ctx.fillText(String(total || 0), 80, 400);
+    ctx.fillStyle = "#9CA3AF"; ctx.font = "26px sans-serif";
+    ctx.fillText(lang === "ro" ? "SEMNĂTURI PE PETIȚIE" : "PETITION SIGNATURES", 80, 440);
+
+    ctx.strokeStyle = "rgba(255,255,255,.1)"; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(680, 295); ctx.lineTo(680, 480); ctx.stroke();
+
+    var deg = COURTS.filter(function(c) { return c.status === "degraded"; }).length;
+    ctx.fillStyle = "#F97316"; ctx.font = "bold 90px monospace";
+    ctx.fillText(deg + " / " + COURTS.length, 720, 400);
+    ctx.fillStyle = "#9CA3AF"; ctx.font = "22px sans-serif";
+    ctx.fillText(lang === "ro" ? "TERENURI DEGRADATE" : "DEGRADED COURTS", 720, 440);
+
+    ctx.strokeStyle = "rgba(255,255,255,.07)"; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(80, 500); ctx.lineTo(1120, 500); ctx.stroke();
+    ctx.fillStyle = "#4B5563"; ctx.font = "18px monospace";
+    ctx.fillText("fromgraytoplay.netlify.app  ·  " + new Date().toLocaleDateString(), 80, 535);
+
+    setReady(true);
+  }, [total, lang]);
+
+  function download() {
+    var canvas = canvasRef.current;
+    if (!canvas) return;
+    var a = document.createElement("a");
+    a.href = canvas.toDataURL("image/png");
+    a.download = "fromgraytoplay-" + (total || 0) + "-signatures.png";
+    a.click();
+  }
+
+  return React.createElement("div", { className: "card mt-2" },
+    React.createElement("h3", { className: "mb-1", style: { fontSize: ".9rem" } },
+      "📤 ", lang === "ro" ? "Card partajare" : lang === "hu" ? "Megosztási kártya" : "Share card"
+    ),
+    React.createElement("p", { className: "text-xs mb-2", style: { color: "var(--textSec)" } },
+      lang === "ro" ? "Imagine 1200×630 gata de postat pe rețele sociale."
+      : "1200×630 image ready to post on social media."
+    ),
+    React.createElement("canvas", { ref: canvasRef, className: "share-canvas" }),
+    ready && React.createElement("button", {
+      className: "btn btn-green btn-block mt-2", onClick: download
+    }, "⬇️ " + (lang === "ro" ? "Descarcă PNG" : lang === "hu" ? "PNG letöltése" : "Download PNG"))
+  );
+}
+
 function PetitionPage() {
   const {
     t,
@@ -3287,6 +3494,8 @@ function PetitionPage() {
   const [email, setEmail] = useState(user?.email || "");
   const [vol, setVol] = useState(false);
   const [showLetter, setShowLetter] = useState(false);
+  const [celebrateMilestone, setCelebrateMilestone] = useState(null);
+  const [showConfetti, setShowConfetti] = useState(false);
   const flip = votes?.flip || 0,
     mural = votes?.mural || 0,
     both = votes?.both || 0,
@@ -3315,6 +3524,17 @@ function PetitionPage() {
     localStorage.setItem("g2p_voted", "1");
     toast(t.success + " +10 " + t.points);
   };
+  useEffect(function() {
+    if (!total) return;
+    var lastSeen = parseInt(localStorage.getItem("g2p_ms_seen") || "0");
+    var achieved = MILESTONES.filter(function(m) { return m <= total && m > lastSeen; });
+    if (achieved.length > 0) {
+      var highest = Math.max.apply(null, achieved);
+      setCelebrateMilestone(highest);
+      setShowConfetti(true);
+      localStorage.setItem("g2p_ms_seen", String(highest));
+    }
+  }, [total]);
   const url = SITE + "/";
   const st = lang === "ro" ? `Am votat pe From Grey to Play! ${total} voturi.` : `I voted on From Grey to Play! ${total} votes.`;
   const opts = [{
@@ -3346,7 +3566,7 @@ function PetitionPage() {
     style: {
       textAlign: "center"
     }
-  }, lang === "ro" ? "Alege viziunea ta pentru terenurile din Târgu Mureș" : "Choose your vision for Târgu Mureș courts"), !voted ? /*#__PURE__*/React.createElement("div", {
+  }, lang === "ro" ? "Alege viziunea ta pentru terenurile din Târgu Mureș" : "Choose your vision for Târgu Mureș courts"), React.createElement(PetitionMilestoneBar, { total: total }), !voted ? /*#__PURE__*/React.createElement("div", {
     style: {
       maxWidth: 600,
       margin: "0 auto"
@@ -3540,7 +3760,24 @@ function PetitionPage() {
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-coral",
     onClick: () => setShowLetter(true)
-  }, "\uD83D\uDCC4 ", t.generateLetter)))), showLetter && /*#__PURE__*/React.createElement(LetterModal, {
+  }, "\uD83D\uDCC4 ", t.generateLetter)))), React.createElement(ShareCardCanvas, { total: total }),
+    celebrateMilestone && React.createElement("div", { className: "milestone-cel" },
+      React.createElement("div", { style: { fontSize: "3rem", marginBottom: ".4rem" } }, "\uD83C\uDF89"),
+      React.createElement("div", { style: { fontFamily: "'Barlow Condensed',monospace", fontSize: "2.6rem", fontWeight: 800, color: "var(--green)" } }, celebrateMilestone),
+      React.createElement("div", { style: { fontWeight: 700, fontSize: "1.05rem", margin: ".3rem 0" } },
+        lang === "ro" ? "SEMNĂTURI ATINSE!" : lang === "hu" ? "ALÁÍRÁS ELÉRVE!" : "SIGNATURES REACHED!"
+      ),
+      React.createElement("p", { style: { color: "var(--textSec)", fontSize: ".85rem", marginBottom: ".8rem" } },
+        lang === "ro" ? "Petiția a ajuns la " + celebrateMilestone + " de semnături. Mulțumim comunității!"
+        : lang === "hu" ? "A petíció elérte a(z) " + celebrateMilestone + " aláírást!"
+        : "The petition has reached " + celebrateMilestone + " signatures. Thank you, community!"
+      ),
+      React.createElement("button", { className: "btn btn-green", onClick: function() { setCelebrateMilestone(null); } },
+        lang === "ro" ? "Continuă!" : "Continue!"
+      )
+    ),
+    showConfetti && React.createElement(MilestoneConfetti, { onDone: function() { setShowConfetti(false); } }),
+    showLetter && /*#__PURE__*/React.createElement(LetterModal, {
     onClose: () => setShowLetter(false),
     total: total
   }));
@@ -4433,6 +4670,176 @@ function DossierButton() {
   );
 }
 
+/* ============================================================
+   NEIGHBOURHOOD INEQUALITY CHART
+   ============================================================ */
+function HoodChart() {
+  var app = useApp();
+  var t = app.t, lang = app.lang;
+  var hoodNames = {
+    tudor: "Tudor Vladimirescu",
+    auchan: "Zona Auchan",
+    center: "Centru / Cornești",
+    sportcomplex: "Sportcomplex"
+  };
+  var hoods = {};
+  COURTS.forEach(function(c) {
+    if (!hoods[c.neighbourhood]) hoods[c.neighbourhood] = [];
+    hoods[c.neighbourhood].push(c);
+  });
+  var rows = Object.entries(hoods).map(function(entry) {
+    var id = entry[0], courts = entry[1];
+    var avg = courts.reduce(function(s,c) { return s + c.condition; }, 0) / courts.length;
+    var acc = courts.reduce(function(s,c) {
+      var a = c.accessibility;
+      return s + [a.wheelchair, a.lighting, a.parking, a.flatSurface].filter(Boolean).length;
+    }, 0) / (courts.length * 4) * 100;
+    var degraded = courts.filter(function(c) { return c.status === "degraded"; }).length;
+    return { id: id, name: hoodNames[id] || id, courts: courts, avg: avg, acc: acc, degraded: degraded };
+  }).sort(function(a, b) { return a.avg - b.avg; });
+
+  var worstAvg = rows[0] ? rows[0].avg : 1;
+  var bestAvg = rows[rows.length - 1] ? rows[rows.length - 1].avg : 5;
+  var gap = bestAvg - worstAvg;
+
+  function barColor(v) {
+    return v <= 2 ? "var(--red)" : v <= 3.5 ? "var(--coral)" : "var(--green)";
+  }
+  function accColor(v) {
+    return v <= 30 ? "var(--red)" : v <= 60 ? "var(--coral)" : "var(--green)";
+  }
+
+  return React.createElement("div", null,
+    // Gap callout
+    React.createElement("div", { className: "hood-gap-callout" },
+      React.createElement("div", { className: "flex justify-between items-center", style: { flexWrap: "wrap", gap: ".5rem" } },
+        React.createElement("div", null,
+          React.createElement("div", { style: { fontSize: ".72rem", fontWeight: 700, color: "var(--red)", letterSpacing: 1, textTransform: "uppercase", marginBottom: ".2rem" } },
+            lang === "ro" ? "Decalaj documentat" : lang === "hu" ? "Dokumentált különbség" : "Documented gap"
+          ),
+          React.createElement("div", { style: { fontSize: "2rem", fontWeight: 800, fontFamily: "'Barlow Condensed',monospace", color: "var(--red)", lineHeight: 1 } },
+            gap.toFixed(1) + " / 5 pts"
+          ),
+          React.createElement("div", { style: { fontSize: ".78rem", color: "var(--textSec)", marginTop: ".2rem" } },
+            rows[0] && rows[rows.length-1]
+              ? (lang === "ro"
+                  ? rows[0].name + " (" + worstAvg.toFixed(1) + ") vs " + rows[rows.length-1].name + " (" + bestAvg.toFixed(1) + ")"
+                  : rows[0].name + " (" + worstAvg.toFixed(1) + ") vs " + rows[rows.length-1].name + " (" + bestAvg.toFixed(1) + ")")
+              : ""
+          )
+        ),
+        React.createElement("div", { className: "flex gap-3" },
+          React.createElement("div", { style: { textAlign: "center" } },
+            React.createElement("div", { style: { fontSize: "1.6rem", fontFamily: "'Barlow Condensed',monospace", fontWeight: 800, color: "var(--red)", lineHeight: 1 } },
+              COURTS.filter(function(c) { return c.status === "degraded"; }).length
+            ),
+            React.createElement("div", { style: { fontSize: ".68rem", color: "var(--textSec)" } },
+              lang === "ro" ? "degradate" : "degraded"
+            )
+          ),
+          React.createElement("div", { style: { textAlign: "center" } },
+            React.createElement("div", { style: { fontSize: "1.6rem", fontFamily: "'Barlow Condensed',monospace", fontWeight: 800, color: "var(--coral)", lineHeight: 1 } },
+              COURTS.filter(function(c) { return c.status === "inProgress"; }).length
+            ),
+            React.createElement("div", { style: { fontSize: ".68rem", color: "var(--textSec)" } },
+              lang === "ro" ? "în lucru" : "in progress"
+            )
+          ),
+          React.createElement("div", { style: { textAlign: "center" } },
+            React.createElement("div", { style: { fontSize: "1.6rem", fontFamily: "'Barlow Condensed',monospace", fontWeight: 800, color: "var(--green)", lineHeight: 1 } },
+              COURTS.filter(function(c) { return c.status === "renovated"; }).length
+            ),
+            React.createElement("div", { style: { fontSize: ".68rem", color: "var(--textSec)" } },
+              lang === "ro" ? "renovate" : "renovated"
+            )
+          )
+        )
+      )
+    ),
+    // Condition bar chart
+    React.createElement("div", { className: "card mb-2" },
+      React.createElement("h4", { style: { fontSize: ".9rem", marginBottom: "1rem", fontWeight: 700 } },
+        lang === "ro" ? "Condiție medie pe cartier (1=degradat → 5=excelent)"
+        : lang === "hu" ? "Átlagos állapot kerületenként (1=leromlott → 5=kiváló)"
+        : "Average condition by neighbourhood (1=degraded → 5=excellent)"
+      ),
+      rows.map(function(row) {
+        var color = barColor(row.avg);
+        var pct = (row.avg / 5) * 100;
+        return React.createElement("div", { key: row.id, className: "hood-chart-row" },
+          React.createElement("div", { className: "hood-chart-label" }, row.name),
+          React.createElement("div", { className: "hood-chart-bar-wrap" },
+            React.createElement("div", { className: "hood-chart-bar", style: { width: pct + "%", background: color } })
+          ),
+          React.createElement("div", { className: "hood-chart-val", style: { color: color } }, row.avg.toFixed(1))
+        );
+      }),
+      // Legend
+      React.createElement("div", { className: "flex gap-3 mt-2", style: { flexWrap: "wrap" } },
+        [["var(--red)", lang === "ro" ? "Degradat (1-2)" : "Degraded (1-2)"],
+         ["var(--coral)", lang === "ro" ? "Parțial (3)" : "Partial (3)"],
+         ["var(--green)", lang === "ro" ? "Bun (4-5)" : "Good (4-5)"]
+        ].map(function(item) {
+          return React.createElement("div", { key: item[1], className: "flex items-center gap-1", style: { fontSize: ".74rem" } },
+            React.createElement("div", { style: { width: 11, height: 11, borderRadius: 3, background: item[0], flexShrink: 0 } }),
+            React.createElement("span", { style: { color: "var(--textSec)" } }, item[1])
+          );
+        })
+      )
+    ),
+    // Accessibility chart
+    React.createElement("div", { className: "card mb-2" },
+      React.createElement("h4", { style: { fontSize: ".9rem", marginBottom: "1rem", fontWeight: 700 } },
+        lang === "ro" ? "Accesibilitate pe cartier (rampe + iluminat + parcare + suprafață)"
+        : lang === "hu" ? "Akadálymentesség kerületenként"
+        : "Accessibility by neighbourhood (ramps + lighting + parking + surface)"
+      ),
+      rows.map(function(row) {
+        var color = accColor(row.acc);
+        return React.createElement("div", { key: row.id + "_a", className: "hood-chart-row" },
+          React.createElement("div", { className: "hood-chart-label" }, row.name),
+          React.createElement("div", { className: "hood-chart-bar-wrap" },
+            React.createElement("div", { className: "hood-chart-bar", style: { width: row.acc + "%", background: color } })
+          ),
+          React.createElement("div", { className: "hood-chart-val", style: { color: color, fontSize: ".88rem" } }, Math.round(row.acc) + "%")
+        );
+      })
+    ),
+    // Full court list
+    React.createElement("div", { className: "card" },
+      React.createElement("h4", { style: { fontSize: ".88rem", marginBottom: ".8rem", fontWeight: 700 } },
+        lang === "ro" ? "Toate terenurile" : lang === "hu" ? "Minden pálya" : "All courts"
+      ),
+      COURTS.map(function(c) {
+        var sColor = c.status === "degraded" ? "var(--red)" : c.status === "inProgress" ? "var(--coral)" : "var(--green)";
+        var sLabel = c.status === "degraded"
+          ? (lang === "ro" ? "Degradat" : lang === "hu" ? "Leromlott" : "Degraded")
+          : c.status === "inProgress"
+            ? (lang === "ro" ? "În lucru" : lang === "hu" ? "Folyamatban" : "In Progress")
+            : (lang === "ro" ? "Renovat" : lang === "hu" ? "Felújított" : "Renovated");
+        return React.createElement("div", {
+          key: c.id,
+          className: "flex justify-between items-center",
+          style: { borderBottom: "1px solid var(--border)", padding: ".42rem 0", fontSize: ".82rem" }
+        },
+          React.createElement("div", null,
+            React.createElement("span", { style: { fontWeight: 600 } }, c.name),
+            React.createElement("span", { style: { color: "var(--textSec)", marginLeft: ".4rem", fontSize: ".72rem" } },
+              hoodNames[c.neighbourhood] || c.neighbourhood
+            )
+          ),
+          React.createElement("div", { className: "flex items-center gap-2" },
+            React.createElement("span", { style: { color: sColor, fontSize: ".72rem", fontWeight: 700 } }, sLabel),
+            React.createElement("span", { style: { color: "var(--coral)", fontFamily: "'Barlow Condensed',monospace", fontWeight: 800, fontSize: "1rem" } },
+              c.condition + "/5"
+            )
+          )
+        );
+      })
+    )
+  );
+}
+
 function ImpactPage() {
   const {
     t,
@@ -4470,7 +4877,7 @@ function ImpactPage() {
   }, "\uD83E\uDDE0"), /*#__PURE__*/React.createElement("button", {
     className: tab === "tl" ? "active" : "",
     onClick: () => setTab("tl")
-  }, "\uD83D\uDCC5")), tab === "calc" && /*#__PURE__*/React.createElement(ImpactCalc, null), tab === "city" && /*#__PURE__*/React.createElement(CityComp, null), tab === "budget" && /*#__PURE__*/React.createElement(BudgetViz, null), tab === "carbon" && /*#__PURE__*/React.createElement(CarbonCalc, null), tab === "health" && /*#__PURE__*/React.createElement(HealthCalc, null), tab === "mental" && /*#__PURE__*/React.createElement(MentalSec, null), tab === "tl" && /*#__PURE__*/React.createElement(TimelineSec, null))));
+  }, "\uD83D\uDCC5"), React.createElement("button", { className: tab === "hood" ? "active" : "", onClick: function() { setTab("hood"); }, title: "Neighbourhoods" }, "\uD83C\uDFD8")), tab === "calc" && /*#__PURE__*/React.createElement(ImpactCalc, null), tab === "city" && /*#__PURE__*/React.createElement(CityComp, null), tab === "budget" && /*#__PURE__*/React.createElement(BudgetViz, null), tab === "carbon" && /*#__PURE__*/React.createElement(CarbonCalc, null), tab === "health" && /*#__PURE__*/React.createElement(HealthCalc, null), tab === "mental" && /*#__PURE__*/React.createElement(MentalSec, null), tab === "tl" && /*#__PURE__*/React.createElement(TimelineSec, null), tab === "hood" && React.createElement(HoodChart, null))));
 }
 function ImpactCalc() {
   const {
