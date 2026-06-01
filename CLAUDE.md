@@ -106,6 +106,12 @@ Anyone can write — rules are MVP-permissive. Tighten before any press.
   download failures (detached `<a>` must be appended to the DOM before click).
 - Contact-Primăria card: tappable tel/mailto/web links + one-tap "Send email"
   that prefills the official request to primar@tirgumures.ro.
+- `sw.js` service worker (was registered but missing — blocked PWA install).
+  Precaches the shell, network-first navigations, SWR for CDN/tiles.
+- Shared `useInstall()` hook + global `beforeinstallprompt` capture; explicit
+  `InstallButton` in Profile settings; `InstallBanner` refactored onto the hook.
+- `downloadPressKit(lang)` — proper sectioned branded press-kit PDF (stats grid,
+  proposals, sources, contact) replacing the raw text dump.
 
 ## Roadmap priorities (from the brief)
 

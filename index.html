@@ -310,6 +310,49 @@ const {
 const AppCtx = createContext();
 const useApp = () => useContext(AppCtx);
 const SITE = "https://fromgraytoplay.netlify.app";
+
+/* PWA install — capture the prompt as early as possible (the browser may fire
+   beforeinstallprompt before any component mounts) so any button can install
+   on demand, not just the auto-banner. */
+var __deferredInstallPrompt = null;
+window.addEventListener("beforeinstallprompt", function (e) {
+  e.preventDefault();
+  __deferredInstallPrompt = e;
+  window.dispatchEvent(new Event("g2p-can-install"));
+});
+window.addEventListener("appinstalled", function () {
+  __deferredInstallPrompt = null;
+  window.dispatchEvent(new Event("g2p-installed"));
+});
+function useInstall() {
+  const isStandalone = window.matchMedia("(display-mode:standalone)").matches || window.navigator.standalone === true;
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const [canInstall, setCanInstall] = useState(!!__deferredInstallPrompt);
+  const [installed, setInstalled] = useState(isStandalone);
+  useEffect(() => {
+    const onCan = () => setCanInstall(true);
+    const onDone = () => { setCanInstall(false); setInstalled(true); };
+    window.addEventListener("g2p-can-install", onCan);
+    window.addEventListener("g2p-installed", onDone);
+    return () => {
+      window.removeEventListener("g2p-can-install", onCan);
+      window.removeEventListener("g2p-installed", onDone);
+    };
+  }, []);
+  const promptInstall = async () => {
+    if (__deferredInstallPrompt) {
+      __deferredInstallPrompt.prompt();
+      try {
+        const r = await __deferredInstallPrompt.userChoice;
+        if (r.outcome === "accepted") { setCanInstall(false); setInstalled(true); }
+      } catch (e) { /* dismissed */ }
+      __deferredInstallPrompt = null;
+      return "prompted";
+    }
+    return isIOS ? "ios" : "unsupported";
+  };
+  return { canInstall, installed, isIOS, isStandalone, promptInstall };
+}
 function useFirebase(path) {
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -1196,6 +1239,65 @@ function downloadDocument(filename, title, bodyText) {
   doc.save(filename);
 }
 
+/* Professional, sectioned press kit PDF (stats grid + proposals + sources).
+   Falls back to a plain .txt via downloadBlob if jsPDF didn't load. */
+function downloadPressKit(lang) {
+  const deg = COURTS.filter(function (c) { return c.status === "degraded"; }).length;
+  const doc = brandedPdf();
+  if (!doc) {
+    downloadBlob("press_kit_g2p.txt",
+      "FROM GREY TO PLAY — Press Kit\n\nCivic initiative · Târgu Mureş\nCimpan Teodor · " + SITE.replace("https://", "") +
+      "\n\nKEY STATISTICS\n- 12/15 residents say the court is too degraded\n- 5,000,000 lei frozen by an administrative error\n- 0% of peripheral courts renovated\n- " + deg + "/" + COURTS.length + " documented courts degraded" +
+      "\n\nPROPOSALS\n1. Flip-the-Court — resurface courts + smart equipment locker\n2. Street Canvas — community-voted murals\n\nSOURCES\n- Integrated Urban Development Strategy (SIDU)\n- Journal of Urban Health; Urban Science (MDPI, 2023)\n- Punctul.ro (Oct 2025)\n\nCONTACT\nfromgreytoplay@gmail.com\n" + SITE.replace("https://", ""));
+    return;
+  }
+  const W = 210, M = 18, maxW = W - M * 2;
+  const green = [16, 185, 129], dark = [26, 26, 46];
+  let y = 30;
+  doc.setTextColor(dark[0], dark[1], dark[2]); doc.setFont("helvetica", "bold"); doc.setFontSize(22);
+  doc.text("Press Kit", M, y); y += 8;
+  doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(110, 110, 120);
+  doc.text((lang === "ro" ? "Inițiativă civică · Târgu Mureş" : lang === "hu" ? "Civil kezdeményezés · Marosvásárhely" : "Civic initiative · Târgu Mureş"), M, y); y += 4.5;
+  doc.text("Cimpan Teodor · " + SITE.replace("https://", ""), M, y); y += 11;
+  const heading = function (txt) { doc.setFillColor(green[0], green[1], green[2]); doc.rect(M, y - 4, 3, 6, "F"); doc.setTextColor(dark[0], dark[1], dark[2]); doc.setFont("helvetica", "bold"); doc.setFontSize(13); doc.text(txt, M + 6, y); y += 8; };
+  const para = function (txt) { doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(50, 50, 60); String(txt).split("\n").forEach(function (line) { doc.splitTextToSize(line || " ", maxW).forEach(function (l) { if (y > 275) { doc.addPage(); y = 22; } doc.text(l, M, y); y += 5; }); }); y += 3; };
+  heading(lang === "ro" ? "Despre" : lang === "hu" ? "Bemutatkozás" : "About");
+  para(lang === "ro"
+    ? "From Grey to Play documentează inegalitatea dintre terenurile sportive centrale și cele periferice din Târgu Mureş și mobilizează comunitatea pentru renovare."
+    : lang === "hu"
+    ? "A From Grey to Play dokumentálja a marosvásárhelyi központi és peremkerületi sportpályák közötti egyenlőtlenséget, és a közösséget a felújításra mozgósítja."
+    : "From Grey to Play documents the inequality between central and peripheral sports courts in Târgu Mureş and mobilises the community for renovation.");
+  heading(lang === "ro" ? "Date cheie" : lang === "hu" ? "Kulcsadatok" : "Key statistics");
+  const stats = [
+    ["12/15", lang === "ro" ? "rezidenți: teren prea degradat" : lang === "hu" ? "lakos: a pálya túl rossz" : "residents: court too degraded"],
+    ["5M lei", lang === "ro" ? "înghețați (eroare admin.)" : lang === "hu" ? "befagyasztva (admin. hiba)" : "frozen (admin error)"],
+    ["0%", lang === "ro" ? "terenuri periferice renovate" : lang === "hu" ? "peremkerületi pálya felújítva" : "peripheral courts renovated"],
+    [deg + "/" + COURTS.length, lang === "ro" ? "terenuri documentate degradate" : lang === "hu" ? "dokumentált pálya leromlott" : "documented courts degraded"]
+  ];
+  const cw = (maxW - 6) / 2;
+  stats.forEach(function (s, i) {
+    const col = i % 2, row = Math.floor(i / 2);
+    const x = M + col * (cw + 6), cy = y + row * 20;
+    doc.setFillColor(245, 247, 250); doc.roundedRect(x, cy, cw, 16, 2, 2, "F");
+    doc.setTextColor(green[0], green[1], green[2]); doc.setFont("helvetica", "bold"); doc.setFontSize(15);
+    doc.text(s[0], x + 4, cy + 8);
+    doc.setTextColor(90, 90, 100); doc.setFont("helvetica", "normal"); doc.setFontSize(7.5);
+    doc.splitTextToSize(s[1], cw - 6).forEach(function (l, j) { doc.text(l, x + 4, cy + 12 + j * 3.2); });
+  });
+  y += 20 * Math.ceil(stats.length / 2) + 6;
+  heading(lang === "ro" ? "Propuneri" : lang === "hu" ? "Javaslatok" : "Proposals");
+  para("1. Flip-the-Court — " + (lang === "ro" ? "renovarea terenurilor existente + dulap inteligent de echipament." : lang === "hu" ? "meglévő pályák felújítása + okos felszerelésszekrény." : "resurface existing courts + smart equipment locker."));
+  para("2. Street Canvas — " + (lang === "ro" ? "murale colorate alese prin votul comunității." : lang === "hu" ? "a közösség által megszavazott színes falfestmények." : "colourful murals chosen by community vote."));
+  heading(lang === "ro" ? "Surse" : lang === "hu" ? "Források" : "Sources");
+  para("• Strategia Integrată de Dezvoltare Urbană (SIDU)\n• Journal of Urban Health; Urban Science (MDPI, 2023)\n• Punctul.ro (Oct 2025)");
+  heading("Contact");
+  para("fromgreytoplay@gmail.com\n" + SITE.replace("https://", ""));
+  doc.setDrawColor(220, 220, 225); doc.line(M, 288, W - M, 288);
+  doc.setFontSize(7.5); doc.setTextColor(140, 140, 150);
+  doc.text("From Grey to Play · " + new Date().toLocaleDateString(), M, 293);
+  doc.save("press_kit_g2p.pdf");
+}
+
 /* Official request to the City Hall, in the active language. Shared by the
    PDF download and the prefilled-email action so they never drift apart. */
 function buildCouncilRequest(lang) {
@@ -1242,7 +1344,13 @@ function compressImage(file, maxDim, quality) {
 }
 
 /* === Data === */
-/* === Milestone & neighbourhood chart strings === */
+/* === Install + milestone & neighbourhood chart strings === */
+T.ro.installApp = "Instalează aplicația";
+T.ro.install = "Instalează";
+T.en.installApp = "Install app";
+T.en.install = "Install";
+T.hu.installApp = "Alkalmazás telepítése"; // TODO: HU review
+T.hu.install = "Telepítés"; // TODO: HU review
 T.ro.signaturesLabel = "semnături";
 T.ro.hoodChart = "Inegalitate pe cartiere";
 T.ro.hoodGap = "Decalaj documentat";
@@ -1552,37 +1660,25 @@ function Onboarding({
 function InstallBanner({
   lang
 }) {
-  const [dp, setDp] = useState(null);
+  const { canInstall, installed, isIOS, promptInstall } = useInstall();
   const [show, setShow] = useState(false);
   useEffect(() => {
-    if (window.matchMedia('(display-mode:standalone)').matches) return;
+    if (installed) return;
     const d = localStorage.getItem("g2p_ib_d");
     if (d && Date.now() - +d < 7 * 86400000) return;
-    const h = e => {
-      e.preventDefault();
-      setDp(e);
-      setShow(true);
-    };
-    window.addEventListener("beforeinstallprompt", h);
-    const ios = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    if (ios) setTimeout(() => setShow(true), 2e3);
-    return () => window.removeEventListener("beforeinstallprompt", h);
-  }, []);
+    if (canInstall) { setShow(true); return; }
+    if (isIOS) { const tm = setTimeout(() => setShow(true), 2e3); return () => clearTimeout(tm); }
+  }, [canInstall, installed, isIOS]);
   const install = async () => {
-    if (dp) {
-      dp.prompt();
-      const r = await dp.userChoice;
-      if (r.outcome === "accepted") setShow(false);
-      setDp(null);
-    } else {
-      alert(lang === "ro" ? "Apasă Share ⬆️ → Adaugă pe ecranul principal" : "Tap Share ⬆️ → Add to Home Screen");
-    }
+    const r = await promptInstall();
+    if (r === "prompted") setShow(false);
+    else if (r === "ios") alert(lang === "ro" ? "Apasă Share ⬆️ → Adaugă pe ecranul principal" : "Tap Share ⬆️ → Add to Home Screen");
   };
   const dismiss = () => {
     setShow(false);
     localStorage.setItem("g2p_ib_d", String(Date.now()));
   };
-  if (!show) return null;
+  if (!show || installed) return null;
   return /*#__PURE__*/React.createElement("div", {
     className: "install-banner"
   }, /*#__PURE__*/React.createElement("span", null, "\uD83D\uDCF2"), /*#__PURE__*/React.createElement("span", null, lang === "ro" ? "Instalează aplicația From Grey to Play!" : "Install the From Grey to Play app!"), /*#__PURE__*/React.createElement("button", {
@@ -1592,6 +1688,25 @@ function InstallBanner({
     className: "ib-x",
     onClick: dismiss
   }, "\u2715"));
+}
+
+/* Explicit, always-available install control (Profile settings). Shows a
+   "done" state once installed, and guides iOS / unsupported browsers. */
+function InstallButton({ lang, t }) {
+  const { canInstall, installed, isIOS, promptInstall } = useInstall();
+  if (installed) {
+    return /*#__PURE__*/React.createElement("div", { className: "flex justify-between items-center mb-1" },
+      /*#__PURE__*/React.createElement("span", null, "\ud83d\udcf2 ", t.installApp),
+      /*#__PURE__*/React.createElement("span", { className: "badge badge-green" }, "\u2713"));
+  }
+  const onClick = async () => {
+    const r = await promptInstall();
+    if (r === "ios") alert(lang === "ro" ? "Apas\u0103 Share \u2b06\ufe0f \u2192 Adaug\u0103 pe ecranul principal" : lang === "hu" ? "Koppints a Megoszt\u00e1s \u2b06\ufe0f \u2192 Hozz\u00e1ad\u00e1s a kezd\u0151k\u00e9perny\u0151h\u00f6z" : "Tap Share \u2b06\ufe0f \u2192 Add to Home Screen");
+    else if (r === "unsupported") alert(lang === "ro" ? "Deschide meniul browserului \u2192 Instaleaz\u0103 aplica\u021bia" : lang === "hu" ? "Nyisd meg a b\u00f6ng\u00e9sz\u0151 men\u00fcj\u00e9t \u2192 Alkalmaz\u00e1s telep\u00edt\u00e9se" : "Open your browser menu \u2192 Install app");
+  };
+  return /*#__PURE__*/React.createElement("div", { className: "flex justify-between items-center mb-1" },
+    /*#__PURE__*/React.createElement("span", null, "\ud83d\udcf2 ", t.installApp),
+    /*#__PURE__*/React.createElement("button", { className: "btn btn-sm btn-green", onClick }, t.install));
 }
 
 /* === Navbar === */
@@ -5686,11 +5801,10 @@ function AboutPage() {
   }, lang === "ro" ? "Pachet pentru presă" : "Press pack"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-green",
     onClick: () => {
-      const body = "Project: Civic initiative \u2014 T\u00e2rgu Mure\u015f\nOwner: Cimpan Teodor\nWeb: " + SITE.replace("https://", "") + "\n\nKEY STATISTICS\n- 12 of 15 residents say the courts are too degraded\n- 5,000,000 lei frozen by an administrative error\n- 0% of peripheral courts renovated\n- " + COURTS.filter(function(c){return c.status==='degraded';}).length + " of " + COURTS.length + " documented courts are degraded\n\nPROPOSALS\n1. Flip-the-Court \u2014 resurface existing courts + smart equipment locker\n2. Street Canvas \u2014 community-voted murals by local artists\n\nBACKING\n- Integrated Urban Development Strategy (SIDU)\n- Journal of Urban Health; Urban Science (MDPI, 2023)\n- Punctul.ro investigations (Oct 2025)\n\nCONTACT\nfromgreytoplay@gmail.com\n" + SITE.replace("https://", "");
-      downloadDocument("press_kit_g2p.pdf", "Press Kit", body);
+      downloadPressKit(lang);
       toast(t.success);
     }
-  }, "\uD83D\uDCE5 ", lang === "ro" ? "Descarcă" : "Download")))));
+  }, "\uD83D\uDCE5 ", lang === "ro" ? "Descarc\u0103 PDF" : lang === "hu" ? "PDF let\u00f6lt\u00e9se" : "Download PDF")))));
 }
 
 /* === Profile === */
@@ -5881,7 +5995,7 @@ function ProfilePage() {
   }, /*#__PURE__*/React.createElement("span", null, "Language"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-outline",
     onClick: () => setLang(nextLang(lang))
-  }, t.language))), /*#__PURE__*/React.createElement("button", {
+  }, t.language)), /*#__PURE__*/React.createElement(InstallButton, { lang, t })), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline btn-block",
     style: {
       color: "var(--red)",
