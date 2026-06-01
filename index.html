@@ -1115,6 +1115,95 @@ function logActivity(type, userName, courtId) {
     });
   } catch (e) { /* offline — silently drop */ }
 }
+
+/* Robust file download. The detached-anchor trick fails silently on mobile
+   Chrome/Safari — the <a> MUST be in the DOM before .click(). Falls back to a
+   data-URI tab if Blob downloads are blocked. */
+function downloadBlob(filename, content, mime) {
+  const type = mime || "text/plain;charset=utf-8";
+  try {
+    const blob = content instanceof Blob ? content : new Blob([content], { type });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      if (a.parentNode) a.parentNode.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 1500);
+  } catch (e) {
+    try {
+      const uri = "data:" + type + "," + encodeURIComponent(String(content));
+      if (!window.open(uri, "_blank")) window.location.href = uri;
+    } catch (e2) { /* give up */ }
+  }
+}
+
+/* New branded A4 jsPDF doc with green header bar + site URL. null if jsPDF absent. */
+function brandedPdf() {
+  const JsPDF = window.jspdf && window.jspdf.jsPDF;
+  if (!JsPDF) return null;
+  const doc = new JsPDF({ unit: "mm", format: "a4" });
+  const W = 210, M = 18;
+  doc.setFillColor(16, 185, 129);
+  doc.rect(0, 0, W, 16, "F");
+  doc.setTextColor(255, 255, 255);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(13);
+  doc.text("FROM GREY TO PLAY", M, 10.5);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.text(SITE.replace("https://", ""), W - M, 10.5, { align: "right" });
+  return doc;
+}
+
+/* Render a title + plain-text body into a branded PDF and save it.
+   Gracefully degrades to a robust .txt download if jsPDF didn't load. */
+function downloadDocument(filename, title, bodyText) {
+  const doc = brandedPdf();
+  if (!doc) {
+    downloadBlob(filename.replace(/\.pdf$/i, ".txt"),
+      (title ? title + "\n\n" : "") + bodyText);
+    return;
+  }
+  const W = 210, M = 18, maxW = W - M * 2;
+  let y = 30;
+  if (title) {
+    doc.setTextColor(26, 26, 46);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    doc.splitTextToSize(title, maxW).forEach(function (l) { doc.text(l, M, y); y += 7; });
+    y += 3;
+  }
+  doc.setTextColor(30, 30, 40);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10.5);
+  String(bodyText).split("\n").forEach(function (line) {
+    doc.splitTextToSize(line || " ", maxW).forEach(function (w) {
+      if (y > 280) { doc.addPage(); y = 22; }
+      doc.text(w, M, y);
+      y += 5.4;
+    });
+  });
+  doc.setDrawColor(220, 220, 225);
+  doc.line(M, 288, W - M, 288);
+  doc.setFontSize(7.5);
+  doc.setTextColor(140, 140, 150);
+  doc.text("Generat prin From Grey to Play · " + new Date().toLocaleDateString(), M, 293);
+  doc.save(filename);
+}
+
+/* Official request to the City Hall, in the active language. Shared by the
+   PDF download and the prefilled-email action so they never drift apart. */
+function buildCouncilRequest(lang) {
+  if (lang === "en") return "TO: Registry of Târgu Mureş City Hall\nPiața Victoriei nr. 3, 540026\n\nI, the undersigned _____________, residing at _____________,\n\nrequest:\n1. Information on the renovation status of sports courts in the peripheral neighbourhoods\n2. Allocation of funds for the Flip-the-Court pilot programme\n3. Accessing Erasmus+ Sport KA2 funds\n\nSincerely,\n_____________\nDate: " + new Date().toLocaleDateString("en-GB");
+  if (lang === "hu") return "CÍMZETT: Marosvásárhely Polgármesteri Hivatalának Iktatója\nPiața Victoriei nr. 3, 540026\n\nAlulírott _____________, lakcím: _____________,\n\nkérem:\n1. Tájékoztatást a peremkerületi sportpályák felújításának állapotáról\n2. Forrás elkülönítését a Flip-the-Court kísérleti programra\n3. Az Erasmus+ Sport KA2 alapok igénylését\n\nTisztelettel,\n_____________\nDátum: " + new Date().toLocaleDateString("hu-HU");
+  return "CĂTRE: Registratura Primăriei Municipiului Târgu Mureş\nPiața Victoriei nr. 3, 540026\n\nSubsemnatul/a _____________, domiciliat/ă în _____________,\n\nsolicit:\n1. Informare privind stadiul renovării terenurilor sportive din cartierele periferice\n2. Alocarea de fonduri pentru programul pilot Flip-the-Court\n3. Accesarea fondurilor Erasmus+ Sport KA2\n\nCu stimă,\n_____________\nData: " + new Date().toLocaleDateString("ro-RO");
+}
+
 // Downscale + JPEG-compress a File so it fits in RTDB as a data URL (~80-150KB).
 // Storage bucket isn't configured (config has only databaseURL), so photos live
 // in the gallery/ node for now; migrating to Firebase Storage is the future step.
@@ -3459,10 +3548,9 @@ function ShareCardCanvas({ total }) {
   function download() {
     var canvas = canvasRef.current;
     if (!canvas) return;
-    var a = document.createElement("a");
-    a.href = canvas.toDataURL("image/png");
-    a.download = "fromgraytoplay-" + (total || 0) + "-signatures.png";
-    a.click();
+    canvas.toBlob(function (blob) {
+      if (blob) downloadBlob("fromgraytoplay-" + (total || 0) + "-signatures.png", blob, "image/png");
+    }, "image/png");
   }
 
   return React.createElement("div", { className: "card mt-2" },
@@ -3815,11 +3903,7 @@ function LetterModal({
     const text = buildLetter();
     const JsPDF = window.jspdf && window.jspdf.jsPDF;
     if (!JsPDF) {
-      const b = new Blob([text], { type: "text/plain" });
-      const el = document.createElement("a");
-      el.href = URL.createObjectURL(b);
-      el.download = "scrisoare_g2p.txt";
-      el.click();
+      downloadBlob("scrisoare_g2p.txt", text);
       return;
     }
     const doc = new JsPDF({ unit: "mm", format: "a4" });
@@ -5366,27 +5450,31 @@ function HelpPage() {
     className: "text-sm"
   }, "\uD83D\uDCCD Pia\u021Ba Victoriei nr. 3, 540026"), /*#__PURE__*/React.createElement("p", {
     className: "text-sm"
-  }, "\uD83D\uDCDE 0265-268.330"), /*#__PURE__*/React.createElement("p", {
+  }, "\uD83D\uDCDE ", /*#__PURE__*/React.createElement("a", { href: "tel:+40265268330" }, "0265-268.330")), /*#__PURE__*/React.createElement("p", {
     className: "text-sm"
-  }, "\uD83D\uDCE7 primar@tirgumures.ro"), /*#__PURE__*/React.createElement("p", {
+  }, "\uD83D\uDCE7 ", /*#__PURE__*/React.createElement("a", { href: "mailto:primar@tirgumures.ro" }, "primar@tirgumures.ro")), /*#__PURE__*/React.createElement("p", {
     className: "text-sm"
-  }, "\uD83C\uDF10 www.tirgumures.ro")), /*#__PURE__*/React.createElement("div", {
+  }, "\uD83C\uDF10 ", /*#__PURE__*/React.createElement("a", { href: "https://www.tirgumures.ro", target: "_blank", rel: "noopener" }, "www.tirgumures.ro"))), /*#__PURE__*/React.createElement("div", {
     className: "card"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "mb-1"
-  }, "\uD83D\uDCC4 ", lang === "ro" ? "Șablon cerere oficială" : "Official Request Template"), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-green mt-1",
+  }, "\uD83D\uDCC4 ", lang === "ro" ? "\u0218ablon cerere oficial\u0103" : lang === "hu" ? "Hivatalos k\u00e9relem sablon" : "Official Request Template"), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs mb-2",
+    style: { color: "var(--textSec)" }
+  }, lang === "ro" ? "Descarc\u0103 PDF-ul sau trimite-l direct pe email Prim\u0103riei." : lang === "hu" ? "T\u00f6ltsd le PDF-k\u00e9nt, vagy k\u00fcldd el e-mailben a hivatalnak." : "Download as PDF or send it straight to the City Hall by email."), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1",
+    style: { flexWrap: "wrap" }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-green",
     onClick: () => {
-      const c = `CĂTRE: Registratura Primăriei Municipiului Târgu Mureș\nPiața Victoriei nr. 3, 540026\n\nSubsemnatul/a _____________, domiciliat/ă în _____________,\n\nsolicit:\n1. Informare privind stadiul renovării terenurilor sportive din cartierele periferice\n2. Alocarea de fonduri pentru programul pilot Flip-the-Court\n3. Accesarea fondurilor Erasmus+ Sport KA2\n\nCu stimă,\n_____________\nData: ${new Date().toLocaleDateString("ro-RO")}`;
-      const b = new Blob([c], {
-        type: "text/plain"
-      });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(b);
-      a.download = "cerere_primaria.txt";
-      a.click();
+      const title = lang === "ro" ? "Cerere oficial\u0103" : lang === "hu" ? "Hivatalos k\u00e9relem" : "Official request";
+      downloadDocument("cerere_primaria.pdf", title, buildCouncilRequest(lang));
+      toast(t.success);
     }
-  }, "\uD83D\uDCE5 ", t.downloadPDF))))));
+  }, "\uD83D\uDCE5 ", t.downloadPDF), /*#__PURE__*/React.createElement("a", {
+    className: "btn btn-outline",
+    href: "mailto:primar@tirgumures.ro?subject=" + encodeURIComponent(lang === "ro" ? "Renovarea terenurilor sportive \u2014 T\u00e2rgu Mure\u015f" : lang === "hu" ? "Sportp\u00e1ly\u00e1k fel\u00faj\u00edt\u00e1sa \u2014 Marosv\u00e1s\u00e1rhely" : "Renovation of sports courts \u2014 T\u00e2rgu Mure\u015f") + "&body=" + encodeURIComponent(buildCouncilRequest(lang))
+  }, "\uD83D\uDCE7 ", lang === "ro" ? "Trimite email" : lang === "hu" ? "Email k\u00fcld\u00e9se" : "Send email")))))));
 }
 
 /* === About === */
@@ -5598,14 +5686,9 @@ function AboutPage() {
   }, lang === "ro" ? "Pachet pentru presă" : "Press pack"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-green",
     onClick: () => {
-      const c = `FROM GREY TO PLAY — Press Kit\n\nProject: Civic initiative — Târgu Mureș\nOwner: Cimpan Teodor\nWeb: ${SITE.replace("https://", "")}\n\nKey Stats:\n- 12/15 residents say courts too degraded\n- 5M lei frozen by admin error\n- 0% peripheral courts renovated\n- 3km gap\n\nProposals:\n1. Flip-the-Court\n2. Street Canvas\n\nContact: fromgreytoplay@gmail.com`;
-      const b = new Blob([c], {
-        type: "text/plain"
-      });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(b);
-      a.download = "press_kit_g2p.txt";
-      a.click();
+      const body = "Project: Civic initiative \u2014 T\u00e2rgu Mure\u015f\nOwner: Cimpan Teodor\nWeb: " + SITE.replace("https://", "") + "\n\nKEY STATISTICS\n- 12 of 15 residents say the courts are too degraded\n- 5,000,000 lei frozen by an administrative error\n- 0% of peripheral courts renovated\n- " + COURTS.filter(function(c){return c.status==='degraded';}).length + " of " + COURTS.length + " documented courts are degraded\n\nPROPOSALS\n1. Flip-the-Court \u2014 resurface existing courts + smart equipment locker\n2. Street Canvas \u2014 community-voted murals by local artists\n\nBACKING\n- Integrated Urban Development Strategy (SIDU)\n- Journal of Urban Health; Urban Science (MDPI, 2023)\n- Punctul.ro investigations (Oct 2025)\n\nCONTACT\nfromgreytoplay@gmail.com\n" + SITE.replace("https://", "");
+      downloadDocument("press_kit_g2p.pdf", "Press Kit", body);
+      toast(t.success);
     }
   }, "\uD83D\uDCE5 ", lang === "ro" ? "Descarcă" : "Download")))));
 }
@@ -5657,14 +5740,14 @@ function ProfilePage() {
     localStorage.removeItem("g2p_user");
   };
   const cert = () => {
-    const c = `══════════════════════\nCERTIFICAT VOLUNTAR\n══════════════════════\n\nFROM GREY TO PLAY\n\n${user?.name || "___"}\n\na participat ca voluntar.\nPuncte: ${user?.points || 0}\n\nManager: Cimpan Teodor\nData: ${new Date().toLocaleDateString()}\n══════════════════════`;
-    const b = new Blob([c], {
-      type: "text/plain"
-    });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(b);
-    a.download = "certificat_g2p.txt";
-    a.click();
+    const title = lang === "en" ? "VOLUNTEER CERTIFICATE" : lang === "hu" ? "\u00d6NK\u00c9NTES OKLEV\u00c9L" : "CERTIFICAT VOLUNTAR";
+    const body = "FROM GREY TO PLAY\n\n" + (user?.name || "___") + "\n\n"
+      + (lang === "en" ? "participated as a volunteer." : lang === "hu" ? "\u00f6nk\u00e9ntesk\u00e9nt vett r\u00e9szt." : "a participat ca voluntar.")
+      + "\n" + (lang === "en" ? "Points" : lang === "hu" ? "Pontok" : "Puncte") + ": " + (user?.points || 0)
+      + "\n\n" + (lang === "en" ? "Manager" : "Manager") + ": Cimpan Teodor"
+      + "\n" + (lang === "en" ? "Date" : lang === "hu" ? "D\u00e1tum" : "Data") + ": " + new Date().toLocaleDateString();
+    downloadDocument("certificat_g2p.pdf", title, body);
+    toast(t.success);
   };
   if (!user) return /*#__PURE__*/React.createElement("div", {
     className: "animate-in"
@@ -5899,13 +5982,7 @@ function AdminPanel({
     const ks = Object.keys(rows[0]).filter(k => k !== "id");
     const h = ks.join(",");
     const b = rows.map(r => ks.map(k => String(r[k] || "").includes(",") ? `"${r[k]}"` : String(r[k] || "")).join(",")).join("\n");
-    const bl = new Blob([h + "\n" + b], {
-      type: "text/csv"
-    });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(bl);
-    a.download = fn;
-    a.click();
+    downloadBlob(fn, h + "\n" + b, "text/csv;charset=utf-8");
   };
   const [ef, setEf] = useState({
     title: "",

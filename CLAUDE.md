@@ -98,6 +98,14 @@ Anyone can write — rules are MVP-permissive. Tighten before any press.
 - `getCourtWeather(condition)` helper + visual weather chip on court cards.
 - Live activity feed component (Community page).
 - Activity writes from petition vote + check-in.
+- Neighbourhood inequality chart (Impact → 🏘 tab), petition milestone bar
+  + confetti, canvas share card (PNG).
+- Robust download helpers: `downloadBlob`, `brandedPdf`, `downloadDocument`,
+  `buildCouncilRequest`. Council request + press kit + volunteer cert now emit
+  real branded PDFs (jsPDF) with a `.txt` fallback. Fixes silent mobile-Chrome
+  download failures (detached `<a>` must be appended to the DOM before click).
+- Contact-Primăria card: tappable tel/mailto/web links + one-tap "Send email"
+  that prefills the official request to primar@tirgumures.ro.
 
 ## Roadmap priorities (from the brief)
 
