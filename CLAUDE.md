@@ -1,7 +1,7 @@
 # From Grey to Play — Project Rules (CLAUDE.md)
 
 Civic PWA documenting the inequality between central and peripheral
-sports courts in Târgu Mureș. Live at https://fromgraytoplay.netlify.app/.
+sports courts in Târgu Mureș. Live at https://fromgreytoplay.netlify.app/.
 
 ## Knowledge Graph
 
@@ -19,7 +19,7 @@ Utilizare:
 
 - **Single-file PWA.** Everything lives in `index.html` at repo root. Build
   output is hand-tuned, not regenerated. Deploy = upload that one file +
-  `/manifest.json`, `/icons/*` to Netlify.
+  `/manifest.json`, `/sw.js`, `/icons/*` to Netlify.
 - **No bundler at root.** React + Firebase + Leaflet load from CDN
   (unpkg / gstatic). JSX is pre-transpiled to `React.createElement(...)`
   inside `<script>` — write new code in that same style or paste raw JSX
@@ -98,6 +98,18 @@ Anyone can write — rules are MVP-permissive. Tighten before any press.
 - `getCourtWeather(condition)` helper + visual weather chip on court cards.
 - Live activity feed component (Community page).
 - Activity writes from petition vote + check-in.
+- Hash routing: every page is bookmarkable; `#court-{id}` deep-links open
+  CourtDetail (fixes dead `shareCourt` links + manifest shortcuts).
+- `sw.js` created (was registered but missing) — offline shell + CDN cache.
+  Deploy surface is now `index.html` + `manifest.json` + `sw.js` + `icons/*`.
+- Open Graph / Twitter / canonical / JSON-LD meta for link unfurls.
+- Open-data export card (JSON full dataset / CSV reports, CC BY 4.0) on
+  Impact page; strips `voterKey` and `photoDataUrl`.
+- `<html lang>` follows the active language switcher.
+- Fixed dead domain: `SITE`/meta pointed at fromgr**a**ytoplay.netlify.app
+  (404); live site is fromgr**e**ytoplay.netlify.app.
+- `icons/*` generated and committed (were 404 on the live site — manifest,
+  favicon and og:image all referenced missing files).
 
 ## Roadmap priorities (from the brief)
 

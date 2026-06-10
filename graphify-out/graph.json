@@ -450,6 +450,30 @@
       "type": "external",
       "line": 0,
       "desc": "window.jspdf.jsPDF (CDN unpkg). Folosit pentru export PDF: LetterModal + DossierButton."
+    },
+    {
+      "id": "pageFromHash",
+      "type": "util",
+      "line": 1153,
+      "desc": "Hash routing: mapează location.hash (#courts, #court-{id}, …) la pagina curentă. Folosit de App la mount + hashchange. setPage din AppCtx sincronizează hash-ul (pushState)."
+    },
+    {
+      "id": "downloadFile",
+      "type": "util",
+      "line": 1160,
+      "desc": "Descarcă un fișier generat client-side (Blob + <a download>). Folosit de OpenDataCard."
+    },
+    {
+      "id": "OpenDataCard",
+      "type": "component",
+      "line": 4924,
+      "desc": "Export date deschise (JSON complet / CSV sesizări, licență CC BY 4.0). Strip voterKey + photoDataUrl. În ImpactPage, sub DossierButton."
+    },
+    {
+      "id": "sw.js",
+      "type": "pwa",
+      "line": 0,
+      "desc": "Service worker (fișier separat la root, înregistrat din App). Shell network-first, CDN stale-while-revalidate, Firebase RTDB neinterceptat. Bump const CACHE la schimbări breaking."
     }
   ],
   "edges": [
@@ -912,9 +936,45 @@
       "from": "DossierButton",
       "to": "jsPDF",
       "rel": "calls"
+    },
+    {
+      "from": "ImpactPage",
+      "to": "OpenDataCard",
+      "rel": "renders"
+    },
+    {
+      "from": "OpenDataCard",
+      "to": "fb/reports",
+      "rel": "reads"
+    },
+    {
+      "from": "OpenDataCard",
+      "to": "fb/votes",
+      "rel": "reads"
+    },
+    {
+      "from": "OpenDataCard",
+      "to": "fb/courts",
+      "rel": "reads"
+    },
+    {
+      "from": "OpenDataCard",
+      "to": "fb/ratings",
+      "rel": "reads"
+    },
+    {
+      "from": "OpenDataCard",
+      "to": "downloadFile",
+      "rel": "calls"
+    },
+    {
+      "from": "CourtsPage",
+      "to": "pageFromHash",
+      "rel": "deep-link #court-{id} deschide CourtDetail"
     }
   ],
   "routes": {
+    "_note": "Rutele sunt sincronizate cu location.hash (#courts, #petition, …). #court-{id} = deep link CourtDetail. Vezi pageFromHash.",
     "home": "HomePage",
     "courts": "CourtsPage",
     "reports": "ReportsPage",
