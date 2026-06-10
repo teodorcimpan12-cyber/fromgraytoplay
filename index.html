@@ -4,7 +4,24 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5"/>
 <meta name="theme-color" content="#10B981"/>
-<meta name="description" content="From Grey to Play — Târgu Mureș"/>
+<meta name="description" content="From Grey to Play — PWA civic care documentează inegalitatea dintre terenurile sportive centrale și cele periferice din Târgu Mureș și mobilizează comunitatea pentru schimbare."/>
+<link rel="canonical" href="https://fromgraytoplay.netlify.app/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://fromgraytoplay.netlify.app/"/>
+<meta property="og:site_name" content="From Grey to Play"/>
+<meta property="og:title" content="From Grey to Play — Târgu Mureș"/>
+<meta property="og:description" content="Civic PWA documenting sports infrastructure inequality in Târgu Mureș and mobilising community action for change."/>
+<meta property="og:image" content="https://fromgraytoplay.netlify.app/icons/icon-512.png"/>
+<meta property="og:locale" content="ro_RO"/>
+<meta property="og:locale:alternate" content="en_GB"/>
+<meta property="og:locale:alternate" content="hu_HU"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="From Grey to Play — Târgu Mureș"/>
+<meta name="twitter:description" content="Civic PWA documenting sports infrastructure inequality in Târgu Mureș and mobilising community action for change."/>
+<meta name="twitter:image" content="https://fromgraytoplay.netlify.app/icons/icon-512.png"/>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"From Grey to Play","url":"https://fromgraytoplay.netlify.app/","applicationCategory":"GovernmentApplication","operatingSystem":"Web","description":"Civic PWA documenting sports infrastructure inequality in Târgu Mureș and mobilising community action for change.","inLanguage":["ro","en","hu"],"isAccessibleForFree":true}
+</script>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="Grey2Play"/>
@@ -1129,6 +1146,26 @@ function shareCourt(court, t, toast) {
   }
 }
 
+/* === Hash routing. "#courts" etc. select a page; "#court-{id}" deep-links
+   into CourtsPage (used by shareCourt + manifest shortcuts). "#/admin" is
+   handled separately in App. === */
+const PAGE_IDS = ["home", "courts", "reports", "petition", "community", "impact", "help", "about", "profile"];
+function pageFromHash() {
+  const h = location.hash.replace(/^#\/?/, "");
+  if (h.indexOf("court-") === 0) return "courts";
+  return PAGE_IDS.indexOf(h) >= 0 ? h : "home";
+}
+
+/* === Trigger a client-side file download (open data export). === */
+function downloadFile(name, content, mime) {
+  const blob = new Blob([content], { type: mime });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
 function compressImage(file, maxDim, quality) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -1166,6 +1203,23 @@ T.hu.signaturesLabel = "aláírás"; // TODO: HU review
 T.hu.hoodChart = "Egyenlőtlenség kerületenként"; // TODO: HU review
 T.hu.hoodGap = "Dokumentált különbség"; // TODO: HU review
 T.hu.downloadPng = "PNG letöltése"; // TODO: HU review
+
+/* === Open data export strings === */
+T.ro.openData = "Date deschise";
+T.ro.openDataSub = "Setul de date al proiectului — terenuri, sesizări, voturi, evaluări — liber de descărcat și reutilizat (CC BY 4.0).";
+T.ro.downloadJson = "Descarcă JSON";
+T.ro.downloadCsv = "Descarcă CSV (sesizări)";
+T.ro.openDataReady = "Fișier descărcat!";
+T.en.openData = "Open data";
+T.en.openDataSub = "The project dataset — courts, reports, votes, ratings — free to download and reuse (CC BY 4.0).";
+T.en.downloadJson = "Download JSON";
+T.en.downloadCsv = "Download CSV (reports)";
+T.en.openDataReady = "File downloaded!";
+T.hu.openData = "Nyílt adatok"; // TODO: HU review
+T.hu.openDataSub = "A projekt adatkészlete — pályák, bejelentések, szavazatok, értékelések — szabadon letölthető és újrafelhasználható (CC BY 4.0)."; // TODO: HU review
+T.hu.downloadJson = "JSON letöltése"; // TODO: HU review
+T.hu.downloadCsv = "CSV letöltése (bejelentések)"; // TODO: HU review
+T.hu.openDataReady = "Fájl letöltve!"; // TODO: HU review
 
 const COURTS = [{
   id: "c1",
@@ -2590,6 +2644,29 @@ function CourtsPage() {
   const all = [...COURTS, ...extra];
   const filtered = all.filter(c => (filter === "all" || c.status === filter) && (hood === "all" || c.neighbourhood === hood));
   const gameCountFor = id => allGames && allGames[id] ? Object.keys(allGames[id]).length : 0;
+  // Deep links: "#court-{id}" opens the detail (shareCourt URLs); back button closes it.
+  const openCourt = c => {
+    setSel(c);
+    if (c && location.hash !== "#court-" + c.id) history.pushState(null, "", "#court-" + c.id);
+  };
+  const closeCourt = () => {
+    setSel(null);
+    if (/^#court-/.test(location.hash)) history.replaceState(null, "", "#courts");
+  };
+  useEffect(() => {
+    const sync = () => {
+      const m = location.hash.match(/^#court-(.+)$/);
+      if (m) {
+        const c = all.find(x => x.id === m[1]);
+        if (c) setSel(c);
+      } else {
+        setSel(null);
+      }
+    };
+    sync();
+    window.addEventListener("hashchange", sync);
+    return () => window.removeEventListener("hashchange", sync);
+  }, [fbCourts]);
   return /*#__PURE__*/React.createElement("div", {
     className: "animate-in"
   }, /*#__PURE__*/React.createElement("section", {
@@ -2652,13 +2729,13 @@ function CourtsPage() {
     onClick: () => setTab("list")
   }, "\uD83D\uDCCB")), tab === "map" && /*#__PURE__*/React.createElement(MapView, {
     courts: filtered,
-    onSelect: setSel
+    onSelect: openCourt
   }), tab === "list" && /*#__PURE__*/React.createElement("div", {
     className: "grid gap-1"
   }, filtered.map(c => /*#__PURE__*/React.createElement("div", {
     key: c.id,
     className: "card card-accent card-link",
-    onClick: () => setSel(c)
+    onClick: () => openCourt(c)
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex justify-between items-center"
   }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", {
@@ -2709,7 +2786,7 @@ function CourtsPage() {
     loading: "lazy"
   }))), sel && /*#__PURE__*/React.createElement(CourtDetail, {
     court: sel,
-    onClose: () => setSel(null),
+    onClose: closeCourt,
     onBook: () => setShowBook(true)
   }), showRep && /*#__PURE__*/React.createElement(ReportModal, {
     onClose: () => setShowRep(false)
@@ -4840,6 +4917,77 @@ function HoodChart() {
   );
 }
 
+/* ============================================================
+   OPEN DATA EXPORT — JSON/CSV download of the public dataset.
+   Strips voterKey + photoDataUrl (privacy / file size).
+   ============================================================ */
+function OpenDataCard() {
+  const { t, toast } = useApp();
+  const reports = useFirebase("reports");
+  const votes = useFirebase("votes");
+  const fbCourts = useFirebase("courts");
+  const ratings = useFirebase("ratings");
+  const buildCourts = () => {
+    const extra = fbCourts ? Object.entries(fbCourts).map(([id, c]) => ({ id, ...c })) : [];
+    return [...COURTS, ...extra];
+  };
+  const buildReports = () => reports ? Object.entries(reports).map(([id, r]) => ({
+    id,
+    courtId: r.courtId || "",
+    courtName: r.courtName || "",
+    neighbourhood: r.neighborhood || r.neighbourhood || "",
+    category: r.category || "",
+    description: r.description || "",
+    status: r.status || "",
+    lat: r.lat || null,
+    lng: r.lng || null,
+    createdAt: r.createdAt || null
+  })) : [];
+  const buildRatings = () => {
+    const out = {};
+    if (!ratings) return out;
+    const dims = ["surface", "lighting", "equipment", "safety"];
+    Object.entries(ratings).forEach(([cid, byUser]) => {
+      const list = Object.values(byUser || {});
+      if (!list.length) return;
+      const avg = { count: list.length };
+      dims.forEach(d => { avg[d] = +(list.reduce((s, r) => s + (+r[d] || 0), 0) / list.length).toFixed(2); });
+      out[cid] = avg;
+    });
+    return out;
+  };
+  const exportJson = () => {
+    const data = {
+      meta: { project: "From Grey to Play", source: SITE, generated: new Date().toISOString(), license: "CC BY 4.0" },
+      votes: votes || {},
+      courts: buildCourts(),
+      reports: buildReports(),
+      ratings: buildRatings()
+    };
+    downloadFile("g2p_open_data.json", JSON.stringify(data, null, 2), "application/json");
+    toast(t.openDataReady);
+  };
+  const exportCsv = () => {
+    const esc = v => '"' + String(v == null ? "" : v).replace(/"/g, '""') + '"';
+    const head = ["id", "courtId", "courtName", "neighbourhood", "category", "status", "lat", "lng", "createdAt", "description"];
+    const rows = buildReports().map(r => head.map(k => esc(r[k])).join(","));
+    downloadFile("g2p_sesizari.csv", [head.join(",")].concat(rows).join("\n"), "text/csv;charset=utf-8");
+    toast(t.openDataReady);
+  };
+  return React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--teal)" } },
+    React.createElement("div", { className: "flex justify-between items-center", style: { gap: "1rem", flexWrap: "wrap" } },
+      React.createElement("div", { style: { flex: 1, minWidth: 180 } },
+        React.createElement("h3", { className: "barlow", style: { fontSize: "1.15rem", marginBottom: ".25rem" } }, "🗂️ ", t.openData),
+        React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } }, t.openDataSub)
+      ),
+      React.createElement("div", { className: "flex gap-1", style: { flexWrap: "wrap" } },
+        React.createElement("button", { className: "btn btn-outline btn-sm", onClick: exportJson }, "📥 " + t.downloadJson),
+        React.createElement("button", { className: "btn btn-outline btn-sm", onClick: exportCsv }, "📥 " + t.downloadCsv)
+      )
+    )
+  );
+}
+
 function ImpactPage() {
   const {
     t,
@@ -4854,7 +5002,7 @@ function ImpactPage() {
     className: "container"
   }, /*#__PURE__*/React.createElement("h2", {
     className: "section-title"
-  }, "\uD83D\uDCCA ", t.impact), /*#__PURE__*/React.createElement(DossierButton, null), /*#__PURE__*/React.createElement("div", {
+  }, "\uD83D\uDCCA ", t.impact), /*#__PURE__*/React.createElement(DossierButton, null), /*#__PURE__*/React.createElement(OpenDataCard, null), /*#__PURE__*/React.createElement("div", {
     className: "tabs"
   }, /*#__PURE__*/React.createElement("button", {
     className: tab === "calc" ? "active" : "",
@@ -6755,7 +6903,14 @@ function Footer() {
 function App() {
   const [lang, setLang] = useState(() => localStorage.getItem("g2p_lang") || "ro");
   const [theme, setTheme] = useState(() => localStorage.getItem("g2p_theme") || (window.matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light"));
-  const [page, setPage] = useState("home");
+  const [page, setPageRaw] = useState(pageFromHash);
+  // setPage keeps the URL hash in sync so every page (and shared court link)
+  // is bookmarkable; pushState avoids re-triggering the hashchange listener.
+  const setPage = useCallback(p => {
+    setPageRaw(p);
+    const h = p === "home" ? "" : "#" + p;
+    if (location.hash !== h) history.pushState(null, "", h || location.pathname + location.search);
+  }, []);
   const [user, setUser] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("g2p_user"));
@@ -6769,6 +6924,7 @@ function App() {
   const [adminAuth, setAdminAuth] = useState(false);
   useEffect(() => {
     localStorage.setItem("g2p_lang", lang);
+    document.documentElement.lang = lang;
   }, [lang]);
   useEffect(() => {
     localStorage.setItem("g2p_theme", theme);
@@ -6793,7 +6949,11 @@ function App() {
   useEffect(() => {
     if (location.hash === "#/admin") setAdminMode(true);
     const h = () => {
-      if (location.hash === "#/admin") setAdminMode(true);
+      if (location.hash === "#/admin") {
+        setAdminMode(true);
+        return;
+      }
+      setPageRaw(pageFromHash());
     };
     window.addEventListener("hashchange", h);
     return () => window.removeEventListener("hashchange", h);
