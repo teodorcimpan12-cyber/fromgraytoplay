@@ -279,8 +279,8 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 /* Section title accent bar */
 .section-title{position:relative}
 /* Smooth page enter */
-.animate-in{animation:pageEnter .45s cubic-bezier(.22,1,.36,1) both}
-@keyframes pageEnter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.animate-in{animation:pageEnter .55s cubic-bezier(.22,1,.36,1) both}
+@keyframes pageEnter{from{opacity:0;transform:translateY(18px) scale(.985);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
 /* Dossier button glow */
 .btn-dossier{background:linear-gradient(100deg,var(--green),var(--teal));color:#fff;position:relative;overflow:hidden}
 .btn-dossier::after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-20deg);animation:sheen 3.5s ease-in-out infinite}
@@ -306,6 +306,41 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .hood-gap-callout{background:linear-gradient(130deg,rgba(220,38,38,.07) 0%,rgba(16,185,129,.07) 100%);border:1px solid rgba(220,38,38,.2);border-radius:12px;padding:.85rem 1rem;margin-bottom:1rem}
 .share-canvas{width:100%;border-radius:10px;border:1px solid var(--border);display:block}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.hero-mesh,.btn-dossier::after,.skeleton::after{animation:none}.animate-in{animation:none}}
+/* === Show-off animation pack === */
+.btn,.h3d-btn,.tabs button{position:relative;overflow:hidden}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.45);transform:scale(0);animation:rippleOut .55s ease-out forwards;pointer-events:none}
+@keyframes rippleOut{to{transform:scale(3.2);opacity:0}}
+.tilt{will-change:transform;transition:transform .18s ease-out,box-shadow .25s}
+.tilt:hover{box-shadow:0 18px 44px rgba(0,0,0,.18)}
+.lr span{display:inline-block;opacity:0;transform:translateY(.6em) rotate(4deg);animation:lrIn .6s cubic-bezier(.22,1,.36,1) forwards;animation-delay:var(--ld,0ms)}
+@keyframes lrIn{to{opacity:1;transform:none}}
+.h3d-title .p{display:inline-block;background-size:220% 100%;animation:lrIn .6s cubic-bezier(.22,1,.36,1) .55s both,gradShift 5s ease-in-out 1.2s infinite}
+@keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.h3d-particles{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.h3d-particle{position:absolute;bottom:-14px;border-radius:50%;opacity:0;animation:floatUp linear infinite}
+@keyframes floatUp{0%{transform:translateY(0) translateX(0);opacity:0}12%{opacity:.8}100%{transform:translateY(-640px) translateX(var(--sway,24px));opacity:0}}
+/* Before/After slider */
+.ba-wrap{position:relative;border-radius:var(--radius);overflow:hidden;user-select:none;touch-action:none;box-shadow:var(--shadow);cursor:ew-resize;aspect-ratio:16/9;background:var(--dark)}
+.ba-layer{position:absolute;inset:0}
+.ba-label{position:absolute;top:.7rem;font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;letter-spacing:1px;padding:.22rem .6rem;border-radius:20px;color:#fff;z-index:4}
+.ba-handle{position:absolute;top:0;bottom:0;width:3px;background:#fff;z-index:5;box-shadow:0 0 14px rgba(0,0,0,.45)}
+.ba-knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--dark);box-shadow:0 4px 16px rgba(0,0,0,.35);font-size:.8rem;letter-spacing:-1px}
+.ba-knob:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+/* Scrollytelling */
+.story-progress{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--grey),var(--coral),var(--green));z-index:250;width:0}
+.story-hero{min-height:54vh;display:flex;flex-direction:column;justify-content:center;background:linear-gradient(160deg,var(--dark),#0F172A);color:#fff;position:relative;overflow:hidden;padding:3rem 0}
+.story-hero h1{font-family:'Barlow Condensed','Space Mono',monospace;font-size:clamp(2.4rem,8vw,4.4rem);font-weight:800;line-height:1.05;margin:.4rem 0 .8rem}
+.story-kicker{font-family:'Space Mono',monospace;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--green)}
+.story-hero .story-sub{color:#9CA3AF;max-width:560px;font-size:1.02rem}
+.story-scroll-cue{position:absolute;bottom:1.1rem;left:50%;transform:translateX(-50%);color:#9CA3AF;font-size:1.4rem;animation:cueBob 1.6s ease-in-out infinite}
+@keyframes cueBob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
+.story-ch{max-width:680px;margin:0 auto;padding:2.6rem 1rem 0}
+.story-ch p{font-size:1.04rem;line-height:1.85}
+.story-num{font-family:'Barlow Condensed','Space Mono',monospace;font-size:3rem;font-weight:800;color:var(--green);opacity:.28;line-height:1}
+.story-stats{background:var(--dark);color:#fff;padding:3rem 0;margin:3rem 0}
+.story-cta{text-align:center;padding:3.4rem 1rem 4rem}
+.story-cta h2{font-family:'Barlow Condensed','Space Mono',monospace;font-size:clamp(1.6rem,5vw,2.6rem);max-width:640px;margin:0 auto 1.4rem}
+@media(prefers-reduced-motion:reduce){.lr span{animation:none;opacity:1;transform:none}.h3d-particle{display:none}.h3d-title .p{animation:none}.tilt{transition:none}.ripple{display:none}.story-scroll-cue{animation:none}}
 </style>
 </head>
 <body>
@@ -391,6 +426,51 @@ function useReveal() {
     return () => io.disconnect();
   }, []);
   return ref;
+}
+
+/* Show-off: wrapper element with scroll-reveal + stagger delay (--d). */
+function Reveal(props) {
+  const ref = useReveal();
+  const p = { ...props, ref, className: "reveal " + (props.className || ""), style: { ...(props.style || {}), "--d": (props.d || 0) + "ms" } };
+  delete p.d; delete p.as;
+  return React.createElement(props.as || "div", p);
+}
+
+/* Show-off: 3D tilt that follows the cursor. Skipped on touch + reduced motion. */
+function useTilt(max) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !window.matchMedia) return;
+    if (window.matchMedia("(prefers-reduced-motion:reduce)").matches || window.matchMedia("(hover: none)").matches) return;
+    const mv = e => {
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
+      el.style.transform = "perspective(700px) rotateX(" + (-py * (max || 7)).toFixed(2) + "deg) rotateY(" + (px * (max || 7)).toFixed(2) + "deg) translateY(-2px)";
+    };
+    const lv = () => { el.style.transform = ""; };
+    el.addEventListener("mousemove", mv);
+    el.addEventListener("mouseleave", lv);
+    return () => { el.removeEventListener("mousemove", mv); el.removeEventListener("mouseleave", lv); };
+  }, [max]);
+  return ref;
+}
+
+/* Show-off: div with 3D tilt. Use like a normal div; optional max (deg). */
+function TiltDiv(props) {
+  const ref = useTilt(props.max);
+  const p = { ...props, ref, className: (props.className || "") + " tilt" };
+  delete p.max;
+  return React.createElement("div", p);
+}
+
+/* Show-off: letter-by-letter text reveal. aria keeps the full word readable. */
+function LetterReveal({ text, base }) {
+  return React.createElement("span", { className: "lr", role: "text", "aria-label": text },
+    text.split("").map((ch, i) => React.createElement("span", {
+      key: i, "aria-hidden": "true",
+      style: { "--ld": ((base || 0) + i * 45) + "ms" }
+    }, ch === " " ? " " : ch)));
 }
 
 /* === i18n === */
@@ -1149,7 +1229,7 @@ function shareCourt(court, t, toast) {
 /* === Hash routing. "#courts" etc. select a page; "#court-{id}" deep-links
    into CourtsPage (used by shareCourt + manifest shortcuts). "#/admin" is
    handled separately in App. === */
-const PAGE_IDS = ["home", "courts", "reports", "petition", "community", "impact", "help", "about", "profile"];
+const PAGE_IDS = ["home", "courts", "reports", "petition", "community", "impact", "story", "help", "about", "profile"];
 function pageFromHash() {
   const h = location.hash.replace(/^#\/?/, "");
   if (h.indexOf("court-") === 0) return "courts";
@@ -1220,6 +1300,54 @@ T.hu.openDataSub = "A projekt adatkészlete — pályák, bejelentések, szavaza
 T.hu.downloadJson = "JSON letöltése"; // TODO: HU review
 T.hu.downloadCsv = "CSV letöltése (bejelentések)"; // TODO: HU review
 T.hu.openDataReady = "Fájl letöltve!"; // TODO: HU review
+
+/* === Before/After slider strings === */
+T.ro.baTitle = "De la gri la joacă";
+T.ro.baSub = "Trage de mâner ca să vezi transformarea unui teren.";
+T.ro.baBefore = "ÎNAINTE";
+T.ro.baAfter = "DUPĂ";
+T.en.baTitle = "From grey to play";
+T.en.baSub = "Drag the handle to see a court transform.";
+T.en.baBefore = "BEFORE";
+T.en.baAfter = "AFTER";
+T.hu.baTitle = "A szürkétől a játékig"; // TODO: HU review
+T.hu.baSub = "Húzd a fogantyút, és nézd meg a pálya átalakulását."; // TODO: HU review
+T.hu.baBefore = "ELŐTTE"; // TODO: HU review
+T.hu.baAfter = "UTÁNA"; // TODO: HU review
+
+/* === Scrollytelling story strings === */
+T.ro.story = "Povestea";
+T.ro.storyKicker = "Eseu interactiv";
+T.ro.storySub = "Derulează ca să descoperi de ce adresa ta nu ar trebui să-ți limiteze șansele.";
+T.ro.storyStat1 = "din 15 rezidenți evită terenul de lângă ei";
+T.ro.storyStat2 = "milioane lei blocați de o eroare administrativă";
+T.ro.storyStat3 = "luni de la grant la tăierea panglicii";
+T.ro.storyCtaTitle = "Adresa ta nu ar trebui să-ți limiteze oportunitățile.";
+T.ro.storyCtaSub = "Singurul lucru scump este să nu facem nimic.";
+T.en.story = "The Story";
+T.en.storyKicker = "Interactive essay";
+T.en.storySub = "Scroll to discover why your address should not cap your opportunities.";
+T.en.storyStat1 = "of 15 residents avoid their nearest court";
+T.en.storyStat2 = "million lei frozen by an administrative mix-up";
+T.en.storyStat3 = "months from grant to ribbon-cutting";
+T.en.storyCtaTitle = "Your address should not cap your opportunities.";
+T.en.storyCtaSub = "The only expensive thing is continuing to do nothing.";
+T.hu.story = "A történet"; // TODO: HU review
+T.hu.storyKicker = "Interaktív esszé"; // TODO: HU review
+T.hu.storySub = "Görgess, és tudd meg, miért nem szabhat határt a lakcímed a lehetőségeidnek."; // TODO: HU review
+T.hu.storyStat1 = "lakó a 15-ből elkerüli a legközelebbi pályát"; // TODO: HU review
+T.hu.storyStat2 = "millió lej fagyott be egy adminisztratív hiba miatt"; // TODO: HU review
+T.hu.storyStat3 = "hónap a támogatástól a szalagátvágásig"; // TODO: HU review
+T.hu.storyCtaTitle = "A lakcímed nem szabhat határt a lehetőségeidnek."; // TODO: HU review
+T.hu.storyCtaSub = "Az egyetlen drága dolog az, ha továbbra sem teszünk semmit."; // TODO: HU review
+
+/* === Heatmap strings === */
+T.ro.heatmap = "Heatmap sesizări";
+T.ro.heatmapOn = "Heatmap activ — cercurile roșii arată densitatea problemelor";
+T.en.heatmap = "Report heatmap";
+T.en.heatmapOn = "Heatmap on — red circles show problem density";
+T.hu.heatmap = "Bejelentés-hőtérkép"; // TODO: HU review
+T.hu.heatmapOn = "Hőtérkép bekapcsolva — a piros körök a problémák sűrűségét mutatják"; // TODO: HU review
 
 const COURTS = [{
   id: "c1",
@@ -1662,6 +1790,9 @@ function Navbar() {
     k: "impact",
     l: t.impact
   }, {
+    k: "story",
+    l: t.story
+  }, {
     k: "help",
     l: t.help
   }, {
@@ -1755,7 +1886,9 @@ function Navbar() {
 function MapView({
   courts,
   height = "380px",
-  onSelect
+  onSelect,
+  heat = false,
+  heatCounts = null
 }) {
   const ref = useRef(null);
   const mapRef = useRef(null);
@@ -1768,6 +1901,24 @@ function MapView({
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OSM'
     }).addTo(m);
+    // Heatmap: concentric translucent circles per court, radius/opacity
+    // scaled by report density (static c.reports + live heatCounts).
+    if (heat) {
+      courts.forEach(c => {
+        const n = (c.reports || 0) + (heatCounts && heatCounts[c.id] || 0);
+        if (!n) return;
+        const f = Math.min(1, n / 8);
+        [[1, 0.07], [0.62, 0.12], [0.3, 0.2]].forEach(([rf, op]) => {
+          L.circle([c.lat, c.lng], {
+            radius: (180 + 420 * f) * rf,
+            stroke: false,
+            color: "#DC2626",
+            fillColor: "#DC2626",
+            fillOpacity: op + f * 0.1
+          }).addTo(m);
+        });
+      });
+    }
     courts.forEach(c => {
       const col = c.status === "degraded" ? "#DC2626" : c.status === "inProgress" ? "#F97316" : "#10B981";
       const icon = L.divIcon({
@@ -1787,7 +1938,7 @@ function MapView({
       m.remove();
       mapRef.current = null;
     };
-  }, [courts]);
+  }, [courts, heat, heatCounts]);
   return /*#__PURE__*/React.createElement("div", {
     ref: ref,
     className: "map-box",
@@ -2485,15 +2636,29 @@ function Hero3D() {
     if (apiRef.current) apiRef.current.setRenov(nv);
     toast(nv ? t.heroTRenov : t.heroTGrey);
   }
+  // Show-off: floating brand-color particles, generated once.
+  const particles = React.useMemo(() => Array.from({ length: 16 }, (_, i) => ({
+    left: (3 + Math.random() * 94) + "%",
+    size: 3 + Math.random() * 6,
+    color: ["#10B981", "#F97316", "#0D9488", "#ffffff"][i % 4],
+    dur: (7 + Math.random() * 9).toFixed(1) + "s",
+    delay: (Math.random() * 9).toFixed(1) + "s",
+    sway: ((Math.random() - 0.5) * 90).toFixed(0) + "px"
+  })), []);
   return React.createElement("section", { className: "h3d-hero" },
     React.createElement("div", { className: "h3d-canvas", ref: mountRef }),
     React.createElement("div", { className: "h3d-scrim-top" }),
     React.createElement("div", { className: "h3d-scrim" }),
+    React.createElement("div", { className: "h3d-particles", "aria-hidden": "true" },
+      particles.map((p, i) => React.createElement("span", {
+        key: i, className: "h3d-particle",
+        style: { left: p.left, width: p.size, height: p.size, background: p.color, animationDuration: p.dur, animationDelay: p.delay, "--sway": p.sway }
+      }))),
     failed ? React.createElement("div", { className: "h3d-loading" }, "\u26A0\uFE0F 3D") : (!ready ? React.createElement("div", { className: "h3d-loading" }, "\u00B7\u00B7\u00B7") : null),
     React.createElement("div", { className: "h3d-hint", ref: hintRef }, t.heroHint),
     React.createElement("div", { className: "h3d-overlay" },
       React.createElement("div", { className: "h3d-kicker" }, t.heroKicker),
-      React.createElement("div", { className: "h3d-title" }, React.createElement("span", { className: "g" }, "From Grey"), React.createElement("br", null), "to ", React.createElement("span", { className: "p" }, "Play")),
+      React.createElement("div", { className: "h3d-title" }, React.createElement("span", { className: "g" }, React.createElement(LetterReveal, { text: "From Grey" })), React.createElement("br", null), React.createElement(LetterReveal, { text: "to ", base: 420 }), React.createElement("span", { className: "p" }, "Play")),
       React.createElement("p", { className: "h3d-sub" }, t.heroSub),
       React.createElement("div", { className: "h3d-cta" },
         React.createElement("button", { className: "h3d-btn h3d-btn-green", onClick: toggle }, renovated ? t.heroBack : t.heroRenovate),
@@ -2510,10 +2675,75 @@ function Hero3D() {
   );
 }
 
+/* ============================================================
+   BEFORE/AFTER SLIDER — SVG court scene, degraded vs renovated.
+   Drag the handle (pointer) or use arrow keys on the knob.
+   ============================================================ */
+function CourtScene({ play }) {
+  const c = play
+    ? { sky: "#0E7490", ground: "#10B981", line: "#FFFFFF", hoop: "#F97316", wall: "#16213E", blocks: "#1A1A2E" }
+    : { sky: "#475569", ground: "#6B7280", line: "#9CA3AF", hoop: "#4B5563", wall: "#374151", blocks: "#334155" };
+  return React.createElement("svg", { viewBox: "0 0 800 450", preserveAspectRatio: "xMidYMid slice", style: { width: "100%", height: "100%", display: "block" }, "aria-hidden": "true" },
+    React.createElement("rect", { width: 800, height: 450, fill: c.sky }),
+    [[0, 150, 90, 160], [100, 120, 80, 190], [190, 170, 70, 140], [640, 140, 75, 170], [725, 165, 75, 145]].map((b, i) =>
+      React.createElement("rect", { key: "b" + i, x: b[0], y: b[1], width: b[2], height: b[3], fill: c.blocks })),
+    play
+      ? React.createElement("circle", { cx: 700, cy: 70, r: 38, fill: "#FDE68A" })
+      : React.createElement("g", { fill: "#94A3B8" },
+          React.createElement("ellipse", { cx: 680, cy: 70, rx: 55, ry: 20 }),
+          React.createElement("ellipse", { cx: 628, cy: 82, rx: 40, ry: 16 })),
+    React.createElement("rect", { x: 0, y: 250, width: 800, height: 60, fill: c.wall }),
+    play && React.createElement("g", null,
+      React.createElement("circle", { cx: 160, cy: 280, r: 22, fill: "#F97316", opacity: 0.9 }),
+      React.createElement("circle", { cx: 213, cy: 277, r: 13, fill: "#10B981", opacity: 0.9 }),
+      React.createElement("rect", { x: 360, y: 262, width: 90, height: 36, rx: 8, fill: "#0D9488", opacity: 0.85 }),
+      React.createElement("circle", { cx: 600, cy: 282, r: 18, fill: "#F59E0B", opacity: 0.9 }),
+      React.createElement("circle", { cx: 648, cy: 273, r: 10, fill: "#EC4899", opacity: 0.85 })),
+    React.createElement("rect", { x: 0, y: 310, width: 800, height: 140, fill: c.ground }),
+    React.createElement("line", { x1: 400, y1: 310, x2: 400, y2: 450, stroke: c.line, strokeWidth: 4, strokeDasharray: play ? "" : "14 10" }),
+    React.createElement("ellipse", { cx: 400, cy: 400, rx: 70, ry: 34, fill: "none", stroke: c.line, strokeWidth: 4 }),
+    !play && React.createElement("g", { stroke: "#374151", strokeWidth: 3, fill: "none" },
+      React.createElement("path", { d: "M80 350 l40 18 l-12 26 l38 20" }),
+      React.createElement("path", { d: "M620 330 l30 24 l28 -8 l20 30" }),
+      React.createElement("path", { d: "M300 432 l26 -18 l30 10" })),
+    React.createElement("rect", { x: 120, y: 180, width: 8, height: 140, fill: play ? "#E5E7EB" : "#4B5563" }),
+    React.createElement("rect", { x: 92, y: 168, width: 64, height: 44, rx: 4, fill: play ? "#FFFFFF" : "#6B7280", stroke: c.hoop, strokeWidth: 4 }),
+    React.createElement("ellipse", { cx: 124, cy: 214, rx: 20, ry: 6, fill: "none", stroke: c.hoop, strokeWidth: 5, transform: play ? "" : "rotate(-16 124 214)" }),
+    play && React.createElement("circle", { cx: 470, cy: 424, r: 16, fill: "#F97316", stroke: "#1A1A2E", strokeWidth: 2 }));
+}
+
+function BeforeAfter() {
+  const { t } = useApp();
+  const [pos, setPos] = useState(58);
+  const wrapRef = useRef(null);
+  const drag = useRef(false);
+  const moveTo = x => {
+    const r = wrapRef.current.getBoundingClientRect();
+    setPos(Math.max(3, Math.min(97, (x - r.left) / r.width * 100)));
+  };
+  const down = e => { drag.current = true; if (wrapRef.current.setPointerCapture) try { wrapRef.current.setPointerCapture(e.pointerId); } catch (err) {} moveTo(e.clientX); };
+  const move = e => { if (drag.current) moveTo(e.clientX); };
+  const up = () => { drag.current = false; };
+  const key = e => {
+    if (e.key === "ArrowLeft") { setPos(p => Math.max(3, p - 4)); e.preventDefault(); }
+    if (e.key === "ArrowRight") { setPos(p => Math.min(97, p + 4)); e.preventDefault(); }
+  };
+  return React.createElement("div", { ref: wrapRef, className: "ba-wrap", onPointerDown: down, onPointerMove: move, onPointerUp: up, onPointerCancel: up },
+    React.createElement("div", { className: "ba-layer" }, React.createElement(CourtScene, { play: true })),
+    React.createElement("div", { className: "ba-layer", style: { clipPath: "inset(0 " + (100 - pos) + "% 0 0)" } }, React.createElement(CourtScene, { play: false })),
+    React.createElement("span", { className: "ba-label", style: { left: ".8rem", background: "rgba(55,65,81,.85)" } }, t.baBefore),
+    React.createElement("span", { className: "ba-label", style: { right: ".8rem", background: "rgba(16,185,129,.9)" } }, t.baAfter),
+    React.createElement("div", { className: "ba-handle", style: { left: pos + "%" } },
+      React.createElement("div", {
+        className: "ba-knob", role: "slider", tabIndex: 0, "aria-label": t.baTitle,
+        "aria-valuemin": 0, "aria-valuemax": 100, "aria-valuenow": Math.round(pos), onKeyDown: key
+      }, "◂▸")));
+}
+
 /* Polish: animated stat tile with count-up + colored glow */
 function StatTile({ value, label, color }) {
   const n = useCountUp(value);
-  return React.createElement("div", { className: "stat-tile" },
+  return React.createElement(TiltDiv, { max: 9, className: "stat-tile" },
     React.createElement("div", { className: "stat-glow", style: { background: color } }),
     React.createElement("div", { className: "stat-number", style: { color } }, n),
     React.createElement("div", { className: "stat-label" }, label)
@@ -2560,7 +2790,14 @@ function HomePage() {
     value: tv, label: t.petitionVotes, color: "var(--coral)"
   }), /*#__PURE__*/React.createElement(StatTile, {
     value: vc, label: t.volunteers, color: "var(--teal)"
-  })))), /*#__PURE__*/React.createElement("section", {
+  })))), React.createElement("section", { className: "section" },
+    React.createElement("div", { className: "container" },
+      React.createElement(Reveal, null,
+        React.createElement("h2", { className: "section-title" }, t.baTitle),
+        React.createElement("p", { className: "section-sub" }, t.baSub)),
+      React.createElement(Reveal, { d: 120 }, React.createElement(BeforeAfter, null)),
+      React.createElement(Reveal, { d: 200, style: { textAlign: "center", marginTop: "1.2rem" } },
+        React.createElement("button", { className: "btn btn-outline", onClick: () => setPage("story") }, "📖 " + t.story)))), /*#__PURE__*/React.createElement("section", {
     className: "section"
   }, /*#__PURE__*/React.createElement("div", {
     className: "container"
@@ -2635,8 +2872,15 @@ function CourtsPage() {
   const [sel, setSel] = useState(null);
   const [showRep, setShowRep] = useState(false);
   const [showBook, setShowBook] = useState(false);
+  const [heat, setHeat] = useState(false);
   const fbCourts = useFirebase("courts");
   const allGames = useFirebase("games");
+  const fbReports = useFirebase(heat ? "reports" : null);
+  const heatCounts = React.useMemo(() => {
+    const out = {};
+    if (fbReports) Object.values(fbReports).forEach(r => { if (r.courtId) out[r.courtId] = (out[r.courtId] || 0) + 1; });
+    return out;
+  }, [fbReports]);
   const extra = fbCourts ? Object.entries(fbCourts).map(([id, c]) => ({
     id,
     ...c
@@ -2727,13 +2971,21 @@ function CourtsPage() {
   }, "\uD83D\uDDFA\uFE0F"), /*#__PURE__*/React.createElement("button", {
     className: tab === "list" ? "active" : "",
     onClick: () => setTab("list")
-  }, "\uD83D\uDCCB")), tab === "map" && /*#__PURE__*/React.createElement(MapView, {
+  }, "\uD83D\uDCCB"), tab === "map" && React.createElement("button", {
+    className: heat ? "active" : "",
+    onClick: () => { setHeat(h => !h); if (!heat) toast(t.heatmapOn); },
+    title: t.heatmap,
+    "aria-pressed": heat
+  }, "\uD83D\uDD25 " + t.heatmap)), tab === "map" && /*#__PURE__*/React.createElement(MapView, {
     courts: filtered,
-    onSelect: openCourt
+    onSelect: openCourt,
+    heat: heat,
+    heatCounts: heatCounts
   }), tab === "list" && /*#__PURE__*/React.createElement("div", {
     className: "grid gap-1"
-  }, filtered.map(c => /*#__PURE__*/React.createElement("div", {
+  }, filtered.map(c => /*#__PURE__*/React.createElement(TiltDiv, {
     key: c.id,
+    max: 5,
     className: "card card-accent card-link",
     onClick: () => openCourt(c)
   }, /*#__PURE__*/React.createElement("div", {
@@ -3599,6 +3851,7 @@ function PetitionPage() {
     }));
     setVoted(true);
     localStorage.setItem("g2p_voted", "1");
+    setShowConfetti(true);
     toast(t.success + " +10 " + t.points);
   };
   useEffect(function() {
@@ -5372,6 +5625,76 @@ function TimelineSec() {
 }
 
 /* === Help === */
+/* ============================================================
+   SCROLLYTELLING — the essay as an animated, chaptered story.
+   Route: #story. ESSAY.hu missing -> falls back to RO.
+   ============================================================ */
+function StoryChapter({ n, text }) {
+  const ref = useReveal();
+  return React.createElement("div", { ref: ref, className: "reveal story-ch" },
+    React.createElement("div", { className: "story-num" }, String(n).padStart(2, "0")),
+    React.createElement("p", null, text));
+}
+
+function StoryStat({ v, suffix, label, color }) {
+  const [vis, setVis] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (!("IntersectionObserver" in window)) { setVis(true); return; }
+    const io = new IntersectionObserver(es => {
+      es.forEach(e => { if (e.isIntersecting) { setVis(true); io.unobserve(e.target); } });
+    }, { threshold: 0.4 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  const n = useCountUp(vis ? v : 0, 1500);
+  return React.createElement("div", { ref: ref, style: { textAlign: "center" } },
+    React.createElement("div", { className: "stat-number", style: { color: color, fontSize: "2.8rem" } }, n, suffix),
+    React.createElement("div", { className: "stat-label", style: { color: "#9CA3AF", maxWidth: 220, margin: ".3rem auto 0" } }, label));
+}
+
+function StoryPage() {
+  const { t, lang, setPage } = useApp();
+  const paras = (ESSAY[lang] || ESSAY.ro).split("\n\n");
+  const barRef = useRef(null);
+  useEffect(() => {
+    const onScroll = () => {
+      const h = document.documentElement;
+      const max = h.scrollHeight - h.clientHeight;
+      if (barRef.current) barRef.current.style.width = (max > 0 ? h.scrollTop / max * 100 : 0) + "%";
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  const mid = Math.min(4, paras.length);
+  return React.createElement("div", { className: "animate-in" },
+    React.createElement("div", { className: "story-progress", ref: barRef }),
+    React.createElement("section", { className: "story-hero" },
+      React.createElement("div", { className: "container" },
+        React.createElement("div", { className: "story-kicker" }, t.storyKicker),
+        React.createElement("h1", null,
+          React.createElement("span", { style: { color: "#9CA3AF" } }, React.createElement(LetterReveal, { text: "From Grey" })),
+          React.createElement("br", null),
+          React.createElement("span", { className: "p", style: { background: "linear-gradient(90deg,#10B981,#0D9488,#F97316)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" } }, "to Play")),
+        React.createElement("p", { className: "story-sub" }, t.storySub)),
+      React.createElement("div", { className: "story-scroll-cue", "aria-hidden": "true" }, "↓")),
+    paras.slice(0, mid).map((p, i) => React.createElement(StoryChapter, { key: i, n: i + 1, text: p })),
+    React.createElement("section", { className: "story-stats" },
+      React.createElement("div", { className: "container grid grid-3" },
+        React.createElement(StoryStat, { v: 12, suffix: "/15", label: t.storyStat1, color: "var(--red)" }),
+        React.createElement(StoryStat, { v: 5, suffix: "M", label: t.storyStat2, color: "var(--coral)" }),
+        React.createElement(StoryStat, { v: 6, suffix: "", label: t.storyStat3, color: "var(--green)" }))),
+    paras.slice(mid).map((p, i) => React.createElement(StoryChapter, { key: mid + i, n: mid + i + 1, text: p })),
+    React.createElement("section", { className: "story-cta" },
+      React.createElement(Reveal, null,
+        React.createElement("h2", null, t.storyCtaTitle),
+        React.createElement("p", { className: "section-sub" }, t.storyCtaSub),
+        React.createElement("button", { className: "btn btn-green", style: { fontSize: "1rem", padding: ".8rem 1.6rem" }, onClick: () => setPage("petition") }, "✊ " + t.heroSign))));
+}
+
 function HelpPage() {
   const {
     t,
@@ -6936,6 +7259,25 @@ function App() {
   useEffect(() => {
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
   }, []);
+  // Show-off: ripple micro-interaction on every button, via one delegated listener.
+  useEffect(() => {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+    const h = e => {
+      const b = e.target.closest && e.target.closest(".btn,.h3d-btn,.tabs button");
+      if (!b) return;
+      const r = b.getBoundingClientRect();
+      const d = Math.max(r.width, r.height) * 1.2;
+      const s = document.createElement("span");
+      s.className = "ripple";
+      s.style.width = s.style.height = d + "px";
+      s.style.left = e.clientX - r.left - d / 2 + "px";
+      s.style.top = e.clientY - r.top - d / 2 + "px";
+      b.appendChild(s);
+      setTimeout(() => s.remove(), 600);
+    };
+    document.addEventListener("pointerdown", h);
+    return () => document.removeEventListener("pointerdown", h);
+  }, []);
   useEffect(() => {
     const h = e => {
       if (e.ctrlKey && e.shiftKey && (e.key === "A" || e.key === "a")) {
@@ -7008,6 +7350,8 @@ function App() {
         return /*#__PURE__*/React.createElement(CommunityPage, null);
       case "impact":
         return /*#__PURE__*/React.createElement(ImpactPage, null);
+      case "story":
+        return /*#__PURE__*/React.createElement(StoryPage, null);
       case "help":
         return /*#__PURE__*/React.createElement(HelpPage, null);
       case "about":
@@ -7026,7 +7370,9 @@ function App() {
     style: {
       minHeight: "80vh"
     }
-  }, P()), /*#__PURE__*/React.createElement(Footer, null), toastMsg && /*#__PURE__*/React.createElement(Toast, {
+  }, /*#__PURE__*/React.createElement("div", {
+    key: page
+  }, P())), /*#__PURE__*/React.createElement(Footer, null), toastMsg && /*#__PURE__*/React.createElement(Toast, {
     msg: toastMsg,
     onClose: () => setToastMsg("")
   }));

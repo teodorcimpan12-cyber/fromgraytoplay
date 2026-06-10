@@ -110,6 +110,19 @@ Anyone can write — rules are MVP-permissive. Tighten before any press.
   (404); live site is fromgr**e**ytoplay.netlify.app.
 - `icons/*` generated and committed (were 404 on the live site — manifest,
   favicon and og:image all referenced missing files).
+- Show-off animation pack: ripple on all buttons (delegated listener in
+  App), 3D tilt (`TiltDiv`) on court cards + stat tiles, letter-by-letter
+  hero title (`LetterReveal`), floating hero particles, cinematic page
+  transitions (keyed `main`), `Reveal` stagger wrapper. All gated behind
+  `prefers-reduced-motion`.
+- Before/After slider (`BeforeAfter` + SVG `CourtScene`) on Home —
+  drag/keyboard, grey vs renovated court.
+- Scrollytelling `StoryPage` (route `#story`, in navbar): essay chapters
+  with scroll progress bar, count-up stat interlude, petition CTA.
+  ESSAY.hu still missing → falls back to RO.
+- Report heatmap toggle on the courts map (density circles from static
+  `reports` + live `reports/` counts).
+- Confetti now fires on every petition vote (was milestones-only).
 
 ## Roadmap priorities (from the brief)
 
