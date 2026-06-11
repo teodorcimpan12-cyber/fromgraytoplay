@@ -2256,7 +2256,7 @@ function HoopGame(props) {
     }
     function up() {
       if (!drag) return;
-      var vx = (start.x - drag.x) * 7.5, vy = (start.y - drag.y) * 7.5;
+      var vx = (start.x - drag.x) * 11, vy = (start.y - drag.y) * 11;
       drag = null;
       if (Math.hypot(vx, vy) < 80) { ball.x = start.x; ball.y = start.y; return; }
       ball.vx = vx; ball.vy = vy;
