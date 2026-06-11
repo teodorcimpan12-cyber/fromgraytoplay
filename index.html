@@ -279,8 +279,8 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 /* Section title accent bar */
 .section-title{position:relative}
 /* Smooth page enter */
-.animate-in{animation:pageEnter .45s cubic-bezier(.22,1,.36,1) both}
-@keyframes pageEnter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.animate-in{animation:pageEnter .55s cubic-bezier(.22,1,.36,1) both}
+@keyframes pageEnter{from{opacity:0;transform:translateY(18px) scale(.985);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
 /* Dossier button glow */
 .btn-dossier{background:linear-gradient(100deg,var(--green),var(--teal));color:#fff;position:relative;overflow:hidden}
 .btn-dossier::after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-20deg);animation:sheen 3.5s ease-in-out infinite}
@@ -306,6 +306,44 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .hood-gap-callout{background:linear-gradient(130deg,rgba(220,38,38,.07) 0%,rgba(16,185,129,.07) 100%);border:1px solid rgba(220,38,38,.2);border-radius:12px;padding:.85rem 1rem;margin-bottom:1rem}
 .share-canvas{width:100%;border-radius:10px;border:1px solid var(--border);display:block}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.hero-mesh,.btn-dossier::after,.skeleton::after{animation:none}.animate-in{animation:none}}
+/* === Show-off animation pack === */
+.btn,.h3d-btn,.tabs button{position:relative;overflow:hidden}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.45);transform:scale(0);animation:rippleOut .55s ease-out forwards;pointer-events:none}
+@keyframes rippleOut{to{transform:scale(3.2);opacity:0}}
+.tilt{will-change:transform;transition:transform .18s ease-out,box-shadow .25s}
+.tilt:hover{box-shadow:0 18px 44px rgba(0,0,0,.18)}
+.lr span{display:inline-block;opacity:0;transform:translateY(.6em) rotate(4deg);animation:lrIn .6s cubic-bezier(.22,1,.36,1) forwards;animation-delay:var(--ld,0ms)}
+@keyframes lrIn{to{opacity:1;transform:none}}
+.h3d-title .p{display:inline-block;background-size:220% 100%;animation:lrIn .6s cubic-bezier(.22,1,.36,1) .55s both,gradShift 5s ease-in-out 1.2s infinite}
+@keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.h3d-particles{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.h3d-particle{position:absolute;bottom:-14px;border-radius:50%;opacity:0;animation:floatUp linear infinite}
+@keyframes floatUp{0%{transform:translateY(0) translateX(0);opacity:0}12%{opacity:.8}100%{transform:translateY(-640px) translateX(var(--sway,24px));opacity:0}}
+/* Pro-max effect pack */
+.card,.stat-tile{position:relative}
+.card::after,.stat-tile::after{content:"";position:absolute;inset:0;border-radius:inherit;opacity:0;transition:opacity .35s;pointer-events:none;background:radial-gradient(440px circle at var(--mx,50%) var(--my,50%),rgba(16,185,129,.14),transparent 65%)}
+.card:hover::after,.stat-tile:hover::after{opacity:1}
+@property --ga{syntax:"<angle>";inherits:false;initial-value:0deg}
+.glow-border{border:1.5px solid transparent !important;background:linear-gradient(var(--bgCard),var(--bgCard)) padding-box,conic-gradient(from var(--ga),var(--green),var(--teal),var(--coral),var(--green)) border-box !important;animation:gspin 4.5s linear infinite}
+@keyframes gspin{to{--ga:360deg}}
+.page-wipe{position:fixed;inset:0;z-index:9997;pointer-events:none;background:linear-gradient(105deg,transparent 8%,rgba(16,185,129,.9) 38%,rgba(13,148,136,.94) 50%,rgba(16,185,129,.9) 62%,transparent 92%);transform:translateX(-130%) skewX(-8deg);animation:wipeSweep .55s cubic-bezier(.76,0,.24,1) forwards}
+@keyframes wipeSweep{to{transform:translateX(130%) skewX(-8deg)}}
+.aurora{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.aurora span{position:absolute;border-radius:50%;filter:blur(70px);opacity:.45;animation:auroraMove 14s ease-in-out infinite alternate}
+.aurora span:nth-child(1){width:420px;height:420px;background:var(--green);top:-130px;left:-90px}
+.aurora span:nth-child(2){width:380px;height:380px;background:var(--teal);bottom:-150px;right:-70px;animation-delay:-5s}
+.aurora span:nth-child(3){width:300px;height:300px;background:var(--coral);top:25%;left:58%;opacity:.3;animation-duration:19s;animation-delay:-9s}
+@keyframes auroraMove{from{transform:translate(0,0) scale(1)}to{transform:translate(70px,46px) scale(1.18)}}
+.shimmer-text{background:linear-gradient(100deg,#fff 38%,var(--green) 48%,#7DF7C9 52%,#fff 62%);background-size:230% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:textShine 4s linear infinite}
+@keyframes textShine{to{background-position:-230% 0}}
+.ticker-wrap{display:flex;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bgCard);padding:.6rem 0}
+.ticker{display:flex;flex-shrink:0;min-width:100%;gap:2.4rem;white-space:nowrap;padding-right:2.4rem;animation:tickerMove 30s linear infinite}
+.ticker-wrap:hover .ticker{animation-play-state:paused}
+.ticker-item{font-size:.82rem;color:var(--textSec)}
+.ticker-item b{color:var(--text)}
+@keyframes tickerMove{to{transform:translateX(-100%)}}
+.h3d-btn,.btn-green{will-change:transform}
+@media(prefers-reduced-motion:reduce){.lr span{animation:none;opacity:1;transform:none}.h3d-particle{display:none}.h3d-title .p{animation:none}.tilt{transition:none}.ripple{display:none}.page-wipe{display:none}.aurora span{animation:none}.shimmer-text{animation:none;background:none;color:inherit}.ticker{animation:none}.glow-border{animation:none}.card::after,.stat-tile::after{display:none}}
 </style>
 </head>
 <body>
@@ -391,6 +429,51 @@ function useReveal() {
     return () => io.disconnect();
   }, []);
   return ref;
+}
+
+/* Show-off: wrapper element with scroll-reveal + stagger delay (--d). */
+function Reveal(props) {
+  const ref = useReveal();
+  const p = { ...props, ref, className: "reveal " + (props.className || ""), style: { ...(props.style || {}), "--d": (props.d || 0) + "ms" } };
+  delete p.d; delete p.as;
+  return React.createElement(props.as || "div", p);
+}
+
+/* Show-off: 3D tilt that follows the cursor. Skipped on touch + reduced motion. */
+function useTilt(max) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !window.matchMedia) return;
+    if (window.matchMedia("(prefers-reduced-motion:reduce)").matches || window.matchMedia("(hover: none)").matches) return;
+    const mv = e => {
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
+      el.style.transform = "perspective(700px) rotateX(" + (-py * (max || 7)).toFixed(2) + "deg) rotateY(" + (px * (max || 7)).toFixed(2) + "deg) translateY(-2px)";
+    };
+    const lv = () => { el.style.transform = ""; };
+    el.addEventListener("mousemove", mv);
+    el.addEventListener("mouseleave", lv);
+    return () => { el.removeEventListener("mousemove", mv); el.removeEventListener("mouseleave", lv); };
+  }, [max]);
+  return ref;
+}
+
+/* Show-off: div with 3D tilt. Use like a normal div; optional max (deg). */
+function TiltDiv(props) {
+  const ref = useTilt(props.max);
+  const p = { ...props, ref, className: (props.className || "") + " tilt" };
+  delete p.max;
+  return React.createElement("div", p);
+}
+
+/* Show-off: letter-by-letter text reveal. aria keeps the full word readable. */
+function LetterReveal({ text, base }) {
+  return React.createElement("span", { className: "lr", role: "text", "aria-label": text },
+    text.split("").map((ch, i) => React.createElement("span", {
+      key: i, "aria-hidden": "true",
+      style: { "--ld": ((base || 0) + i * 45) + "ms" }
+    }, ch === " " ? " " : ch)));
 }
 
 /* === i18n === */
@@ -1221,6 +1304,40 @@ T.hu.downloadJson = "JSON letöltése"; // TODO: HU review
 T.hu.downloadCsv = "CSV letöltése (bejelentések)"; // TODO: HU review
 T.hu.openDataReady = "Fájl letöltve!"; // TODO: HU review
 
+/* === Live activity ticker strings === */
+T.ro.tickerTitle = "Comunitatea, în direct";
+T.ro.tickPetition = "a votat petiția";
+T.ro.tickCheckin = "e la teren";
+T.ro.tickPhoto = "a adăugat o dovadă foto";
+T.ro.tickReport = "a trimis o sesizare";
+T.ro.tickGame = "a pornit un joc";
+T.ro.tickJoin = "s-a alăturat unui joc";
+T.ro.tickDefault = "e activ în comunitate";
+T.en.tickerTitle = "Community, live";
+T.en.tickPetition = "voted the petition";
+T.en.tickCheckin = "is at a court";
+T.en.tickPhoto = "added photo evidence";
+T.en.tickReport = "filed a report";
+T.en.tickGame = "started a game";
+T.en.tickJoin = "joined a game";
+T.en.tickDefault = "is active in the community";
+T.hu.tickerTitle = "Közösség, élőben"; // TODO: HU review
+T.hu.tickPetition = "szavazott a petícióra"; // TODO: HU review
+T.hu.tickCheckin = "a pályán van"; // TODO: HU review
+T.hu.tickPhoto = "fotóbizonyítékot adott hozzá"; // TODO: HU review
+T.hu.tickReport = "bejelentést küldött"; // TODO: HU review
+T.hu.tickGame = "játékot indított"; // TODO: HU review
+T.hu.tickJoin = "csatlakozott egy játékhoz"; // TODO: HU review
+T.hu.tickDefault = "aktív a közösségben"; // TODO: HU review
+
+/* === Heatmap strings === */
+T.ro.heatmap = "Heatmap sesizări";
+T.ro.heatmapOn = "Heatmap activ — cercurile roșii arată densitatea problemelor";
+T.en.heatmap = "Report heatmap";
+T.en.heatmapOn = "Heatmap on — red circles show problem density";
+T.hu.heatmap = "Bejelentés-hőtérkép"; // TODO: HU review
+T.hu.heatmapOn = "Hőtérkép bekapcsolva — a piros körök a problémák sűrűségét mutatják"; // TODO: HU review
+
 const COURTS = [{
   id: "c1",
   name: "Teren Tudor 1",
@@ -1662,6 +1779,7 @@ function Navbar() {
     k: "impact",
     l: t.impact
   }, {
+  }, {
     k: "help",
     l: t.help
   }, {
@@ -1755,7 +1873,9 @@ function Navbar() {
 function MapView({
   courts,
   height = "380px",
-  onSelect
+  onSelect,
+  heat = false,
+  heatCounts = null
 }) {
   const ref = useRef(null);
   const mapRef = useRef(null);
@@ -1768,6 +1888,24 @@ function MapView({
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OSM'
     }).addTo(m);
+    // Heatmap: concentric translucent circles per court, radius/opacity
+    // scaled by report density (static c.reports + live heatCounts).
+    if (heat) {
+      courts.forEach(c => {
+        const n = (c.reports || 0) + (heatCounts && heatCounts[c.id] || 0);
+        if (!n) return;
+        const f = Math.min(1, n / 8);
+        [[1, 0.07], [0.62, 0.12], [0.3, 0.2]].forEach(([rf, op]) => {
+          L.circle([c.lat, c.lng], {
+            radius: (180 + 420 * f) * rf,
+            stroke: false,
+            color: "#DC2626",
+            fillColor: "#DC2626",
+            fillOpacity: op + f * 0.1
+          }).addTo(m);
+        });
+      });
+    }
     courts.forEach(c => {
       const col = c.status === "degraded" ? "#DC2626" : c.status === "inProgress" ? "#F97316" : "#10B981";
       const icon = L.divIcon({
@@ -1787,7 +1925,7 @@ function MapView({
       m.remove();
       mapRef.current = null;
     };
-  }, [courts]);
+  }, [courts, heat, heatCounts]);
   return /*#__PURE__*/React.createElement("div", {
     ref: ref,
     className: "map-box",
@@ -2485,15 +2623,29 @@ function Hero3D() {
     if (apiRef.current) apiRef.current.setRenov(nv);
     toast(nv ? t.heroTRenov : t.heroTGrey);
   }
+  // Show-off: floating brand-color particles, generated once.
+  const particles = React.useMemo(() => Array.from({ length: 16 }, (_, i) => ({
+    left: (3 + Math.random() * 94) + "%",
+    size: 3 + Math.random() * 6,
+    color: ["#10B981", "#F97316", "#0D9488", "#ffffff"][i % 4],
+    dur: (7 + Math.random() * 9).toFixed(1) + "s",
+    delay: (Math.random() * 9).toFixed(1) + "s",
+    sway: ((Math.random() - 0.5) * 90).toFixed(0) + "px"
+  })), []);
   return React.createElement("section", { className: "h3d-hero" },
     React.createElement("div", { className: "h3d-canvas", ref: mountRef }),
     React.createElement("div", { className: "h3d-scrim-top" }),
     React.createElement("div", { className: "h3d-scrim" }),
+    React.createElement("div", { className: "h3d-particles", "aria-hidden": "true" },
+      particles.map((p, i) => React.createElement("span", {
+        key: i, className: "h3d-particle",
+        style: { left: p.left, width: p.size, height: p.size, background: p.color, animationDuration: p.dur, animationDelay: p.delay, "--sway": p.sway }
+      }))),
     failed ? React.createElement("div", { className: "h3d-loading" }, "\u26A0\uFE0F 3D") : (!ready ? React.createElement("div", { className: "h3d-loading" }, "\u00B7\u00B7\u00B7") : null),
     React.createElement("div", { className: "h3d-hint", ref: hintRef }, t.heroHint),
     React.createElement("div", { className: "h3d-overlay" },
       React.createElement("div", { className: "h3d-kicker" }, t.heroKicker),
-      React.createElement("div", { className: "h3d-title" }, React.createElement("span", { className: "g" }, "From Grey"), React.createElement("br", null), "to ", React.createElement("span", { className: "p" }, "Play")),
+      React.createElement("div", { className: "h3d-title" }, React.createElement("span", { className: "g" }, React.createElement(LetterReveal, { text: "From Grey" })), React.createElement("br", null), React.createElement(LetterReveal, { text: "to ", base: 420 }), React.createElement("span", { className: "p" }, "Play")),
       React.createElement("p", { className: "h3d-sub" }, t.heroSub),
       React.createElement("div", { className: "h3d-cta" },
         React.createElement("button", { className: "h3d-btn h3d-btn-green", onClick: toggle }, renovated ? t.heroBack : t.heroRenovate),
@@ -2510,10 +2662,27 @@ function Hero3D() {
   );
 }
 
+/* ============================================================
+   LIVE ACTIVITY TICKER — infinite marquee fed by activity/.
+   Two copies of the row give a seamless loop; hover pauses.
+   ============================================================ */
+function ActivityTicker() {
+  const { t } = useApp();
+  const data = useFirebase("activity");
+  const items = data ? Object.values(data).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).slice(0, 14) : [];
+  if (!items.length) return null;
+  const ICO = { petition: "✊", checkin: "📍", photo: "📸", report: "⚠️", game: "⚽", join: "👥" };
+  const verb = ty => ({ petition: t.tickPetition, checkin: t.tickCheckin, photo: t.tickPhoto, report: t.tickReport, game: t.tickGame, join: t.tickJoin })[ty] || t.tickDefault;
+  const row = key => React.createElement("div", { className: "ticker", key: key, "aria-hidden": key === "b" ? "true" : undefined },
+    items.map((a, i) => React.createElement("span", { className: "ticker-item", key: i },
+      (ICO[a.type] || "•") + " ", React.createElement("b", null, a.userName || "Anon"), " " + verb(a.type))));
+  return React.createElement("section", { className: "ticker-wrap", title: t.tickerTitle }, row("a"), row("b"));
+}
+
 /* Polish: animated stat tile with count-up + colored glow */
 function StatTile({ value, label, color }) {
   const n = useCountUp(value);
-  return React.createElement("div", { className: "stat-tile" },
+  return React.createElement(TiltDiv, { max: 9, className: "stat-tile glow-border" },
     React.createElement("div", { className: "stat-glow", style: { background: color } }),
     React.createElement("div", { className: "stat-number", style: { color } }, n),
     React.createElement("div", { className: "stat-label" }, label)
@@ -2536,6 +2705,7 @@ function HomePage() {
   }, /*#__PURE__*/React.createElement(Hero3D, null), /*#__PURE__*/React.createElement("section", {
     className: "hero-premium"
   }, /*#__PURE__*/React.createElement("div", { className: "hero-mesh" }),
+     React.createElement("div", { className: "aurora", "aria-hidden": "true" }, React.createElement("span", null), React.createElement("span", null), React.createElement("span", null)),
      /*#__PURE__*/React.createElement("div", { className: "hero-grid-lines" }),
      /*#__PURE__*/React.createElement("div", {
     className: "container",
@@ -2546,7 +2716,7 @@ function HomePage() {
   }, /*#__PURE__*/React.createElement("div", {
     className: "hero-pill"
   }, /*#__PURE__*/React.createElement("span", { className: "live-dot" }), " 2026"), /*#__PURE__*/React.createElement("h1", {
-    className: "hero-title"
+    className: "hero-title shimmer-text"
   }, lang === "ro" ? "Terenurile tale contează" : "Your courts matter"), /*#__PURE__*/React.createElement("p", {
     style: {
       color: "#9CA3AF",
@@ -2560,7 +2730,7 @@ function HomePage() {
     value: tv, label: t.petitionVotes, color: "var(--coral)"
   }), /*#__PURE__*/React.createElement(StatTile, {
     value: vc, label: t.volunteers, color: "var(--teal)"
-  })))), /*#__PURE__*/React.createElement("section", {
+  })))), React.createElement(ActivityTicker, null), /*#__PURE__*/React.createElement("section", {
     className: "section"
   }, /*#__PURE__*/React.createElement("div", {
     className: "container"
@@ -2635,8 +2805,15 @@ function CourtsPage() {
   const [sel, setSel] = useState(null);
   const [showRep, setShowRep] = useState(false);
   const [showBook, setShowBook] = useState(false);
+  const [heat, setHeat] = useState(false);
   const fbCourts = useFirebase("courts");
   const allGames = useFirebase("games");
+  const fbReports = useFirebase(heat ? "reports" : null);
+  const heatCounts = React.useMemo(() => {
+    const out = {};
+    if (fbReports) Object.values(fbReports).forEach(r => { if (r.courtId) out[r.courtId] = (out[r.courtId] || 0) + 1; });
+    return out;
+  }, [fbReports]);
   const extra = fbCourts ? Object.entries(fbCourts).map(([id, c]) => ({
     id,
     ...c
@@ -2727,13 +2904,21 @@ function CourtsPage() {
   }, "\uD83D\uDDFA\uFE0F"), /*#__PURE__*/React.createElement("button", {
     className: tab === "list" ? "active" : "",
     onClick: () => setTab("list")
-  }, "\uD83D\uDCCB")), tab === "map" && /*#__PURE__*/React.createElement(MapView, {
+  }, "\uD83D\uDCCB"), tab === "map" && React.createElement("button", {
+    className: heat ? "active" : "",
+    onClick: () => { setHeat(h => !h); if (!heat) toast(t.heatmapOn); },
+    title: t.heatmap,
+    "aria-pressed": heat
+  }, "\uD83D\uDD25 " + t.heatmap)), tab === "map" && /*#__PURE__*/React.createElement(MapView, {
     courts: filtered,
-    onSelect: openCourt
+    onSelect: openCourt,
+    heat: heat,
+    heatCounts: heatCounts
   }), tab === "list" && /*#__PURE__*/React.createElement("div", {
     className: "grid gap-1"
-  }, filtered.map(c => /*#__PURE__*/React.createElement("div", {
+  }, filtered.map(c => /*#__PURE__*/React.createElement(TiltDiv, {
     key: c.id,
+    max: 5,
     className: "card card-accent card-link",
     onClick: () => openCourt(c)
   }, /*#__PURE__*/React.createElement("div", {
@@ -2766,25 +2951,7 @@ function CourtsPage() {
     style: {
       width: c.progress + "%"
     }
-  }))))))), /*#__PURE__*/React.createElement("section", {
-    className: "section",
-    style: {
-      background: "var(--bgCard)"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "container"
-  }, /*#__PURE__*/React.createElement("h2", {
-    className: "section-title"
-  }, "\uD83D\uDDFA\uFE0F Google My Maps"), /*#__PURE__*/React.createElement("iframe", {
-    src: "https://www.google.com/maps/d/embed?mid=19tND_bqOJoFbhTNKN0PenNW7S7yUog8",
-    width: "100%",
-    height: "380",
-    style: {
-      border: 0,
-      borderRadius: "var(--radius)"
-    },
-    loading: "lazy"
-  }))), sel && /*#__PURE__*/React.createElement(CourtDetail, {
+  }))))))), sel && /*#__PURE__*/React.createElement(CourtDetail, {
     court: sel,
     onClose: closeCourt,
     onBook: () => setShowBook(true)
@@ -3599,6 +3766,7 @@ function PetitionPage() {
     }));
     setVoted(true);
     localStorage.setItem("g2p_voted", "1");
+    setShowConfetti(true);
     toast(t.success + " +10 " + t.points);
   };
   useEffect(function() {
@@ -6904,10 +7072,12 @@ function App() {
   const [lang, setLang] = useState(() => localStorage.getItem("g2p_lang") || "ro");
   const [theme, setTheme] = useState(() => localStorage.getItem("g2p_theme") || (window.matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light"));
   const [page, setPageRaw] = useState(pageFromHash);
+  const [wipe, setWipe] = useState(0);
   // setPage keeps the URL hash in sync so every page (and shared court link)
   // is bookmarkable; pushState avoids re-triggering the hashchange listener.
   const setPage = useCallback(p => {
     setPageRaw(p);
+    setWipe(w => w + 1);
     const h = p === "home" ? "" : "#" + p;
     if (location.hash !== h) history.pushState(null, "", h || location.pathname + location.search);
   }, []);
@@ -6935,6 +7105,56 @@ function App() {
   }, [page]);
   useEffect(() => {
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+  }, []);
+  // Show-off: ripple micro-interaction on every button, via one delegated listener.
+  useEffect(() => {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+    const h = e => {
+      const b = e.target.closest && e.target.closest(".btn,.h3d-btn,.tabs button");
+      if (!b) return;
+      const r = b.getBoundingClientRect();
+      const d = Math.max(r.width, r.height) * 1.2;
+      const s = document.createElement("span");
+      s.className = "ripple";
+      s.style.width = s.style.height = d + "px";
+      s.style.left = e.clientX - r.left - d / 2 + "px";
+      s.style.top = e.clientY - r.top - d / 2 + "px";
+      b.appendChild(s);
+      setTimeout(() => s.remove(), 600);
+    };
+    document.addEventListener("pointerdown", h);
+    return () => document.removeEventListener("pointerdown", h);
+  }, []);
+  // Pro-max: cursor spotlight on cards + magnetic CTA buttons (desktop only).
+  useEffect(() => {
+    if (!window.matchMedia) return;
+    if (window.matchMedia("(prefers-reduced-motion:reduce)").matches || window.matchMedia("(hover: none)").matches) return;
+    const spot = e => {
+      const c = e.target.closest && e.target.closest(".card,.stat-tile");
+      if (!c) return;
+      const r = c.getBoundingClientRect();
+      c.style.setProperty("--mx", e.clientX - r.left + "px");
+      c.style.setProperty("--my", e.clientY - r.top + "px");
+    };
+    const magnet = e => {
+      const b = e.target.closest && e.target.closest(".h3d-btn,.btn-green");
+      if (!b || b.dataset.mag) return;
+      b.dataset.mag = "1";
+      const mv = ev => {
+        const r = b.getBoundingClientRect();
+        const dx = ev.clientX - (r.left + r.width / 2), dy = ev.clientY - (r.top + r.height / 2);
+        b.style.transform = "translate(" + (dx * 0.18).toFixed(1) + "px," + (dy * 0.18).toFixed(1) + "px)";
+      };
+      const lv = () => { b.style.transform = ""; };
+      b.addEventListener("mousemove", mv);
+      b.addEventListener("mouseleave", lv);
+    };
+    document.addEventListener("mousemove", spot, { passive: true });
+    document.addEventListener("mouseover", magnet);
+    return () => {
+      document.removeEventListener("mousemove", spot);
+      document.removeEventListener("mouseover", magnet);
+    };
   }, []);
   useEffect(() => {
     const h = e => {
@@ -7020,13 +7240,19 @@ function App() {
   };
   return /*#__PURE__*/React.createElement(AppCtx.Provider, {
     value: ctx
-  }, /*#__PURE__*/React.createElement(InstallBanner, {
+  }, wipe > 0 && /*#__PURE__*/React.createElement("div", {
+    key: wipe,
+    className: "page-wipe",
+    "aria-hidden": "true"
+  }), /*#__PURE__*/React.createElement(InstallBanner, {
     lang: lang
   }), /*#__PURE__*/React.createElement(Navbar, null), /*#__PURE__*/React.createElement("main", {
     style: {
       minHeight: "80vh"
     }
-  }, P()), /*#__PURE__*/React.createElement(Footer, null), toastMsg && /*#__PURE__*/React.createElement(Toast, {
+  }, /*#__PURE__*/React.createElement("div", {
+    key: page
+  }, P())), /*#__PURE__*/React.createElement(Footer, null), toastMsg && /*#__PURE__*/React.createElement(Toast, {
     msg: toastMsg,
     onClose: () => setToastMsg("")
   }));

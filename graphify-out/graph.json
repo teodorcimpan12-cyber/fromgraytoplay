@@ -474,6 +474,48 @@
       "type": "pwa",
       "line": 0,
       "desc": "Service worker (fișier separat la root, înregistrat din App). Shell network-first, CDN stale-while-revalidate, Firebase RTDB neinterceptat. Bump const CACHE la schimbări breaking."
+    },
+    {
+      "id": "Reveal",
+      "type": "component",
+      "line": 0,
+      "desc": "Wrapper scroll-reveal cu stagger (prop d = delay ms, as = tag). Folosește useReveal + clasa .reveal."
+    },
+    {
+      "id": "useTilt",
+      "type": "hook",
+      "line": 0,
+      "desc": "Tilt 3D care urmărește cursorul (perspective + rotateX/Y). Dezactivat pe touch și prefers-reduced-motion."
+    },
+    {
+      "id": "TiltDiv",
+      "type": "component",
+      "line": 0,
+      "desc": "Div cu useTilt (prop max = grade). Folosit pe cardurile de terenuri și StatTile."
+    },
+    {
+      "id": "LetterReveal",
+      "type": "component",
+      "line": 0,
+      "desc": "Reveal literă-cu-literă (clasa .lr, delay --ld). Folosit în titlul Hero3D și StoryPage. aria-label păstrează textul întreg."
+    },
+    {
+      "id": "ripple-listener",
+      "type": "util",
+      "line": 0,
+      "desc": "Listener delegat pointerdown în App: ripple pe .btn/.h3d-btn/.tabs button. Oprit la prefers-reduced-motion."
+    },
+    {
+      "id": "ActivityTicker",
+      "type": "component",
+      "line": 0,
+      "desc": "Marquee infinit cu activitate live din activity/ (14 itemi, două copii pentru loop, pauză la hover). Pe HomePage sub hero."
+    },
+    {
+      "id": "promax-effects",
+      "type": "util",
+      "line": 0,
+      "desc": "Listeneri delegați în App: spotlight radial pe .card/.stat-tile (--mx/--my), butoane magnetice (.h3d-btn/.btn-green), page-wipe overlay la setPage. CSS: glow-border conic animat (StatTile), aurora blobs (hero), shimmer-text (titlu hero). Toate oprite la prefers-reduced-motion / hover:none."
     }
   ],
   "edges": [
@@ -971,6 +1013,26 @@
       "from": "CourtsPage",
       "to": "pageFromHash",
       "rel": "deep-link #court-{id} deschide CourtDetail"
+    },
+    {
+      "from": "CourtsPage",
+      "to": "fb/reports",
+      "rel": "reads (doar cu heatmap activ, pentru densitate)"
+    },
+    {
+      "from": "Hero3D",
+      "to": "LetterReveal",
+      "rel": "renders"
+    },
+    {
+      "from": "HomePage",
+      "to": "ActivityTicker",
+      "rel": "renders"
+    },
+    {
+      "from": "ActivityTicker",
+      "to": "fb/activity",
+      "rel": "reads"
     }
   ],
   "routes": {

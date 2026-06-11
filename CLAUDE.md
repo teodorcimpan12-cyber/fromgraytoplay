@@ -110,6 +110,21 @@ Anyone can write — rules are MVP-permissive. Tighten before any press.
   (404); live site is fromgr**e**ytoplay.netlify.app.
 - `icons/*` generated and committed (were 404 on the live site — manifest,
   favicon and og:image all referenced missing files).
+- Show-off animation pack: ripple on all buttons (delegated listener in
+  App), 3D tilt (`TiltDiv`) on court cards + stat tiles, letter-by-letter
+  hero title (`LetterReveal`), floating hero particles, cinematic page
+  transitions (keyed `main`), `Reveal` stagger wrapper. All gated behind
+  `prefers-reduced-motion`.
+- Report heatmap toggle on the courts map (density circles from static
+  `reports` + live `reports/` counts).
+- Confetti now fires on every petition vote (was milestones-only).
+- Pro-max effect pack (per user request): cursor spotlight on all cards,
+  magnetic CTA buttons, green page-wipe on navigation, animated conic
+  `glow-border` on stat tiles, aurora blobs + shimmer headline in hero,
+  live `ActivityTicker` marquee on Home (reads `activity/`). All gated
+  behind `prefers-reduced-motion` / `hover:none`.
+- REMOVED per user feedback: Before/After slider, scrollytelling
+  StoryPage (essay already on About), Google My Maps iframe on Courts.
 
 ## Roadmap priorities (from the brief)
 
