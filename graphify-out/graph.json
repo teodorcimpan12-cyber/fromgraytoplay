@@ -500,28 +500,22 @@
       "desc": "Reveal literă-cu-literă (clasa .lr, delay --ld). Folosit în titlul Hero3D și StoryPage. aria-label păstrează textul întreg."
     },
     {
-      "id": "BeforeAfter",
-      "type": "component",
-      "line": 0,
-      "desc": "Slider before/after cu două CourtScene SVG (gri vs renovat), drag pointer + săgeți tastatură (role=slider). În HomePage."
-    },
-    {
-      "id": "CourtScene",
-      "type": "component",
-      "line": 0,
-      "desc": "Ilustrație SVG teren (prop play: false=degradat gri, true=renovat color). Folosit de BeforeAfter."
-    },
-    {
-      "id": "StoryPage",
-      "type": "page",
-      "line": 0,
-      "desc": "Scrollytelling: eseul ESSAY ca poveste pe capitole (StoryChapter), bară progres scroll, interludiu StoryStat cu count-up la intrare în viewport, CTA spre petiție. Rută #story. ESSAY.hu lipsește -> fallback RO."
-    },
-    {
       "id": "ripple-listener",
       "type": "util",
       "line": 0,
       "desc": "Listener delegat pointerdown în App: ripple pe .btn/.h3d-btn/.tabs button. Oprit la prefers-reduced-motion."
+    },
+    {
+      "id": "ActivityTicker",
+      "type": "component",
+      "line": 0,
+      "desc": "Marquee infinit cu activitate live din activity/ (14 itemi, două copii pentru loop, pauză la hover). Pe HomePage sub hero."
+    },
+    {
+      "id": "promax-effects",
+      "type": "util",
+      "line": 0,
+      "desc": "Listeneri delegați în App: spotlight radial pe .card/.stat-tile (--mx/--my), butoane magnetice (.h3d-btn/.btn-green), page-wipe overlay la setPage. CSS: glow-border conic animat (StatTile), aurora blobs (hero), shimmer-text (titlu hero). Toate oprite la prefers-reduced-motion / hover:none."
     }
   ],
   "edges": [
@@ -1021,16 +1015,6 @@
       "rel": "deep-link #court-{id} deschide CourtDetail"
     },
     {
-      "from": "HomePage",
-      "to": "BeforeAfter",
-      "rel": "renders"
-    },
-    {
-      "from": "BeforeAfter",
-      "to": "CourtScene",
-      "rel": "renders"
-    },
-    {
       "from": "CourtsPage",
       "to": "fb/reports",
       "rel": "reads (doar cu heatmap activ, pentru densitate)"
@@ -1039,6 +1023,16 @@
       "from": "Hero3D",
       "to": "LetterReveal",
       "rel": "renders"
+    },
+    {
+      "from": "HomePage",
+      "to": "ActivityTicker",
+      "rel": "renders"
+    },
+    {
+      "from": "ActivityTicker",
+      "to": "fb/activity",
+      "rel": "reads"
     }
   ],
   "routes": {
@@ -1049,7 +1043,6 @@
     "petition": "PetitionPage",
     "community": "CommunityPage",
     "impact": "ImpactPage",
-    "story": "StoryPage",
     "help": "HelpPage",
     "about": "AboutPage",
     "profile": "ProfilePage",

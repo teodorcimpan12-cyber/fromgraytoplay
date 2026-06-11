@@ -319,28 +319,31 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .h3d-particles{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
 .h3d-particle{position:absolute;bottom:-14px;border-radius:50%;opacity:0;animation:floatUp linear infinite}
 @keyframes floatUp{0%{transform:translateY(0) translateX(0);opacity:0}12%{opacity:.8}100%{transform:translateY(-640px) translateX(var(--sway,24px));opacity:0}}
-/* Before/After slider */
-.ba-wrap{position:relative;border-radius:var(--radius);overflow:hidden;user-select:none;touch-action:none;box-shadow:var(--shadow);cursor:ew-resize;aspect-ratio:16/9;background:var(--dark)}
-.ba-layer{position:absolute;inset:0}
-.ba-label{position:absolute;top:.7rem;font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;letter-spacing:1px;padding:.22rem .6rem;border-radius:20px;color:#fff;z-index:4}
-.ba-handle{position:absolute;top:0;bottom:0;width:3px;background:#fff;z-index:5;box-shadow:0 0 14px rgba(0,0,0,.45)}
-.ba-knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--dark);box-shadow:0 4px 16px rgba(0,0,0,.35);font-size:.8rem;letter-spacing:-1px}
-.ba-knob:focus-visible{outline:3px solid var(--green);outline-offset:2px}
-/* Scrollytelling */
-.story-progress{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--grey),var(--coral),var(--green));z-index:250;width:0}
-.story-hero{min-height:54vh;display:flex;flex-direction:column;justify-content:center;background:linear-gradient(160deg,var(--dark),#0F172A);color:#fff;position:relative;overflow:hidden;padding:3rem 0}
-.story-hero h1{font-family:'Barlow Condensed','Space Mono',monospace;font-size:clamp(2.4rem,8vw,4.4rem);font-weight:800;line-height:1.05;margin:.4rem 0 .8rem}
-.story-kicker{font-family:'Space Mono',monospace;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--green)}
-.story-hero .story-sub{color:#9CA3AF;max-width:560px;font-size:1.02rem}
-.story-scroll-cue{position:absolute;bottom:1.1rem;left:50%;transform:translateX(-50%);color:#9CA3AF;font-size:1.4rem;animation:cueBob 1.6s ease-in-out infinite}
-@keyframes cueBob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
-.story-ch{max-width:680px;margin:0 auto;padding:2.6rem 1rem 0}
-.story-ch p{font-size:1.04rem;line-height:1.85}
-.story-num{font-family:'Barlow Condensed','Space Mono',monospace;font-size:3rem;font-weight:800;color:var(--green);opacity:.28;line-height:1}
-.story-stats{background:var(--dark);color:#fff;padding:3rem 0;margin:3rem 0}
-.story-cta{text-align:center;padding:3.4rem 1rem 4rem}
-.story-cta h2{font-family:'Barlow Condensed','Space Mono',monospace;font-size:clamp(1.6rem,5vw,2.6rem);max-width:640px;margin:0 auto 1.4rem}
-@media(prefers-reduced-motion:reduce){.lr span{animation:none;opacity:1;transform:none}.h3d-particle{display:none}.h3d-title .p{animation:none}.tilt{transition:none}.ripple{display:none}.story-scroll-cue{animation:none}}
+/* Pro-max effect pack */
+.card,.stat-tile{position:relative}
+.card::after,.stat-tile::after{content:"";position:absolute;inset:0;border-radius:inherit;opacity:0;transition:opacity .35s;pointer-events:none;background:radial-gradient(440px circle at var(--mx,50%) var(--my,50%),rgba(16,185,129,.14),transparent 65%)}
+.card:hover::after,.stat-tile:hover::after{opacity:1}
+@property --ga{syntax:"<angle>";inherits:false;initial-value:0deg}
+.glow-border{border:1.5px solid transparent !important;background:linear-gradient(var(--bgCard),var(--bgCard)) padding-box,conic-gradient(from var(--ga),var(--green),var(--teal),var(--coral),var(--green)) border-box !important;animation:gspin 4.5s linear infinite}
+@keyframes gspin{to{--ga:360deg}}
+.page-wipe{position:fixed;inset:0;z-index:9997;pointer-events:none;background:linear-gradient(105deg,transparent 8%,rgba(16,185,129,.9) 38%,rgba(13,148,136,.94) 50%,rgba(16,185,129,.9) 62%,transparent 92%);transform:translateX(-130%) skewX(-8deg);animation:wipeSweep .55s cubic-bezier(.76,0,.24,1) forwards}
+@keyframes wipeSweep{to{transform:translateX(130%) skewX(-8deg)}}
+.aurora{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.aurora span{position:absolute;border-radius:50%;filter:blur(70px);opacity:.45;animation:auroraMove 14s ease-in-out infinite alternate}
+.aurora span:nth-child(1){width:420px;height:420px;background:var(--green);top:-130px;left:-90px}
+.aurora span:nth-child(2){width:380px;height:380px;background:var(--teal);bottom:-150px;right:-70px;animation-delay:-5s}
+.aurora span:nth-child(3){width:300px;height:300px;background:var(--coral);top:25%;left:58%;opacity:.3;animation-duration:19s;animation-delay:-9s}
+@keyframes auroraMove{from{transform:translate(0,0) scale(1)}to{transform:translate(70px,46px) scale(1.18)}}
+.shimmer-text{background:linear-gradient(100deg,#fff 38%,var(--green) 48%,#7DF7C9 52%,#fff 62%);background-size:230% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:textShine 4s linear infinite}
+@keyframes textShine{to{background-position:-230% 0}}
+.ticker-wrap{display:flex;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bgCard);padding:.6rem 0}
+.ticker{display:flex;flex-shrink:0;min-width:100%;gap:2.4rem;white-space:nowrap;padding-right:2.4rem;animation:tickerMove 30s linear infinite}
+.ticker-wrap:hover .ticker{animation-play-state:paused}
+.ticker-item{font-size:.82rem;color:var(--textSec)}
+.ticker-item b{color:var(--text)}
+@keyframes tickerMove{to{transform:translateX(-100%)}}
+.h3d-btn,.btn-green{will-change:transform}
+@media(prefers-reduced-motion:reduce){.lr span{animation:none;opacity:1;transform:none}.h3d-particle{display:none}.h3d-title .p{animation:none}.tilt{transition:none}.ripple{display:none}.page-wipe{display:none}.aurora span{animation:none}.shimmer-text{animation:none;background:none;color:inherit}.ticker{animation:none}.glow-border{animation:none}.card::after,.stat-tile::after{display:none}}
 </style>
 </head>
 <body>
@@ -1229,7 +1232,7 @@ function shareCourt(court, t, toast) {
 /* === Hash routing. "#courts" etc. select a page; "#court-{id}" deep-links
    into CourtsPage (used by shareCourt + manifest shortcuts). "#/admin" is
    handled separately in App. === */
-const PAGE_IDS = ["home", "courts", "reports", "petition", "community", "impact", "story", "help", "about", "profile"];
+const PAGE_IDS = ["home", "courts", "reports", "petition", "community", "impact", "help", "about", "profile"];
 function pageFromHash() {
   const h = location.hash.replace(/^#\/?/, "");
   if (h.indexOf("court-") === 0) return "courts";
@@ -1301,45 +1304,31 @@ T.hu.downloadJson = "JSON letöltése"; // TODO: HU review
 T.hu.downloadCsv = "CSV letöltése (bejelentések)"; // TODO: HU review
 T.hu.openDataReady = "Fájl letöltve!"; // TODO: HU review
 
-/* === Before/After slider strings === */
-T.ro.baTitle = "De la gri la joacă";
-T.ro.baSub = "Trage de mâner ca să vezi transformarea unui teren.";
-T.ro.baBefore = "ÎNAINTE";
-T.ro.baAfter = "DUPĂ";
-T.en.baTitle = "From grey to play";
-T.en.baSub = "Drag the handle to see a court transform.";
-T.en.baBefore = "BEFORE";
-T.en.baAfter = "AFTER";
-T.hu.baTitle = "A szürkétől a játékig"; // TODO: HU review
-T.hu.baSub = "Húzd a fogantyút, és nézd meg a pálya átalakulását."; // TODO: HU review
-T.hu.baBefore = "ELŐTTE"; // TODO: HU review
-T.hu.baAfter = "UTÁNA"; // TODO: HU review
-
-/* === Scrollytelling story strings === */
-T.ro.story = "Povestea";
-T.ro.storyKicker = "Eseu interactiv";
-T.ro.storySub = "Derulează ca să descoperi de ce adresa ta nu ar trebui să-ți limiteze șansele.";
-T.ro.storyStat1 = "din 15 rezidenți evită terenul de lângă ei";
-T.ro.storyStat2 = "milioane lei blocați de o eroare administrativă";
-T.ro.storyStat3 = "luni de la grant la tăierea panglicii";
-T.ro.storyCtaTitle = "Adresa ta nu ar trebui să-ți limiteze oportunitățile.";
-T.ro.storyCtaSub = "Singurul lucru scump este să nu facem nimic.";
-T.en.story = "The Story";
-T.en.storyKicker = "Interactive essay";
-T.en.storySub = "Scroll to discover why your address should not cap your opportunities.";
-T.en.storyStat1 = "of 15 residents avoid their nearest court";
-T.en.storyStat2 = "million lei frozen by an administrative mix-up";
-T.en.storyStat3 = "months from grant to ribbon-cutting";
-T.en.storyCtaTitle = "Your address should not cap your opportunities.";
-T.en.storyCtaSub = "The only expensive thing is continuing to do nothing.";
-T.hu.story = "A történet"; // TODO: HU review
-T.hu.storyKicker = "Interaktív esszé"; // TODO: HU review
-T.hu.storySub = "Görgess, és tudd meg, miért nem szabhat határt a lakcímed a lehetőségeidnek."; // TODO: HU review
-T.hu.storyStat1 = "lakó a 15-ből elkerüli a legközelebbi pályát"; // TODO: HU review
-T.hu.storyStat2 = "millió lej fagyott be egy adminisztratív hiba miatt"; // TODO: HU review
-T.hu.storyStat3 = "hónap a támogatástól a szalagátvágásig"; // TODO: HU review
-T.hu.storyCtaTitle = "A lakcímed nem szabhat határt a lehetőségeidnek."; // TODO: HU review
-T.hu.storyCtaSub = "Az egyetlen drága dolog az, ha továbbra sem teszünk semmit."; // TODO: HU review
+/* === Live activity ticker strings === */
+T.ro.tickerTitle = "Comunitatea, în direct";
+T.ro.tickPetition = "a votat petiția";
+T.ro.tickCheckin = "e la teren";
+T.ro.tickPhoto = "a adăugat o dovadă foto";
+T.ro.tickReport = "a trimis o sesizare";
+T.ro.tickGame = "a pornit un joc";
+T.ro.tickJoin = "s-a alăturat unui joc";
+T.ro.tickDefault = "e activ în comunitate";
+T.en.tickerTitle = "Community, live";
+T.en.tickPetition = "voted the petition";
+T.en.tickCheckin = "is at a court";
+T.en.tickPhoto = "added photo evidence";
+T.en.tickReport = "filed a report";
+T.en.tickGame = "started a game";
+T.en.tickJoin = "joined a game";
+T.en.tickDefault = "is active in the community";
+T.hu.tickerTitle = "Közösség, élőben"; // TODO: HU review
+T.hu.tickPetition = "szavazott a petícióra"; // TODO: HU review
+T.hu.tickCheckin = "a pályán van"; // TODO: HU review
+T.hu.tickPhoto = "fotóbizonyítékot adott hozzá"; // TODO: HU review
+T.hu.tickReport = "bejelentést küldött"; // TODO: HU review
+T.hu.tickGame = "játékot indított"; // TODO: HU review
+T.hu.tickJoin = "csatlakozott egy játékhoz"; // TODO: HU review
+T.hu.tickDefault = "aktív a közösségben"; // TODO: HU review
 
 /* === Heatmap strings === */
 T.ro.heatmap = "Heatmap sesizări";
@@ -1790,8 +1779,6 @@ function Navbar() {
     k: "impact",
     l: t.impact
   }, {
-    k: "story",
-    l: t.story
   }, {
     k: "help",
     l: t.help
@@ -2676,74 +2663,26 @@ function Hero3D() {
 }
 
 /* ============================================================
-   BEFORE/AFTER SLIDER — SVG court scene, degraded vs renovated.
-   Drag the handle (pointer) or use arrow keys on the knob.
+   LIVE ACTIVITY TICKER — infinite marquee fed by activity/.
+   Two copies of the row give a seamless loop; hover pauses.
    ============================================================ */
-function CourtScene({ play }) {
-  const c = play
-    ? { sky: "#0E7490", ground: "#10B981", line: "#FFFFFF", hoop: "#F97316", wall: "#16213E", blocks: "#1A1A2E" }
-    : { sky: "#475569", ground: "#6B7280", line: "#9CA3AF", hoop: "#4B5563", wall: "#374151", blocks: "#334155" };
-  return React.createElement("svg", { viewBox: "0 0 800 450", preserveAspectRatio: "xMidYMid slice", style: { width: "100%", height: "100%", display: "block" }, "aria-hidden": "true" },
-    React.createElement("rect", { width: 800, height: 450, fill: c.sky }),
-    [[0, 150, 90, 160], [100, 120, 80, 190], [190, 170, 70, 140], [640, 140, 75, 170], [725, 165, 75, 145]].map((b, i) =>
-      React.createElement("rect", { key: "b" + i, x: b[0], y: b[1], width: b[2], height: b[3], fill: c.blocks })),
-    play
-      ? React.createElement("circle", { cx: 700, cy: 70, r: 38, fill: "#FDE68A" })
-      : React.createElement("g", { fill: "#94A3B8" },
-          React.createElement("ellipse", { cx: 680, cy: 70, rx: 55, ry: 20 }),
-          React.createElement("ellipse", { cx: 628, cy: 82, rx: 40, ry: 16 })),
-    React.createElement("rect", { x: 0, y: 250, width: 800, height: 60, fill: c.wall }),
-    play && React.createElement("g", null,
-      React.createElement("circle", { cx: 160, cy: 280, r: 22, fill: "#F97316", opacity: 0.9 }),
-      React.createElement("circle", { cx: 213, cy: 277, r: 13, fill: "#10B981", opacity: 0.9 }),
-      React.createElement("rect", { x: 360, y: 262, width: 90, height: 36, rx: 8, fill: "#0D9488", opacity: 0.85 }),
-      React.createElement("circle", { cx: 600, cy: 282, r: 18, fill: "#F59E0B", opacity: 0.9 }),
-      React.createElement("circle", { cx: 648, cy: 273, r: 10, fill: "#EC4899", opacity: 0.85 })),
-    React.createElement("rect", { x: 0, y: 310, width: 800, height: 140, fill: c.ground }),
-    React.createElement("line", { x1: 400, y1: 310, x2: 400, y2: 450, stroke: c.line, strokeWidth: 4, strokeDasharray: play ? "" : "14 10" }),
-    React.createElement("ellipse", { cx: 400, cy: 400, rx: 70, ry: 34, fill: "none", stroke: c.line, strokeWidth: 4 }),
-    !play && React.createElement("g", { stroke: "#374151", strokeWidth: 3, fill: "none" },
-      React.createElement("path", { d: "M80 350 l40 18 l-12 26 l38 20" }),
-      React.createElement("path", { d: "M620 330 l30 24 l28 -8 l20 30" }),
-      React.createElement("path", { d: "M300 432 l26 -18 l30 10" })),
-    React.createElement("rect", { x: 120, y: 180, width: 8, height: 140, fill: play ? "#E5E7EB" : "#4B5563" }),
-    React.createElement("rect", { x: 92, y: 168, width: 64, height: 44, rx: 4, fill: play ? "#FFFFFF" : "#6B7280", stroke: c.hoop, strokeWidth: 4 }),
-    React.createElement("ellipse", { cx: 124, cy: 214, rx: 20, ry: 6, fill: "none", stroke: c.hoop, strokeWidth: 5, transform: play ? "" : "rotate(-16 124 214)" }),
-    play && React.createElement("circle", { cx: 470, cy: 424, r: 16, fill: "#F97316", stroke: "#1A1A2E", strokeWidth: 2 }));
-}
-
-function BeforeAfter() {
+function ActivityTicker() {
   const { t } = useApp();
-  const [pos, setPos] = useState(58);
-  const wrapRef = useRef(null);
-  const drag = useRef(false);
-  const moveTo = x => {
-    const r = wrapRef.current.getBoundingClientRect();
-    setPos(Math.max(3, Math.min(97, (x - r.left) / r.width * 100)));
-  };
-  const down = e => { drag.current = true; if (wrapRef.current.setPointerCapture) try { wrapRef.current.setPointerCapture(e.pointerId); } catch (err) {} moveTo(e.clientX); };
-  const move = e => { if (drag.current) moveTo(e.clientX); };
-  const up = () => { drag.current = false; };
-  const key = e => {
-    if (e.key === "ArrowLeft") { setPos(p => Math.max(3, p - 4)); e.preventDefault(); }
-    if (e.key === "ArrowRight") { setPos(p => Math.min(97, p + 4)); e.preventDefault(); }
-  };
-  return React.createElement("div", { ref: wrapRef, className: "ba-wrap", onPointerDown: down, onPointerMove: move, onPointerUp: up, onPointerCancel: up },
-    React.createElement("div", { className: "ba-layer" }, React.createElement(CourtScene, { play: true })),
-    React.createElement("div", { className: "ba-layer", style: { clipPath: "inset(0 " + (100 - pos) + "% 0 0)" } }, React.createElement(CourtScene, { play: false })),
-    React.createElement("span", { className: "ba-label", style: { left: ".8rem", background: "rgba(55,65,81,.85)" } }, t.baBefore),
-    React.createElement("span", { className: "ba-label", style: { right: ".8rem", background: "rgba(16,185,129,.9)" } }, t.baAfter),
-    React.createElement("div", { className: "ba-handle", style: { left: pos + "%" } },
-      React.createElement("div", {
-        className: "ba-knob", role: "slider", tabIndex: 0, "aria-label": t.baTitle,
-        "aria-valuemin": 0, "aria-valuemax": 100, "aria-valuenow": Math.round(pos), onKeyDown: key
-      }, "◂▸")));
+  const data = useFirebase("activity");
+  const items = data ? Object.values(data).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).slice(0, 14) : [];
+  if (!items.length) return null;
+  const ICO = { petition: "✊", checkin: "📍", photo: "📸", report: "⚠️", game: "⚽", join: "👥" };
+  const verb = ty => ({ petition: t.tickPetition, checkin: t.tickCheckin, photo: t.tickPhoto, report: t.tickReport, game: t.tickGame, join: t.tickJoin })[ty] || t.tickDefault;
+  const row = key => React.createElement("div", { className: "ticker", key: key, "aria-hidden": key === "b" ? "true" : undefined },
+    items.map((a, i) => React.createElement("span", { className: "ticker-item", key: i },
+      (ICO[a.type] || "•") + " ", React.createElement("b", null, a.userName || "Anon"), " " + verb(a.type))));
+  return React.createElement("section", { className: "ticker-wrap", title: t.tickerTitle }, row("a"), row("b"));
 }
 
 /* Polish: animated stat tile with count-up + colored glow */
 function StatTile({ value, label, color }) {
   const n = useCountUp(value);
-  return React.createElement(TiltDiv, { max: 9, className: "stat-tile" },
+  return React.createElement(TiltDiv, { max: 9, className: "stat-tile glow-border" },
     React.createElement("div", { className: "stat-glow", style: { background: color } }),
     React.createElement("div", { className: "stat-number", style: { color } }, n),
     React.createElement("div", { className: "stat-label" }, label)
@@ -2766,6 +2705,7 @@ function HomePage() {
   }, /*#__PURE__*/React.createElement(Hero3D, null), /*#__PURE__*/React.createElement("section", {
     className: "hero-premium"
   }, /*#__PURE__*/React.createElement("div", { className: "hero-mesh" }),
+     React.createElement("div", { className: "aurora", "aria-hidden": "true" }, React.createElement("span", null), React.createElement("span", null), React.createElement("span", null)),
      /*#__PURE__*/React.createElement("div", { className: "hero-grid-lines" }),
      /*#__PURE__*/React.createElement("div", {
     className: "container",
@@ -2776,7 +2716,7 @@ function HomePage() {
   }, /*#__PURE__*/React.createElement("div", {
     className: "hero-pill"
   }, /*#__PURE__*/React.createElement("span", { className: "live-dot" }), " 2026"), /*#__PURE__*/React.createElement("h1", {
-    className: "hero-title"
+    className: "hero-title shimmer-text"
   }, lang === "ro" ? "Terenurile tale contează" : "Your courts matter"), /*#__PURE__*/React.createElement("p", {
     style: {
       color: "#9CA3AF",
@@ -2790,14 +2730,7 @@ function HomePage() {
     value: tv, label: t.petitionVotes, color: "var(--coral)"
   }), /*#__PURE__*/React.createElement(StatTile, {
     value: vc, label: t.volunteers, color: "var(--teal)"
-  })))), React.createElement("section", { className: "section" },
-    React.createElement("div", { className: "container" },
-      React.createElement(Reveal, null,
-        React.createElement("h2", { className: "section-title" }, t.baTitle),
-        React.createElement("p", { className: "section-sub" }, t.baSub)),
-      React.createElement(Reveal, { d: 120 }, React.createElement(BeforeAfter, null)),
-      React.createElement(Reveal, { d: 200, style: { textAlign: "center", marginTop: "1.2rem" } },
-        React.createElement("button", { className: "btn btn-outline", onClick: () => setPage("story") }, "📖 " + t.story)))), /*#__PURE__*/React.createElement("section", {
+  })))), React.createElement(ActivityTicker, null), /*#__PURE__*/React.createElement("section", {
     className: "section"
   }, /*#__PURE__*/React.createElement("div", {
     className: "container"
@@ -3018,25 +2951,7 @@ function CourtsPage() {
     style: {
       width: c.progress + "%"
     }
-  }))))))), /*#__PURE__*/React.createElement("section", {
-    className: "section",
-    style: {
-      background: "var(--bgCard)"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "container"
-  }, /*#__PURE__*/React.createElement("h2", {
-    className: "section-title"
-  }, "\uD83D\uDDFA\uFE0F Google My Maps"), /*#__PURE__*/React.createElement("iframe", {
-    src: "https://www.google.com/maps/d/embed?mid=19tND_bqOJoFbhTNKN0PenNW7S7yUog8",
-    width: "100%",
-    height: "380",
-    style: {
-      border: 0,
-      borderRadius: "var(--radius)"
-    },
-    loading: "lazy"
-  }))), sel && /*#__PURE__*/React.createElement(CourtDetail, {
+  }))))))), sel && /*#__PURE__*/React.createElement(CourtDetail, {
     court: sel,
     onClose: closeCourt,
     onBook: () => setShowBook(true)
@@ -5625,76 +5540,6 @@ function TimelineSec() {
 }
 
 /* === Help === */
-/* ============================================================
-   SCROLLYTELLING — the essay as an animated, chaptered story.
-   Route: #story. ESSAY.hu missing -> falls back to RO.
-   ============================================================ */
-function StoryChapter({ n, text }) {
-  const ref = useReveal();
-  return React.createElement("div", { ref: ref, className: "reveal story-ch" },
-    React.createElement("div", { className: "story-num" }, String(n).padStart(2, "0")),
-    React.createElement("p", null, text));
-}
-
-function StoryStat({ v, suffix, label, color }) {
-  const [vis, setVis] = useState(false);
-  const ref = useRef(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (!("IntersectionObserver" in window)) { setVis(true); return; }
-    const io = new IntersectionObserver(es => {
-      es.forEach(e => { if (e.isIntersecting) { setVis(true); io.unobserve(e.target); } });
-    }, { threshold: 0.4 });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-  const n = useCountUp(vis ? v : 0, 1500);
-  return React.createElement("div", { ref: ref, style: { textAlign: "center" } },
-    React.createElement("div", { className: "stat-number", style: { color: color, fontSize: "2.8rem" } }, n, suffix),
-    React.createElement("div", { className: "stat-label", style: { color: "#9CA3AF", maxWidth: 220, margin: ".3rem auto 0" } }, label));
-}
-
-function StoryPage() {
-  const { t, lang, setPage } = useApp();
-  const paras = (ESSAY[lang] || ESSAY.ro).split("\n\n");
-  const barRef = useRef(null);
-  useEffect(() => {
-    const onScroll = () => {
-      const h = document.documentElement;
-      const max = h.scrollHeight - h.clientHeight;
-      if (barRef.current) barRef.current.style.width = (max > 0 ? h.scrollTop / max * 100 : 0) + "%";
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-  const mid = Math.min(4, paras.length);
-  return React.createElement("div", { className: "animate-in" },
-    React.createElement("div", { className: "story-progress", ref: barRef }),
-    React.createElement("section", { className: "story-hero" },
-      React.createElement("div", { className: "container" },
-        React.createElement("div", { className: "story-kicker" }, t.storyKicker),
-        React.createElement("h1", null,
-          React.createElement("span", { style: { color: "#9CA3AF" } }, React.createElement(LetterReveal, { text: "From Grey" })),
-          React.createElement("br", null),
-          React.createElement("span", { className: "p", style: { background: "linear-gradient(90deg,#10B981,#0D9488,#F97316)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" } }, "to Play")),
-        React.createElement("p", { className: "story-sub" }, t.storySub)),
-      React.createElement("div", { className: "story-scroll-cue", "aria-hidden": "true" }, "↓")),
-    paras.slice(0, mid).map((p, i) => React.createElement(StoryChapter, { key: i, n: i + 1, text: p })),
-    React.createElement("section", { className: "story-stats" },
-      React.createElement("div", { className: "container grid grid-3" },
-        React.createElement(StoryStat, { v: 12, suffix: "/15", label: t.storyStat1, color: "var(--red)" }),
-        React.createElement(StoryStat, { v: 5, suffix: "M", label: t.storyStat2, color: "var(--coral)" }),
-        React.createElement(StoryStat, { v: 6, suffix: "", label: t.storyStat3, color: "var(--green)" }))),
-    paras.slice(mid).map((p, i) => React.createElement(StoryChapter, { key: mid + i, n: mid + i + 1, text: p })),
-    React.createElement("section", { className: "story-cta" },
-      React.createElement(Reveal, null,
-        React.createElement("h2", null, t.storyCtaTitle),
-        React.createElement("p", { className: "section-sub" }, t.storyCtaSub),
-        React.createElement("button", { className: "btn btn-green", style: { fontSize: "1rem", padding: ".8rem 1.6rem" }, onClick: () => setPage("petition") }, "✊ " + t.heroSign))));
-}
-
 function HelpPage() {
   const {
     t,
@@ -7227,10 +7072,12 @@ function App() {
   const [lang, setLang] = useState(() => localStorage.getItem("g2p_lang") || "ro");
   const [theme, setTheme] = useState(() => localStorage.getItem("g2p_theme") || (window.matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light"));
   const [page, setPageRaw] = useState(pageFromHash);
+  const [wipe, setWipe] = useState(0);
   // setPage keeps the URL hash in sync so every page (and shared court link)
   // is bookmarkable; pushState avoids re-triggering the hashchange listener.
   const setPage = useCallback(p => {
     setPageRaw(p);
+    setWipe(w => w + 1);
     const h = p === "home" ? "" : "#" + p;
     if (location.hash !== h) history.pushState(null, "", h || location.pathname + location.search);
   }, []);
@@ -7277,6 +7124,37 @@ function App() {
     };
     document.addEventListener("pointerdown", h);
     return () => document.removeEventListener("pointerdown", h);
+  }, []);
+  // Pro-max: cursor spotlight on cards + magnetic CTA buttons (desktop only).
+  useEffect(() => {
+    if (!window.matchMedia) return;
+    if (window.matchMedia("(prefers-reduced-motion:reduce)").matches || window.matchMedia("(hover: none)").matches) return;
+    const spot = e => {
+      const c = e.target.closest && e.target.closest(".card,.stat-tile");
+      if (!c) return;
+      const r = c.getBoundingClientRect();
+      c.style.setProperty("--mx", e.clientX - r.left + "px");
+      c.style.setProperty("--my", e.clientY - r.top + "px");
+    };
+    const magnet = e => {
+      const b = e.target.closest && e.target.closest(".h3d-btn,.btn-green");
+      if (!b || b.dataset.mag) return;
+      b.dataset.mag = "1";
+      const mv = ev => {
+        const r = b.getBoundingClientRect();
+        const dx = ev.clientX - (r.left + r.width / 2), dy = ev.clientY - (r.top + r.height / 2);
+        b.style.transform = "translate(" + (dx * 0.18).toFixed(1) + "px," + (dy * 0.18).toFixed(1) + "px)";
+      };
+      const lv = () => { b.style.transform = ""; };
+      b.addEventListener("mousemove", mv);
+      b.addEventListener("mouseleave", lv);
+    };
+    document.addEventListener("mousemove", spot, { passive: true });
+    document.addEventListener("mouseover", magnet);
+    return () => {
+      document.removeEventListener("mousemove", spot);
+      document.removeEventListener("mouseover", magnet);
+    };
   }, []);
   useEffect(() => {
     const h = e => {
@@ -7350,8 +7228,6 @@ function App() {
         return /*#__PURE__*/React.createElement(CommunityPage, null);
       case "impact":
         return /*#__PURE__*/React.createElement(ImpactPage, null);
-      case "story":
-        return /*#__PURE__*/React.createElement(StoryPage, null);
       case "help":
         return /*#__PURE__*/React.createElement(HelpPage, null);
       case "about":
@@ -7364,7 +7240,11 @@ function App() {
   };
   return /*#__PURE__*/React.createElement(AppCtx.Provider, {
     value: ctx
-  }, /*#__PURE__*/React.createElement(InstallBanner, {
+  }, wipe > 0 && /*#__PURE__*/React.createElement("div", {
+    key: wipe,
+    className: "page-wipe",
+    "aria-hidden": "true"
+  }), /*#__PURE__*/React.createElement(InstallBanner, {
     lang: lang
   }), /*#__PURE__*/React.createElement(Navbar, null), /*#__PURE__*/React.createElement("main", {
     style: {

@@ -115,14 +115,16 @@ Anyone can write — rules are MVP-permissive. Tighten before any press.
   hero title (`LetterReveal`), floating hero particles, cinematic page
   transitions (keyed `main`), `Reveal` stagger wrapper. All gated behind
   `prefers-reduced-motion`.
-- Before/After slider (`BeforeAfter` + SVG `CourtScene`) on Home —
-  drag/keyboard, grey vs renovated court.
-- Scrollytelling `StoryPage` (route `#story`, in navbar): essay chapters
-  with scroll progress bar, count-up stat interlude, petition CTA.
-  ESSAY.hu still missing → falls back to RO.
 - Report heatmap toggle on the courts map (density circles from static
   `reports` + live `reports/` counts).
 - Confetti now fires on every petition vote (was milestones-only).
+- Pro-max effect pack (per user request): cursor spotlight on all cards,
+  magnetic CTA buttons, green page-wipe on navigation, animated conic
+  `glow-border` on stat tiles, aurora blobs + shimmer headline in hero,
+  live `ActivityTicker` marquee on Home (reads `activity/`). All gated
+  behind `prefers-reduced-motion` / `hover:none`.
+- REMOVED per user feedback: Before/After slider, scrollytelling
+  StoryPage (essay already on About), Google My Maps iframe on Courts.
 
 ## Roadmap priorities (from the brief)
 
