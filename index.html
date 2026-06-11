@@ -287,7 +287,11 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 @keyframes sheen{0%,100%{left:-60%}50%{left:120%}}
 /* === Milestone progress bar === */
 .milestone-bar{position:relative;height:12px;background:var(--border);border-radius:6px;overflow:visible;margin:1rem 0 1.8rem}
-.milestone-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--green),var(--teal));transition:width 1s cubic-bezier(.22,1,.36,1)}
+.milestone-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--green),var(--teal));transition:width 1s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
+.milestone-fill::after{content:'';position:absolute;top:-4px;left:-10%;width:120%;height:10px;background:rgba(255,255,255,.35);border-radius:50%;animation:liquidWave 2.2s ease-in-out infinite}
+@keyframes liquidWave{0%,100%{transform:translateX(-5%) scaleY(1)}50%{transform:translateX(8%) scaleY(.6)}}
+@media(prefers-reduced-motion:reduce){.milestone-fill::after{animation:none}}
+.no-fx .milestone-fill::after{display:none}
 .milestone-marker{position:absolute;top:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;border:2px solid var(--bgCard);z-index:2;cursor:default}
 .milestone-marker.ms-reached{background:var(--green);box-shadow:0 0 0 3px rgba(16,185,129,.22)}
 .milestone-marker.ms-next{background:var(--border)}
