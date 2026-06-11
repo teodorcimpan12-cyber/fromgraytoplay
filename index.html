@@ -731,6 +731,11 @@ const T = {
     tudor: "Tudor",
     auchan: "Zona Auchan",
     sportcomplex: "Sportcomplex",
+    mureseni: "Mureșeni",
+    pandurilor: "Pandurilor",
+    libertate: "Libertate",
+    unirii: "Unirii",
+    gym: "Sală fitness",
     general: "General",
     center: "Centru",
     accessibility: "Accesibilitate",
@@ -873,6 +878,11 @@ const T = {
     tudor: "Tudor",
     auchan: "Auchan Area",
     sportcomplex: "Sportcomplex",
+    mureseni: "Mureșeni",
+    pandurilor: "Pandurilor",
+    libertate: "Libertate",
+    unirii: "Unirii",
+    gym: "Gym / Fitness",
     general: "General",
     center: "Centre",
     accessibility: "Accessibility",
@@ -1015,6 +1025,11 @@ const T = {
     tudor: "Tudor",
     auchan: "Auchan környéke",
     sportcomplex: "Sportcomplex",
+    mureseni: "Mureșeni",
+    pandurilor: "Pandurilor",
+    libertate: "Libertate",
+    unirii: "Unirii",
+    gym: "Terem / Fitnesz", // TODO: HU review
     general: "Általános",
     center: "Központ",
     accessibility: "Akadálymentesség",
@@ -1739,11 +1754,19 @@ function CourtHealthRing(props) {
 }
 
 /* === Neighborhood Civic Race === */
-var HOOD_COURT_MAP = { tudor:["c1","c5"], auchan:["c2"], sportcomplex:["c3"], center:["c4"] };
+var HOOD_COURT_MAP = {
+  tudor:      ["c5","c6","c7","c8","c19"],
+  auchan:     ["c3","c4"],
+  mureseni:   ["c1","c2","c20"],
+  center:     ["c9","c10","c11","c12","c13","c18"],
+  pandurilor: ["c14","c15"],
+  libertate:  ["c16"],
+  unirii:     ["c17"]
+};
 var HOOD_DISPLAY = {
-  ro:{ tudor:"Tudor", auchan:"Zona Auchan", sportcomplex:"Sportcomplex", center:"Centru" },
-  en:{ tudor:"Tudor", auchan:"Auchan Area", sportcomplex:"Sportcomplex", center:"Center" },
-  hu:{ tudor:"Tudor", auchan:"Auchan körzet", sportcomplex:"Sportcomplex", center:"Közép" }
+  ro:{ tudor:"Tudor", auchan:"Zona Auchan", mureseni:"Mureșeni", center:"Centru", pandurilor:"Pandurilor", libertate:"Libertate", unirii:"Unirii" },
+  en:{ tudor:"Tudor", auchan:"Auchan Area", mureseni:"Mureșeni", center:"Center",  pandurilor:"Pandurilor", libertate:"Libertate", unirii:"Unirii" },
+  hu:{ tudor:"Tudor", auchan:"Auchan körzet", mureseni:"Mureșeni", center:"Közép", pandurilor:"Pandurilor", libertate:"Libertate", unirii:"Unirii" }
 };
 
 function NeighborhoodRace() {
@@ -2477,7 +2500,7 @@ function InequalityReceipt() {
     ctx.fillText(t.receiptTitle.toUpperCase(), W / 2, 116);
     dash(138);
     // Per-neighbourhood line items from the hardcoded COURTS dataset.
-    var hoodKeys = ["center", "tudor", "auchan", "sportcomplex"];
+    var hoodKeys = ["center", "tudor", "mureseni", "auchan", "pandurilor", "libertate", "unirii"];
     var y = 174;
     ctx.font = "15px 'Space Mono',monospace";
     hoodKeys.forEach(function (hk) {
@@ -3287,102 +3310,319 @@ function MayorMode(props) {
   );
 }
 
-const COURTS = [{
-  id: "c1",
-  name: "Teren Tudor 1",
-  address: "Str. Tudor Vladimirescu 45",
-  lat: 46.5512,
-  lng: 24.5678,
-  status: "degraded",
-  neighbourhood: "tudor",
-  category: "basketball",
-  condition: 2,
-  occupancy: "empty",
-  progress: 10,
-  accessibility: {
-    wheelchair: false,
-    lighting: false,
-    parking: true,
-    flatSurface: false
+const COURTS = [
+  // ── BAZA MUREȘUL (public, municipal) ──────────────────────────────────────
+  {
+    id: "c1",
+    name: "Baza Mureșul — Teren Baschet",
+    address: "Str. Plutelor 2",
+    lat: 46.5618, lng: 24.5512,
+    status: "renovated",
+    neighbourhood: "mureseni",
+    category: "basketball",
+    condition: 5,
+    occupancy: "active",
+    progress: 100,
+    accessibility: { wheelchair: true,  lighting: true,  parking: true,  flatSurface: true  },
+    reports: 0,
+    description: "Teren baschet 37×20 m, asfalt nou, iluminat nocturn. Parte din Complexul de Agrement și Sport Mureșul."
   },
-  reports: 3
-}, {
-  id: "c2",
-  name: "Teren Auchan",
-  address: "Zona Auchan, Calea Sighișoarei",
-  lat: 46.5445,
-  lng: 24.5789,
-  status: "degraded",
-  neighbourhood: "auchan",
-  category: "multiuse",
-  condition: 1,
-  occupancy: "empty",
-  progress: 5,
-  accessibility: {
-    wheelchair: false,
-    lighting: false,
-    parking: true,
-    flatSurface: false
+  {
+    id: "c2",
+    name: "Baza Mureșul — Teren Fotbal",
+    address: "Str. Plutelor 2",
+    lat: 46.5615, lng: 24.5518,
+    status: "renovated",
+    neighbourhood: "mureseni",
+    category: "football",
+    condition: 5,
+    occupancy: "active",
+    progress: 100,
+    accessibility: { wheelchair: true,  lighting: true,  parking: true,  flatSurface: true  },
+    reports: 0,
+    description: "Teren fotbal 60×40 m, gazon artificial, iluminat nocturn. Complexul Mureșul, suprafață recentă."
   },
-  reports: 5
-}, {
-  id: "c3",
-  name: "Teren Sportcomplex",
-  address: "Str. Sportcomplex 12",
-  lat: 46.5567,
-  lng: 24.5623,
-  status: "inProgress",
-  neighbourhood: "sportcomplex",
-  category: "football",
-  condition: 3,
-  occupancy: "active",
-  progress: 45,
-  accessibility: {
-    wheelchair: true,
-    lighting: true,
-    parking: true,
-    flatSurface: true
+  // ── COMPLEXUL WEEKEND ────────────────────────────────────────────────────
+  {
+    id: "c3",
+    name: "Complex Weekend — Teren Fotbal",
+    address: "Str. Salcâmilor 1",
+    lat: 46.5448, lng: 24.5782,
+    status: "inProgress",
+    neighbourhood: "auchan",
+    category: "football",
+    condition: 3,
+    occupancy: "active",
+    progress: 55,
+    accessibility: { wheelchair: false, lighting: true,  parking: true,  flatSurface: true  },
+    reports: 2,
+    description: "Teren 50×35 m, gazon sintetic, sezonier (mai–aug). Facilitățile sunt vechi dar funcționale."
   },
-  reports: 2
-}, {
-  id: "c4",
-  name: "Teren Cornești",
-  address: "Platoul Cornești",
-  lat: 46.5634,
-  lng: 24.5432,
-  status: "renovated",
-  neighbourhood: "center",
-  category: "tennis",
-  condition: 5,
-  occupancy: "active",
-  progress: 100,
-  accessibility: {
-    wheelchair: true,
-    lighting: true,
-    parking: true,
-    flatSurface: true
+  {
+    id: "c4",
+    name: "Complex Weekend — Teren Tenis",
+    address: "Str. Salcâmilor 1",
+    lat: 46.5445, lng: 24.5786,
+    status: "degraded",
+    neighbourhood: "auchan",
+    category: "tennis",
+    condition: 2,
+    occupancy: "empty",
+    progress: 20,
+    accessibility: { wheelchair: false, lighting: false, parking: true,  flatSurface: false },
+    reports: 3,
+    description: "Teren tenis zgură. Suprafață deteriorată, filet rupt, necesită reabilitare urgentă."
   },
-  reports: 0
-}, {
-  id: "c5",
-  name: "Teren Insulei",
-  address: "Str. Insulei 8",
-  lat: 46.5489,
-  lng: 24.5701,
-  status: "degraded",
-  neighbourhood: "tudor",
-  category: "handball",
-  condition: 2,
-  occupancy: "empty",
-  progress: 15,
-  accessibility: {
-    wheelchair: false,
-    lighting: false,
-    parking: false,
-    flatSurface: false
+  // ── STR. INSULEI (Tudor, municipal) ──────────────────────────────────────
+  {
+    id: "c5",
+    name: "Baza Sportivă Str. Insulei",
+    address: "Str. Insulei 2",
+    lat: 46.5489, lng: 24.5701,
+    status: "inProgress",
+    neighbourhood: "tudor",
+    category: "football",
+    condition: 3,
+    occupancy: "empty",
+    progress: 45,
+    accessibility: { wheelchair: false, lighting: true,  parking: false, flatSurface: true  },
+    reports: 4,
+    description: "Teren sintetic 40×20 m + teren fotbal mare. Administrație municipală din 2024; proiect blocat de eroare cadastrală de 5M lei (oct 2025)."
   },
-  reports: 7
-}];
+  // ── TUDOR neighborhood outdoor public ────────────────────────────────────
+  {
+    id: "c6",
+    name: "Teren Baschet Tudor Vladimirescu",
+    address: "Str. Tudor Vladimirescu 45",
+    lat: 46.5512, lng: 24.5678,
+    status: "degraded",
+    neighbourhood: "tudor",
+    category: "basketball",
+    condition: 2,
+    occupancy: "empty",
+    progress: 10,
+    accessibility: { wheelchair: false, lighting: false, parking: true,  flatSurface: false },
+    reports: 5,
+    description: "Teren baschet asfalt, coș îndoit, fără plasă. Cel mai folosit teren de cartier Tudor, stare critică."
+  },
+  {
+    id: "c7",
+    name: "Teren Sport Str. Carpați",
+    address: "Str. Carpați 18",
+    lat: 46.5528, lng: 24.5710,
+    status: "degraded",
+    neighbourhood: "tudor",
+    category: "multiuse",
+    condition: 1,
+    occupancy: "empty",
+    progress: 5,
+    accessibility: { wheelchair: false, lighting: false, parking: false, flatSurface: false },
+    reports: 7,
+    description: "Teren multifuncțional beton, asfalt crăpat, fără echipamente. Abandonat de circa 8 ani."
+  },
+  // ── TORPI (public rental, Tudor) ─────────────────────────────────────────
+  {
+    id: "c8",
+    name: "CS Torpi — Terenuri Sport",
+    address: "Str. Sălciilor 11B",
+    lat: 46.5502, lng: 24.5659,
+    status: "renovated",
+    neighbourhood: "tudor",
+    category: "multiuse",
+    condition: 4,
+    occupancy: "active",
+    progress: 90,
+    accessibility: { wheelchair: true,  lighting: true,  parking: true,  flatSurface: true  },
+    reports: 0,
+    description: "Terenuri interioare fotbal, baschet, volei, handbal, tenis — închiriere. CS Torpi, deschis din 2005."
+  },
+  // ── CENTER ────────────────────────────────────────────────────────────────
+  {
+    id: "c9",
+    name: "Platoul Cornești — Teren Tenis",
+    address: "Platoul Cornești",
+    lat: 46.5634, lng: 24.5432,
+    status: "renovated",
+    neighbourhood: "center",
+    category: "tennis",
+    condition: 5,
+    occupancy: "active",
+    progress: 100,
+    accessibility: { wheelchair: true,  lighting: true,  parking: true,  flatSurface: true  },
+    reports: 0,
+    description: "Teren tenis modern pe Platoul Cornești, vizibilitate panoramică. Cel mai bine întreținut teren public din oraș."
+  },
+  {
+    id: "c10",
+    name: "Sala Sporturilor City Arena",
+    address: "Str. Gheorghe Doja 246",
+    lat: 46.5394, lng: 24.5587,
+    status: "renovated",
+    neighbourhood: "center",
+    category: "basketball",
+    condition: 5,
+    occupancy: "active",
+    progress: 100,
+    accessibility: { wheelchair: true,  lighting: true,  parking: true,  flatSurface: true  },
+    reports: 0,
+    description: "Sală profesionistă FIBA, 5.000 locuri. Gazda echipelor CSM Târgu Mureș. Standard internațional."
+  },
+  {
+    id: "c11",
+    name: "Stadionul Municipal",
+    address: "Str. Gheorghe Doja 243",
+    lat: 46.5397, lng: 24.5578,
+    status: "inProgress",
+    neighbourhood: "center",
+    category: "football",
+    condition: 3,
+    occupancy: "active",
+    progress: 60,
+    accessibility: { wheelchair: true,  lighting: true,  parking: true,  flatSurface: true  },
+    reports: 2,
+    description: "Stadion municipal 11.000 locuri, teren gazon natural. Renovare parțială în curs (tribune vechi)."
+  },
+  {
+    id: "c12",
+    name: "Academica Transilvania — Teren Fotbal",
+    address: "Str. N. Iorga 1",
+    lat: 46.5388, lng: 24.5508,
+    status: "renovated",
+    neighbourhood: "center",
+    category: "football",
+    condition: 4,
+    occupancy: "active",
+    progress: 85,
+    accessibility: { wheelchair: false, lighting: true,  parking: true,  flatSurface: true  },
+    reports: 1,
+    description: "Teren sintetic futsal/fotbal, universitar, disponibil pentru închiriere publicului."
+  },
+  // ── ENJOY / FITNESS CENTER (private, center) ─────────────────────────────
+  {
+    id: "c13",
+    name: "Enjoy Sports Club",
+    address: "Str. Liviu Rebreanu 29 (Pasajul Mocca)",
+    lat: 46.5420, lng: 24.5572,
+    status: "renovated",
+    neighbourhood: "center",
+    category: "gym",
+    condition: 4,
+    occupancy: "active",
+    progress: 100,
+    accessibility: { wheelchair: false, lighting: true,  parking: false, flatSurface: true  },
+    reports: 0,
+    description: "Sală fitness și sport privată, deschisă din 2005. Fitness, bodybuilding, aerobic, cursuri de grup."
+  },
+  // ── PANDURILOR / SUD ──────────────────────────────────────────────────────
+  {
+    id: "c14",
+    name: "Body Factory",
+    address: "B-dul Pandurilor 3",
+    lat: 46.5335, lng: 24.5490,
+    status: "renovated",
+    neighbourhood: "pandurilor",
+    category: "gym",
+    condition: 5,
+    occupancy: "active",
+    progress: 100,
+    accessibility: { wheelchair: true,  lighting: true,  parking: true,  flatSurface: true  },
+    reports: 0,
+    description: "Sală sport modernă, echipamente premium. Una dintre cele mai mari săli private din Târgu Mureș."
+  },
+  {
+    id: "c15",
+    name: "Teren Baschet Bulevardul 1 Decembrie",
+    address: "B-dul 1 Decembrie 1918",
+    lat: 46.5351, lng: 24.5531,
+    status: "degraded",
+    neighbourhood: "pandurilor",
+    category: "basketball",
+    condition: 1,
+    occupancy: "empty",
+    progress: 5,
+    accessibility: { wheelchair: false, lighting: false, parking: true,  flatSurface: false },
+    reports: 6,
+    description: "Teren baschet asfalt, complet degradat. Coșuri fără plasă, iluminat nonfuncțional, suprafață periculoasă."
+  },
+  // ── LIBERTATE / UNIRII ────────────────────────────────────────────────────
+  {
+    id: "c16",
+    name: "Teren Multifuncțional Libertății",
+    address: "Str. Libertății 52",
+    lat: 46.5455, lng: 24.5645,
+    status: "degraded",
+    neighbourhood: "libertate",
+    category: "multiuse",
+    condition: 2,
+    occupancy: "empty",
+    progress: 15,
+    accessibility: { wheelchair: false, lighting: false, parking: false, flatSurface: false },
+    reports: 5,
+    description: "Teren multisport beton, graffiti, echipamente lipsă. Ignorat de administrație de ani de zile."
+  },
+  {
+    id: "c17",
+    name: "Teren Fotbal Micro 14-15",
+    address: "Str. Unirii 80",
+    lat: 46.5378, lng: 24.5490,
+    status: "degraded",
+    neighbourhood: "unirii",
+    category: "football",
+    condition: 2,
+    occupancy: "empty",
+    progress: 20,
+    accessibility: { wheelchair: false, lighting: false, parking: false, flatSurface: false },
+    reports: 4,
+    description: "Mini-teren fotbal între blocuri, gard metalic corodat, marcaje șterse, porți fără plasă."
+  },
+  // ── AGORA / SKYGYM (private, central/nord) ────────────────────────────────
+  {
+    id: "c18",
+    name: "Agora Fitness Center",
+    address: "Str. Regele Ferdinand 4",
+    lat: 46.5435, lng: 24.5542,
+    status: "renovated",
+    neighbourhood: "center",
+    category: "gym",
+    condition: 4,
+    occupancy: "active",
+    progress: 100,
+    accessibility: { wheelchair: false, lighting: true,  parking: false, flatSurface: true  },
+    reports: 0,
+    description: "Sală fitness cu 237 recenzii pozitive, locație centrală. Cardio, mașini, clase fitness."
+  },
+  {
+    id: "c19",
+    name: "SkyGYM",
+    address: "Str. Călărașilor 112-114",
+    lat: 46.5480, lng: 24.5605,
+    status: "renovated",
+    neighbourhood: "tudor",
+    category: "gym",
+    condition: 4,
+    occupancy: "active",
+    progress: 100,
+    accessibility: { wheelchair: false, lighting: true,  parking: true,  flatSurface: true  },
+    reports: 0,
+    description: "Sală sport modernă în cartierul Tudor. Fitness, arte marțiale, box — oferă alternativă la terenurile degradate din jur."
+  },
+  // ── MUREȘENI SUD ──────────────────────────────────────────────────────────
+  {
+    id: "c20",
+    name: "Teren Fotbal Mureșeni",
+    address: "Str. Dealul Sighișoarei 12",
+    lat: 46.5268, lng: 24.5591,
+    status: "degraded",
+    neighbourhood: "mureseni",
+    category: "football",
+    condition: 2,
+    occupancy: "empty",
+    progress: 15,
+    accessibility: { wheelchair: false, lighting: false, parking: false, flatSurface: false },
+    reports: 5,
+    description: "Teren fotbal cartier Mureșeni, asfalt degradat, porți ruginite, fără iluminat. Zona cu tineri numeroși și facilități inexistente."
+  }
+];
 var ESSAY = {
   ro: "Cauta Targu Mures pe Google si fotografiile iti vand un vis – trasee de alergare pe Platoul Cornesti, parcuri verzi, fatade colorate. Oras sportiv, zic ei. Dar ia autobuzul spre Tudor sau in spatele Auchan, si visul se crapa, la propriu. Terenurile sunt sparte, cosurile indoite, si nimanui pare sa-i pese. Am vrut sa aflu de ce.\n\nAm cautat mai intai dovezi academice. Un studiu din 2023 in Urban Science (publicat de MDPI) compara modul in care orasele europene gestioneaza infrastructura recreationala si argumenteaza ca distributia inegala tinde sa adanceasca decalajele sociale. Este un studiu amplu, transnational – nu se potriveste perfect pentru un singur oras romanesc – dar rationamentul mi-a ramas. Journal of Urban Health restrange focusul: absenta terenurilor sportive la nivel de cartier se coreleaza direct cu inactivitatea si izolarea tinerilor. Ceea ce a fost decisiv a fost descoperirea Strategiei Integrate de Dezvoltare Urbana (SIDU), publicata pe site-ul Primariei. Documentul admite deschis ca districtele periferice – cele cu populatiile cele mai tinere – primesc cele mai putine investitii in infrastructura.\n\nReportajele locale au adaugat culoare. O investigatie Punctul.ro din octombrie 2025 a expus cum o eroare administrativa de cinci milioane de lei a inghetat renovarea unei baze sportive de pe strada Insulei – birocratie la superlativ. Un alt reportaj Punctul.ro a explorat cum Cluj si Sibiu au transformat cu succes loturi urbane neglijate in hub-uri digitale, evidentiind prin contrast cat de putin a facut Targu Mures. Acum, presa poate sensationaliza, asa ca am verificat cu bugetul oficial al Primariei Targu Mures. Cifrele s-au aliniat: fondurile promise pentru renovari depasesc constant ceea ce se cheltuieste efectiv.\n\nTotusi, cercetarea de birou iti arata doar o parte din imagine. Pe parcursul a doua weekenduri, am strabatut Tudor, zona Auchan si terenurile de langa Sportcomplex, fotografiind asfalt crapat si cosuri indoite si le-am inregistrat pe Google My Maps. Am facut si un sondaj informal rapid – cincisprezece rezidenti, o intrebare: folosesti terenul cel mai aproape de tine? Doisprezece au spus nu, prea degradat. Trei au spus ocazional, din lipsa de alternative. Cincisprezece respondenti nu vor castiga un premiu de statistica, dar acel nivel de consens este greu de respins.\n\nPunand piesele cap la cap, apare un lant clar: pasul unu, municipalitatea concentreaza cheltuielile pe locatii centrale de profil inalt; pasul doi, terenurile periferice se degradeaza din pura neatentie; pasul trei, tinerii din acele zone isi pierd sansa la sport regulat si la viata sociala care vine cu el. Platoul Cornesti ar putea fi intr-un alt cod postal fata de periferie. Nu spun ca cineva actioneaza din rautate – bugetele limitate si prea multe cereri concurente probabil explica mult. Dar rezidentii din aceste cartiere nu au canale civice clare pentru a semnala problema, si aceasta tacere lasa ciclul sa se repete.\n\nPrima mea propunere este un pilot Flip-the-Court: alegem trei dintre cele mai degradate terenuri, le refacem suprafata si echipam fiecare cu un dulap de echipament rezistent la intemperii pe care localnicii il pot debloca printr-o aplicatie gratuita. Aplicatia functioneaza si ca instrument de feedback – oamenii evalueaza facilitatile, raporteaza daunele si sugereaza ce echipament sportiv sa fie aprovizionat. Ca finantare, micro-granturile EU pentru sport-tineret acopera costurile principale; cateva parteneriate cu sali de sport locale acopera intretinerea. De la obtinerea grantului pana la taierea panglicii, sase luni par realizabile.\n\nA doua idee se bazeaza mai mult pe arta decat pe tehnologie. O initiativa Street Canvas ar aduce artistii locali de graffiti si rezidentii impreuna pentru a picta murale colorate la scara mare pe suprafetele renovate – finantata aproape in intregime din spray paint donat si ore de voluntariat. De ce sa ne obosim? Cercetarile privind atasamentul de loc arata ca oamenii care ajuta fizic la modelarea unui spatiu public il trateaza ca pe al lor, iar ratele de vandalism scad corespunzator. O placa cenusie devine un loc de intalnire pe care oamenii chiar vor sa-l protejeze.\n\nNimic din toate acestea nu este cu adevarat despre baschet sau handbal. Este despre daca adresa ta ar trebui sa-ti limiteze oportunitatile. Un pilot mic, cateva murale, un efort comunitar incapatanat – pretul este modest. Singurul lucru scump este sa continuam sa nu facem nimic.",
   en: "Google Târgu Mureș and the photos sell you a dream – running trails on the Cornești Plateau, green parks, colourful facades. Sporty city, they say. But ride the bus out to Tudor or behind Auchan, and the dream cracks, quite literally. The courts are broken, the hoops bent, and nobody seems to care. I wanted to find out why.\n\nI went looking for academic backing first. A 2023 study in Urban Science (published by MDPI) compares how European cities manage recreational infrastructure and argues that uneven distribution tends to widen social gaps rather than narrow them. It is a broad, cross-national piece – not a perfect fit for one Romanian city – but the reasoning stuck with me. The Journal of Urban Health narrows the focus: the absence of neighbourhood-level sports courts correlates directly with youth inactivity and isolation. What really sealed it, though, was finding our city’s Integrated Urban Development Strategy (SIDU), published on the Primaria website. The document openly admits that peripheral districts – the ones with the youngest populations – receive the least infrastructure investment.\n\nLocal reporting added colour. A Punctul.ro investigation from October 2025 exposed how a five-million-lei administrative mix-up froze the renovation of a sports facility on Insulei Street – bureaucracy at its finest. A separate Punctul.ro feature explored how Cluj and Sibiu successfully repurposed neglected urban lots into digital hubs, highlighting by contrast just how little Targu Mures has done. Now, media outlets can sensationalise, so I cross-checked against the official Primaria Targu Mures budget. The numbers lined up: pledged renovation funds consistently outstrip what actually gets spent on the ground.\n\nStill, desk research only shows you part of the picture. Over two weekends, I walked through Tudor, the Auchan area, and the courts near Sportcomplex, photographing cracked asphalt and bent rims and logging it all on Google My Maps. I also ran a quick, informal poll – fifteen residents, one question: do you use the court nearest to you? Twelve said no, too run-down. Three said occasionally, for lack of alternatives. Fifteen respondents will not win a statistics prize, but that level of agreement is hard to dismiss.\n\nPut the pieces together, and a clear chain emerges: step one, the municipality concentrates spending on high-profile central venues; step two, peripheral courts decay from sheer inattention; step three, young people in those areas lose their shot at regular sport and the social life that goes with it. The Cornesti Plateau might as well be in a different postcode from the outskirts. Now, I am not saying anyone is acting out of spite – limited budgets and too many competing demands probably explain a lot. But residents in these neighbourhoods also lack clear civic channels to flag the problem, and that silence lets the cycle repeat itself.\n\nMy first proposal is a Flip-the-Court pilot: choose three of the worst-off courts, resurface them, and fit each with a weather-proof equipment cabinet that locals can unlock through a free phone app. The app doubles as a feedback tool – people rate the facilities, report damage, and suggest what sports gear to stock next. Funding-wise, EU youth-sport micro-grants cover the hard costs; a handful of local gym partnerships cover maintenance. From securing the grant to cutting the ribbon, six months feels achievable.\n\nMy second idea leans more on art than on tech. A Street Canvas initiative would bring local graffiti artists and residents together to paint large-scale, colourful ground murals across the refurbished surfaces – funded almost entirely by donated spray paint and volunteer hours. Why bother? Research on place attachment shows that people who physically help shape a public space treat it as their own, and that damage rates drop accordingly. A once-grey slab becomes a gathering spot people actually want to protect.\n\nNone of this is really about basketball or handball. It is about whether your address should cap your opportunities. A small pilot, a few murals, some stubborn community effort – the price tag is modest. The only expensive thing is continuing to do nothing."
@@ -4183,6 +4423,7 @@ function mountHero3D(host, opts) {
   key.shadow.mapSize.set(1024, 1024); key.shadow.camera.near = 0.5; key.shadow.camera.far = 14;
   key.shadow.camera.left = -2.4; key.shadow.camera.right = 2.4; key.shadow.camera.top = 2.4; key.shadow.camera.bottom = -2.4; key.shadow.bias = -0.0006; scene.add(key);
   var fill = new THREE.DirectionalLight(0x7e8ea0, 0.28); fill.position.set(-4, 3, -3); scene.add(fill);
+  var fillWarm = new THREE.DirectionalLight(0xFFF0E0, 0.3); fillWarm.position.set(-3, 2, 4); scene.add(fillWarm);
 
   // everything lives in `world` (scaled to 70% — the whole scene 30% smaller)
   var S = 0.7;
@@ -4219,6 +4460,15 @@ function mountHero3D(host, opts) {
   court.rotation.x = -Math.PI / 2; court.position.y = 0.001; court.receiveShadow = true; group.add(court); drawCourt(0);
   var slab = new THREE.Mesh(new THREE.BoxGeometry(CX + 0.22, 0.12, CZ + 0.22), new THREE.MeshStandardMaterial({ color: 0x2a2f36, roughness: 0.9 }));
   slab.position.y = -0.06; slab.receiveShadow = true; group.add(slab);
+
+  // Court line markings — center circle + free-throw lines
+  var lineMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55 });
+  var centerCircle = new THREE.Mesh(new THREE.TorusGeometry(0.32, 0.012, 8, 32), lineMat);
+  centerCircle.rotation.x = -Math.PI / 2; centerCircle.position.y = 0.003; group.add(centerCircle);
+  var ftLineL = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.001, CZ * 0.58), lineMat.clone());
+  ftLineL.position.set(-CX * 0.25, 0.003, 0); group.add(ftLineL);
+  var ftLineR = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.001, CZ * 0.58), lineMat.clone());
+  ftLineR.position.set(CX * 0.25, 0.003, 0); group.add(ftLineR);
 
   var netTex = texFrom(buildNet(), 1, 1), boardTex = texFrom(buildBackboard());
   var nets = [], hoops = [], lockerScreen = null, renovOnly = [], interactives = [];
@@ -4266,7 +4516,7 @@ function mountHero3D(host, opts) {
     var boardMat = new THREE.MeshStandardMaterial({ map: boardTex, transparent: true, side: THREE.DoubleSide });
     var board = new THREE.Mesh(new THREE.PlaneGeometry(0.52, 0.32), boardMat); board.position.set(-sign * 0.015, 0, 0); board.rotation.y = -sign * Math.PI / 2; board.castShadow = true; hoop.add(board);
     var rimMat = new THREE.MeshStandardMaterial({ color: 0xE2552B, roughness: 0.45 });
-    var rim = new THREE.Mesh(new THREE.TorusGeometry(0.11, 0.013, 8, 24), rimMat); rim.position.set(-sign * 0.14, -0.07, 0); rim.rotation.x = Math.PI / 2; rim.castShadow = true; hoop.add(rim);
+    var rim = new THREE.Mesh(new THREE.TorusGeometry(0.11, 0.013, 16, 32), rimMat); rim.position.set(-sign * 0.14, -0.07, 0); rim.rotation.x = Math.PI / 2; rim.castShadow = true; hoop.add(rim);
     var bnet = new THREE.Mesh(new THREE.CylinderGeometry(0.105, 0.05, 0.17, 14, 1, true), new THREE.MeshBasicMaterial({ map: netTex.clone(), transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false })); bnet.position.set(-sign * 0.14, -0.07 - 0.095, 0); hoop.add(bnet); nets.push(bnet);
     hoops.push({ x: baseX - sign * 0.14, y: boardY - 0.07, z: 0, r: 0.11 });
     endUnits.push({ frame: frame, hoop: hoop, rim: rim, rimMat: rimMat, boardMat: boardMat, sign: sign, lean: sign > 0 ? -0.1 : 0.08 });
@@ -4945,10 +5195,16 @@ function CourtsPage() {
   }, t.tudor), /*#__PURE__*/React.createElement("option", {
     value: "auchan"
   }, t.auchan), /*#__PURE__*/React.createElement("option", {
-    value: "sportcomplex"
-  }, t.sportcomplex), /*#__PURE__*/React.createElement("option", {
+    value: "mureseni"
+  }, t.mureseni), /*#__PURE__*/React.createElement("option", {
     value: "center"
-  }, t.center))), /*#__PURE__*/React.createElement("div", {
+  }, t.center), /*#__PURE__*/React.createElement("option", {
+    value: "pandurilor"
+  }, t.pandurilor), /*#__PURE__*/React.createElement("option", {
+    value: "libertate"
+  }, t.libertate), /*#__PURE__*/React.createElement("option", {
+    value: "unirii"
+  }, t.unirii))), /*#__PURE__*/React.createElement("div", {
     className: "tabs"
   }, /*#__PURE__*/React.createElement("button", {
     className: tab === "map" ? "active" : "",
@@ -4961,12 +5217,17 @@ function CourtsPage() {
     onClick: () => { setHeat(h => !h); if (!heat) toast(t.heatmapOn); },
     title: t.heatmap,
     "aria-pressed": heat
-  }, "\uD83D\uDD25 " + t.heatmap)), tab === "map" && /*#__PURE__*/React.createElement(MapView, {
+  }, "\uD83D\uDD25 " + t.heatmap)), tab === "map" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(MapView, {
     courts: filtered,
     onSelect: openCourt,
     heat: heat,
     heatCounts: heatCounts
-  }), tab === "list" && /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs mt-1",
+    style: { color: "var(--textSec)", textAlign: "center" }
+  }, lang === "ro"
+    ? /*#__PURE__*/React.createElement("span", null, "Surs\u0103: cercetare de teren + date municipale T\xE2rgu Mure\u0219. ", /*#__PURE__*/React.createElement("a", { href: "https://www.google.com/maps/search/terenuri+sport+Targu+Mures", target: "_blank", style: { color: "var(--green)" } }, "Caut\u0103 pe Google Maps \u2192"))
+    : /*#__PURE__*/React.createElement("span", null, "Source: field research + T\xE2rgu Mure\u0219 municipal data. ", /*#__PURE__*/React.createElement("a", { href: "https://www.google.com/maps/search/sports+courts+Targu+Mures", target: "_blank", style: { color: "var(--green)" } }, "Search Google Maps \u2192")))), tab === "list" && /*#__PURE__*/React.createElement("div", {
     className: "grid gap-1"
   }, filtered.map(c => /*#__PURE__*/React.createElement(TiltDiv, {
     key: c.id,
@@ -6119,10 +6380,13 @@ function PetitionPage() {
   React.createElement(PledgeWall, null));
 }
 const LETTER_AREAS = [
-  { k: "tudor", ro: "Tudor", en: "Tudor", hu: "Tudor" },
-  { k: "auchan", ro: "Mureșeni / Auchan", en: "Mureșeni / Auchan", hu: "Mureșeni / Auchan" },
-  { k: "sportcomplex", ro: "Sportcomplex", en: "Sportcomplex", hu: "Sportcomplex" },
-  { k: "center", ro: "Centru", en: "Center", hu: "Központ" }
+  { k: "tudor",      ro: "Tudor",       en: "Tudor",       hu: "Tudor" },
+  { k: "auchan",     ro: "Zona Auchan", en: "Auchan Area", hu: "Auchan körzet" },
+  { k: "mureseni",   ro: "Mureșeni",    en: "Mureșeni",    hu: "Mureșeni" },
+  { k: "center",     ro: "Centru",      en: "Center",      hu: "Központ" },
+  { k: "pandurilor", ro: "Pandurilor",  en: "Pandurilor",  hu: "Pandurilor" },
+  { k: "libertate",  ro: "Libertate",   en: "Libertate",   hu: "Libertate" },
+  { k: "unirii",     ro: "Unirii",      en: "Unirii",      hu: "Unirii" }
 ];
 function LetterModal({
   onClose,
@@ -6788,8 +7052,16 @@ function TeamsTab() {
   }, t.tudor), /*#__PURE__*/React.createElement("option", {
     value: "auchan"
   }, t.auchan), /*#__PURE__*/React.createElement("option", {
-    value: "sportcomplex"
-  }, t.sportcomplex)), /*#__PURE__*/React.createElement("button", {
+    value: "mureseni"
+  }, t.mureseni), /*#__PURE__*/React.createElement("option", {
+    value: "center"
+  }, t.center), /*#__PURE__*/React.createElement("option", {
+    value: "pandurilor"
+  }, t.pandurilor), /*#__PURE__*/React.createElement("option", {
+    value: "libertate"
+  }, t.libertate), /*#__PURE__*/React.createElement("option", {
+    value: "unirii"
+  }, t.unirii)), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-green btn-sm",
     onClick: create
   }, t.submit)), list.length === 0 ? /*#__PURE__*/React.createElement("div", {
@@ -7013,10 +7285,13 @@ function HoodChart() {
   var app = useApp();
   var t = app.t, lang = app.lang;
   var hoodNames = {
-    tudor: "Tudor Vladimirescu",
-    auchan: "Zona Auchan",
-    center: "Centru / Cornești",
-    sportcomplex: "Sportcomplex"
+    tudor:      "Tudor Vladimirescu",
+    auchan:     "Zona Auchan",
+    mureseni:   "Mureșeni",
+    center:     "Centru / Cornești",
+    pandurilor: "Pandurilor",
+    libertate:  "Libertate",
+    unirii:     "Unirii"
   };
   var hoods = {};
   COURTS.forEach(function(c) {
@@ -7952,7 +8227,19 @@ function AboutPage() {
   }, "\uD83D\uDCDA MDPI Urban Science"), /*#__PURE__*/React.createElement("a", {
     href: "https://www.tirgumures.ro/strategie/SIDU_Targu_Mures.pdf",
     target: "_blank"
-  }, "\uD83D\uDCC4 SIDU T\xE2rgu Mure\u0219")))), tab === "funding" && /*#__PURE__*/React.createElement("div", {
+  }, "\uD83D\uDCC4 SIDU T\xE2rgu Mure\u0219"))), /*#__PURE__*/React.createElement("div", {
+    className: "card mt-2"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "mb-2"
+  }, "\uD83D\uDCCD " + (lang === "ro" ? "G\u0103se\u0219te-ne pe hart\u0103" : lang === "hu" ? "Tal\xe1lj meg min\ket a t\xe9rk\xe9pen" : "Find us on the map")), /*#__PURE__*/React.createElement("a", {
+    href: "https://www.google.com/maps/place/G2P/@46.5399,24.5568,15z",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    className: "btn btn-green btn-sm"
+  }, "\uD83D\uDDFA\uFE0F Google Maps \u2014 G2P T\xE2rgu Mure\u0219"), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs mt-1",
+    style: { color: "var(--textSec)" }
+  }, lang === "ro" ? "Str. Tg Mure\u015F, 540143 Mure\u015F \u00B7 Tel: 0770 115 654" : "Tg Mure\u015F, 540143 Mure\u015F \u00B7 Tel: 0770 115 654")), /*#__PURE__*/React.createElement("span", null)), tab === "funding" && /*#__PURE__*/React.createElement("div", {
     className: "grid gap-1"
   }, FUNDING.map((f, i) => /*#__PURE__*/React.createElement("div", {
     key: i,
@@ -9243,8 +9530,11 @@ function ReportsPage() {
             React.createElement("option", { value: "all" }, t.neighbourhood),
             React.createElement("option", { value: "tudor" }, t.tudor),
             React.createElement("option", { value: "auchan" }, t.auchan),
-            React.createElement("option", { value: "sportcomplex" }, t.sportcomplex),
-            React.createElement("option", { value: "center" }, t.center)
+            React.createElement("option", { value: "mureseni" }, t.mureseni),
+            React.createElement("option", { value: "center" }, t.center),
+            React.createElement("option", { value: "pandurilor" }, t.pandurilor),
+            React.createElement("option", { value: "libertate" }, t.libertate),
+            React.createElement("option", { value: "unirii" }, t.unirii)
           ),
           React.createElement("select", { value: filterCat, onChange: e => setFilterCat(e.target.value), style: { width: "auto", padding: ".3rem .5rem", fontSize: ".82rem" } },
             React.createElement("option", { value: "all" }, lang === "ro" ? "Categorie" : lang === "hu" ? "Kateg\xf3ria" : "Category"),
@@ -9311,7 +9601,15 @@ function Footer() {
     target: "_blank"
   }, "\uD83D\uDCDA MDPI")), /*#__PURE__*/React.createElement("p", {
     className: "mt-1"
-  }, t.copyright)));
+  }, t.copyright), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 mt-2",
+    style: { justifyContent: "center", flexWrap: "wrap" }
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "https://www.google.com/maps/place/G2P/@46.5399,24.5568,15z",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: { fontSize: ".78rem", color: "var(--textSec)", display: "flex", alignItems: "center", gap: ".3rem" }
+  }, /*#__PURE__*/React.createElement("span", null, "📍"), /*#__PURE__*/React.createElement("span", null, "G2P — T\xE2rgu Mureș pe Google Maps")))));
 }
 
 /* === App === */
