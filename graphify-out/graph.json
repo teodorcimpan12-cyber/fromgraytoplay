@@ -528,6 +528,66 @@
       "desc": "presence/{voterKey}: true. Scris de App cu onDisconnect().remove(). Citit de PresenceBadge (contor online)."
     },
     {
+      "id": "fb/achievements",
+      "type": "firebase",
+      "desc": "achievements/{voterKey}/{badgeId}: timestamp. Scris de useBadges().awardBadge(). Citit de BadgesGrid + useBadges. Season 2."
+    },
+    {
+      "id": "fb/pledges",
+      "type": "firebase",
+      "desc": "pledges/{pushId}: {name, pledge, emoji, ts}. Scris de PledgeWall. Citit de PledgeWall (slice 60 desc). Season 2."
+    },
+    {
+      "id": "BADGES",
+      "type": "constant",
+      "desc": "Array of 12 badge definitions: {id, icon, name:{ro,en,hu}, desc:{ro,en,hu}}. Season 2."
+    },
+    {
+      "id": "useBadges",
+      "type": "hook",
+      "desc": "Returns {earned, awardBadge}. Reads achievements/{voterKey} via useFirebase. awardBadge(id,cb) writes to achievements/ and calls cb with badge def."
+    },
+    {
+      "id": "BadgeUnlockModal",
+      "type": "component",
+      "desc": "Overlay modal cu animație pentru badge deblocat. Auto-close 4.5s. Props: {badge, lang, onClose}. Season 2."
+    },
+    {
+      "id": "BadgesGrid",
+      "type": "component",
+      "desc": "Grid 12 badge-uri earned/locked. Props: {lang}. Integrat în ProfilePage. Season 2."
+    },
+    {
+      "id": "CourtHealthRing",
+      "type": "component",
+      "desc": "SVG ring progres 0-100 scor sănătate teren. Citit din reports/ + ratings/{courtId}. Integrat în CourtDetail. Season 2."
+    },
+    {
+      "id": "getCourtHealthScore",
+      "type": "util",
+      "desc": "Calculează scor 0-100 din condiție(40pt), rapoarte deschise(-6/rep), ratings(30pt), checkins recente(10pt). Season 2."
+    },
+    {
+      "id": "NeighborhoodRace",
+      "type": "component",
+      "desc": "Bar chart race cartiere după scor civic (activitate+rapoarte). Live reads activity/ + reports/. Tab 'race' ImpactPage. Season 2."
+    },
+    {
+      "id": "PledgeWall",
+      "type": "component",
+      "desc": "Wall promisiuni civice. Input emoji+name+text, scrie pledges/. Integrat în PetitionPage. Season 2."
+    },
+    {
+      "id": "CourtQRCard",
+      "type": "component",
+      "desc": "Modal QR code generat cu QRious (lazy CDN). Download branded PNG. Props: {court, onClose}. Integrat în CourtDetail. Season 2."
+    },
+    {
+      "id": "CouncilCountdown",
+      "type": "component",
+      "desc": "Countdown zile/ore/min până la ședința de consiliu. Dates hardcodate. Tab 'race' ImpactPage. Season 2."
+    },
+    {
       "id": "AdminSiteTab",
       "type": "component",
       "line": 0,
@@ -1254,6 +1314,40 @@
     "animation": [
       "animate-in",
       "live-dot"
+    ],
+    "season2": [
+      "badge-unlock-overlay",
+      "badge-unlock-card",
+      "badge-unlock-icon",
+      "badge-unlock-kicker",
+      "badge-unlock-name",
+      "badge-unlock-desc",
+      "badges-grid",
+      "badge-slot",
+      "badge-slot.earned",
+      "badge-slot.locked",
+      "health-ring-wrap",
+      "health-ring",
+      "health-ring-bg",
+      "health-ring-fill",
+      "health-ring-label",
+      "health-ring-num",
+      "health-ring-sub",
+      "health-trend-badge",
+      "race-row",
+      "race-rank",
+      "race-label",
+      "race-bar-wrap",
+      "race-bar",
+      "race-score",
+      "pledge-grid",
+      "pledge-tile",
+      "pledge-tile-new",
+      "countdown-wrap",
+      "countdown-unit",
+      "countdown-num",
+      "countdown-label",
+      "countdown-sep"
     ]
   },
   "design_tokens": {
