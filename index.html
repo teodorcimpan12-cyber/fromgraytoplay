@@ -343,7 +343,47 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .ticker-item b{color:var(--text)}
 @keyframes tickerMove{to{transform:translateX(-100%)}}
 .h3d-btn,.btn-green{will-change:transform}
-@media(prefers-reduced-motion:reduce){.lr span{animation:none;opacity:1;transform:none}.h3d-particle{display:none}.h3d-title .p{animation:none}.tilt{transition:none}.ripple{display:none}.page-wipe{display:none}.aurora span{animation:none}.shimmer-text{animation:none;background:none;color:inherit}.ticker{animation:none}.glow-border{animation:none}.card::after,.stat-tile::after{display:none}}
+/* Rule-everything: banner / presence / palette / maintenance / admin controls */
+.site-banner{text-align:center;padding:.5rem 1rem;font-size:.85rem;font-weight:600;color:#fff;animation:slideDown .3s}
+.sb-info{background:linear-gradient(90deg,var(--teal),var(--green))}
+.sb-warn{background:linear-gradient(90deg,var(--coral),#F59E0B)}
+.sb-alert{background:linear-gradient(90deg,var(--red),#B91C1C)}
+.presence{display:inline-flex;align-items:center;gap:.35rem;font-size:.72rem;color:var(--green);font-family:'Space Mono',monospace;padding:.15rem .55rem;border:1px solid rgba(16,185,129,.35);border-radius:20px;margin:0 .2rem}
+.presence i{width:8px;height:8px;border-radius:50%;background:var(--green);animation:presencePulse 1.8s infinite}
+@keyframes presencePulse{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.45)}50%{box-shadow:0 0 0 6px rgba(16,185,129,0)}}
+.cp-overlay{position:fixed;inset:0;z-index:9000;background:rgba(8,10,22,.55);backdrop-filter:blur(6px);display:flex;justify-content:center;align-items:flex-start;padding:12vh 1rem 0;animation:fadeIn .15s}
+.cp{width:min(560px,100%);background:var(--bgCard);border:1px solid var(--border);border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,.45);overflow:hidden;animation:cpIn .22s cubic-bezier(.22,1,.36,1)}
+@keyframes cpIn{from{opacity:0;transform:translateY(-16px) scale(.97)}to{opacity:1;transform:none}}
+.cp-input{border:none;border-bottom:1px solid var(--border);border-radius:0;padding:.9rem 1rem;font-size:1rem;background:transparent}
+.cp-input:focus{border-color:var(--green)}
+.cp-list{max-height:46vh;overflow-y:auto;padding:.4rem}
+.cp-group{font-size:.66rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--textSec);padding:.55rem .6rem .25rem;font-family:'Space Mono',monospace}
+.cp-item{display:flex;align-items:center;gap:.6rem;padding:.55rem .6rem;border-radius:8px;cursor:pointer;font-size:.9rem}
+.cp-item.sel{background:rgba(16,185,129,.13);box-shadow:inset 2px 0 0 var(--green)}
+.cp-item small{color:var(--textSec)}
+.cp-empty{padding:1.4rem;text-align:center;color:var(--textSec)}
+.cp-hint{padding:.5rem .9rem;border-top:1px solid var(--border);font-size:.7rem;color:var(--textSec);font-family:'Space Mono',monospace}
+.maint{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;background:var(--dark);color:#fff}
+.maint-ic{font-size:3.2rem;margin-bottom:1rem;animation:pulse 2s infinite}
+.maint h1{font-size:1.8rem;margin-bottom:.5rem}
+.maint p{color:#9CA3AF;max-width:420px}
+.a-sec{margin:1.5rem 0 .6rem;font-size:.95rem}
+.a-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:#151828;border:1px solid #1E2235;border-radius:10px;padding:.65rem .8rem;margin-bottom:.5rem}
+.a-row.a-danger{border-color:#7F1D1D}
+.a-toggle{width:46px;height:26px;border-radius:20px;border:1px solid #1E2235;background:#0D101F;position:relative;cursor:pointer;transition:background .2s,border-color .2s;flex-shrink:0}
+.a-toggle i{position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#6B7280;transition:transform .25s cubic-bezier(.22,1,.36,1),background .2s}
+.a-toggle.on{background:rgba(16,185,129,.25);border-color:#10B981}
+.a-toggle.on i{transform:translateX(20px);background:#10B981}
+.a-del{background:none;border:1px solid #7F1D1D;color:#F87171;border-radius:6px;padding:.25rem .55rem;cursor:pointer;flex-shrink:0}
+.a-del:hover{background:#7F1D1D;color:#fff}
+.a-swatch{width:30px;height:30px;border-radius:50%;border:2px solid transparent;cursor:pointer}
+.a-swatch.on{border-color:#fff;box-shadow:0 0 0 2px #10B981}
+.featured-card{border-left:none}
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+.no-fx *,.no-fx *::before,.no-fx *::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+.no-fx .page-wipe,.no-fx .aurora,.no-fx .h3d-particles,.no-fx .ripple{display:none !important}
+.no-fx .card::after,.no-fx .stat-tile::after{display:none}
+@media(prefers-reduced-motion:reduce){.lr span{animation:none;opacity:1;transform:none}.h3d-particle{display:none}.h3d-title .p{animation:none}.tilt{transition:none}.ripple{display:none}.page-wipe{display:none}.aurora span{animation:none}.shimmer-text{animation:none;background:none;color:inherit}.ticker{animation:none}.glow-border{animation:none}.card::after,.stat-tile::after{display:none}.presence i{animation:none}.cp,.cp-overlay{animation:none}.maint-ic{animation:none}}
 </style>
 </head>
 <body>
@@ -1249,6 +1289,23 @@ function downloadFile(name, content, mime) {
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 
+/* Show-off: theme switch with a circular reveal (View Transitions API).
+   Falls back to a plain toggle on unsupported browsers / reduced motion. */
+function switchTheme(e, theme, setTheme) {
+  const next = theme === "dark" ? "light" : "dark";
+  const rm = window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+  if (!document.startViewTransition || rm || !ReactDOM.flushSync) { setTheme(next); return; }
+  const x = (e && e.clientX) || window.innerWidth / 2, y = (e && e.clientY) || 40;
+  const vt = document.startViewTransition(() => { ReactDOM.flushSync(() => setTheme(next)); });
+  vt.ready.then(() => {
+    const r = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+    document.documentElement.animate(
+      { clipPath: ["circle(0px at " + x + "px " + y + "px)", "circle(" + r + "px at " + x + "px " + y + "px)"] },
+      { duration: 550, easing: "cubic-bezier(.22,1,.36,1)", pseudoElement: "::view-transition-new(root)" }
+    );
+  }).catch(() => {});
+}
+
 function compressImage(file, maxDim, quality) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -1337,6 +1394,44 @@ T.en.heatmap = "Report heatmap";
 T.en.heatmapOn = "Heatmap on — red circles show problem density";
 T.hu.heatmap = "Bejelentés-hőtérkép"; // TODO: HU review
 T.hu.heatmapOn = "Hőtérkép bekapcsolva — a piros körök a problémák sűrűségét mutatják"; // TODO: HU review
+
+/* === Admin rule-everything: maintenance / presence / featured / palette === */
+T.ro.maintenanceTitle = "Revenim imediat";
+T.ro.maintenanceMsg = "Site-ul este în mentenanță programată. Mulțumim pentru răbdare!";
+T.ro.onlineNow = "online acum";
+T.ro.featured = "Terenul săptămânii";
+T.ro.featuredCta = "Vezi terenul";
+T.ro.cmdPlaceholder = "Caută pagini, terenuri, acțiuni…";
+T.ro.cmdPages = "Pagini";
+T.ro.cmdCourts = "Terenuri";
+T.ro.cmdActions = "Acțiuni";
+T.ro.cmdTheme = "Comută tema";
+T.ro.cmdLang = "Schimbă limba";
+T.ro.cmdHint = "↑↓ navighează · Enter deschide · Esc închide";
+T.en.maintenanceTitle = "Back soon";
+T.en.maintenanceMsg = "The site is under scheduled maintenance. Thanks for your patience!";
+T.en.onlineNow = "online now";
+T.en.featured = "Court of the week";
+T.en.featuredCta = "View court";
+T.en.cmdPlaceholder = "Search pages, courts, actions…";
+T.en.cmdPages = "Pages";
+T.en.cmdCourts = "Courts";
+T.en.cmdActions = "Actions";
+T.en.cmdTheme = "Toggle theme";
+T.en.cmdLang = "Switch language";
+T.en.cmdHint = "↑↓ navigate · Enter open · Esc close";
+T.hu.maintenanceTitle = "Hamarosan visszatérünk"; // TODO: HU review
+T.hu.maintenanceMsg = "Az oldal ütemezett karbantartás alatt áll. Köszönjük a türelmet!"; // TODO: HU review
+T.hu.onlineNow = "most online"; // TODO: HU review
+T.hu.featured = "A hét pályája"; // TODO: HU review
+T.hu.featuredCta = "Pálya megtekintése"; // TODO: HU review
+T.hu.cmdPlaceholder = "Oldalak, pályák, műveletek keresése…"; // TODO: HU review
+T.hu.cmdPages = "Oldalak"; // TODO: HU review
+T.hu.cmdCourts = "Pályák"; // TODO: HU review
+T.hu.cmdActions = "Műveletek"; // TODO: HU review
+T.hu.cmdTheme = "Téma váltása"; // TODO: HU review
+T.hu.cmdLang = "Nyelv váltása"; // TODO: HU review
+T.hu.cmdHint = "↑↓ navigálás · Enter megnyitás · Esc bezárás"; // TODO: HU review
 
 const COURTS = [{
   id: "c1",
@@ -1740,6 +1835,90 @@ function NotifPanel({ onClose }) {
   );
 }
 
+/* Live presence counter — presence/{voterKey} written from App. */
+function PresenceBadge() {
+  const { t } = useApp();
+  const p = useFirebase("presence");
+  const n = p ? Object.keys(p).length : 0;
+  if (!n) return null;
+  return React.createElement("span", { className: "presence", title: n + " " + t.onlineNow },
+    React.createElement("i", null), n);
+}
+
+/* ============================================================
+   COMMAND PALETTE — Ctrl/Cmd+K. Pages, courts, quick actions.
+   ============================================================ */
+function CommandPalette({ onClose }) {
+  const { t, lang, setLang, theme, setTheme, setPage, settings } = useApp();
+  const [q, setQ] = useState("");
+  const [idx, setIdx] = useState(0);
+  const inputRef = useRef(null);
+  useEffect(() => { if (inputRef.current) inputRef.current.focus(); }, []);
+  const norm = s => (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const flags = (settings && settings.flags) || {};
+  const items = [];
+  [["home", t.home, "🏠"], ["courts", t.courts, "🏟️"], ["reports", t.reportPageTitle, "⚠️"],
+   ["petition", t.petition, "✊"], ["community", t.community, "💬"], ["impact", t.impact, "📊"],
+   ["help", t.help, "🤝"], ["about", t.about, "ℹ️"], ["profile", t.profile, "👤"]]
+    .filter(pg => flags[pg[0]] !== false)
+    .forEach(pg => items.push({ g: t.cmdPages, ic: pg[2], l: pg[1], run: () => setPage(pg[0]) }));
+  COURTS.forEach(c => items.push({ g: t.cmdCourts, ic: "📍", l: c.name, sub: c.address, run: () => { location.hash = "#court-" + c.id; } }));
+  items.push({ g: t.cmdActions, ic: theme === "dark" ? "☀️" : "🌙", l: t.cmdTheme, run: () => switchTheme(null, theme, setTheme) });
+  items.push({ g: t.cmdActions, ic: "🌐", l: t.cmdLang + " (" + nextLang(lang).toUpperCase() + ")", run: () => setLang(nextLang(lang)) });
+  const list = q ? items.filter(i => norm(i.l + " " + (i.sub || "")).indexOf(norm(q)) >= 0) : items;
+  const sel = Math.max(0, Math.min(idx, list.length - 1));
+  const exec = i => { if (!i) return; onClose(); i.run(); };
+  const key = e => {
+    if (e.key === "ArrowDown") { setIdx(v => Math.min(v + 1, list.length - 1)); e.preventDefault(); }
+    else if (e.key === "ArrowUp") { setIdx(v => Math.max(v - 1, 0)); e.preventDefault(); }
+    else if (e.key === "Enter") exec(list[sel]);
+    else if (e.key === "Escape") onClose();
+  };
+  let lastG = null;
+  return React.createElement("div", { className: "cp-overlay", onClick: onClose },
+    React.createElement("div", { className: "cp", onClick: e => e.stopPropagation(), role: "dialog", "aria-modal": "true", "aria-label": t.cmdPlaceholder },
+      React.createElement("input", { ref: inputRef, className: "cp-input", placeholder: t.cmdPlaceholder, value: q,
+        onChange: e => { setQ(e.target.value); setIdx(0); }, onKeyDown: key, "aria-label": t.cmdPlaceholder }),
+      React.createElement("div", { className: "cp-list", role: "listbox" },
+        list.length === 0
+          ? React.createElement("div", { className: "cp-empty" }, "∅")
+          : list.slice(0, 40).map((i, n) => {
+              const head = i.g !== lastG ? React.createElement("div", { className: "cp-group", key: "g" + n }, i.g) : null;
+              lastG = i.g;
+              return React.createElement(React.Fragment, { key: n }, head,
+                React.createElement("div", {
+                  className: "cp-item" + (n === sel ? " sel" : ""), role: "option", "aria-selected": n === sel,
+                  onMouseEnter: () => setIdx(n), onClick: () => exec(i)
+                },
+                  React.createElement("span", { className: "cp-ic" }, i.ic),
+                  React.createElement("span", { className: "cp-l" }, i.l, i.sub && React.createElement("small", null, " — " + i.sub))));
+            })),
+      React.createElement("div", { className: "cp-hint" }, t.cmdHint)));
+}
+
+/* Admin-picked "court of the week" spotlight on Home (settings/featuredCourtId). */
+function FeaturedCourt() {
+  const { t, settings } = useApp();
+  const fbCourts = useFirebase("courts");
+  const id = settings && settings.featuredCourtId;
+  if (!id) return null;
+  const extra = fbCourts ? Object.entries(fbCourts).map(([cid, c]) => ({ id: cid, ...c })) : [];
+  const c = COURTS.concat(extra).find(x => x.id === id);
+  if (!c) return null;
+  const w = getCourtWeather(c.condition, t);
+  return React.createElement("section", { className: "section" },
+    React.createElement("div", { className: "container" },
+      React.createElement(Reveal, null,
+        React.createElement(TiltDiv, { max: 5, className: "card glow-border featured-card" },
+          React.createElement("div", { className: "flex justify-between items-center", style: { gap: "1rem", flexWrap: "wrap" } },
+            React.createElement("div", null,
+              React.createElement("span", { className: "badge badge-green", style: { display: "inline-block", marginBottom: ".4rem" } }, "⭐ " + t.featured),
+              React.createElement("h3", { className: "barlow", style: { fontSize: "1.35rem" } }, c.name),
+              React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)", marginBottom: ".4rem" } }, c.address),
+              React.createElement("span", { className: "badge", style: { background: w.color + "22", color: w.color } }, w.icon, " ", w.label)),
+            React.createElement("button", { className: "btn btn-green", onClick: () => { location.hash = "#court-" + c.id; } }, t.featuredCta + " →"))))));
+}
+
 function Navbar() {
   const {
     t,
@@ -1749,7 +1928,9 @@ function Navbar() {
     setTheme,
     page,
     setPage,
-    user
+    user,
+    settings,
+    setCmd
   } = useApp();
   const [mob, setMob] = useState(false);
   const [showNotif, setShowNotif] = useState(false);
@@ -1785,7 +1966,7 @@ function Navbar() {
   }, {
     k: "about",
     l: t.about
-  }];
+  }].filter(n => !(settings && settings.flags && settings.flags[n.k] === false));
   const NL = ({
     k,
     l,
@@ -1828,10 +2009,17 @@ function Navbar() {
   }, "🔔", unreadCount > 0 && /*#__PURE__*/React.createElement("span", {
     style: { position:"absolute", top:"-4px", right:"-6px", background:"var(--coral)", color:"#fff", borderRadius:"50%", fontSize:".6rem", fontWeight:700, minWidth:"16px", height:"16px", lineHeight:"16px", textAlign:"center", padding:"0 2px" }
   }, unreadCount > 9 ? "9+" : unreadCount)),
+  /*#__PURE__*/React.createElement(PresenceBadge, null),
+  /*#__PURE__*/React.createElement("button", {
+    className: "nav-cmd",
+    title: "Ctrl+K",
+    "aria-label": "Search (Ctrl+K)",
+    onClick: () => setCmd(true)
+  }, "🔍"),
   /*#__PURE__*/React.createElement("button", {
     onClick: () => setLang(nextLang(lang))
   }, t.language), /*#__PURE__*/React.createElement("button", {
-    onClick: () => setTheme(theme === "dark" ? "light" : "dark")
+    onClick: e => switchTheme(e, theme, setTheme)
   }, theme === "dark" ? "☀️" : "🌙")), /*#__PURE__*/React.createElement("button", {
     className: "hamburger",
     onClick: () => setMob(true)
@@ -1865,7 +2053,7 @@ function Navbar() {
     onClick: () => setLang(nextLang(lang))
   }, t.language), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-outline",
-    onClick: () => setTheme(theme === "dark" ? "light" : "dark")
+    onClick: e => switchTheme(e, theme, setTheme)
   }, theme === "dark" ? "☀️" : "🌙"))));
 }
 
@@ -2730,7 +2918,7 @@ function HomePage() {
     value: tv, label: t.petitionVotes, color: "var(--coral)"
   }), /*#__PURE__*/React.createElement(StatTile, {
     value: vc, label: t.volunteers, color: "var(--teal)"
-  })))), React.createElement(ActivityTicker, null), /*#__PURE__*/React.createElement("section", {
+  })))), React.createElement(ActivityTicker, null), React.createElement(FeaturedCourt, null), /*#__PURE__*/React.createElement("section", {
     className: "section"
   }, /*#__PURE__*/React.createElement("div", {
     className: "container"
@@ -3169,7 +3357,7 @@ function CourtDetail({
   React.createElement(RatingSection, { court: c }),
   /*#__PURE__*/React.createElement("div", {
     className: "flex gap-1 mt-2"
-  }, /*#__PURE__*/React.createElement("button", {
+  }, (useApp().settings?.flags?.booking) !== false && /*#__PURE__*/React.createElement("button", {
     className: "btn btn-green btn-sm",
     onClick: onBook
   }, "\uD83D\uDCC5 ", t.bookCourt), /*#__PURE__*/React.createElement("button", {
@@ -6108,7 +6296,7 @@ function ProfilePage() {
     className: "flex justify-between items-center mb-1"
   }, /*#__PURE__*/React.createElement("span", null, theme === "dark" ? "🌙 Dark" : "☀️ Light"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-outline",
-    onClick: () => setTheme(theme === "dark" ? "light" : "dark")
+    onClick: e => switchTheme(e, theme, setTheme)
   }, theme === "dark" ? "☀️" : "🌙")), /*#__PURE__*/React.createElement("div", {
     className: "flex justify-between items-center mb-1"
   }, /*#__PURE__*/React.createElement("span", null, "Language"), /*#__PURE__*/React.createElement("button", {
@@ -6167,10 +6355,135 @@ function AdminLogin({
     }
   }, "\u2190 Back")));
 }
+/* ============================================================
+   ADMIN — SITE CONTROL. Writes settings/ which every client
+   follows in realtime: maintenance, banner, broadcast, feature
+   flags, featured court, accent color, danger zone.
+   ============================================================ */
+function AdminSiteTab() {
+  const s = useFirebase("settings") || {};
+  const flags = s.flags || {};
+  const fbCourts = useFirebase("courts");
+  const allCourts = COURTS.concat(fbCourts ? Object.entries(fbCourts).map(([id, c]) => ({ id, ...c })) : []);
+  const set = (path, val) => db.ref("settings/" + path).set(val);
+  const [bText, setBText] = useState("");
+  const [bType, setBType] = useState("info");
+  const [bcast, setBcast] = useState("");
+  const [sent, setSent] = useState(false);
+  const Row = (title, sub, child, danger) => React.createElement("div", { className: "a-row" + (danger ? " a-danger" : ""), key: title },
+    React.createElement("div", { style: { minWidth: 0 } },
+      React.createElement("div", { style: { fontWeight: 600, fontSize: ".88rem" } }, title),
+      sub && React.createElement("div", { style: { color: "#6B7280", fontSize: ".74rem" } }, sub)),
+    React.createElement("div", { className: "flex gap-1 items-center", style: { flexShrink: 0 } }, child));
+  const Toggle = (on, onChange) => React.createElement("button", {
+    className: "a-toggle" + (on ? " on" : ""), onClick: () => onChange(!on), "aria-pressed": !!on
+  }, React.createElement("i", null));
+  const SWATCHES = [["", "Default"], ["#2563EB", "Blue"], ["#7C3AED", "Purple"], ["#DB2777", "Pink"], ["#F97316", "Orange"]];
+  return React.createElement("div", null,
+    React.createElement("h2", null, "⚙️ Site Control"),
+    React.createElement("p", { style: { color: "#6B7280", fontSize: ".8rem", marginBottom: "1rem" } },
+      "Live switches — every visitor's app reacts instantly. No deploy needed."),
+    React.createElement("h3", { className: "a-sec" }, "🚦 Status"),
+    Row("Maintenance mode", "Locks the whole site behind a maintenance screen. Admin keeps access.",
+      Toggle(!!s.maintenance, v => set("maintenance", v)), !!s.maintenance),
+    React.createElement("h3", { className: "a-sec" }, "📣 Announcement banner"),
+    Row("Visible", "Shown under the navbar on every page.",
+      Toggle(!!(s.banner && s.banner.on), v => set("banner/on", v))),
+    React.createElement("div", { className: "a-row", style: { flexWrap: "wrap" } },
+      React.createElement("input", { placeholder: (s.banner && s.banner.text) || "Banner text…", value: bText,
+        onChange: e => setBText(e.target.value), style: { flex: 1, minWidth: 180, background: "#0D101F", border: "1px solid #1E2235", color: "#E5E7EB" } }),
+      React.createElement("select", { value: bType, onChange: e => setBType(e.target.value),
+        style: { width: "auto", background: "#0D101F", border: "1px solid #1E2235", color: "#E5E7EB" } },
+        React.createElement("option", { value: "info" }, "info (green)"),
+        React.createElement("option", { value: "warn" }, "warn (orange)"),
+        React.createElement("option", { value: "alert" }, "alert (red)")),
+      React.createElement("button", { className: "btn btn-sm btn-green", onClick: () => {
+        if (!bText.trim() && !(s.banner && s.banner.text)) return;
+        set("banner", { on: true, text: bText.trim() || (s.banner && s.banner.text) || "", type: bType });
+        setBText("");
+      } }, "Save")),
+    React.createElement("h3", { className: "a-sec" }, "📢 Broadcast toast"),
+    React.createElement("div", { className: "a-row", style: { flexWrap: "wrap" } },
+      React.createElement("input", { placeholder: "Message pushed live to every visitor, once…", value: bcast,
+        onChange: e => setBcast(e.target.value), style: { flex: 1, minWidth: 180, background: "#0D101F", border: "1px solid #1E2235", color: "#E5E7EB" } }),
+      React.createElement("button", { className: "btn btn-sm btn-green", onClick: () => {
+        if (!bcast.trim()) return;
+        set("broadcast", { text: bcast.trim(), ts: Date.now() });
+        setBcast(""); setSent(true); setTimeout(() => setSent(false), 2000);
+      } }, sent ? "Sent ✓" : "Send")),
+    React.createElement("h3", { className: "a-sec" }, "🎛 Feature flags"),
+    Row("Petition", "Page + nav link", Toggle(flags.petition !== false, v => set("flags/petition", v))),
+    Row("Community", "Forum, events, gallery, teams", Toggle(flags.community !== false, v => set("flags/community", v))),
+    Row("Bookings", "Reserve-a-slot button on court pages", Toggle(flags.booking !== false, v => set("flags/booking", v))),
+    Row("Animations & effects", "Site-wide kill-switch for the show-off effect pack", Toggle(flags.effects !== false, v => set("flags/effects", v))),
+    React.createElement("h3", { className: "a-sec" }, "⭐ Court of the week"),
+    React.createElement("div", { className: "a-row" },
+      React.createElement("select", { value: s.featuredCourtId || "", onChange: e => set("featuredCourtId", e.target.value),
+        style: { background: "#0D101F", border: "1px solid #1E2235", color: "#E5E7EB" } },
+        React.createElement("option", { value: "" }, "— none —"),
+        allCourts.map(c => React.createElement("option", { key: c.id, value: c.id }, c.name)))),
+    React.createElement("h3", { className: "a-sec" }, "🎨 Accent color"),
+    React.createElement("div", { className: "a-row" },
+      React.createElement("div", { className: "flex gap-1" },
+        SWATCHES.map(([hex, name]) => React.createElement("button", {
+          key: name, title: name,
+          className: "a-swatch" + ((s.accent || "") === hex ? " on" : ""),
+          style: { background: hex || "#10B981" },
+          onClick: () => set("accent", hex)
+        })))),
+    React.createElement("h3", { className: "a-sec", style: { color: "#F87171" } }, "☢️ Danger zone"),
+    Row("Reset petition votes", "Sets flip / mural / both to 0. Signup rows are kept.",
+      React.createElement("button", { className: "a-del", onClick: () => {
+        if (window.confirm("Reset ALL votes to 0?")) db.ref("votes").set({ flip: 0, mural: 0, both: 0 });
+      } }, "Reset"), true),
+    Row("Clear activity feed", "Removes every entry from activity/ (ticker + feed + notifications).",
+      React.createElement("button", { className: "a-del", onClick: () => {
+        if (window.confirm("Delete the entire activity feed?")) db.ref("activity").remove();
+      } }, "Clear"), true));
+}
+
+/* ADMIN — MODERATION: delete any user-generated content. */
+function AdminModTab() {
+  const fo = useFirebase("forum");
+  const ga = useFirebase("gallery");
+  const ev = useFirebase("events");
+  const te = useFirebase("teams");
+  const ac = useFirebase("activity");
+  const gm = useFirebase("games");
+  const del = path => { if (window.confirm("Delete permanently?")) db.ref(path).remove(); };
+  const gameList = gm ? Object.entries(gm).flatMap(([cid, g]) =>
+    Object.entries(g || {}).map(([gid, v]) => ({ id: cid + "/" + gid, ...v }))) : null;
+  const sec = (title, obj, path, fmt) => {
+    const list = (Array.isArray(obj) ? obj.slice() : obj ? Object.entries(obj).map(([id, v]) => ({ id, ...v })) : [])
+      .sort((a, b) => (b.timestamp || b.createdAt || 0) - (a.timestamp || a.createdAt || 0)).slice(0, 15);
+    const total = Array.isArray(obj) ? obj.length : obj ? Object.keys(obj).length : 0;
+    return React.createElement("div", { key: title, style: { marginBottom: "1.4rem" } },
+      React.createElement("h3", { className: "a-sec" }, title + " (" + total + ")"),
+      list.length === 0
+        ? React.createElement("p", { style: { color: "#6B7280", fontSize: ".8rem" } }, "Empty")
+        : list.map(it => React.createElement("div", { className: "a-row", key: it.id },
+            React.createElement("div", { style: { minWidth: 0, flex: 1 } },
+              React.createElement("div", { style: { fontSize: ".85rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, fmt(it) || "—"),
+              React.createElement("div", { style: { color: "#6B7280", fontSize: ".72rem" } },
+                (it.userName || it.createdBy || it.name || "?") + " · " + (it.timestamp || it.createdAt ? new Date(it.timestamp || it.createdAt).toLocaleString() : ""))),
+            React.createElement("button", { className: "a-del", onClick: () => del(path + "/" + it.id) }, "🗑"))));
+  };
+  return React.createElement("div", null,
+    React.createElement("h2", null, "🛡️ Moderation"),
+    React.createElement("p", { style: { color: "#6B7280", fontSize: ".8rem", marginBottom: "1rem" } },
+      "Latest 15 of each. Deleting is immediate and permanent."),
+    sec("💬 Forum", fo, "forum", x => x.text),
+    sec("📸 Gallery / evidence", ga, "gallery", x => x.caption || x.courtName || "photo"),
+    sec("📅 Events", ev, "events", x => x.title),
+    sec("👥 Teams", te, "teams", x => (x.name || "") + (x.sport ? " · " + x.sport : "")),
+    sec("⚽ Active games", gameList, "games", x => (x.sport || "game") + (x.note ? " · " + x.note : "")),
+    sec("⚡ Activity feed", ac, "activity", x => x.type));
+}
+
 function AdminPanel({
   onExit
 }) {
-  const [tab, setTab] = useState("signups");
+  const [tab, setTab] = useState("site");
   const su = useFirebase("signups");
   const vo = useFirebase("votes");
   const co = useFirebase("courts");
@@ -6249,6 +6562,12 @@ function AdminPanel({
     });
   };
   const tabs = [{
+    k: "site",
+    l: "⚙️ Site Control"
+  }, {
+    k: "moderation",
+    l: "🛡️ Moderation"
+  }, {
     k: "signups",
     l: "📋 Signups (" + sl.length + ")"
   }, {
@@ -6298,7 +6617,7 @@ function AdminPanel({
     onClick: () => setTab(tb.k)
   }, tb.l))), /*#__PURE__*/React.createElement("div", {
     className: "admin-main"
-  }, tab === "signups" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Petition Signups"), /*#__PURE__*/React.createElement("div", {
+  }, tab === "site" && React.createElement(AdminSiteTab, null), tab === "moderation" && React.createElement(AdminModTab, null), tab === "signups" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Petition Signups"), /*#__PURE__*/React.createElement("div", {
     className: "a-stats"
   }, /*#__PURE__*/React.createElement("div", {
     className: "a-stat"
@@ -7073,6 +7392,10 @@ function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem("g2p_theme") || (window.matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light"));
   const [page, setPageRaw] = useState(pageFromHash);
   const [wipe, setWipe] = useState(0);
+  const [cmd, setCmd] = useState(false);
+  // Admin "rule everything": live site settings (maintenance, banner, flags,
+  // featured court, accent, broadcast) — every client reacts in realtime.
+  const settings = useFirebase("settings");
   // setPage keeps the URL hash in sync so every page (and shared court link)
   // is bookmarkable; pushState avoids re-triggering the hashchange listener.
   const setPage = useCallback(p => {
@@ -7156,6 +7479,39 @@ function App() {
       document.removeEventListener("mouseover", magnet);
     };
   }, []);
+  // Command palette hotkey.
+  useEffect(() => {
+    const h = e => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K")) {
+        e.preventDefault();
+        setCmd(v => !v);
+      }
+    };
+    window.addEventListener("keydown", h);
+    return () => window.removeEventListener("keydown", h);
+  }, []);
+  // Live presence: register this visitor, auto-cleanup on disconnect.
+  useEffect(() => {
+    try {
+      const ref = db.ref("presence/" + getVoterKey());
+      ref.set(true);
+      ref.onDisconnect().remove();
+      const bye = () => { try { ref.remove(); } catch (e) {} };
+      window.addEventListener("beforeunload", bye);
+      return () => { window.removeEventListener("beforeunload", bye); bye(); };
+    } catch (e) { /* offline */ }
+  }, []);
+  // Admin accent color override (settings/accent).
+  useEffect(() => {
+    const a = settings && settings.accent;
+    if (a) document.documentElement.style.setProperty("--green", a);
+    else document.documentElement.style.removeProperty("--green");
+  }, [settings && settings.accent]);
+  // Admin effects kill-switch (settings/flags/effects === false).
+  useEffect(() => {
+    const off = !!(settings && settings.flags && settings.flags.effects === false);
+    document.documentElement.classList.toggle("no-fx", off);
+  }, [settings && settings.flags && settings.flags.effects]);
   useEffect(() => {
     const h = e => {
       if (e.ctrlKey && e.shiftKey && (e.key === "A" || e.key === "a")) {
@@ -7182,6 +7538,14 @@ function App() {
     setToastMsg(msg);
     setTimeout(() => setToastMsg(""), 3e3);
   }, []);
+  // Admin broadcast: one realtime toast per message to every visitor.
+  useEffect(() => {
+    const b = settings && settings.broadcast;
+    if (!b || !b.ts || !b.text) return;
+    if (b.ts <= +(localStorage.getItem("g2p_bc_seen") || 0)) return;
+    localStorage.setItem("g2p_bc_seen", String(b.ts));
+    toast("📢 " + b.text);
+  }, [settings && settings.broadcast && settings.broadcast.ts]);
   const t = T[lang];
   const ctx = {
     t,
@@ -7193,7 +7557,9 @@ function App() {
     setPage,
     user,
     setUser,
-    toast
+    toast,
+    settings,
+    setCmd
   };
   if (adminMode && !adminAuth) return /*#__PURE__*/React.createElement(AdminLogin, {
     onAuth: () => setAdminAuth(true),
@@ -7209,6 +7575,11 @@ function App() {
       location.hash = "";
     }
   });
+  if (settings && settings.maintenance && !adminMode) return /*#__PURE__*/React.createElement("div", {
+    className: "maint"
+  }, /*#__PURE__*/React.createElement("div", { className: "maint-ic" }, "🛠️"),
+     /*#__PURE__*/React.createElement("h1", null, t.maintenanceTitle),
+     /*#__PURE__*/React.createElement("p", null, t.maintenanceMsg));
   if (onboard) return /*#__PURE__*/React.createElement(Onboarding, {
     lang: lang,
     onDone: () => {
@@ -7217,6 +7588,7 @@ function App() {
     }
   });
   const P = () => {
+    if (settings && settings.flags && settings.flags[page] === false) return /*#__PURE__*/React.createElement(HomePage, null);
     switch (page) {
       case "courts":
         return /*#__PURE__*/React.createElement(CourtsPage, null);
@@ -7246,7 +7618,12 @@ function App() {
     "aria-hidden": "true"
   }), /*#__PURE__*/React.createElement(InstallBanner, {
     lang: lang
-  }), /*#__PURE__*/React.createElement(Navbar, null), /*#__PURE__*/React.createElement("main", {
+  }), /*#__PURE__*/React.createElement(Navbar, null), settings && settings.banner && settings.banner.on && settings.banner.text && /*#__PURE__*/React.createElement("div", {
+    className: "site-banner sb-" + (settings.banner.type || "info"),
+    role: "status"
+  }, settings.banner.text), cmd && /*#__PURE__*/React.createElement(CommandPalette, {
+    onClose: () => setCmd(false)
+  }), /*#__PURE__*/React.createElement("main", {
     style: {
       minHeight: "80vh"
     }
