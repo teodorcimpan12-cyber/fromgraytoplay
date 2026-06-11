@@ -457,6 +457,14 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .sat-slider-row{display:flex;align-items:center;gap:.6rem;margin-top:.6rem}
 .sat-slider-row input[type=range]{flex:1;padding:0;accent-color:var(--green)}
 .sat-year{font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;color:var(--textSec);flex-shrink:0}
+/* === Hoop game (petition hook) === */
+.hoop-wrap{position:relative;border-radius:var(--radius);overflow:hidden;background:#262b33}
+.hoop-canvas{display:block;width:100%;touch-action:none;cursor:grab}
+.hoop-skip{position:absolute;top:.5rem;right:.7rem;background:rgba(11,14,24,.45);border:none;color:rgba(255,255,255,.75);font-size:.72rem;font-family:'Space Mono',monospace;padding:.25rem .6rem;border-radius:14px;cursor:pointer;z-index:2}
+.hoop-skip:hover{color:#fff}
+.hoop-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:rgba(11,14,24,.84);padding:1.2rem;animation:fadeIn .4s;z-index:3}
+@media(prefers-reduced-motion:reduce){.hoop-overlay{animation:none}}
+.no-fx .hoop-overlay{animation:none}
 </style>
 </head>
 <body>
@@ -2003,6 +2011,231 @@ function SatelliteTimeMachine(props) {
       React.createElement("span", { className: "sat-year" }, t.satNow)
     ),
     React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, t.satCaption)
+  );
+}
+
+/* === #2 Hoop game strings === */
+T.ro.hoopMiss = "Nu e vina ta. Coșul e îndoit din 2019. Semnează ca să-l reparăm.";
+T.ro.hoopSign = "Semnează";
+T.ro.hoopSkip = "Sari peste";
+T.ro.hoopHint = "Trage mingea spre coș";
+T.en.hoopMiss = "Not your fault. The rim's been bent since 2019. Sign to fix it.";
+T.en.hoopSign = "Sign";
+T.en.hoopSkip = "Skip";
+T.en.hoopHint = "Flick the ball at the hoop";
+T.hu.hoopMiss = "Nem a te hibád. A gyűrű 2019 óta görbe. Írd alá, hogy megjavítsuk."; // TODO: HU review
+T.hu.hoopSign = "Aláírom"; // TODO: HU review
+T.hu.hoopSkip = "Kihagyás"; // TODO: HU review
+T.hu.hoopHint = "Pöccintsd a labdát a kosár felé"; // TODO: HU review
+
+/* === #2 Shoot-a-Hoop petition hook — 2D canvas, rigged bent rim.
+   The rim always deflects; after 2 throws the overlay invites a signature. === */
+function HoopGame(props) {
+  var onDone = props.onDone;
+  var app = useApp();
+  var t = app.t;
+  var tRef = useRef(t);
+  tRef.current = t;
+  var cvRef = useRef(null);
+  var overSt = useState(false);
+  var over = overSt[0], setOver = overSt[1];
+  var rm = window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+  useEffect(function () {
+    var cv = cvRef.current;
+    if (rm || !cv) return;
+    var ctx = cv.getContext("2d");
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var H = 300, W = 320;
+    function resize() {
+      W = (cv.parentNode && cv.parentNode.clientWidth) || 320;
+      cv.width = Math.round(W * dpr);
+      cv.height = Math.round(H * dpr);
+      cv.style.height = H + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+    var groundY = H - 36;
+    var R = 13;
+    var start = { x: 56, y: groundY - R };
+    var ball = { x: start.x, y: start.y, vx: 0, vy: 0, rot: 0, flying: false };
+    var drag = null, throws = 0, finished = false, bounces = 0, launchT = 0, clangT = 0;
+    // Static cracks for the asphalt strip, generated once.
+    var cracks = [];
+    for (var ci = 0; ci < 7; ci++) {
+      var seg = [], cxp = Math.random(), cyp = Math.random();
+      for (var cj = 0; cj < 4; cj++) { seg.push([cxp, cyp]); cxp += (Math.random() - 0.5) * 0.12; cyp += (Math.random() - 0.5) * 0.9; }
+      cracks.push(seg);
+    }
+    function rimGeo() {
+      var poleX = W - 44;
+      var a = 25 * Math.PI / 180; // the bend
+      var x0 = poleX - 10, y0 = 118;
+      return { poleX: poleX, x0: x0, y0: y0, x1: x0 - 46 * Math.cos(a), y1: y0 + 46 * Math.sin(a) };
+    }
+    function deflect() {
+      ball.vx = -Math.abs(ball.vx) * 0.45 - 90 - Math.random() * 60;
+      ball.vy = -Math.abs(ball.vy) * 0.3 - 70;
+      clangT = performance.now();
+    }
+    function endThrow() {
+      throws += 1;
+      ball.flying = false;
+      bounces = 0;
+      ball.x = start.x; ball.y = start.y; ball.vx = 0; ball.vy = 0; ball.rot = 0;
+      if (throws >= 2) {
+        finished = true;
+        setOver(true);
+      }
+    }
+    function step(dt) {
+      if (!ball.flying) return;
+      ball.vy += 1700 * dt;
+      ball.x += ball.vx * dt;
+      ball.y += ball.vy * dt;
+      ball.rot += ball.vx * dt * 0.02;
+      var g = rimGeo();
+      // Backboard / pole: bounce back.
+      if (ball.x + R > g.poleX - 12 && ball.y > 58 && ball.y < 150 && ball.vx > 0) {
+        ball.x = g.poleX - 12 - R;
+        ball.vx = -Math.abs(ball.vx) * 0.5;
+        clangT = performance.now();
+      }
+      // Rigged rim: distance to the bent rim segment — always knocks the ball out.
+      var dx = g.x1 - g.x0, dy = g.y1 - g.y0;
+      var tt = Math.max(0, Math.min(1, ((ball.x - g.x0) * dx + (ball.y - g.y0) * dy) / (dx * dx + dy * dy)));
+      var px = g.x0 + dx * tt, py = g.y0 + dy * tt;
+      if (Math.hypot(ball.x - px, ball.y - py) < R + 4) deflect();
+      // Guard zone above the basket mouth: no clean swish is possible.
+      var mx = (g.x0 + g.x1) / 2, my = (g.y0 + g.y1) / 2;
+      if (ball.vy > 0 && Math.hypot(ball.x - mx, ball.y - my) < 30) deflect();
+      // Ground bounce.
+      if (ball.y + R > groundY) {
+        ball.y = groundY - R;
+        ball.vy = -ball.vy * 0.45;
+        ball.vx *= 0.75;
+        bounces += 1;
+        if (Math.abs(ball.vy) < 60 && bounces >= 2) { endThrow(); return; }
+      }
+      if (ball.x < -60 || ball.x > W + 60 || performance.now() - launchT > 6000) endThrow();
+    }
+    function draw() {
+      var g = rimGeo();
+      var bg = ctx.createLinearGradient(0, 0, 0, H);
+      bg.addColorStop(0, "#2e333c"); bg.addColorStop(1, "#21252c");
+      ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+      // asphalt
+      ctx.fillStyle = "#3a3e46"; ctx.fillRect(0, groundY, W, H - groundY);
+      ctx.strokeStyle = "rgba(12,12,16,.7)"; ctx.lineWidth = 1.4;
+      cracks.forEach(function (seg) {
+        ctx.beginPath();
+        seg.forEach(function (p, i) {
+          var x = p[0] * W, y = groundY + 4 + Math.abs(p[1] % 1) * (H - groundY - 8);
+          if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y);
+        });
+        ctx.stroke();
+      });
+      // pole + board + bent rim (no net)
+      ctx.fillStyle = "#565b64"; ctx.fillRect(g.poleX, 64, 7, groundY - 64);
+      ctx.fillStyle = "#8a909a"; ctx.fillRect(g.poleX - 12, 64, 8, 78);
+      var fresh = performance.now() - clangT < 120;
+      ctx.strokeStyle = fresh ? "#ffffff" : "#F97316";
+      ctx.lineWidth = 5; ctx.lineCap = "round";
+      ctx.beginPath(); ctx.moveTo(g.x0, g.y0); ctx.lineTo(g.x1, g.y1); ctx.stroke();
+      // hint + throws left
+      ctx.fillStyle = "rgba(255,255,255,.6)";
+      ctx.font = "12px 'Space Mono',monospace";
+      ctx.textAlign = "center";
+      ctx.fillText(tRef.current.hoopHint, W / 2, 26);
+      ctx.textAlign = "left";
+      for (var i = 0; i < 2 - throws; i++) {
+        ctx.fillStyle = "#F97316";
+        ctx.beginPath(); ctx.arc(16 + i * 18, 18, 5, 0, Math.PI * 2); ctx.fill();
+      }
+      // aim line
+      if (drag) {
+        var ax = start.x + (start.x - drag.x), ay = start.y + (start.y - drag.y);
+        ctx.strokeStyle = "rgba(255,255,255,.45)";
+        ctx.setLineDash([5, 6]); ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(ball.x, ball.y); ctx.lineTo(ax, ay); ctx.stroke();
+        ctx.setLineDash([]);
+      }
+      // ball
+      ctx.save();
+      ctx.translate(ball.x, ball.y); ctx.rotate(ball.rot);
+      ctx.fillStyle = "#F97316";
+      ctx.beginPath(); ctx.arc(0, 0, R, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = "rgba(120,50,8,.8)"; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(-R, 0); ctx.lineTo(R, 0); ctx.stroke();
+      ctx.beginPath(); ctx.arc(0, -R * 1.4, R * 1.05, Math.PI * 0.25, Math.PI * 0.75); ctx.stroke();
+      ctx.restore();
+    }
+    var raf, last = performance.now();
+    function loop(now) {
+      if (finished) { draw(); return; }
+      var dt = Math.min((now - last) / 1000, 0.032);
+      last = now;
+      step(dt);
+      draw();
+      raf = requestAnimationFrame(loop);
+    }
+    raf = requestAnimationFrame(loop);
+    function pos(e) {
+      var r = cv.getBoundingClientRect();
+      return { x: e.clientX - r.left, y: e.clientY - r.top };
+    }
+    function down(e) {
+      if (finished || ball.flying) return;
+      var p = pos(e);
+      if (Math.hypot(p.x - ball.x, p.y - ball.y) < 52) {
+        drag = p;
+        if (cv.setPointerCapture && e.pointerId != null) { try { cv.setPointerCapture(e.pointerId); } catch (err) {} }
+        e.preventDefault();
+      }
+    }
+    function move(e) {
+      if (!drag) return;
+      var p = pos(e);
+      var ddx = p.x - start.x, ddy = p.y - start.y;
+      var d = Math.hypot(ddx, ddy);
+      if (d > 90) { ddx *= 90 / d; ddy *= 90 / d; }
+      drag = { x: start.x + ddx, y: start.y + ddy };
+      ball.x = drag.x; ball.y = drag.y;
+      e.preventDefault();
+    }
+    function up() {
+      if (!drag) return;
+      var vx = (start.x - drag.x) * 7.5, vy = (start.y - drag.y) * 7.5;
+      drag = null;
+      if (Math.hypot(vx, vy) < 80) { ball.x = start.x; ball.y = start.y; return; }
+      ball.vx = vx; ball.vy = vy;
+      ball.flying = true;
+      bounces = 0;
+      launchT = performance.now();
+    }
+    cv.addEventListener("pointerdown", down);
+    cv.addEventListener("pointermove", move);
+    cv.addEventListener("pointerup", up);
+    cv.addEventListener("pointercancel", up);
+    return function () {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
+      cv.removeEventListener("pointerdown", down);
+      cv.removeEventListener("pointermove", move);
+      cv.removeEventListener("pointerup", up);
+      cv.removeEventListener("pointercancel", up);
+    };
+  }, [rm]);
+  if (rm) return null;
+  return React.createElement("div", { className: "card mb-2", style: { padding: 0, borderLeft: "3px solid var(--coral)", maxWidth: 600, margin: "0 auto 1.2rem" } },
+    React.createElement("div", { className: "hoop-wrap" },
+      React.createElement("canvas", { ref: cvRef, className: "hoop-canvas", height: 300 }),
+      !over && React.createElement("button", { className: "hoop-skip", onClick: onDone }, t.hoopSkip + " →"),
+      over && React.createElement("div", { className: "hoop-overlay" },
+        React.createElement("p", { style: { color: "#fff", fontFamily: "'Space Mono',monospace", fontSize: ".95rem", maxWidth: 420, marginBottom: "1rem", lineHeight: 1.55 } }, t.hoopMiss),
+        React.createElement("button", { className: "btn btn-green", onClick: onDone }, "✊ " + t.hoopSign)
+      )
+    )
   );
 }
 
@@ -4513,6 +4746,15 @@ function PetitionPage() {
   const votes = useFirebase("votes");
   const [ch, setCh] = useState("");
   const [voted, setVoted] = useState(() => !!localStorage.getItem("g2p_voted"));
+  const [hoopDone, setHoopDone] = useState(() => !!localStorage.getItem("g2p_hoop"));
+  const hoopFinish = () => {
+    localStorage.setItem("g2p_hoop", "1");
+    setHoopDone(true);
+    setTimeout(() => {
+      const el = document.getElementById("g2p-vote-form");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 80);
+  };
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
   const [vol, setVol] = useState(false);
@@ -4594,7 +4836,8 @@ function PetitionPage() {
     style: {
       textAlign: "center"
     }
-  }, lang === "ro" ? "Alege viziunea ta pentru terenurile din Târgu Mureș" : "Choose your vision for Târgu Mureș courts"), React.createElement(PetitionMilestoneBar, { total: total }), !voted ? /*#__PURE__*/React.createElement("div", {
+  }, lang === "ro" ? "Alege viziunea ta pentru terenurile din Târgu Mureș" : "Choose your vision for Târgu Mureș courts"), React.createElement(PetitionMilestoneBar, { total: total }), !voted && !hoopDone && React.createElement(HoopGame, { onDone: hoopFinish }), !voted ? /*#__PURE__*/React.createElement("div", {
+    id: "g2p-vote-form",
     style: {
       maxWidth: 600,
       margin: "0 auto"
