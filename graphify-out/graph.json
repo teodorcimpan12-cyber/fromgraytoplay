@@ -516,6 +516,52 @@
       "type": "util",
       "line": 0,
       "desc": "Listeneri delegați în App: spotlight radial pe .card/.stat-tile (--mx/--my), butoane magnetice (.h3d-btn/.btn-green), page-wipe overlay la setPage. CSS: glow-border conic animat (StatTile), aurora blobs (hero), shimmer-text (titlu hero). Toate oprite la prefers-reduced-motion / hover:none."
+    },
+    {
+      "id": "fb/settings",
+      "type": "firebase",
+      "desc": "settings/: {maintenance, banner:{on,text,type}, flags:{petition,community,booking,effects}, featuredCourtId, accent, broadcast:{text,ts}}. Scris din AdminSiteTab, citit live de App (ctx.settings)."
+    },
+    {
+      "id": "fb/presence",
+      "type": "firebase",
+      "desc": "presence/{voterKey}: true. Scris de App cu onDisconnect().remove(). Citit de PresenceBadge (contor online)."
+    },
+    {
+      "id": "AdminSiteTab",
+      "type": "component",
+      "line": 0,
+      "desc": "Admin Site Control: mentenanță, banner, broadcast toast, feature flags, teren-vedetă, accent color, danger zone (reset votes / clear activity). Scrie settings/."
+    },
+    {
+      "id": "AdminModTab",
+      "type": "component",
+      "line": 0,
+      "desc": "Admin Moderation: șterge orice conținut user-generated (forum, gallery, events, teams, games, activity)."
+    },
+    {
+      "id": "CommandPalette",
+      "type": "component",
+      "line": 0,
+      "desc": "Ctrl/Cmd+K (sau 🔍 în navbar, ctx.setCmd): caută pagini/terenuri/acțiuni, navigare tastatură, respectă feature flags. Deep-link terenuri prin #court-{id}."
+    },
+    {
+      "id": "PresenceBadge",
+      "type": "component",
+      "line": 0,
+      "desc": "Contor live 'online acum' în Navbar, puls verde. Citește presence/."
+    },
+    {
+      "id": "FeaturedCourt",
+      "type": "component",
+      "line": 0,
+      "desc": "Terenul săptămânii pe Home (glow-border + tilt), ales de admin via settings/featuredCourtId."
+    },
+    {
+      "id": "switchTheme",
+      "type": "util",
+      "line": 0,
+      "desc": "Comutare temă cu reveal circular (View Transitions API + ReactDOM.flushSync), fallback simplu. Folosit în Navbar (desktop+mobil) și Profil."
     }
   ],
   "edges": [
@@ -1033,6 +1079,91 @@
       "from": "ActivityTicker",
       "to": "fb/activity",
       "rel": "reads"
+    },
+    {
+      "from": "App",
+      "to": "fb/settings",
+      "rel": "reads (live: maintenance/banner/flags/accent/broadcast)"
+    },
+    {
+      "from": "App",
+      "to": "fb/presence",
+      "rel": "writes (onDisconnect cleanup)"
+    },
+    {
+      "from": "AdminSiteTab",
+      "to": "fb/settings",
+      "rel": "writes"
+    },
+    {
+      "from": "AdminSiteTab",
+      "to": "fb/votes",
+      "rel": "danger: reset"
+    },
+    {
+      "from": "AdminSiteTab",
+      "to": "fb/activity",
+      "rel": "danger: clear"
+    },
+    {
+      "from": "AdminModTab",
+      "to": "fb/forum",
+      "rel": "deletes"
+    },
+    {
+      "from": "AdminModTab",
+      "to": "fb/gallery",
+      "rel": "deletes"
+    },
+    {
+      "from": "AdminModTab",
+      "to": "fb/events",
+      "rel": "deletes"
+    },
+    {
+      "from": "AdminModTab",
+      "to": "fb/teams",
+      "rel": "deletes"
+    },
+    {
+      "from": "AdminModTab",
+      "to": "fb/games",
+      "rel": "deletes"
+    },
+    {
+      "from": "AdminModTab",
+      "to": "fb/activity",
+      "rel": "deletes"
+    },
+    {
+      "from": "Navbar",
+      "to": "PresenceBadge",
+      "rel": "renders"
+    },
+    {
+      "from": "PresenceBadge",
+      "to": "fb/presence",
+      "rel": "reads"
+    },
+    {
+      "from": "HomePage",
+      "to": "FeaturedCourt",
+      "rel": "renders"
+    },
+    {
+      "from": "FeaturedCourt",
+      "to": "fb/settings",
+      "rel": "reads featuredCourtId"
+    },
+    {
+      "from": "AdminPanel",
+      "to": "AdminSiteTab",
+      "rel": "renders"
+    },
+    {
+      "from": "AdminPanel",
+      "to": "AdminModTab",
+      "rel": "renders"
     }
   ],
   "routes": {

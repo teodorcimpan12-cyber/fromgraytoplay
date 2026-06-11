@@ -58,7 +58,11 @@ fromgreytoplay-default-rtdb/
 ├── activity/{pushId}: {type, userName, courtId?, timestamp}   [new]
 ├── reports/{pushId}: {courtId, issue, status, timestamp}
 ├── courts/{id}/checkins/{pushId}: {userId, timestamp}
-└── bookings/{pushId}: {courtId, date, hour, userName}
+├── bookings/{pushId}: {courtId, date, hour, userName}
+├── settings/: {maintenance, banner:{on,text,type}, flags:{petition,
+│               community,booking,effects}, featuredCourtId, accent,
+│               broadcast:{text,ts}}            [admin Site Control]
+└── presence/{voterKey}: true                   [live online counter]
 ```
 
 Anyone can write — rules are MVP-permissive. Tighten before any press.
@@ -125,6 +129,19 @@ Anyone can write — rules are MVP-permissive. Tighten before any press.
   behind `prefers-reduced-motion` / `hover:none`.
 - REMOVED per user feedback: Before/After slider, scrollytelling
   StoryPage (essay already on About), Google My Maps iframe on Courts.
+- Admin "rule everything" (admin panel → ⚙️ Site Control + 🛡️ Moderation):
+  live `settings/` node — maintenance mode, announcement banner,
+  broadcast toast to all visitors, feature flags (petition/community/
+  booking/effects kill-switch), court-of-the-week, accent color override,
+  danger zone (reset votes, clear activity). Moderation tab deletes any
+  forum/gallery/event/team/game/activity entry.
+- Command palette (Ctrl/Cmd+K or 🔍 in navbar): pages, courts (deep
+  link), theme/language actions; keyboard nav; respects feature flags.
+- Live presence counter (`presence/{voterKey}` + onDisconnect) shown as
+  pulsing badge in navbar.
+- `FeaturedCourt` spotlight on Home, picked by admin.
+- Theme toggle now does a circular reveal (View Transitions API +
+  `ReactDOM.flushSync`, falls back gracefully).
 
 ## Roadmap priorities (from the brief)
 
