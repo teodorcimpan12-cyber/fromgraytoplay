@@ -449,6 +449,14 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .countdown-num{font-family:'Space Mono',monospace;font-weight:900;font-size:2.6rem;line-height:1;color:var(--green);min-width:60px;text-align:center;background:var(--bgCard);border:1px solid rgba(16,185,129,.25);border-radius:10px;padding:.2rem .4rem}
 .countdown-label{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--textSec)}
 .countdown-sep{font-family:'Space Mono',monospace;font-size:2rem;color:var(--green);opacity:.4;align-self:flex-start;padding-top:.5rem}
+/* ============================================================
+   SEASON 3 — CINEMA PACK
+   ============================================================ */
+/* === Satellite Time Machine === */
+.sat-map{height:260px;border-radius:var(--radius);overflow:hidden;border:2px solid var(--border)}
+.sat-slider-row{display:flex;align-items:center;gap:.6rem;margin-top:.6rem}
+.sat-slider-row input[type=range]{flex:1;padding:0;accent-color:var(--green)}
+.sat-year{font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;color:var(--textSec);flex-shrink:0}
 </style>
 </head>
 <body>
@@ -1926,6 +1934,75 @@ function CouncilCountdown() {
       (lang==="ro"?"Ședința din ":lang==="hu"?"Következő ülés: ":"Session on ") +
       nextDate.toLocaleDateString(lang==="ro"?"ro-RO":lang==="hu"?"hu-HU":"en-GB", {day:"numeric",month:"long",year:"numeric"})
     )
+  );
+}
+
+/* ============================================================
+   SEASON 3 — CINEMA PACK (components + strings)
+   ============================================================ */
+/* === #1 Satellite Time Machine strings === */
+T.ro.satTitle = "Mașina timpului din satelit";
+T.ro.satCaption = "Trage pentru a compara terenul în timp — dovadă din satelit.";
+T.ro.satNow = "Azi";
+T.en.satTitle = "Satellite Time Machine";
+T.en.satCaption = "Drag to compare the court over time — evidence from space.";
+T.en.satNow = "Today";
+T.hu.satTitle = "Műholdas időgép"; // TODO: HU review
+T.hu.satCaption = "Húzd a csúszkát, és hasonlítsd össze a pályát az időben — bizonyíték az űrből."; // TODO: HU review
+T.hu.satNow = "Ma"; // TODO: HU review
+
+/* === #1 Satellite Time Machine — Esri Wayback (2014) crossfading into today === */
+function SatelliteTimeMachine(props) {
+  var court = props.court;
+  var app = useApp();
+  var t = app.t;
+  var mapEl = useRef(null);
+  var nowLayerRef = useRef(null);
+  var errRef = useRef(0);
+  var opSt = useState(50);
+  var op = opSt[0], setOp = opSt[1];
+  var deadSt = useState(false);
+  var dead = deadSt[0], setDead = deadSt[1];
+  useEffect(function () {
+    if (dead || !mapEl.current || typeof L === "undefined") return;
+    var m = L.map(mapEl.current, { scrollWheelZoom: false }).setView([court.lat, court.lng], 17);
+    var then = L.tileLayer("https://wayback.maptiles.arcgis.com/arcgis/rest/services/world_imagery/wmts/1.0.0/default028mm/mapserver/tile/10/{z}/{y}/{x}", {
+      maxZoom: 18, attribution: "Esri World Imagery / Wayback"
+    });
+    var now = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+      maxZoom: 18, opacity: op / 100
+    });
+    // If the Wayback service is unreachable, hide the whole card gracefully.
+    var onErr = function () { errRef.current += 1; if (errRef.current >= 8) setDead(true); };
+    then.on("tileerror", onErr);
+    then.addTo(m);
+    now.addTo(m);
+    nowLayerRef.current = now;
+    var tid = setTimeout(function () { m.invalidateSize(); }, 200);
+    return function () {
+      clearTimeout(tid);
+      then.off("tileerror", onErr);
+      nowLayerRef.current = null;
+      m.remove();
+    };
+  }, [court.id, dead]);
+  useEffect(function () {
+    if (nowLayerRef.current) nowLayerRef.current.setOpacity(op / 100);
+  }, [op]);
+  if (dead) return null;
+  return React.createElement("div", { className: "card mt-2", style: { borderLeft: "3px solid var(--teal)" } },
+    React.createElement("h4", { className: "mb-1" }, "🛰️ ", t.satTitle),
+    React.createElement("div", { className: "sat-map", ref: mapEl }),
+    React.createElement("div", { className: "sat-slider-row" },
+      React.createElement("span", { className: "sat-year" }, "2014"),
+      React.createElement("input", {
+        type: "range", min: 0, max: 100, value: op,
+        onChange: function (e) { setOp(+e.target.value); },
+        "aria-label": t.satTitle
+      }),
+      React.createElement("span", { className: "sat-year" }, t.satNow)
+    ),
+    React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, t.satCaption)
   );
 }
 
@@ -3865,6 +3942,7 @@ function CourtDetail({
   ),
   React.createElement(ActiveGames, { court: c }),
   React.createElement(RatingSection, { court: c }),
+  React.createElement(SatelliteTimeMachine, { court: c }),
   /*#__PURE__*/React.createElement("div", {
     className: "flex gap-1 mt-2"
   }, (useApp().settings?.flags?.booking) !== false && /*#__PURE__*/React.createElement("button", {
