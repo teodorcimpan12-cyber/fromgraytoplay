@@ -475,6 +475,13 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .no-fx .px-swatch{transition:none}
 /* === Inequality receipt === */
 .receipt-canvas{width:100%;max-width:320px;display:block;margin:0 auto .9rem;filter:drop-shadow(0 10px 24px rgba(0,0,0,.18))}
+/* === Live court heat === */
+.heat-1{box-shadow:0 0 18px rgba(249,115,22,.25)}
+.heat-2{box-shadow:0 0 22px rgba(249,115,22,.45)}
+.heat-3{box-shadow:0 0 28px rgba(249,115,22,.7);outline:2px solid rgba(249,115,22,.5);animation:heatPulse 1.8s ease-in-out infinite}
+@keyframes heatPulse{0%,100%{box-shadow:0 0 22px rgba(249,115,22,.55);outline-color:rgba(249,115,22,.35)}50%{box-shadow:0 0 40px rgba(249,115,22,.85);outline-color:rgba(249,115,22,.8)}}
+@media(prefers-reduced-motion:reduce){.heat-3{animation:none}}
+.no-fx .heat-3{animation:none}
 </style>
 </head>
 <body>
@@ -2521,6 +2528,48 @@ function InequalityReceipt() {
   );
 }
 
+/* === #5 Live court heat strings === */
+T.ro.heatPlaying = "joacă acum";
+T.ro.heatJoin = "joacă la";
+T.ro.heatJoinCta = "alătură-te!";
+T.en.heatPlaying = "playing now";
+T.en.heatJoin = "is playing at";
+T.en.heatJoinCta = "join them!";
+T.hu.heatPlaying = "most játszik"; // TODO: HU review
+T.hu.heatJoin = "itt játszik:"; // TODO: HU review
+T.hu.heatJoinCta = "csatlakozz!"; // TODO: HU review
+
+/* === #5 HeatWatcher — global "join them" toast on fresh check-ins.
+   Mounted once in App; max 1 toast / 3 minutes; skips pre-mount events. === */
+function HeatWatcher() {
+  var app = useApp();
+  var tRef = useRef(app.t), toastRef = useRef(app.toast), userRef = useRef(app.user);
+  tRef.current = app.t; toastRef.current = app.toast; userRef.current = app.user;
+  useEffect(function () {
+    var mounted = Date.now();
+    var lastToast = 0;
+    var ref = db.ref("activity").limitToLast(1);
+    var fn = function (snap) {
+      var a = snap.val();
+      if (!a) return;
+      var ts = typeof a.timestamp === "number" ? a.timestamp : (Date.parse(a.timestamp || "") || 0);
+      if (ts < mounted) return;
+      if (a.type !== "check-in" && a.type !== "checkin") return;
+      var me = anonName((userRef.current && userRef.current.name) || "");
+      if (me && me !== "Anonim" && a.userName === me) return;
+      if (Date.now() - lastToast < 180000) return;
+      var c = COURTS.find(function (x) { return x.id === a.courtId; });
+      if (!c) return;
+      lastToast = Date.now();
+      var t = tRef.current;
+      toastRef.current("🏀 " + (a.userName || "Anon") + " " + t.heatJoin + " " + c.name + " — " + t.heatJoinCta);
+    };
+    ref.on("child_added", fn);
+    return function () { ref.off("child_added", fn); };
+  }, []);
+  return null;
+}
+
 const COURTS = [{
   id: "c1",
   name: "Teren Tudor 1",
@@ -4095,6 +4144,14 @@ function CourtsPage() {
     ...c
   })) : [];
   const all = [...COURTS, ...extra];
+  // Season 3: live court heat — check-ins within the last 2 hours.
+  const heatNow = id => {
+    const ci = fbCourts && fbCourts[id] && fbCourts[id].checkins;
+    if (!ci) return 0;
+    const cutoff = Date.now() - 7200000;
+    return Object.values(ci).filter(x => ((x && (x.ts || x.timestamp)) || 0) > cutoff).length;
+  };
+  const heatCls = n => n >= 5 ? " heat-3" : n >= 3 ? " heat-2" : n >= 1 ? " heat-1" : "";
   const filtered = all.filter(c => (filter === "all" || c.status === filter) && (hood === "all" || c.neighbourhood === hood));
   const gameCountFor = id => allGames && allGames[id] ? Object.keys(allGames[id]).length : 0;
   // Deep links: "#court-{id}" opens the detail (shareCourt URLs); back button closes it.
@@ -4195,7 +4252,7 @@ function CourtsPage() {
   }, filtered.map(c => /*#__PURE__*/React.createElement(TiltDiv, {
     key: c.id,
     max: 5,
-    className: "card card-accent card-link",
+    className: "card card-accent card-link" + heatCls(heatNow(c.id)),
     onClick: () => openCourt(c)
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex justify-between items-center"
@@ -4219,7 +4276,11 @@ function CourtsPage() {
   gameCountFor(c.id) > 0 && /*#__PURE__*/React.createElement("span", {
     className: "badge badge-coral",
     style: { animation: "livePing 1.5s infinite" }
-  }, "⚽ ", gameCountFor(c.id), " ", t.activeGames)
+  }, "⚽ ", gameCountFor(c.id), " ", t.activeGames),
+  heatNow(c.id) > 0 && React.createElement("span", {
+    className: "badge badge-coral",
+    style: { marginLeft: ".3rem" }
+  }, "🔥 ", heatNow(c.id), " ", t.heatPlaying)
   ), /*#__PURE__*/React.createElement("div", {
     className: "progress-bar mt-1"
   }, /*#__PURE__*/React.createElement("div", {
@@ -8759,7 +8820,7 @@ function App() {
     }
   }, /*#__PURE__*/React.createElement("div", {
     key: page
-  }, P())), /*#__PURE__*/React.createElement(Footer, null), toastMsg && /*#__PURE__*/React.createElement(Toast, {
+  }, P())), React.createElement(HeatWatcher, null), /*#__PURE__*/React.createElement(Footer, null), toastMsg && /*#__PURE__*/React.createElement(Toast, {
     msg: toastMsg,
     onClose: () => setToastMsg("")
   }));
