@@ -62,6 +62,8 @@ fromgreytoplay-default-rtdb/
 ├── settings/: {maintenance, banner:{on,text,type}, flags:{petition,
 │               community,booking,effects}, featuredCourtId, accent,
 │               broadcast:{text,ts}}            [admin Site Control]
+├── pixels/{x_y}: color                          [48×48 collective mural,
+│               hex string, 1 px / 10 min / voterKey — Season 3]
 └── presence/{voterKey}: true                   [live online counter]
 ```
 
@@ -159,6 +161,40 @@ Anyone can write — rules are MVP-permissive. Tighten before any press.
   - Liquid wave progress bar — `milestone-fill::after` CSS animation.
   - New T strings (neighborhoodRace, civicScore, pledgeWall, countdownTitle,
     qrCardTitle, healthScore, etc.) in ro/en/hu.
+- Season 3 feature pack (Cinema Pack):
+  - 🛰️ Satellite Time-Machine — `SatelliteTimeMachine` in CourtDetail: Leaflet
+    with Esri Wayback 2014 + today's World Imagery, opacity-slider crossfade;
+    self-hides after 8 tile errors.
+  - 🎮 Shoot-a-Hoop petition hook — `HoopGame` (2D canvas, slingshot physics,
+    rigged bent rim that always deflects) at top of PetitionPage for non-voters;
+    after 2 throws → "rim's been bent since 2019" + sign CTA; localStorage
+    `g2p_hoop`; skipped under reduced-motion.
+  - 🗺️ Pixel Wall — `PixelWall`, new "🎨 Pixel" tab in CommunityPage. Shared
+    48×48 mural at `pixels/{x_y}` (hex string), 10-color palette, 1 px/10 min
+    per voterKey (`g2p_px_ts`), mm:ss cooldown chip, PNG export, live counter,
+    logs `pixel` activity.
+  - 📊 Inequality Receipt — `InequalityReceipt` canvas receipt (per-hood line
+    items from COURTS, "TOTAL DE PLATĂ: 1 RENOVARE", fake barcode, torn edge,
+    live supporter count); PNG download + navigator.share. On ImpactPage (calc
+    tab) and PetitionPage.
+  - 🔥 Live Court Heat — `.heat-1/2/3` glow classes + "🔥 n playing now" chip on
+    CourtsPage list cards (check-ins < 2h), plus `HeatWatcher` in App: global
+    "join them" toast on fresh check-ins (1 / 3 min max).
+  - 🌗 Ambient Light — `AmbientLight` fixed overlay in App: golden tint ±90 min
+    around monthly-approximated Târgu Mureș sunset, deep blue at night, 2.5s red
+    flash when a new report lands. Off under reduced-motion / `flags.effects`.
+  - 🎙️ Sound of Neglect — `CourtSound` in CourtDetail: WebAudio scenes — alive
+    (accelerating ball bounces, crowd murmur, sneaker squeaks) vs abandoned
+    (LFO wind, water drips, traffic rumble); lazy AudioContext, full cleanup.
+  - 🧬 City Pulse — `CityPulse` full-screen 2D-canvas time-lapse (~30s) replaying
+    activity+signups: city-hall blooms, court bursts, live counters, scrubber +
+    play/pause, Esc. Launched from ImpactPage card and ⌘K (via sessionStorage
+    `g2p_open_pulse`). Reduced-motion → static final state.
+  - ⌨️ Mayor Mode — type "fixit" (or ⌘K action): cinematic canvas where all 5
+    courts flip grey→renovated with confetti + ken burns, type-on pitch
+    ("Cost: ~0.3% of the city's annual budget"), CTA → petition.
+  - All Season 3 strings in T.ro/T.en/T.hu (HU flagged `// TODO: HU review`);
+    every animation gated behind `prefers-reduced-motion` + `.no-fx`.
 
 ## Roadmap priorities (from the brief)
 

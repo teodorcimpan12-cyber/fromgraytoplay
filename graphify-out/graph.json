@@ -2,7 +2,7 @@
   "meta": {
     "project": "From Gray to Play",
     "file": "index.html",
-    "generated": "2026-05-22",
+    "generated": "2026-06-11",
     "description": "Knowledge graph al proiectului — componente, pagini, Firebase paths, utilitare. Citit automat de Claude la fiecare sesiune."
   },
   "nodes": [
@@ -622,6 +622,56 @@
       "type": "util",
       "line": 0,
       "desc": "Comutare temă cu reveal circular (View Transitions API + ReactDOM.flushSync), fallback simplu. Folosit în Navbar (desktop+mobil) și Profil."
+    },
+    {
+      "id": "SatelliteTimeMachine",
+      "type": "component",
+      "desc": "Card Leaflet în CourtDetail: două straturi satelit (Esri Wayback 2014 + World Imagery azi), slider de opacitate pentru crossfade. Se ascunde singur după 8 tileerror. Props: {court}. Season 3."
+    },
+    {
+      "id": "HoopGame",
+      "type": "component",
+      "desc": "Canvas 2D la începutul PetitionPage (doar ne-votați, fără flag g2p_hoop, fără reduced-motion): aruncă mingea la un coș îndoit care deviază mereu; după 2 aruncări → mesaj + CTA semnare. Props: {onDone}. Season 3."
+    },
+    {
+      "id": "PixelWall",
+      "type": "component",
+      "desc": "Mural colectiv 48×48 (tab '🎨 Pixel' în CommunityPage). 1 pixel / 10 min / voterKey (localStorage g2p_px_ts), paletă 10 culori, export PNG, contor live. Season 3."
+    },
+    {
+      "id": "InequalityReceipt",
+      "type": "component",
+      "desc": "Bon de casă generat pe canvas (560px): linii per cartier din COURTS, taxe/investiții, total '1 RENOVARE', barcode fals, margine zimțată. Download PNG + navigator.share. Pe ImpactPage (tab calc) și PetitionPage. Season 3."
+    },
+    {
+      "id": "HeatWatcher",
+      "type": "component",
+      "desc": "Componentă invizibilă montată în App: ascultă activity (limitToLast 1) și arată toast 'alătură-te' la check-in proaspăt al altcuiva. Max 1 toast / 3 min. Season 3."
+    },
+    {
+      "id": "AmbientLight",
+      "type": "component",
+      "desc": "Overlay radial fix, subtil (opacity ~.09): nuanță aurie ±90min în jurul apusului (lookup lunar Târgu Mureș), albastru noaptea, flash roșu 2.5s la sesizare nouă (reports limitToLast 1). Oprit la reduced-motion / flags.effects=false. Season 3."
+    },
+    {
+      "id": "CourtSound",
+      "type": "component",
+      "desc": "Card în CourtDetail cu sinteză WebAudio: teren viu (mingi care saltă accelerat, murmur, scârțâit adidași) vs abandonat (vânt cu LFO, picături, huruit trafic). AudioContext lazy, stop/cleanup complet. Props: {court}. Season 3."
+    },
+    {
+      "id": "CityPulse",
+      "type": "component",
+      "desc": "Overlay full-screen (z 9500) cu time-lapse 2D-canvas ~30s al activity+signups: inele de la 'primărie' pentru petiții, burst-uri la nodurile terenurilor, contoare live, scrubber + play/pauză, Esc. Reduced-motion = stare finală statică. Lansat din ImpactPage și ⌘K (sessionStorage g2p_open_pulse). Props: {onClose}. Season 3."
+    },
+    {
+      "id": "MayorMode",
+      "type": "component",
+      "desc": "Easter egg (tastează 'fixit' / ⌘K → Mayor Mode): overlay canvas cinematic în care cele 5 terenuri trec pe rând din gri crăpat în verde renovat (confetti, ken burns), apoi text type-on + CTA spre petiție. Esc/✕ închide. Props: {onClose}. Season 3."
+    },
+    {
+      "id": "fb/pixels",
+      "type": "firebase",
+      "desc": "pixels/{x_y}: string hex color (ex: pixels/12_34 = '#10B981'). Grid 48×48. Scris de PixelWall (cooldown 10 min/voterKey, client-side). Season 3."
     }
   ],
   "edges": [
@@ -1224,6 +1274,106 @@
       "from": "AdminPanel",
       "to": "AdminModTab",
       "rel": "renders"
+    },
+    {
+      "from": "CourtDetail",
+      "to": "SatelliteTimeMachine",
+      "rel": "renders"
+    },
+    {
+      "from": "CourtDetail",
+      "to": "CourtSound",
+      "rel": "renders"
+    },
+    {
+      "from": "PetitionPage",
+      "to": "HoopGame",
+      "rel": "renders (doar dacă !voted && !g2p_hoop && !reduced-motion)"
+    },
+    {
+      "from": "PetitionPage",
+      "to": "InequalityReceipt",
+      "rel": "renders"
+    },
+    {
+      "from": "ImpactPage",
+      "to": "InequalityReceipt",
+      "rel": "renders (tab calc)"
+    },
+    {
+      "from": "ImpactPage",
+      "to": "CityPulse",
+      "rel": "renders (state pulse / sessionStorage g2p_open_pulse)"
+    },
+    {
+      "from": "CommunityPage",
+      "to": "PixelWall",
+      "rel": "renders (tab pixel)"
+    },
+    {
+      "from": "App",
+      "to": "HeatWatcher",
+      "rel": "renders"
+    },
+    {
+      "from": "App",
+      "to": "AmbientLight",
+      "rel": "renders"
+    },
+    {
+      "from": "App",
+      "to": "MayorMode",
+      "rel": "renders (typed 'fixit' / event g2p-mayor)"
+    },
+    {
+      "from": "CommandPalette",
+      "to": "CityPulse",
+      "rel": "opens (setPage impact + sessionStorage g2p_open_pulse)"
+    },
+    {
+      "from": "CommandPalette",
+      "to": "MayorMode",
+      "rel": "opens (window event g2p-mayor)"
+    },
+    {
+      "from": "PixelWall",
+      "to": "fb/pixels",
+      "rel": "reads+writes"
+    },
+    {
+      "from": "PixelWall",
+      "to": "logActivity",
+      "rel": "calls"
+    },
+    {
+      "from": "InequalityReceipt",
+      "to": "fb/votes",
+      "rel": "reads"
+    },
+    {
+      "from": "HeatWatcher",
+      "to": "fb/activity",
+      "rel": "reads (limitToLast 1, child_added)"
+    },
+    {
+      "from": "AmbientLight",
+      "to": "fb/reports",
+      "rel": "reads (limitToLast 1, child_added)"
+    },
+    {
+      "from": "CityPulse",
+      "to": "fb/activity",
+      "rel": "reads"
+    },
+    {
+      "from": "CityPulse",
+      "to": "fb/signups",
+      "rel": "reads"
+    },
+    {
+      "from": "CourtsPage",
+      "to": "fb/courts/{id}/checkins",
+      "rel": "reads (heat: check-ins < 2h → .heat-1/2/3 + chip)"
     }
   ],
   "routes": {
@@ -1348,6 +1498,34 @@
       "countdown-num",
       "countdown-label",
       "countdown-sep"
+    ],
+    "season3": [
+      "sat-map",
+      "sat-slider-row",
+      "sat-year",
+      "hoop-wrap",
+      "hoop-canvas",
+      "hoop-skip",
+      "hoop-overlay",
+      "px-canvas",
+      "px-palette",
+      "px-swatch",
+      "px-cool",
+      "receipt-canvas",
+      "heat-1",
+      "heat-2",
+      "heat-3",
+      "ambient-overlay",
+      "eq",
+      "pulse-overlay",
+      "pulse-hdr",
+      "pulse-x",
+      "pulse-stage",
+      "pulse-ctrl",
+      "pulse-play",
+      "mayor-overlay",
+      "mayor-x",
+      "mayor-cta"
     ]
   },
   "design_tokens": {

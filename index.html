@@ -449,6 +449,73 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .countdown-num{font-family:'Space Mono',monospace;font-weight:900;font-size:2.6rem;line-height:1;color:var(--green);min-width:60px;text-align:center;background:var(--bgCard);border:1px solid rgba(16,185,129,.25);border-radius:10px;padding:.2rem .4rem}
 .countdown-label{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--textSec)}
 .countdown-sep{font-family:'Space Mono',monospace;font-size:2rem;color:var(--green);opacity:.4;align-self:flex-start;padding-top:.5rem}
+/* ============================================================
+   SEASON 3 — CINEMA PACK
+   ============================================================ */
+/* === Satellite Time Machine === */
+.sat-map{height:260px;border-radius:var(--radius);overflow:hidden;border:2px solid var(--border)}
+.sat-slider-row{display:flex;align-items:center;gap:.6rem;margin-top:.6rem}
+.sat-slider-row input[type=range]{flex:1;padding:0;accent-color:var(--green)}
+.sat-year{font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;color:var(--textSec);flex-shrink:0}
+/* === Hoop game (petition hook) === */
+.hoop-wrap{position:relative;border-radius:var(--radius);overflow:hidden;background:#262b33}
+.hoop-canvas{display:block;width:100%;touch-action:none;cursor:grab}
+.hoop-skip{position:absolute;top:.5rem;right:.7rem;background:rgba(11,14,24,.45);border:none;color:rgba(255,255,255,.75);font-size:.72rem;font-family:'Space Mono',monospace;padding:.25rem .6rem;border-radius:14px;cursor:pointer;z-index:2}
+.hoop-skip:hover{color:#fff}
+.hoop-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:rgba(11,14,24,.84);padding:1.2rem;animation:fadeIn .4s;z-index:3}
+@media(prefers-reduced-motion:reduce){.hoop-overlay{animation:none}}
+.no-fx .hoop-overlay{animation:none}
+/* === Pixel wall === */
+.px-canvas{width:100%;max-width:480px;aspect-ratio:1/1;image-rendering:pixelated;border-radius:8px;border:1px solid var(--border);cursor:crosshair;display:block;touch-action:manipulation;margin:0 auto}
+.px-palette{display:flex;gap:.35rem;flex-wrap:wrap;margin:.7rem 0;justify-content:center}
+.px-swatch{width:30px;height:30px;border-radius:8px;border:2px solid var(--border);cursor:pointer;padding:0;transition:transform .15s,border-color .15s}
+.px-swatch.on{border-color:var(--green);transform:scale(1.15);box-shadow:0 0 0 2px rgba(16,185,129,.3)}
+.px-cool{display:inline-flex;align-items:center;gap:.4rem;font-family:'Space Mono',monospace;font-size:.8rem;color:var(--coral);border:1px solid rgba(249,115,22,.35);border-radius:20px;padding:.25rem .7rem}
+@media(prefers-reduced-motion:reduce){.px-swatch{transition:none}}
+.no-fx .px-swatch{transition:none}
+/* === Inequality receipt === */
+.receipt-canvas{width:100%;max-width:320px;display:block;margin:0 auto .9rem;filter:drop-shadow(0 10px 24px rgba(0,0,0,.18))}
+/* === Live court heat === */
+.heat-1{box-shadow:0 0 18px rgba(249,115,22,.25)}
+.heat-2{box-shadow:0 0 22px rgba(249,115,22,.45)}
+.heat-3{box-shadow:0 0 28px rgba(249,115,22,.7);outline:2px solid rgba(249,115,22,.5);animation:heatPulse 1.8s ease-in-out infinite}
+@keyframes heatPulse{0%,100%{box-shadow:0 0 22px rgba(249,115,22,.55);outline-color:rgba(249,115,22,.35)}50%{box-shadow:0 0 40px rgba(249,115,22,.85);outline-color:rgba(249,115,22,.8)}}
+@media(prefers-reduced-motion:reduce){.heat-3{animation:none}}
+.no-fx .heat-3{animation:none}
+/* === Ambient court status light === */
+.ambient-overlay{position:fixed;inset:0;pointer-events:none;z-index:1;transition:background 3s ease,opacity 3s ease}
+.ambient-overlay.amb-flash{transition:background .3s ease,opacity .3s ease}
+@media(prefers-reduced-motion:reduce){.ambient-overlay{display:none}}
+.no-fx .ambient-overlay{display:none}
+/* === Court sound equalizer === */
+.eq{display:inline-flex;gap:2px;align-items:flex-end;height:14px}
+.eq i{width:3px;background:var(--green);border-radius:1px;animation:eqBounce .9s ease-in-out infinite}
+.eq i:nth-child(2){animation-delay:.2s}
+.eq i:nth-child(3){animation-delay:.45s}
+@keyframes eqBounce{0%,100%{height:4px}50%{height:14px}}
+@media(prefers-reduced-motion:reduce){.eq i{animation:none;height:8px}}
+.no-fx .eq i{animation:none;height:8px}
+/* === City pulse overlay === */
+.pulse-overlay{position:fixed;inset:0;z-index:9500;background:#0B0E18;display:flex;flex-direction:column;animation:fadeIn .25s}
+.pulse-hdr{display:flex;align-items:flex-start;gap:.8rem;padding:.8rem 1rem .4rem;color:#fff}
+.pulse-hdr h3{font-family:'Space Mono',monospace;font-size:1rem;color:#10B981}
+.pulse-hdr p{font-size:.72rem;color:#9CA3AF}
+.pulse-x{margin-left:auto;background:rgba(255,255,255,.08);border:none;color:#fff;width:34px;height:34px;border-radius:50%;font-size:1rem;cursor:pointer;flex-shrink:0}
+.pulse-stage{flex:1;position:relative;min-height:0}
+.pulse-stage canvas{position:absolute;inset:0;width:100%;height:100%}
+.pulse-ctrl{display:flex;align-items:center;gap:.7rem;padding:.7rem 1rem calc(.7rem + env(safe-area-inset-bottom,0px))}
+.pulse-ctrl input[type=range]{flex:1;accent-color:var(--green);padding:0}
+.pulse-play{background:var(--green);color:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:1rem;cursor:pointer;flex-shrink:0}
+@media(prefers-reduced-motion:reduce){.pulse-overlay{animation:none}}
+.no-fx .pulse-overlay{animation:none}
+/* === Mayor mode === */
+.mayor-overlay{position:fixed;inset:0;z-index:9600;background:linear-gradient(160deg,#0B0E18,#16213E);animation:fadeIn .3s}
+.mayor-overlay canvas{position:absolute;inset:0;width:100%;height:100%}
+.mayor-x{position:absolute;top:.8rem;right:.9rem;background:rgba(255,255,255,.08);border:none;color:#fff;width:34px;height:34px;border-radius:50%;font-size:1rem;cursor:pointer;z-index:2}
+.mayor-cta{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);opacity:0;transition:opacity .8s;white-space:nowrap;z-index:2}
+.mayor-cta.show{opacity:1}
+@media(prefers-reduced-motion:reduce){.mayor-overlay{animation:none}.mayor-cta{transition:none}}
+.no-fx .mayor-overlay{animation:none}.no-fx .mayor-cta{transition:none}
 </style>
 </head>
 <body>
@@ -664,6 +731,11 @@ const T = {
     tudor: "Tudor",
     auchan: "Zona Auchan",
     sportcomplex: "Sportcomplex",
+    mureseni: "Mureșeni",
+    pandurilor: "Pandurilor",
+    libertate: "Libertate",
+    unirii: "Unirii",
+    gym: "Sală fitness",
     general: "General",
     center: "Centru",
     accessibility: "Accesibilitate",
@@ -806,6 +878,11 @@ const T = {
     tudor: "Tudor",
     auchan: "Auchan Area",
     sportcomplex: "Sportcomplex",
+    mureseni: "Mureșeni",
+    pandurilor: "Pandurilor",
+    libertate: "Libertate",
+    unirii: "Unirii",
+    gym: "Gym / Fitness",
     general: "General",
     center: "Centre",
     accessibility: "Accessibility",
@@ -948,6 +1025,11 @@ const T = {
     tudor: "Tudor",
     auchan: "Auchan környéke",
     sportcomplex: "Sportcomplex",
+    mureseni: "Mureșeni",
+    pandurilor: "Pandurilor",
+    libertate: "Libertate",
+    unirii: "Unirii",
+    gym: "Terem / Fitnesz", // TODO: HU review
     general: "Általános",
     center: "Központ",
     accessibility: "Akadálymentesség",
@@ -1672,11 +1754,19 @@ function CourtHealthRing(props) {
 }
 
 /* === Neighborhood Civic Race === */
-var HOOD_COURT_MAP = { tudor:["c1","c5"], auchan:["c2"], sportcomplex:["c3"], center:["c4"] };
+var HOOD_COURT_MAP = {
+  tudor:      ["c5","c6","c7","c8","c19"],
+  auchan:     ["c3","c4"],
+  mureseni:   ["c1","c2","c20"],
+  center:     ["c9","c10","c11","c12","c13","c18"],
+  pandurilor: ["c14","c15"],
+  libertate:  ["c16"],
+  unirii:     ["c17"]
+};
 var HOOD_DISPLAY = {
-  ro:{ tudor:"Tudor", auchan:"Zona Auchan", sportcomplex:"Sportcomplex", center:"Centru" },
-  en:{ tudor:"Tudor", auchan:"Auchan Area", sportcomplex:"Sportcomplex", center:"Center" },
-  hu:{ tudor:"Tudor", auchan:"Auchan körzet", sportcomplex:"Sportcomplex", center:"Közép" }
+  ro:{ tudor:"Tudor", auchan:"Zona Auchan", mureseni:"Mureșeni", center:"Centru", pandurilor:"Pandurilor", libertate:"Libertate", unirii:"Unirii" },
+  en:{ tudor:"Tudor", auchan:"Auchan Area", mureseni:"Mureșeni", center:"Center",  pandurilor:"Pandurilor", libertate:"Libertate", unirii:"Unirii" },
+  hu:{ tudor:"Tudor", auchan:"Auchan körzet", mureseni:"Mureșeni", center:"Közép", pandurilor:"Pandurilor", libertate:"Libertate", unirii:"Unirii" }
 };
 
 function NeighborhoodRace() {
@@ -1929,102 +2019,1610 @@ function CouncilCountdown() {
   );
 }
 
-const COURTS = [{
-  id: "c1",
-  name: "Teren Tudor 1",
-  address: "Str. Tudor Vladimirescu 45",
-  lat: 46.5512,
-  lng: 24.5678,
-  status: "degraded",
-  neighbourhood: "tudor",
-  category: "basketball",
-  condition: 2,
-  occupancy: "empty",
-  progress: 10,
-  accessibility: {
-    wheelchair: false,
-    lighting: false,
-    parking: true,
-    flatSurface: false
+/* ============================================================
+   SEASON 3 — CINEMA PACK (components + strings)
+   ============================================================ */
+/* === #1 Satellite Time Machine strings === */
+T.ro.satTitle = "Mașina timpului din satelit";
+T.ro.satCaption = "Trage pentru a compara terenul în timp — dovadă din satelit.";
+T.ro.satNow = "Azi";
+T.en.satTitle = "Satellite Time Machine";
+T.en.satCaption = "Drag to compare the court over time — evidence from space.";
+T.en.satNow = "Today";
+T.hu.satTitle = "Műholdas időgép"; // TODO: HU review
+T.hu.satCaption = "Húzd a csúszkát, és hasonlítsd össze a pályát az időben — bizonyíték az űrből."; // TODO: HU review
+T.hu.satNow = "Ma"; // TODO: HU review
+
+/* === #1 Satellite Time Machine — Esri Wayback (2014) crossfading into today === */
+function SatelliteTimeMachine(props) {
+  var court = props.court;
+  var app = useApp();
+  var t = app.t;
+  var mapEl = useRef(null);
+  var nowLayerRef = useRef(null);
+  var errRef = useRef(0);
+  var opSt = useState(50);
+  var op = opSt[0], setOp = opSt[1];
+  var deadSt = useState(false);
+  var dead = deadSt[0], setDead = deadSt[1];
+  useEffect(function () {
+    if (dead || !mapEl.current || typeof L === "undefined") return;
+    var m = L.map(mapEl.current, { scrollWheelZoom: false }).setView([court.lat, court.lng], 17);
+    var then = L.tileLayer("https://wayback.maptiles.arcgis.com/arcgis/rest/services/world_imagery/wmts/1.0.0/default028mm/mapserver/tile/10/{z}/{y}/{x}", {
+      maxZoom: 18, attribution: "Esri World Imagery / Wayback"
+    });
+    var now = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+      maxZoom: 18, opacity: op / 100
+    });
+    // If the Wayback service is unreachable, hide the whole card gracefully.
+    var onErr = function () { errRef.current += 1; if (errRef.current >= 8) setDead(true); };
+    then.on("tileerror", onErr);
+    then.addTo(m);
+    now.addTo(m);
+    nowLayerRef.current = now;
+    var tid = setTimeout(function () { m.invalidateSize(); }, 200);
+    return function () {
+      clearTimeout(tid);
+      then.off("tileerror", onErr);
+      nowLayerRef.current = null;
+      m.remove();
+    };
+  }, [court.id, dead]);
+  useEffect(function () {
+    if (nowLayerRef.current) nowLayerRef.current.setOpacity(op / 100);
+  }, [op]);
+  if (dead) return null;
+  return React.createElement("div", { className: "card mt-2", style: { borderLeft: "3px solid var(--teal)" } },
+    React.createElement("h4", { className: "mb-1" }, "🛰️ ", t.satTitle),
+    React.createElement("div", { className: "sat-map", ref: mapEl }),
+    React.createElement("div", { className: "sat-slider-row" },
+      React.createElement("span", { className: "sat-year" }, "2014"),
+      React.createElement("input", {
+        type: "range", min: 0, max: 100, value: op,
+        onChange: function (e) { setOp(+e.target.value); },
+        "aria-label": t.satTitle
+      }),
+      React.createElement("span", { className: "sat-year" }, t.satNow)
+    ),
+    React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, t.satCaption)
+  );
+}
+
+/* === #2 Hoop game strings === */
+T.ro.hoopMiss = "Nu e vina ta. Coșul e îndoit din 2019. Semnează ca să-l reparăm.";
+T.ro.hoopSign = "Semnează";
+T.ro.hoopSkip = "Sari peste";
+T.ro.hoopHint = "Trage mingea spre coș";
+T.en.hoopMiss = "Not your fault. The rim's been bent since 2019. Sign to fix it.";
+T.en.hoopSign = "Sign";
+T.en.hoopSkip = "Skip";
+T.en.hoopHint = "Flick the ball at the hoop";
+T.hu.hoopMiss = "Nem a te hibád. A gyűrű 2019 óta görbe. Írd alá, hogy megjavítsuk."; // TODO: HU review
+T.hu.hoopSign = "Aláírom"; // TODO: HU review
+T.hu.hoopSkip = "Kihagyás"; // TODO: HU review
+T.hu.hoopHint = "Pöccintsd a labdát a kosár felé"; // TODO: HU review
+
+/* === #2 Shoot-a-Hoop petition hook — 2D canvas, rigged bent rim.
+   The rim always deflects; after 2 throws the overlay invites a signature. === */
+function HoopGame(props) {
+  var onDone = props.onDone;
+  var app = useApp();
+  var t = app.t;
+  var tRef = useRef(t);
+  tRef.current = t;
+  var cvRef = useRef(null);
+  var overSt = useState(false);
+  var over = overSt[0], setOver = overSt[1];
+  var rm = window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+  useEffect(function () {
+    var cv = cvRef.current;
+    if (rm || !cv) return;
+    var ctx = cv.getContext("2d");
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var H = 300, W = 320;
+    function resize() {
+      W = (cv.parentNode && cv.parentNode.clientWidth) || 320;
+      cv.width = Math.round(W * dpr);
+      cv.height = Math.round(H * dpr);
+      cv.style.height = H + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+    var groundY = H - 36;
+    var R = 13;
+    var start = { x: 56, y: groundY - R };
+    var ball = { x: start.x, y: start.y, vx: 0, vy: 0, rot: 0, flying: false };
+    var drag = null, throws = 0, finished = false, bounces = 0, launchT = 0, clangT = 0;
+    // Static cracks for the asphalt strip, generated once.
+    var cracks = [];
+    for (var ci = 0; ci < 7; ci++) {
+      var seg = [], cxp = Math.random(), cyp = Math.random();
+      for (var cj = 0; cj < 4; cj++) { seg.push([cxp, cyp]); cxp += (Math.random() - 0.5) * 0.12; cyp += (Math.random() - 0.5) * 0.9; }
+      cracks.push(seg);
+    }
+    function rimGeo() {
+      var poleX = W - 44;
+      var a = 25 * Math.PI / 180; // the bend
+      var x0 = poleX - 10, y0 = 118;
+      return { poleX: poleX, x0: x0, y0: y0, x1: x0 - 46 * Math.cos(a), y1: y0 + 46 * Math.sin(a) };
+    }
+    function deflect() {
+      ball.vx = -Math.abs(ball.vx) * 0.45 - 90 - Math.random() * 60;
+      ball.vy = -Math.abs(ball.vy) * 0.3 - 70;
+      clangT = performance.now();
+    }
+    function endThrow() {
+      throws += 1;
+      ball.flying = false;
+      bounces = 0;
+      ball.x = start.x; ball.y = start.y; ball.vx = 0; ball.vy = 0; ball.rot = 0;
+      if (throws >= 2) {
+        finished = true;
+        setOver(true);
+      }
+    }
+    function step(dt) {
+      if (!ball.flying) return;
+      ball.vy += 1700 * dt;
+      ball.x += ball.vx * dt;
+      ball.y += ball.vy * dt;
+      ball.rot += ball.vx * dt * 0.02;
+      var g = rimGeo();
+      // Backboard / pole: bounce back.
+      if (ball.x + R > g.poleX - 12 && ball.y > 58 && ball.y < 150 && ball.vx > 0) {
+        ball.x = g.poleX - 12 - R;
+        ball.vx = -Math.abs(ball.vx) * 0.5;
+        clangT = performance.now();
+      }
+      // Rigged rim: distance to the bent rim segment — always knocks the ball out.
+      var dx = g.x1 - g.x0, dy = g.y1 - g.y0;
+      var tt = Math.max(0, Math.min(1, ((ball.x - g.x0) * dx + (ball.y - g.y0) * dy) / (dx * dx + dy * dy)));
+      var px = g.x0 + dx * tt, py = g.y0 + dy * tt;
+      if (Math.hypot(ball.x - px, ball.y - py) < R + 4) deflect();
+      // Guard zone above the basket mouth: no clean swish is possible.
+      var mx = (g.x0 + g.x1) / 2, my = (g.y0 + g.y1) / 2;
+      if (ball.vy > 0 && Math.hypot(ball.x - mx, ball.y - my) < 30) deflect();
+      // Ground bounce.
+      if (ball.y + R > groundY) {
+        ball.y = groundY - R;
+        ball.vy = -ball.vy * 0.45;
+        ball.vx *= 0.75;
+        bounces += 1;
+        if (Math.abs(ball.vy) < 60 && bounces >= 2) { endThrow(); return; }
+      }
+      if (ball.x < -60 || ball.x > W + 60 || performance.now() - launchT > 6000) endThrow();
+    }
+    function draw() {
+      var g = rimGeo();
+      var bg = ctx.createLinearGradient(0, 0, 0, H);
+      bg.addColorStop(0, "#2e333c"); bg.addColorStop(1, "#21252c");
+      ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+      // asphalt
+      ctx.fillStyle = "#3a3e46"; ctx.fillRect(0, groundY, W, H - groundY);
+      ctx.strokeStyle = "rgba(12,12,16,.7)"; ctx.lineWidth = 1.4;
+      cracks.forEach(function (seg) {
+        ctx.beginPath();
+        seg.forEach(function (p, i) {
+          var x = p[0] * W, y = groundY + 4 + Math.abs(p[1] % 1) * (H - groundY - 8);
+          if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y);
+        });
+        ctx.stroke();
+      });
+      // pole + board + bent rim (no net)
+      ctx.fillStyle = "#565b64"; ctx.fillRect(g.poleX, 64, 7, groundY - 64);
+      ctx.fillStyle = "#8a909a"; ctx.fillRect(g.poleX - 12, 64, 8, 78);
+      var fresh = performance.now() - clangT < 120;
+      ctx.strokeStyle = fresh ? "#ffffff" : "#F97316";
+      ctx.lineWidth = 5; ctx.lineCap = "round";
+      ctx.beginPath(); ctx.moveTo(g.x0, g.y0); ctx.lineTo(g.x1, g.y1); ctx.stroke();
+      // hint + throws left
+      ctx.fillStyle = "rgba(255,255,255,.6)";
+      ctx.font = "12px 'Space Mono',monospace";
+      ctx.textAlign = "center";
+      ctx.fillText(tRef.current.hoopHint, W / 2, 26);
+      ctx.textAlign = "left";
+      for (var i = 0; i < 2 - throws; i++) {
+        ctx.fillStyle = "#F97316";
+        ctx.beginPath(); ctx.arc(16 + i * 18, 18, 5, 0, Math.PI * 2); ctx.fill();
+      }
+      // aim line
+      if (drag) {
+        var ax = start.x + (start.x - drag.x), ay = start.y + (start.y - drag.y);
+        ctx.strokeStyle = "rgba(255,255,255,.45)";
+        ctx.setLineDash([5, 6]); ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(ball.x, ball.y); ctx.lineTo(ax, ay); ctx.stroke();
+        ctx.setLineDash([]);
+      }
+      // ball
+      ctx.save();
+      ctx.translate(ball.x, ball.y); ctx.rotate(ball.rot);
+      ctx.fillStyle = "#F97316";
+      ctx.beginPath(); ctx.arc(0, 0, R, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = "rgba(120,50,8,.8)"; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(-R, 0); ctx.lineTo(R, 0); ctx.stroke();
+      ctx.beginPath(); ctx.arc(0, -R * 1.4, R * 1.05, Math.PI * 0.25, Math.PI * 0.75); ctx.stroke();
+      ctx.restore();
+    }
+    var raf, last = performance.now();
+    function loop(now) {
+      if (finished) { draw(); return; }
+      var dt = Math.min((now - last) / 1000, 0.032);
+      last = now;
+      step(dt);
+      draw();
+      raf = requestAnimationFrame(loop);
+    }
+    raf = requestAnimationFrame(loop);
+    function pos(e) {
+      var r = cv.getBoundingClientRect();
+      return { x: e.clientX - r.left, y: e.clientY - r.top };
+    }
+    function down(e) {
+      if (finished || ball.flying) return;
+      var p = pos(e);
+      if (Math.hypot(p.x - ball.x, p.y - ball.y) < 52) {
+        drag = p;
+        if (cv.setPointerCapture && e.pointerId != null) { try { cv.setPointerCapture(e.pointerId); } catch (err) {} }
+        e.preventDefault();
+      }
+    }
+    function move(e) {
+      if (!drag) return;
+      var p = pos(e);
+      var ddx = p.x - start.x, ddy = p.y - start.y;
+      var d = Math.hypot(ddx, ddy);
+      if (d > 90) { ddx *= 90 / d; ddy *= 90 / d; }
+      drag = { x: start.x + ddx, y: start.y + ddy };
+      ball.x = drag.x; ball.y = drag.y;
+      e.preventDefault();
+    }
+    function up() {
+      if (!drag) return;
+      var vx = (start.x - drag.x) * 11, vy = (start.y - drag.y) * 11;
+      drag = null;
+      if (Math.hypot(vx, vy) < 80) { ball.x = start.x; ball.y = start.y; return; }
+      ball.vx = vx; ball.vy = vy;
+      ball.flying = true;
+      bounces = 0;
+      launchT = performance.now();
+    }
+    cv.addEventListener("pointerdown", down);
+    cv.addEventListener("pointermove", move);
+    cv.addEventListener("pointerup", up);
+    cv.addEventListener("pointercancel", up);
+    return function () {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
+      cv.removeEventListener("pointerdown", down);
+      cv.removeEventListener("pointermove", move);
+      cv.removeEventListener("pointerup", up);
+      cv.removeEventListener("pointercancel", up);
+    };
+  }, [rm]);
+  if (rm) return null;
+  return React.createElement("div", { className: "card mb-2", style: { padding: 0, borderLeft: "3px solid var(--coral)", maxWidth: 600, margin: "0 auto 1.2rem" } },
+    React.createElement("div", { className: "hoop-wrap" },
+      React.createElement("canvas", { ref: cvRef, className: "hoop-canvas", height: 300 }),
+      !over && React.createElement("button", { className: "hoop-skip", onClick: onDone }, t.hoopSkip + " →"),
+      over && React.createElement("div", { className: "hoop-overlay" },
+        React.createElement("p", { style: { color: "#fff", fontFamily: "'Space Mono',monospace", fontSize: ".95rem", maxWidth: 420, marginBottom: "1rem", lineHeight: 1.55 } }, t.hoopMiss),
+        React.createElement("button", { className: "btn btn-green", onClick: onDone }, "✊ " + t.hoopSign)
+      )
+    )
+  );
+}
+
+/* === #3 Pixel wall strings === */
+T.ro.pixelTitle = "Pictura murală colectivă";
+T.ro.pixelSub = "Un pixel per persoană la 10 minute. Rezultatul devine propunerea reală de mural pentru consiliu.";
+T.ro.pixelPlaced = "Pixel plasat! Următorul în 10 min.";
+T.ro.pixelWait = "Următorul pixel în";
+T.ro.pixelPainted = "pixeli pictați";
+T.en.pixelTitle = "The Collective Mural";
+T.en.pixelSub = "One pixel per person every 10 minutes. The result becomes the real mural proposal for the council.";
+T.en.pixelPlaced = "Pixel placed! Next one in 10 min.";
+T.en.pixelWait = "Next pixel in";
+T.en.pixelPainted = "pixels painted";
+T.hu.pixelTitle = "A közös falfestmény"; // TODO: HU review
+T.hu.pixelSub = "Egy pixel személyenként, 10 percenként. Az eredmény lesz a tanácsnak benyújtott valódi murál-javaslat."; // TODO: HU review
+T.hu.pixelPlaced = "Pixel elhelyezve! A következő 10 perc múlva."; // TODO: HU review
+T.hu.pixelWait = "Következő pixel"; // TODO: HU review
+T.hu.pixelPainted = "festett pixel"; // TODO: HU review
+
+/* === #3 Civic graffiti pixel wall — shared 48×48 canvas in pixels/{x_y} === */
+var PX_GRID = 48;
+var PX_COLORS = ["#10B981", "#0D9488", "#F97316", "#DC2626", "#F59E0B", "#8B5CF6", "#3B82F6", "#EC4899", "#FFFFFF", "#1A1A2E"];
+var PX_COOLDOWN_MS = 10 * 60 * 1000;
+function PixelWall() {
+  var app = useApp();
+  var t = app.t, toast = app.toast, user = app.user, theme = app.theme;
+  var data = useFirebase("pixels");
+  var cvRef = useRef(null);
+  var colSt = useState(PX_COLORS[0]);
+  var col = colSt[0], setCol = colSt[1];
+  var leftSt = useState(function () {
+    return Math.max(0, (+(localStorage.getItem("g2p_px_ts") || 0)) + PX_COOLDOWN_MS - Date.now());
+  });
+  var left = leftSt[0], setLeft = leftSt[1];
+  useEffect(function () {
+    var iv = setInterval(function () {
+      setLeft(Math.max(0, (+(localStorage.getItem("g2p_px_ts") || 0)) + PX_COOLDOWN_MS - Date.now()));
+    }, 1000);
+    return function () { clearInterval(iv); };
+  }, []);
+  useEffect(function () {
+    var cv = cvRef.current;
+    if (!cv) return;
+    var ctx = cv.getContext("2d");
+    var cell = 480 / PX_GRID;
+    var checker = theme === "dark" ? ["#1E2235", "#181C2E"] : ["#E9ECF1", "#F3F5F9"];
+    for (var y = 0; y < PX_GRID; y++) {
+      for (var x = 0; x < PX_GRID; x++) {
+        ctx.fillStyle = checker[(x + y) % 2];
+        ctx.fillRect(x * cell, y * cell, cell, cell);
+      }
+    }
+    if (data) Object.keys(data).forEach(function (k) {
+      var p = k.split("_");
+      var px = +p[0], py = +p[1];
+      if (isNaN(px) || isNaN(py) || px < 0 || py < 0 || px >= PX_GRID || py >= PX_GRID) return;
+      if (typeof data[k] !== "string") return;
+      ctx.fillStyle = data[k];
+      ctx.fillRect(px * cell, py * cell, cell, cell);
+    });
+  }, [data, theme]);
+  var place = function (e) {
+    var cv = cvRef.current;
+    if (!cv || left > 0) return;
+    var r = cv.getBoundingClientRect();
+    var x = Math.floor((e.clientX - r.left) / r.width * PX_GRID);
+    var y = Math.floor((e.clientY - r.top) / r.height * PX_GRID);
+    if (x < 0 || y < 0 || x >= PX_GRID || y >= PX_GRID) return;
+    db.ref("pixels/" + x + "_" + y).set(col);
+    localStorage.setItem("g2p_px_ts", String(Date.now()));
+    setLeft(PX_COOLDOWN_MS);
+    toast(t.pixelPlaced);
+    logActivity("pixel", (user && user.name) || "Anonim");
+  };
+  var exportPng = function () {
+    var cv = cvRef.current;
+    if (!cv) return;
+    var a = document.createElement("a");
+    a.href = cv.toDataURL("image/png");
+    a.download = "g2p-mural.png";
+    a.click();
+  };
+  var count = data ? Object.keys(data).length : 0;
+  var mm = Math.floor(left / 60000), ss = Math.floor((left % 60000) / 1000);
+  var fmt = mm + ":" + String(ss).padStart(2, "0");
+  return React.createElement("div", null,
+    React.createElement("div", { className: "flex justify-between items-center mb-1", style: { flexWrap: "wrap", gap: ".5rem" } },
+      React.createElement("h3", { style: { fontSize: "1rem" } }, "🎨 ", t.pixelTitle),
+      React.createElement("span", { className: "badge badge-green" }, count + "/" + (PX_GRID * PX_GRID) + " " + t.pixelPainted)
+    ),
+    React.createElement("p", { className: "text-sm mb-2", style: { color: "var(--textSec)" } }, t.pixelSub),
+    React.createElement("div", { className: "card" },
+      React.createElement("canvas", { ref: cvRef, className: "px-canvas", width: 480, height: 480, onClick: place }),
+      left > 0
+        ? React.createElement("div", { style: { textAlign: "center", margin: ".8rem 0" } },
+            React.createElement("span", { className: "px-cool" }, "⏳ " + t.pixelWait + " " + fmt))
+        : React.createElement("div", { className: "px-palette" },
+            PX_COLORS.map(function (c) {
+              return React.createElement("button", {
+                key: c,
+                className: "px-swatch" + (col === c ? " on" : ""),
+                style: { background: c },
+                onClick: function () { setCol(c); },
+                "aria-label": c,
+                "aria-pressed": col === c
+              });
+            })),
+      React.createElement("div", { style: { textAlign: "center" } },
+        React.createElement("button", { className: "btn btn-outline btn-sm", onClick: exportPng }, "⬇️ PNG"))
+    )
+  );
+}
+
+/* === #4 Inequality receipt strings === */
+T.ro.receiptTitle = "Bonul inegalității";
+T.ro.receiptSub = "Chitanța orașului: aceleași taxe, investiții inegale. Descarcă și distribuie.";
+T.ro.receiptTaxes = "TAXE PLĂTITE";
+T.ro.receiptSame = "ACELEAȘI";
+T.ro.receiptInvest = "INVESTIȚII";
+T.ro.receiptUnequal = "INEGALE";
+T.ro.receiptTotal = "TOTAL DE PLATĂ";
+T.ro.receiptFix = "1 RENOVARE";
+T.ro.receiptSupporters = "SUSȚINĂTORI";
+T.ro.receiptCourt1 = "teren";
+T.ro.receiptCourtN = "terenuri";
+T.en.receiptTitle = "The Inequality Receipt";
+T.en.receiptSub = "The city's receipt: same taxes, unequal investment. Download and share.";
+T.en.receiptTaxes = "TAXES PAID";
+T.en.receiptSame = "THE SAME";
+T.en.receiptInvest = "INVESTMENT";
+T.en.receiptUnequal = "UNEQUAL";
+T.en.receiptTotal = "TOTAL DUE";
+T.en.receiptFix = "1 RENOVATION";
+T.en.receiptSupporters = "SUPPORTERS";
+T.en.receiptCourt1 = "court";
+T.en.receiptCourtN = "courts";
+T.hu.receiptTitle = "Az egyenlőtlenség blokkja"; // TODO: HU review
+T.hu.receiptSub = "A város nyugtája: ugyanazok az adók, egyenlőtlen beruházások. Töltsd le és oszd meg."; // TODO: HU review
+T.hu.receiptTaxes = "BEFIZETETT ADÓK"; // TODO: HU review
+T.hu.receiptSame = "UGYANANNYI"; // TODO: HU review
+T.hu.receiptInvest = "BERUHÁZÁS"; // TODO: HU review
+T.hu.receiptUnequal = "EGYENLŐTLEN"; // TODO: HU review
+T.hu.receiptTotal = "FIZETENDŐ"; // TODO: HU review
+T.hu.receiptFix = "1 FELÚJÍTÁS"; // TODO: HU review
+T.hu.receiptSupporters = "TÁMOGATÓK"; // TODO: HU review
+T.hu.receiptCourt1 = "pálya"; // TODO: HU review
+T.hu.receiptCourtN = "pálya"; // TODO: HU review
+
+/* === #4 Inequality receipt — canvas-rendered shareable "store receipt" === */
+function InequalityReceipt() {
+  var app = useApp();
+  var t = app.t, lang = app.lang, toast = app.toast;
+  var votes = useFirebase("votes");
+  var total = votes ? (votes.flip || 0) + (votes.mural || 0) + (votes.both || 0) : 0;
+  var cvRef = useRef(null);
+  useEffect(function () {
+    var cv = cvRef.current;
+    if (!cv) return;
+    var W = 560, H = 740;
+    cv.width = W; cv.height = H;
+    var ctx = cv.getContext("2d");
+    ctx.clearRect(0, 0, W, H);
+    // Receipt body with a jagged (torn) bottom edge.
+    var zig = 14, zw = 20;
+    ctx.beginPath();
+    ctx.moveTo(0, 0); ctx.lineTo(W, 0); ctx.lineTo(W, H - zig);
+    for (var zx = W; zx > 0; zx -= zw) { ctx.lineTo(zx - zw / 2, H); ctx.lineTo(zx - zw, H - zig); }
+    ctx.closePath();
+    ctx.fillStyle = "#FBFBF8";
+    ctx.fill();
+    var ink = "#1A1A2E";
+    var dash = function (y) {
+      ctx.strokeStyle = "#9CA3AF"; ctx.lineWidth = 1.5;
+      ctx.setLineDash([7, 6]);
+      ctx.beginPath(); ctx.moveTo(32, y); ctx.lineTo(W - 32, y); ctx.stroke();
+      ctx.setLineDash([]);
+    };
+    ctx.textAlign = "center";
+    ctx.fillStyle = ink;
+    ctx.font = "bold 27px 'Space Mono',monospace";
+    ctx.fillText("FROM GREY TO PLAY", W / 2, 58);
+    ctx.font = "13px 'Space Mono',monospace";
+    ctx.fillStyle = "#6B7280";
+    ctx.fillText("TÂRGU MUREȘ · " + new Date().toLocaleDateString(lang === "ro" ? "ro-RO" : lang === "hu" ? "hu-HU" : "en-GB"), W / 2, 84);
+    ctx.fillStyle = ink;
+    ctx.font = "bold 16px 'Space Mono',monospace";
+    ctx.fillText(t.receiptTitle.toUpperCase(), W / 2, 116);
+    dash(138);
+    // Per-neighbourhood line items from the hardcoded COURTS dataset.
+    var hoodKeys = ["center", "tudor", "mureseni", "auchan", "pandurilor", "libertate", "unirii"];
+    var y = 174;
+    ctx.font = "15px 'Space Mono',monospace";
+    hoodKeys.forEach(function (hk) {
+      var cs = COURTS.filter(function (c) { return c.neighbourhood === hk; });
+      if (!cs.length) return;
+      var avg = Math.round(cs.reduce(function (s, c) { return s + (c.condition || 0); }, 0) / cs.length);
+      var mark = avg >= 4 ? "✓" : avg >= 3 ? "~" : "✗";
+      var markCol = avg >= 4 ? "#10B981" : avg >= 3 ? "#F97316" : "#DC2626";
+      ctx.textAlign = "left";
+      ctx.fillStyle = ink;
+      ctx.fillText(String(t[hk] || hk).toUpperCase(), 36, y);
+      ctx.fillText(cs.length + " " + (cs.length === 1 ? t.receiptCourt1 : t.receiptCourtN), 270, y);
+      ctx.fillText(avg + "/5", 448, y);
+      ctx.fillStyle = markCol;
+      ctx.font = "bold 17px 'Space Mono',monospace";
+      ctx.fillText(mark, 510, y);
+      ctx.font = "15px 'Space Mono',monospace";
+      y += 36;
+    });
+    dash(y - 8);
+    y += 26;
+    var row = function (l, v, big, vCol) {
+      ctx.font = (big ? "bold 20px" : "bold 15px") + " 'Space Mono',monospace";
+      ctx.textAlign = "left"; ctx.fillStyle = ink;
+      ctx.fillText(l + ":", 36, y);
+      ctx.textAlign = "right"; ctx.fillStyle = vCol || ink;
+      ctx.fillText(v, W - 36, y);
+      y += big ? 42 : 34;
+    };
+    row(t.receiptTaxes, t.receiptSame);
+    row(t.receiptInvest, t.receiptUnequal);
+    dash(y - 12);
+    y += 20;
+    row(t.receiptTotal, t.receiptFix, true, "#10B981");
+    dash(y - 14);
+    y += 18;
+    row(t.receiptSupporters, String(total));
+    // Fake barcode.
+    var bx = 120;
+    ctx.fillStyle = ink;
+    while (bx < 440) {
+      var bw = 2 + Math.random() * 6;
+      ctx.fillRect(bx, y - 4, bw, 54);
+      bx += bw + 2 + Math.random() * 6;
+    }
+    y += 76;
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#6B7280";
+    ctx.font = "13px 'Space Mono',monospace";
+    ctx.fillText("fromgreytoplay.netlify.app", W / 2, y);
+  }, [total, lang, t]);
+  var download = function () {
+    var cv = cvRef.current;
+    if (!cv) return;
+    var a = document.createElement("a");
+    a.href = cv.toDataURL("image/png");
+    a.download = "g2p-inequality-receipt.png";
+    a.click();
+  };
+  var share = function () {
+    var cv = cvRef.current;
+    if (!cv) return;
+    cv.toBlob(function (blob) {
+      var file = blob && typeof File !== "undefined" ? new File([blob], "g2p-receipt.png", { type: "image/png" }) : null;
+      if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({ files: [file], title: "From Grey to Play", url: SITE }).catch(function () {});
+      } else if (navigator.share) {
+        navigator.share({ title: "From Grey to Play", text: t.receiptTitle, url: SITE }).catch(function () {});
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(SITE).then(function () { toast(t.copiedLink); }).catch(function () {});
+      }
+    });
+  };
+  return React.createElement("div", { className: "card mt-2", style: { borderLeft: "3px solid var(--red)" } },
+    React.createElement("h3", { className: "mb-1", style: { fontSize: ".95rem" } }, "🧾 ", t.receiptTitle),
+    React.createElement("p", { className: "text-xs mb-2", style: { color: "var(--textSec)" } }, t.receiptSub),
+    React.createElement("canvas", { ref: cvRef, className: "receipt-canvas" }),
+    React.createElement("div", { className: "flex gap-1", style: { justifyContent: "center" } },
+      React.createElement("button", { className: "btn btn-green btn-sm", onClick: download }, "⬇️ PNG"),
+      React.createElement("button", { className: "btn btn-outline btn-sm", onClick: share }, "📤 " + t.share)
+    )
+  );
+}
+
+/* === #5 Live court heat strings === */
+T.ro.heatPlaying = "joacă acum";
+T.ro.heatJoin = "joacă la";
+T.ro.heatJoinCta = "alătură-te!";
+T.en.heatPlaying = "playing now";
+T.en.heatJoin = "is playing at";
+T.en.heatJoinCta = "join them!";
+T.hu.heatPlaying = "most játszik"; // TODO: HU review
+T.hu.heatJoin = "itt játszik:"; // TODO: HU review
+T.hu.heatJoinCta = "csatlakozz!"; // TODO: HU review
+
+/* === #5 HeatWatcher — global "join them" toast on fresh check-ins.
+   Mounted once in App; max 1 toast / 3 minutes; skips pre-mount events. === */
+function HeatWatcher() {
+  var app = useApp();
+  var tRef = useRef(app.t), toastRef = useRef(app.toast), userRef = useRef(app.user);
+  tRef.current = app.t; toastRef.current = app.toast; userRef.current = app.user;
+  useEffect(function () {
+    var mounted = Date.now();
+    var lastToast = 0;
+    var ref = db.ref("activity").limitToLast(1);
+    var fn = function (snap) {
+      var a = snap.val();
+      if (!a) return;
+      var ts = typeof a.timestamp === "number" ? a.timestamp : (Date.parse(a.timestamp || "") || 0);
+      if (ts < mounted) return;
+      if (a.type !== "check-in" && a.type !== "checkin") return;
+      var me = anonName((userRef.current && userRef.current.name) || "");
+      if (me && me !== "Anonim" && a.userName === me) return;
+      if (Date.now() - lastToast < 180000) return;
+      var c = COURTS.find(function (x) { return x.id === a.courtId; });
+      if (!c) return;
+      lastToast = Date.now();
+      var t = tRef.current;
+      toastRef.current("🏀 " + (a.userName || "Anon") + " " + t.heatJoin + " " + c.name + " — " + t.heatJoinCta);
+    };
+    ref.on("child_added", fn);
+    return function () { ref.off("child_added", fn); };
+  }, []);
+  return null;
+}
+
+/* === #6 Ambient court status light — time-of-day tint + red flash on fresh reports.
+   Approx. sunset hour in Târgu Mureș per month (local time, DST-adjusted). === */
+var G2P_SUNSET = [16.8, 17.5, 18.3, 20.1, 20.8, 21.3, 21.3, 20.7, 19.7, 18.6, 16.7, 16.4];
+function AmbientLight() {
+  var app = useApp();
+  var settings = app.settings;
+  var modeSt = useState("none");
+  var mode = modeSt[0], setMode = modeSt[1];
+  var flashSt = useState(false);
+  var flash = flashSt[0], setFlash = flashSt[1];
+  var rm = window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+  var off = !!rm || !!(settings && settings.flags && settings.flags.effects === false);
+  useEffect(function () {
+    if (off) return;
+    var tick = function () {
+      var d = new Date();
+      var h = d.getHours() + d.getMinutes() / 60;
+      var sunset = G2P_SUNSET[d.getMonth()];
+      if (Math.abs(h - sunset) <= 1.5) setMode("golden");
+      else if (h > sunset + 1.5 || h < 6.5) setMode("night");
+      else setMode("none");
+    };
+    tick();
+    var iv = setInterval(tick, 60000);
+    return function () { clearInterval(iv); };
+  }, [off]);
+  useEffect(function () {
+    if (off) return;
+    var mounted = Date.now();
+    var tid = null;
+    var ref = db.ref("reports").limitToLast(1);
+    var fn = function (snap) {
+      var r = snap.val();
+      if (!r) return;
+      var ts = Date.parse((r && r.createdAt) || "") || (typeof r.timestamp === "number" ? r.timestamp : 0);
+      if (!ts || ts < mounted) return;
+      setFlash(true);
+      if (tid) clearTimeout(tid);
+      tid = setTimeout(function () { setFlash(false); }, 2500);
+    };
+    ref.on("child_added", fn);
+    return function () { ref.off("child_added", fn); if (tid) clearTimeout(tid); };
+  }, [off]);
+  if (off) return null;
+  var bg = flash
+    ? "radial-gradient(ellipse at 50% 0%, rgba(220,38,38,.6), transparent 70%)"
+    : mode === "golden"
+      ? "radial-gradient(ellipse at 50% 100%, rgba(245,158,11,.55), transparent 65%)"
+      : mode === "night"
+        ? "radial-gradient(ellipse at 50% 0%, rgba(30,58,138,.6), transparent 70%)"
+        : "transparent";
+  var visible = flash || mode !== "none";
+  return React.createElement("div", {
+    className: "ambient-overlay" + (flash ? " amb-flash" : ""),
+    "aria-hidden": "true",
+    style: { background: bg, opacity: visible ? (flash ? 0.16 : 0.09) : 0 }
+  });
+}
+
+/* === #7 Sound of neglect strings === */
+T.ro.soundTitle = "Sunetul terenului";
+T.ro.soundSub = "Ascultă diferența dintre un teren viu și unul abandonat.";
+T.ro.soundPlay = "Ascultă";
+T.ro.soundStop = "Stop";
+T.en.soundTitle = "The Sound of This Court";
+T.en.soundSub = "Hear the difference between a living court and an abandoned one.";
+T.en.soundPlay = "Listen";
+T.en.soundStop = "Stop";
+T.hu.soundTitle = "A pálya hangja"; // TODO: HU review
+T.hu.soundSub = "Hallgasd meg a különbséget egy élő és egy elhagyatott pálya között."; // TODO: HU review
+T.hu.soundPlay = "Meghallgatom"; // TODO: HU review
+T.hu.soundStop = "Stop"; // TODO: HU review
+
+/* === #7 Sound of neglect — WebAudio scenes: "alive" (bounces, crowd,
+   squeaks) vs "abandoned" (wind, drips, distant rumble). === */
+function CourtSound(props) {
+  var court = props.court;
+  var app = useApp();
+  var t = app.t;
+  var playSt = useState(false);
+  var playing = playSt[0], setPlaying = playSt[1];
+  var stopRef = useRef(null);
+  var alive = court.status === "renovated" || (court.condition || 0) >= 4;
+  useEffect(function () {
+    return function () { if (stopRef.current) stopRef.current(); };
+  }, []);
+  var toggle = function () {
+    if (stopRef.current) { stopRef.current(); return; }
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    var ctx;
+    try { ctx = new AC(); } catch (e) { return; }
+    if (ctx.resume) { try { ctx.resume(); } catch (e) {} }
+    var on = true;
+    var timers = [];
+    var later = function (fn, ms) { var id = setTimeout(function () { if (on) fn(); }, ms); timers.push(id); };
+    var master = ctx.createGain();
+    master.gain.value = 0.25;
+    master.connect(ctx.destination);
+    var noiseBuf = function (sec) {
+      var b = ctx.createBuffer(1, Math.floor(ctx.sampleRate * sec), ctx.sampleRate);
+      var d = b.getChannelData(0);
+      for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      return b;
+    };
+    var brownBuf = function (sec) {
+      var b = ctx.createBuffer(1, Math.floor(ctx.sampleRate * sec), ctx.sampleRate);
+      var d = b.getChannelData(0);
+      var lastV = 0;
+      for (var i = 0; i < d.length; i++) {
+        var w = Math.random() * 2 - 1;
+        lastV = (lastV + 0.02 * w) / 1.02;
+        d[i] = lastV * 3.5;
+      }
+      return b;
+    };
+    var loopNoise = function (buf, type, freq, gain) {
+      var src = ctx.createBufferSource();
+      src.buffer = buf; src.loop = true;
+      var f = ctx.createBiquadFilter();
+      f.type = type; f.frequency.value = freq;
+      var g = ctx.createGain(); g.gain.value = gain;
+      src.connect(f); f.connect(g); g.connect(master);
+      src.start();
+      return { src: src, filter: f, gain: g };
+    };
+    if (alive) {
+      loopNoise(brownBuf(2), "lowpass", 520, 0.1); // crowd murmur
+      var bounce = function (when, vol) {
+        var o = ctx.createOscillator();
+        o.type = "sine"; o.frequency.setValueAtTime(60, when);
+        var og = ctx.createGain();
+        og.gain.setValueAtTime(0.0001, when);
+        og.gain.exponentialRampToValueAtTime(vol, when + 0.005);
+        og.gain.exponentialRampToValueAtTime(0.0001, when + 0.13);
+        o.connect(og); og.connect(master);
+        o.start(when); o.stop(when + 0.16);
+        var n = ctx.createBufferSource(); n.buffer = noiseBuf(0.06);
+        var nf = ctx.createBiquadFilter(); nf.type = "lowpass"; nf.frequency.value = 420;
+        var ng = ctx.createGain();
+        ng.gain.setValueAtTime(vol * 0.6, when);
+        ng.gain.exponentialRampToValueAtTime(0.0001, when + 0.06);
+        n.connect(nf); nf.connect(ng); ng.connect(master);
+        n.start(when);
+      };
+      var bounceSeq = function () {
+        // a dropped ball: bounces accelerate, then the pattern resets
+        var t0 = ctx.currentTime + 0.05;
+        var gap = 0.42, dt = 0;
+        for (var i = 0; i < 9; i++) { bounce(t0 + dt, Math.max(0.12, 0.5 - i * 0.045)); dt += gap; gap *= 0.72; }
+        later(bounceSeq, 2500 + Math.random() * 800);
+      };
+      bounceSeq();
+      var squeak = function () {
+        var when = ctx.currentTime + 0.02;
+        var n = ctx.createBufferSource(); n.buffer = noiseBuf(0.2);
+        var bf = ctx.createBiquadFilter(); bf.type = "bandpass";
+        bf.frequency.setValueAtTime(2200, when);
+        bf.frequency.exponentialRampToValueAtTime(3800, when + 0.13);
+        bf.Q.value = 9;
+        var g = ctx.createGain();
+        g.gain.setValueAtTime(0.0001, when);
+        g.gain.exponentialRampToValueAtTime(0.12, when + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, when + 0.16);
+        n.connect(bf); bf.connect(g); g.connect(master);
+        n.start(when);
+        later(squeak, 3000 + Math.random() * 4000);
+      };
+      later(squeak, 1500);
+    } else {
+      var wind = loopNoise(brownBuf(3), "lowpass", 550, 0.16);
+      var lfo = ctx.createOscillator(); lfo.type = "sine"; lfo.frequency.value = 0.07;
+      var lfoG = ctx.createGain(); lfoG.gain.value = 250;
+      lfo.connect(lfoG); lfoG.connect(wind.filter.frequency);
+      lfo.start();
+      var rum = ctx.createOscillator(); rum.type = "sine"; rum.frequency.value = 46;
+      var rumG = ctx.createGain(); rumG.gain.value = 0.03;
+      rum.connect(rumG); rumG.connect(master);
+      rum.start();
+      var drip = function () {
+        var when = ctx.currentTime + 0.02;
+        var o = ctx.createOscillator(); o.type = "sine";
+        o.frequency.setValueAtTime(820, when);
+        o.frequency.exponentialRampToValueAtTime(300, when + 0.18);
+        var g = ctx.createGain();
+        g.gain.setValueAtTime(0.0001, when);
+        g.gain.exponentialRampToValueAtTime(0.16, when + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, when + 0.22);
+        o.connect(g); g.connect(master);
+        o.start(when); o.stop(when + 0.25);
+        later(drip, 2000 + Math.random() * 4000);
+      };
+      later(drip, 900);
+    }
+    stopRef.current = function () {
+      on = false;
+      timers.forEach(clearTimeout);
+      try { ctx.close(); } catch (e) {}
+      stopRef.current = null;
+      setPlaying(false);
+    };
+    setPlaying(true);
+  };
+  return React.createElement("div", { className: "card mt-2", style: { borderLeft: "3px solid var(--green)" } },
+    React.createElement("div", { className: "flex items-center gap-2", style: { flexWrap: "wrap" } },
+      React.createElement("span", { style: { fontSize: "1.4rem" } }, "🎧"),
+      React.createElement("div", { style: { flex: 1, minWidth: 150 } },
+        React.createElement("h4", { style: { fontSize: ".88rem" } }, t.soundTitle),
+        React.createElement("p", { className: "text-xs", style: { color: "var(--textSec)" } }, t.soundSub)
+      ),
+      playing && React.createElement("span", { className: "eq", "aria-hidden": "true" },
+        React.createElement("i", null), React.createElement("i", null), React.createElement("i", null)),
+      React.createElement("button", {
+        className: "btn btn-sm " + (playing ? "btn-outline" : "btn-green"),
+        onClick: toggle, "aria-pressed": playing
+      }, playing ? "⏹ " + t.soundStop : "▶ " + t.soundPlay)
+    )
+  );
+}
+
+/* === #8 City pulse strings === */
+T.ro.pulseTitle = "Pulsul orașului";
+T.ro.pulseSub = "Fiecare punct = o acțiune civică reală";
+T.ro.pulseOpen = "Vezi pulsul orașului";
+T.ro.pulseOpenSub = "Reluare animată a fiecărei semnături, sesizări și check-in din proiect.";
+T.ro.pulseSig = "Semnături";
+T.ro.pulseRep = "Sesizări";
+T.ro.pulseCheck = "Check-in-uri";
+T.en.pulseTitle = "City Pulse";
+T.en.pulseSub = "Every dot = a real civic action";
+T.en.pulseOpen = "Watch the City Pulse";
+T.en.pulseOpenSub = "An animated replay of every signature, report and check-in in the project.";
+T.en.pulseSig = "Signatures";
+T.en.pulseRep = "Reports";
+T.en.pulseCheck = "Check-ins";
+T.hu.pulseTitle = "A város pulzusa"; // TODO: HU review
+T.hu.pulseSub = "Minden pont = egy valódi polgári cselekedet"; // TODO: HU review
+T.hu.pulseOpen = "Nézd meg a város pulzusát"; // TODO: HU review
+T.hu.pulseOpenSub = "Animált visszajátszás minden aláírásról, bejelentésről és bejelentkezésről."; // TODO: HU review
+T.hu.pulseSig = "Aláírások"; // TODO: HU review
+T.hu.pulseRep = "Bejelentések"; // TODO: HU review
+T.hu.pulseCheck = "Bejelentkezések"; // TODO: HU review
+
+/* === #8 Live City Pulse — full-screen 2D-canvas time-lapse of civic activity.
+   Petition events bloom from the "city hall" centre; court events burst at
+   their court node. ~30s replay with a scrubber. === */
+function CityPulse(props) {
+  var onClose = props.onClose;
+  var app = useApp();
+  var t = app.t, lang = app.lang;
+  var activity = useFirebase("activity");
+  var signups = useFirebase("signups");
+  var cvRef = useRef(null), stageRef = useRef(null), scrubRef = useRef(null), seekRef = useRef(null);
+  var playSt = useState(true);
+  var playing = playSt[0], setPlaying = playSt[1];
+  var playRef = useRef(true);
+  var rm = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches);
+  var events = React.useMemo(function () {
+    var ev = [];
+    if (activity) Object.values(activity).forEach(function (a) {
+      var ts = typeof a.timestamp === "number" ? a.timestamp : (Date.parse(a.timestamp || "") || 0);
+      if (!ts) return;
+      ev.push({ ts: ts, type: a.type || "other", courtId: a.courtId || null });
+    });
+    if (signups) Object.values(signups).forEach(function (s) {
+      var ts = Date.parse(s.date || "") || (typeof s.timestamp === "number" ? s.timestamp : 0);
+      if (!ts) return;
+      ev.push({ ts: ts, type: "signup", courtId: null });
+    });
+    ev.sort(function (a, b) { return a.ts - b.ts; });
+    return ev;
+  }, [activity, signups]);
+  useEffect(function () {
+    var h = function (e) { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", h);
+    return function () { window.removeEventListener("keydown", h); };
+  }, [onClose]);
+  useEffect(function () {
+    var cv = cvRef.current, stage = stageRef.current;
+    if (!cv || !stage) return;
+    var ctx = cv.getContext("2d");
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var W = 320, H = 320;
+    var prog = rm ? 1 : 0;
+    var particles = [], rings = [];
+    var tMin = events.length ? events[0].ts : Date.now() - 1;
+    var tMax = events.length ? events[events.length - 1].ts : Date.now();
+    if (tMax <= tMin) tMax = tMin + 1;
+    var prevT = tMin - 1;
+    var lats = COURTS.map(function (c) { return c.lat; });
+    var lngs = COURTS.map(function (c) { return c.lng; });
+    var laMin = Math.min.apply(null, lats), laMax = Math.max.apply(null, lats);
+    var loMin = Math.min.apply(null, lngs), loMax = Math.max.apply(null, lngs);
+    function proj(lat, lng) {
+      var nx = (lng - loMin) / ((loMax - loMin) || 1);
+      var ny = 1 - (lat - laMin) / ((laMax - laMin) || 1);
+      return { x: (0.16 + nx * 0.68) * W, y: (0.24 + ny * 0.56) * H };
+    }
+    function resize() {
+      W = stage.clientWidth || 320;
+      H = stage.clientHeight || 320;
+      cv.width = Math.round(W * dpr);
+      cv.height = Math.round(H * dpr);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+    var colorFor = function (ty) {
+      return ty === "petition" || ty === "signup" ? "#10B981"
+        : ty === "report" ? "#DC2626"
+        : ty === "check-in" || ty === "checkin" ? "#F97316"
+        : ty === "photo" ? "#8B5CF6" : "#0D9488";
+    };
+    function spawn(ev) {
+      var col = colorFor(ev.type);
+      var court = ev.courtId && COURTS.find(function (c) { return c.id === ev.courtId; });
+      if (court) {
+        var p = proj(court.lat, court.lng);
+        var n = 6 + Math.floor(Math.random() * 5);
+        for (var i = 0; i < n; i++) {
+          var ang = Math.random() * Math.PI * 2, sp = 30 + Math.random() * 90;
+          particles.push({ x: p.x, y: p.y, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp, life: 1, decay: 0.5 + Math.random() * 0.5, color: col, r: 1.5 + Math.random() * 2 });
+        }
+        rings.push({ x: p.x, y: p.y, r: 4, vr: 50, a: 0.7, color: col });
+      } else {
+        rings.push({ x: W / 2, y: H * 0.46, r: 5, vr: 90, a: 0.9, color: col });
+        rings.push({ x: W / 2, y: H * 0.46, r: 2, vr: 55, a: 0.7, color: col });
+      }
+    }
+    seekRef.current = function (p) {
+      prog = Math.max(0, Math.min(1, p));
+      prevT = tMin + (tMax - tMin) * prog;
+      particles.length = 0;
+      rings.length = 0;
+    };
+    function draw(playT, dt) {
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.globalCompositeOperation = "source-over";
+      ctx.fillStyle = "#0B0E18";
+      ctx.fillRect(0, 0, W, H);
+      ctx.strokeStyle = "rgba(255,255,255,.035)";
+      ctx.lineWidth = 1;
+      for (var gx = 0; gx < W; gx += 48) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke(); }
+      for (var gy = 0; gy < H; gy += 48) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke(); }
+      ctx.font = "16px serif";
+      ctx.textAlign = "center";
+      ctx.fillText("🏛️", W / 2, H * 0.46 + 5);
+      COURTS.forEach(function (c) {
+        var p = proj(c.lat, c.lng);
+        var col = c.status === "degraded" ? "#DC2626" : c.status === "inProgress" ? "#F97316" : "#10B981";
+        ctx.save();
+        ctx.shadowColor = col;
+        ctx.shadowBlur = 14;
+        ctx.fillStyle = col;
+        ctx.beginPath(); ctx.arc(p.x, p.y, 5, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+        ctx.fillStyle = "#9CA3AF";
+        ctx.font = "10px 'Space Mono',monospace";
+        ctx.fillText(c.name, p.x, p.y + 18);
+      });
+      ctx.globalCompositeOperation = "lighter";
+      for (var i = rings.length - 1; i >= 0; i--) {
+        var rg = rings[i];
+        rg.r += rg.vr * dt;
+        rg.a -= dt * 0.55;
+        if (rg.a <= 0) { rings.splice(i, 1); continue; }
+        ctx.globalAlpha = Math.max(0, rg.a);
+        ctx.strokeStyle = rg.color;
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(rg.x, rg.y, rg.r, 0, Math.PI * 2); ctx.stroke();
+      }
+      for (var j = particles.length - 1; j >= 0; j--) {
+        var pp = particles[j];
+        pp.x += pp.vx * dt;
+        pp.y += pp.vy * dt;
+        pp.vx *= Math.pow(0.25, dt);
+        pp.vy *= Math.pow(0.25, dt);
+        pp.life -= pp.decay * dt;
+        if (pp.life <= 0) { particles.splice(j, 1); continue; }
+        ctx.globalAlpha = Math.max(0, pp.life);
+        ctx.fillStyle = pp.color;
+        ctx.beginPath(); ctx.arc(pp.x, pp.y, pp.r, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = "source-over";
+      var vg = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.35, W / 2, H / 2, Math.max(W, H) * 0.75);
+      vg.addColorStop(0, "rgba(0,0,0,0)");
+      vg.addColorStop(1, "rgba(0,0,0,.55)");
+      ctx.fillStyle = vg;
+      ctx.fillRect(0, 0, W, H);
+      var sig = 0, rep = 0, chk = 0;
+      events.forEach(function (e) {
+        if (e.ts > playT) return;
+        if (e.type === "petition" || e.type === "signup") sig++;
+        else if (e.type === "report") rep++;
+        else if (e.type === "check-in" || e.type === "checkin") chk++;
+      });
+      ctx.textAlign = "left";
+      var rows = [[sig, t.pulseSig, "#10B981"], [rep, t.pulseRep, "#DC2626"], [chk, t.pulseCheck, "#F97316"]];
+      var cy = 38;
+      rows.forEach(function (r) {
+        ctx.fillStyle = r[2];
+        ctx.font = "800 30px 'Barlow Condensed',sans-serif";
+        ctx.fillText(String(r[0]), 16, cy);
+        ctx.fillStyle = "#9CA3AF";
+        ctx.font = "10px 'Space Mono',monospace";
+        ctx.fillText(String(r[1]).toUpperCase(), 16, cy + 13);
+        cy += 52;
+      });
+      if (events.length) {
+        ctx.fillStyle = "#6B7280";
+        ctx.font = "11px 'Space Mono',monospace";
+        ctx.fillText(new Date(playT).toLocaleDateString(lang === "ro" ? "ro-RO" : lang === "hu" ? "hu-HU" : "en-GB"), 16, cy + 6);
+      }
+    }
+    if (rm) {
+      // Reduced motion: render the final, fully-counted state. No animation.
+      prevT = tMax;
+      if (scrubRef.current) scrubRef.current.value = "1000";
+      draw(tMax, 0);
+      var redraw = function () { draw(tMax, 0); };
+      window.addEventListener("resize", redraw);
+      return function () {
+        window.removeEventListener("resize", redraw);
+        window.removeEventListener("resize", resize);
+        seekRef.current = null;
+      };
+    }
+    var raf = null, last = performance.now();
+    function loop(now) {
+      var dt = Math.min((now - last) / 1000, 0.05);
+      last = now;
+      if (playRef.current && prog < 1) {
+        prog = Math.min(1, prog + dt / 30);
+        if (prog >= 1) { playRef.current = false; setPlaying(false); }
+      }
+      var playT = tMin + (tMax - tMin) * prog;
+      events.forEach(function (e) { if (e.ts > prevT && e.ts <= playT) spawn(e); });
+      prevT = playT;
+      if (scrubRef.current) scrubRef.current.value = String(Math.round(prog * 1000));
+      draw(playT, dt);
+      raf = requestAnimationFrame(loop);
+    }
+    raf = requestAnimationFrame(loop);
+    return function () {
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
+      seekRef.current = null;
+    };
+  }, [events, rm, lang]);
+  var togglePlay = function () {
+    if (!playRef.current && scrubRef.current && +scrubRef.current.value >= 1000 && seekRef.current) seekRef.current(0);
+    playRef.current = !playRef.current;
+    setPlaying(playRef.current);
+  };
+  return React.createElement("div", { className: "pulse-overlay", role: "dialog", "aria-modal": "true", "aria-label": t.pulseTitle },
+    React.createElement("div", { className: "pulse-hdr" },
+      React.createElement("div", null,
+        React.createElement("h3", null, "🧬 " + t.pulseTitle),
+        React.createElement("p", null, t.pulseSub)
+      ),
+      React.createElement("button", { className: "pulse-x", onClick: onClose, "aria-label": t.close }, "✕")
+    ),
+    React.createElement("div", { className: "pulse-stage", ref: stageRef },
+      React.createElement("canvas", { ref: cvRef })
+    ),
+    React.createElement("div", { className: "pulse-ctrl" },
+      React.createElement("button", { className: "pulse-play", onClick: togglePlay, "aria-label": playing ? "⏸" : "▶" }, playing ? "⏸" : "▶"),
+      React.createElement("input", {
+        ref: scrubRef, type: "range", min: 0, max: 1000, defaultValue: 0,
+        onInput: function (e) { if (seekRef.current) seekRef.current((+e.target.value) / 1000); },
+        "aria-label": t.pulseTitle
+      })
+    )
+  );
+}
+
+/* === #9 Mayor mode strings === */
+T.ro.mayorLine1 = "Acesta este viitorul.";
+T.ro.mayorLine2 = "Cost: ~0.3% din bugetul anual al orașului.";
+T.ro.mayorCta = "Fă-l real — semnează";
+T.en.mayorLine1 = "This is the future.";
+T.en.mayorLine2 = "Cost: ~0.3% of the city's annual budget.";
+T.en.mayorCta = "Make it real — sign";
+T.hu.mayorLine1 = "Ez a jövő."; // TODO: HU review
+T.hu.mayorLine2 = "Költség: a város éves költségvetésének ~0,3%-a."; // TODO: HU review
+T.hu.mayorCta = "Tedd valósággá — írd alá"; // TODO: HU review
+
+/* === #9 Mayor Mode — easter egg (type "fixit" anywhere, or via ⌘K).
+   Cinematic canvas: all 5 courts flip grey → renovated, then the pitch. === */
+function MayorMode(props) {
+  var onClose = props.onClose;
+  var app = useApp();
+  var t = app.t, setPage = app.setPage;
+  var tRef = useRef(t);
+  tRef.current = t;
+  var cvRef = useRef(null);
+  var btnSt = useState(false);
+  var showBtn = btnSt[0], setShowBtn = btnSt[1];
+  var rm = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches);
+  useEffect(function () {
+    var h = function (e) { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", h);
+    return function () { window.removeEventListener("keydown", h); };
+  }, [onClose]);
+  useEffect(function () {
+    var cv = cvRef.current;
+    if (!cv) return;
+    var ctx = cv.getContext("2d");
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var W = 320, H = 320;
+    function resize() {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      cv.width = Math.round(W * dpr);
+      cv.height = Math.round(H * dpr);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+    var N = COURTS.length;
+    var flipAt = COURTS.map(function (_, i) { return rm ? 0 : 800 + i * 900; });
+    var textDelay = rm ? 0 : flipAt[N - 1] + 1100;
+    var spawned = COURTS.map(function () { return false; });
+    var confetti = [];
+    var btnShown = false;
+    var CONF_COLS = ["#10B981", "#F97316", "#0D9488", "#F59E0B", "#EC4899"];
+    // Static cracks per court (relative coords), generated once.
+    var cracks = COURTS.map(function () {
+      var lines = [];
+      for (var i = 0; i < 3; i++) {
+        var seg = [], x = 0.15 + Math.random() * 0.7, y = 0.15 + Math.random() * 0.7;
+        for (var j = 0; j < 4; j++) { seg.push([x, y]); x += (Math.random() - 0.5) * 0.3; y += (Math.random() - 0.5) * 0.3; }
+        lines.push(seg);
+      }
+      return lines;
+    });
+    function layout() {
+      var cols = W > 680 ? 3 : 2;
+      var rows = Math.ceil(N / cols);
+      var cw = Math.min(W / cols * 0.72, 220);
+      var ch = cw * 0.6;
+      var out = [];
+      for (var i = 0; i < N; i++) {
+        var col = i % cols, row = Math.floor(i / cols);
+        var inRow = row === rows - 1 ? N - cols * (rows - 1) : cols;
+        var offset = (cols - inRow) * (W / cols) / 2;
+        out.push({
+          x: offset + (W / cols) * (col + 0.5),
+          y: H * 0.1 + ((H * 0.58) / rows) * (row + 0.5),
+          w: cw, h: ch
+        });
+      }
+      return out;
+    }
+    function rr(x, y, w, h, r) {
+      ctx.beginPath();
+      if (ctx.roundRect) { ctx.roundRect(x, y, w, h, r); return; }
+      ctx.rect(x, y, w, h);
+    }
+    function drawCourt(p, c, idx, el) {
+      var flipped = el >= flipAt[idx];
+      var fp = Math.max(0, Math.min(1, (el - flipAt[idx]) / 450));
+      var sc = flipped && !rm ? 1 + 0.22 * Math.sin(fp * Math.PI) : 1;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.scale(sc, sc);
+      var w = p.w, h = p.h;
+      if (!flipped) {
+        ctx.fillStyle = "#3f444d";
+        rr(-w / 2, -h / 2, w, h, 8); ctx.fill();
+        ctx.strokeStyle = "rgba(12,12,16,.75)";
+        ctx.lineWidth = 1.4;
+        cracks[idx].forEach(function (seg) {
+          ctx.beginPath();
+          seg.forEach(function (q, k) {
+            var qx = -w / 2 + Math.max(0.05, Math.min(0.95, q[0])) * w;
+            var qy = -h / 2 + Math.max(0.05, Math.min(0.95, q[1])) * h;
+            if (k) ctx.lineTo(qx, qy); else ctx.moveTo(qx, qy);
+          });
+          ctx.stroke();
+        });
+      } else {
+        ctx.fillStyle = "#10B981";
+        rr(-w / 2, -h / 2, w, h, 8); ctx.fill();
+        ctx.strokeStyle = "rgba(255,255,255,.9)";
+        ctx.lineWidth = 1.6;
+        ctx.strokeRect(-w / 2 + 7, -h / 2 + 7, w - 14, h - 14);
+        ctx.beginPath(); ctx.moveTo(0, -h / 2 + 7); ctx.lineTo(0, h / 2 - 7); ctx.stroke();
+        ctx.beginPath(); ctx.arc(0, 0, h * 0.18, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(-w / 2 + 13, 0, 4, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(w / 2 - 13, 0, 4, 0, Math.PI * 2); ctx.stroke();
+      }
+      ctx.restore();
+      ctx.fillStyle = "#C7CBD1";
+      ctx.font = "11px 'Space Mono',monospace";
+      ctx.textAlign = "center";
+      ctx.fillText(c.name, p.x, p.y + p.h / 2 + 20);
+      if (flipped && !spawned[idx]) {
+        spawned[idx] = true;
+        if (!rm) for (var i = 0; i < 16; i++) {
+          confetti.push({
+            x: p.x, y: p.y,
+            vx: (Math.random() - 0.5) * 240,
+            vy: -40 - Math.random() * 160,
+            life: 1,
+            color: CONF_COLS[i % CONF_COLS.length]
+          });
+        }
+      }
+    }
+    var t0 = performance.now();
+    var raf = null, last = t0;
+    function frame(now) {
+      var el = now - t0;
+      var dt = Math.min((now - last) / 1000, 0.05);
+      last = now;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var bgg = ctx.createLinearGradient(0, 0, W, H);
+      bgg.addColorStop(0, "#0B0E18"); bgg.addColorStop(1, "#16213E");
+      ctx.fillStyle = bgg;
+      ctx.fillRect(0, 0, W, H);
+      // ken burns drift
+      ctx.save();
+      if (!rm) {
+        var s = 1.02 + 0.012 * Math.sin(el * 0.0003);
+        ctx.translate(W / 2 + Math.sin(el * 0.00022) * 12, H / 2 + Math.cos(el * 0.00018) * 9);
+        ctx.scale(s, s);
+        ctx.translate(-W / 2, -H / 2);
+      }
+      var pos = layout();
+      COURTS.forEach(function (c, i) { drawCourt(pos[i], c, i, el); });
+      // confetti
+      for (var i = confetti.length - 1; i >= 0; i--) {
+        var cf = confetti[i];
+        cf.vy += 320 * dt;
+        cf.x += cf.vx * dt;
+        cf.y += cf.vy * dt;
+        cf.life -= dt * 1.1;
+        if (cf.life <= 0) { confetti.splice(i, 1); continue; }
+        ctx.globalAlpha = Math.max(0, cf.life);
+        ctx.fillStyle = cf.color;
+        ctx.fillRect(cf.x - 2, cf.y - 2, 4, 4);
+      }
+      ctx.globalAlpha = 1;
+      ctx.restore();
+      // type-on pitch
+      var tt = tRef.current;
+      if (el >= textDelay) {
+        var n1 = rm ? tt.mayorLine1.length : Math.floor((el - textDelay) / 45);
+        ctx.fillStyle = "#fff";
+        ctx.font = "bold 22px 'Space Mono',monospace";
+        ctx.textAlign = "center";
+        ctx.fillText(tt.mayorLine1.slice(0, n1), W / 2, H * 0.78);
+        var d2 = textDelay + tt.mayorLine1.length * 45 + 350;
+        if (el >= d2) {
+          var n2 = rm ? tt.mayorLine2.length : Math.floor((el - d2) / 35);
+          ctx.fillStyle = "#9CA3AF";
+          ctx.font = "15px 'Space Mono',monospace";
+          ctx.fillText(tt.mayorLine2.slice(0, n2), W / 2, H * 0.78 + 32);
+          if (!btnShown && (rm || n2 >= tt.mayorLine2.length)) {
+            btnShown = true;
+            setShowBtn(true);
+          }
+        }
+      }
+      raf = requestAnimationFrame(frame);
+    }
+    raf = requestAnimationFrame(frame);
+    return function () {
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
+    };
+  }, [rm]);
+  return React.createElement("div", { className: "mayor-overlay", role: "dialog", "aria-modal": "true", "aria-label": "Mayor Mode" },
+    React.createElement("canvas", { ref: cvRef }),
+    React.createElement("button", { className: "mayor-x", onClick: onClose, "aria-label": t.close }, "✕"),
+    React.createElement("button", {
+      className: "btn btn-green mayor-cta" + (showBtn ? " show" : ""),
+      style: { pointerEvents: showBtn ? "auto" : "none" },
+      onClick: function () { onClose(); setPage("petition"); }
+    }, "✊ " + t.mayorCta)
+  );
+}
+
+const COURTS = [
+  // ── BAZA MUREȘUL (public, municipal) ──────────────────────────────────────
+  {
+    id: "c1",
+    name: "Baza Mureșul — Teren Baschet",
+    address: "Str. Plutelor 2",
+    lat: 46.5618, lng: 24.5512,
+    status: "renovated",
+    neighbourhood: "mureseni",
+    category: "basketball",
+    condition: 5,
+    occupancy: "active",
+    progress: 100,
+    accessibility: { wheelchair: true,  lighting: true,  parking: true,  flatSurface: true  },
+    reports: 0,
+    description: "Teren baschet 37×20 m, asfalt nou, iluminat nocturn. Parte din Complexul de Agrement și Sport Mureșul."
   },
-  reports: 3
-}, {
-  id: "c2",
-  name: "Teren Auchan",
-  address: "Zona Auchan, Calea Sighișoarei",
-  lat: 46.5445,
-  lng: 24.5789,
-  status: "degraded",
-  neighbourhood: "auchan",
-  category: "multiuse",
-  condition: 1,
-  occupancy: "empty",
-  progress: 5,
-  accessibility: {
-    wheelchair: false,
-    lighting: false,
-    parking: true,
-    flatSurface: false
+  {
+    id: "c2",
+    name: "Baza Mureșul — Teren Fotbal",
+    address: "Str. Plutelor 2",
+    lat: 46.5615, lng: 24.5518,
+    status: "renovated",
+    neighbourhood: "mureseni",
+    category: "football",
+    condition: 5,
+    occupancy: "active",
+    progress: 100,
+    accessibility: { wheelchair: true,  lighting: true,  parking: true,  flatSurface: true  },
+    reports: 0,
+    description: "Teren fotbal 60×40 m, gazon artificial, iluminat nocturn. Complexul Mureșul, suprafață recentă."
   },
-  reports: 5
-}, {
-  id: "c3",
-  name: "Teren Sportcomplex",
-  address: "Str. Sportcomplex 12",
-  lat: 46.5567,
-  lng: 24.5623,
-  status: "inProgress",
-  neighbourhood: "sportcomplex",
-  category: "football",
-  condition: 3,
-  occupancy: "active",
-  progress: 45,
-  accessibility: {
-    wheelchair: true,
-    lighting: true,
-    parking: true,
-    flatSurface: true
+  // ── COMPLEXUL WEEKEND ────────────────────────────────────────────────────
+  {
+    id: "c3",
+    name: "Complex Weekend — Teren Fotbal",
+    address: "Str. Salcâmilor 1",
+    lat: 46.5448, lng: 24.5782,
+    status: "inProgress",
+    neighbourhood: "auchan",
+    category: "football",
+    condition: 3,
+    occupancy: "active",
+    progress: 55,
+    accessibility: { wheelchair: false, lighting: true,  parking: true,  flatSurface: true  },
+    reports: 2,
+    description: "Teren 50×35 m, gazon sintetic, sezonier (mai–aug). Facilitățile sunt vechi dar funcționale."
   },
-  reports: 2
-}, {
-  id: "c4",
-  name: "Teren Cornești",
-  address: "Platoul Cornești",
-  lat: 46.5634,
-  lng: 24.5432,
-  status: "renovated",
-  neighbourhood: "center",
-  category: "tennis",
-  condition: 5,
-  occupancy: "active",
-  progress: 100,
-  accessibility: {
-    wheelchair: true,
-    lighting: true,
-    parking: true,
-    flatSurface: true
+  {
+    id: "c4",
+    name: "Complex Weekend — Teren Tenis",
+    address: "Str. Salcâmilor 1",
+    lat: 46.5445, lng: 24.5786,
+    status: "degraded",
+    neighbourhood: "auchan",
+    category: "tennis",
+    condition: 2,
+    occupancy: "empty",
+    progress: 20,
+    accessibility: { wheelchair: false, lighting: false, parking: true,  flatSurface: false },
+    reports: 3,
+    description: "Teren tenis zgură. Suprafață deteriorată, filet rupt, necesită reabilitare urgentă."
   },
-  reports: 0
-}, {
-  id: "c5",
-  name: "Teren Insulei",
-  address: "Str. Insulei 8",
-  lat: 46.5489,
-  lng: 24.5701,
-  status: "degraded",
-  neighbourhood: "tudor",
-  category: "handball",
-  condition: 2,
-  occupancy: "empty",
-  progress: 15,
-  accessibility: {
-    wheelchair: false,
-    lighting: false,
-    parking: false,
-    flatSurface: false
+  // ── STR. INSULEI (Tudor, municipal) ──────────────────────────────────────
+  {
+    id: "c5",
+    name: "Baza Sportivă Str. Insulei",
+    address: "Str. Insulei 2",
+    lat: 46.5489, lng: 24.5701,
+    status: "inProgress",
+    neighbourhood: "tudor",
+    category: "football",
+    condition: 3,
+    occupancy: "empty",
+    progress: 45,
+    accessibility: { wheelchair: false, lighting: true,  parking: false, flatSurface: true  },
+    reports: 4,
+    description: "Teren sintetic 40×20 m + teren fotbal mare. Administrație municipală din 2024; proiect blocat de eroare cadastrală de 5M lei (oct 2025)."
   },
-  reports: 7
-}];
+  // ── TUDOR neighborhood outdoor public ────────────────────────────────────
+  {
+    id: "c6",
+    name: "Teren Baschet Tudor Vladimirescu",
+    address: "Str. Tudor Vladimirescu 45",
+    lat: 46.5512, lng: 24.5678,
+    status: "degraded",
+    neighbourhood: "tudor",
+    category: "basketball",
+    condition: 2,
+    occupancy: "empty",
+    progress: 10,
+    accessibility: { wheelchair: false, lighting: false, parking: true,  flatSurface: false },
+    reports: 5,
+    description: "Teren baschet asfalt, coș îndoit, fără plasă. Cel mai folosit teren de cartier Tudor, stare critică."
+  },
+  {
+    id: "c7",
+    name: "Teren Sport Str. Carpați",
+    address: "Str. Carpați 18",
+    lat: 46.5528, lng: 24.5710,
+    status: "degraded",
+    neighbourhood: "tudor",
+    category: "multiuse",
+    condition: 1,
+    occupancy: "empty",
+    progress: 5,
+    accessibility: { wheelchair: false, lighting: false, parking: false, flatSurface: false },
+    reports: 7,
+    description: "Teren multifuncțional beton, asfalt crăpat, fără echipamente. Abandonat de circa 8 ani."
+  },
+  // ── TORPI (public rental, Tudor) ─────────────────────────────────────────
+  {
+    id: "c8",
+    name: "CS Torpi — Terenuri Sport",
+    address: "Str. Sălciilor 11B",
+    lat: 46.5502, lng: 24.5659,
+    status: "renovated",
+    neighbourhood: "tudor",
+    category: "multiuse",
+    condition: 4,
+    occupancy: "active",
+    progress: 90,
+    accessibility: { wheelchair: true,  lighting: true,  parking: true,  flatSurface: true  },
+    reports: 0,
+    description: "Terenuri interioare fotbal, baschet, volei, handbal, tenis — închiriere. CS Torpi, deschis din 2005."
+  },
+  // ── CENTER ────────────────────────────────────────────────────────────────
+  {
+    id: "c9",
+    name: "Platoul Cornești — Teren Tenis",
+    address: "Platoul Cornești",
+    lat: 46.5634, lng: 24.5432,
+    status: "renovated",
+    neighbourhood: "center",
+    category: "tennis",
+    condition: 5,
+    occupancy: "active",
+    progress: 100,
+    accessibility: { wheelchair: true,  lighting: true,  parking: true,  flatSurface: true  },
+    reports: 0,
+    description: "Teren tenis modern pe Platoul Cornești, vizibilitate panoramică. Cel mai bine întreținut teren public din oraș."
+  },
+  {
+    id: "c10",
+    name: "Sala Sporturilor City Arena",
+    address: "Str. Gheorghe Doja 246",
+    lat: 46.5394, lng: 24.5587,
+    status: "renovated",
+    neighbourhood: "center",
+    category: "basketball",
+    condition: 5,
+    occupancy: "active",
+    progress: 100,
+    accessibility: { wheelchair: true,  lighting: true,  parking: true,  flatSurface: true  },
+    reports: 0,
+    description: "Sală profesionistă FIBA, 5.000 locuri. Gazda echipelor CSM Târgu Mureș. Standard internațional."
+  },
+  {
+    id: "c11",
+    name: "Stadionul Municipal",
+    address: "Str. Gheorghe Doja 243",
+    lat: 46.5397, lng: 24.5578,
+    status: "inProgress",
+    neighbourhood: "center",
+    category: "football",
+    condition: 3,
+    occupancy: "active",
+    progress: 60,
+    accessibility: { wheelchair: true,  lighting: true,  parking: true,  flatSurface: true  },
+    reports: 2,
+    description: "Stadion municipal 11.000 locuri, teren gazon natural. Renovare parțială în curs (tribune vechi)."
+  },
+  {
+    id: "c12",
+    name: "Academica Transilvania — Teren Fotbal",
+    address: "Str. N. Iorga 1",
+    lat: 46.5388, lng: 24.5508,
+    status: "renovated",
+    neighbourhood: "center",
+    category: "football",
+    condition: 4,
+    occupancy: "active",
+    progress: 85,
+    accessibility: { wheelchair: false, lighting: true,  parking: true,  flatSurface: true  },
+    reports: 1,
+    description: "Teren sintetic futsal/fotbal, universitar, disponibil pentru închiriere publicului."
+  },
+  // ── ENJOY / FITNESS CENTER (private, center) ─────────────────────────────
+  {
+    id: "c13",
+    name: "Enjoy Sports Club",
+    address: "Str. Liviu Rebreanu 29 (Pasajul Mocca)",
+    lat: 46.5420, lng: 24.5572,
+    status: "renovated",
+    neighbourhood: "center",
+    category: "gym",
+    condition: 4,
+    occupancy: "active",
+    progress: 100,
+    accessibility: { wheelchair: false, lighting: true,  parking: false, flatSurface: true  },
+    reports: 0,
+    description: "Sală fitness și sport privată, deschisă din 2005. Fitness, bodybuilding, aerobic, cursuri de grup."
+  },
+  // ── PANDURILOR / SUD ──────────────────────────────────────────────────────
+  {
+    id: "c14",
+    name: "Body Factory",
+    address: "B-dul Pandurilor 3",
+    lat: 46.5335, lng: 24.5490,
+    status: "renovated",
+    neighbourhood: "pandurilor",
+    category: "gym",
+    condition: 5,
+    occupancy: "active",
+    progress: 100,
+    accessibility: { wheelchair: true,  lighting: true,  parking: true,  flatSurface: true  },
+    reports: 0,
+    description: "Sală sport modernă, echipamente premium. Una dintre cele mai mari săli private din Târgu Mureș."
+  },
+  {
+    id: "c15",
+    name: "Teren Baschet Bulevardul 1 Decembrie",
+    address: "B-dul 1 Decembrie 1918",
+    lat: 46.5351, lng: 24.5531,
+    status: "degraded",
+    neighbourhood: "pandurilor",
+    category: "basketball",
+    condition: 1,
+    occupancy: "empty",
+    progress: 5,
+    accessibility: { wheelchair: false, lighting: false, parking: true,  flatSurface: false },
+    reports: 6,
+    description: "Teren baschet asfalt, complet degradat. Coșuri fără plasă, iluminat nonfuncțional, suprafață periculoasă."
+  },
+  // ── LIBERTATE / UNIRII ────────────────────────────────────────────────────
+  {
+    id: "c16",
+    name: "Teren Multifuncțional Libertății",
+    address: "Str. Libertății 52",
+    lat: 46.5455, lng: 24.5645,
+    status: "degraded",
+    neighbourhood: "libertate",
+    category: "multiuse",
+    condition: 2,
+    occupancy: "empty",
+    progress: 15,
+    accessibility: { wheelchair: false, lighting: false, parking: false, flatSurface: false },
+    reports: 5,
+    description: "Teren multisport beton, graffiti, echipamente lipsă. Ignorat de administrație de ani de zile."
+  },
+  {
+    id: "c17",
+    name: "Teren Fotbal Micro 14-15",
+    address: "Str. Unirii 80",
+    lat: 46.5378, lng: 24.5490,
+    status: "degraded",
+    neighbourhood: "unirii",
+    category: "football",
+    condition: 2,
+    occupancy: "empty",
+    progress: 20,
+    accessibility: { wheelchair: false, lighting: false, parking: false, flatSurface: false },
+    reports: 4,
+    description: "Mini-teren fotbal între blocuri, gard metalic corodat, marcaje șterse, porți fără plasă."
+  },
+  // ── AGORA / SKYGYM (private, central/nord) ────────────────────────────────
+  {
+    id: "c18",
+    name: "Agora Fitness Center",
+    address: "Str. Regele Ferdinand 4",
+    lat: 46.5435, lng: 24.5542,
+    status: "renovated",
+    neighbourhood: "center",
+    category: "gym",
+    condition: 4,
+    occupancy: "active",
+    progress: 100,
+    accessibility: { wheelchair: false, lighting: true,  parking: false, flatSurface: true  },
+    reports: 0,
+    description: "Sală fitness cu 237 recenzii pozitive, locație centrală. Cardio, mașini, clase fitness."
+  },
+  {
+    id: "c19",
+    name: "SkyGYM",
+    address: "Str. Călărașilor 112-114",
+    lat: 46.5480, lng: 24.5605,
+    status: "renovated",
+    neighbourhood: "tudor",
+    category: "gym",
+    condition: 4,
+    occupancy: "active",
+    progress: 100,
+    accessibility: { wheelchair: false, lighting: true,  parking: true,  flatSurface: true  },
+    reports: 0,
+    description: "Sală sport modernă în cartierul Tudor. Fitness, arte marțiale, box — oferă alternativă la terenurile degradate din jur."
+  },
+  // ── MUREȘENI SUD ──────────────────────────────────────────────────────────
+  {
+    id: "c20",
+    name: "Teren Fotbal Mureșeni",
+    address: "Str. Dealul Sighișoarei 12",
+    lat: 46.5268, lng: 24.5591,
+    status: "degraded",
+    neighbourhood: "mureseni",
+    category: "football",
+    condition: 2,
+    occupancy: "empty",
+    progress: 15,
+    accessibility: { wheelchair: false, lighting: false, parking: false, flatSurface: false },
+    reports: 5,
+    description: "Teren fotbal cartier Mureșeni, asfalt degradat, porți ruginite, fără iluminat. Zona cu tineri numeroși și facilități inexistente."
+  }
+];
 var ESSAY = {
   ro: "Cauta Targu Mures pe Google si fotografiile iti vand un vis – trasee de alergare pe Platoul Cornesti, parcuri verzi, fatade colorate. Oras sportiv, zic ei. Dar ia autobuzul spre Tudor sau in spatele Auchan, si visul se crapa, la propriu. Terenurile sunt sparte, cosurile indoite, si nimanui pare sa-i pese. Am vrut sa aflu de ce.\n\nAm cautat mai intai dovezi academice. Un studiu din 2023 in Urban Science (publicat de MDPI) compara modul in care orasele europene gestioneaza infrastructura recreationala si argumenteaza ca distributia inegala tinde sa adanceasca decalajele sociale. Este un studiu amplu, transnational – nu se potriveste perfect pentru un singur oras romanesc – dar rationamentul mi-a ramas. Journal of Urban Health restrange focusul: absenta terenurilor sportive la nivel de cartier se coreleaza direct cu inactivitatea si izolarea tinerilor. Ceea ce a fost decisiv a fost descoperirea Strategiei Integrate de Dezvoltare Urbana (SIDU), publicata pe site-ul Primariei. Documentul admite deschis ca districtele periferice – cele cu populatiile cele mai tinere – primesc cele mai putine investitii in infrastructura.\n\nReportajele locale au adaugat culoare. O investigatie Punctul.ro din octombrie 2025 a expus cum o eroare administrativa de cinci milioane de lei a inghetat renovarea unei baze sportive de pe strada Insulei – birocratie la superlativ. Un alt reportaj Punctul.ro a explorat cum Cluj si Sibiu au transformat cu succes loturi urbane neglijate in hub-uri digitale, evidentiind prin contrast cat de putin a facut Targu Mures. Acum, presa poate sensationaliza, asa ca am verificat cu bugetul oficial al Primariei Targu Mures. Cifrele s-au aliniat: fondurile promise pentru renovari depasesc constant ceea ce se cheltuieste efectiv.\n\nTotusi, cercetarea de birou iti arata doar o parte din imagine. Pe parcursul a doua weekenduri, am strabatut Tudor, zona Auchan si terenurile de langa Sportcomplex, fotografiind asfalt crapat si cosuri indoite si le-am inregistrat pe Google My Maps. Am facut si un sondaj informal rapid – cincisprezece rezidenti, o intrebare: folosesti terenul cel mai aproape de tine? Doisprezece au spus nu, prea degradat. Trei au spus ocazional, din lipsa de alternative. Cincisprezece respondenti nu vor castiga un premiu de statistica, dar acel nivel de consens este greu de respins.\n\nPunand piesele cap la cap, apare un lant clar: pasul unu, municipalitatea concentreaza cheltuielile pe locatii centrale de profil inalt; pasul doi, terenurile periferice se degradeaza din pura neatentie; pasul trei, tinerii din acele zone isi pierd sansa la sport regulat si la viata sociala care vine cu el. Platoul Cornesti ar putea fi intr-un alt cod postal fata de periferie. Nu spun ca cineva actioneaza din rautate – bugetele limitate si prea multe cereri concurente probabil explica mult. Dar rezidentii din aceste cartiere nu au canale civice clare pentru a semnala problema, si aceasta tacere lasa ciclul sa se repete.\n\nPrima mea propunere este un pilot Flip-the-Court: alegem trei dintre cele mai degradate terenuri, le refacem suprafata si echipam fiecare cu un dulap de echipament rezistent la intemperii pe care localnicii il pot debloca printr-o aplicatie gratuita. Aplicatia functioneaza si ca instrument de feedback – oamenii evalueaza facilitatile, raporteaza daunele si sugereaza ce echipament sportiv sa fie aprovizionat. Ca finantare, micro-granturile EU pentru sport-tineret acopera costurile principale; cateva parteneriate cu sali de sport locale acopera intretinerea. De la obtinerea grantului pana la taierea panglicii, sase luni par realizabile.\n\nA doua idee se bazeaza mai mult pe arta decat pe tehnologie. O initiativa Street Canvas ar aduce artistii locali de graffiti si rezidentii impreuna pentru a picta murale colorate la scara mare pe suprafetele renovate – finantata aproape in intregime din spray paint donat si ore de voluntariat. De ce sa ne obosim? Cercetarile privind atasamentul de loc arata ca oamenii care ajuta fizic la modelarea unui spatiu public il trateaza ca pe al lor, iar ratele de vandalism scad corespunzator. O placa cenusie devine un loc de intalnire pe care oamenii chiar vor sa-l protejeze.\n\nNimic din toate acestea nu este cu adevarat despre baschet sau handbal. Este despre daca adresa ta ar trebui sa-ti limiteze oportunitatile. Un pilot mic, cateva murale, un efort comunitar incapatanat – pretul este modest. Singurul lucru scump este sa continuam sa nu facem nimic.",
   en: "Google Târgu Mureș and the photos sell you a dream – running trails on the Cornești Plateau, green parks, colourful facades. Sporty city, they say. But ride the bus out to Tudor or behind Auchan, and the dream cracks, quite literally. The courts are broken, the hoops bent, and nobody seems to care. I wanted to find out why.\n\nI went looking for academic backing first. A 2023 study in Urban Science (published by MDPI) compares how European cities manage recreational infrastructure and argues that uneven distribution tends to widen social gaps rather than narrow them. It is a broad, cross-national piece – not a perfect fit for one Romanian city – but the reasoning stuck with me. The Journal of Urban Health narrows the focus: the absence of neighbourhood-level sports courts correlates directly with youth inactivity and isolation. What really sealed it, though, was finding our city’s Integrated Urban Development Strategy (SIDU), published on the Primaria website. The document openly admits that peripheral districts – the ones with the youngest populations – receive the least infrastructure investment.\n\nLocal reporting added colour. A Punctul.ro investigation from October 2025 exposed how a five-million-lei administrative mix-up froze the renovation of a sports facility on Insulei Street – bureaucracy at its finest. A separate Punctul.ro feature explored how Cluj and Sibiu successfully repurposed neglected urban lots into digital hubs, highlighting by contrast just how little Targu Mures has done. Now, media outlets can sensationalise, so I cross-checked against the official Primaria Targu Mures budget. The numbers lined up: pledged renovation funds consistently outstrip what actually gets spent on the ground.\n\nStill, desk research only shows you part of the picture. Over two weekends, I walked through Tudor, the Auchan area, and the courts near Sportcomplex, photographing cracked asphalt and bent rims and logging it all on Google My Maps. I also ran a quick, informal poll – fifteen residents, one question: do you use the court nearest to you? Twelve said no, too run-down. Three said occasionally, for lack of alternatives. Fifteen respondents will not win a statistics prize, but that level of agreement is hard to dismiss.\n\nPut the pieces together, and a clear chain emerges: step one, the municipality concentrates spending on high-profile central venues; step two, peripheral courts decay from sheer inattention; step three, young people in those areas lose their shot at regular sport and the social life that goes with it. The Cornesti Plateau might as well be in a different postcode from the outskirts. Now, I am not saying anyone is acting out of spite – limited budgets and too many competing demands probably explain a lot. But residents in these neighbourhoods also lack clear civic channels to flag the problem, and that silence lets the cycle repeat itself.\n\nMy first proposal is a Flip-the-Court pilot: choose three of the worst-off courts, resurface them, and fit each with a weather-proof equipment cabinet that locals can unlock through a free phone app. The app doubles as a feedback tool – people rate the facilities, report damage, and suggest what sports gear to stock next. Funding-wise, EU youth-sport micro-grants cover the hard costs; a handful of local gym partnerships cover maintenance. From securing the grant to cutting the ribbon, six months feels achievable.\n\nMy second idea leans more on art than on tech. A Street Canvas initiative would bring local graffiti artists and residents together to paint large-scale, colourful ground murals across the refurbished surfaces – funded almost entirely by donated spray paint and volunteer hours. Why bother? Research on place attachment shows that people who physically help shape a public space treat it as their own, and that damage rates drop accordingly. A once-grey slab becomes a gathering spot people actually want to protect.\n\nNone of this is really about basketball or handball. It is about whether your address should cap your opportunities. A small pilot, a few murals, some stubborn community effort – the price tag is modest. The only expensive thing is continuing to do nothing."
@@ -2361,6 +3959,8 @@ function CommandPalette({ onClose }) {
   COURTS.forEach(c => items.push({ g: t.cmdCourts, ic: "📍", l: c.name, sub: c.address, run: () => { location.hash = "#court-" + c.id; } }));
   items.push({ g: t.cmdActions, ic: theme === "dark" ? "☀️" : "🌙", l: t.cmdTheme, run: () => switchTheme(null, theme, setTheme) });
   items.push({ g: t.cmdActions, ic: "🌐", l: t.cmdLang + " (" + nextLang(lang).toUpperCase() + ")", run: () => setLang(nextLang(lang)) });
+  if (flags.impact !== false) items.push({ g: t.cmdActions, ic: "🧬", l: t.pulseTitle, run: () => { sessionStorage.setItem("g2p_open_pulse", "1"); setPage("impact"); } });
+  items.push({ g: t.cmdActions, ic: "🏛️", l: "Mayor Mode", run: () => { window.dispatchEvent(new Event("g2p-mayor")); } });
   const list = q ? items.filter(i => norm(i.l + " " + (i.sub || "")).indexOf(norm(q)) >= 0) : items;
   const sel = Math.max(0, Math.min(idx, list.length - 1));
   const exec = i => { if (!i) return; onClose(); i.run(); };
@@ -2823,6 +4423,7 @@ function mountHero3D(host, opts) {
   key.shadow.mapSize.set(1024, 1024); key.shadow.camera.near = 0.5; key.shadow.camera.far = 14;
   key.shadow.camera.left = -2.4; key.shadow.camera.right = 2.4; key.shadow.camera.top = 2.4; key.shadow.camera.bottom = -2.4; key.shadow.bias = -0.0006; scene.add(key);
   var fill = new THREE.DirectionalLight(0x7e8ea0, 0.28); fill.position.set(-4, 3, -3); scene.add(fill);
+  var fillWarm = new THREE.DirectionalLight(0xFFF0E0, 0.3); fillWarm.position.set(-3, 2, 4); scene.add(fillWarm);
 
   // everything lives in `world` (scaled to 70% — the whole scene 30% smaller)
   var S = 0.7;
@@ -2859,6 +4460,15 @@ function mountHero3D(host, opts) {
   court.rotation.x = -Math.PI / 2; court.position.y = 0.001; court.receiveShadow = true; group.add(court); drawCourt(0);
   var slab = new THREE.Mesh(new THREE.BoxGeometry(CX + 0.22, 0.12, CZ + 0.22), new THREE.MeshStandardMaterial({ color: 0x2a2f36, roughness: 0.9 }));
   slab.position.y = -0.06; slab.receiveShadow = true; group.add(slab);
+
+  // Court line markings — center circle + free-throw lines
+  var lineMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55 });
+  var centerCircle = new THREE.Mesh(new THREE.TorusGeometry(0.32, 0.012, 8, 32), lineMat);
+  centerCircle.rotation.x = -Math.PI / 2; centerCircle.position.y = 0.003; group.add(centerCircle);
+  var ftLineL = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.001, CZ * 0.58), lineMat.clone());
+  ftLineL.position.set(-CX * 0.25, 0.003, 0); group.add(ftLineL);
+  var ftLineR = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.001, CZ * 0.58), lineMat.clone());
+  ftLineR.position.set(CX * 0.25, 0.003, 0); group.add(ftLineR);
 
   var netTex = texFrom(buildNet(), 1, 1), boardTex = texFrom(buildBackboard());
   var nets = [], hoops = [], lockerScreen = null, renovOnly = [], interactives = [];
@@ -2906,7 +4516,7 @@ function mountHero3D(host, opts) {
     var boardMat = new THREE.MeshStandardMaterial({ map: boardTex, transparent: true, side: THREE.DoubleSide });
     var board = new THREE.Mesh(new THREE.PlaneGeometry(0.52, 0.32), boardMat); board.position.set(-sign * 0.015, 0, 0); board.rotation.y = -sign * Math.PI / 2; board.castShadow = true; hoop.add(board);
     var rimMat = new THREE.MeshStandardMaterial({ color: 0xE2552B, roughness: 0.45 });
-    var rim = new THREE.Mesh(new THREE.TorusGeometry(0.11, 0.013, 8, 24), rimMat); rim.position.set(-sign * 0.14, -0.07, 0); rim.rotation.x = Math.PI / 2; rim.castShadow = true; hoop.add(rim);
+    var rim = new THREE.Mesh(new THREE.TorusGeometry(0.11, 0.013, 16, 32), rimMat); rim.position.set(-sign * 0.14, -0.07, 0); rim.rotation.x = Math.PI / 2; rim.castShadow = true; hoop.add(rim);
     var bnet = new THREE.Mesh(new THREE.CylinderGeometry(0.105, 0.05, 0.17, 14, 1, true), new THREE.MeshBasicMaterial({ map: netTex.clone(), transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false })); bnet.position.set(-sign * 0.14, -0.07 - 0.095, 0); hoop.add(bnet); nets.push(bnet);
     hoops.push({ x: baseX - sign * 0.14, y: boardY - 0.07, z: 0, r: 0.11 });
     endUnits.push({ frame: frame, hoop: hoop, rim: rim, rimMat: rimMat, boardMat: boardMat, sign: sign, lean: sign > 0 ? -0.1 : 0.08 });
@@ -3503,6 +5113,14 @@ function CourtsPage() {
     ...c
   })) : [];
   const all = [...COURTS, ...extra];
+  // Season 3: live court heat — check-ins within the last 2 hours.
+  const heatNow = id => {
+    const ci = fbCourts && fbCourts[id] && fbCourts[id].checkins;
+    if (!ci) return 0;
+    const cutoff = Date.now() - 7200000;
+    return Object.values(ci).filter(x => ((x && (x.ts || x.timestamp)) || 0) > cutoff).length;
+  };
+  const heatCls = n => n >= 5 ? " heat-3" : n >= 3 ? " heat-2" : n >= 1 ? " heat-1" : "";
   const filtered = all.filter(c => (filter === "all" || c.status === filter) && (hood === "all" || c.neighbourhood === hood));
   const gameCountFor = id => allGames && allGames[id] ? Object.keys(allGames[id]).length : 0;
   // Deep links: "#court-{id}" opens the detail (shareCourt URLs); back button closes it.
@@ -3577,10 +5195,16 @@ function CourtsPage() {
   }, t.tudor), /*#__PURE__*/React.createElement("option", {
     value: "auchan"
   }, t.auchan), /*#__PURE__*/React.createElement("option", {
-    value: "sportcomplex"
-  }, t.sportcomplex), /*#__PURE__*/React.createElement("option", {
+    value: "mureseni"
+  }, t.mureseni), /*#__PURE__*/React.createElement("option", {
     value: "center"
-  }, t.center))), /*#__PURE__*/React.createElement("div", {
+  }, t.center), /*#__PURE__*/React.createElement("option", {
+    value: "pandurilor"
+  }, t.pandurilor), /*#__PURE__*/React.createElement("option", {
+    value: "libertate"
+  }, t.libertate), /*#__PURE__*/React.createElement("option", {
+    value: "unirii"
+  }, t.unirii))), /*#__PURE__*/React.createElement("div", {
     className: "tabs"
   }, /*#__PURE__*/React.createElement("button", {
     className: tab === "map" ? "active" : "",
@@ -3593,17 +5217,22 @@ function CourtsPage() {
     onClick: () => { setHeat(h => !h); if (!heat) toast(t.heatmapOn); },
     title: t.heatmap,
     "aria-pressed": heat
-  }, "\uD83D\uDD25 " + t.heatmap)), tab === "map" && /*#__PURE__*/React.createElement(MapView, {
+  }, "\uD83D\uDD25 " + t.heatmap)), tab === "map" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(MapView, {
     courts: filtered,
     onSelect: openCourt,
     heat: heat,
     heatCounts: heatCounts
-  }), tab === "list" && /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs mt-1",
+    style: { color: "var(--textSec)", textAlign: "center" }
+  }, lang === "ro"
+    ? /*#__PURE__*/React.createElement("span", null, "Surs\u0103: cercetare de teren + date municipale T\xE2rgu Mure\u0219. ", /*#__PURE__*/React.createElement("a", { href: "https://www.google.com/maps/search/terenuri+sport+Targu+Mures", target: "_blank", style: { color: "var(--green)" } }, "Caut\u0103 pe Google Maps \u2192"))
+    : /*#__PURE__*/React.createElement("span", null, "Source: field research + T\xE2rgu Mure\u0219 municipal data. ", /*#__PURE__*/React.createElement("a", { href: "https://www.google.com/maps/search/sports+courts+Targu+Mures", target: "_blank", style: { color: "var(--green)" } }, "Search Google Maps \u2192")))), tab === "list" && /*#__PURE__*/React.createElement("div", {
     className: "grid gap-1"
   }, filtered.map(c => /*#__PURE__*/React.createElement(TiltDiv, {
     key: c.id,
     max: 5,
-    className: "card card-accent card-link",
+    className: "card card-accent card-link" + heatCls(heatNow(c.id)),
     onClick: () => openCourt(c)
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex justify-between items-center"
@@ -3627,7 +5256,11 @@ function CourtsPage() {
   gameCountFor(c.id) > 0 && /*#__PURE__*/React.createElement("span", {
     className: "badge badge-coral",
     style: { animation: "livePing 1.5s infinite" }
-  }, "⚽ ", gameCountFor(c.id), " ", t.activeGames)
+  }, "⚽ ", gameCountFor(c.id), " ", t.activeGames),
+  heatNow(c.id) > 0 && React.createElement("span", {
+    className: "badge badge-coral",
+    style: { marginLeft: ".3rem" }
+  }, "🔥 ", heatNow(c.id), " ", t.heatPlaying)
   ), /*#__PURE__*/React.createElement("div", {
     className: "progress-bar mt-1"
   }, /*#__PURE__*/React.createElement("div", {
@@ -3865,6 +5498,8 @@ function CourtDetail({
   ),
   React.createElement(ActiveGames, { court: c }),
   React.createElement(RatingSection, { court: c }),
+  React.createElement(CourtSound, { court: c }),
+  React.createElement(SatelliteTimeMachine, { court: c }),
   /*#__PURE__*/React.createElement("div", {
     className: "flex gap-1 mt-2"
   }, (useApp().settings?.flags?.booking) !== false && /*#__PURE__*/React.createElement("button", {
@@ -4435,6 +6070,15 @@ function PetitionPage() {
   const votes = useFirebase("votes");
   const [ch, setCh] = useState("");
   const [voted, setVoted] = useState(() => !!localStorage.getItem("g2p_voted"));
+  const [hoopDone, setHoopDone] = useState(() => !!localStorage.getItem("g2p_hoop"));
+  const hoopFinish = () => {
+    localStorage.setItem("g2p_hoop", "1");
+    setHoopDone(true);
+    setTimeout(() => {
+      const el = document.getElementById("g2p-vote-form");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 80);
+  };
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
   const [vol, setVol] = useState(false);
@@ -4516,7 +6160,8 @@ function PetitionPage() {
     style: {
       textAlign: "center"
     }
-  }, lang === "ro" ? "Alege viziunea ta pentru terenurile din Târgu Mureș" : "Choose your vision for Târgu Mureș courts"), React.createElement(PetitionMilestoneBar, { total: total }), !voted ? /*#__PURE__*/React.createElement("div", {
+  }, lang === "ro" ? "Alege viziunea ta pentru terenurile din Târgu Mureș" : "Choose your vision for Târgu Mureș courts"), React.createElement(PetitionMilestoneBar, { total: total }), !voted && !hoopDone && React.createElement(HoopGame, { onDone: hoopFinish }), !voted ? /*#__PURE__*/React.createElement("div", {
+    id: "g2p-vote-form",
     style: {
       maxWidth: 600,
       margin: "0 auto"
@@ -4710,7 +6355,7 @@ function PetitionPage() {
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-coral",
     onClick: () => setShowLetter(true)
-  }, "\uD83D\uDCC4 ", t.generateLetter)))), React.createElement(ShareCardCanvas, { total: total }),
+  }, "\uD83D\uDCC4 ", t.generateLetter)), React.createElement(InequalityReceipt, null))), React.createElement(ShareCardCanvas, { total: total }),
     celebrateMilestone && React.createElement("div", { className: "milestone-cel" },
       React.createElement("div", { style: { fontSize: "3rem", marginBottom: ".4rem" } }, "\uD83C\uDF89"),
       React.createElement("div", { style: { fontFamily: "'Barlow Condensed',monospace", fontSize: "2.6rem", fontWeight: 800, color: "var(--green)" } }, celebrateMilestone),
@@ -4735,10 +6380,13 @@ function PetitionPage() {
   React.createElement(PledgeWall, null));
 }
 const LETTER_AREAS = [
-  { k: "tudor", ro: "Tudor", en: "Tudor", hu: "Tudor" },
-  { k: "auchan", ro: "Mureșeni / Auchan", en: "Mureșeni / Auchan", hu: "Mureșeni / Auchan" },
-  { k: "sportcomplex", ro: "Sportcomplex", en: "Sportcomplex", hu: "Sportcomplex" },
-  { k: "center", ro: "Centru", en: "Center", hu: "Központ" }
+  { k: "tudor",      ro: "Tudor",       en: "Tudor",       hu: "Tudor" },
+  { k: "auchan",     ro: "Zona Auchan", en: "Auchan Area", hu: "Auchan körzet" },
+  { k: "mureseni",   ro: "Mureșeni",    en: "Mureșeni",    hu: "Mureșeni" },
+  { k: "center",     ro: "Centru",      en: "Center",      hu: "Központ" },
+  { k: "pandurilor", ro: "Pandurilor",  en: "Pandurilor",  hu: "Pandurilor" },
+  { k: "libertate",  ro: "Libertate",   en: "Libertate",   hu: "Libertate" },
+  { k: "unirii",     ro: "Unirii",      en: "Unirii",      hu: "Unirii" }
 ];
 function LetterModal({
   onClose,
@@ -4927,11 +6575,11 @@ function CommunityPage() {
     className: "section-title"
   }, "\uD83E\uDD1D ", t.community), /*#__PURE__*/React.createElement("div", {
     className: "tabs"
-  }, ["activity", "forum", "events", "gallery", "teams", "leaderboard"].map(tb => /*#__PURE__*/React.createElement("button", {
+  }, ["activity", "pixel", "forum", "events", "gallery", "teams", "leaderboard"].map(tb => /*#__PURE__*/React.createElement("button", {
     key: tb,
     className: tab === tb ? "active" : "",
     onClick: () => setTab(tb)
-  }, tb === "activity" ? "📡 " + t.liveActivity : tb === "forum" ? "💬 " + t.forum : tb === "events" ? "📅 " + t.events : tb === "gallery" ? "📸 " + t.gallery : tb === "teams" ? "⚽ " + t.teams : "🏆 " + t.leaderboard))), tab === "activity" && /*#__PURE__*/React.createElement(ActivityFeed, null), tab === "forum" && /*#__PURE__*/React.createElement(ForumTab, null), tab === "events" && /*#__PURE__*/React.createElement(EventsTab, null), tab === "gallery" && /*#__PURE__*/React.createElement(GalleryTab, null), tab === "teams" && /*#__PURE__*/React.createElement(TeamsTab, null), tab === "leaderboard" && /*#__PURE__*/React.createElement(LBTab, null))));
+  }, tb === "activity" ? "📡 " + t.liveActivity : tb === "pixel" ? "🎨 Pixel" : tb === "forum" ? "💬 " + t.forum : tb === "events" ? "📅 " + t.events : tb === "gallery" ? "📸 " + t.gallery : tb === "teams" ? "⚽ " + t.teams : "🏆 " + t.leaderboard))), tab === "activity" && /*#__PURE__*/React.createElement(ActivityFeed, null), tab === "pixel" && React.createElement(PixelWall, null), tab === "forum" && /*#__PURE__*/React.createElement(ForumTab, null), tab === "events" && /*#__PURE__*/React.createElement(EventsTab, null), tab === "gallery" && /*#__PURE__*/React.createElement(GalleryTab, null), tab === "teams" && /*#__PURE__*/React.createElement(TeamsTab, null), tab === "leaderboard" && /*#__PURE__*/React.createElement(LBTab, null))));
 }
 function ForumTab() {
   const {
@@ -5404,8 +7052,16 @@ function TeamsTab() {
   }, t.tudor), /*#__PURE__*/React.createElement("option", {
     value: "auchan"
   }, t.auchan), /*#__PURE__*/React.createElement("option", {
-    value: "sportcomplex"
-  }, t.sportcomplex)), /*#__PURE__*/React.createElement("button", {
+    value: "mureseni"
+  }, t.mureseni), /*#__PURE__*/React.createElement("option", {
+    value: "center"
+  }, t.center), /*#__PURE__*/React.createElement("option", {
+    value: "pandurilor"
+  }, t.pandurilor), /*#__PURE__*/React.createElement("option", {
+    value: "libertate"
+  }, t.libertate), /*#__PURE__*/React.createElement("option", {
+    value: "unirii"
+  }, t.unirii)), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-green btn-sm",
     onClick: create
   }, t.submit)), list.length === 0 ? /*#__PURE__*/React.createElement("div", {
@@ -5629,10 +7285,13 @@ function HoodChart() {
   var app = useApp();
   var t = app.t, lang = app.lang;
   var hoodNames = {
-    tudor: "Tudor Vladimirescu",
-    auchan: "Zona Auchan",
-    center: "Centru / Cornești",
-    sportcomplex: "Sportcomplex"
+    tudor:      "Tudor Vladimirescu",
+    auchan:     "Zona Auchan",
+    mureseni:   "Mureșeni",
+    center:     "Centru / Cornești",
+    pandurilor: "Pandurilor",
+    libertate:  "Libertate",
+    unirii:     "Unirii"
   };
   var hoods = {};
   COURTS.forEach(function(c) {
@@ -5869,6 +7528,14 @@ function ImpactPage() {
     lang
   } = useApp();
   const [tab, setTab] = useState("calc");
+  const [pulse, setPulse] = useState(false);
+  // Command palette deep-link: open City Pulse on arrival.
+  useEffect(() => {
+    if (sessionStorage.getItem("g2p_open_pulse")) {
+      sessionStorage.removeItem("g2p_open_pulse");
+      setPulse(true);
+    }
+  }, []);
   return /*#__PURE__*/React.createElement("div", {
     className: "animate-in"
   }, /*#__PURE__*/React.createElement("section", {
@@ -5877,7 +7544,16 @@ function ImpactPage() {
     className: "container"
   }, /*#__PURE__*/React.createElement("h2", {
     className: "section-title"
-  }, "\uD83D\uDCCA ", t.impact), /*#__PURE__*/React.createElement(DossierButton, null), /*#__PURE__*/React.createElement(OpenDataCard, null), /*#__PURE__*/React.createElement("div", {
+  }, "\uD83D\uDCCA ", t.impact), /*#__PURE__*/React.createElement(DossierButton, null), /*#__PURE__*/React.createElement(OpenDataCard, null),
+  React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--green)" } },
+    React.createElement("div", { className: "flex justify-between items-center", style: { gap: "1rem", flexWrap: "wrap" } },
+      React.createElement("div", { style: { flex: 1, minWidth: 180 } },
+        React.createElement("h3", { className: "barlow", style: { fontSize: "1.15rem", marginBottom: ".25rem" } }, "\uD83E\uDDEC ", t.pulseTitle),
+        React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } }, t.pulseOpenSub)
+      ),
+      React.createElement("button", { className: "btn btn-green", onClick: () => setPulse(true) }, "\uD83E\uDDEC " + t.pulseOpen)
+    )
+  ), /*#__PURE__*/React.createElement("div", {
     className: "tabs"
   }, /*#__PURE__*/React.createElement("button", {
     className: tab === "calc" ? "active" : "",
@@ -5902,11 +7578,11 @@ function ImpactPage() {
     onClick: () => setTab("tl")
   }, "\uD83D\uDCC5"), React.createElement("button", { className: tab === "hood" ? "active" : "", onClick: function() { setTab("hood"); }, title: "Neighbourhoods" }, "\uD83C\uDFD8"),
   React.createElement("button", { className: tab === "race" ? "active" : "", onClick: function() { setTab("race"); }, title: t.neighborhoodRace||"Cursa cartierelor" }, "\uD83C\uDFC1")),
-  tab === "calc" && /*#__PURE__*/React.createElement(ImpactCalc, null), tab === "city" && /*#__PURE__*/React.createElement(CityComp, null), tab === "budget" && /*#__PURE__*/React.createElement(BudgetViz, null), tab === "carbon" && /*#__PURE__*/React.createElement(CarbonCalc, null), tab === "health" && /*#__PURE__*/React.createElement(HealthCalc, null), tab === "mental" && /*#__PURE__*/React.createElement(MentalSec, null), tab === "tl" && /*#__PURE__*/React.createElement(TimelineSec, null), tab === "hood" && React.createElement(HoodChart, null),
+  tab === "calc" && React.createElement(React.Fragment, null, React.createElement(ImpactCalc, null), React.createElement(InequalityReceipt, null)), tab === "city" && /*#__PURE__*/React.createElement(CityComp, null), tab === "budget" && /*#__PURE__*/React.createElement(BudgetViz, null), tab === "carbon" && /*#__PURE__*/React.createElement(CarbonCalc, null), tab === "health" && /*#__PURE__*/React.createElement(HealthCalc, null), tab === "mental" && /*#__PURE__*/React.createElement(MentalSec, null), tab === "tl" && /*#__PURE__*/React.createElement(TimelineSec, null), tab === "hood" && React.createElement(HoodChart, null),
   tab === "race" && React.createElement(React.Fragment, null,
     React.createElement(CouncilCountdown, null),
     React.createElement(NeighborhoodRace, null)
-  ))));
+  ))), pulse && React.createElement(CityPulse, { onClose: () => setPulse(false) }));
 }
 function ImpactCalc() {
   const {
@@ -6551,7 +8227,19 @@ function AboutPage() {
   }, "\uD83D\uDCDA MDPI Urban Science"), /*#__PURE__*/React.createElement("a", {
     href: "https://www.tirgumures.ro/strategie/SIDU_Targu_Mures.pdf",
     target: "_blank"
-  }, "\uD83D\uDCC4 SIDU T\xE2rgu Mure\u0219")))), tab === "funding" && /*#__PURE__*/React.createElement("div", {
+  }, "\uD83D\uDCC4 SIDU T\xE2rgu Mure\u0219"))), /*#__PURE__*/React.createElement("div", {
+    className: "card mt-2"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "mb-2"
+  }, "\uD83D\uDCCD " + (lang === "ro" ? "G\u0103se\u0219te-ne pe hart\u0103" : lang === "hu" ? "Tal\xe1lj meg min\ket a t\xe9rk\xe9pen" : "Find us on the map")), /*#__PURE__*/React.createElement("a", {
+    href: "https://www.google.com/maps/place/G2P/@46.5399,24.5568,15z",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    className: "btn btn-green btn-sm"
+  }, "\uD83D\uDDFA\uFE0F Google Maps \u2014 G2P T\xE2rgu Mure\u0219"), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs mt-1",
+    style: { color: "var(--textSec)" }
+  }, lang === "ro" ? "Str. Tg Mure\u015F, 540143 Mure\u015F \u00B7 Tel: 0770 115 654" : "Tg Mure\u015F, 540143 Mure\u015F \u00B7 Tel: 0770 115 654")), /*#__PURE__*/React.createElement("span", null)), tab === "funding" && /*#__PURE__*/React.createElement("div", {
     className: "grid gap-1"
   }, FUNDING.map((f, i) => /*#__PURE__*/React.createElement("div", {
     key: i,
@@ -7842,8 +9530,11 @@ function ReportsPage() {
             React.createElement("option", { value: "all" }, t.neighbourhood),
             React.createElement("option", { value: "tudor" }, t.tudor),
             React.createElement("option", { value: "auchan" }, t.auchan),
-            React.createElement("option", { value: "sportcomplex" }, t.sportcomplex),
-            React.createElement("option", { value: "center" }, t.center)
+            React.createElement("option", { value: "mureseni" }, t.mureseni),
+            React.createElement("option", { value: "center" }, t.center),
+            React.createElement("option", { value: "pandurilor" }, t.pandurilor),
+            React.createElement("option", { value: "libertate" }, t.libertate),
+            React.createElement("option", { value: "unirii" }, t.unirii)
           ),
           React.createElement("select", { value: filterCat, onChange: e => setFilterCat(e.target.value), style: { width: "auto", padding: ".3rem .5rem", fontSize: ".82rem" } },
             React.createElement("option", { value: "all" }, lang === "ro" ? "Categorie" : lang === "hu" ? "Kateg\xf3ria" : "Category"),
@@ -7910,7 +9601,15 @@ function Footer() {
     target: "_blank"
   }, "\uD83D\uDCDA MDPI")), /*#__PURE__*/React.createElement("p", {
     className: "mt-1"
-  }, t.copyright)));
+  }, t.copyright), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 mt-2",
+    style: { justifyContent: "center", flexWrap: "wrap" }
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "https://www.google.com/maps/place/G2P/@46.5399,24.5568,15z",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: { fontSize: ".78rem", color: "var(--textSec)", display: "flex", alignItems: "center", gap: ".3rem" }
+  }, /*#__PURE__*/React.createElement("span", null, "📍"), /*#__PURE__*/React.createElement("span", null, "G2P — T\xE2rgu Mureș pe Google Maps")))));
 }
 
 /* === App === */
@@ -7920,6 +9619,25 @@ function App() {
   const [page, setPageRaw] = useState(pageFromHash);
   const [wipe, setWipe] = useState(0);
   const [cmd, setCmd] = useState(false);
+  const [mayor, setMayor] = useState(false);
+  // Season 3 easter egg: type "fixit" anywhere (outside form fields) → Mayor Mode.
+  useEffect(() => {
+    let buf = "";
+    const h = e => {
+      const el = e.target;
+      if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.tagName === "SELECT" || el.isContentEditable)) return;
+      if (!e.key || e.key.length !== 1 || e.ctrlKey || e.metaKey || e.altKey) return;
+      buf = (buf + e.key.toLowerCase()).slice(-5);
+      if (buf === "fixit") { buf = ""; setMayor(true); }
+    };
+    const open = () => setMayor(true);
+    window.addEventListener("keydown", h);
+    window.addEventListener("g2p-mayor", open);
+    return () => {
+      window.removeEventListener("keydown", h);
+      window.removeEventListener("g2p-mayor", open);
+    };
+  }, []);
   // Admin "rule everything": live site settings (maintenance, banner, flags,
   // featured court, accent, broadcast) — every client reacts in realtime.
   const settings = useFirebase("settings");
@@ -8156,7 +9874,9 @@ function App() {
     }
   }, /*#__PURE__*/React.createElement("div", {
     key: page
-  }, P())), /*#__PURE__*/React.createElement(Footer, null), toastMsg && /*#__PURE__*/React.createElement(Toast, {
+  }, P())), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), mayor && React.createElement(MayorMode, {
+    onClose: () => setMayor(false)
+  }), /*#__PURE__*/React.createElement(Footer, null), toastMsg && /*#__PURE__*/React.createElement(Toast, {
     msg: toastMsg,
     onClose: () => setToastMsg("")
   }));
