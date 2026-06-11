@@ -142,6 +142,23 @@ Anyone can write — rules are MVP-permissive. Tighten before any press.
 - `FeaturedCourt` spotlight on Home, picked by admin.
 - Theme toggle now does a circular reveal (View Transitions API +
   `ReactDOM.flushSync`, falls back gracefully).
+- Season 2 feature pack:
+  - Achievement/Badge System (12 badges) — `useBadges()` hook, `BadgesGrid` in
+    ProfilePage, `BadgeUnlockModal` overlay; badges awarded on petition vote
+    (vocal/voter) and court check-in (first_checkin). Firebase: `achievements/`.
+  - Court Health Score Ring — `CourtHealthRing` SVG ring (0-100, animated),
+    `getCourtHealthScore()` util; integrated into CourtDetail below status badges.
+  - Neighborhood Civic Race — `NeighborhoodRace` live bar-chart race of 4
+    neighbourhoods by activity+report score; tab "🏁" on ImpactPage.
+  - Council Countdown — `CouncilCountdown` days/hours/min until next council
+    session; shown on same "race" tab in ImpactPage.
+  - Pledge Wall — `PledgeWall` community promise board with emoji picker;
+    writes `pledges/`; added to PetitionPage.
+  - QR Code Generator — `CourtQRCard` modal using QRious (lazy CDN); branded
+    PNG download; "📱 QR" button in CourtDetail.
+  - Liquid wave progress bar — `milestone-fill::after` CSS animation.
+  - New T strings (neighborhoodRace, civicScore, pledgeWall, countdownTitle,
+    qrCardTitle, healthScore, etc.) in ro/en/hu.
 
 ## Roadmap priorities (from the brief)
 
