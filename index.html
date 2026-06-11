@@ -465,6 +465,14 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .hoop-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:rgba(11,14,24,.84);padding:1.2rem;animation:fadeIn .4s;z-index:3}
 @media(prefers-reduced-motion:reduce){.hoop-overlay{animation:none}}
 .no-fx .hoop-overlay{animation:none}
+/* === Pixel wall === */
+.px-canvas{width:100%;max-width:480px;aspect-ratio:1/1;image-rendering:pixelated;border-radius:8px;border:1px solid var(--border);cursor:crosshair;display:block;touch-action:manipulation;margin:0 auto}
+.px-palette{display:flex;gap:.35rem;flex-wrap:wrap;margin:.7rem 0;justify-content:center}
+.px-swatch{width:30px;height:30px;border-radius:8px;border:2px solid var(--border);cursor:pointer;padding:0;transition:transform .15s,border-color .15s}
+.px-swatch.on{border-color:var(--green);transform:scale(1.15);box-shadow:0 0 0 2px rgba(16,185,129,.3)}
+.px-cool{display:inline-flex;align-items:center;gap:.4rem;font-family:'Space Mono',monospace;font-size:.8rem;color:var(--coral);border:1px solid rgba(249,115,22,.35);border-radius:20px;padding:.25rem .7rem}
+@media(prefers-reduced-motion:reduce){.px-swatch{transition:none}}
+.no-fx .px-swatch{transition:none}
 </style>
 </head>
 <body>
@@ -2235,6 +2243,117 @@ function HoopGame(props) {
         React.createElement("p", { style: { color: "#fff", fontFamily: "'Space Mono',monospace", fontSize: ".95rem", maxWidth: 420, marginBottom: "1rem", lineHeight: 1.55 } }, t.hoopMiss),
         React.createElement("button", { className: "btn btn-green", onClick: onDone }, "✊ " + t.hoopSign)
       )
+    )
+  );
+}
+
+/* === #3 Pixel wall strings === */
+T.ro.pixelTitle = "Pictura murală colectivă";
+T.ro.pixelSub = "Un pixel per persoană la 10 minute. Rezultatul devine propunerea reală de mural pentru consiliu.";
+T.ro.pixelPlaced = "Pixel plasat! Următorul în 10 min.";
+T.ro.pixelWait = "Următorul pixel în";
+T.ro.pixelPainted = "pixeli pictați";
+T.en.pixelTitle = "The Collective Mural";
+T.en.pixelSub = "One pixel per person every 10 minutes. The result becomes the real mural proposal for the council.";
+T.en.pixelPlaced = "Pixel placed! Next one in 10 min.";
+T.en.pixelWait = "Next pixel in";
+T.en.pixelPainted = "pixels painted";
+T.hu.pixelTitle = "A közös falfestmény"; // TODO: HU review
+T.hu.pixelSub = "Egy pixel személyenként, 10 percenként. Az eredmény lesz a tanácsnak benyújtott valódi murál-javaslat."; // TODO: HU review
+T.hu.pixelPlaced = "Pixel elhelyezve! A következő 10 perc múlva."; // TODO: HU review
+T.hu.pixelWait = "Következő pixel"; // TODO: HU review
+T.hu.pixelPainted = "festett pixel"; // TODO: HU review
+
+/* === #3 Civic graffiti pixel wall — shared 48×48 canvas in pixels/{x_y} === */
+var PX_GRID = 48;
+var PX_COLORS = ["#10B981", "#0D9488", "#F97316", "#DC2626", "#F59E0B", "#8B5CF6", "#3B82F6", "#EC4899", "#FFFFFF", "#1A1A2E"];
+var PX_COOLDOWN_MS = 10 * 60 * 1000;
+function PixelWall() {
+  var app = useApp();
+  var t = app.t, toast = app.toast, user = app.user, theme = app.theme;
+  var data = useFirebase("pixels");
+  var cvRef = useRef(null);
+  var colSt = useState(PX_COLORS[0]);
+  var col = colSt[0], setCol = colSt[1];
+  var leftSt = useState(function () {
+    return Math.max(0, (+(localStorage.getItem("g2p_px_ts") || 0)) + PX_COOLDOWN_MS - Date.now());
+  });
+  var left = leftSt[0], setLeft = leftSt[1];
+  useEffect(function () {
+    var iv = setInterval(function () {
+      setLeft(Math.max(0, (+(localStorage.getItem("g2p_px_ts") || 0)) + PX_COOLDOWN_MS - Date.now()));
+    }, 1000);
+    return function () { clearInterval(iv); };
+  }, []);
+  useEffect(function () {
+    var cv = cvRef.current;
+    if (!cv) return;
+    var ctx = cv.getContext("2d");
+    var cell = 480 / PX_GRID;
+    var checker = theme === "dark" ? ["#1E2235", "#181C2E"] : ["#E9ECF1", "#F3F5F9"];
+    for (var y = 0; y < PX_GRID; y++) {
+      for (var x = 0; x < PX_GRID; x++) {
+        ctx.fillStyle = checker[(x + y) % 2];
+        ctx.fillRect(x * cell, y * cell, cell, cell);
+      }
+    }
+    if (data) Object.keys(data).forEach(function (k) {
+      var p = k.split("_");
+      var px = +p[0], py = +p[1];
+      if (isNaN(px) || isNaN(py) || px < 0 || py < 0 || px >= PX_GRID || py >= PX_GRID) return;
+      if (typeof data[k] !== "string") return;
+      ctx.fillStyle = data[k];
+      ctx.fillRect(px * cell, py * cell, cell, cell);
+    });
+  }, [data, theme]);
+  var place = function (e) {
+    var cv = cvRef.current;
+    if (!cv || left > 0) return;
+    var r = cv.getBoundingClientRect();
+    var x = Math.floor((e.clientX - r.left) / r.width * PX_GRID);
+    var y = Math.floor((e.clientY - r.top) / r.height * PX_GRID);
+    if (x < 0 || y < 0 || x >= PX_GRID || y >= PX_GRID) return;
+    db.ref("pixels/" + x + "_" + y).set(col);
+    localStorage.setItem("g2p_px_ts", String(Date.now()));
+    setLeft(PX_COOLDOWN_MS);
+    toast(t.pixelPlaced);
+    logActivity("pixel", (user && user.name) || "Anonim");
+  };
+  var exportPng = function () {
+    var cv = cvRef.current;
+    if (!cv) return;
+    var a = document.createElement("a");
+    a.href = cv.toDataURL("image/png");
+    a.download = "g2p-mural.png";
+    a.click();
+  };
+  var count = data ? Object.keys(data).length : 0;
+  var mm = Math.floor(left / 60000), ss = Math.floor((left % 60000) / 1000);
+  var fmt = mm + ":" + String(ss).padStart(2, "0");
+  return React.createElement("div", null,
+    React.createElement("div", { className: "flex justify-between items-center mb-1", style: { flexWrap: "wrap", gap: ".5rem" } },
+      React.createElement("h3", { style: { fontSize: "1rem" } }, "🎨 ", t.pixelTitle),
+      React.createElement("span", { className: "badge badge-green" }, count + "/" + (PX_GRID * PX_GRID) + " " + t.pixelPainted)
+    ),
+    React.createElement("p", { className: "text-sm mb-2", style: { color: "var(--textSec)" } }, t.pixelSub),
+    React.createElement("div", { className: "card" },
+      React.createElement("canvas", { ref: cvRef, className: "px-canvas", width: 480, height: 480, onClick: place }),
+      left > 0
+        ? React.createElement("div", { style: { textAlign: "center", margin: ".8rem 0" } },
+            React.createElement("span", { className: "px-cool" }, "⏳ " + t.pixelWait + " " + fmt))
+        : React.createElement("div", { className: "px-palette" },
+            PX_COLORS.map(function (c) {
+              return React.createElement("button", {
+                key: c,
+                className: "px-swatch" + (col === c ? " on" : ""),
+                style: { background: c },
+                onClick: function () { setCol(c); },
+                "aria-label": c,
+                "aria-pressed": col === c
+              });
+            })),
+      React.createElement("div", { style: { textAlign: "center" } },
+        React.createElement("button", { className: "btn btn-outline btn-sm", onClick: exportPng }, "⬇️ PNG"))
     )
   );
 }
@@ -5248,11 +5367,11 @@ function CommunityPage() {
     className: "section-title"
   }, "\uD83E\uDD1D ", t.community), /*#__PURE__*/React.createElement("div", {
     className: "tabs"
-  }, ["activity", "forum", "events", "gallery", "teams", "leaderboard"].map(tb => /*#__PURE__*/React.createElement("button", {
+  }, ["activity", "pixel", "forum", "events", "gallery", "teams", "leaderboard"].map(tb => /*#__PURE__*/React.createElement("button", {
     key: tb,
     className: tab === tb ? "active" : "",
     onClick: () => setTab(tb)
-  }, tb === "activity" ? "📡 " + t.liveActivity : tb === "forum" ? "💬 " + t.forum : tb === "events" ? "📅 " + t.events : tb === "gallery" ? "📸 " + t.gallery : tb === "teams" ? "⚽ " + t.teams : "🏆 " + t.leaderboard))), tab === "activity" && /*#__PURE__*/React.createElement(ActivityFeed, null), tab === "forum" && /*#__PURE__*/React.createElement(ForumTab, null), tab === "events" && /*#__PURE__*/React.createElement(EventsTab, null), tab === "gallery" && /*#__PURE__*/React.createElement(GalleryTab, null), tab === "teams" && /*#__PURE__*/React.createElement(TeamsTab, null), tab === "leaderboard" && /*#__PURE__*/React.createElement(LBTab, null))));
+  }, tb === "activity" ? "📡 " + t.liveActivity : tb === "pixel" ? "🎨 Pixel" : tb === "forum" ? "💬 " + t.forum : tb === "events" ? "📅 " + t.events : tb === "gallery" ? "📸 " + t.gallery : tb === "teams" ? "⚽ " + t.teams : "🏆 " + t.leaderboard))), tab === "activity" && /*#__PURE__*/React.createElement(ActivityFeed, null), tab === "pixel" && React.createElement(PixelWall, null), tab === "forum" && /*#__PURE__*/React.createElement(ForumTab, null), tab === "events" && /*#__PURE__*/React.createElement(EventsTab, null), tab === "gallery" && /*#__PURE__*/React.createElement(GalleryTab, null), tab === "teams" && /*#__PURE__*/React.createElement(TeamsTab, null), tab === "leaderboard" && /*#__PURE__*/React.createElement(LBTab, null))));
 }
 function ForumTab() {
   const {
