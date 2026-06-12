@@ -1626,6 +1626,17 @@ T.hu.cmdTheme = "Téma váltása"; // TODO: HU review
 T.hu.cmdLang = "Nyelv váltása"; // TODO: HU review
 T.hu.cmdHint = "↑↓ navigálás · Enter megnyitás · Esc bezárás"; // TODO: HU review
 
+/* === GDPR / Privacy Policy strings === */
+T.ro.privacyPolicy = "Politică de Confidențialitate";
+T.en.privacyPolicy = "Privacy Policy";
+T.hu.privacyPolicy = "Adatvédelmi Irányelvek"; // TODO: HU review
+T.ro.gdprConsent = "Sunt de acord cu prelucrarea datelor personale conform Politicii de Confidențialitate (RGPD Art. 6(1)(a))";
+T.en.gdprConsent = "I agree to the processing of my personal data per the Privacy Policy (GDPR Art. 6(1)(a))";
+T.hu.gdprConsent = "Hozzájárulok személyes adataim kezeléséhez az Adatvédelmi Irányelvek szerint (GDPR Art. 6(1)(a))"; // TODO: HU review
+T.ro.gdprRequired = "Trebuie să accepți prelucrarea datelor pentru a semna petiția.";
+T.en.gdprRequired = "You must accept data processing to sign the petition.";
+T.hu.gdprRequired = "Az aláíráshoz el kell fogadnod az adatkezelést."; // TODO: HU review
+
 /* === Season 4 — Civic Utility Pack strings === */
 /* 1. Near Me */
 T.ro.nearMe = "Lângă mine"; T.en.nearMe = "Near me"; T.hu.nearMe = "Közelemben"; // TODO: HU review
@@ -6597,6 +6608,8 @@ function PetitionPage() {
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
   const [vol, setVol] = useState(false);
+  const [consent, setConsent] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
   const [showLetter, setShowLetter] = useState(false);
   const [celebrateMilestone, setCelebrateMilestone] = useState(null);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -6607,7 +6620,7 @@ function PetitionPage() {
     both = votes?.both || 0,
     total = flip + mural + both,
     mx = Math.max(flip, mural, both, 1);
-  const ok = name.trim().length >= 2 && email.includes("@") && ch !== "";
+  const ok = name.trim().length >= 2 && email.includes("@") && ch !== "" && consent;
   const doVote = () => {
     if (!ok) return;
     const key = ch;
@@ -6752,11 +6765,32 @@ function PetitionPage() {
     style: {
       color: "var(--textSec)"
     }
-  }, lang === "ro" ? "Participă la evenimente" : "Join events and earn points"))), /*#__PURE__*/React.createElement("button", {
+  }, lang === "ro" ? "Participă la evenimente" : "Join events and earn points"))),
+  React.createElement("div", {
+    style: { display: "flex", alignItems: "flex-start", gap: ".6rem", marginBottom: "1rem", padding: ".7rem", background: "var(--bgCard)", borderRadius: 8, border: "1px solid var(--border)" }
+  },
+    React.createElement("input", {
+      type: "checkbox", id: "g2p-consent", checked: consent,
+      onChange: function(e) { setConsent(e.target.checked); },
+      style: { marginTop: ".15rem", accentColor: "var(--green)", width: 16, height: 16, flexShrink: 0, cursor: "pointer" }
+    }),
+    React.createElement("label", { htmlFor: "g2p-consent", className: "text-xs", style: { color: "var(--textSec)", cursor: "pointer", lineHeight: 1.5 } },
+      t.gdprConsent || "Sunt de acord cu prelucrarea datelor personale.",
+      " ",
+      React.createElement("a", {
+        href: "#",
+        onClick: function(e) { e.preventDefault(); setShowPrivacy(true); },
+        style: { color: "var(--green)", fontWeight: 600 }
+      }, t.privacyPolicy || "Politică de Confidențialitate"),
+      " *"
+    )
+  ),
+  /*#__PURE__*/React.createElement("button", {
     className: "pet-submit",
     disabled: !ok,
     onClick: doVote
-  }, ok ? lang === "ro" ? "✊ Semnează petiția" : "✊ Sign the petition" : lang === "ro" ? "Completează toate câmpurile" : "Fill all fields to vote")) : /*#__PURE__*/React.createElement("div", {
+  }, ok ? lang === "ro" ? "✊ Semnează petiția" : "✊ Sign the petition" : lang === "ro" ? "Completează toate câmpurile + acceptă RGPD" : "Fill all fields + accept privacy policy"),
+  showPrivacy && React.createElement(PrivacyPolicyModal, { onClose: function() { setShowPrivacy(false); } })) : /*#__PURE__*/React.createElement("div", {
     className: "card mt-2",
     style: {
       textAlign: "center",
@@ -10097,39 +10131,106 @@ function ReportsPage() {
   );
 }
 
+/* === Privacy Policy Modal (RGPD / GDPR Art. 6(1)(a)) === */
+function PrivacyPolicyModal({ onClose }) {
+  var _ref = useApp(), t = _ref.t, lang = _ref.lang;
+  return React.createElement("div", { className: "modal-overlay", onClick: onClose },
+    React.createElement("div", { className: "modal", onClick: function(e) { e.stopPropagation(); }, style: { maxWidth: 600, maxHeight: "80vh", overflowY: "auto" } },
+      React.createElement("div", { className: "flex justify-between items-center mb-2" },
+        React.createElement("h2", null, "🔒 ", t.privacyPolicy),
+        React.createElement("button", { onClick: onClose, style: { background: "none", border: "none", fontSize: "1.4rem", color: "var(--text)" } }, "✕")
+      ),
+      React.createElement("div", { className: "text-sm", style: { lineHeight: 1.7, color: "var(--text)" } },
+        React.createElement("h4", { className: "mb-1 mt-1" }, lang === "ro" ? "1. Cine prelucrează datele" : "1. Data controller"),
+        React.createElement("p", { className: "mb-1", style: { color: "var(--textSec)" } },
+          lang === "ro"
+            ? "Operatorul de date este Cimpan Teodor, inițiatorul platformei civice \"From Grey to Play\" (fromgreytoplay.netlify.app). Contact: addtru@gmail.com"
+            : "Data controller: Cimpan Teodor, initiator of the civic platform \"From Grey to Play\" (fromgreytoplay.netlify.app). Contact: addtru@gmail.com"
+        ),
+        React.createElement("h4", { className: "mb-1 mt-2" }, lang === "ro" ? "2. Ce date colectăm" : "2. Data collected"),
+        React.createElement("p", { className: "mb-1", style: { color: "var(--textSec)" } },
+          lang === "ro"
+            ? "Nume, adresă de email, opțiunea de vot, disponibilitate voluntariat, data semnăturii. Datele sunt stocate în Firebase Realtime Database (Google LLC, SUA), cu clauze contractuale standard UE."
+            : "Name, email address, vote choice, volunteer availability, signature date. Data stored in Firebase Realtime Database (Google LLC, USA) with EU standard contractual clauses."
+        ),
+        React.createElement("h4", { className: "mb-1 mt-2" }, lang === "ro" ? "3. Scopul prelucrării" : "3. Purpose"),
+        React.createElement("p", { className: "mb-1", style: { color: "var(--textSec)" } },
+          lang === "ro"
+            ? "Transmiterea petiției colective \"From Grey to Play\" către Primăria Municipiului Târgu Mureș și către Consiliul Local, în scopul solicitării renovării terenurilor sportive din cartierele periferice."
+            : "Submission of the collective petition \"From Grey to Play\" to Târgu Mureș City Hall and Local Council, requesting renovation of peripheral sports courts."
+        ),
+        React.createElement("h4", { className: "mb-1 mt-2" }, lang === "ro" ? "4. Baza legală" : "4. Legal basis"),
+        React.createElement("p", { className: "mb-1", style: { color: "var(--textSec)" } },
+          "Art. 6(1)(a) RGPD — consimțământ explicit. / GDPR Art. 6(1)(a) — explicit consent."
+        ),
+        React.createElement("h4", { className: "mb-1 mt-2" }, lang === "ro" ? "5. Durata retenției" : "5. Retention"),
+        React.createElement("p", { className: "mb-1", style: { color: "var(--textSec)" } },
+          lang === "ro"
+            ? "Datele se păstrează pe durata campaniei civice, maxim 3 ani de la data semnăturii, sau până la retragerea consimțământului."
+            : "Data retained for the duration of the campaign, max 3 years from signature date, or until consent is withdrawn."
+        ),
+        React.createElement("h4", { className: "mb-1 mt-2" }, lang === "ro" ? "6. Drepturile tale" : "6. Your rights"),
+        React.createElement("p", { className: "mb-1", style: { color: "var(--textSec)" } },
+          lang === "ro"
+            ? "Ai dreptul la: acces, rectificare, ștergere, portabilitate, opoziție. Contactează-ne la addtru@gmail.com. Ai dreptul să depui plângere la ANSPDCP (www.dataprotection.ro, 0318.059.211)."
+            : "You have the right to: access, rectification, erasure, portability, objection. Contact: addtru@gmail.com. You may lodge a complaint with ANSPDCP (www.dataprotection.ro)."
+        ),
+        React.createElement("h4", { className: "mb-1 mt-2" }, lang === "ro" ? "7. Securitate" : "7. Security"),
+        React.createElement("p", { className: "mb-1", style: { color: "var(--textSec)" } },
+          lang === "ro"
+            ? "Accesul la datele personale este restricționat la administratorul autentificat al platformei. Datele nu se transmit terților și nu se folosesc în scop comercial."
+            : "Access to personal data is restricted to the authenticated platform administrator. Data is not shared with third parties or used commercially."
+        ),
+        React.createElement("p", { className: "mt-2 text-xs", style: { color: "var(--textSec)" } },
+          lang === "ro" ? "Ultima actualizare: Iunie 2026" : "Last updated: June 2026"
+        )
+      ),
+      React.createElement("button", { className: "btn btn-green btn-block mt-2", onClick: onClose },
+        lang === "ro" ? "Am înțeles" : "Got it"
+      )
+    )
+  );
+}
+
 /* === Footer === */
 function Footer() {
-  const {
-    t
-  } = useApp();
-  return /*#__PURE__*/React.createElement("footer", {
-    className: "footer"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "container"
-  }, /*#__PURE__*/React.createElement("p", {
-    className: "owner"
-  }, t.owner), /*#__PURE__*/React.createElement("p", null, t.madeBy, " ", t.owner, " \u2014 ", t.city), /*#__PURE__*/React.createElement("p", {
-    className: "mt-1"
-  }, /*#__PURE__*/React.createElement("a", {
-    href: "https://www.google.com/maps/d/edit?mid=19tND_bqOJoFbhTNKN0PenNW7S7yUog8",
-    target: "_blank"
-  }, "\uD83D\uDDFA\uFE0F Maps"), " · ", /*#__PURE__*/React.createElement("a", {
-    href: "https://punctul.ro/eroare-tehnica-de-5-milioane-de-lei-baza-sportiva-din-str-insulei-identificata-gresit-in-acte/",
-    target: "_blank"
-  }, "\uD83D\uDCF0 Punctul.ro"), " · ", /*#__PURE__*/React.createElement("a", {
-    href: "https://www.mdpi.com/2413-8851/8/4/203",
-    target: "_blank"
-  }, "\uD83D\uDCDA MDPI")), /*#__PURE__*/React.createElement("p", {
-    className: "mt-1"
-  }, t.copyright), /*#__PURE__*/React.createElement("div", {
-    className: "flex items-center gap-2 mt-2",
-    style: { justifyContent: "center", flexWrap: "wrap" }
-  }, /*#__PURE__*/React.createElement("a", {
-    href: "https://www.google.com/maps/place/G2P/@46.5399,24.5568,15z",
-    target: "_blank",
-    rel: "noopener noreferrer",
-    style: { fontSize: ".78rem", color: "var(--textSec)", display: "flex", alignItems: "center", gap: ".3rem" }
-  }, /*#__PURE__*/React.createElement("span", null, "📍"), /*#__PURE__*/React.createElement("span", null, "G2P — T\xE2rgu Mureș pe Google Maps")))));
+  const { t } = useApp();
+  const [showPrivacy, setShowPrivacy] = useState(false);
+  return React.createElement(React.Fragment, null,
+    /*#__PURE__*/React.createElement("footer", {
+      className: "footer"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "container"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "owner"
+    }, t.owner), /*#__PURE__*/React.createElement("p", null, t.madeBy, " ", t.owner, " — ", t.city), /*#__PURE__*/React.createElement("p", {
+      className: "mt-1"
+    }, /*#__PURE__*/React.createElement("a", {
+      href: "https://www.google.com/maps/d/edit?mid=19tND_bqOJoFbhTNKN0PenNW7S7yUog8",
+      target: "_blank"
+    }, "🗺️ Maps"), " · ", /*#__PURE__*/React.createElement("a", {
+      href: "https://punctul.ro/eroare-tehnica-de-5-milioane-de-lei-baza-sportiva-din-str-insulei-identificata-gresit-in-acte/",
+      target: "_blank"
+    }, "📰 Punctul.ro"), " · ", /*#__PURE__*/React.createElement("a", {
+      href: "https://www.mdpi.com/2413-8851/8/4/203",
+      target: "_blank"
+    }, "📚 MDPI"), " · ", React.createElement("a", {
+      href: "#",
+      onClick: function(e) { e.preventDefault(); setShowPrivacy(true); },
+      style: { color: "var(--green)" }
+    }, "🔒 ", t.privacyPolicy || "Politică de Confidențialitate")), /*#__PURE__*/React.createElement("p", {
+      className: "mt-1"
+    }, t.copyright), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-2 mt-2",
+      style: { justifyContent: "center", flexWrap: "wrap" }
+    }, /*#__PURE__*/React.createElement("a", {
+      href: "https://www.google.com/maps/place/G2P/@46.5399,24.5568,15z",
+      target: "_blank",
+      rel: "noopener noreferrer",
+      style: { fontSize: ".78rem", color: "var(--textSec)", display: "flex", alignItems: "center", gap: ".3rem" }
+    }, /*#__PURE__*/React.createElement("span", null, "📍"), /*#__PURE__*/React.createElement("span", null, "G2P — Târgu Mureș pe Google Maps"))))),
+    showPrivacy && React.createElement(PrivacyPolicyModal, { onClose: function() { setShowPrivacy(false); } })
+  );
 }
 
 /* === App === */

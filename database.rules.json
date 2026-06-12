@@ -1,0 +1,138 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "votes": {
+      ".read": true,
+      ".write": true,
+      "flip":  { ".validate": "newData.isNumber() && newData.val() >= 0" },
+      "mural": { ".validate": "newData.isNumber() && newData.val() >= 0" },
+      "both":  { ".validate": "newData.isNumber() && newData.val() >= 0" }
+    },
+
+    "signups": {
+      ".read": false,
+      "$id": {
+        ".write": true,
+        ".validate": "newData.hasChildren(['name','email','choice','timestamp']) && newData.child('name').isString() && newData.child('name').val().length >= 2 && newData.child('email').isString() && newData.child('email').val().contains('@') && (newData.child('choice').val() === 'flip' || newData.child('choice').val() === 'mural' || newData.child('choice').val() === 'both')"
+      }
+    },
+
+    "activity": {
+      ".read": true,
+      "$id": {
+        ".write": true,
+        ".validate": "newData.hasChildren(['type','timestamp']) && newData.child('type').isString()"
+      }
+    },
+
+    "reports": {
+      ".read": false,
+      "$id": {
+        ".write": true,
+        ".validate": "newData.hasChildren(['courtId','issue','timestamp'])"
+      }
+    },
+
+    "courts": {
+      ".read": true,
+      ".write": true
+    },
+
+    "bookings": {
+      ".read": true,
+      ".write": true
+    },
+
+    "settings": {
+      ".read": true,
+      ".write": false,
+      "admin": {
+        ".write": true
+      }
+    },
+
+    "pixels": {
+      ".read": true,
+      ".write": true
+    },
+
+    "presence": {
+      ".read": true,
+      ".write": true
+    },
+
+    "pledges": {
+      ".read": true,
+      "$id": {
+        ".write": true,
+        ".validate": "newData.hasChildren(['text','emoji','timestamp'])"
+      }
+    },
+
+    "achievements": {
+      ".read": true,
+      ".write": true
+    },
+
+    "adoptions": {
+      ".read": true,
+      ".write": true
+    },
+
+    "letterCount": {
+      ".read": true,
+      "total": {
+        ".write": true,
+        ".validate": "newData.isNumber() && newData.val() >= 0"
+      }
+    },
+
+    "budgetLive": {
+      ".read": true,
+      ".write": false,
+      "admin": {
+        ".write": true
+      }
+    },
+
+    "tasks": {
+      ".read": true,
+      ".write": true
+    },
+
+    "users": {
+      ".read": false,
+      "$uid": {
+        ".read": "auth !== null",
+        ".write": true
+      }
+    },
+
+    "leaderboard": {
+      ".read": true,
+      ".write": true
+    },
+
+    "games": {
+      ".read": true,
+      ".write": true
+    },
+
+    "gallery": {
+      ".read": true,
+      ".write": true
+    },
+
+    "ratings": {
+      ".read": true,
+      ".write": true
+    },
+
+    "follows": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}
