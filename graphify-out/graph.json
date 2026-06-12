@@ -1,1542 +1,1602 @@
 {
-  "meta": {
-    "project": "From Gray to Play",
-    "file": "index.html",
-    "generated": "2026-06-11",
-    "description": "Knowledge graph al proiectului — componente, pagini, Firebase paths, utilitare. Citit automat de Claude la fiecare sesiune."
+ "meta": {
+  "project": "From Gray to Play",
+  "file": "index.html",
+  "generated": "2026-06-11",
+  "description": "Knowledge graph al proiectului — componente, pagini, Firebase paths, utilitare. Citit automat de Claude la fiecare sesiune."
+ },
+ "nodes": [
+  {
+   "id": "AppCtx",
+   "type": "context",
+   "line": 229,
+   "desc": "Context global React: { t, lang, setLang, theme, setTheme, page, setPage, user, setUser, toast }"
   },
-  "nodes": [
-    {
-      "id": "AppCtx",
-      "type": "context",
-      "line": 229,
-      "desc": "Context global React: { t, lang, setLang, theme, setTheme, page, setPage, user, setUser, toast }"
-    },
-    {
-      "id": "useApp",
-      "type": "hook",
-      "line": 230,
-      "desc": "Shortcut useContext(AppCtx)"
-    },
-    {
-      "id": "useFirebase",
-      "type": "hook",
-      "line": 232,
-      "desc": "Abonare realtime la o cale Firebase; returnează valoarea sau null"
-    },
-    {
-      "id": "getVoterKey",
-      "type": "util",
-      "line": 5213,
-      "desc": "Identitate anonimă stabilă din localStorage (g2p_vk). Folosit pentru 'rapoartele mele'."
-    },
-    {
-      "id": "logActivity",
-      "type": "util",
-      "line": 805,
-      "desc": "Scrie în activity/ {type, userName, courtId, timestamp}"
-    },
-    {
-      "id": "compressImage",
-      "type": "util",
-      "line": 815,
-      "desc": "Comprimă File → dataURL (maxDim, quality). Folosit în galerie și rapoarte."
-    },
-    {
-      "id": "getCourtWeather",
-      "type": "util",
-      "line": 779,
-      "desc": "Returnează {icon, label, color} pentru condiția unui teren."
-    },
-    {
-      "id": "anonName",
-      "type": "util",
-      "line": 797,
-      "desc": "Generează nume anonim din voterKey"
-    },
-    {
-      "id": "nextLang",
-      "type": "util",
-      "line": 791,
-      "desc": "Ciclează ro → en → hu → ro"
-    },
-    {
-      "id": "T",
-      "type": "i18n",
-      "line": 245,
-      "desc": "Dicționar { ro, en, hu }. Toate string-urile UI. HU = draft."
-    },
-    {
-      "id": "COURTS",
-      "type": "constant",
-      "line": 839,
-      "desc": "Array static cu terenurile hardcodate (id, name, address, lat, lng, condition, status, neighborhood)"
-    },
-    {
-      "id": "FUNDING",
-      "type": "constant",
-      "line": 939,
-      "desc": "Surse de finanțare disponibile (titlu, suma, termen, stare)"
-    },
-    {
-      "id": "BUDGET",
-      "type": "constant",
-      "line": 980,
-      "desc": "Linii bugetare municipale pentru vizualizare"
-    },
-    {
-      "id": "TIMELINE",
-      "type": "constant",
-      "line": 1031,
-      "desc": "Timeline civic cu evenimente (ro/en/hu)"
-    },
-    {
-      "id": "LETTER_AREAS",
-      "type": "constant",
-      "line": 2989,
-      "desc": "Zone cartiere pentru generatorul de scrisori"
-    },
-    {
-      "id": "ADMIN_PW",
-      "type": "constant",
-      "line": 1062,
-      "desc": "Parola admin panel = 'teodor2026'"
-    },
-    {
-      "id": "Toast",
-      "type": "component",
-      "line": 1065,
-      "desc": "Toast transient global. Declanșat via useApp().toast('msg')"
-    },
-    {
-      "id": "Onboarding",
-      "type": "component",
-      "line": 1079,
-      "desc": "Ecran onboarding 3 pași la prima vizită. Stochează done în localStorage."
-    },
-    {
-      "id": "InstallBanner",
-      "type": "component",
-      "line": 1132,
-      "desc": "Banner PWA install (beforeinstallprompt)"
-    },
-    {
-      "id": "Navbar",
-      "type": "component",
-      "line": 1178,
-      "desc": "Navigare sticky cu hamburger mobil. Link-uri: home, courts, reports, petition, community, impact, help."
-    },
-    {
-      "id": "MapView",
-      "type": "component",
-      "line": 1288,
-      "desc": "Leaflet map cu markere terenuri. Props: courts[], onSelect(court)."
-    },
-    {
-      "id": "Hero3D",
-      "type": "component",
-      "line": 1980,
-      "desc": "Hero Three.js animat. Terenuri 3D gri→color la click. Montat în HomePage."
-    },
-    {
-      "id": "ActivityFeed",
-      "type": "component",
-      "line": 3086,
-      "desc": "Feed live activity/ Firebase (ultimele 30). Live-dot pe cel mai recent."
-    },
-    {
-      "id": "QuickReportFAB",
-      "type": "component",
-      "line": 5220,
-      "desc": "FAB verde fix bottom-right. Deschide QuickReportModal."
-    },
-    {
-      "id": "QuickReportModal",
-      "type": "component",
-      "line": 5228,
-      "desc": "Modal 3 pași: categorie → descriere+foto → teren+geo. Scrie în reports/ și activity/."
-    },
-    {
-      "id": "PlayNowModal",
-      "type": "component",
-      "line": 2930,
-      "desc": "Modal B2: creează un joc spontan. Sport, maxPlayers, notă. Scrie în games/{courtId}/ + activity/."
-    },
-    {
-      "id": "ActiveGames",
-      "type": "component",
-      "line": 2987,
-      "desc": "Lista jocuri active dintr-un teren. Join incrementează playerCount via transaction. Citit în CourtDetail."
-    },
-    {
-      "id": "NotifPanel",
-      "type": "component",
-      "line": 1262,
-      "desc": "B3: panou notificări dropdown în Navbar. Filtrează activity/ după follows/{vk}. Unread = newer than g2p_notif_seen."
-    },
-    {
-      "id": "useFollows",
-      "type": "hook",
-      "line": 245,
-      "desc": "B3: citește follows/{voterKey}/ din Firebase. Returnează { follows, isFollowing(id), toggle(id) }."
-    },
-    {
-      "id": "ReportTimeline",
-      "type": "component",
-      "line": 5332,
-      "desc": "Timeline vizual 4 pași: Primit→Analiză→Planificat→Rezolvat."
-    },
-    {
-      "id": "Footer",
-      "type": "component",
-      "line": 5449,
-      "desc": "Footer static cu link-uri."
-    },
-    {
-      "id": "HomePage",
-      "type": "page",
-      "line": 2046,
-      "desc": "Pagina principală: hero 3D + statistici live (votes, signups) + QuickReportFAB."
-    },
-    {
-      "id": "CourtsPage",
-      "type": "page",
-      "line": 2190,
-      "desc": "Listă + hartă terenuri. Filtre: cartier, condiție, sport. Click → CourtDetail."
-    },
-    {
-      "id": "CourtDetail",
-      "type": "page",
-      "line": 2336,
-      "desc": "Detalii teren: check-in live, galerie, rezervare, raport, scrisoare."
-    },
-    {
-      "id": "ReportsPage",
-      "type": "page",
-      "line": 5350,
-      "desc": "Pagina sesizări publice. Tabs: toate/ale mele. Filtre status/cartier/categorie."
-    },
-    {
-      "id": "PetitionPage",
-      "type": "page",
-      "line": 2717,
-      "desc": "Petiție cu opțiuni flip/mural/both, voluntariat, scrisoare PDF."
-    },
-    {
-      "id": "CommunityPage",
-      "type": "page",
-      "line": 3133,
-      "desc": "Hub comunitar cu tabs: activity, forum, events, gallery, teams, leaderboard."
-    },
-    {
-      "id": "ImpactPage",
-      "type": "page",
-      "line": 3701,
-      "desc": "Date civice: calculator impact, comparație orașe, buget vizual, carbon, sănătate, timeline."
-    },
-    {
-      "id": "HelpPage",
-      "type": "page",
-      "line": 4085,
-      "desc": "Ghid utilizare + FAQ."
-    },
-    {
-      "id": "AboutPage",
-      "type": "page",
-      "line": 4251,
-      "desc": "Despre proiect, parteneri, contact."
-    },
-    {
-      "id": "ProfilePage",
-      "type": "page",
-      "line": 4472,
-      "desc": "Profil utilizator: editare nume, statistici personale, istoric."
-    },
-    {
-      "id": "AdminPanel",
-      "type": "page",
-      "line": 4712,
-      "desc": "Panou admin (pw: ADMIN_PW). Tabs: signups, votes, courts, activity, reports, bookings."
-    },
-    {
-      "id": "ForumTab",
-      "type": "component",
-      "line": 3154,
-      "desc": "Forum comunitar cu reply-uri și voturi. Firebase: forum/"
-    },
-    {
-      "id": "EventsTab",
-      "type": "component",
-      "line": 3359,
-      "desc": "Evenimente cu RSVP. Firebase: events/"
-    },
-    {
-      "id": "GalleryTab",
-      "type": "component",
-      "line": 3423,
-      "desc": "Galerie foto cu voturi. Firebase: gallery/. Folosește compressImage."
-    },
-    {
-      "id": "TeamsTab",
-      "type": "component",
-      "line": 3577,
-      "desc": "Echipe. Firebase: teams/"
-    },
-    {
-      "id": "LBTab",
-      "type": "component",
-      "line": 3650,
-      "desc": "Clasament utilizatori. Firebase: leaderboard/"
-    },
-    {
-      "id": "ReportModal",
-      "type": "component",
-      "line": 2461,
-      "desc": "Modal raportare teren degradat din CourtDetail (diferit de QuickReportModal)."
-    },
-    {
-      "id": "BookingModal",
-      "type": "component",
-      "line": 2585,
-      "desc": "Modal rezervare slot orar. Firebase: bookings/{courtId}/{date}/{hour}."
-    },
-    {
-      "id": "LetterModal",
-      "type": "component",
-      "line": 2995,
-      "desc": "Generator scrisoare PDF/text către consiliu local. Folosit din PetitionPage și CourtDetail."
-    },
-    {
-      "id": "fb/votes",
-      "type": "firebase",
-      "desc": "Counter { flip, mural, both }. Transaction +1 la vot."
-    },
-    {
-      "id": "fb/signups",
-      "type": "firebase",
-      "desc": "{ name, email, choice, volunteer, timestamp } per semnătură petiție."
-    },
-    {
-      "id": "fb/activity",
-      "type": "firebase",
-      "desc": "{ type, userName, courtId?, timestamp }. Scris de logActivity(). Citit de ActivityFeed."
-    },
-    {
-      "id": "fb/reports",
-      "type": "firebase",
-      "desc": "{ courtId, courtName, neighborhood, category, description, photoDataUrl?, lat?, lng?, status, createdAt, voterKey }. Scris de QuickReportModal."
-    },
-    {
-      "id": "fb/courts/{id}/checkins",
-      "type": "firebase",
-      "desc": "{ userId, timestamp }. Auto-remove după 2h. Citit în CourtDetail."
-    },
-    {
-      "id": "fb/bookings",
-      "type": "firebase",
-      "desc": "{ courtId, date, hour, userName }. Gestionat din BookingModal."
-    },
-    {
-      "id": "fb/gallery",
-      "type": "firebase",
-      "desc": "{ courtId, url, userName, votes, timestamp }. Upload din GalleryTab."
-    },
-    {
-      "id": "fb/forum",
-      "type": "firebase",
-      "desc": "{ text, userName, timestamp, likes, replies/{} }. Gestionat din ForumTab."
-    },
-    {
-      "id": "fb/events",
-      "type": "firebase",
-      "desc": "{ title, date, courtId, attendeeCount }. Gestionat din EventsTab."
-    },
-    {
-      "id": "fb/teams",
-      "type": "firebase",
-      "desc": "{ name, sport, members[] }. Gestionat din TeamsTab."
-    },
-    {
-      "id": "fb/leaderboard",
-      "type": "firebase",
-      "desc": "{ name, points, actions }. Actualizat la petition + help signups."
-    },
-    {
-      "id": "fb/courts",
-      "type": "firebase",
-      "desc": "Terenuri adăugate din AdminPanel (suplimentar față de COURTS static)."
-    },
-    {
-      "id": "fb/users",
-      "type": "firebase",
-      "desc": "{ name, avatar, bio, ... }. Actualizat din ProfilePage."
-    },
-    {
-      "id": "fb/partnerRequests",
-      "type": "firebase",
-      "desc": "Cereri parteneriat din AboutPage."
-    },
-    {
-      "id": "fb/games",
-      "type": "firebase",
-      "desc": "{ sport, maxPlayers, playerCount, createdBy, note, timestamp }. Scoped per courtId: games/{courtId}/{gameId}. Auto-remove după 2h. B2."
-    },
-    {
-      "id": "fb/follows",
-      "type": "firebase",
-      "desc": "follows/{voterKey}/{courtId}: true. Toggle din CourtDetail. Citit de Navbar și NotifPanel pentru badge unread. B3."
-    },
-    {
-      "id": "EvidenceWall",
-      "type": "component",
-      "line": 5700,
-      "desc": "#2.1: grid masonry dovezi foto. Upload cu GPS, filter per teren, stats (nr. martori, terenuri documentate). Scrie în gallery/ cu isEvidence:true."
-    },
-    {
-      "id": "shareCourt",
-      "type": "util",
-      "line": 945,
-      "desc": "B8: Web Share API cu fallback clipboard. shareCourt(court, t, toast) → navigator.share sau clipboard.writeText."
-    },
-    {
-      "id": "useCountUp",
-      "type": "hook",
-      "line": 319,
-      "desc": "Polish: animație count-up cu requestAnimationFrame, ease-out cubic. Respectă prefers-reduced-motion."
-    },
-    {
-      "id": "useReveal",
-      "type": "hook",
-      "line": 342,
-      "desc": "Polish: IntersectionObserver scroll-reveal. Atașează ref, adaugă clasa .in la intrare în viewport."
-    },
-    {
-      "id": "StatTile",
-      "type": "component",
-      "line": 2369,
-      "desc": "Polish: tile statistică cu count-up + glow colorat. Folosit în hero HomePage."
-    },
-    {
-      "id": "RadarChart",
-      "type": "component",
-      "line": 2668,
-      "desc": "#3.1: radar chart SVG pur (fără librărie) pentru 4 dimensiuni rating."
-    },
-    {
-      "id": "StarPicker",
-      "type": "component",
-      "line": 2690,
-      "desc": "#3.1: input stele 1-5 pentru o dimensiune de rating."
-    },
-    {
-      "id": "RatingSection",
-      "type": "component",
-      "line": 2700,
-      "desc": "#3.1: secțiune evaluare teren (suprafață/iluminat/echipament/siguranță). Radar + bare medii. Scrie ratings/{courtId}/{voterKey}. În CourtDetail."
-    },
-    {
-      "id": "DossierButton",
-      "type": "component",
-      "line": 4294,
-      "desc": "#2.3: generează dosar PDF complet (cover, stats, terenuri, sesizări, dovezi foto) cu jsPDF. În ImpactPage."
-    },
-    {
-      "id": "fb/ratings",
-      "type": "firebase",
-      "desc": "ratings/{courtId}/{voterKey}: {surface,lighting,equipment,safety,userName,ts}. Scris de RatingSection. #3.1."
-    },
-    {
-      "id": "jsPDF",
-      "type": "external",
-      "line": 0,
-      "desc": "window.jspdf.jsPDF (CDN unpkg). Folosit pentru export PDF: LetterModal + DossierButton."
-    },
-    {
-      "id": "pageFromHash",
-      "type": "util",
-      "line": 1153,
-      "desc": "Hash routing: mapează location.hash (#courts, #court-{id}, …) la pagina curentă. Folosit de App la mount + hashchange. setPage din AppCtx sincronizează hash-ul (pushState)."
-    },
-    {
-      "id": "downloadFile",
-      "type": "util",
-      "line": 1160,
-      "desc": "Descarcă un fișier generat client-side (Blob + <a download>). Folosit de OpenDataCard."
-    },
-    {
-      "id": "OpenDataCard",
-      "type": "component",
-      "line": 4924,
-      "desc": "Export date deschise (JSON complet / CSV sesizări, licență CC BY 4.0). Strip voterKey + photoDataUrl. În ImpactPage, sub DossierButton."
-    },
-    {
-      "id": "sw.js",
-      "type": "pwa",
-      "line": 0,
-      "desc": "Service worker (fișier separat la root, înregistrat din App). Shell network-first, CDN stale-while-revalidate, Firebase RTDB neinterceptat. Bump const CACHE la schimbări breaking."
-    },
-    {
-      "id": "Reveal",
-      "type": "component",
-      "line": 0,
-      "desc": "Wrapper scroll-reveal cu stagger (prop d = delay ms, as = tag). Folosește useReveal + clasa .reveal."
-    },
-    {
-      "id": "useTilt",
-      "type": "hook",
-      "line": 0,
-      "desc": "Tilt 3D care urmărește cursorul (perspective + rotateX/Y). Dezactivat pe touch și prefers-reduced-motion."
-    },
-    {
-      "id": "TiltDiv",
-      "type": "component",
-      "line": 0,
-      "desc": "Div cu useTilt (prop max = grade). Folosit pe cardurile de terenuri și StatTile."
-    },
-    {
-      "id": "LetterReveal",
-      "type": "component",
-      "line": 0,
-      "desc": "Reveal literă-cu-literă (clasa .lr, delay --ld). Folosit în titlul Hero3D și StoryPage. aria-label păstrează textul întreg."
-    },
-    {
-      "id": "ripple-listener",
-      "type": "util",
-      "line": 0,
-      "desc": "Listener delegat pointerdown în App: ripple pe .btn/.h3d-btn/.tabs button. Oprit la prefers-reduced-motion."
-    },
-    {
-      "id": "ActivityTicker",
-      "type": "component",
-      "line": 0,
-      "desc": "Marquee infinit cu activitate live din activity/ (14 itemi, două copii pentru loop, pauză la hover). Pe HomePage sub hero."
-    },
-    {
-      "id": "promax-effects",
-      "type": "util",
-      "line": 0,
-      "desc": "Listeneri delegați în App: spotlight radial pe .card/.stat-tile (--mx/--my), butoane magnetice (.h3d-btn/.btn-green), page-wipe overlay la setPage. CSS: glow-border conic animat (StatTile), aurora blobs (hero), shimmer-text (titlu hero). Toate oprite la prefers-reduced-motion / hover:none."
-    },
-    {
-      "id": "fb/settings",
-      "type": "firebase",
-      "desc": "settings/: {maintenance, banner:{on,text,type}, flags:{petition,community,booking,effects}, featuredCourtId, accent, broadcast:{text,ts}}. Scris din AdminSiteTab, citit live de App (ctx.settings)."
-    },
-    {
-      "id": "fb/presence",
-      "type": "firebase",
-      "desc": "presence/{voterKey}: true. Scris de App cu onDisconnect().remove(). Citit de PresenceBadge (contor online)."
-    },
-    {
-      "id": "fb/achievements",
-      "type": "firebase",
-      "desc": "achievements/{voterKey}/{badgeId}: timestamp. Scris de useBadges().awardBadge(). Citit de BadgesGrid + useBadges. Season 2."
-    },
-    {
-      "id": "fb/pledges",
-      "type": "firebase",
-      "desc": "pledges/{pushId}: {name, pledge, emoji, ts}. Scris de PledgeWall. Citit de PledgeWall (slice 60 desc). Season 2."
-    },
-    {
-      "id": "BADGES",
-      "type": "constant",
-      "desc": "Array of 12 badge definitions: {id, icon, name:{ro,en,hu}, desc:{ro,en,hu}}. Season 2."
-    },
-    {
-      "id": "useBadges",
-      "type": "hook",
-      "desc": "Returns {earned, awardBadge}. Reads achievements/{voterKey} via useFirebase. awardBadge(id,cb) writes to achievements/ and calls cb with badge def."
-    },
-    {
-      "id": "BadgeUnlockModal",
-      "type": "component",
-      "desc": "Overlay modal cu animație pentru badge deblocat. Auto-close 4.5s. Props: {badge, lang, onClose}. Season 2."
-    },
-    {
-      "id": "BadgesGrid",
-      "type": "component",
-      "desc": "Grid 12 badge-uri earned/locked. Props: {lang}. Integrat în ProfilePage. Season 2."
-    },
-    {
-      "id": "CourtHealthRing",
-      "type": "component",
-      "desc": "SVG ring progres 0-100 scor sănătate teren. Citit din reports/ + ratings/{courtId}. Integrat în CourtDetail. Season 2."
-    },
-    {
-      "id": "getCourtHealthScore",
-      "type": "util",
-      "desc": "Calculează scor 0-100 din condiție(40pt), rapoarte deschise(-6/rep), ratings(30pt), checkins recente(10pt). Season 2."
-    },
-    {
-      "id": "NeighborhoodRace",
-      "type": "component",
-      "desc": "Bar chart race cartiere după scor civic (activitate+rapoarte). Live reads activity/ + reports/. Tab 'race' ImpactPage. Season 2."
-    },
-    {
-      "id": "PledgeWall",
-      "type": "component",
-      "desc": "Wall promisiuni civice. Input emoji+name+text, scrie pledges/. Integrat în PetitionPage. Season 2."
-    },
-    {
-      "id": "CourtQRCard",
-      "type": "component",
-      "desc": "Modal QR code generat cu QRious (lazy CDN). Download branded PNG. Props: {court, onClose}. Integrat în CourtDetail. Season 2."
-    },
-    {
-      "id": "CouncilCountdown",
-      "type": "component",
-      "desc": "Countdown zile/ore/min până la ședința de consiliu. Dates hardcodate. Tab 'race' ImpactPage. Season 2."
-    },
-    {
-      "id": "AdminSiteTab",
-      "type": "component",
-      "line": 0,
-      "desc": "Admin Site Control: mentenanță, banner, broadcast toast, feature flags, teren-vedetă, accent color, danger zone (reset votes / clear activity). Scrie settings/."
-    },
-    {
-      "id": "AdminModTab",
-      "type": "component",
-      "line": 0,
-      "desc": "Admin Moderation: șterge orice conținut user-generated (forum, gallery, events, teams, games, activity)."
-    },
-    {
-      "id": "CommandPalette",
-      "type": "component",
-      "line": 0,
-      "desc": "Ctrl/Cmd+K (sau 🔍 în navbar, ctx.setCmd): caută pagini/terenuri/acțiuni, navigare tastatură, respectă feature flags. Deep-link terenuri prin #court-{id}."
-    },
-    {
-      "id": "PresenceBadge",
-      "type": "component",
-      "line": 0,
-      "desc": "Contor live 'online acum' în Navbar, puls verde. Citește presence/."
-    },
-    {
-      "id": "FeaturedCourt",
-      "type": "component",
-      "line": 0,
-      "desc": "Terenul săptămânii pe Home (glow-border + tilt), ales de admin via settings/featuredCourtId."
-    },
-    {
-      "id": "switchTheme",
-      "type": "util",
-      "line": 0,
-      "desc": "Comutare temă cu reveal circular (View Transitions API + ReactDOM.flushSync), fallback simplu. Folosit în Navbar (desktop+mobil) și Profil."
-    },
-    {
-      "id": "SatelliteTimeMachine",
-      "type": "component",
-      "desc": "Card Leaflet în CourtDetail: două straturi satelit (Esri Wayback 2014 + World Imagery azi), slider de opacitate pentru crossfade. Se ascunde singur după 8 tileerror. Props: {court}. Season 3."
-    },
-    {
-      "id": "HoopGame",
-      "type": "component",
-      "desc": "Canvas 2D la începutul PetitionPage (doar ne-votați, fără flag g2p_hoop, fără reduced-motion): aruncă mingea la un coș îndoit care deviază mereu; după 2 aruncări → mesaj + CTA semnare. Props: {onDone}. Season 3."
-    },
-    {
-      "id": "PixelWall",
-      "type": "component",
-      "desc": "Mural colectiv 48×48 (tab '🎨 Pixel' în CommunityPage). 1 pixel / 10 min / voterKey (localStorage g2p_px_ts), paletă 10 culori, export PNG, contor live. Season 3."
-    },
-    {
-      "id": "InequalityReceipt",
-      "type": "component",
-      "desc": "Bon de casă generat pe canvas (560px): linii per cartier din COURTS, taxe/investiții, total '1 RENOVARE', barcode fals, margine zimțată. Download PNG + navigator.share. Pe ImpactPage (tab calc) și PetitionPage. Season 3."
-    },
-    {
-      "id": "HeatWatcher",
-      "type": "component",
-      "desc": "Componentă invizibilă montată în App: ascultă activity (limitToLast 1) și arată toast 'alătură-te' la check-in proaspăt al altcuiva. Max 1 toast / 3 min. Season 3."
-    },
-    {
-      "id": "AmbientLight",
-      "type": "component",
-      "desc": "Overlay radial fix, subtil (opacity ~.09): nuanță aurie ±90min în jurul apusului (lookup lunar Târgu Mureș), albastru noaptea, flash roșu 2.5s la sesizare nouă (reports limitToLast 1). Oprit la reduced-motion / flags.effects=false. Season 3."
-    },
-    {
-      "id": "CourtSound",
-      "type": "component",
-      "desc": "Card în CourtDetail cu sinteză WebAudio: teren viu (mingi care saltă accelerat, murmur, scârțâit adidași) vs abandonat (vânt cu LFO, picături, huruit trafic). AudioContext lazy, stop/cleanup complet. Props: {court}. Season 3."
-    },
-    {
-      "id": "CityPulse",
-      "type": "component",
-      "desc": "Overlay full-screen (z 9500) cu time-lapse 2D-canvas ~30s al activity+signups: inele de la 'primărie' pentru petiții, burst-uri la nodurile terenurilor, contoare live, scrubber + play/pauză, Esc. Reduced-motion = stare finală statică. Lansat din ImpactPage și ⌘K (sessionStorage g2p_open_pulse). Props: {onClose}. Season 3."
-    },
-    {
-      "id": "MayorMode",
-      "type": "component",
-      "desc": "Easter egg (tastează 'fixit' / ⌘K → Mayor Mode): overlay canvas cinematic în care cele 5 terenuri trec pe rând din gri crăpat în verde renovat (confetti, ken burns), apoi text type-on + CTA spre petiție. Esc/✕ închide. Props: {onClose}. Season 3."
-    },
-    {
-      "id": "fb/pixels",
-      "type": "firebase",
-      "desc": "pixels/{x_y}: string hex color (ex: pixels/12_34 = '#10B981'). Grid 48×48. Scris de PixelWall (cooldown 10 min/voterKey, client-side). Season 3."
-    }
-  ],
-  "edges": [
-    {
-      "from": "HomePage",
-      "to": "Hero3D",
-      "rel": "renders"
-    },
-    {
-      "from": "HomePage",
-      "to": "QuickReportFAB",
-      "rel": "renders"
-    },
-    {
-      "from": "HomePage",
-      "to": "fb/votes",
-      "rel": "reads"
-    },
-    {
-      "from": "HomePage",
-      "to": "fb/signups",
-      "rel": "reads"
-    },
-    {
-      "from": "CourtsPage",
-      "to": "MapView",
-      "rel": "renders"
-    },
-    {
-      "from": "CourtsPage",
-      "to": "CourtDetail",
-      "rel": "navigates-to"
-    },
-    {
-      "from": "CourtsPage",
-      "to": "fb/courts",
-      "rel": "reads"
-    },
-    {
-      "from": "CourtsPage",
-      "to": "fb/games",
-      "rel": "reads"
-    },
-    {
-      "from": "CourtDetail",
-      "to": "ReportModal",
-      "rel": "renders"
-    },
-    {
-      "from": "CourtDetail",
-      "to": "BookingModal",
-      "rel": "renders"
-    },
-    {
-      "from": "CourtDetail",
-      "to": "LetterModal",
-      "rel": "renders"
-    },
-    {
-      "from": "CourtDetail",
-      "to": "PlayNowModal",
-      "rel": "renders"
-    },
-    {
-      "from": "CourtDetail",
-      "to": "ActiveGames",
-      "rel": "renders"
-    },
-    {
-      "from": "CourtDetail",
-      "to": "fb/follows",
-      "rel": "reads+writes"
-    },
-    {
-      "from": "Navbar",
-      "to": "NotifPanel",
-      "rel": "renders"
-    },
-    {
-      "from": "Navbar",
-      "to": "fb/activity",
-      "rel": "reads"
-    },
-    {
-      "from": "Navbar",
-      "to": "fb/follows",
-      "rel": "reads"
-    },
-    {
-      "from": "NotifPanel",
-      "to": "fb/activity",
-      "rel": "reads"
-    },
-    {
-      "from": "NotifPanel",
-      "to": "fb/follows",
-      "rel": "reads"
-    },
-    {
-      "from": "CourtDetail",
-      "to": "fb/courts/{id}/checkins",
-      "rel": "reads+writes"
-    },
-    {
-      "from": "CourtDetail",
-      "to": "fb/games",
-      "rel": "reads"
-    },
-    {
-      "from": "CourtDetail",
-      "to": "fb/gallery",
-      "rel": "reads"
-    },
-    {
-      "from": "PlayNowModal",
-      "to": "fb/games",
-      "rel": "writes"
-    },
-    {
-      "from": "PlayNowModal",
-      "to": "fb/activity",
-      "rel": "writes"
-    },
-    {
-      "from": "ActiveGames",
-      "to": "fb/games",
-      "rel": "reads+writes"
-    },
-    {
-      "from": "ActiveGames",
-      "to": "fb/activity",
-      "rel": "writes"
-    },
-    {
-      "from": "CourtDetail",
-      "to": "logActivity",
-      "rel": "calls"
-    },
-    {
-      "from": "ReportsPage",
-      "to": "QuickReportFAB",
-      "rel": "renders"
-    },
-    {
-      "from": "ReportsPage",
-      "to": "ReportTimeline",
-      "rel": "renders"
-    },
-    {
-      "from": "ReportsPage",
-      "to": "fb/reports",
-      "rel": "reads"
-    },
-    {
-      "from": "QuickReportModal",
-      "to": "fb/reports",
-      "rel": "writes"
-    },
-    {
-      "from": "QuickReportModal",
-      "to": "fb/activity",
-      "rel": "writes"
-    },
-    {
-      "from": "QuickReportModal",
-      "to": "getVoterKey",
-      "rel": "calls"
-    },
-    {
-      "from": "QuickReportModal",
-      "to": "compressImage",
-      "rel": "calls"
-    },
-    {
-      "from": "QuickReportModal",
-      "to": "COURTS",
-      "rel": "reads"
-    },
-    {
-      "from": "QuickReportModal",
-      "to": "fb/courts",
-      "rel": "reads"
-    },
-    {
-      "from": "PetitionPage",
-      "to": "LetterModal",
-      "rel": "renders"
-    },
-    {
-      "from": "PetitionPage",
-      "to": "fb/votes",
-      "rel": "reads+writes"
-    },
-    {
-      "from": "PetitionPage",
-      "to": "fb/signups",
-      "rel": "writes"
-    },
-    {
-      "from": "PetitionPage",
-      "to": "fb/leaderboard",
-      "rel": "writes"
-    },
-    {
-      "from": "PetitionPage",
-      "to": "logActivity",
-      "rel": "calls"
-    },
-    {
-      "from": "CommunityPage",
-      "to": "ActivityFeed",
-      "rel": "renders"
-    },
-    {
-      "from": "CommunityPage",
-      "to": "ForumTab",
-      "rel": "renders"
-    },
-    {
-      "from": "CommunityPage",
-      "to": "EventsTab",
-      "rel": "renders"
-    },
-    {
-      "from": "CommunityPage",
-      "to": "GalleryTab",
-      "rel": "renders"
-    },
-    {
-      "from": "CommunityPage",
-      "to": "TeamsTab",
-      "rel": "renders"
-    },
-    {
-      "from": "CommunityPage",
-      "to": "LBTab",
-      "rel": "renders"
-    },
-    {
-      "from": "ActivityFeed",
-      "to": "fb/activity",
-      "rel": "reads"
-    },
-    {
-      "from": "ForumTab",
-      "to": "fb/forum",
-      "rel": "reads+writes"
-    },
-    {
-      "from": "EventsTab",
-      "to": "fb/events",
-      "rel": "reads+writes"
-    },
-    {
-      "from": "GalleryTab",
-      "to": "fb/gallery",
-      "rel": "reads+writes"
-    },
-    {
-      "from": "GalleryTab",
-      "to": "compressImage",
-      "rel": "calls"
-    },
-    {
-      "from": "GalleryTab",
-      "to": "logActivity",
-      "rel": "calls"
-    },
-    {
-      "from": "TeamsTab",
-      "to": "fb/teams",
-      "rel": "reads+writes"
-    },
-    {
-      "from": "LBTab",
-      "to": "fb/leaderboard",
-      "rel": "reads"
-    },
-    {
-      "from": "ImpactPage",
-      "to": "FUNDING",
-      "rel": "reads"
-    },
-    {
-      "from": "ImpactPage",
-      "to": "BUDGET",
-      "rel": "reads"
-    },
-    {
-      "from": "ImpactPage",
-      "to": "TIMELINE",
-      "rel": "reads"
-    },
-    {
-      "from": "ImpactPage",
-      "to": "fb/signups",
-      "rel": "reads"
-    },
-    {
-      "from": "ProfilePage",
-      "to": "fb/users",
-      "rel": "reads+writes"
-    },
-    {
-      "from": "ProfilePage",
-      "to": "fb/leaderboard",
-      "rel": "reads"
-    },
-    {
-      "from": "ProfilePage",
-      "to": "fb/activity",
-      "rel": "reads"
-    },
-    {
-      "from": "AdminPanel",
-      "to": "fb/signups",
-      "rel": "reads+deletes"
-    },
-    {
-      "from": "AdminPanel",
-      "to": "fb/votes",
-      "rel": "reads"
-    },
-    {
-      "from": "AdminPanel",
-      "to": "fb/courts",
-      "rel": "reads+writes+deletes"
-    },
-    {
-      "from": "AdminPanel",
-      "to": "fb/activity",
-      "rel": "reads"
-    },
-    {
-      "from": "AdminPanel",
-      "to": "fb/reports",
-      "rel": "reads+writes+deletes"
-    },
-    {
-      "from": "AdminPanel",
-      "to": "fb/bookings",
-      "rel": "reads"
-    },
-    {
-      "from": "BookingModal",
-      "to": "fb/bookings",
-      "rel": "reads+writes"
-    },
-    {
-      "from": "ReportModal",
-      "to": "fb/reports",
-      "rel": "writes"
-    },
-    {
-      "from": "AboutPage",
-      "to": "fb/partnerRequests",
-      "rel": "writes"
-    },
-    {
-      "from": "logActivity",
-      "to": "fb/activity",
-      "rel": "writes"
-    },
-    {
-      "from": "Navbar",
-      "to": "AppCtx",
-      "rel": "reads"
-    },
-    {
-      "from": "useFirebase",
-      "to": "AppCtx",
-      "rel": "reads"
-    },
-    {
-      "from": "ReportsPage",
-      "to": "EvidenceWall",
-      "rel": "renders"
-    },
-    {
-      "from": "EvidenceWall",
-      "to": "fb/gallery",
-      "rel": "reads+writes"
-    },
-    {
-      "from": "EvidenceWall",
-      "to": "fb/activity",
-      "rel": "writes"
-    },
-    {
-      "from": "CourtDetail",
-      "to": "shareCourt",
-      "rel": "calls"
-    },
-    {
-      "from": "HomePage",
-      "to": "StatTile",
-      "rel": "renders"
-    },
-    {
-      "from": "StatTile",
-      "to": "useCountUp",
-      "rel": "calls"
-    },
-    {
-      "from": "HomePage",
-      "to": "useReveal",
-      "rel": "calls"
-    },
-    {
-      "from": "CourtDetail",
-      "to": "RatingSection",
-      "rel": "renders"
-    },
-    {
-      "from": "RatingSection",
-      "to": "RadarChart",
-      "rel": "renders"
-    },
-    {
-      "from": "RatingSection",
-      "to": "StarPicker",
-      "rel": "renders"
-    },
-    {
-      "from": "RatingSection",
-      "to": "fb/ratings",
-      "rel": "reads+writes"
-    },
-    {
-      "from": "ImpactPage",
-      "to": "DossierButton",
-      "rel": "renders"
-    },
-    {
-      "from": "DossierButton",
-      "to": "fb/votes",
-      "rel": "reads"
-    },
-    {
-      "from": "DossierButton",
-      "to": "fb/signups",
-      "rel": "reads"
-    },
-    {
-      "from": "DossierButton",
-      "to": "fb/reports",
-      "rel": "reads"
-    },
-    {
-      "from": "DossierButton",
-      "to": "fb/gallery",
-      "rel": "reads"
-    },
-    {
-      "from": "LetterModal",
-      "to": "jsPDF",
-      "rel": "calls"
-    },
-    {
-      "from": "DossierButton",
-      "to": "jsPDF",
-      "rel": "calls"
-    },
-    {
-      "from": "ImpactPage",
-      "to": "OpenDataCard",
-      "rel": "renders"
-    },
-    {
-      "from": "OpenDataCard",
-      "to": "fb/reports",
-      "rel": "reads"
-    },
-    {
-      "from": "OpenDataCard",
-      "to": "fb/votes",
-      "rel": "reads"
-    },
-    {
-      "from": "OpenDataCard",
-      "to": "fb/courts",
-      "rel": "reads"
-    },
-    {
-      "from": "OpenDataCard",
-      "to": "fb/ratings",
-      "rel": "reads"
-    },
-    {
-      "from": "OpenDataCard",
-      "to": "downloadFile",
-      "rel": "calls"
-    },
-    {
-      "from": "CourtsPage",
-      "to": "pageFromHash",
-      "rel": "deep-link #court-{id} deschide CourtDetail"
-    },
-    {
-      "from": "CourtsPage",
-      "to": "fb/reports",
-      "rel": "reads (doar cu heatmap activ, pentru densitate)"
-    },
-    {
-      "from": "Hero3D",
-      "to": "LetterReveal",
-      "rel": "renders"
-    },
-    {
-      "from": "HomePage",
-      "to": "ActivityTicker",
-      "rel": "renders"
-    },
-    {
-      "from": "ActivityTicker",
-      "to": "fb/activity",
-      "rel": "reads"
-    },
-    {
-      "from": "App",
-      "to": "fb/settings",
-      "rel": "reads (live: maintenance/banner/flags/accent/broadcast)"
-    },
-    {
-      "from": "App",
-      "to": "fb/presence",
-      "rel": "writes (onDisconnect cleanup)"
-    },
-    {
-      "from": "AdminSiteTab",
-      "to": "fb/settings",
-      "rel": "writes"
-    },
-    {
-      "from": "AdminSiteTab",
-      "to": "fb/votes",
-      "rel": "danger: reset"
-    },
-    {
-      "from": "AdminSiteTab",
-      "to": "fb/activity",
-      "rel": "danger: clear"
-    },
-    {
-      "from": "AdminModTab",
-      "to": "fb/forum",
-      "rel": "deletes"
-    },
-    {
-      "from": "AdminModTab",
-      "to": "fb/gallery",
-      "rel": "deletes"
-    },
-    {
-      "from": "AdminModTab",
-      "to": "fb/events",
-      "rel": "deletes"
-    },
-    {
-      "from": "AdminModTab",
-      "to": "fb/teams",
-      "rel": "deletes"
-    },
-    {
-      "from": "AdminModTab",
-      "to": "fb/games",
-      "rel": "deletes"
-    },
-    {
-      "from": "AdminModTab",
-      "to": "fb/activity",
-      "rel": "deletes"
-    },
-    {
-      "from": "Navbar",
-      "to": "PresenceBadge",
-      "rel": "renders"
-    },
-    {
-      "from": "PresenceBadge",
-      "to": "fb/presence",
-      "rel": "reads"
-    },
-    {
-      "from": "HomePage",
-      "to": "FeaturedCourt",
-      "rel": "renders"
-    },
-    {
-      "from": "FeaturedCourt",
-      "to": "fb/settings",
-      "rel": "reads featuredCourtId"
-    },
-    {
-      "from": "AdminPanel",
-      "to": "AdminSiteTab",
-      "rel": "renders"
-    },
-    {
-      "from": "AdminPanel",
-      "to": "AdminModTab",
-      "rel": "renders"
-    },
-    {
-      "from": "CourtDetail",
-      "to": "SatelliteTimeMachine",
-      "rel": "renders"
-    },
-    {
-      "from": "CourtDetail",
-      "to": "CourtSound",
-      "rel": "renders"
-    },
-    {
-      "from": "PetitionPage",
-      "to": "HoopGame",
-      "rel": "renders (doar dacă !voted && !g2p_hoop && !reduced-motion)"
-    },
-    {
-      "from": "PetitionPage",
-      "to": "InequalityReceipt",
-      "rel": "renders"
-    },
-    {
-      "from": "ImpactPage",
-      "to": "InequalityReceipt",
-      "rel": "renders (tab calc)"
-    },
-    {
-      "from": "ImpactPage",
-      "to": "CityPulse",
-      "rel": "renders (state pulse / sessionStorage g2p_open_pulse)"
-    },
-    {
-      "from": "CommunityPage",
-      "to": "PixelWall",
-      "rel": "renders (tab pixel)"
-    },
-    {
-      "from": "App",
-      "to": "HeatWatcher",
-      "rel": "renders"
-    },
-    {
-      "from": "App",
-      "to": "AmbientLight",
-      "rel": "renders"
-    },
-    {
-      "from": "App",
-      "to": "MayorMode",
-      "rel": "renders (typed 'fixit' / event g2p-mayor)"
-    },
-    {
-      "from": "CommandPalette",
-      "to": "CityPulse",
-      "rel": "opens (setPage impact + sessionStorage g2p_open_pulse)"
-    },
-    {
-      "from": "CommandPalette",
-      "to": "MayorMode",
-      "rel": "opens (window event g2p-mayor)"
-    },
-    {
-      "from": "PixelWall",
-      "to": "fb/pixels",
-      "rel": "reads+writes"
-    },
-    {
-      "from": "PixelWall",
-      "to": "logActivity",
-      "rel": "calls"
-    },
-    {
-      "from": "InequalityReceipt",
-      "to": "fb/votes",
-      "rel": "reads"
-    },
-    {
-      "from": "HeatWatcher",
-      "to": "fb/activity",
-      "rel": "reads (limitToLast 1, child_added)"
-    },
-    {
-      "from": "AmbientLight",
-      "to": "fb/reports",
-      "rel": "reads (limitToLast 1, child_added)"
-    },
-    {
-      "from": "CityPulse",
-      "to": "fb/activity",
-      "rel": "reads"
-    },
-    {
-      "from": "CityPulse",
-      "to": "fb/signups",
-      "rel": "reads"
-    },
-    {
-      "from": "CourtsPage",
-      "to": "fb/courts/{id}/checkins",
-      "rel": "reads (heat: check-ins < 2h → .heat-1/2/3 + chip)"
-    }
-  ],
-  "routes": {
-    "_note": "Rutele sunt sincronizate cu location.hash (#courts, #petition, …). #court-{id} = deep link CourtDetail. Vezi pageFromHash.",
-    "home": "HomePage",
-    "courts": "CourtsPage",
-    "reports": "ReportsPage",
-    "petition": "PetitionPage",
-    "community": "CommunityPage",
-    "impact": "ImpactPage",
-    "help": "HelpPage",
-    "about": "AboutPage",
-    "profile": "ProfilePage",
-    "#/admin": "AdminPanel"
+  {
+   "id": "useApp",
+   "type": "hook",
+   "line": 230,
+   "desc": "Shortcut useContext(AppCtx)"
   },
-  "css_classes": {
-    "layout": [
-      "container",
-      "section",
-      "grid",
-      "grid-2",
-      "grid-3",
-      "grid-4",
-      "flex",
-      "flex-col"
-    ],
-    "components": [
-      "card",
-      "card-accent",
-      "card-link",
-      "btn",
-      "btn-green",
-      "btn-coral",
-      "btn-outline",
-      "btn-sm",
-      "btn-block",
-      "badge",
-      "badge-green",
-      "badge-coral",
-      "badge-red",
-      "badge-teal",
-      "tabs",
-      "modal",
-      "modal-overlay",
-      "modal-lg",
-      "toast",
-      "fab"
-    ],
-    "reports": [
-      "badge-received",
-      "badge-analyzing",
-      "badge-planned",
-      "badge-resolved",
-      "report-timeline",
-      "rt-step",
-      "rt-dot",
-      "rt-label",
-      "rcat-grid",
-      "rcat-btn",
-      "badge-official"
-    ],
-    "hero3d": [
-      "h3d-hero",
-      "h3d-canvas",
-      "h3d-overlay",
-      "h3d-title",
-      "h3d-btn",
-      "h3d-btn-green",
-      "h3d-btn-ghost"
-    ],
-    "admin": [
-      "admin-shell",
-      "admin-hdr",
-      "admin-side",
-      "admin-main",
-      "a-stats",
-      "a-table",
-      "a-form",
-      "a-badge"
-    ],
-    "typography": [
-      "stat-number",
-      "stat-label",
-      "barlow",
-      "section-title",
-      "section-sub"
-    ],
-    "animation": [
-      "animate-in",
-      "live-dot"
-    ],
-    "season2": [
-      "badge-unlock-overlay",
-      "badge-unlock-card",
-      "badge-unlock-icon",
-      "badge-unlock-kicker",
-      "badge-unlock-name",
-      "badge-unlock-desc",
-      "badges-grid",
-      "badge-slot",
-      "badge-slot.earned",
-      "badge-slot.locked",
-      "health-ring-wrap",
-      "health-ring",
-      "health-ring-bg",
-      "health-ring-fill",
-      "health-ring-label",
-      "health-ring-num",
-      "health-ring-sub",
-      "health-trend-badge",
-      "race-row",
-      "race-rank",
-      "race-label",
-      "race-bar-wrap",
-      "race-bar",
-      "race-score",
-      "pledge-grid",
-      "pledge-tile",
-      "pledge-tile-new",
-      "countdown-wrap",
-      "countdown-unit",
-      "countdown-num",
-      "countdown-label",
-      "countdown-sep"
-    ],
-    "season3": [
-      "sat-map",
-      "sat-slider-row",
-      "sat-year",
-      "hoop-wrap",
-      "hoop-canvas",
-      "hoop-skip",
-      "hoop-overlay",
-      "px-canvas",
-      "px-palette",
-      "px-swatch",
-      "px-cool",
-      "receipt-canvas",
-      "heat-1",
-      "heat-2",
-      "heat-3",
-      "ambient-overlay",
-      "eq",
-      "pulse-overlay",
-      "pulse-hdr",
-      "pulse-x",
-      "pulse-stage",
-      "pulse-ctrl",
-      "pulse-play",
-      "mayor-overlay",
-      "mayor-x",
-      "mayor-cta"
-    ]
+  {
+   "id": "useFirebase",
+   "type": "hook",
+   "line": 232,
+   "desc": "Abonare realtime la o cale Firebase; returnează valoarea sau null"
   },
-  "design_tokens": {
-    "--green": "#10B981",
-    "--coral": "#F97316",
-    "--teal": "#0D9488",
-    "--red": "#DC2626",
-    "--dark": "#1A1A2E",
-    "--darkCard": "#16213E",
-    "--radius": "12px",
-    "font_headings": "Space Mono / Barlow Condensed",
-    "font_body": "Libre Franklin"
+  {
+   "id": "getVoterKey",
+   "type": "util",
+   "line": 5213,
+   "desc": "Identitate anonimă stabilă din localStorage (g2p_vk). Folosit pentru 'rapoartele mele'."
+  },
+  {
+   "id": "logActivity",
+   "type": "util",
+   "line": 805,
+   "desc": "Scrie în activity/ {type, userName, courtId, timestamp}"
+  },
+  {
+   "id": "compressImage",
+   "type": "util",
+   "line": 815,
+   "desc": "Comprimă File → dataURL (maxDim, quality). Folosit în galerie și rapoarte."
+  },
+  {
+   "id": "getCourtWeather",
+   "type": "util",
+   "line": 779,
+   "desc": "Returnează {icon, label, color} pentru condiția unui teren."
+  },
+  {
+   "id": "anonName",
+   "type": "util",
+   "line": 797,
+   "desc": "Generează nume anonim din voterKey"
+  },
+  {
+   "id": "nextLang",
+   "type": "util",
+   "line": 791,
+   "desc": "Ciclează ro → en → hu → ro"
+  },
+  {
+   "id": "T",
+   "type": "i18n",
+   "line": 245,
+   "desc": "Dicționar { ro, en, hu }. Toate string-urile UI. HU = draft."
+  },
+  {
+   "id": "COURTS",
+   "type": "constant",
+   "line": 839,
+   "desc": "Array static cu terenurile hardcodate (id, name, address, lat, lng, condition, status, neighborhood)"
+  },
+  {
+   "id": "FUNDING",
+   "type": "constant",
+   "line": 939,
+   "desc": "Surse de finanțare disponibile (titlu, suma, termen, stare)"
+  },
+  {
+   "id": "BUDGET",
+   "type": "constant",
+   "line": 980,
+   "desc": "Linii bugetare municipale pentru vizualizare"
+  },
+  {
+   "id": "TIMELINE",
+   "type": "constant",
+   "line": 1031,
+   "desc": "Timeline civic cu evenimente (ro/en/hu)"
+  },
+  {
+   "id": "LETTER_AREAS",
+   "type": "constant",
+   "line": 2989,
+   "desc": "Zone cartiere pentru generatorul de scrisori"
+  },
+  {
+   "id": "ADMIN_PW",
+   "type": "constant",
+   "line": 1062,
+   "desc": "Parola admin panel = 'teodor2026'"
+  },
+  {
+   "id": "Toast",
+   "type": "component",
+   "line": 1065,
+   "desc": "Toast transient global. Declanșat via useApp().toast('msg')"
+  },
+  {
+   "id": "Onboarding",
+   "type": "component",
+   "line": 1079,
+   "desc": "Ecran onboarding 3 pași la prima vizită. Stochează done în localStorage."
+  },
+  {
+   "id": "InstallBanner",
+   "type": "component",
+   "line": 1132,
+   "desc": "Banner PWA install (beforeinstallprompt)"
+  },
+  {
+   "id": "Navbar",
+   "type": "component",
+   "line": 1178,
+   "desc": "Navigare sticky cu hamburger mobil. Link-uri: home, courts, reports, petition, community, impact, help."
+  },
+  {
+   "id": "MapView",
+   "type": "component",
+   "line": 1288,
+   "desc": "Leaflet map cu markere terenuri. Props: courts[], onSelect(court)."
+  },
+  {
+   "id": "Hero3D",
+   "type": "component",
+   "line": 1980,
+   "desc": "Hero Three.js animat. Terenuri 3D gri→color la click. Montat în HomePage."
+  },
+  {
+   "id": "ActivityFeed",
+   "type": "component",
+   "line": 3086,
+   "desc": "Feed live activity/ Firebase (ultimele 30). Live-dot pe cel mai recent."
+  },
+  {
+   "id": "QuickReportFAB",
+   "type": "component",
+   "line": 5220,
+   "desc": "FAB verde fix bottom-right. Deschide QuickReportModal."
+  },
+  {
+   "id": "QuickReportModal",
+   "type": "component",
+   "line": 5228,
+   "desc": "Modal 3 pași: categorie → descriere+foto → teren+geo. Scrie în reports/ și activity/."
+  },
+  {
+   "id": "PlayNowModal",
+   "type": "component",
+   "line": 2930,
+   "desc": "Modal B2: creează un joc spontan. Sport, maxPlayers, notă. Scrie în games/{courtId}/ + activity/."
+  },
+  {
+   "id": "ActiveGames",
+   "type": "component",
+   "line": 2987,
+   "desc": "Lista jocuri active dintr-un teren. Join incrementează playerCount via transaction. Citit în CourtDetail."
+  },
+  {
+   "id": "NotifPanel",
+   "type": "component",
+   "line": 1262,
+   "desc": "B3: panou notificări dropdown în Navbar. Filtrează activity/ după follows/{vk}. Unread = newer than g2p_notif_seen."
+  },
+  {
+   "id": "useFollows",
+   "type": "hook",
+   "line": 245,
+   "desc": "B3: citește follows/{voterKey}/ din Firebase. Returnează { follows, isFollowing(id), toggle(id) }."
+  },
+  {
+   "id": "ReportTimeline",
+   "type": "component",
+   "line": 5332,
+   "desc": "Timeline vizual 4 pași: Primit→Analiză→Planificat→Rezolvat."
+  },
+  {
+   "id": "Footer",
+   "type": "component",
+   "line": 5449,
+   "desc": "Footer static cu link-uri."
+  },
+  {
+   "id": "HomePage",
+   "type": "page",
+   "line": 2046,
+   "desc": "Pagina principală: hero 3D + statistici live (votes, signups) + QuickReportFAB."
+  },
+  {
+   "id": "CourtsPage",
+   "type": "page",
+   "line": 2190,
+   "desc": "Listă + hartă terenuri. Filtre: cartier, condiție, sport. Click → CourtDetail."
+  },
+  {
+   "id": "CourtDetail",
+   "type": "page",
+   "line": 2336,
+   "desc": "Detalii teren: check-in live, galerie, rezervare, raport, scrisoare."
+  },
+  {
+   "id": "ReportsPage",
+   "type": "page",
+   "line": 5350,
+   "desc": "Pagina sesizări publice. Tabs: toate/ale mele. Filtre status/cartier/categorie."
+  },
+  {
+   "id": "PetitionPage",
+   "type": "page",
+   "line": 2717,
+   "desc": "Petiție cu opțiuni flip/mural/both, voluntariat, scrisoare PDF."
+  },
+  {
+   "id": "CommunityPage",
+   "type": "page",
+   "line": 3133,
+   "desc": "Hub comunitar cu tabs: activity, forum, events, gallery, teams, leaderboard."
+  },
+  {
+   "id": "ImpactPage",
+   "type": "page",
+   "line": 3701,
+   "desc": "Date civice: calculator impact, comparație orașe, buget vizual, carbon, sănătate, timeline."
+  },
+  {
+   "id": "HelpPage",
+   "type": "page",
+   "line": 4085,
+   "desc": "Ghid utilizare + FAQ."
+  },
+  {
+   "id": "AboutPage",
+   "type": "page",
+   "line": 4251,
+   "desc": "Despre proiect, parteneri, contact."
+  },
+  {
+   "id": "ProfilePage",
+   "type": "page",
+   "line": 4472,
+   "desc": "Profil utilizator: editare nume, statistici personale, istoric."
+  },
+  {
+   "id": "AdminPanel",
+   "type": "page",
+   "line": 4712,
+   "desc": "Panou admin (pw: ADMIN_PW). Tabs: signups, votes, courts, activity, reports, bookings."
+  },
+  {
+   "id": "ForumTab",
+   "type": "component",
+   "line": 3154,
+   "desc": "Forum comunitar cu reply-uri și voturi. Firebase: forum/"
+  },
+  {
+   "id": "EventsTab",
+   "type": "component",
+   "line": 3359,
+   "desc": "Evenimente cu RSVP. Firebase: events/"
+  },
+  {
+   "id": "GalleryTab",
+   "type": "component",
+   "line": 3423,
+   "desc": "Galerie foto cu voturi. Firebase: gallery/. Folosește compressImage."
+  },
+  {
+   "id": "TeamsTab",
+   "type": "component",
+   "line": 3577,
+   "desc": "Echipe. Firebase: teams/"
+  },
+  {
+   "id": "LBTab",
+   "type": "component",
+   "line": 3650,
+   "desc": "Clasament utilizatori. Firebase: leaderboard/"
+  },
+  {
+   "id": "ReportModal",
+   "type": "component",
+   "line": 2461,
+   "desc": "Modal raportare teren degradat din CourtDetail (diferit de QuickReportModal)."
+  },
+  {
+   "id": "BookingModal",
+   "type": "component",
+   "line": 2585,
+   "desc": "Modal rezervare slot orar. Firebase: bookings/{courtId}/{date}/{hour}."
+  },
+  {
+   "id": "LetterModal",
+   "type": "component",
+   "line": 2995,
+   "desc": "Generator scrisoare PDF/text către consiliu local. Folosit din PetitionPage și CourtDetail."
+  },
+  {
+   "id": "fb/votes",
+   "type": "firebase",
+   "desc": "Counter { flip, mural, both }. Transaction +1 la vot."
+  },
+  {
+   "id": "fb/signups",
+   "type": "firebase",
+   "desc": "{ name, email, choice, volunteer, timestamp } per semnătură petiție."
+  },
+  {
+   "id": "fb/activity",
+   "type": "firebase",
+   "desc": "{ type, userName, courtId?, timestamp }. Scris de logActivity(). Citit de ActivityFeed."
+  },
+  {
+   "id": "fb/reports",
+   "type": "firebase",
+   "desc": "{ courtId, courtName, neighborhood, category, description, photoDataUrl?, lat?, lng?, status, createdAt, voterKey }. Scris de QuickReportModal."
+  },
+  {
+   "id": "fb/courts/{id}/checkins",
+   "type": "firebase",
+   "desc": "{ userId, timestamp }. Auto-remove după 2h. Citit în CourtDetail."
+  },
+  {
+   "id": "fb/bookings",
+   "type": "firebase",
+   "desc": "{ courtId, date, hour, userName }. Gestionat din BookingModal."
+  },
+  {
+   "id": "fb/gallery",
+   "type": "firebase",
+   "desc": "{ courtId, url, userName, votes, timestamp }. Upload din GalleryTab."
+  },
+  {
+   "id": "fb/forum",
+   "type": "firebase",
+   "desc": "{ text, userName, timestamp, likes, replies/{} }. Gestionat din ForumTab."
+  },
+  {
+   "id": "fb/events",
+   "type": "firebase",
+   "desc": "{ title, date, courtId, attendeeCount }. Gestionat din EventsTab."
+  },
+  {
+   "id": "fb/teams",
+   "type": "firebase",
+   "desc": "{ name, sport, members[] }. Gestionat din TeamsTab."
+  },
+  {
+   "id": "fb/leaderboard",
+   "type": "firebase",
+   "desc": "{ name, points, actions }. Actualizat la petition + help signups."
+  },
+  {
+   "id": "fb/courts",
+   "type": "firebase",
+   "desc": "Terenuri adăugate din AdminPanel (suplimentar față de COURTS static)."
+  },
+  {
+   "id": "fb/users",
+   "type": "firebase",
+   "desc": "{ name, avatar, bio, ... }. Actualizat din ProfilePage."
+  },
+  {
+   "id": "fb/partnerRequests",
+   "type": "firebase",
+   "desc": "Cereri parteneriat din AboutPage."
+  },
+  {
+   "id": "fb/games",
+   "type": "firebase",
+   "desc": "{ sport, maxPlayers, playerCount, createdBy, note, timestamp }. Scoped per courtId: games/{courtId}/{gameId}. Auto-remove după 2h. B2."
+  },
+  {
+   "id": "fb/follows",
+   "type": "firebase",
+   "desc": "follows/{voterKey}/{courtId}: true. Toggle din CourtDetail. Citit de Navbar și NotifPanel pentru badge unread. B3."
+  },
+  {
+   "id": "EvidenceWall",
+   "type": "component",
+   "line": 5700,
+   "desc": "#2.1: grid masonry dovezi foto. Upload cu GPS, filter per teren, stats (nr. martori, terenuri documentate). Scrie în gallery/ cu isEvidence:true."
+  },
+  {
+   "id": "shareCourt",
+   "type": "util",
+   "line": 945,
+   "desc": "B8: Web Share API cu fallback clipboard. shareCourt(court, t, toast) → navigator.share sau clipboard.writeText."
+  },
+  {
+   "id": "useCountUp",
+   "type": "hook",
+   "line": 319,
+   "desc": "Polish: animație count-up cu requestAnimationFrame, ease-out cubic. Respectă prefers-reduced-motion."
+  },
+  {
+   "id": "useReveal",
+   "type": "hook",
+   "line": 342,
+   "desc": "Polish: IntersectionObserver scroll-reveal. Atașează ref, adaugă clasa .in la intrare în viewport."
+  },
+  {
+   "id": "StatTile",
+   "type": "component",
+   "line": 2369,
+   "desc": "Polish: tile statistică cu count-up + glow colorat. Folosit în hero HomePage."
+  },
+  {
+   "id": "RadarChart",
+   "type": "component",
+   "line": 2668,
+   "desc": "#3.1: radar chart SVG pur (fără librărie) pentru 4 dimensiuni rating."
+  },
+  {
+   "id": "StarPicker",
+   "type": "component",
+   "line": 2690,
+   "desc": "#3.1: input stele 1-5 pentru o dimensiune de rating."
+  },
+  {
+   "id": "RatingSection",
+   "type": "component",
+   "line": 2700,
+   "desc": "#3.1: secțiune evaluare teren (suprafață/iluminat/echipament/siguranță). Radar + bare medii. Scrie ratings/{courtId}/{voterKey}. În CourtDetail."
+  },
+  {
+   "id": "DossierButton",
+   "type": "component",
+   "line": 4294,
+   "desc": "#2.3: generează dosar PDF complet (cover, stats, terenuri, sesizări, dovezi foto) cu jsPDF. În ImpactPage."
+  },
+  {
+   "id": "fb/ratings",
+   "type": "firebase",
+   "desc": "ratings/{courtId}/{voterKey}: {surface,lighting,equipment,safety,userName,ts}. Scris de RatingSection. #3.1."
+  },
+  {
+   "id": "jsPDF",
+   "type": "external",
+   "line": 0,
+   "desc": "window.jspdf.jsPDF (CDN unpkg). Folosit pentru export PDF: LetterModal + DossierButton."
+  },
+  {
+   "id": "pageFromHash",
+   "type": "util",
+   "line": 1153,
+   "desc": "Hash routing: mapează location.hash (#courts, #court-{id}, …) la pagina curentă. Folosit de App la mount + hashchange. setPage din AppCtx sincronizează hash-ul (pushState)."
+  },
+  {
+   "id": "downloadFile",
+   "type": "util",
+   "line": 1160,
+   "desc": "Descarcă un fișier generat client-side (Blob + <a download>). Folosit de OpenDataCard."
+  },
+  {
+   "id": "OpenDataCard",
+   "type": "component",
+   "line": 4924,
+   "desc": "Export date deschise (JSON complet / CSV sesizări, licență CC BY 4.0). Strip voterKey + photoDataUrl. În ImpactPage, sub DossierButton."
+  },
+  {
+   "id": "sw.js",
+   "type": "pwa",
+   "line": 0,
+   "desc": "Service worker (fișier separat la root, înregistrat din App). Shell network-first, CDN stale-while-revalidate, Firebase RTDB neinterceptat. Bump const CACHE la schimbări breaking."
+  },
+  {
+   "id": "Reveal",
+   "type": "component",
+   "line": 0,
+   "desc": "Wrapper scroll-reveal cu stagger (prop d = delay ms, as = tag). Folosește useReveal + clasa .reveal."
+  },
+  {
+   "id": "useTilt",
+   "type": "hook",
+   "line": 0,
+   "desc": "Tilt 3D care urmărește cursorul (perspective + rotateX/Y). Dezactivat pe touch și prefers-reduced-motion."
+  },
+  {
+   "id": "TiltDiv",
+   "type": "component",
+   "line": 0,
+   "desc": "Div cu useTilt (prop max = grade). Folosit pe cardurile de terenuri și StatTile."
+  },
+  {
+   "id": "LetterReveal",
+   "type": "component",
+   "line": 0,
+   "desc": "Reveal literă-cu-literă (clasa .lr, delay --ld). Folosit în titlul Hero3D și StoryPage. aria-label păstrează textul întreg."
+  },
+  {
+   "id": "ripple-listener",
+   "type": "util",
+   "line": 0,
+   "desc": "Listener delegat pointerdown în App: ripple pe .btn/.h3d-btn/.tabs button. Oprit la prefers-reduced-motion."
+  },
+  {
+   "id": "ActivityTicker",
+   "type": "component",
+   "line": 0,
+   "desc": "Marquee infinit cu activitate live din activity/ (14 itemi, două copii pentru loop, pauză la hover). Pe HomePage sub hero."
+  },
+  {
+   "id": "promax-effects",
+   "type": "util",
+   "line": 0,
+   "desc": "Listeneri delegați în App: spotlight radial pe .card/.stat-tile (--mx/--my), butoane magnetice (.h3d-btn/.btn-green), page-wipe overlay la setPage. CSS: glow-border conic animat (StatTile), aurora blobs (hero), shimmer-text (titlu hero). Toate oprite la prefers-reduced-motion / hover:none."
+  },
+  {
+   "id": "fb/settings",
+   "type": "firebase",
+   "desc": "settings/: {maintenance, banner:{on,text,type}, flags:{petition,community,booking,effects}, featuredCourtId, accent, broadcast:{text,ts}}. Scris din AdminSiteTab, citit live de App (ctx.settings)."
+  },
+  {
+   "id": "fb/presence",
+   "type": "firebase",
+   "desc": "presence/{voterKey}: true. Scris de App cu onDisconnect().remove(). Citit de PresenceBadge (contor online)."
+  },
+  {
+   "id": "fb/achievements",
+   "type": "firebase",
+   "desc": "achievements/{voterKey}/{badgeId}: timestamp. Scris de useBadges().awardBadge(). Citit de BadgesGrid + useBadges. Season 2."
+  },
+  {
+   "id": "fb/pledges",
+   "type": "firebase",
+   "desc": "pledges/{pushId}: {name, pledge, emoji, ts}. Scris de PledgeWall. Citit de PledgeWall (slice 60 desc). Season 2."
+  },
+  {
+   "id": "BADGES",
+   "type": "constant",
+   "desc": "Array of 12 badge definitions: {id, icon, name:{ro,en,hu}, desc:{ro,en,hu}}. Season 2."
+  },
+  {
+   "id": "useBadges",
+   "type": "hook",
+   "desc": "Returns {earned, awardBadge}. Reads achievements/{voterKey} via useFirebase. awardBadge(id,cb) writes to achievements/ and calls cb with badge def."
+  },
+  {
+   "id": "BadgeUnlockModal",
+   "type": "component",
+   "desc": "Overlay modal cu animație pentru badge deblocat. Auto-close 4.5s. Props: {badge, lang, onClose}. Season 2."
+  },
+  {
+   "id": "BadgesGrid",
+   "type": "component",
+   "desc": "Grid 12 badge-uri earned/locked. Props: {lang}. Integrat în ProfilePage. Season 2."
+  },
+  {
+   "id": "CourtHealthRing",
+   "type": "component",
+   "desc": "SVG ring progres 0-100 scor sănătate teren. Citit din reports/ + ratings/{courtId}. Integrat în CourtDetail. Season 2."
+  },
+  {
+   "id": "getCourtHealthScore",
+   "type": "util",
+   "desc": "Calculează scor 0-100 din condiție(40pt), rapoarte deschise(-6/rep), ratings(30pt), checkins recente(10pt). Season 2."
+  },
+  {
+   "id": "NeighborhoodRace",
+   "type": "component",
+   "desc": "Bar chart race cartiere după scor civic (activitate+rapoarte). Live reads activity/ + reports/. Tab 'race' ImpactPage. Season 2."
+  },
+  {
+   "id": "PledgeWall",
+   "type": "component",
+   "desc": "Wall promisiuni civice. Input emoji+name+text, scrie pledges/. Integrat în PetitionPage. Season 2."
+  },
+  {
+   "id": "CourtQRCard",
+   "type": "component",
+   "desc": "Modal QR code generat cu QRious (lazy CDN). Download branded PNG. Props: {court, onClose}. Integrat în CourtDetail. Season 2."
+  },
+  {
+   "id": "CouncilCountdown",
+   "type": "component",
+   "desc": "Countdown zile/ore/min până la ședința de consiliu. Dates hardcodate. Tab 'race' ImpactPage. Season 2."
+  },
+  {
+   "id": "AdminSiteTab",
+   "type": "component",
+   "line": 0,
+   "desc": "Admin Site Control: mentenanță, banner, broadcast toast, feature flags, teren-vedetă, accent color, danger zone (reset votes / clear activity). Scrie settings/."
+  },
+  {
+   "id": "AdminModTab",
+   "type": "component",
+   "line": 0,
+   "desc": "Admin Moderation: șterge orice conținut user-generated (forum, gallery, events, teams, games, activity)."
+  },
+  {
+   "id": "CommandPalette",
+   "type": "component",
+   "line": 0,
+   "desc": "Ctrl/Cmd+K (sau 🔍 în navbar, ctx.setCmd): caută pagini/terenuri/acțiuni, navigare tastatură, respectă feature flags. Deep-link terenuri prin #court-{id}."
+  },
+  {
+   "id": "PresenceBadge",
+   "type": "component",
+   "line": 0,
+   "desc": "Contor live 'online acum' în Navbar, puls verde. Citește presence/."
+  },
+  {
+   "id": "FeaturedCourt",
+   "type": "component",
+   "line": 0,
+   "desc": "Terenul săptămânii pe Home (glow-border + tilt), ales de admin via settings/featuredCourtId."
+  },
+  {
+   "id": "switchTheme",
+   "type": "util",
+   "line": 0,
+   "desc": "Comutare temă cu reveal circular (View Transitions API + ReactDOM.flushSync), fallback simplu. Folosit în Navbar (desktop+mobil) și Profil."
+  },
+  {
+   "id": "SatelliteTimeMachine",
+   "type": "component",
+   "desc": "Card Leaflet în CourtDetail: două straturi satelit (Esri Wayback 2014 + World Imagery azi), slider de opacitate pentru crossfade. Se ascunde singur după 8 tileerror. Props: {court}. Season 3."
+  },
+  {
+   "id": "HoopGame",
+   "type": "component",
+   "desc": "Canvas 2D la începutul PetitionPage (doar ne-votați, fără flag g2p_hoop, fără reduced-motion): aruncă mingea la un coș îndoit care deviază mereu; după 2 aruncări → mesaj + CTA semnare. Props: {onDone}. Season 3."
+  },
+  {
+   "id": "PixelWall",
+   "type": "component",
+   "desc": "Mural colectiv 48×48 (tab '🎨 Pixel' în CommunityPage). 1 pixel / 10 min / voterKey (localStorage g2p_px_ts), paletă 10 culori, export PNG, contor live. Season 3."
+  },
+  {
+   "id": "InequalityReceipt",
+   "type": "component",
+   "desc": "Bon de casă generat pe canvas (560px): linii per cartier din COURTS, taxe/investiții, total '1 RENOVARE', barcode fals, margine zimțată. Download PNG + navigator.share. Pe ImpactPage (tab calc) și PetitionPage. Season 3."
+  },
+  {
+   "id": "HeatWatcher",
+   "type": "component",
+   "desc": "Componentă invizibilă montată în App: ascultă activity (limitToLast 1) și arată toast 'alătură-te' la check-in proaspăt al altcuiva. Max 1 toast / 3 min. Season 3."
+  },
+  {
+   "id": "AmbientLight",
+   "type": "component",
+   "desc": "Overlay radial fix, subtil (opacity ~.09): nuanță aurie ±90min în jurul apusului (lookup lunar Târgu Mureș), albastru noaptea, flash roșu 2.5s la sesizare nouă (reports limitToLast 1). Oprit la reduced-motion / flags.effects=false. Season 3."
+  },
+  {
+   "id": "CourtSound",
+   "type": "component",
+   "desc": "Card în CourtDetail cu sinteză WebAudio: teren viu (mingi care saltă accelerat, murmur, scârțâit adidași) vs abandonat (vânt cu LFO, picături, huruit trafic). AudioContext lazy, stop/cleanup complet. Props: {court}. Season 3."
+  },
+  {
+   "id": "CityPulse",
+   "type": "component",
+   "desc": "Overlay full-screen (z 9500) cu time-lapse 2D-canvas ~30s al activity+signups: inele de la 'primărie' pentru petiții, burst-uri la nodurile terenurilor, contoare live, scrubber + play/pauză, Esc. Reduced-motion = stare finală statică. Lansat din ImpactPage și ⌘K (sessionStorage g2p_open_pulse). Props: {onClose}. Season 3."
+  },
+  {
+   "id": "MayorMode",
+   "type": "component",
+   "desc": "Easter egg (tastează 'fixit' / ⌘K → Mayor Mode): overlay canvas cinematic în care cele 5 terenuri trec pe rând din gri crăpat în verde renovat (confetti, ken burns), apoi text type-on + CTA spre petiție. Esc/✕ închide. Props: {onClose}. Season 3."
+  },
+  {
+   "id": "fb/pixels",
+   "type": "firebase",
+   "desc": "pixels/{x_y}: string hex color (ex: pixels/12_34 = '#10B981'). Grid 48×48. Scris de PixelWall (cooldown 10 min/voterKey, client-side). Season 3."
+  },
+  {
+   "id": "AdminGodTab",
+   "type": "component",
+   "desc": "Admin God Mode: editor brut pe orice cale Firebase, scanner noduri, backup/restore total JSON, stergeri rapide. Tab in AdminPanel."
+  },
+  {
+   "id": "CityHallGuide",
+   "type": "component",
+   "desc": "Ghid Primarie pe Help>contact: contacte reale (Directia Tehnica, Serviciul Sport, infopublic), mailto pre-completat 544/2001 + OG 27/2002, pasi, argumente."
+  },
+  {
+   "id": "FunEggs",
+   "type": "component",
+   "desc": "Easter eggs vizuale rare: minge/copil/caine traverseaza ecranul la 80-220s. Gated reduced-motion + flags.effects."
+  },
+  {
+   "id": "SecretKeys",
+   "type": "component",
+   "desc": "Combinatii secrete: Konami=GOD MODE, dunk=ploaie mingi, disco=hue-rotate 8s, tgm=confetti verde, rain=ploaie fotbal."
+  },
+  {
+   "id": "ProiecteTab",
+   "type": "component",
+   "desc": "Tab Impact 🏗️: 4 proiecte reale TGM cu sume si statusuri (PROIECTE const)."
+  },
+  {
+   "id": "CivicFactsTape",
+   "type": "component",
+   "desc": "Grila 8 cifre mari verificate (CIVIC_FACTS_DATA) la top-ul paginii Impact."
   }
+ ],
+ "edges": [
+  {
+   "from": "HomePage",
+   "to": "Hero3D",
+   "rel": "renders"
+  },
+  {
+   "from": "HomePage",
+   "to": "QuickReportFAB",
+   "rel": "renders"
+  },
+  {
+   "from": "HomePage",
+   "to": "fb/votes",
+   "rel": "reads"
+  },
+  {
+   "from": "HomePage",
+   "to": "fb/signups",
+   "rel": "reads"
+  },
+  {
+   "from": "CourtsPage",
+   "to": "MapView",
+   "rel": "renders"
+  },
+  {
+   "from": "CourtsPage",
+   "to": "CourtDetail",
+   "rel": "navigates-to"
+  },
+  {
+   "from": "CourtsPage",
+   "to": "fb/courts",
+   "rel": "reads"
+  },
+  {
+   "from": "CourtsPage",
+   "to": "fb/games",
+   "rel": "reads"
+  },
+  {
+   "from": "CourtDetail",
+   "to": "ReportModal",
+   "rel": "renders"
+  },
+  {
+   "from": "CourtDetail",
+   "to": "BookingModal",
+   "rel": "renders"
+  },
+  {
+   "from": "CourtDetail",
+   "to": "LetterModal",
+   "rel": "renders"
+  },
+  {
+   "from": "CourtDetail",
+   "to": "PlayNowModal",
+   "rel": "renders"
+  },
+  {
+   "from": "CourtDetail",
+   "to": "ActiveGames",
+   "rel": "renders"
+  },
+  {
+   "from": "CourtDetail",
+   "to": "fb/follows",
+   "rel": "reads+writes"
+  },
+  {
+   "from": "Navbar",
+   "to": "NotifPanel",
+   "rel": "renders"
+  },
+  {
+   "from": "Navbar",
+   "to": "fb/activity",
+   "rel": "reads"
+  },
+  {
+   "from": "Navbar",
+   "to": "fb/follows",
+   "rel": "reads"
+  },
+  {
+   "from": "NotifPanel",
+   "to": "fb/activity",
+   "rel": "reads"
+  },
+  {
+   "from": "NotifPanel",
+   "to": "fb/follows",
+   "rel": "reads"
+  },
+  {
+   "from": "CourtDetail",
+   "to": "fb/courts/{id}/checkins",
+   "rel": "reads+writes"
+  },
+  {
+   "from": "CourtDetail",
+   "to": "fb/games",
+   "rel": "reads"
+  },
+  {
+   "from": "CourtDetail",
+   "to": "fb/gallery",
+   "rel": "reads"
+  },
+  {
+   "from": "PlayNowModal",
+   "to": "fb/games",
+   "rel": "writes"
+  },
+  {
+   "from": "PlayNowModal",
+   "to": "fb/activity",
+   "rel": "writes"
+  },
+  {
+   "from": "ActiveGames",
+   "to": "fb/games",
+   "rel": "reads+writes"
+  },
+  {
+   "from": "ActiveGames",
+   "to": "fb/activity",
+   "rel": "writes"
+  },
+  {
+   "from": "CourtDetail",
+   "to": "logActivity",
+   "rel": "calls"
+  },
+  {
+   "from": "ReportsPage",
+   "to": "QuickReportFAB",
+   "rel": "renders"
+  },
+  {
+   "from": "ReportsPage",
+   "to": "ReportTimeline",
+   "rel": "renders"
+  },
+  {
+   "from": "ReportsPage",
+   "to": "fb/reports",
+   "rel": "reads"
+  },
+  {
+   "from": "QuickReportModal",
+   "to": "fb/reports",
+   "rel": "writes"
+  },
+  {
+   "from": "QuickReportModal",
+   "to": "fb/activity",
+   "rel": "writes"
+  },
+  {
+   "from": "QuickReportModal",
+   "to": "getVoterKey",
+   "rel": "calls"
+  },
+  {
+   "from": "QuickReportModal",
+   "to": "compressImage",
+   "rel": "calls"
+  },
+  {
+   "from": "QuickReportModal",
+   "to": "COURTS",
+   "rel": "reads"
+  },
+  {
+   "from": "QuickReportModal",
+   "to": "fb/courts",
+   "rel": "reads"
+  },
+  {
+   "from": "PetitionPage",
+   "to": "LetterModal",
+   "rel": "renders"
+  },
+  {
+   "from": "PetitionPage",
+   "to": "fb/votes",
+   "rel": "reads+writes"
+  },
+  {
+   "from": "PetitionPage",
+   "to": "fb/signups",
+   "rel": "writes"
+  },
+  {
+   "from": "PetitionPage",
+   "to": "fb/leaderboard",
+   "rel": "writes"
+  },
+  {
+   "from": "PetitionPage",
+   "to": "logActivity",
+   "rel": "calls"
+  },
+  {
+   "from": "CommunityPage",
+   "to": "ActivityFeed",
+   "rel": "renders"
+  },
+  {
+   "from": "CommunityPage",
+   "to": "ForumTab",
+   "rel": "renders"
+  },
+  {
+   "from": "CommunityPage",
+   "to": "EventsTab",
+   "rel": "renders"
+  },
+  {
+   "from": "CommunityPage",
+   "to": "GalleryTab",
+   "rel": "renders"
+  },
+  {
+   "from": "CommunityPage",
+   "to": "TeamsTab",
+   "rel": "renders"
+  },
+  {
+   "from": "CommunityPage",
+   "to": "LBTab",
+   "rel": "renders"
+  },
+  {
+   "from": "ActivityFeed",
+   "to": "fb/activity",
+   "rel": "reads"
+  },
+  {
+   "from": "ForumTab",
+   "to": "fb/forum",
+   "rel": "reads+writes"
+  },
+  {
+   "from": "EventsTab",
+   "to": "fb/events",
+   "rel": "reads+writes"
+  },
+  {
+   "from": "GalleryTab",
+   "to": "fb/gallery",
+   "rel": "reads+writes"
+  },
+  {
+   "from": "GalleryTab",
+   "to": "compressImage",
+   "rel": "calls"
+  },
+  {
+   "from": "GalleryTab",
+   "to": "logActivity",
+   "rel": "calls"
+  },
+  {
+   "from": "TeamsTab",
+   "to": "fb/teams",
+   "rel": "reads+writes"
+  },
+  {
+   "from": "LBTab",
+   "to": "fb/leaderboard",
+   "rel": "reads"
+  },
+  {
+   "from": "ImpactPage",
+   "to": "FUNDING",
+   "rel": "reads"
+  },
+  {
+   "from": "ImpactPage",
+   "to": "BUDGET",
+   "rel": "reads"
+  },
+  {
+   "from": "ImpactPage",
+   "to": "TIMELINE",
+   "rel": "reads"
+  },
+  {
+   "from": "ImpactPage",
+   "to": "fb/signups",
+   "rel": "reads"
+  },
+  {
+   "from": "ProfilePage",
+   "to": "fb/users",
+   "rel": "reads+writes"
+  },
+  {
+   "from": "ProfilePage",
+   "to": "fb/leaderboard",
+   "rel": "reads"
+  },
+  {
+   "from": "ProfilePage",
+   "to": "fb/activity",
+   "rel": "reads"
+  },
+  {
+   "from": "AdminPanel",
+   "to": "fb/signups",
+   "rel": "reads+deletes"
+  },
+  {
+   "from": "AdminPanel",
+   "to": "fb/votes",
+   "rel": "reads"
+  },
+  {
+   "from": "AdminPanel",
+   "to": "fb/courts",
+   "rel": "reads+writes+deletes"
+  },
+  {
+   "from": "AdminPanel",
+   "to": "fb/activity",
+   "rel": "reads"
+  },
+  {
+   "from": "AdminPanel",
+   "to": "fb/reports",
+   "rel": "reads+writes+deletes"
+  },
+  {
+   "from": "AdminPanel",
+   "to": "fb/bookings",
+   "rel": "reads"
+  },
+  {
+   "from": "BookingModal",
+   "to": "fb/bookings",
+   "rel": "reads+writes"
+  },
+  {
+   "from": "ReportModal",
+   "to": "fb/reports",
+   "rel": "writes"
+  },
+  {
+   "from": "AboutPage",
+   "to": "fb/partnerRequests",
+   "rel": "writes"
+  },
+  {
+   "from": "logActivity",
+   "to": "fb/activity",
+   "rel": "writes"
+  },
+  {
+   "from": "Navbar",
+   "to": "AppCtx",
+   "rel": "reads"
+  },
+  {
+   "from": "useFirebase",
+   "to": "AppCtx",
+   "rel": "reads"
+  },
+  {
+   "from": "ReportsPage",
+   "to": "EvidenceWall",
+   "rel": "renders"
+  },
+  {
+   "from": "EvidenceWall",
+   "to": "fb/gallery",
+   "rel": "reads+writes"
+  },
+  {
+   "from": "EvidenceWall",
+   "to": "fb/activity",
+   "rel": "writes"
+  },
+  {
+   "from": "CourtDetail",
+   "to": "shareCourt",
+   "rel": "calls"
+  },
+  {
+   "from": "HomePage",
+   "to": "StatTile",
+   "rel": "renders"
+  },
+  {
+   "from": "StatTile",
+   "to": "useCountUp",
+   "rel": "calls"
+  },
+  {
+   "from": "HomePage",
+   "to": "useReveal",
+   "rel": "calls"
+  },
+  {
+   "from": "CourtDetail",
+   "to": "RatingSection",
+   "rel": "renders"
+  },
+  {
+   "from": "RatingSection",
+   "to": "RadarChart",
+   "rel": "renders"
+  },
+  {
+   "from": "RatingSection",
+   "to": "StarPicker",
+   "rel": "renders"
+  },
+  {
+   "from": "RatingSection",
+   "to": "fb/ratings",
+   "rel": "reads+writes"
+  },
+  {
+   "from": "ImpactPage",
+   "to": "DossierButton",
+   "rel": "renders"
+  },
+  {
+   "from": "DossierButton",
+   "to": "fb/votes",
+   "rel": "reads"
+  },
+  {
+   "from": "DossierButton",
+   "to": "fb/signups",
+   "rel": "reads"
+  },
+  {
+   "from": "DossierButton",
+   "to": "fb/reports",
+   "rel": "reads"
+  },
+  {
+   "from": "DossierButton",
+   "to": "fb/gallery",
+   "rel": "reads"
+  },
+  {
+   "from": "LetterModal",
+   "to": "jsPDF",
+   "rel": "calls"
+  },
+  {
+   "from": "DossierButton",
+   "to": "jsPDF",
+   "rel": "calls"
+  },
+  {
+   "from": "ImpactPage",
+   "to": "OpenDataCard",
+   "rel": "renders"
+  },
+  {
+   "from": "OpenDataCard",
+   "to": "fb/reports",
+   "rel": "reads"
+  },
+  {
+   "from": "OpenDataCard",
+   "to": "fb/votes",
+   "rel": "reads"
+  },
+  {
+   "from": "OpenDataCard",
+   "to": "fb/courts",
+   "rel": "reads"
+  },
+  {
+   "from": "OpenDataCard",
+   "to": "fb/ratings",
+   "rel": "reads"
+  },
+  {
+   "from": "OpenDataCard",
+   "to": "downloadFile",
+   "rel": "calls"
+  },
+  {
+   "from": "CourtsPage",
+   "to": "pageFromHash",
+   "rel": "deep-link #court-{id} deschide CourtDetail"
+  },
+  {
+   "from": "CourtsPage",
+   "to": "fb/reports",
+   "rel": "reads (doar cu heatmap activ, pentru densitate)"
+  },
+  {
+   "from": "Hero3D",
+   "to": "LetterReveal",
+   "rel": "renders"
+  },
+  {
+   "from": "HomePage",
+   "to": "ActivityTicker",
+   "rel": "renders"
+  },
+  {
+   "from": "ActivityTicker",
+   "to": "fb/activity",
+   "rel": "reads"
+  },
+  {
+   "from": "App",
+   "to": "fb/settings",
+   "rel": "reads (live: maintenance/banner/flags/accent/broadcast)"
+  },
+  {
+   "from": "App",
+   "to": "fb/presence",
+   "rel": "writes (onDisconnect cleanup)"
+  },
+  {
+   "from": "AdminSiteTab",
+   "to": "fb/settings",
+   "rel": "writes"
+  },
+  {
+   "from": "AdminSiteTab",
+   "to": "fb/votes",
+   "rel": "danger: reset"
+  },
+  {
+   "from": "AdminSiteTab",
+   "to": "fb/activity",
+   "rel": "danger: clear"
+  },
+  {
+   "from": "AdminModTab",
+   "to": "fb/forum",
+   "rel": "deletes"
+  },
+  {
+   "from": "AdminModTab",
+   "to": "fb/gallery",
+   "rel": "deletes"
+  },
+  {
+   "from": "AdminModTab",
+   "to": "fb/events",
+   "rel": "deletes"
+  },
+  {
+   "from": "AdminModTab",
+   "to": "fb/teams",
+   "rel": "deletes"
+  },
+  {
+   "from": "AdminModTab",
+   "to": "fb/games",
+   "rel": "deletes"
+  },
+  {
+   "from": "AdminModTab",
+   "to": "fb/activity",
+   "rel": "deletes"
+  },
+  {
+   "from": "Navbar",
+   "to": "PresenceBadge",
+   "rel": "renders"
+  },
+  {
+   "from": "PresenceBadge",
+   "to": "fb/presence",
+   "rel": "reads"
+  },
+  {
+   "from": "HomePage",
+   "to": "FeaturedCourt",
+   "rel": "renders"
+  },
+  {
+   "from": "FeaturedCourt",
+   "to": "fb/settings",
+   "rel": "reads featuredCourtId"
+  },
+  {
+   "from": "AdminPanel",
+   "to": "AdminSiteTab",
+   "rel": "renders"
+  },
+  {
+   "from": "AdminPanel",
+   "to": "AdminModTab",
+   "rel": "renders"
+  },
+  {
+   "from": "CourtDetail",
+   "to": "SatelliteTimeMachine",
+   "rel": "renders"
+  },
+  {
+   "from": "CourtDetail",
+   "to": "CourtSound",
+   "rel": "renders"
+  },
+  {
+   "from": "PetitionPage",
+   "to": "HoopGame",
+   "rel": "renders (doar dacă !voted && !g2p_hoop && !reduced-motion)"
+  },
+  {
+   "from": "PetitionPage",
+   "to": "InequalityReceipt",
+   "rel": "renders"
+  },
+  {
+   "from": "ImpactPage",
+   "to": "InequalityReceipt",
+   "rel": "renders (tab calc)"
+  },
+  {
+   "from": "ImpactPage",
+   "to": "CityPulse",
+   "rel": "renders (state pulse / sessionStorage g2p_open_pulse)"
+  },
+  {
+   "from": "CommunityPage",
+   "to": "PixelWall",
+   "rel": "renders (tab pixel)"
+  },
+  {
+   "from": "App",
+   "to": "HeatWatcher",
+   "rel": "renders"
+  },
+  {
+   "from": "App",
+   "to": "AmbientLight",
+   "rel": "renders"
+  },
+  {
+   "from": "App",
+   "to": "MayorMode",
+   "rel": "renders (typed 'fixit' / event g2p-mayor)"
+  },
+  {
+   "from": "CommandPalette",
+   "to": "CityPulse",
+   "rel": "opens (setPage impact + sessionStorage g2p_open_pulse)"
+  },
+  {
+   "from": "CommandPalette",
+   "to": "MayorMode",
+   "rel": "opens (window event g2p-mayor)"
+  },
+  {
+   "from": "PixelWall",
+   "to": "fb/pixels",
+   "rel": "reads+writes"
+  },
+  {
+   "from": "PixelWall",
+   "to": "logActivity",
+   "rel": "calls"
+  },
+  {
+   "from": "InequalityReceipt",
+   "to": "fb/votes",
+   "rel": "reads"
+  },
+  {
+   "from": "HeatWatcher",
+   "to": "fb/activity",
+   "rel": "reads (limitToLast 1, child_added)"
+  },
+  {
+   "from": "AmbientLight",
+   "to": "fb/reports",
+   "rel": "reads (limitToLast 1, child_added)"
+  },
+  {
+   "from": "CityPulse",
+   "to": "fb/activity",
+   "rel": "reads"
+  },
+  {
+   "from": "CityPulse",
+   "to": "fb/signups",
+   "rel": "reads"
+  },
+  {
+   "from": "CourtsPage",
+   "to": "fb/courts/{id}/checkins",
+   "rel": "reads (heat: check-ins < 2h → .heat-1/2/3 + chip)"
+  },
+  {
+   "from": "AdminPanel",
+   "to": "AdminGodTab",
+   "rel": "renders"
+  },
+  {
+   "from": "HelpPage",
+   "to": "CityHallGuide",
+   "rel": "renders"
+  },
+  {
+   "from": "App",
+   "to": "FunEggs",
+   "rel": "renders"
+  },
+  {
+   "from": "App",
+   "to": "SecretKeys",
+   "rel": "renders"
+  },
+  {
+   "from": "ImpactPage",
+   "to": "ProiecteTab",
+   "rel": "renders"
+  },
+  {
+   "from": "ImpactPage",
+   "to": "CivicFactsTape",
+   "rel": "renders"
+  }
+ ],
+ "routes": {
+  "_note": "Rutele sunt sincronizate cu location.hash (#courts, #petition, …). #court-{id} = deep link CourtDetail. Vezi pageFromHash.",
+  "home": "HomePage",
+  "courts": "CourtsPage",
+  "reports": "ReportsPage",
+  "petition": "PetitionPage",
+  "community": "CommunityPage",
+  "impact": "ImpactPage",
+  "help": "HelpPage",
+  "about": "AboutPage",
+  "profile": "ProfilePage",
+  "#/admin": "AdminPanel"
+ },
+ "css_classes": {
+  "layout": [
+   "container",
+   "section",
+   "grid",
+   "grid-2",
+   "grid-3",
+   "grid-4",
+   "flex",
+   "flex-col"
+  ],
+  "components": [
+   "card",
+   "card-accent",
+   "card-link",
+   "btn",
+   "btn-green",
+   "btn-coral",
+   "btn-outline",
+   "btn-sm",
+   "btn-block",
+   "badge",
+   "badge-green",
+   "badge-coral",
+   "badge-red",
+   "badge-teal",
+   "tabs",
+   "modal",
+   "modal-overlay",
+   "modal-lg",
+   "toast",
+   "fab"
+  ],
+  "reports": [
+   "badge-received",
+   "badge-analyzing",
+   "badge-planned",
+   "badge-resolved",
+   "report-timeline",
+   "rt-step",
+   "rt-dot",
+   "rt-label",
+   "rcat-grid",
+   "rcat-btn",
+   "badge-official"
+  ],
+  "hero3d": [
+   "h3d-hero",
+   "h3d-canvas",
+   "h3d-overlay",
+   "h3d-title",
+   "h3d-btn",
+   "h3d-btn-green",
+   "h3d-btn-ghost"
+  ],
+  "admin": [
+   "admin-shell",
+   "admin-hdr",
+   "admin-side",
+   "admin-main",
+   "a-stats",
+   "a-table",
+   "a-form",
+   "a-badge"
+  ],
+  "typography": [
+   "stat-number",
+   "stat-label",
+   "barlow",
+   "section-title",
+   "section-sub"
+  ],
+  "animation": [
+   "animate-in",
+   "live-dot"
+  ],
+  "season2": [
+   "badge-unlock-overlay",
+   "badge-unlock-card",
+   "badge-unlock-icon",
+   "badge-unlock-kicker",
+   "badge-unlock-name",
+   "badge-unlock-desc",
+   "badges-grid",
+   "badge-slot",
+   "badge-slot.earned",
+   "badge-slot.locked",
+   "health-ring-wrap",
+   "health-ring",
+   "health-ring-bg",
+   "health-ring-fill",
+   "health-ring-label",
+   "health-ring-num",
+   "health-ring-sub",
+   "health-trend-badge",
+   "race-row",
+   "race-rank",
+   "race-label",
+   "race-bar-wrap",
+   "race-bar",
+   "race-score",
+   "pledge-grid",
+   "pledge-tile",
+   "pledge-tile-new",
+   "countdown-wrap",
+   "countdown-unit",
+   "countdown-num",
+   "countdown-label",
+   "countdown-sep"
+  ],
+  "season3": [
+   "sat-map",
+   "sat-slider-row",
+   "sat-year",
+   "hoop-wrap",
+   "hoop-canvas",
+   "hoop-skip",
+   "hoop-overlay",
+   "px-canvas",
+   "px-palette",
+   "px-swatch",
+   "px-cool",
+   "receipt-canvas",
+   "heat-1",
+   "heat-2",
+   "heat-3",
+   "ambient-overlay",
+   "eq",
+   "pulse-overlay",
+   "pulse-hdr",
+   "pulse-x",
+   "pulse-stage",
+   "pulse-ctrl",
+   "pulse-play",
+   "mayor-overlay",
+   "mayor-x",
+   "mayor-cta"
+  ]
+ },
+ "design_tokens": {
+  "--green": "#10B981",
+  "--coral": "#F97316",
+  "--teal": "#0D9488",
+  "--red": "#DC2626",
+  "--dark": "#1A1A2E",
+  "--darkCard": "#16213E",
+  "--radius": "12px",
+  "font_headings": "Space Mono / Barlow Condensed",
+  "font_body": "Libre Franklin"
+ }
 }
