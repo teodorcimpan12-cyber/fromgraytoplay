@@ -1686,6 +1686,16 @@ T.ro.taskLeave = "Înscris — Renunță"; T.en.taskLeave = "Signed up — Leave
 T.ro.taskReady = "Echipă completă — organizați-vă pe forum!"; T.en.taskReady = "Crew complete — coordinate on the forum!"; T.hu.taskReady = "Csapat kész — egyeztessetek a fórumon!"; // TODO: HU review
 T.ro.taskJoined = "Te-ai înscris la echipă!"; T.en.taskJoined = "You joined the crew!"; T.hu.taskJoined = "Csatlakoztál a csapathoz!"; // TODO: HU review
 
+
+/* === Season 5 — Real Civic Data & Projects === */
+T.ro.proiecteTab = "Proiecte TGM"; T.en.proiecteTab = "TGM Projects"; T.hu.proiecteTab = "TGM projektek"; // TODO: HU review
+T.ro.proiecteTitle = "Ce știm concret despre Târgu Mureș"; T.en.proiecteTitle = "Verified facts about Târgu Mureș"; T.hu.proiecteTitle = "Amit biztosan tudunk"; // TODO: HU review
+T.ro.civicFactsTitle = "Numerele care contează"; T.en.civicFactsTitle = "The numbers that matter"; T.hu.civicFactsTitle = "A számok, amelyek számítanak"; // TODO: HU review
+T.ro.statusDone = "Finalizat"; T.en.statusDone = "Completed"; T.hu.statusDone = "Befejezve"; // TODO: HU review
+T.ro.statusApproved = "Aprobat"; T.en.statusApproved = "Approved"; T.hu.statusApproved = "Jóváhagyva"; // TODO: HU review
+T.ro.statusInProgress = "În lucru"; T.en.statusInProgress = "In progress"; T.hu.statusInProgress = "Folyamatban"; // TODO: HU review
+T.ro.statusModel = "Model alt oraș"; T.en.statusModel = "Model from another city"; T.hu.statusModel = "Más város modellje"; // TODO: HU review
+
 /* === Achievement / Badge System === */
 const BADGES = [
   { id:"first_checkin", icon:"🏃", name:{ro:"Prima vizită",en:"First Visit",hu:"Első látogatás"}, desc:{ro:"Primul check-in la un teren",en:"First court check-in",hu:"Első pálya bejelentkezés"} },
@@ -4150,6 +4160,64 @@ const FUNDING = [{
   url: "https://www.tirgumures.ro/",
   type: "Local"
 }];
+const PROIECTE = [
+  {
+    id: "p1", icon: "✅", status: "done",
+    name: { ro: "Parcul Tudor Vladimirescu", en: "Tudor Vladimirescu Park", hu: "Tudor Vladimirescu park" },
+    address: { ro: "cartierul Tudor Vladimirescu", en: "Tudor Vladimirescu neighbourhood", hu: "Tudor Vladimirescu negyed" },
+    amount: "14.500.000 lei",
+    funding: { ro: "Fonduri UE — POR 2014-2020 Axa 4 (ADR Centru) + buget local", en: "EU funds — POR 2014-2020 Axis 4 (ADR Centru) + local budget", hu: "EU-alap — POR 2014-2020 4. tengely (ADR Centru) + helyi keret" },
+    year: "2023",
+    desc: { ro: "Parc complet cu terenuri sport, pistă alergare, zone fitness. Demonstrează că Târgu Mureș poate accesa fonduri europene pentru sport de cartier.", en: "Full park with sport courts, running track, fitness zones. Proves TGM can access EU funds for neighbourhood sport.", hu: "Teljes park: sportpályák, futópálya, fitneszterületek. Bizonyítja, hogy TGM EU-forrásokhoz tud hozzáférni." },
+    note: { ro: "Același tip de finanțare (POR) funcționează și pentru terenuri autonome de cartier.", en: "The same type of funding (POR) works for standalone neighbourhood courts.", hu: "Ugyanez a finanszírozási forma (POR) önálló kerületi pályákra is működik." },
+    noteColor: "var(--teal)"
+  },
+  {
+    id: "p2", icon: "🔨", status: "approved",
+    name: { ro: "Teren Multisport Str. Plopilor", en: "Plopilor St Multisport Court", hu: "Plopilor u. többcélú pálya" },
+    address: { ro: "cartierul Unirii, Târgu Mureș", en: "Unirii neighbourhood, Târgu Mureș", hu: "Unirii negyed, Marosvásárhely" },
+    amount: "80.000 lei",
+    funding: { ro: "Buget local TGM — HCL ian. 2025, propus de consilierii Mașca + Veress (POL)", en: "TGM local budget — HCL Jan 2025, proposed by councillors Mașca + Veress (POL)", hu: "TGM helyi keret — HCL 2025 jan., Mașca + Veress tanácsosok (POL)" },
+    year: "2025",
+    desc: { ro: "Teren multisport (baschet, fotbal, volei), cartierul Unirii. Aprobat prin Hotărâre a Consiliului Local în ianuarie 2025 — cel mai recent precedent direct.", en: "Multisport court (basketball, football, volleyball), Unirii neighbourhood. Approved by City Council in January 2025 — the most recent direct precedent.", hu: "Többcélú pálya (kosárlabda, foci, röplabda), Unirii negyed. 2025 januárban hagyta jóvá a képviselő-testület." },
+    note: { ro: "PRECEDENT CHEIE: cerem aceeași abordare pentru celelalte 4 cartiere periferice. Consilierii Mașca + Veress sunt aliați naturali.", en: "KEY PRECEDENT: we ask for the same approach for the other 4 peripheral neighbourhoods. Councillors Mașca + Veress are natural allies.", hu: "KULCSPRECEDENS: ugyanezt kérjük a másik 4 peremkerületben. Mașca + Veress tanácsosok természetes szövetségesek." },
+    noteColor: "var(--green)"
+  },
+  {
+    id: "p3", icon: "🏗️", status: "inProgress",
+    name: { ro: "Sală Polivalentă TGM (fost Patinoar)", en: "TGM Multipurpose Arena (ex-Ice Rink)", hu: "TGM Multifunkcionális csarnok (egykori jégpálya)" },
+    address: { ro: "centrul orașului, Târgu Mureș", en: "city center, Târgu Mureș", hu: "városközpont, Marosvásárhely" },
+    amount: "55.000.000 lei",
+    funding: { ro: "CNI — Compania Națională de Investiții (finanțare națională, fără UE)", en: "CNI — National Investment Company (national funding, no EU)", hu: "CNI — Nemzeti Beruházási Társaság (nemzeti alap, EU nélkül)" },
+    year: "2025–2027",
+    desc: { ro: "Fostul patinoar transformat în sală polivalentă 3.000+ locuri. Investiție majoră în centru, în timp ce cartierele periferice nu au terenuri funcționale.", en: "Former ice rink converted to 3000+ seat multipurpose arena. Major central investment while peripheral neighbourhoods lack functional courts.", hu: "Az egykori jégpálya 3000+ személyes multifunkcionális csarnokká alakul, miközben a peremkerületek pályái leromlottak." },
+    note: { ro: "Context: 55.000.000 lei pentru o sală centrală vs 80.000 lei pentru terenuri de cartier — disparitate de 687×.", en: "Context: 55,000,000 lei for a central arena vs 80,000 lei for neighbourhood courts — 687× disparity.", hu: "Kontextus: 55 000 000 lej egy központi csarnoknak vs 80 000 lej kerületi pályáknak — 687-szeres különbség." },
+    noteColor: "var(--coral)"
+  },
+  {
+    id: "p4", icon: "🌟", status: "model",
+    name: { ro: "Baza Sport "La Terenuri" — Cluj-Napoca, Mănăștur", en: ""La Terenuri" Sport Base — Cluj-Napoca, Mănăștur", hu: ""La Terenuri" sportbázis — Kolozsvár, Mănăștur" },
+    address: { ro: "cartier muncitoresc de periferie — similar cu Tudor Vladimirescu", en: "working-class peripheral neighbourhood — similar to Tudor Vladimirescu", hu: "munkásnegyed — hasonló a Tudor Vladimirescu-hoz" },
+    amount: "26.500.000 lei",
+    funding: { ro: "Buget local Cluj-Napoca, după ani de presiune civică pe Declic.ro", en: "Cluj-Napoca local budget, after years of civic pressure on Declic.ro", hu: "Kolozsvár helyi keret, több éves polgári nyomást követően" },
+    year: "2024",
+    desc: { ro: "Terenuri exterioare (tenis, baschet, fotbal, 3×3, volei, badminton), pistă alergare, skate park, zone fitness. Acces gratuit. Utilizare 100% în weekend.", en: "Outdoor courts (tennis, basketball, football, 3×3, volleyball, badminton), running track, skate park, fitness zones. Free access. 100% used on weekends.", hu: "Kültéri pályák (tenisz, kosár, foci, 3×3, röplabda, tollaslabda), futópálya, gördeszkás park, fitnesszterület. Ingyenes. Hétvégén telt ház." },
+    note: { ro: "Model direct aplicabil: petiție civică online → presă locală → alocare bugetară municipală. 5 terenuri TGM ar costa ~5% din investiția Cluj.", en: "Directly applicable model: online civic petition → local press → municipal budget allocation. 5 TGM courts would cost ~5% of the Cluj investment.", hu: "Közvetlenül alkalmazható modell: online petíció → sajtó → önkormányzati forrás. 5 TGM pálya ~5%-a lenne a kolozsvári beruházásnak." },
+    noteColor: "var(--green)"
+  }
+];
+
+const CIVIC_FACTS_DATA = [
+  { num: "856M", icon: "🏛️", color: "var(--teal)", label: { ro: "lei buget total Târgu Mureș 2025", en: "lei total Târgu Mureș budget 2025", hu: "lej TGM összkiadás 2025" } },
+  { num: "99.5M", icon: "⚽", color: "var(--green)", label: { ro: "lei alocați sport + cultură = 11,6% din buget", en: "lei allocated to sport + culture = 11.6% of budget", hu: "lej sport + kultúra = 11,6% a költségvetésből" } },
+  { num: "80K", icon: "🏀", color: "var(--coral)", label: { ro: "lei pentru terenuri de cartier = 0,08% din bugetul sport", en: "lei for neighbourhood courts = 0.08% of sport budget", hu: "lej kerületi pályákra = 0,08% a sportköltségvetésből" } },
+  { num: "12 ani", icon: "📅", color: "var(--red)", label: { ro: "de la ultima renovare teren sport periferie", en: "since the last peripheral court renovation", hu: "az utolsó kerületi pályafelújítás óta" } },
+  { num: "134K", icon: "👥", color: "var(--teal)", label: { ro: "locuitori în Târgu Mureș (50K+ în cartierele periferice)", en: "residents in Târgu Mureș (50K+ in peripheral neighbourhoods)", hu: "lakos Marosvásárhelyen (50K+ a peremkerületekben)" } },
+  { num: "26.5M", icon: "🌟", color: "var(--green)", label: { ro: "lei Cluj-Napoca în Mănăștur (2024) după petiție civică", en: "lei Cluj-Napoca in Mănăștur (2024) after civic petition", hu: "lej Kolozsvár Mănășturban (2024) polgári petíció után" } },
+  { num: "45.5M€", icon: "🇪🇺", color: "var(--teal)", label: { ro: "disponibili UE prin PR Centru OS 4.3 — regenerare urbană + sport", en: "available EU funds via PR Centru OS 4.3 — urban regeneration + sport", hu: "EU-forrás PR Centru OS 4.3 — városi megújulás + sport" } },
+  { num: "1–2%", icon: "💡", color: "var(--green)", label: { ro: "din bugetul anual sport = 5 terenuri complet renovate", en: "of annual sport budget = 5 fully renovated courts", hu: "az éves sportköltségvetésből = 5 teljesen felújított pálya" } }
+];
+
 const BUDGET = [{
   y: 2020,
   p: 2.1,
@@ -4201,37 +4269,16 @@ const CITIES = {
     r: 42
   }
 };
-const TIMELINE = [{
-  y: 2013,
-  ro: "Ultima renovare majoră a terenurilor periferice",
-  en: "Last major peripheral court renovation",
-  hu: "Az utolsó nagyobb felújítás a peremkerületi pályákon"
-}, {
-  y: 2016,
-  ro: "SIDU identifică deficit infrastructură sportivă",
-  en: "SIDU identifies sports infrastructure deficit",
-  hu: "A SIDU sportinfrastruktúra-hiányt azonosít"
-}, {
-  y: 2019,
-  ro: "Buget promis pentru renovări — nerealizat",
-  en: "Budget promised for renovations — unfulfilled",
-  hu: "Ígért felújítási költségvetés — nem teljesült"
-}, {
-  y: 2022,
-  ro: "Degradare avansată terenuri Tudor și Auchan",
-  en: "Advanced degradation of Tudor and Auchan courts",
-  hu: "A Tudor és Auchan pályák súlyos állapotromlása"
-}, {
-  y: 2025,
-  ro: "Eroare administrativă 5M lei — Punctul.ro",
-  en: "5M lei admin error exposed — Punctul.ro",
-  hu: "5 millió lejes hivatali hiba feltárva — Punctul.ro"
-}, {
-  y: 2026,
-  ro: "Lansare From Grey to Play",
-  en: "From Grey to Play launched",
-  hu: "From Grey to Play indulása"
-}];
+const TIMELINE = [
+  { y: 2013, ro: "Ultima renovare majoră a terenurilor sportive din cartierele periferice", en: "Last major renovation of peripheral neighbourhood sport courts", hu: "Az utolsó nagyobb felújítás a peremkerületi sportpályákon" },
+  { y: 2016, ro: "SIDU Târgu Mureș 2021–2030 identifică deficitul de infrastructură sportivă în cartiere", en: "SIDU Târgu Mureș 2021–2030 identifies sports infrastructure deficit in neighbourhoods", hu: "A SIDU sportinfrastruktúra-hiányt azonosít a városnegyedekben" },
+  { y: 2019, ro: "Buget promis pentru renovări — nerealizat. Zero terenuri renovate.", en: "Budget promised for renovations — unfulfilled. Zero courts renovated.", hu: "Ígért felújítási költségvetés — nem teljesült. Nulla felújított pálya." },
+  { y: 2022, ro: "Degradare avansată terenuri Tudor Vladimirescu, Auchan, Dâmbu Pietros", en: "Advanced degradation of Tudor Vladimirescu, Auchan, Dâmbu Pietros courts", hu: "A Tudor, Auchan, Dâmbu Pietros pályák súlyos állapotromlása" },
+  { y: 2023, ro: "Parcul Tudor Vladimirescu finalizat — 14,5 milioane lei fonduri UE (POR 2014-2020, ADR Centru)", en: "Tudor Vladimirescu Park completed — 14.5M lei EU funds (POR 2014-2020, ADR Centru)", hu: "Tudor Vladimirescu park elkészült — 14,5M lej EU-forrás (POR 2014-2020)" },
+  { y: 2025, ro: "Ian: HCL aprobă 80.000 lei pentru terenul Plopilor — primul teren de cartier în 12 ani (consilieri Mașca + Veress, POL)", en: "Jan: HCL approves 80,000 lei for Plopilor court — first neighbourhood court in 12 years (Mașca + Veress, POL)", hu: "Jan: HCL jóváhagyja a Plopilor pálya 80 000 lejes felújítását — 12 év után az első kerületi pálya" },
+  { y: 2025, ro: "Oct: Eroare administrativă 5M lei îngheață Baza Insulei — investigație Punctul.ro", en: "Oct: 5M lei admin error freezes Baza Insulei renovation — Punctul.ro investigation", hu: "Okt: 5 millió lejes hibával befagyasztják a Sziget sport bázist — Punctul.ro" },
+  { y: 2026, ro: "Lansare From Grey to Play — platforma civică documentează cele 20 de terenuri din Târgu Mureș", en: "From Grey to Play launched — civic platform documents all 20 courts in Târgu Mureș", hu: "From Grey to Play indulása — a platform mind a 20 marosvásárhelyi pályát dokumentálja" }
+];
 const ADMIN_PW = "teodor2026";
 
 /* === Toast === */
@@ -8075,6 +8122,72 @@ function OpenDataCard() {
   );
 }
 
+
+function CivicFactsTape() {
+  var lang = useApp().lang;
+  return React.createElement("div", { className: "card mb-2", style: { padding: ".75rem" } },
+    React.createElement("h4", { className: "text-xs mb-2", style: { color: "var(--textSec)", fontFamily: "Space Mono, monospace", letterSpacing: ".05em" } },
+      lang === "ro" ? "📊 NUMERELE CARE CONTEAZĂ — DATE VERIFICATE 2025" :
+      lang === "hu" ? "📊 A FONTOS SZÁMOK — ELLENŐRZÖTT ADATOK 2025" :
+      "📊 THE NUMBERS THAT MATTER — VERIFIED DATA 2025"
+    ),
+    React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(155px, 1fr))", gap: ".5rem" } },
+      CIVIC_FACTS_DATA.map(function(f, i) {
+        return React.createElement("div", {
+          key: i,
+          style: { background: "var(--bgCard)", borderRadius: 10, padding: ".55rem .75rem", borderLeft: "3px solid " + f.color }
+        },
+          React.createElement("div", { style: { fontSize: "1.2rem", fontWeight: 900, fontFamily: "Space Mono, monospace", color: f.color, lineHeight: 1.1 } }, f.num),
+          React.createElement("div", { className: "text-xs mt-1", style: { color: "var(--textSec)", lineHeight: 1.3 } }, f.icon + " " + (f.label[lang] || f.label.ro))
+        );
+      })
+    )
+  );
+}
+
+function ProiecteTab() {
+  var app = useApp(); var t = app.t; var lang = app.lang;
+  var statusColors = { done: "var(--teal)", approved: "var(--green)", inProgress: "var(--coral)", model: "var(--green)" };
+  var statusLabels = {
+    done: t.statusDone || "Finalizat",
+    approved: t.statusApproved || "Aprobat",
+    inProgress: t.statusInProgress || "În lucru",
+    model: t.statusModel || "Model alt oraș"
+  };
+  var statusIcons = { done: "✅", approved: "🟢", inProgress: "🔨", model: "🌟" };
+  return React.createElement("div", { className: "mt-2" },
+    React.createElement("p", { className: "text-sm mb-2", style: { color: "var(--textSec)" } },
+      lang === "ro" ? "Proiecte reale în Târgu Mureș + model comparabil — date verificate" :
+      lang === "hu" ? "Valós TGM-projektek + összehasonlító modell — ellenőrzött adatok" :
+      "Real projects in Târgu Mureș + comparable model — verified data"
+    ),
+    PROIECTE.map(function(p) {
+      var col = statusColors[p.status];
+      return React.createElement("div", { key: p.id, className: "card mb-2", style: { borderLeft: "4px solid " + col } },
+        React.createElement("div", { className: "flex justify-between items-center mb-1" },
+          React.createElement("span", { style: { fontSize: "1.4rem" } }, p.icon),
+          React.createElement("span", {
+            className: "badge",
+            style: { background: col + "22", color: col, fontWeight: 700, fontSize: ".72rem", padding: ".2rem .6rem" }
+          }, statusIcons[p.status] + " " + statusLabels[p.status])
+        ),
+        React.createElement("h4", { style: { fontSize: "1rem", fontWeight: 700, marginBottom: ".2rem" } }, p.name[lang] || p.name.ro),
+        React.createElement("div", { style: { fontSize: "1.8rem", fontWeight: 900, fontFamily: "Space Mono, monospace", color: col, lineHeight: 1.1, marginBottom: ".3rem" } }, p.amount),
+        React.createElement("div", { className: "text-xs mb-1", style: { color: "var(--textSec)" } },
+          "📍 ", p.address[lang] || p.address.ro, " · 📅 ", p.year
+        ),
+        React.createElement("p", { className: "text-sm mb-1", style: { lineHeight: 1.5 } }, p.desc[lang] || p.desc.ro),
+        React.createElement("div", { className: "text-xs mb-2", style: { color: "var(--textSec)" } },
+          "💰 ", p.funding[lang] || p.funding.ro
+        ),
+        React.createElement("div", {
+          style: { background: p.noteColor + "18", border: "1px solid " + p.noteColor + "55", borderRadius: 8, padding: ".5rem .75rem", fontSize: ".8rem", fontWeight: 600, color: p.noteColor, lineHeight: 1.45 }
+        }, p.note[lang] || p.note.ro)
+      );
+    })
+  );
+}
+
 function ImpactPage() {
   const {
     t,
@@ -8097,7 +8210,7 @@ function ImpactPage() {
     className: "container"
   }, /*#__PURE__*/React.createElement("h2", {
     className: "section-title"
-  }, "\uD83D\uDCCA ", t.impact), /*#__PURE__*/React.createElement(DossierButton, null), /*#__PURE__*/React.createElement(OpenDataCard, null),
+  }, "\uD83D\uDCCA ", t.impact), /*#__PURE__*/React.createElement(DossierButton, null), /*#__PURE__*/React.createElement(OpenDataCard, null), React.createElement(CivicFactsTape, null),
   React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--green)" } },
     React.createElement("div", { className: "flex justify-between items-center", style: { gap: "1rem", flexWrap: "wrap" } },
       React.createElement("div", { style: { flex: 1, minWidth: 180 } },
@@ -8131,7 +8244,7 @@ function ImpactPage() {
     onClick: () => setTab("tl")
   }, "\uD83D\uDCC5"), React.createElement("button", { className: tab === "hood" ? "active" : "", onClick: function() { setTab("hood"); }, title: "Neighbourhoods" }, "\uD83C\uDFD8"),
   React.createElement("button", { className: tab === "race" ? "active" : "", onClick: function() { setTab("race"); }, title: t.neighborhoodRace||"Cursa cartierelor" }, "\uD83C\uDFC1")),
-  tab === "calc" && React.createElement(React.Fragment, null, React.createElement(ImpactCalc, null), React.createElement(InequalityReceipt, null)), tab === "city" && /*#__PURE__*/React.createElement(CityComp, null), tab === "budget" && React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(BudgetViz, null), React.createElement(BudgetWatchdog, null)), tab === "carbon" && /*#__PURE__*/React.createElement(CarbonCalc, null), tab === "health" && /*#__PURE__*/React.createElement(HealthCalc, null), tab === "mental" && /*#__PURE__*/React.createElement(MentalSec, null), tab === "tl" && /*#__PURE__*/React.createElement(TimelineSec, null), tab === "hood" && React.createElement(HoodChart, null),
+  tab === "proiecte" && React.createElement(ProiecteTab, null), tab === "calc" && React.createElement(React.Fragment, null, React.createElement(ImpactCalc, null), React.createElement(InequalityReceipt, null)), tab === "city" && /*#__PURE__*/React.createElement(CityComp, null), tab === "budget" && React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(BudgetViz, null), React.createElement(BudgetWatchdog, null)), tab === "carbon" && /*#__PURE__*/React.createElement(CarbonCalc, null), tab === "health" && /*#__PURE__*/React.createElement(HealthCalc, null), tab === "mental" && /*#__PURE__*/React.createElement(MentalSec, null), tab === "tl" && /*#__PURE__*/React.createElement(TimelineSec, null), tab === "hood" && React.createElement(HoodChart, null),
   tab === "race" && React.createElement(React.Fragment, null,
     React.createElement(CouncilCountdown, null),
     React.createElement(NeighborhoodRace, null)
