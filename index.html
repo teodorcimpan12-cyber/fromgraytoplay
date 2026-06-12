@@ -516,6 +516,23 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .mayor-cta.show{opacity:1}
 @media(prefers-reduced-motion:reduce){.mayor-overlay{animation:none}.mayor-cta{transition:none}}
 .no-fx .mayor-overlay{animation:none}.no-fx .mayor-cta{transition:none}
+.sat-chip{position:absolute;top:8px;z-index:800;background:rgba(0,0,0,.66);color:#fff;font:700 11px 'Space Mono',monospace;padding:2px 8px;border-radius:6px;pointer-events:none;transition:opacity .15s}
+.egg-layer{position:fixed;inset:0;pointer-events:none;z-index:350;overflow:hidden}
+.egg{position:absolute;left:-12vw;font-size:2rem;will-change:transform}
+.egg-runner{animation:eggRun 1.25s linear forwards}
+.egg-dog{animation:eggRun 1.6s linear forwards;font-size:1.6rem}
+.egg-ball{animation:eggRoll 3.8s linear forwards}
+.egg-ball i{display:inline-block;font-style:normal;animation:eggBounce .55s cubic-bezier(.35,0,.65,1) infinite alternate}
+@keyframes eggRun{to{transform:translateX(124vw)}}
+@keyframes eggRoll{to{transform:translateX(124vw)}}
+@keyframes eggBounce{from{transform:translateY(0) rotate(0deg)}to{transform:translateY(-40px) rotate(180deg)}}
+.ball-rain{position:fixed;top:-3rem;font-size:1.6rem;pointer-events:none;z-index:600;animation:ballFall 2.5s ease-in forwards}
+@keyframes ballFall{to{transform:translateY(112vh) rotate(560deg)}}
+html.disco-fx{animation:discoHue 1.1s linear infinite}
+@keyframes discoHue{0%{filter:hue-rotate(0deg) saturate(1.35)}100%{filter:hue-rotate(360deg) saturate(1.35)}}
+body.godmode-fx{box-shadow:inset 0 0 0 4px #F59E0B,inset 0 0 70px rgba(245,158,11,.22)}
+@media(prefers-reduced-motion:reduce){.egg-layer,.ball-rain{display:none}html.disco-fx{animation:none}}
+.no-fx .egg-layer,.no-fx .ball-rain{display:none}
 </style>
 <script>(function(){try{var t=localStorage.getItem("g2p_theme")||(window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 </head>
@@ -2109,6 +2126,7 @@ function CouncilCountdown() {
 T.ro.satTitle = "Mașina timpului din satelit";
 T.ro.satCaption = "Trage pentru a compara terenul în timp — dovadă din satelit.";
 T.ro.satNow = "Azi";
+T.ro.satHere = "TERENUL"; T.en.satHere = "THE COURT"; T.hu.satHere = "A P\u00C1LYA"; // TODO: HU review
 T.en.satTitle = "Satellite Time Machine";
 T.en.satCaption = "Drag to compare the court over time — evidence from space.";
 T.en.satNow = "Today";
@@ -2130,7 +2148,7 @@ function SatelliteTimeMachine(props) {
   var dead = deadSt[0], setDead = deadSt[1];
   useEffect(function () {
     if (dead || !mapEl.current || typeof L === "undefined") return;
-    var m = L.map(mapEl.current, { scrollWheelZoom: false }).setView([court.lat, court.lng], 17);
+    var m = L.map(mapEl.current, { scrollWheelZoom: false }).setView([court.lat, court.lng], 18);
     var then = L.tileLayer("https://wayback.maptiles.arcgis.com/arcgis/rest/services/world_imagery/wmts/1.0.0/default028mm/mapserver/tile/10/{z}/{y}/{x}", {
       maxZoom: 18, attribution: "Esri World Imagery / Wayback"
     });
@@ -2142,6 +2160,14 @@ function SatelliteTimeMachine(props) {
     then.on("tileerror", onErr);
     then.addTo(m);
     now.addTo(m);
+    L.circle([court.lat, court.lng], { radius: 26, color: "#F97316", weight: 3, fill: false, dashArray: "6 6" }).addTo(m);
+    L.marker([court.lat, court.lng], {
+      icon: L.divIcon({
+        html: '<div style="transform:translate(-50%,-240%);background:#F97316;color:#fff;font:700 10px \'Space Mono\',monospace;padding:2px 7px;border-radius:6px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.45)">\uD83C\uDFC0 ' + (t.satHere || "TERENUL") + '</div>',
+        className: "", iconSize: [0, 0]
+      }),
+      interactive: false
+    }).addTo(m);
     nowLayerRef.current = now;
     var tid = setTimeout(function () { m.invalidateSize(); }, 200);
     return function () {
@@ -2157,7 +2183,11 @@ function SatelliteTimeMachine(props) {
   if (dead) return null;
   return React.createElement("div", { className: "card mt-2", style: { borderLeft: "3px solid var(--teal)" } },
     React.createElement("h4", { className: "mb-1" }, "🛰️ ", t.satTitle),
-    React.createElement("div", { className: "sat-map", ref: mapEl }),
+    React.createElement("div", { style: { position: "relative" } },
+      React.createElement("div", { className: "sat-map", ref: mapEl }),
+      React.createElement("span", { className: "sat-chip", style: { left: 8, opacity: Math.max(0.15, 1 - op / 100) } }, "2014"),
+      React.createElement("span", { className: "sat-chip", style: { right: 8, opacity: Math.max(0.15, op / 100) } }, t.satNow)
+    ),
     React.createElement("div", { className: "sat-slider-row" },
       React.createElement("span", { className: "sat-year" }, "2014"),
       React.createElement("input", {
@@ -2166,6 +2196,11 @@ function SatelliteTimeMachine(props) {
         "aria-label": t.satTitle
       }),
       React.createElement("span", { className: "sat-year" }, t.satNow)
+    ),
+    React.createElement("div", { className: "flex gap-1 mt-1", style: { justifyContent: "center" } },
+      React.createElement("button", { className: "btn btn-sm " + (op < 25 ? "btn-green" : "btn-outline"), onClick: function () { setOp(0); } }, "2014"),
+      React.createElement("button", { className: "btn btn-sm " + (op >= 25 && op <= 75 ? "btn-green" : "btn-outline"), onClick: function () { setOp(50); } }, "50/50"),
+      React.createElement("button", { className: "btn btn-sm " + (op > 75 ? "btn-green" : "btn-outline"), onClick: function () { setOp(100); } }, t.satNow)
     ),
     React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, t.satCaption)
   );
@@ -9121,15 +9156,7 @@ function AboutPage() {
     className: "card mt-2"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "mb-2"
-  }, "\uD83D\uDCCD " + (lang === "ro" ? "G\u0103se\u0219te-ne pe hart\u0103" : lang === "hu" ? "Tal\xe1lj meg min\ket a t\xe9rk\xe9pen" : "Find us on the map")), /*#__PURE__*/React.createElement("a", {
-    href: "https://www.google.com/maps/search/?api=1&query=46.5399,24.5568",
-    target: "_blank",
-    rel: "noopener noreferrer",
-    className: "btn btn-green btn-sm"
-  }, "\uD83D\uDDFA\uFE0F Google Maps \u2014 G2P T\xE2rgu Mure\u0219"), /*#__PURE__*/React.createElement("p", {
-    className: "text-xs mt-1",
-    style: { color: "var(--textSec)" }
-  }, lang === "ro" ? "Str. Tg Mure\u015F, 540143 Mure\u015F \u00B7 Tel: 0770 115 654" : "Tg Mure\u015F, 540143 Mure\u015F \u00B7 Tel: 0770 115 654")), /*#__PURE__*/React.createElement("span", null)), tab === "funding" && /*#__PURE__*/React.createElement("div", {
+  }, "\uD83D\uDDFA\uFE0F " + (lang === "ro" ? "Terenurile pe hart\u0103" : lang === "hu" ? "P\u00E1ly\u00E1k a t\u00E9rk\u00E9pen" : "The courts on the map")), React.createElement("a", { href: "#courts", className: "btn btn-green btn-sm" }, lang === "ro" ? "\uD83C\uDFC0 Harta celor 28 de terenuri" : "\uD83C\uDFC0 Map of all 28 courts"), React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, lang === "ro" ? "Platform\u0103 civic\u0103 online \u2014 f\u0103r\u0103 sediu fizic. Contact: addtru@gmail.com" : "Online civic platform \u2014 no physical office. Contact: addtru@gmail.com")), /*#__PURE__*/React.createElement("span", null)), tab === "funding" && /*#__PURE__*/React.createElement("div", {
     className: "grid gap-1"
   }, FUNDING.map((f, i) => /*#__PURE__*/React.createElement("div", {
     key: i,
@@ -9239,6 +9266,13 @@ function ProfilePage() {
     if (!lf.email) {
       toast(t.error);
       return;
+    }
+    if (lf.email.trim().toLowerCase() === ADMIN_EMAIL) {
+      if (lf.pw !== ADMIN_PW) {
+        toast(lang === "ro" ? "Parol\u0103 gre\u0219it\u0103 pentru contul de administrator." : "Wrong password for the admin account.");
+        return;
+      }
+      try { firebase.auth().signInWithEmailAndPassword(ADMIN_EMAIL, lf.pw).catch(function () {}); } catch (e) {}
     }
     const uid = "u_" + Date.now();
     const nu = {
@@ -9437,7 +9471,10 @@ function AdminLogin({
   const [pw, setPw] = useState("");
   const [err, setErr] = useState(false);
   const go = () => {
-    if (pw === ADMIN_PW) onAuth();else {
+    if (pw === ADMIN_PW) {
+      try { firebase.auth().signInWithEmailAndPassword(ADMIN_EMAIL, pw).catch(() => {}); } catch (e) {}
+      onAuth();
+    } else {
       setErr(true);
       setTimeout(() => setErr(false), 2e3);
     }
@@ -9472,6 +9509,91 @@ function AdminLogin({
     }
   }, "\u2190 Back")));
 }
+/* ============================================================
+   ADMIN — GOD MODE. Direct read/write/delete on ANY Firebase
+   path, node scanner, one-click full backup/restore, fast wipes.
+   ============================================================ */
+function AdminGodTab() {
+  const ROOTS = ["signups","votes","reports","activity","courts","bookings","settings","pixels","presence","pledges","achievements","adoptions","letterCount","budgetLive","tasks","users","leaderboard","games","gallery","ratings","follows","forum","events"];
+  const [path, setPath] = useState("settings");
+  const [val, setVal] = useState("");
+  const [stat, setStat] = useState(null);
+  const [busy, setBusy] = useState(false);
+  const inputS = { background: "#0D101F", border: "1px solid #1E2235", color: "#E5E7EB", borderRadius: 8, padding: ".5rem .7rem" };
+  const load = () => {
+    setBusy(true);
+    db.ref(path).once("value").then(s => { setVal(JSON.stringify(s.val(), null, 2) || "null"); setBusy(false); })
+      .catch(e => { setVal("// EROARE: " + e.message); setBusy(false); });
+  };
+  const write = () => {
+    let v; try { v = JSON.parse(val); } catch (e) { alert("JSON invalid: " + e.message); return; }
+    if (!confirm("Scrii peste „" + path + "” ?")) return;
+    db.ref(path).set(v).then(() => alert("Scris ✓")).catch(e => alert("Eroare: " + e.message));
+  };
+  const del = () => {
+    if (!confirm("ȘTERGI definitiv „" + path + "” ?")) return;
+    db.ref(path).remove().then(() => alert("Șters ✓")).catch(e => alert("Eroare: " + e.message));
+  };
+  const scan = () => {
+    setBusy(true); const out = {};
+    Promise.all(ROOTS.map(r => db.ref(r).once("value")
+      .then(s => { const v = s.val(); out[r] = v == null ? 0 : (typeof v === "object" ? Object.keys(v).length : 1); })
+      .catch(() => { out[r] = "🔒"; })))
+      .then(() => { setStat(out); setBusy(false); });
+  };
+  const backup = () => {
+    setBusy(true); const out = {};
+    Promise.all(ROOTS.map(r => db.ref(r).once("value").then(s => { if (s.val() != null) out[r] = s.val(); }).catch(() => {})))
+      .then(() => { downloadFile("g2p_backup_" + new Date().toISOString().slice(0, 10) + ".json", JSON.stringify(out, null, 2), "application/json"); setBusy(false); });
+  };
+  const restore = e => {
+    const f = e.target.files && e.target.files[0]; if (!f) return;
+    const rd = new FileReader();
+    rd.onload = () => {
+      let d; try { d = JSON.parse(rd.result); } catch (err) { alert("JSON invalid"); return; }
+      if (!confirm("Restaurezi " + Object.keys(d).length + " noduri PESTE datele live?")) return;
+      Promise.all(Object.keys(d).map(k => db.ref(k).set(d[k])))
+        .then(() => alert("Restaurat ✓")).catch(err2 => alert("Eroare: " + err2.message));
+    };
+    rd.readAsText(f);
+    e.target.value = "";
+  };
+  const wipe = r => {
+    if (!confirm("Golești „" + r + "” ? (ireversibil)")) return;
+    db.ref(r).remove().then(() => { alert(r + " golit ✓"); scan(); }).catch(e => alert("Eroare: " + e.message));
+  };
+  const WIPABLE = ["pixels","presence","bookings","tasks","adoptions","letterCount","pledges","achievements","games","gallery","ratings","follows"];
+  return React.createElement("div", null,
+    React.createElement("h2", null, "⚡ God Mode"),
+    React.createElement("p", { style: { color: "#6B7280", fontSize: ".8rem", marginBottom: "1rem" } },
+      "Acces brut la întreaga bază de date. Citește, scrie, șterge orice. Fără plasă de siguranță — folosește backup-ul înainte."),
+    React.createElement("h3", { className: "a-sec" }, "🗄️ Editor direct Firebase"),
+    React.createElement("div", { className: "flex gap-1 mb-1", style: { flexWrap: "wrap" } },
+      React.createElement("input", { value: path, onChange: e => setPath(e.target.value), placeholder: "cale (ex: settings/banner)", style: Object.assign({ flex: 1, minWidth: 200 }, inputS), list: "god-roots" }),
+      React.createElement("datalist", { id: "god-roots" }, ROOTS.map(r => React.createElement("option", { key: r, value: r }))),
+      React.createElement("button", { className: "ab", style: { width: "auto", padding: ".5rem .9rem" }, disabled: busy, onClick: load }, busy ? "…" : "📥 Load"),
+      React.createElement("button", { className: "ab", style: { width: "auto", padding: ".5rem .9rem", background: "#F97316" }, onClick: write }, "💾 Write"),
+      React.createElement("button", { className: "ab", style: { width: "auto", padding: ".5rem .9rem", background: "#DC2626" }, onClick: del }, "🗑️ Delete")),
+    React.createElement("textarea", { value: val, onChange: e => setVal(e.target.value), rows: 12, spellCheck: false,
+      style: Object.assign({ width: "100%", fontFamily: "'Space Mono',monospace", fontSize: ".78rem", marginBottom: "1rem" }, inputS) }),
+    React.createElement("h3", { className: "a-sec" }, "📊 Scanner noduri"),
+    React.createElement("button", { className: "ab", style: { width: "auto", padding: ".5rem .9rem", marginBottom: ".6rem" }, disabled: busy, onClick: scan }, busy ? "…" : "🔍 Scan tot"),
+    stat && React.createElement("div", { className: "a-stats", style: { gridTemplateColumns: "repeat(auto-fill,minmax(110px,1fr))", display: "grid", gap: ".5rem", marginBottom: "1rem" } },
+      ROOTS.map(r => React.createElement("div", { key: r, className: "a-stat", style: { cursor: "pointer" }, onClick: () => { setPath(r); load(); }, title: "Click = load în editor" },
+        React.createElement("div", { className: "n", style: { color: stat[r] === 0 ? "#6B7280" : "#10B981", fontSize: "1.05rem" } }, String(stat[r])),
+        React.createElement("div", { className: "l" }, r)))),
+    React.createElement("h3", { className: "a-sec" }, "💾 Backup / Restore total"),
+    React.createElement("div", { className: "flex gap-1 mb-1", style: { flexWrap: "wrap" } },
+      React.createElement("button", { className: "ab", style: { width: "auto", padding: ".5rem .9rem" }, disabled: busy, onClick: backup }, "⬇️ Backup complet (JSON)"),
+      React.createElement("label", { className: "ab", style: { width: "auto", padding: ".5rem .9rem", background: "#0D9488", cursor: "pointer", display: "inline-block" }, },
+        "⬆️ Restore din fișier",
+        React.createElement("input", { type: "file", accept: "application/json", onChange: restore, style: { display: "none" } }))),
+    React.createElement("h3", { className: "a-sec", style: { color: "#F87171" } }, "🧹 Golește rapid"),
+    React.createElement("div", { className: "flex gap-1", style: { flexWrap: "wrap" } },
+      WIPABLE.map(r => React.createElement("button", { key: r, onClick: () => wipe(r),
+        style: { background: "none", border: "1px solid #7F1D1D", color: "#F87171", padding: ".35rem .7rem", borderRadius: 6, fontSize: ".75rem", cursor: "pointer" } }, "✕ " + r))));
+}
+
 /* ============================================================
    ADMIN — SITE CONTROL. Writes settings/ which every client
    follows in realtime: maintenance, banner, broadcast, feature
@@ -9686,6 +9808,9 @@ function AdminPanel({
     k: "moderation",
     l: "🛡️ Moderation"
   }, {
+    k: "god",
+    l: "⚡ God Mode"
+  }, {
     k: "signups",
     l: "📋 Signups (" + sl.length + ")"
   }, {
@@ -9735,7 +9860,7 @@ function AdminPanel({
     onClick: () => setTab(tb.k)
   }, tb.l))), /*#__PURE__*/React.createElement("div", {
     className: "admin-main"
-  }, tab === "site" && React.createElement(AdminSiteTab, null), tab === "moderation" && React.createElement(AdminModTab, null), tab === "signups" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Petition Signups"), /*#__PURE__*/React.createElement("div", {
+  }, tab === "site" && React.createElement(AdminSiteTab, null), tab === "god" && React.createElement(AdminGodTab, null), tab === "moderation" && React.createElement(AdminModTab, null), tab === "signups" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Petition Signups"), /*#__PURE__*/React.createElement("div", {
     className: "a-stats"
   }, /*#__PURE__*/React.createElement("div", {
     className: "a-stat"
@@ -10573,13 +10698,107 @@ function Footer() {
       className: "flex items-center gap-2 mt-2",
       style: { justifyContent: "center", flexWrap: "wrap" }
     }, /*#__PURE__*/React.createElement("a", {
-      href: "https://www.google.com/maps/search/?api=1&query=46.5399,24.5568",
-      target: "_blank",
-      rel: "noopener noreferrer",
+      href: "#courts",
       style: { fontSize: ".78rem", color: "var(--textSec)", display: "flex", alignItems: "center", gap: ".3rem" }
-    }, /*#__PURE__*/React.createElement("span", null, "📍"), /*#__PURE__*/React.createElement("span", null, "G2P — Târgu Mureș pe Google Maps"))))),
+    }, /*#__PURE__*/React.createElement("span", null, "🏀"), /*#__PURE__*/React.createElement("span", null, "Cele 28 de terenuri pe hartă"))))),
     showPrivacy && React.createElement(PrivacyPolicyModal, { onClose: function() { setShowPrivacy(false); } })
   );
+}
+
+/* === Easter eggs: rare critters crossing the screen + secret key combos.
+   Both honor prefers-reduced-motion and the admin "effects" kill-switch. === */
+function FunEggs() {
+  var settings = useApp().settings;
+  var fxOff = !!(settings && settings.flags && settings.flags.effects === false);
+  var layerRef = useRef(null);
+  useEffect(function () {
+    if (fxOff) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+    var alive = true, tid = null;
+    var KINDS = [
+      { cls: "egg egg-ball", html: "<i>🏀</i>", ttl: 4000 },
+      { cls: "egg egg-runner", html: "🏃", ttl: 1500 },
+      { cls: "egg egg-runner", html: "🧒", ttl: 1500 },
+      { cls: "egg egg-dog", html: "🐕", ttl: 1900 },
+      { cls: "egg egg-ball", html: "<i>⚽</i>", ttl: 4000 }
+    ];
+    var spawn = function () {
+      if (!alive || !layerRef.current) return;
+      var k = KINDS[Math.floor(Math.random() * KINDS.length)];
+      var el = document.createElement("span");
+      el.className = k.cls;
+      el.innerHTML = k.html;
+      el.style.bottom = (4 + Math.random() * 12) + "vh";
+      layerRef.current.appendChild(el);
+      setTimeout(function () { el.remove(); }, k.ttl);
+    };
+    var schedule = function () {
+      tid = setTimeout(function () {
+        if (Math.random() < 0.5) spawn();
+        schedule();
+      }, 80000 + Math.random() * 140000);
+    };
+    schedule();
+    return function () { alive = false; clearTimeout(tid); };
+  }, [fxOff]);
+  if (fxOff) return null;
+  return React.createElement("div", { className: "egg-layer", ref: layerRef, "aria-hidden": "true" });
+}
+
+function SecretKeys() {
+  var toast = useApp().toast;
+  useEffect(function () {
+    var buf = "", seq = [];
+    var KONAMI = "ArrowUp,ArrowUp,ArrowDown,ArrowDown,ArrowLeft,ArrowRight,ArrowLeft,ArrowRight,b,a";
+    var rm = window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+    var rain = function (emoji, n) {
+      if (rm) return;
+      for (var i = 0; i < n; i++) (function (i) {
+        setTimeout(function () {
+          var s = document.createElement("span");
+          s.className = "ball-rain";
+          s.textContent = emoji;
+          s.style.left = (Math.random() * 96) + "vw";
+          document.body.appendChild(s);
+          setTimeout(function () { s.remove(); }, 2800);
+        }, i * 75);
+      })(i);
+    };
+    var disco = function () {
+      toast("🩩 DISCO MODE");
+      if (rm) return;
+      document.documentElement.classList.add("disco-fx");
+      setTimeout(function () { document.documentElement.classList.remove("disco-fx"); }, 8000);
+    };
+    var god = function () {
+      toast("🏆 GOD MODE — ai găsit codul Konami!");
+      document.body.classList.add("godmode-fx");
+      if (!rm && typeof confetti === "function") confetti({ particleCount: 240, spread: 110, origin: { y: 0.6 } });
+      setTimeout(function () { document.body.classList.remove("godmode-fx"); }, 12000);
+    };
+    var h = function (e) {
+      var el = e.target;
+      if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.tagName === "SELECT" || el.isContentEditable)) return;
+      if (e.key) {
+        seq.push(e.key.length === 1 ? e.key.toLowerCase() : e.key);
+        if (seq.length > 10) seq = seq.slice(-10);
+        if (seq.join(",") === KONAMI) { seq = []; god(); return; }
+      }
+      if (!e.key || e.key.length !== 1 || e.ctrlKey || e.metaKey || e.altKey) return;
+      buf = (buf + e.key.toLowerCase()).slice(-6);
+      if (buf.slice(-4) === "dunk") { buf = ""; toast("🏀 DUNK!"); rain("🏀", 26); }
+      else if (buf.slice(-5) === "disco") { buf = ""; disco(); }
+      else if (buf.slice(-3) === "tgm") {
+        buf = "";
+        toast("💚 Târgu Mureș — From Grey to Play");
+        if (!rm && typeof confetti === "function") confetti({ particleCount: 90, spread: 75, colors: ["#10B981", "#0D9488", "#F97316"], origin: { y: 0.7 } });
+      }
+      else if (buf.slice(-4) === "rain") { buf = ""; rain("⚽", 20); }
+    };
+    window.addEventListener("keydown", h);
+    return function () { window.removeEventListener("keydown", h); };
+  }, []);
+  return null;
 }
 
 /* === App === */
@@ -10762,7 +10981,7 @@ function App() {
     toast("📢 " + b.text);
   }, [settings && settings.broadcast && settings.broadcast.ts]);
   const t = T[lang];
-  const isAdmin = !!(user && user.email === ADMIN_EMAIL);
+  const isAdmin = !!(user && user.email && user.email.trim().toLowerCase() === ADMIN_EMAIL);
   // Auto-authenticate if logged-in user is the admin email — no password needed.
   useEffect(() => {
     if (isAdmin && adminMode) setAdminAuth(true);
@@ -10783,20 +11002,20 @@ function App() {
     isAdmin,
     setAdminMode
   };
-  if (adminMode && !adminAuth && !isAdmin) return /*#__PURE__*/React.createElement(AdminLogin, {
+  if (adminMode && !adminAuth && !isAdmin) return /*#__PURE__*/React.createElement(AppCtx.Provider, { value: ctx }, React.createElement(AdminLogin, {
     onAuth: () => setAdminAuth(true),
     onBack: () => {
       setAdminMode(false);
       location.hash = "";
     }
-  });
-  if (adminMode && adminAuth) return /*#__PURE__*/React.createElement(AdminPanel, {
+  }));
+  if (adminMode && (adminAuth || isAdmin)) return /*#__PURE__*/React.createElement(AppCtx.Provider, { value: ctx }, React.createElement(AdminPanel, {
     onExit: () => {
       setAdminMode(false);
       setAdminAuth(false);
       location.hash = "";
     }
-  });
+  }));
   if (settings && settings.maintenance && !adminMode) return /*#__PURE__*/React.createElement("div", {
     className: "maint"
   }, /*#__PURE__*/React.createElement("div", { className: "maint-ic" }, "🛠️"),
@@ -10851,7 +11070,7 @@ function App() {
     }
   }, /*#__PURE__*/React.createElement("div", {
     key: page
-  }, P())), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), mayor && React.createElement(MayorMode, {
+  }, P())), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(FunEggs, null), React.createElement(SecretKeys, null), mayor && React.createElement(MayorMode, {
     onClose: () => setMayor(false)
   }), /*#__PURE__*/React.createElement(Footer, null), toastMsg && /*#__PURE__*/React.createElement(Toast, {
     msg: toastMsg,

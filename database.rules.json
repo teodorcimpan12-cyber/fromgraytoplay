@@ -12,7 +12,7 @@
     },
 
     "signups": {
-      ".read": false,
+      ".read": "auth != null",
       "$id": {
         ".write": true,
         ".validate": "newData.hasChildren(['name','email','choice','timestamp']) && newData.child('name').isString() && newData.child('name').val().length >= 2 && newData.child('email').isString() && newData.child('email').val().contains('@') && (newData.child('choice').val() === 'flip' || newData.child('choice').val() === 'mural' || newData.child('choice').val() === 'both')"
@@ -100,9 +100,9 @@
     },
 
     "users": {
-      ".read": false,
+      ".read": "auth !== null",
       "$uid": {
-        ".read": "auth !== null",
+        ".read": true,
         ".write": true
       }
     },
