@@ -1431,6 +1431,7 @@ function logActivity(type, userName, courtId) {
       type, userName: anonName(userName), courtId: courtId || null, timestamp: Date.now()
     });
   } catch (e) { /* offline — silently drop */ }
+  try { bumpStreak(); } catch (e) { /* streak is best-effort */ }
 }
 // Downscale + JPEG-compress a File so it fits in RTDB as a data URL (~80-150KB).
 // Storage bucket isn't configured (config has only databaseURL), so photos live
@@ -1625,6 +1626,55 @@ T.hu.cmdTheme = "Téma váltása"; // TODO: HU review
 T.hu.cmdLang = "Nyelv váltása"; // TODO: HU review
 T.hu.cmdHint = "↑↓ navigálás · Enter megnyitás · Esc bezárás"; // TODO: HU review
 
+/* === Season 4 — Civic Utility Pack strings === */
+/* 1. Near Me */
+T.ro.nearMe = "Lângă mine"; T.en.nearMe = "Near me"; T.hu.nearMe = "Közelemben"; // TODO: HU review
+T.ro.nearMeDenied = "Nu am putut obține locația"; T.en.nearMeDenied = "Couldn't get your location"; T.hu.nearMeDenied = "Nem sikerült lekérni a helyzetedet"; // TODO: HU review
+T.ro.walkMin = "min pe jos"; T.en.walkMin = "min walk"; T.hu.walkMin = "perc gyalog"; // TODO: HU review
+/* 2. Court Timeline */
+T.ro.courtTimeline = "Istoricul terenului"; T.en.courtTimeline = "Court history"; T.hu.courtTimeline = "Pálya története"; // TODO: HU review
+T.ro.timelineEmpty = "Nicio activitate încă — fii primul."; T.en.timelineEmpty = "No activity yet — be the first."; T.hu.timelineEmpty = "Még nincs aktivitás — légy te az első."; // TODO: HU review
+T.ro.actReport = "a trimis o sesizare"; T.en.actReport = "filed a report"; T.hu.actReport = "bejelentést küldött"; // TODO: HU review
+T.ro.actCheckin = "a făcut check-in"; T.en.actCheckin = "checked in"; T.hu.actCheckin = "bejelentkezett"; // TODO: HU review
+T.ro.actPhoto = "a adăugat o dovadă foto"; T.en.actPhoto = "added photo evidence"; T.hu.actPhoto = "fotóbizonyítékot adott"; // TODO: HU review
+T.ro.actAdopt = "a adoptat terenul"; T.en.actAdopt = "adopted the court"; T.hu.actAdopt = "örökbe fogadta a pályát"; // TODO: HU review
+T.ro.actTask = "s-a oferit la o reparație"; T.en.actTask = "volunteered for a repair"; T.hu.actTask = "vállalt egy javítást"; // TODO: HU review
+T.ro.actLetter = "a generat o scrisoare"; T.en.actLetter = "generated a letter"; T.hu.actLetter = "levelet írt"; // TODO: HU review
+T.ro.actDefault = "a fost activ aici"; T.en.actDefault = "was active here"; T.hu.actDefault = "aktív volt itt"; // TODO: HU review
+/* 3. Letter counter */
+T.ro.lettersSent = "scrisori generate către consiliu"; T.en.lettersSent = "letters generated to the council"; T.hu.lettersSent = "tanácsnak írt levél"; // TODO: HU review
+/* 4. Wanted poster */
+T.ro.wantedPoster = "Afiș CĂUTAT"; T.en.wantedPoster = "Wanted poster"; T.hu.wantedPoster = "Körözési plakát"; // TODO: HU review
+T.ro.wantedTitle = "CĂUTAT"; T.en.wantedTitle = "WANTED"; T.hu.wantedTitle = "KÖRÖZÖTT"; // TODO: HU review
+T.ro.wantedSub = "UN VIITOR PENTRU ACEST TEREN"; T.en.wantedSub = "A FUTURE FOR THIS COURT"; T.hu.wantedSub = "JÖVŐT ENNEK A PÁLYÁNAK"; // TODO: HU review
+T.ro.wantedSignCta = "SEMNEAZĂ PETIȚIA"; T.en.wantedSignCta = "SIGN THE PETITION"; T.hu.wantedSignCta = "ÍRD ALÁ A PETÍCIÓT"; // TODO: HU review
+T.ro.shareUnsupported = "Partajarea nu e suportată — link copiat"; T.en.shareUnsupported = "Sharing unsupported — link copied"; T.hu.shareUnsupported = "A megosztás nem támogatott — link másolva"; // TODO: HU review
+/* 5. Adoption */
+T.ro.adoptCourt = "Adoptă acest teren"; T.en.adoptCourt = "Adopt this court"; T.hu.adoptCourt = "Fogadd örökbe ezt a pályát"; // TODO: HU review
+T.ro.adopted = "Ești acum gardianul acestui teren!"; T.en.adopted = "You're now this court's guardian!"; T.hu.adopted = "Most te vagy a pálya őrzője!"; // TODO: HU review
+T.ro.youAreGuardian = "Ești gardianul acestui teren"; T.en.youAreGuardian = "You're a guardian of this court"; T.hu.youAreGuardian = "Te vagy a pálya egyik őrzője"; // TODO: HU review
+T.ro.guardiansOf = "Gardienii terenului"; T.en.guardiansOf = "Court guardians"; T.hu.guardiansOf = "A pálya őrzői"; // TODO: HU review
+T.ro.noGuardians = "Niciun gardian încă — fii primul."; T.en.noGuardians = "No guardians yet — be the first."; T.hu.noGuardians = "Még nincs őrző — légy te az első."; // TODO: HU review
+T.ro.unadopt = "Renunță"; T.en.unadopt = "Step down"; T.hu.unadopt = "Lemondás"; // TODO: HU review
+T.ro.yourName = "Numele tău"; T.en.yourName = "Your name"; T.hu.yourName = "Neved"; // TODO: HU review
+/* 6. Budget watchdog */
+T.ro.budgetGap = "promiși dar necheltuiți"; T.en.budgetGap = "promised but unspent"; T.hu.budgetGap = "ígért, de el nem költött"; // TODO: HU review
+T.ro.budgetWatchdog = "Câinele de pază al bugetului"; T.en.budgetWatchdog = "Budget watchdog"; T.hu.budgetWatchdog = "Költségvetési őrkutya"; // TODO: HU review
+T.ro.budgetPromised = "Promis"; T.en.budgetPromised = "Promised"; T.hu.budgetPromised = "Ígért"; // TODO: HU review
+T.ro.budgetSpent = "Cheltuit"; T.en.budgetSpent = "Spent"; T.hu.budgetSpent = "Elköltött"; // TODO: HU review
+/* 7. Offline drafts */
+T.ro.draftRestored = "Ciornă restaurată"; T.en.draftRestored = "Draft restored"; T.hu.draftRestored = "Piszkozat visszaállítva"; // TODO: HU review
+/* 8. Streaks */
+T.ro.streakDays = "zile la rând active civic"; T.en.streakDays = "day civic streak"; T.hu.streakDays = "napos polgári sorozat"; // TODO: HU review
+T.ro.streakStart = "Fă o acțiune azi ca să-ți pornești seria!"; T.en.streakStart = "Take one action today to start your streak!"; T.hu.streakStart = "Tégy egy lépést ma, hogy elindítsd a sorozatod!"; // TODO: HU review
+T.ro.streakTitle = "Seria ta civică"; T.en.streakTitle = "Your civic streak"; T.hu.streakTitle = "Polgári sorozatod"; // TODO: HU review
+/* 9. Task board */
+T.ro.taskBoard = "Echipa de reparații"; T.en.taskBoard = "Repair crew"; T.hu.taskBoard = "Javító csapat"; // TODO: HU review
+T.ro.taskJoin = "Mă ocup eu"; T.en.taskJoin = "I'll do it"; T.hu.taskJoin = "Én vállalom"; // TODO: HU review
+T.ro.taskLeave = "Înscris — Renunță"; T.en.taskLeave = "Signed up — Leave"; T.hu.taskLeave = "Jelentkezve — Kilépés"; // TODO: HU review
+T.ro.taskReady = "Echipă completă — organizați-vă pe forum!"; T.en.taskReady = "Crew complete — coordinate on the forum!"; T.hu.taskReady = "Csapat kész — egyeztessetek a fórumon!"; // TODO: HU review
+T.ro.taskJoined = "Te-ai înscris la echipă!"; T.en.taskJoined = "You joined the crew!"; T.hu.taskJoined = "Csatlakoztál a csapathoz!"; // TODO: HU review
+
 /* === Achievement / Badge System === */
 const BADGES = [
   { id:"first_checkin", icon:"🏃", name:{ro:"Prima vizită",en:"First Visit",hu:"Első látogatás"}, desc:{ro:"Primul check-in la un teren",en:"First court check-in",hu:"Első pálya bejelentkezés"} },
@@ -1639,6 +1689,7 @@ const BADGES = [
   { id:"witness", icon:"👁️", name:{ro:"Martor",en:"Witness",hu:"Tanú"}, desc:{ro:"3 fotografii dovadă adăugate",en:"Added 3 evidence photos",hu:"3 bizonyítékfotót feltöltöttél"} },
   { id:"pioneer", icon:"🚀", name:{ro:"Pionier",en:"Pioneer",hu:"Úttörő"}, desc:{ro:"Printre primii 100 de susținători",en:"Among the first 100 supporters",hu:"Az első 100 támogató közt"} },
   { id:"voter", icon:"🗳️", name:{ro:"Cetățean activ",en:"Active Citizen",hu:"Aktív polgár"}, desc:{ro:"Ai votat și ai semnat",en:"Voted and signed petition",hu:"Szavaztál és aláírtad"} },
+  { id:"guardian", icon:"🛡️", name:{ro:"Gardian",en:"Guardian",hu:"Őrző"}, desc:{ro:"Ai adoptat un teren",en:"Adopted a court",hu:"Örökbe fogadtál egy pályát"} },
 ];
 
 function useBadges() {
@@ -3307,6 +3358,426 @@ function MayorMode(props) {
       style: { pointerEvents: showBtn ? "auto" : "none" },
       onClick: function () { onClose(); setPage("petition"); }
     }, "✊ " + t.mayorCta)
+  );
+}
+
+/* ============================================================
+   SEASON 4 — CIVIC UTILITY PACK
+   Shared utilities + components. All animations gated behind
+   prefers-reduced-motion + .no-fx. Firebase reads null-guarded.
+   ============================================================ */
+
+/* Haversine great-circle distance in km between two lat/lng pairs. */
+function haversineKm(lat1, lng1, lat2, lng2) {
+  var toRad = function (d) { return d * Math.PI / 180; };
+  var R = 6371;
+  var dLat = toRad(lat2 - lat1);
+  var dLng = toRad(lng2 - lng1);
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+/* Relative time label ("acum 2h" / "2h ago" / "2 órája"). */
+function relTime(ts, lang) {
+  var diff = Math.max(0, Date.now() - (Number(ts) || 0));
+  var mins = Math.floor(diff / 60000);
+  var hrs = Math.floor(diff / 3600000);
+  var days = Math.floor(diff / 86400000);
+  if (lang === "ro") {
+    if (mins < 1) return "chiar acum";
+    if (mins < 60) return "acum " + mins + " min";
+    if (hrs < 24) return "acum " + hrs + "h";
+    return "acum " + days + (days === 1 ? " zi" : " zile");
+  }
+  if (lang === "hu") { // TODO: HU review
+    if (mins < 1) return "épp most";
+    if (mins < 60) return mins + " perce";
+    if (hrs < 24) return hrs + " órája";
+    return days + " napja";
+  }
+  if (mins < 1) return "just now";
+  if (mins < 60) return mins + "m ago";
+  if (hrs < 24) return hrs + "h ago";
+  return days + (days === 1 ? " day ago" : " days ago");
+}
+
+/* Civic streak: bumped on every civic action via logActivity().
+   localStorage g2p_streak = {count, last:"YYYY-MM-DD"}. */
+function streakDateStr(d) {
+  d = d || new Date();
+  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+}
+function bumpStreak() {
+  try {
+    var today = streakDateStr();
+    var y = new Date(); y.setDate(y.getDate() - 1);
+    var yesterday = streakDateStr(y);
+    var raw = localStorage.getItem("g2p_streak");
+    var st = raw ? JSON.parse(raw) : null;
+    var count;
+    if (st && st.last === today) { count = st.count; }
+    else if (st && st.last === yesterday) { count = (st.count || 0) + 1; }
+    else { count = 1; }
+    localStorage.setItem("g2p_streak", JSON.stringify({ count: count, last: today }));
+    return count;
+  } catch (e) { return 0; }
+}
+function readStreak() {
+  try {
+    var raw = localStorage.getItem("g2p_streak");
+    if (!raw) return { count: 0, last: null };
+    var st = JSON.parse(raw);
+    var today = streakDateStr();
+    var y = new Date(); y.setDate(y.getDate() - 1);
+    var yesterday = streakDateStr(y);
+    // Streak only "alive" if last action was today or yesterday.
+    if (st.last === today || st.last === yesterday) return st;
+    return { count: 0, last: st.last };
+  } catch (e) { return { count: 0, last: null }; }
+}
+
+/* Maintenance task templates (Feature 9). */
+var TASK_TEMPLATES = [
+  { key: "lines",    emoji: "🎨", ro: "Revopsire marcaje",       en: "Repaint lines",    hu: "Vonalak újrafestése" },      // TODO: HU review
+  { key: "net",      emoji: "🥅", ro: "Înlocuire plasă/filet",   en: "Replace net",      hu: "Háló cseréje" },             // TODO: HU review
+  { key: "clean",    emoji: "🧹", ro: "Curățenie generală",      en: "General cleanup",  hu: "Általános takarítás" },      // TODO: HU review
+  { key: "weeds",    emoji: "🌿", ro: "Defrișare vegetație",     en: "Clear weeds",      hu: "Gyomtalanítás" },            // TODO: HU review
+  { key: "graffiti", emoji: "🧽", ro: "Curățare graffiti",       en: "Remove graffiti",  hu: "Graffiti eltávolítása" }     // TODO: HU review
+];
+
+/* === S4-F2: Court Timeline ===
+   Reads activity/ from Firebase, filters by courtId, shows as vertical list. */
+function CourtTimeline({ court }) {
+  var _ref = useApp(), t = _ref.t, lang = _ref.lang;
+  var rawAct = useFirebase("activity");
+  var items = rawAct
+    ? Object.values(rawAct)
+        .filter(function(a) { return a && a.courtId === court.id; })
+        .sort(function(a, b) { return (b.timestamp || 0) - (a.timestamp || 0); })
+        .slice(0, 20)
+    : [];
+  var typeLabel = function(type) {
+    if (type === "check-in") return t.actCheckin || "checked in";
+    if (type === "report")   return t.actReport  || "filed a report";
+    if (type === "photo")    return t.actPhoto   || "added photo evidence";
+    if (type === "adopt")    return t.actAdopt   || "adopted the court";
+    if (type === "task")     return t.actTask    || "volunteered for a repair";
+    if (type === "letter")   return t.actLetter  || "generated a letter";
+    return t.actDefault || "was active here";
+  };
+  return React.createElement("div", { className: "card mt-2" },
+    React.createElement("h4", { className: "mb-1" }, "📋 ", t.courtTimeline || "Court history"),
+    items.length === 0
+      ? React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } }, t.timelineEmpty || "No activity yet — be the first.")
+      : React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: ".45rem" } },
+          items.map(function(a, i) {
+            return React.createElement("div", { key: i, className: "flex gap-1 items-center text-sm", style: { borderLeft: "2px solid var(--border)", paddingLeft: ".6rem" } },
+              React.createElement("span", { style: { color: "var(--textSec)", minWidth: 68, fontSize: ".73rem" } }, relTime(a.timestamp, lang)),
+              React.createElement("span", { style: { fontWeight: 600 } }, a.userName || "?"),
+              React.createElement("span", { style: { color: "var(--textSec)" } }, " ", typeLabel(a.type))
+            );
+          })
+        )
+  );
+}
+
+/* === S4-F3: Letter Counter ===
+   Reads letterCount/total — shown on PetitionPage. */
+function LetterCounter() {
+  var _ref = useApp(), t = _ref.t;
+  var cnt = useFirebase("letterCount/total") || 0;
+  return React.createElement("div", { className: "card mb-2", style: { textAlign: "center", padding: "1.2rem", borderLeft: "4px solid var(--teal)" } },
+    React.createElement("div", { className: "stat-number", style: { color: "var(--teal)" } }, cnt),
+    React.createElement("div", { className: "stat-label" }, t.lettersSent || "letters generated to the council")
+  );
+}
+
+/* === S4-F4: Wanted Poster ===
+   Canvas 1:1.78 portrait; cracked-asphalt bg, "CĂUTAT" banner, court stats, PNG download + share.
+   Shown in CourtDetail for non-gym courts. */
+function _wrapText(ctx, text, maxW) {
+  var words = text.split(" "), lines = [], cur = "";
+  words.forEach(function(w) {
+    var test = cur ? cur + " " + w : w;
+    if (ctx.measureText(test).width > maxW) { if (cur) lines.push(cur); cur = w; }
+    else cur = test;
+  });
+  if (cur) lines.push(cur);
+  return lines;
+}
+function _rrect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h); ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+function WantedPoster({ court, onClose }) {
+  var _ref = useApp(), t = _ref.t, lang = _ref.lang, toast = _ref.toast;
+  var canvasRef = React.useRef(null);
+  React.useEffect(function() {
+    var canvas = canvasRef.current;
+    if (!canvas) return;
+    var W = 540, H = 960;
+    canvas.width = W; canvas.height = H;
+    var ctx = canvas.getContext("2d");
+    /* background */
+    ctx.fillStyle = "#111118"; ctx.fillRect(0, 0, W, H);
+    /* cracks */
+    ctx.save(); ctx.strokeStyle = "#2a2a2a"; ctx.lineWidth = 1;
+    for (var ci = 0; ci < 14; ci++) {
+      ctx.beginPath();
+      ctx.moveTo(Math.random() * W, Math.random() * H);
+      for (var cj = 0; cj < 3; cj++) ctx.lineTo(Math.random() * W, Math.random() * H);
+      ctx.stroke();
+    }
+    ctx.restore();
+    /* top banner */
+    ctx.fillStyle = "#c8a84b"; ctx.fillRect(0, 0, W, 130);
+    ctx.fillStyle = "#111"; ctx.font = "bold 72px 'Space Mono',monospace";
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText(t.wantedTitle || "CĂUTAT", W / 2, 65);
+    /* sub label */
+    ctx.fillStyle = "#c8a84b44"; ctx.fillRect(0, 130, W, 46);
+    ctx.fillStyle = "#c8a84b"; ctx.font = "bold 13px 'Space Mono',monospace";
+    ctx.fillText(t.wantedSub || "UN VIITOR PENTRU ACEST TEREN", W / 2, 153);
+    /* court name */
+    ctx.fillStyle = "#fff"; ctx.font = "bold 24px 'Space Mono',monospace";
+    var nameLines = _wrapText(ctx, court.name, W - 60);
+    nameLines.forEach(function(ln, i) { ctx.fillText(ln, W / 2, 210 + i * 32); });
+    /* status badge */
+    var scol = court.status === "degraded" ? "#DC2626" : court.status === "inProgress" ? "#F97316" : "#10B981";
+    var slbl = court.status === "degraded" ? (t.degraded || "Degradat") : court.status === "inProgress" ? (t.inProgress || "În lucru") : (t.renovated || "Renovat");
+    ctx.fillStyle = scol; _rrect(ctx, W / 2 - 88, 268, 176, 38, 9); ctx.fill();
+    ctx.fillStyle = "#fff"; ctx.font = "bold 15px 'Space Mono',monospace";
+    ctx.fillText(slbl, W / 2, 291);
+    /* divider */
+    ctx.strokeStyle = "#c8a84b"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(30, 326); ctx.lineTo(W - 30, 326); ctx.stroke();
+    /* stats */
+    ctx.fillStyle = "#999"; ctx.font = "12px 'Space Mono',monospace"; ctx.textAlign = "left";
+    [
+      "📍 " + court.address,
+      "📊 " + (t.condition || "Stare") + ": " + court.condition + "/5",
+      "📋 " + (t.reports || "Rapoarte") + ": " + (court.reports || 0),
+      "🏘 " + (t.neighbourhood || "Cartier") + ": " + (court.neighbourhood || "—")
+    ].forEach(function(s, i) { ctx.fillText(s, 40, 370 + i * 42); });
+    /* CTA */
+    ctx.fillStyle = "#10B981"; _rrect(ctx, 40, H - 200, W - 80, 62, 14); ctx.fill();
+    ctx.fillStyle = "#fff"; ctx.font = "bold 17px 'Space Mono',monospace"; ctx.textAlign = "center";
+    ctx.fillText(t.wantedSignCta || "SEMNEAZĂ PETIȚIA", W / 2, H - 163);
+    /* URL */
+    ctx.fillStyle = "#aaa"; ctx.font = "11px 'Space Mono',monospace";
+    ctx.fillText(SITE, W / 2, H - 90);
+    /* branding */
+    ctx.fillStyle = "#10B98166"; ctx.font = "bold 10px 'Space Mono',monospace";
+    ctx.fillText("FROM GREY TO PLAY", W / 2, H - 40);
+    ctx.textBaseline = "alphabetic";
+  }, []);
+  var dl = function() {
+    var canvas = canvasRef.current; if (!canvas) return;
+    var a = document.createElement("a");
+    a.href = canvas.toDataURL("image/png");
+    a.download = "g2p_wanted_" + court.id + ".png"; a.click();
+  };
+  var share = function() {
+    var canvas = canvasRef.current; if (!canvas) return;
+    canvas.toBlob(function(blob) {
+      if (!navigator.share) { toast(t.shareUnsupported || "Link copiat"); return; }
+      navigator.share({ files: [new File([blob], "g2p_wanted.png", { type: "image/png" })], title: "From Grey to Play — " + court.name, url: SITE });
+    });
+  };
+  return React.createElement("div", { className: "modal-overlay", onClick: onClose },
+    React.createElement("div", { className: "modal", onClick: function(e) { e.stopPropagation(); } },
+      React.createElement("div", { className: "flex justify-between items-center mb-2" },
+        React.createElement("h2", null, "🪧 ", t.wantedPoster || "Afiș CĂUTAT"),
+        React.createElement("button", { onClick: onClose, style: { background: "none", border: "none", fontSize: "1.4rem", color: "var(--text)" } }, "✕")
+      ),
+      React.createElement("canvas", { ref: canvasRef, style: { width: "100%", maxWidth: 320, display: "block", margin: "0 auto", borderRadius: 8, background: "#111" } }),
+      React.createElement("div", { className: "flex gap-1 mt-2" },
+        React.createElement("button", { className: "btn btn-green", onClick: dl }, "⬇️ PNG"),
+        React.createElement("button", { className: "btn btn-outline", onClick: share }, "📤 Share")
+      )
+    )
+  );
+}
+
+/* === S4-F5: Court Adoption ===
+   Firebase adoptions/{courtId}/{voterKey}: {name, ts}. Awards guardian badge. */
+function AdoptCourt({ court }) {
+  var _ref = useApp(), t = _ref.t, lang = _ref.lang, toast = _ref.toast;
+  var _b = useBadges(), awardBadge = _b.awardBadge;
+  var vk = getVoterKey();
+  var adoptions = useFirebase("adoptions/" + court.id) || {};
+  var names = Object.values(adoptions).map(function(a) { return a && a.name ? a.name : "?"; });
+  var isAdopted = !!adoptions[vk];
+  var _s = React.useState(""), joinName = _s[0], setJoinName = _s[1];
+  var _u = React.useState(null), unlockBadge = _u[0], setUnlockBadge = _u[1];
+  var adopt = function() {
+    if (!joinName.trim()) { toast(t.error); return; }
+    db.ref("adoptions/" + court.id + "/" + vk).set({ name: joinName.trim(), ts: Date.now() });
+    logActivity("adopt", joinName.trim(), court.id);
+    awardBadge("guardian", function(b) { setUnlockBadge(b); });
+    toast(t.adopted || "Ești acum gardianul acestui teren!");
+    setJoinName("");
+  };
+  var unadopt = function() {
+    db.ref("adoptions/" + court.id + "/" + vk).remove();
+    toast(t.success);
+  };
+  return React.createElement("div", { className: "card mt-2" },
+    React.createElement("h4", { className: "mb-1" }, "🤝 ", t.adoptCourt || "Adoptă acest teren"),
+    names.length > 0 && React.createElement("div", { className: "mb-1", style: { display: "flex", flexWrap: "wrap", gap: ".3rem", alignItems: "center" } },
+      React.createElement("span", { className: "text-xs font-bold", style: { color: "var(--textSec)" } }, (t.guardiansOf || "Gardieni") + ":"),
+      names.map(function(n, i) { return React.createElement("span", { key: i, className: "badge badge-green" }, "🛡️ ", n); })
+    ),
+    !isAdopted
+      ? React.createElement("div", { className: "flex gap-1" },
+          React.createElement("input", { placeholder: t.yourName || "Numele tău", value: joinName, onChange: function(e) { setJoinName(e.target.value); }, style: { flex: 1 } }),
+          React.createElement("button", { className: "btn btn-green btn-sm", onClick: adopt }, t.adoptCourt || "Adoptă")
+        )
+      : React.createElement("div", null,
+          React.createElement("p", { className: "text-sm mb-1", style: { color: "var(--green)", fontWeight: 600 } }, "🛡️ ", t.youAreGuardian || "Ești gardianul acestui teren"),
+          React.createElement("button", { className: "btn btn-sm btn-outline", style: { color: "var(--red)", borderColor: "var(--red)" }, onClick: unadopt }, t.unadopt || "Renunță")
+        ),
+    unlockBadge && React.createElement(BadgeUnlockModal, { badge: unlockBadge, lang: lang, onClose: function() { setUnlockBadge(null); } })
+  );
+}
+
+/* === S4-F6: Budget Watchdog ===
+   Reads budgetLive/{year} from Firebase. Shown on ImpactPage > budget tab. */
+function BudgetWatchdog() {
+  var _ref = useApp(), t = _ref.t;
+  var year = new Date().getFullYear();
+  var data = useFirebase("budgetLive/" + year) || { promised: 5000000, spent: 0 };
+  var promised = data.promised || 0, spent = data.spent || 0;
+  var gap = Math.max(0, promised - spent);
+  var pct = promised > 0 ? Math.min(100, Math.round(spent / promised * 100)) : 0;
+  return React.createElement("div", { className: "card mt-2" },
+    React.createElement("h3", { className: "mb-1" }, "🐕 ", t.budgetWatchdog || "Câinele de pază al bugetului"),
+    React.createElement("p", { className: "text-xs mb-2", style: { color: "var(--textSec)" } }, year),
+    React.createElement("div", { className: "grid grid-2 mb-2" },
+      React.createElement("div", { style: { textAlign: "center" } },
+        React.createElement("div", { className: "stat-number", style: { color: "var(--green)" } }, promised.toLocaleString()),
+        React.createElement("div", { className: "stat-label" }, t.budgetPromised || "Promis")
+      ),
+      React.createElement("div", { style: { textAlign: "center" } },
+        React.createElement("div", { className: "stat-number", style: { color: "var(--coral)" } }, spent.toLocaleString()),
+        React.createElement("div", { className: "stat-label" }, t.budgetSpent || "Cheltuit")
+      )
+    ),
+    React.createElement("div", { className: "progress-bar mb-1" },
+      React.createElement("div", { className: "progress-fill", style: { width: pct + "%" } })
+    ),
+    React.createElement("p", { className: "text-xs mb-1", style: { color: "var(--textSec)" } }, pct + "% cheltuit"),
+    React.createElement("div", { className: "card", style: { background: "var(--red)22", borderLeft: "4px solid var(--red)", padding: "1rem", textAlign: "center" } },
+      React.createElement("div", { className: "stat-number", style: { color: "var(--red)", fontSize: "1.5rem" } }, gap.toLocaleString() + " lei"),
+      React.createElement("div", { className: "stat-label" }, t.budgetGap || "promiși dar necheltuiți")
+    )
+  );
+}
+/* Admin panel companion for BudgetWatchdog. */
+function BudgetAdmin() {
+  var _ref = useApp(), t = _ref.t, toast = _ref.toast;
+  var year = new Date().getFullYear();
+  var data = useFirebase("budgetLive/" + year) || { promised: 5000000, spent: 0 };
+  var _p = React.useState(5000000), pv = _p[0], setPv = _p[1];
+  var _s = React.useState(0), sv = _s[0], setSv = _s[1];
+  React.useEffect(function() { setPv(data.promised || 5000000); setSv(data.spent || 0); }, [data.promised, data.spent]);
+  var save = function() { db.ref("budgetLive/" + year).set({ promised: Number(pv), spent: Number(sv) }); toast(t.success); };
+  return React.createElement("div", { className: "card mt-2" },
+    React.createElement("h4", { className: "mb-1" }, "🐕 ", t.budgetWatchdog || "Budget Watchdog", " — ", year),
+    React.createElement("div", { className: "flex gap-1 mb-1" },
+      React.createElement("label", { style: { flex: 1, fontSize: ".82rem", color: "var(--textSec)" } }, t.budgetPromised || "Promis",
+        React.createElement("input", { type: "number", value: pv, onChange: function(e) { setPv(e.target.value); }, style: { marginTop: ".25rem", display: "block", width: "100%" } })
+      ),
+      React.createElement("label", { style: { flex: 1, fontSize: ".82rem", color: "var(--textSec)" } }, t.budgetSpent || "Cheltuit",
+        React.createElement("input", { type: "number", value: sv, onChange: function(e) { setSv(e.target.value); }, style: { marginTop: ".25rem", display: "block", width: "100%" } })
+      )
+    ),
+    React.createElement("button", { className: "btn btn-green btn-sm", onClick: save }, "💾 Save")
+  );
+}
+
+/* === S4-F8: Civic Streak Card ===
+   Reads readStreak(); shown in ProfilePage. */
+function StreakCard() {
+  var _ref = useApp(), t = _ref.t;
+  var st = readStreak();
+  var count = st.count || 0;
+  var dots = Array.from({ length: 7 }, function(_, i) {
+    var daysAgo = 6 - i;
+    var active = count > 0 && daysAgo < count;
+    return active;
+  });
+  return React.createElement("div", { className: "card mb-2" },
+    React.createElement("div", { className: "flex justify-between items-center mb-1" },
+      React.createElement("h3", null, "🔥 ", t.streakTitle || "Seria ta civică"),
+      React.createElement("div", { className: "stat-number", style: { fontSize: "2rem", color: "var(--coral)", lineHeight: 1 } }, count)
+    ),
+    React.createElement("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } },
+      count > 0
+        ? count + " " + (t.streakDays || "zile la rând active civic")
+        : (t.streakStart || "Fă o acțiune azi ca să-ți pornești seria!")
+    ),
+    React.createElement("div", { className: "flex gap-1" },
+      dots.map(function(active, i) {
+        return React.createElement("div", { key: i, style: {
+          width: 30, height: 30, borderRadius: 6, flexShrink: 0,
+          background: active ? "var(--coral)" : "var(--border)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: "1rem"
+        } }, active ? "🔥" : "");
+      })
+    )
+  );
+}
+
+/* === S4-F9: Task Board ===
+   Firebase tasks/{courtId}/{taskKey}/volunteers/{voterKey}: name.
+   Shown in CourtDetail for degraded/inProgress courts. */
+function TaskBoard({ court }) {
+  var _ref = useApp(), t = _ref.t, lang = _ref.lang, toast = _ref.toast;
+  var vk = getVoterKey();
+  var _jn = React.useState(""), joinName = _jn[0], setJoinName = _jn[1];
+  var tasks = useFirebase("tasks/" + court.id) || {};
+  var joinTask = function(taskKey) {
+    if (!joinName.trim()) { toast(t.error); return; }
+    db.ref("tasks/" + court.id + "/" + taskKey + "/volunteers/" + vk).set(joinName.trim());
+    logActivity("task", joinName.trim(), court.id);
+    toast(t.taskJoined || "Te-ai înscris la echipă!");
+  };
+  var leaveTask = function(taskKey) {
+    db.ref("tasks/" + court.id + "/" + taskKey + "/volunteers/" + vk).remove();
+  };
+  return React.createElement("div", { className: "card mt-2" },
+    React.createElement("h4", { className: "mb-1" }, "🛠️ ", t.taskBoard || "Echipa de reparații"),
+    React.createElement("input", { placeholder: t.yourName || "Numele tău", value: joinName, onChange: function(e) { setJoinName(e.target.value); }, className: "mb-1" }),
+    React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: ".5rem" } },
+      TASK_TEMPLATES.map(function(tmpl) {
+        var taskData = tasks[tmpl.key] || {}, vols = taskData.volunteers || {};
+        var volKeys = Object.keys(vols), volNames = Object.values(vols);
+        var isJoined = !!vols[vk], full = volKeys.length >= 3;
+        return React.createElement("div", { key: tmpl.key, className: "card", style: { padding: ".7rem" } },
+          React.createElement("div", { className: "flex justify-between items-center" },
+            React.createElement("span", null, tmpl.emoji, " ", tmpl[lang] || tmpl.en),
+            React.createElement("div", { className: "flex gap-1 items-center" },
+              volKeys.length > 0 && React.createElement("span", { className: "badge " + (full ? "badge-green" : "badge-coral") }, volKeys.length + "/3"),
+              !isJoined && !full
+                ? React.createElement("button", { className: "btn btn-green btn-sm", onClick: function() { joinTask(tmpl.key); } }, t.taskJoin || "Mă ocup eu")
+                : isJoined
+                ? React.createElement("button", { className: "btn btn-sm", style: { background: "var(--red)", color: "#fff" }, onClick: function() { leaveTask(tmpl.key); } }, t.taskLeave || "Înscris — Renunță")
+                : null
+            )
+          ),
+          full && React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--green)" } }, "✅ ", t.taskReady || "Echipă completă — organizați-vă pe forum!"),
+          volNames.length > 0 && React.createElement("div", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, volNames.join(", "))
+        );
+      })
+    )
   );
 }
 
@@ -5100,6 +5571,8 @@ function CourtsPage() {
   const [showRep, setShowRep] = useState(false);
   const [showBook, setShowBook] = useState(false);
   const [heat, setHeat] = useState(false);
+  const [myLoc, setMyLoc] = useState(null);
+  const [locating, setLocating] = useState(false);
   const fbCourts = useFirebase("courts");
   const allGames = useFirebase("games");
   const fbReports = useFirebase(heat ? "reports" : null);
@@ -5121,7 +5594,28 @@ function CourtsPage() {
     return Object.values(ci).filter(x => ((x && (x.ts || x.timestamp)) || 0) > cutoff).length;
   };
   const heatCls = n => n >= 5 ? " heat-3" : n >= 3 ? " heat-2" : n >= 1 ? " heat-1" : "";
-  const filtered = all.filter(c => (filter === "all" || c.status === filter) && (hood === "all" || c.neighbourhood === hood));
+  // Feature 1: Near Me — distance helpers.
+  const distKm = c => (myLoc && c.lat && c.lng) ? haversineKm(myLoc.lat, myLoc.lng, c.lat, c.lng) : null;
+  const fmtDist = km => km == null ? "" : (km < 1 ? Math.round(km * 1000) + " m" : km.toFixed(1) + " km");
+  const walkMin = km => km == null ? 0 : Math.max(1, Math.round(km / 4.8 * 60));
+  const findNearMe = () => {
+    if (!navigator.geolocation) { toast(t.nearMeDenied); return; }
+    if (myLoc) { setMyLoc(null); return; } // toggle off
+    setLocating(true);
+    try {
+      navigator.geolocation.getCurrentPosition(
+        p => { setMyLoc({ lat: p.coords.latitude, lng: p.coords.longitude }); setLocating(false); },
+        () => { setLocating(false); toast(t.nearMeDenied); },
+        { timeout: 8000, maximumAge: 60000 }
+      );
+    } catch (e) { setLocating(false); toast(t.nearMeDenied); }
+  };
+  let filtered = all.filter(c => (filter === "all" || c.status === filter) && (hood === "all" || c.neighbourhood === hood));
+  if (myLoc) filtered = filtered.slice().sort((a, b) => {
+    const da = distKm(a), db2 = distKm(b);
+    if (da == null) return 1; if (db2 == null) return -1;
+    return da - db2;
+  });
   const gameCountFor = id => allGames && allGames[id] ? Object.keys(allGames[id]).length : 0;
   // Deep links: "#court-{id}" opens the detail (shareCourt URLs); back button closes it.
   const openCourt = c => {
@@ -5217,7 +5711,12 @@ function CourtsPage() {
     onClick: () => { setHeat(h => !h); if (!heat) toast(t.heatmapOn); },
     title: t.heatmap,
     "aria-pressed": heat
-  }, "\uD83D\uDD25 " + t.heatmap)), tab === "map" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(MapView, {
+  }, "\uD83D\uDD25 " + t.heatmap),
+  React.createElement("button", {
+    className: myLoc ? "active" : "",
+    onClick: findNearMe, title: t.nearMe || "L\u00E2ng\u0103 mine",
+    "aria-pressed": !!myLoc, disabled: locating
+  }, locating ? "\uD83D\uDCCD\u2026" : "\uD83D\uDCCD")), tab === "map" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(MapView, {
     courts: filtered,
     onSelect: openCourt,
     heat: heat,
@@ -5260,7 +5759,11 @@ function CourtsPage() {
   heatNow(c.id) > 0 && React.createElement("span", {
     className: "badge badge-coral",
     style: { marginLeft: ".3rem" }
-  }, "🔥 ", heatNow(c.id), " ", t.heatPlaying)
+  }, "🔥 ", heatNow(c.id), " ", t.heatPlaying),
+  myLoc && distKm(c) != null && React.createElement("span", {
+    className: "badge",
+    style: { background: "var(--teal)22", color: "var(--teal)", marginLeft: ".3rem" }
+  }, "📍 ", fmtDist(distKm(c)), " · ", walkMin(distKm(c)), " ", (t.walkMin || "min pe jos"))
   ), /*#__PURE__*/React.createElement("div", {
     className: "progress-bar mt-1"
   }, /*#__PURE__*/React.createElement("div", {
@@ -5380,6 +5883,7 @@ function CourtDetail({
   const [ci, setCi] = useState(false);
   const [showPlay, setShowPlay] = useState(false);
   const [showQR, setShowQR] = useState(false);
+  const [showWanted, setShowWanted] = useState(false);
   const [unlockBadge, setUnlockBadge] = useState(null);
   const { awardBadge } = useBadges();
   const { isFollowing, toggle: toggleFollow } = useFollows();
@@ -5500,6 +6004,9 @@ function CourtDetail({
   React.createElement(RatingSection, { court: c }),
   React.createElement(CourtSound, { court: c }),
   React.createElement(SatelliteTimeMachine, { court: c }),
+  (c.status === "degraded" || c.status === "inProgress") && React.createElement(TaskBoard, { court: c }),
+  c.category !== "gym" && React.createElement(AdoptCourt, { court: c }),
+  React.createElement(CourtTimeline, { court: c }),
   /*#__PURE__*/React.createElement("div", {
     className: "flex gap-1 mt-2"
   }, (useApp().settings?.flags?.booking) !== false && /*#__PURE__*/React.createElement("button", {
@@ -5531,9 +6038,11 @@ function CourtDetail({
     onClick: () => shareCourt(c, t, toast),
     title: t.shareCourt
   }, "\uD83D\uDD17 " + t.shareCourt),
-  React.createElement("button", { className:"btn btn-outline btn-sm", onClick:()=>setShowQR(true) }, "\uD83D\uDCF1 QR"))),
+  React.createElement("button", { className:"btn btn-outline btn-sm", onClick:()=>setShowQR(true) }, "\uD83D\uDCF1 QR"),
+  c.category !== "gym" && React.createElement("button", { className:"btn btn-outline btn-sm", onClick:()=>setShowWanted(true) }, "\uD83E\uDEA7 Poster"))),
   showPlay && React.createElement(PlayNowModal, { court: c, onClose: () => setShowPlay(false) }),
   showQR && React.createElement(CourtQRCard, { court: c, onClose: () => setShowQR(false) }),
+  showWanted && React.createElement(WantedPoster, { court: c, onClose: () => setShowWanted(false) }),
   unlockBadge && React.createElement(BadgeUnlockModal, { badge:unlockBadge, lang:lang, onClose:()=>setUnlockBadge(null) })
   );
 }
@@ -5546,13 +6055,30 @@ function ReportModal({
     t,
     toast
   } = useApp();
-  const [f, setF] = useState({
+  const DRAFT_KEY = "g2p_draft_report";
+  const loadDraft = () => {
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (!raw) return null;
+      const d = JSON.parse(raw);
+      if (d.ts && Date.now() - d.ts < 48 * 3600000) return d.form;
+    } catch (e) {}
+    return null;
+  };
+  const initDraft = loadDraft();
+  const [f, setF] = useState(initDraft || {
     name: "",
     address: "",
     condition: 3,
     description: "",
     category: "basketball"
   });
+  useEffect(() => { if (initDraft) toast(t.draftRestored || "Ciornă restaurată"); }, []);
+  const updateF = (patch) => {
+    const nf = { ...f, ...patch };
+    setF(nf);
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ form: nf, ts: Date.now() })); } catch (e) {}
+  };
   const sub = () => {
     if (!f.name || !f.address) {
       toast(t.error);
@@ -5574,18 +6100,22 @@ function ReportModal({
         flatSurface: false
       }
     });
+    try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
     toast(t.success);
     onClose();
   };
   const gps = () => {
-    if (navigator.geolocation) navigator.geolocation.getCurrentPosition(p => setF(o => ({
-      ...o,
+    if (navigator.geolocation) navigator.geolocation.getCurrentPosition(p => updateF({
       address: `${p.coords.latitude.toFixed(4)}, ${p.coords.longitude.toFixed(4)}`
-    })));
+    }));
+  };
+  const cancelAndClear = () => {
+    try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+    onClose();
   };
   return /*#__PURE__*/React.createElement("div", {
     className: "modal-overlay",
-    onClick: onClose
+    onClick: cancelAndClear
   }, /*#__PURE__*/React.createElement("div", {
     className: "modal",
     onClick: e => e.stopPropagation()
@@ -5594,30 +6124,21 @@ function ReportModal({
   }, "\uD83D\uDCCD ", t.reportCourt), /*#__PURE__*/React.createElement("input", {
     placeholder: t.courtName,
     value: f.name,
-    onChange: e => setF({
-      ...f,
-      name: e.target.value
-    }),
+    onChange: e => updateF({ name: e.target.value }),
     className: "mb-1"
   }), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-1 mb-1"
   }, /*#__PURE__*/React.createElement("input", {
     placeholder: t.address,
     value: f.address,
-    onChange: e => setF({
-      ...f,
-      address: e.target.value
-    })
+    onChange: e => updateF({ address: e.target.value })
   }), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-outline",
     onClick: gps,
     type: "button"
   }, "\uD83D\uDCCD")), /*#__PURE__*/React.createElement("select", {
     value: f.category,
-    onChange: e => setF({
-      ...f,
-      category: e.target.value
-    }),
+    onChange: e => updateF({ category: e.target.value }),
     className: "mb-1"
   }, /*#__PURE__*/React.createElement("option", {
     value: "basketball"
@@ -5638,17 +6159,11 @@ function ReportModal({
     min: "1",
     max: "5",
     value: f.condition,
-    onChange: e => setF({
-      ...f,
-      condition: +e.target.value
-    })
+    onChange: e => updateF({ condition: +e.target.value })
   })), /*#__PURE__*/React.createElement("textarea", {
     placeholder: t.description,
     value: f.description,
-    onChange: e => setF({
-      ...f,
-      description: e.target.value
-    }),
+    onChange: e => updateF({ description: e.target.value }),
     rows: 3,
     className: "mb-1"
   }), /*#__PURE__*/React.createElement("div", {
@@ -5658,7 +6173,7 @@ function ReportModal({
     onClick: sub
   }, t.submit), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline",
-    onClick: onClose
+    onClick: cancelAndClear
   }, t.cancel))));
 }
 
@@ -6377,6 +6892,7 @@ function PetitionPage() {
     total: total
   }),
   unlockBadge && React.createElement(BadgeUnlockModal, { badge:unlockBadge, lang:lang, onClose:function(){setUnlockBadge(null);} }),
+  React.createElement(LetterCounter, null),
   React.createElement(PledgeWall, null));
 }
 const LETTER_AREAS = [
@@ -6413,6 +6929,9 @@ function LetterModal({
   };
   const dl = () => {
     const text = buildLetter();
+    /* S4-F3: increment letter counter */
+    db.ref("letterCount/total").transaction(v => (v || 0) + 1);
+    logActivity("letter", "Cetățean", null);
     const JsPDF = window.jspdf && window.jspdf.jsPDF;
     if (!JsPDF) {
       const b = new Blob([text], { type: "text/plain" });
@@ -7578,7 +8097,7 @@ function ImpactPage() {
     onClick: () => setTab("tl")
   }, "\uD83D\uDCC5"), React.createElement("button", { className: tab === "hood" ? "active" : "", onClick: function() { setTab("hood"); }, title: "Neighbourhoods" }, "\uD83C\uDFD8"),
   React.createElement("button", { className: tab === "race" ? "active" : "", onClick: function() { setTab("race"); }, title: t.neighborhoodRace||"Cursa cartierelor" }, "\uD83C\uDFC1")),
-  tab === "calc" && React.createElement(React.Fragment, null, React.createElement(ImpactCalc, null), React.createElement(InequalityReceipt, null)), tab === "city" && /*#__PURE__*/React.createElement(CityComp, null), tab === "budget" && /*#__PURE__*/React.createElement(BudgetViz, null), tab === "carbon" && /*#__PURE__*/React.createElement(CarbonCalc, null), tab === "health" && /*#__PURE__*/React.createElement(HealthCalc, null), tab === "mental" && /*#__PURE__*/React.createElement(MentalSec, null), tab === "tl" && /*#__PURE__*/React.createElement(TimelineSec, null), tab === "hood" && React.createElement(HoodChart, null),
+  tab === "calc" && React.createElement(React.Fragment, null, React.createElement(ImpactCalc, null), React.createElement(InequalityReceipt, null)), tab === "city" && /*#__PURE__*/React.createElement(CityComp, null), tab === "budget" && React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(BudgetViz, null), React.createElement(BudgetWatchdog, null)), tab === "carbon" && /*#__PURE__*/React.createElement(CarbonCalc, null), tab === "health" && /*#__PURE__*/React.createElement(HealthCalc, null), tab === "mental" && /*#__PURE__*/React.createElement(MentalSec, null), tab === "tl" && /*#__PURE__*/React.createElement(TimelineSec, null), tab === "hood" && React.createElement(HoodChart, null),
   tab === "race" && React.createElement(React.Fragment, null,
     React.createElement(CouncilCountdown, null),
     React.createElement(NeighborhoodRace, null)
@@ -8515,7 +9034,7 @@ function ProfilePage() {
   }, /*#__PURE__*/React.createElement("span", null, "Language"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-outline",
     onClick: () => setLang(nextLang(lang))
-  }, t.language))), React.createElement(Reveal, { as:"div", className:"card mt-2" },
+  }, t.language))), React.createElement(StreakCard, null), React.createElement(Reveal, { as:"div", className:"card mt-2" },
     React.createElement(BadgesGrid, { lang:lang })
   ), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline btn-block mt-2",
@@ -8646,6 +9165,7 @@ function AdminSiteTab() {
           style: { background: hex || "#10B981" },
           onClick: () => set("accent", hex)
         })))),
+    React.createElement(BudgetAdmin, null),
     React.createElement("h3", { className: "a-sec", style: { color: "#F87171" } }, "☢️ Danger zone"),
     Row("Reset petition votes", "Sets flip / mural / both to 0. Signup rows are kept.",
       React.createElement("button", { className: "a-del", onClick: () => {
