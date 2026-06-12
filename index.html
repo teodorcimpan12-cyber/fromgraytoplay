@@ -736,6 +736,8 @@ const T = {
     pandurilor: "Pandurilor",
     libertate: "Libertate",
     unirii: "Unirii",
+    dambu: "Dâmbu Pietros",
+    cornesti: "Cornești",
     gym: "Sală fitness",
     general: "General",
     center: "Centru",
@@ -883,6 +885,8 @@ const T = {
     pandurilor: "Pandurilor",
     libertate: "Libertate",
     unirii: "Unirii",
+    dambu: "Dâmbu Pietros",
+    cornesti: "Cornești",
     gym: "Gym / Fitness",
     general: "General",
     center: "Centre",
@@ -1030,6 +1034,8 @@ const T = {
     pandurilor: "Pandurilor",
     libertate: "Libertate",
     unirii: "Unirii",
+    dambu: "Dâmbu Pietros",
+    cornesti: "Cornești",
     gym: "Terem / Fitnesz", // TODO: HU review
     general: "Általános",
     center: "Központ",
@@ -1643,6 +1649,8 @@ T.hu.gdprRequired = "Az aláíráshoz el kell fogadnod az adatkezelést."; // TO
 T.ro.nearMe = "Lângă mine"; T.en.nearMe = "Near me"; T.hu.nearMe = "Közelemben"; // TODO: HU review
 T.ro.nearMeDenied = "Nu am putut obține locația"; T.en.nearMeDenied = "Couldn't get your location"; T.hu.nearMeDenied = "Nem sikerült lekérni a helyzetedet"; // TODO: HU review
 T.ro.walkMin = "min pe jos"; T.en.walkMin = "min walk"; T.hu.walkMin = "perc gyalog"; // TODO: HU review
+T.ro.youAreHere = "Ești aici"; T.en.youAreHere = "You are here"; T.hu.youAreHere = "Itt vagy"; // TODO: HU review
+T.ro.notifGlobalHint = "Activitate recentă din tot orașul — urmărește un teren pentru notificări personalizate."; T.en.notifGlobalHint = "Recent city-wide activity — follow a court for personalised notifications."; T.hu.notifGlobalHint = "Friss városi aktivitás — kövess egy pályát a személyre szabott értesítésekhez."; // TODO: HU review
 /* 2. Court Timeline */
 T.ro.courtTimeline = "Istoricul terenului"; T.en.courtTimeline = "Court history"; T.hu.courtTimeline = "Pálya története"; // TODO: HU review
 T.ro.timelineEmpty = "Nicio activitate încă — fii primul."; T.en.timelineEmpty = "No activity yet — be the first."; T.hu.timelineEmpty = "Még nincs aktivitás — légy te az első."; // TODO: HU review
@@ -1828,18 +1836,20 @@ function CourtHealthRing(props) {
 
 /* === Neighborhood Civic Race === */
 var HOOD_COURT_MAP = {
-  tudor:      ["c5","c6","c7","c8","c19"],
+  tudor:      ["c5","c6","c7","c8","c19","c27"],
   auchan:     ["c3","c4"],
-  mureseni:   ["c1","c2","c20"],
-  center:     ["c9","c10","c11","c12","c13","c18"],
+  mureseni:   ["c1","c2","c20","c28"],
+  center:     ["c9","c10","c11","c12","c13","c18","c26"],
   pandurilor: ["c14","c15"],
   libertate:  ["c16"],
-  unirii:     ["c17"]
+  unirii:     ["c17","c21"],
+  dambu:      ["c22","c23"],
+  cornesti:   ["c24","c25"]
 };
 var HOOD_DISPLAY = {
-  ro:{ tudor:"Tudor", auchan:"Zona Auchan", mureseni:"Mureșeni", center:"Centru", pandurilor:"Pandurilor", libertate:"Libertate", unirii:"Unirii" },
-  en:{ tudor:"Tudor", auchan:"Auchan Area", mureseni:"Mureșeni", center:"Center",  pandurilor:"Pandurilor", libertate:"Libertate", unirii:"Unirii" },
-  hu:{ tudor:"Tudor", auchan:"Auchan körzet", mureseni:"Mureșeni", center:"Közép", pandurilor:"Pandurilor", libertate:"Libertate", unirii:"Unirii" }
+  ro:{ tudor:"Tudor", auchan:"Zona Auchan", mureseni:"Mureșeni", center:"Centru", pandurilor:"Pandurilor", libertate:"Libertate", unirii:"Unirii", dambu:"Dâmbu Pietros", cornesti:"Cornești" },
+  en:{ tudor:"Tudor", auchan:"Auchan Area", mureseni:"Mureșeni", center:"Center",  pandurilor:"Pandurilor", libertate:"Libertate", unirii:"Unirii", dambu:"Dâmbu Pietros", cornesti:"Cornești" },
+  hu:{ tudor:"Tudor", auchan:"Auchan körzet", mureseni:"Mureșeni", center:"Közép", pandurilor:"Pandurilor", libertate:"Libertate", unirii:"Unirii", dambu:"Dâmbu Pietros", cornesti:"Cornești" }
 };
 
 function NeighborhoodRace() {
@@ -2573,7 +2583,7 @@ function InequalityReceipt() {
     ctx.fillText(t.receiptTitle.toUpperCase(), W / 2, 116);
     dash(138);
     // Per-neighbourhood line items from the hardcoded COURTS dataset.
-    var hoodKeys = ["center", "tudor", "mureseni", "auchan", "pandurilor", "libertate", "unirii"];
+    var hoodKeys = ["center", "tudor", "mureseni", "auchan", "pandurilor", "libertate", "unirii", "dambu", "cornesti"];
     var y = 174;
     ctx.font = "15px 'Space Mono',monospace";
     hoodKeys.forEach(function (hk) {
@@ -4114,6 +4124,132 @@ const COURTS = [
     accessibility: { wheelchair: false, lighting: false, parking: false, flatSurface: false },
     reports: 5,
     description: "Teren fotbal cartier Mureșeni, asfalt degradat, porți ruginite, fără iluminat. Zona cu tineri numeroși și facilități inexistente."
+  },
+  // ── PLOPILOR (proiect HCL ian. 2025 — precedentul-cheie) ──────────────────
+  {
+    id: "c21",
+    name: "Teren Multisport Str. Plopilor",
+    address: "Str. Plopilor, cartier Unirii",
+    lat: 46.5330, lng: 24.5408,
+    status: "inProgress",
+    neighbourhood: "unirii",
+    category: "multiuse",
+    condition: 3,
+    occupancy: "empty",
+    progress: 35,
+    accessibility: { wheelchair: false, lighting: false, parking: false, flatSurface: true },
+    reports: 1,
+    description: "Teren multisport aprobat prin HCL în ianuarie 2025 — 80.000 lei buget local, propus de consilierii Mașca și Veress (POL). Primul teren de cartier finanțat în 12 ani; urmărim execuția."
+  },
+  // ── DÂMBU PIETROS ─────────────────────────────────────────────────────────
+  {
+    id: "c22",
+    name: "Teren Sport Dâmbu Pietros",
+    address: "Str. Băneasa, cartier Dâmbu Pietros",
+    lat: 46.5560, lng: 24.5840,
+    status: "degraded",
+    neighbourhood: "dambu",
+    category: "multiuse",
+    condition: 2,
+    occupancy: "empty",
+    progress: 10,
+    accessibility: { wheelchair: false, lighting: false, parking: false, flatSurface: false },
+    reports: 4,
+    description: "Teren de cartier între blocuri, asfalt crăpat, echipamente lipsă. Cartier numit explicit în documentarea noastră ca zonă prioritară."
+  },
+  {
+    id: "c23",
+    name: "Teren Mic Fotbal Str. 8 Martie",
+    address: "Str. 8 Martie, cartier Dâmbu Pietros",
+    lat: 46.5538, lng: 24.5800,
+    status: "degraded",
+    neighbourhood: "dambu",
+    category: "football",
+    condition: 2,
+    occupancy: "empty",
+    progress: 15,
+    accessibility: { wheelchair: false, lighting: false, parking: false, flatSurface: false },
+    reports: 3,
+    description: "Mini-teren fotbal de cartier, porți ruginite, marcaje șterse, gard parțial căzut."
+  },
+  // ── CORNEȘTI (cartier) ────────────────────────────────────────────────────
+  {
+    id: "c24",
+    name: "Teren Sport Cartier Cornești",
+    address: "Str. Verii, cartier Cornești",
+    lat: 46.5660, lng: 24.5700,
+    status: "degraded",
+    neighbourhood: "cornesti",
+    category: "multiuse",
+    condition: 2,
+    occupancy: "empty",
+    progress: 10,
+    accessibility: { wheelchair: false, lighting: false, parking: false, flatSurface: false },
+    reports: 3,
+    description: "Teren de cartier pe deal, suprafață deteriorată — contrast puternic cu Platoul Cornești aflat la câteva sute de metri."
+  },
+  {
+    id: "c25",
+    name: "Zona Fitness Platoul Cornești",
+    address: "Platoul Cornești",
+    lat: 46.5645, lng: 24.5460,
+    status: "renovated",
+    neighbourhood: "cornesti",
+    category: "multiuse",
+    condition: 4,
+    occupancy: "active",
+    progress: 95,
+    accessibility: { wheelchair: true, lighting: true, parking: true, flatSurface: true },
+    reports: 0,
+    description: "Aparate fitness în aer liber și zonă recreativă pe Platoul Cornești — bine întreținută, parte din zona turistică centrală."
+  },
+  // ── CENTER (universitar) ──────────────────────────────────────────────────
+  {
+    id: "c26",
+    name: "Baza Sportivă UMFST",
+    address: "Str. Gheorghe Marinescu 38",
+    lat: 46.5420, lng: 24.5350,
+    status: "renovated",
+    neighbourhood: "center",
+    category: "multiuse",
+    condition: 4,
+    occupancy: "active",
+    progress: 90,
+    accessibility: { wheelchair: true, lighting: true, parking: true, flatSurface: true },
+    reports: 0,
+    description: "Baza sportivă a Universității de Medicină, Farmacie, Științe și Tehnologie — terenuri multiple, acces pentru studenți și închiriere."
+  },
+  // ── TUDOR (suplimentar) ───────────────────────────────────────────────────
+  {
+    id: "c27",
+    name: "Teren Baschet Aleea Carpați",
+    address: "Aleea Carpați, cartier Tudor",
+    lat: 46.5530, lng: 24.5720,
+    status: "degraded",
+    neighbourhood: "tudor",
+    category: "basketball",
+    condition: 2,
+    occupancy: "empty",
+    progress: 10,
+    accessibility: { wheelchair: false, lighting: false, parking: false, flatSurface: false },
+    reports: 4,
+    description: "Teren baschet între blocuri pe Aleea Carpați — panou crăpat, inel ruginit, asfalt cu gropi."
+  },
+  // ── MUREȘENI (școlar) ─────────────────────────────────────────────────────
+  {
+    id: "c28",
+    name: "Teren Școlar Mureșeni",
+    address: "Cartier Mureșeni (incintă școlară)",
+    lat: 46.5290, lng: 24.5560,
+    status: "degraded",
+    neighbourhood: "mureseni",
+    category: "multiuse",
+    condition: 2,
+    occupancy: "empty",
+    progress: 15,
+    accessibility: { wheelchair: false, lighting: false, parking: false, flatSurface: true },
+    reports: 2,
+    description: "Teren în incintă școlară, acces limitat la programul școlii — singura suprafață sport din zonă pentru mulți copii."
   }
 ];
 var ESSAY = {
@@ -4281,7 +4417,7 @@ const TIMELINE = [
   { y: 2026, ro: "Lansare From Grey to Play — platforma civică documentează cele 20 de terenuri din Târgu Mureș", en: "From Grey to Play launched — civic platform documents all 20 courts in Târgu Mureș", hu: "From Grey to Play indulása — a platform mind a 20 marosvásárhelyi pályát dokumentálja" }
 ];
 const ADMIN_PW = "teodor2026";
-const ADMIN_EMAIL = "addtru@gmail.com";
+const ADMIN_EMAIL = "teodor.cimpan12@gmail.com";
 
 /* === Toast === */
 function Toast({
@@ -4409,7 +4545,7 @@ function NotifPanel({ onClose }) {
   const items = actData
     ? Object.entries(actData)
         .map(([id, a]) => ({ id, ...a }))
-        .filter(a => a.courtId && followedIds.includes(a.courtId))
+        .filter(a => followedIds.length === 0 || (a.courtId && followedIds.includes(a.courtId)))
         .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))
         .slice(0, 20)
     : [];
@@ -4437,6 +4573,7 @@ function NotifPanel({ onClose }) {
       React.createElement("button", { onClick: markRead, style: { background: "none", border: "none", fontSize: ".75rem", color: "var(--green)", cursor: "pointer", fontWeight: 600 } }, t.markRead)
     ),
     React.createElement("div", { style: { overflowY: "auto", flex: 1 } },
+      followedIds.length === 0 && items.length > 0 && React.createElement("p", { style: { padding: ".5rem 1rem 0", color: "var(--textSec)", fontSize: ".72rem", margin: 0 } }, t.notifGlobalHint || "Activitate recenta din tot orasul."),
       items.length === 0
         ? React.createElement("p", { style: { padding: "1rem", color: "var(--textSec)", fontSize: ".88rem" } }, t.notifNone)
         : items.map(a => React.createElement("div", {
@@ -4450,7 +4587,7 @@ function NotifPanel({ onClose }) {
             React.createElement("span", { style: { fontSize: "1.1rem", flexShrink: 0 } }, ICONS[a.type] || "•"),
             React.createElement("div", { style: { flex: 1, minWidth: 0 } },
               React.createElement("p", { style: { margin: 0, fontSize: ".82rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } },
-                React.createElement("strong", null, COURT_NAMES[a.courtId] || a.courtId), " · ", a.userName || "Anon"
+                React.createElement("strong", null, COURT_NAMES[a.courtId] || a.courtId || a.type || "\u2022"), " · ", a.userName || "Anon"
               ),
               React.createElement("time", { style: { fontSize: ".7rem", color: "var(--textSec)", fontFamily: "'Space Mono',monospace" } }, ago(a.timestamp), " ago")
             ),
@@ -4557,7 +4694,8 @@ function Navbar() {
     setPage,
     user,
     settings,
-    setCmd
+    setCmd,
+    isAdmin
   } = useApp();
   const [mob, setMob] = useState(false);
   const [showNotif, setShowNotif] = useState(false);
@@ -4695,7 +4833,8 @@ function MapView({
   height = "380px",
   onSelect,
   heat = false,
-  heatCounts = null
+  heatCounts = null,
+  myLoc = null
 }) {
   const ref = useRef(null);
   const mapRef = useRef(null);
@@ -4739,13 +4878,22 @@ function MapView({
       mk.bindPopup(`<b>${c.name}</b><br>${c.address}`);
       if (onSelect) mk.on('click', () => onSelect(c));
     });
+    if (myLoc) {
+      const uIcon = L.divIcon({
+        html: '<div style="width:18px;height:18px;border-radius:50%;background:#2563EB;border:3px solid #fff;box-shadow:0 0 0 5px rgba(37,99,235,.35)"></div>',
+        className: "",
+        iconSize: [18, 18]
+      });
+      L.marker([myLoc.lat, myLoc.lng], { icon: uIcon, zIndexOffset: 1000 }).addTo(m).bindPopup(t.youAreHere || "Esti aici");
+      m.setView([myLoc.lat, myLoc.lng], 14);
+    }
     mapRef.current = m;
     setTimeout(() => m.invalidateSize(), 200);
     return () => {
       m.remove();
       mapRef.current = null;
     };
-  }, [courts, heat, heatCounts]);
+  }, [courts, heat, heatCounts, myLoc]);
   return /*#__PURE__*/React.createElement("div", {
     ref: ref,
     className: "map-box",
@@ -5763,7 +5911,11 @@ function CourtsPage() {
     value: "libertate"
   }, t.libertate), /*#__PURE__*/React.createElement("option", {
     value: "unirii"
-  }, t.unirii))), /*#__PURE__*/React.createElement("div", {
+  }, t.unirii), /*#__PURE__*/React.createElement("option", {
+    value: "dambu"
+  }, t.dambu), /*#__PURE__*/React.createElement("option", {
+    value: "cornesti"
+  }, t.cornesti))), /*#__PURE__*/React.createElement("div", {
     className: "tabs"
   }, /*#__PURE__*/React.createElement("button", {
     className: tab === "map" ? "active" : "",
@@ -5785,7 +5937,8 @@ function CourtsPage() {
     courts: filtered,
     onSelect: openCourt,
     heat: heat,
-    heatCounts: heatCounts
+    heatCounts: heatCounts,
+    myLoc: myLoc
   }), /*#__PURE__*/React.createElement("p", {
     className: "text-xs mt-1",
     style: { color: "var(--textSec)", textAlign: "center" }
@@ -6067,7 +6220,6 @@ function CourtDetail({
   ),
   React.createElement(ActiveGames, { court: c }),
   React.createElement(RatingSection, { court: c }),
-  React.createElement(CourtSound, { court: c }),
   React.createElement(SatelliteTimeMachine, { court: c }),
   (c.status === "degraded" || c.status === "inProgress") && React.createElement(TaskBoard, { court: c }),
   c.category !== "gym" && React.createElement(AdoptCourt, { court: c }),
@@ -8601,6 +8753,71 @@ function TimelineSec() {
   }, ev[lang])))));
 }
 
+/* === City Hall Guide — real contacts, legal procedures, arguments.
+   Data from CITY_HALL_BRIEF.md (verified June 2026). Help > contact tab. === */
+function CityHallGuide() {
+  var app = useApp(); var lang = app.lang;
+  var L3 = function(ro, en, hu) { return lang === "en" ? en : lang === "hu" ? (hu || ro) : ro; };
+  var CONTACTS = [
+    { ic: "🏗️", name: "Direcția Tehnică — Ing. Racz Lucian", role: L3("Lucrări și investiții — contactul principal pentru renovări", "Works and investments — the main contact for renovations", null), tel: "0265262442", telLabel: "0265-262.442", mail: "tehnic@tirgumures.ro" },
+    { ic: "⚽", name: "Serviciul Sport — Ciugudean Marina", role: L3("Buget operațional sport, finanțări cluburi — Str. N. Grigorescu 17-19", "Sport operations budget, club funding", null), tel: "0365882066", telLabel: "0365-882.066", mail: null },
+    { ic: "📄", name: L3("Informații publice — Legea 544/2001", "Public information — Law 544/2001", null), role: L3("Răspuns obligatoriu în 10 zile lucrătoare", "Mandatory answer within 10 working days", null), tel: null, telLabel: null, mail: "infopublic@tirgumures.ro" },
+    { ic: "🏛️", name: L3("Registratura Primăriei", "City Hall registry", null), role: "Piața Victoriei nr. 3, 540026 Târgu Mureș", tel: "0265268330", telLabel: "0265-268.330", mail: "primaria@tirgumures.ro" }
+  ];
+  var STEPS = [
+    L3("Trimite cererea 544/2001 — buget sport, listă investiții, HCL-uri terenuri (răspuns: 10 zile)", "Send the 544/2001 request — sport budget, investment list, court decisions (answer: 10 days)", null),
+    L3("Depune petiția formală OG 27/2002 — răspuns obligatoriu în 30 de zile", "File the formal OG 27/2002 petition — mandatory answer in 30 days", null),
+    L3("Contactează consilierii Mașca și Veress (POL) — au obținut 80.000 lei pentru terenul Plopilor", "Contact councillors Mașca and Veress (POL) — they secured 80,000 lei for the Plopilor court", null),
+    L3("Programează întâlnirea cu Direcția Tehnică + Serviciul Sport", "Schedule the meeting with the Technical Directorate + Sport Service", null),
+    L3("Comunicat de presă cu 1 săptămână înainte de întâlnire — Zi de Zi, Punctul.ro, Radio Mureș", "Press release one week before the meeting — Zi de Zi, Punctul.ro, Radio Mureș", null)
+  ];
+  var ARGS = [
+    L3("Precedent intern: HCL ian. 2025 — 80.000 lei pentru Plopilor. Cerem consecvență pentru celelalte cartiere.", "Internal precedent: Jan 2025 council decision — 80,000 lei for Plopilor. We ask for consistency across the other neighbourhoods.", null),
+    L3("Cost minim: 100.000–400.000 lei per teren = 0,1–0,4% din bugetul anual de sport (99,5 mil. lei).", "Minimal cost: 100,000–400,000 lei per court = 0.1–0.4% of the yearly sport budget (99.5M lei).", null),
+    L3("Model Cluj-Napoca: 26,5 mil. lei investiți în Mănăștur după presiune civică — același tip de cartier.", "Cluj-Napoca model: 26.5M lei invested in Mănăștur after civic pressure — the same kind of neighbourhood.", null),
+    L3("Fonduri UE disponibile: PR Centru OS 4.3 — 45,5 mil. EUR pentru regenerare urbană; terenurile sport sunt eligibile.", "EU funds available: PR Centru OS 4.3 — 45.5M EUR for urban regeneration; sport courts are eligible.", null)
+  ];
+  var m544 = "mailto:infopublic@tirgumures.ro?subject=" + encodeURIComponent("Cerere de acces la informatii de interes public - Legea 544/2001 - terenuri sportive") + "&body=" + encodeURIComponent("Stimata doamna / Stimate domn,\n\nIn baza Legii nr. 544/2001, va solicit in format electronic:\n1. Bugetul detaliat pe sport si spatii publice 2025 (capitolul 67)\n2. Lista proiectelor de investitii 2022-2025 privind terenurile sportive\n3. Extrasul din SIDU 2021-2030 privind infrastructura sportiva\n4. Hotararile de Consiliu Local 2022-2025 privind terenurile sportive\n5. Stadiul terenului multisport din str. Plopilor (HCL ian. 2025)\n\nTermenul legal de raspuns este de 10 zile lucratoare.\n\nCu respect,\n[numele tau]");
+  var mPet = "mailto:primaria@tirgumures.ro?subject=" + encodeURIComponent("Petitie - renovarea terenurilor sportive din cartierele periferice (OG 27/2002)") + "&body=" + encodeURIComponent("Catre Primarul si Consiliul Local al Municipiului Targu Mures,\n\nIn baza OG 27/2002, solicit:\n1. Includerea in bugetul 2026 a minimum 500.000 lei pentru reabilitarea a minimum 3 terenuri sportive din cartierele periferice (Tudor Vladimirescu, Unirii, Dambu Pietros)\n2. O intalnire de lucru cu Directia Tehnica si Serviciul Sport in termen de 30 de zile\n3. Includerea terenurilor de cartier in actualizarea SIDU 2021-2030\n4. Raport anual de transparenta privind investitiile sportive pe cartiere\n\nDate complete: fromgreytoplay.netlify.app\n\nAstept raspuns motivat in termenul legal de 30 de zile.\n\nCu respect,\n[numele tau]");
+  return React.createElement("div", { className: "mb-2" },
+    React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--green)" } },
+      React.createElement("h3", { className: "mb-1" }, "🏛️ ", L3("Ghid: cum obții renovarea de la Primărie", "Guide: how to get the renovation from City Hall", null)),
+      React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } },
+        L3("Date reale, verificate iunie 2026 — cine decide, ce legi te ajută și pașii exacți.", "Real data, verified June 2026 — who decides, which laws help and the exact steps.", null))),
+    React.createElement("div", { className: "card mb-2" },
+      React.createElement("h4", { className: "mb-1" }, "👤 ", L3("Cine decide", "Who decides", null)),
+      CONTACTS.map(function(ct, i) {
+        return React.createElement("div", { key: i, style: { padding: ".6rem 0", borderBottom: i < CONTACTS.length - 1 ? "1px solid var(--border)" : "none" } },
+          React.createElement("div", { style: { fontWeight: 700, fontSize: ".9rem" } }, ct.ic, " ", ct.name),
+          React.createElement("div", { className: "text-xs", style: { color: "var(--textSec)", margin: ".15rem 0 .35rem" } }, ct.role),
+          React.createElement("div", { className: "flex gap-1", style: { flexWrap: "wrap" } },
+            ct.tel && React.createElement("a", { href: "tel:" + ct.tel, className: "badge", style: { background: "var(--teal)22", color: "var(--teal)", textDecoration: "none" } }, "📞 " + ct.telLabel),
+            ct.mail && React.createElement("a", { href: "mailto:" + ct.mail, className: "badge", style: { background: "var(--green)22", color: "var(--green)", textDecoration: "none" } }, "✉️ " + ct.mail)));
+      })),
+    React.createElement("div", { className: "card mb-2" },
+      React.createElement("h4", { className: "mb-1" }, "⚖️ ", L3("Acțiuni legale într-un click", "Legal actions in one click", null)),
+      React.createElement("p", { className: "text-xs mb-1", style: { color: "var(--textSec)" } },
+        L3("Email pre-completat — deschide, semnează cu numele tău, trimite. Păstrează confirmarea.", "Pre-filled email — open it, sign with your name, send. Keep the receipt.", null)),
+      React.createElement("a", { href: m544, className: "btn btn-green btn-block mb-1", style: { textAlign: "center", textDecoration: "none" } },
+        "📄 ", L3("Cerere informații — Legea 544/2001 (10 zile)", "Information request — Law 544/2001 (10 days)", null)),
+      React.createElement("a", { href: mPet, className: "btn btn-outline btn-block", style: { textAlign: "center", textDecoration: "none" } },
+        "📜 ", L3("Petiție formală — OG 27/2002 (30 de zile)", "Formal petition — OG 27/2002 (30 days)", null))),
+    React.createElement("div", { className: "card mb-2" },
+      React.createElement("h4", { className: "mb-1" }, "🪜 ", L3("Pașii, în ordine", "The steps, in order", null)),
+      STEPS.map(function(s, i) {
+        return React.createElement("div", { key: i, className: "flex gap-1 text-sm", style: { padding: ".35rem 0", alignItems: "flex-start" } },
+          React.createElement("span", { style: { fontFamily: "Space Mono, monospace", fontWeight: 700, color: "var(--green)", flexShrink: 0 } }, (i + 1) + "."),
+          React.createElement("span", null, s));
+      })),
+    React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--teal)" } },
+      React.createElement("h4", { className: "mb-1" }, "🎯 ", L3("Argumente care funcționează", "Arguments that work", null)),
+      ARGS.map(function(a, i) {
+        return React.createElement("p", { key: i, className: "text-sm", style: { padding: ".25rem 0", lineHeight: 1.5 } }, "• " + a);
+      }),
+      React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)", fontWeight: 600 } },
+        L3("Aliați în Consiliul Local: Dan-Sorin Mașca și Veress Beáta (POL) — au propus terenul Plopilor.", "Allies on the City Council: Dan-Sorin Mașca and Veress Beáta (POL) — they proposed the Plopilor court.", null))));
+}
+
 /* === Help === */
 function HelpPage() {
   const {
@@ -8736,7 +8953,7 @@ function HelpPage() {
     },
     href: "https://www.instagram.com/",
     target: "_blank"
-  }, "\uD83D\uDCF7 Instagram"))), tab === "contact" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }, "\uD83D\uDCF7 Instagram"))), tab === "contact" && /*#__PURE__*/React.createElement("div", null, React.createElement(CityHallGuide, null), /*#__PURE__*/React.createElement("div", {
     className: "card mb-2"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "mb-1"
@@ -8886,7 +9103,7 @@ function AboutPage() {
   }, t.sources), /*#__PURE__*/React.createElement("div", {
     className: "flex flex-col gap-1"
   }, /*#__PURE__*/React.createElement("a", {
-    href: "https://www.google.com/maps/d/edit?mid=19tND_bqOJoFbhTNKN0PenNW7S7yUog8",
+    href: "https://www.google.com/maps/d/viewer?mid=19tND_bqOJoFbhTNKN0PenNW7S7yUog8",
     target: "_blank"
   }, "\uD83D\uDDFA\uFE0F Google My Maps"), /*#__PURE__*/React.createElement("a", {
     href: "https://punctul.ro/eroare-tehnica-de-5-milioane-de-lei-baza-sportiva-din-str-insulei-identificata-gresit-in-acte/",
@@ -8905,7 +9122,7 @@ function AboutPage() {
   }, /*#__PURE__*/React.createElement("h3", {
     className: "mb-2"
   }, "\uD83D\uDCCD " + (lang === "ro" ? "G\u0103se\u0219te-ne pe hart\u0103" : lang === "hu" ? "Tal\xe1lj meg min\ket a t\xe9rk\xe9pen" : "Find us on the map")), /*#__PURE__*/React.createElement("a", {
-    href: "https://www.google.com/maps/place/G2P/@46.5399,24.5568,15z",
+    href: "https://www.google.com/maps/search/?api=1&query=46.5399,24.5568",
     target: "_blank",
     rel: "noopener noreferrer",
     className: "btn btn-green btn-sm"
@@ -9194,7 +9411,7 @@ function ProfilePage() {
         React.createElement("span", { style: { fontSize: "1.4rem" } }, "\uD83D\uDD11"),
         React.createElement("div", null,
           React.createElement("div", { style: { fontWeight: 700 } }, "Administrator"),
-          React.createElement("div", { className: "text-xs", style: { color: "var(--textSec)" } }, "addtru@gmail.com \u2022 acces complet")
+          React.createElement("div", { className: "text-xs", style: { color: "var(--textSec)" } }, "teodor.cimpan12@gmail.com \u2022 acces complet")
         )
       ),
       React.createElement("button", { className: "btn btn-green", style: { width: "100%" },
@@ -10338,7 +10555,7 @@ function Footer() {
     }, t.owner), /*#__PURE__*/React.createElement("p", null, t.madeBy, " ", t.owner, " — ", t.city), /*#__PURE__*/React.createElement("p", {
       className: "mt-1"
     }, /*#__PURE__*/React.createElement("a", {
-      href: "https://www.google.com/maps/d/edit?mid=19tND_bqOJoFbhTNKN0PenNW7S7yUog8",
+      href: "https://www.google.com/maps/d/viewer?mid=19tND_bqOJoFbhTNKN0PenNW7S7yUog8",
       target: "_blank"
     }, "🗺️ Maps"), " · ", /*#__PURE__*/React.createElement("a", {
       href: "https://punctul.ro/eroare-tehnica-de-5-milioane-de-lei-baza-sportiva-din-str-insulei-identificata-gresit-in-acte/",
@@ -10356,7 +10573,7 @@ function Footer() {
       className: "flex items-center gap-2 mt-2",
       style: { justifyContent: "center", flexWrap: "wrap" }
     }, /*#__PURE__*/React.createElement("a", {
-      href: "https://www.google.com/maps/place/G2P/@46.5399,24.5568,15z",
+      href: "https://www.google.com/maps/search/?api=1&query=46.5399,24.5568",
       target: "_blank",
       rel: "noopener noreferrer",
       style: { fontSize: ".78rem", color: "var(--textSec)", display: "flex", alignItems: "center", gap: ".3rem" }
