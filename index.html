@@ -517,6 +517,7 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 @media(prefers-reduced-motion:reduce){.mayor-overlay{animation:none}.mayor-cta{transition:none}}
 .no-fx .mayor-overlay{animation:none}.no-fx .mayor-cta{transition:none}
 </style>
+<script>(function(){try{var t=localStorage.getItem("g2p_theme")||(window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 </head>
 <body>
 <div id="root"></div>
@@ -4280,6 +4281,7 @@ const TIMELINE = [
   { y: 2026, ro: "Lansare From Grey to Play — platforma civică documentează cele 20 de terenuri din Târgu Mureș", en: "From Grey to Play launched — civic platform documents all 20 courts in Târgu Mureș", hu: "From Grey to Play indulása — a platform mind a 20 marosvásárhelyi pályát dokumentálja" }
 ];
 const ADMIN_PW = "teodor2026";
+const ADMIN_EMAIL = "addtru@gmail.com";
 
 /* === Toast === */
 function Toast({
@@ -4627,6 +4629,11 @@ function Navbar() {
   })), /*#__PURE__*/React.createElement("button", {
     onClick: () => setPage("profile")
   }, user ? "👤 " + (user.name || t.profile) : t.signIn),
+  isAdmin && /*#__PURE__*/React.createElement("button", {
+    onClick: () => { location.hash = "#/admin"; },
+    style: { background: "var(--green)", color: "#fff", borderRadius: 6, fontWeight: 700, fontSize: ".78rem", padding: ".25rem .6rem" },
+    title: "Admin Panel"
+  }, "\uD83D\uDD11"),
   /*#__PURE__*/React.createElement("button", {
     onClick: () => setShowNotif(v => !v),
     style: { position: "relative" },
@@ -9035,6 +9042,7 @@ function ProfilePage() {
     localStorage.setItem("g2p_user", JSON.stringify(nu));
     toast(t.success);
   };
+  const { isAdmin, setAdminMode } = useApp();
   const logout = () => {
     setUser(null);
     localStorage.removeItem("g2p_user");
@@ -9181,7 +9189,18 @@ function ProfilePage() {
   }, /*#__PURE__*/React.createElement("span", null, "Language"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-outline",
     onClick: () => setLang(nextLang(lang))
-  }, t.language))), React.createElement(StreakCard, null), React.createElement(Reveal, { as:"div", className:"card mt-2" },
+  }, t.language))), isAdmin && React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--green)" } },
+      React.createElement("div", { className: "flex items-center gap-2", style: { marginBottom: ".5rem" } },
+        React.createElement("span", { style: { fontSize: "1.4rem" } }, "\uD83D\uDD11"),
+        React.createElement("div", null,
+          React.createElement("div", { style: { fontWeight: 700 } }, "Administrator"),
+          React.createElement("div", { className: "text-xs", style: { color: "var(--textSec)" } }, "addtru@gmail.com \u2022 acces complet")
+        )
+      ),
+      React.createElement("button", { className: "btn btn-green", style: { width: "100%" },
+        onClick: () => { location.hash = "#/admin"; }
+      }, "\u2192 Deschide Admin Panel")
+    ), React.createElement(StreakCard, null), React.createElement(Reveal, { as:"div", className:"card mt-2" },
     React.createElement(BadgesGrid, { lang:lang })
   ), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline btn-block mt-2",
@@ -10526,6 +10545,11 @@ function App() {
     toast("📢 " + b.text);
   }, [settings && settings.broadcast && settings.broadcast.ts]);
   const t = T[lang];
+  const isAdmin = !!(user && user.email === ADMIN_EMAIL);
+  // Auto-authenticate if logged-in user is the admin email — no password needed.
+  useEffect(() => {
+    if (isAdmin && adminMode) setAdminAuth(true);
+  }, [isAdmin, adminMode]);
   const ctx = {
     t,
     lang,
@@ -10538,9 +10562,11 @@ function App() {
     setUser,
     toast,
     settings,
-    setCmd
+    setCmd,
+    isAdmin,
+    setAdminMode
   };
-  if (adminMode && !adminAuth) return /*#__PURE__*/React.createElement(AdminLogin, {
+  if (adminMode && !adminAuth && !isAdmin) return /*#__PURE__*/React.createElement(AdminLogin, {
     onAuth: () => setAdminAuth(true),
     onBack: () => {
       setAdminMode(false);

@@ -28,7 +28,7 @@
     },
 
     "reports": {
-      ".read": false,
+      ".read": true,
       "$id": {
         ".write": true,
         ".validate": "newData.hasChildren(['courtId','issue','timestamp'])"
@@ -47,10 +47,7 @@
 
     "settings": {
       ".read": true,
-      ".write": false,
-      "admin": {
-        ".write": true
-      }
+      ".write": true
     },
 
     "pixels": {
