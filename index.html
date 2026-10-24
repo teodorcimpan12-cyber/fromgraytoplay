@@ -1510,6 +1510,8 @@ function anonName(s) {
 }
 
 /* === Push an activity entry. Fire-and-forget. === */
+// activity/ mixes numeric and ISO-string timestamps.
+function tsOf(a) { return typeof a.timestamp === "number" ? a.timestamp : (Date.parse(a.timestamp || "") || 0); }
 // In-page replacement for window.confirm(), which browsers may silently suppress.
 function askConfirm(msg) {
   return new Promise(resolve => {
@@ -3655,7 +3657,7 @@ function CourtTimeline({ court }) {
   var items = rawAct
     ? Object.values(rawAct)
         .filter(function(a) { return a && a.courtId === court.id; })
-        .sort(function(a, b) { return (b.timestamp || 0) - (a.timestamp || 0); })
+        .sort(function(a, b) { return tsOf(b) - tsOf(a); })
         .slice(0, 20)
     : [];
   var typeLabel = function(type) {
@@ -4738,7 +4740,7 @@ function NotifPanel({ onClose }) {
     ? Object.entries(actData)
         .map(([id, a]) => ({ id, ...a }))
         .filter(a => followedIds.length === 0 || (a.courtId && followedIds.includes(a.courtId)))
-        .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))
+        .sort((a, b) => tsOf(b) - tsOf(a))
         .slice(0, 20)
     : [];
   const markRead = () => {
@@ -5864,7 +5866,7 @@ function Hero3D() {
 function ActivityTicker() {
   const { t } = useApp();
   const data = useFirebase("activity");
-  const items = data ? Object.values(data).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).slice(0, 14) : [];
+  const items = data ? Object.values(data).sort((a, b) => tsOf(b) - tsOf(a)).slice(0, 14) : [];
   if (!items.length) return null;
   const ICO = { petition: "✊", checkin: "📍", photo: "📸", report: "⚠️", game: "⚽", join: "👥" };
   const verb = ty => ({ petition: t.tickPetition, checkin: t.tickCheckin, photo: t.tickPhoto, report: t.tickReport, game: t.tickGame, join: t.tickJoin })[ty] || t.tickDefault;
@@ -7454,7 +7456,7 @@ function ActivityFeed() {
   const { t } = useApp();
   const data = useFirebase("activity");
   const list = data
-    ? Object.entries(data).map(([id, a]) => ({ id, ...a })).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).slice(0, 30)
+    ? Object.entries(data).map(([id, a]) => ({ id, ...a })).sort((a, b) => tsOf(b) - tsOf(a)).slice(0, 30)
     : [];
   const COURT_NAMES = COURTS.reduce((acc, c) => (acc[c.id] = c.name, acc), {});
   const ICONS = { "check-in": "🏀", petition: "✍️", photo: "📸", report: "⚠️", game: "⚽", join: "🤝" };
