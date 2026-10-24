@@ -3967,7 +3967,7 @@ function TaskBoard({ court }) {
   );
 }
 
-const COURTS = [
+const COURTS_BASE = [
   // ── BAZA MUREȘUL (public, municipal) ──────────────────────────────────────
   {
     id: "c1",
@@ -4408,12 +4408,12 @@ const COURTS = [
 ];
 
 /* === Multi-city === */
-const COURTS_TGM = COURTS.map(c => ({ ...c, city: "tgm" }));
+const COURTS_TGM = COURTS_BASE.map(c => ({ ...c, city: "tgm" }));
 const CITY_CFG = {
   tgm: { nameRo:"Târgu Mureș", nameEn:"Târgu Mureș", nameHu:"Marosvásárhely", center:[46.5427,24.5572], zoom:13 },
   sibiu: { nameRo:"Sibiu", nameEn:"Sibiu / Hermannstadt", nameHu:"Nagyszeben", center:[45.7983,24.1256], zoom:13 }
 };
-const ACTIVE_CITY = (new URLSearchParams(location.search).get("c")) || localStorage.getItem("g2p_city") || "tgm";
+const ACTIVE_CITY = [new URLSearchParams(location.search).get("c"), localStorage.getItem("g2p_city")].find(c => c && CITY_CFG[c]) || "tgm";
 const COURTS_SIBIU = [
   { id:"sb1", name:"Teren Baschet Piața Cibin", address:"Piața Cibin, Sibiu", lat:45.7983, lng:24.1256, status:"unverified", condition:"unverified", neighbourhood:"centru", category:"basketball", city:"sibiu", progress:0, reports:0, accessibility:{wheelchair:false,lighting:false,parking:true,flatSurface:false}, description:"Teren baschet neverificat — sursă OpenStreetMap." },
   { id:"sb2", name:"Teren Sport Turnișor", address:"Str. Turnișorului, Sibiu", lat:45.8123, lng:24.1089, status:"unverified", condition:"unverified", neighbourhood:"turnișor", category:"football", city:"sibiu", progress:0, reports:0, accessibility:{wheelchair:false,lighting:false,parking:false,flatSurface:false}, description:"Teren fotbal neverificat — sursă OpenStreetMap." },
@@ -4427,6 +4427,7 @@ const COURTS_SIBIU = [
   { id:"sb10", name:"Teren Sport Școala Mihai Viteazul", address:"Str. Mihai Viteazul 24, Sibiu", lat:45.8012, lng:24.1389, status:"unverified", condition:"unverified", neighbourhood:"centru", category:"multiuse", city:"sibiu", progress:0, reports:0, accessibility:{wheelchair:false,lighting:false,parking:false,flatSurface:true}, description:"Teren în incintă școlară, neverificat." }
 ];
 const COURTS_ALL = [...COURTS_TGM, ...COURTS_SIBIU];
+const COURTS = COURTS_ALL.filter(c => c.city === ACTIVE_CITY);
 
 var ESSAY = {
   ro: "Cauta Targu Mures pe Google si fotografiile iti vand un vis – trasee de alergare pe Platoul Cornesti, parcuri verzi, fatade colorate. Oras sportiv, zic ei. Dar ia autobuzul spre Tudor sau in spatele Auchan, si visul se crapa, la propriu. Terenurile sunt sparte, cosurile indoite, si nimanui pare sa-i pese. Am vrut sa aflu de ce.\n\nAm cautat mai intai dovezi academice. Un studiu din 2023 in Urban Science (publicat de MDPI) compara modul in care orasele europene gestioneaza infrastructura recreationala si argumenteaza ca distributia inegala tinde sa adanceasca decalajele sociale. Este un studiu amplu, transnational – nu se potriveste perfect pentru un singur oras romanesc – dar rationamentul mi-a ramas. Journal of Urban Health restrange focusul: absenta terenurilor sportive la nivel de cartier se coreleaza direct cu inactivitatea si izolarea tinerilor. Ceea ce a fost decisiv a fost descoperirea Strategiei Integrate de Dezvoltare Urbana (SIDU), publicata pe site-ul Primariei. Documentul admite deschis ca districtele periferice – cele cu populatiile cele mai tinere – primesc cele mai putine investitii in infrastructura.\n\nReportajele locale au adaugat culoare. O investigatie Punctul.ro din octombrie 2025 a expus cum o eroare administrativa de cinci milioane de lei a inghetat renovarea unei baze sportive de pe strada Insulei – birocratie la superlativ. Un alt reportaj Punctul.ro a explorat cum Cluj si Sibiu au transformat cu succes loturi urbane neglijate in hub-uri digitale, evidentiind prin contrast cat de putin a facut Targu Mures. Acum, presa poate sensationaliza, asa ca am verificat cu bugetul oficial al Primariei Targu Mures. Cifrele s-au aliniat: fondurile promise pentru renovari depasesc constant ceea ce se cheltuieste efectiv.\n\nTotusi, cercetarea de birou iti arata doar o parte din imagine. Pe parcursul a doua weekenduri, am strabatut Tudor, zona Auchan si terenurile de langa Sportcomplex, fotografiind asfalt crapat si cosuri indoite si le-am inregistrat pe Google My Maps. Am facut si un sondaj informal rapid – cincisprezece rezidenti, o intrebare: folosesti terenul cel mai aproape de tine? Doisprezece au spus nu, prea degradat. Trei au spus ocazional, din lipsa de alternative. Cincisprezece respondenti nu vor castiga un premiu de statistica, dar acel nivel de consens este greu de respins.\n\nPunand piesele cap la cap, apare un lant clar: pasul unu, municipalitatea concentreaza cheltuielile pe locatii centrale de profil inalt; pasul doi, terenurile periferice se degradeaza din pura neatentie; pasul trei, tinerii din acele zone isi pierd sansa la sport regulat si la viata sociala care vine cu el. Platoul Cornesti ar putea fi intr-un alt cod postal fata de periferie. Nu spun ca cineva actioneaza din rautate – bugetele limitate si prea multe cereri concurente probabil explica mult. Dar rezidentii din aceste cartiere nu au canale civice clare pentru a semnala problema, si aceasta tacere lasa ciclul sa se repete.\n\nPrima mea propunere este un pilot Flip-the-Court: alegem trei dintre cele mai degradate terenuri, le refacem suprafata si echipam fiecare cu un dulap de echipament rezistent la intemperii pe care localnicii il pot debloca printr-o aplicatie gratuita. Aplicatia functioneaza si ca instrument de feedback – oamenii evalueaza facilitatile, raporteaza daunele si sugereaza ce echipament sportiv sa fie aprovizionat. Ca finantare, micro-granturile EU pentru sport-tineret acopera costurile principale; cateva parteneriate cu sali de sport locale acopera intretinerea. De la obtinerea grantului pana la taierea panglicii, sase luni par realizabile.\n\nA doua idee se bazeaza mai mult pe arta decat pe tehnologie. O initiativa Street Canvas ar aduce artistii locali de graffiti si rezidentii impreuna pentru a picta murale colorate la scara mare pe suprafetele renovate – finantata aproape in intregime din spray paint donat si ore de voluntariat. De ce sa ne obosim? Cercetarile privind atasamentul de loc arata ca oamenii care ajuta fizic la modelarea unui spatiu public il trateaza ca pe al lor, iar ratele de vandalism scad corespunzator. O placa cenusie devine un loc de intalnire pe care oamenii chiar vor sa-l protejeze.\n\nNimic din toate acestea nu este cu adevarat despre baschet sau handbal. Este despre daca adresa ta ar trebui sa-ti limiteze oportunitatile. Un pilot mic, cateva murale, un efort comunitar incapatanat – pretul este modest. Singurul lucru scump este sa continuam sa nu facem nimic.",
@@ -5044,7 +5045,7 @@ function MapView({
   } = useApp();
   useEffect(() => {
     if (!ref.current || mapRef.current) return;
-    const m = L.map(ref.current).setView([46.5455, 24.5625], 13);
+    const m = L.map(ref.current).setView(CITY_CFG[ACTIVE_CITY].center, CITY_CFG[ACTIVE_CITY].zoom);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OSM'
     }).addTo(m);
@@ -6069,25 +6070,10 @@ function CourtsPage() {
     }
   }, /*#__PURE__*/React.createElement("option", {
     value: "all"
-  }, t.neighbourhood), /*#__PURE__*/React.createElement("option", {
-    value: "tudor"
-  }, t.tudor), /*#__PURE__*/React.createElement("option", {
-    value: "auchan"
-  }, t.auchan), /*#__PURE__*/React.createElement("option", {
-    value: "mureseni"
-  }, t.mureseni), /*#__PURE__*/React.createElement("option", {
-    value: "center"
-  }, t.center), /*#__PURE__*/React.createElement("option", {
-    value: "pandurilor"
-  }, t.pandurilor), /*#__PURE__*/React.createElement("option", {
-    value: "libertate"
-  }, t.libertate), /*#__PURE__*/React.createElement("option", {
-    value: "unirii"
-  }, t.unirii), /*#__PURE__*/React.createElement("option", {
-    value: "dambu"
-  }, t.dambu), /*#__PURE__*/React.createElement("option", {
-    value: "cornesti"
-  }, t.cornesti))), /*#__PURE__*/React.createElement("div", {
+  }, t.neighbourhood), [...new Set(COURTS.map(c => c.neighbourhood))].map(h => React.createElement("option", {
+    key: h,
+    value: h
+  }, t[h] || h.charAt(0).toUpperCase() + h.slice(1))))), /*#__PURE__*/React.createElement("div", {
     className: "tabs"
   }, /*#__PURE__*/React.createElement("button", {
     className: tab === "map" ? "active" : "",
@@ -6115,7 +6101,7 @@ function CourtsPage() {
     className: "text-xs mt-1",
     style: { color: "var(--textSec)", textAlign: "center" }
   }, lang === "ro"
-    ? /*#__PURE__*/React.createElement("span", null, "Surs\u0103: cercetare de teren + date municipale T\xE2rgu Mure\u0219. ", /*#__PURE__*/React.createElement("a", { href: "https://www.google.com/maps/search/terenuri+sport+Targu+Mures", target: "_blank", style: { color: "var(--green)" } }, "Caut\u0103 pe Google Maps \u2192"))
+    ? /*#__PURE__*/React.createElement("span", null, ACTIVE_CITY === "sibiu" ? "Surs\u0103: OpenStreetMap \u2014 terenuri neverificate, raporteaz\u0103 starea lor. " : "Surs\u0103: cercetare de teren + date municipale T\xE2rgu Mure\u0219. ", /*#__PURE__*/React.createElement("a", { href: "https://www.google.com/maps/search/terenuri+sport+" + (ACTIVE_CITY === "sibiu" ? "Sibiu" : "Targu+Mures"), target: "_blank", style: { color: "var(--green)" } }, "Caut\u0103 pe Google Maps \u2192"))
     : /*#__PURE__*/React.createElement("span", null, "Source: field research + T\xE2rgu Mure\u0219 municipal data. ", /*#__PURE__*/React.createElement("a", { href: "https://www.google.com/maps/search/sports+courts+Targu+Mures", target: "_blank", style: { color: "var(--green)" } }, "Search Google Maps \u2192")))), tab === "list" && /*#__PURE__*/React.createElement("div", {
     className: "grid gap-1"
   }, filtered.map(c => /*#__PURE__*/React.createElement(TiltDiv, {
@@ -9993,7 +9979,7 @@ function AdminSiteTab() {
   const s = useFirebase("settings") || {};
   const flags = s.flags || {};
   const fbCourts = useFirebase("courts");
-  const allCourts = COURTS.concat(fbCourts ? Object.entries(fbCourts).map(([id, c]) => ({ id, ...c })) : []);
+  const allCourts = COURTS_ALL.concat(fbCourts ? Object.entries(fbCourts).map(([id, c]) => ({ id, ...c })) : []);
   const set = (path, val) => db.ref("settings/" + path).set(val);
   const [bText, setBText] = useState("");
   const [bType, setBType] = useState("info");
@@ -11093,7 +11079,7 @@ function Footer() {
     }, /*#__PURE__*/React.createElement("a", {
       href: "#courts",
       style: { fontSize: ".78rem", color: "var(--textSec)", display: "flex", alignItems: "center", gap: ".3rem" }
-    }, /*#__PURE__*/React.createElement("span", null, "🏀"), /*#__PURE__*/React.createElement("span", null, "Cele 28 de terenuri pe hartă"))))),
+    }, /*#__PURE__*/React.createElement("span", null, "🏀"), /*#__PURE__*/React.createElement("span", null, "Cele " + COURTS.length + " de terenuri pe hartă"))))),
     showPrivacy && React.createElement(PrivacyPolicyModal, { onClose: function() { setShowPrivacy(false); } })
   );
 }
