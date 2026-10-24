@@ -1510,6 +1510,21 @@ function anonName(s) {
 }
 
 /* === Push an activity entry. Fire-and-forget. === */
+// In-page replacement for window.confirm(), which browsers may silently suppress.
+function askConfirm(msg) {
+  return new Promise(resolve => {
+    const host = document.createElement("div");
+    document.body.appendChild(host);
+    const root = ReactDOM.createRoot(host);
+    const done = v => { root.unmount(); host.remove(); resolve(v); };
+    root.render(React.createElement("div", { className: "modal-overlay", style: { zIndex: 10000 }, onClick: () => done(false) },
+      React.createElement("div", { className: "modal", style: { maxWidth: 380, textAlign: "center" }, onClick: e => e.stopPropagation() },
+        React.createElement("p", { style: { marginBottom: "1.2rem", fontWeight: 600 } }, msg),
+        React.createElement("div", { className: "flex gap-1", style: { justifyContent: "center" } },
+          React.createElement("button", { className: "btn", onClick: () => done(false) }, "Anulează"),
+          React.createElement("button", { className: "btn", autoFocus: true, style: { background: "#DC2626", color: "#fff" }, onClick: () => done(true) }, "Confirmă")))));
+  });
+}
 function logActivity(type, userName, courtId) {
   try {
     db.ref("activity").push({
@@ -3057,7 +3072,7 @@ function CityPulse(props) {
   var app = useApp();
   var t = app.t, lang = app.lang;
   var activity = useFirebase("activity");
-  var signups = useFirebase("signups");
+  var signups = useFirebase("signupStats");
   var cvRef = useRef(null), stageRef = useRef(null), scrubRef = useRef(null), seekRef = useRef(null);
   var playSt = useState(true);
   var playing = playSt[0], setPlaying = playSt[1];
@@ -5876,7 +5891,7 @@ function HomePage() {
     setPage
   } = useApp();
   const votes = useFirebase("votes");
-  const signups = useFirebase("signups");
+  const signups = useFirebase("signupStats");
   const tv = votes ? (votes.flip || 0) + (votes.mural || 0) + (votes.both || 0) : 0;
   const vc = signups ? Object.values(signups).filter(s => s.volunteer).length : 0;
   const heroRef = useReveal();
@@ -6990,14 +7005,17 @@ function PetitionPage() {
     if (!ok) return;
     const key = ch;
     db.ref("votes/" + key).transaction(v => (v || 0) + 1);
-    db.ref("signups").push({
+    const signupDate = new Date().toISOString();
+    const signupRef = db.ref("signups").push();
+    signupRef.set({
       name: name.trim(),
       email: email.trim(),
       choice: key,
       volunteer: vol,
       city: ACTIVE_CITY,
-      date: new Date().toISOString()
+      date: signupDate
     });
+    db.ref("signupStats/" + signupRef.key).set({ volunteer: vol, city: ACTIVE_CITY, date: signupDate });
     logActivity("petition", name);
     const lbKey = user?.id || name.trim().replace(/[.#$/\[\]]/g, '_');
     db.ref("leaderboard/" + lbKey).transaction(v => ({
@@ -8059,7 +8077,7 @@ function LBTab() {
 function DossierButton() {
   const { t, lang, toast } = useApp();
   const votes = useFirebase("votes");
-  const signups = useFirebase("signups");
+  const signups = useFirebase("signupStats");
   const reports = useFirebase("reports");
   const gallery = useFirebase("gallery");
   const ratings = useFirebase("ratings");
@@ -8996,13 +9014,16 @@ function HelpPage() {
       toast(t.error);
       return;
     }
-    db.ref("signups").push({
+    const volDate = new Date().toISOString();
+    const volRef = db.ref("signups").push();
+    volRef.set({
       ...vf,
       volunteer: true,
       city: ACTIVE_CITY,
-      date: new Date().toISOString(),
+      date: volDate,
       choice: "both"
     });
+    db.ref("signupStats/" + volRef.key).set({ volunteer: true, city: ACTIVE_CITY, date: volDate });
     const k = vf.name.replace(/[.#$/\[\]]/g, '_');
     db.ref("leaderboard/" + k).transaction(v => ({
       ...(v || {}),
@@ -9852,8 +9873,8 @@ function StringEditor() {
     db.ref("settings/strings").set({ ro, en, hu }).then(() => { toast("✅ Texte salvate!"); setEdits({}); });
   };
 
-  const resetAll = () => {
-    if (!confirm("Resetezi toate textele la valorile default din cod?")) return;
+  const resetAll = async () => {
+    if (!(await askConfirm("Resetezi toate textele la valorile default din cod?"))) return;
     db.ref("settings/strings").remove().then(() => toast("↩️ Reset la default"));
   };
 
@@ -9884,7 +9905,9 @@ function StringEditor() {
    path, node scanner, one-click full backup/restore, fast wipes.
    ============================================================ */
 function AdminGodTab() {
-  const ROOTS = ["signups","votes","reports","activity","courts","bookings","settings","pixels","presence","pledges","achievements","adoptions","letterCount","budgetLive","tasks","users","leaderboard","games","gallery","ratings","follows","forum","events"];
+  const ROOTS = ["signups","signupStats","votes","reports","activity","courts","bookings","settings","pixels","presence","pledges","achievements","adoptions","letterCount","budgetLive","tasks","users","leaderboard","games","gallery","ratings","follows","forum","events","teams","partnerRequests"];
+  const { toast } = useApp();
+  const alert = toast;
   const [path, setPath] = useState("settings");
   const [val, setVal] = useState("");
   const [stat, setStat] = useState(null);
@@ -9895,13 +9918,13 @@ function AdminGodTab() {
     db.ref(path).once("value").then(s => { setVal(JSON.stringify(s.val(), null, 2) || "null"); setBusy(false); })
       .catch(e => { setVal("// EROARE: " + e.message); setBusy(false); });
   };
-  const write = () => {
+  const write = async () => {
     let v; try { v = JSON.parse(val); } catch (e) { alert("JSON invalid: " + e.message); return; }
-    if (!confirm("Scrii peste „" + path + "” ?")) return;
+    if (!(await askConfirm("Scrii peste „" + path + "” ?"))) return;
     db.ref(path).set(v).then(() => alert("Scris ✓")).catch(e => alert("Eroare: " + e.message));
   };
-  const del = () => {
-    if (!confirm("ȘTERGI definitiv „" + path + "” ?")) return;
+  const del = async () => {
+    if (!(await askConfirm("ȘTERGI definitiv „" + path + "” ?"))) return;
     db.ref(path).remove().then(() => alert("Șters ✓")).catch(e => alert("Eroare: " + e.message));
   };
   const scan = () => {
@@ -9919,17 +9942,17 @@ function AdminGodTab() {
   const restore = e => {
     const f = e.target.files && e.target.files[0]; if (!f) return;
     const rd = new FileReader();
-    rd.onload = () => {
+    rd.onload = async () => {
       let d; try { d = JSON.parse(rd.result); } catch (err) { alert("JSON invalid"); return; }
-      if (!confirm("Restaurezi " + Object.keys(d).length + " noduri PESTE datele live?")) return;
+      if (!(await askConfirm("Restaurezi " + Object.keys(d).length + " noduri PESTE datele live?"))) return;
       Promise.all(Object.keys(d).map(k => db.ref(k).set(d[k])))
         .then(() => alert("Restaurat ✓")).catch(err2 => alert("Eroare: " + err2.message));
     };
     rd.readAsText(f);
     e.target.value = "";
   };
-  const wipe = r => {
-    if (!confirm("Golești „" + r + "” ? (ireversibil)")) return;
+  const wipe = async r => {
+    if (!(await askConfirm("Golești „" + r + "” ? (ireversibil)"))) return;
     db.ref(r).remove().then(() => { alert(r + " golit ✓"); scan(); }).catch(e => alert("Eroare: " + e.message));
   };
   const WIPABLE = ["pixels","presence","bookings","tasks","adoptions","letterCount","pledges","achievements","games","gallery","ratings","follows"];
@@ -10050,11 +10073,11 @@ function AdminSiteTab() {
     React.createElement("h3", { className: "a-sec", style: { color: "#F87171" } }, "☢️ Danger zone"),
     Row("Reset petition votes", "Sets flip / mural / both to 0. Signup rows are kept.",
       React.createElement("button", { className: "a-del", onClick: () => {
-        if (window.confirm("Reset ALL votes to 0?")) db.ref("votes").set({ flip: 0, mural: 0, both: 0 });
+        askConfirm("Reset ALL votes to 0?").then(ok => ok && db.ref("votes").set({ flip: 0, mural: 0, both: 0 }));
       } }, "Reset"), true),
     Row("Clear activity feed", "Removes every entry from activity/ (ticker + feed + notifications).",
       React.createElement("button", { className: "a-del", onClick: () => {
-        if (window.confirm("Delete the entire activity feed?")) db.ref("activity").remove();
+        askConfirm("Delete the entire activity feed?").then(ok => ok && db.ref("activity").remove());
       } }, "Clear"), true));
 }
 
@@ -10066,7 +10089,7 @@ function AdminModTab() {
   const te = useFirebase("teams");
   const ac = useFirebase("activity");
   const gm = useFirebase("games");
-  const del = path => { if (window.confirm("Delete permanently?")) db.ref(path).remove(); };
+  const del = path => askConfirm("Delete permanently?").then(ok => ok && db.ref(path).remove());
   const gameList = gm ? Object.entries(gm).flatMap(([cid, g]) =>
     Object.entries(g || {}).map(([gid, v]) => ({ id: cid + "/" + gid, ...v }))) : null;
   const sec = (title, obj, path, fmt) => {
@@ -10108,6 +10131,17 @@ function AdminPanel({
   const lb = useFirebase("leaderboard");
   const us = useFirebase("users");
   const re = useFirebase("reports");
+  useEffect(() => {
+    if (!su) return;
+    db.ref("signupStats").once("value").then(snap => {
+      const have = snap.val() || {};
+      Object.entries(su).forEach(([id, s]) => {
+        if (have[id]) return;
+        const date = s.date || (typeof s.timestamp === "number" ? new Date(s.timestamp).toISOString() : new Date().toISOString());
+        db.ref("signupStats/" + id).set({ volunteer: !!s.volunteer, city: s.city || "tgm", date });
+      });
+    });
+  }, [su ? Object.keys(su).length : 0]);
   const sl = su ? Object.entries(su).map(([id, s]) => ({
     id,
     ...s
@@ -10396,7 +10430,7 @@ function AdminPanel({
                 React.createElement("option", { value: "resolved" }, "resolved")
               ),
               React.createElement("button", { onClick: () => { setNoteId(noteId === r.id ? null : r.id); setNoteText(r.official ? r.official.note : ""); } }, "📝"),
-              React.createElement("button", { className: "dng", onClick: () => { if (confirm("Delete?")) db.ref("reports/" + r.id).remove(); } }, "✕")
+              React.createElement("button", { className: "dng", onClick: () => askConfirm("Delete?").then(ok => ok && db.ref("reports/" + r.id).remove()) }, "✕")
             )
           ),
           noteId === r.id && React.createElement("tr", null,
@@ -10439,7 +10473,7 @@ function AdminPanel({
   }, "\u2713"), /*#__PURE__*/React.createElement("button", {
     className: "dng",
     onClick: () => {
-      if (confirm("Delete?")) db.ref("courts/" + c.id).remove();
+      askConfirm("Delete?").then(ok => ok && db.ref("courts/" + c.id).remove());
     }
   }, "\u2715"))))))) : /*#__PURE__*/React.createElement("p", {
     style: {
@@ -10468,7 +10502,7 @@ function AdminPanel({
   }, p.pinned ? "Unpin" : "Pin"), /*#__PURE__*/React.createElement("button", {
     className: "dng",
     onClick: () => {
-      if (confirm("Delete?")) db.ref("forum/" + p.id).remove();
+      askConfirm("Delete?").then(ok => ok && db.ref("forum/" + p.id).remove());
     }
   }, "\uD83D\uDDD1"))))))) : /*#__PURE__*/React.createElement("p", {
     style: {
@@ -10551,7 +10585,7 @@ function AdminPanel({
   }, "\u270F\uFE0F"), /*#__PURE__*/React.createElement("button", {
     className: "dng",
     onClick: () => {
-      if (confirm("Delete?")) db.ref("events/" + e.id).remove();
+      askConfirm("Delete?").then(ok => ok && db.ref("events/" + e.id).remove());
     }
   }, "\uD83D\uDDD1"))))))) : /*#__PURE__*/React.createElement("p", {
     style: {
