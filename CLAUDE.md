@@ -196,6 +196,13 @@ Anyone can write — rules are MVP-permissive. Tighten before any press.
   - All Season 3 strings in T.ro/T.en/T.hu (HU flagged `// TODO: HU review`);
     every animation gated behind `prefers-reduced-motion` + `.no-fx`.
 
+- Perf pass: preconnects for fonts/unpkg/gstatic, React pinned to 18.3.1
+  (the `@18` alias cost a 302 per file), CDN libs moved to end of `<body>`
+  (+ preload), jsPDF + Firebase Analytics `defer`red (analytics inits on
+  `load`), Leaflet CSS non-blocking, unused Libre Franklin 300 dropped,
+  static splash inside `#root`. `netlify.toml` added with cache headers —
+  deploy surface now also includes `netlify.toml`. SW cache → `g2p-v4`.
+
 ## Roadmap priorities (from the brief)
 
 Highest civic-value next steps:

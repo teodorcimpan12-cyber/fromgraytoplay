@@ -31,16 +31,20 @@
 <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152.png"/>
 <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144.png"/>
 <title>From Grey to Play</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Libre+Franklin:wght@300;400;500;600;700;900&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<!-- Perf: warm up third-party origins before the parser reaches them -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="preconnect" href="https://unpkg.com" crossorigin/>
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin/>
+<link rel="dns-prefetch" href="https://fromgreytoplay-default-rtdb.firebaseio.com"/>
+<!-- Core libraries execute at the end of <body>; preload so they download in parallel with the CSS -->
+<link rel="preload" as="script" href="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin/>
+<link rel="preload" as="script" href="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin/>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Libre+Franklin:wght@400;500;600;700;900&family=Barlow+Condensed:wght@600;700;800&display=swap"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Libre+Franklin:wght@400;500;600;700;900&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet"/>
+<!-- Leaflet CSS is only needed by map views; load it without blocking first paint -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" media="print" onload="this.media='all'"/>
+<noscript><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/></noscript>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--dark:#1A1A2E;--darkCard:#16213E;--green:#10B981;--coral:#F97316;--teal:#0D9488;--grey:#6B7280;--darkGrey:#374151;--light:#F8FAFC;--lightGrey:#D1D5DB;--white:#FFFFFF;--red:#DC2626;--bg:var(--light);--bgCard:var(--white);--text:var(--darkGrey);--textSec:var(--grey);--border:var(--lightGrey);--navBg:var(--white);--shadow:0 2px 12px rgba(0,0,0,.08);--radius:12px}
@@ -538,7 +542,17 @@ body.godmode-fx{box-shadow:inset 0 0 0 4px #F59E0B,inset 0 0 70px rgba(245,158,1
 <script>(function(){try{var t=localStorage.getItem("g2p_theme")||(window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 </head>
 <body>
-<div id="root"></div>
+<div id="root"><div style="min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#10B981">From Grey to Play</div></div>
+<!-- Third-party scripts: required by the app script below, so kept synchronous (in order) but moved out of <head> -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+<!-- Non-critical: analytics is initialised on load; jsPDF is only read on click (window.jspdf, guarded) -->
+<script defer src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+<script defer src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
 <script>/* === Firebase === */
 firebase.initializeApp({
@@ -551,7 +565,7 @@ firebase.initializeApp({
   appId: "1:186763946354:web:067794ec899a4d5a9b95eb",
   measurementId: "G-Y6X5LSD42R"
 });
-firebase.analytics();
+window.addEventListener("load", () => { try { firebase.analytics && firebase.analytics(); } catch (e) {} });
 const db = firebase.database();
 const {
   useState,
