@@ -3,133 +3,107 @@
     ".read": false,
     ".write": false,
 
-    "votes": {
-      ".read": true,
-      ".write": true,
-      "flip":  { ".validate": "newData.isNumber() && newData.val() >= 0" },
-      "mural": { ".validate": "newData.isNumber() && newData.val() >= 0" },
-      "both":  { ".validate": "newData.isNumber() && newData.val() >= 0" }
+    "settings": {
+      ".read": "auth != null && auth.uid === 'IIdfYqliTrdlYqjS0swd0swlRkV2'",
+      ".write": "auth != null && auth.uid === 'IIdfYqliTrdlYqjS0swd0swlRkV2'"
     },
 
     "signups": {
-      ".read": "auth != null",
+      ".read": "auth != null && auth.uid === 'IIdfYqliTrdlYqjS0swd0swlRkV2'",
+      "$uid": {
+        ".write": "!data.exists()",
+        ".validate": "newData.hasChildren(['email','name']) && newData.child('email').isString() && newData.child('email').val().length <= 100 && newData.child('name').isString() && newData.child('name').val().length <= 100"
+      }
+    },
+
+    "votes": {
+      ".read": true,
+      ".write": true,
+      ".validate": "newData.isNumber()"
+    },
+
+    "reports": {
+      ".read": "auth != null && auth.uid === 'IIdfYqliTrdlYqjS0swd0swlRkV2'",
       "$id": {
-        ".write": true,
-        ".validate": "newData.hasChildren(['name','email','choice','timestamp']) && newData.child('name').isString() && newData.child('name').val().length >= 2 && newData.child('email').isString() && newData.child('email').val().contains('@') && (newData.child('choice').val() === 'flip' || newData.child('choice').val() === 'mural' || newData.child('choice').val() === 'both')"
+        ".write": "!data.exists()",
+        ".validate": "newData.hasChildren(['court','text','ts']) && newData.child('text').isString() && newData.child('text').val().length <= 500 && newData.child('court').isString() && newData.child('court').val().length <= 20 && (!newData.hasChild('city') || newData.child('city').isString() && (newData.child('city').val() === 'tgm' || newData.child('city').val() === 'sibiu'))"
+      }
+    },
+
+    "pixels": {
+      ".read": true,
+      "$id": {
+        ".write": "!data.exists()",
+        ".validate": "newData.hasChildren(['color']) && newData.child('color').isString() && newData.child('color').val().matches(/^#[0-9a-fA-F]{6}$/)"
       }
     },
 
     "activity": {
       ".read": true,
       "$id": {
-        ".write": true,
-        ".validate": "newData.hasChildren(['type','timestamp']) && newData.child('type').isString()"
+        ".write": "!data.exists()",
+        ".validate": "newData.hasChildren(['type','ts']) && newData.child('type').isString() && newData.child('type').val().length <= 50 && (!newData.hasChild('city') || newData.child('city').isString() && (newData.child('city').val() === 'tgm' || newData.child('city').val() === 'sibiu'))"
       }
-    },
-
-    "reports": {
-      ".read": true,
-      "$id": {
-        ".write": true,
-        ".validate": "newData.hasChildren(['courtId','issue','timestamp'])"
-      }
-    },
-
-    "courts": {
-      ".read": true,
-      ".write": true
-    },
-
-    "bookings": {
-      ".read": true,
-      ".write": true
-    },
-
-    "settings": {
-      ".read": true,
-      ".write": true
-    },
-
-    "pixels": {
-      ".read": true,
-      ".write": true
-    },
-
-    "presence": {
-      ".read": true,
-      ".write": true
     },
 
     "pledges": {
       ".read": true,
       "$id": {
+        ".write": "!data.exists()",
+        ".validate": "newData.hasChildren(['text','ts']) && newData.child('text').isString() && newData.child('text').val().length <= 500"
+      }
+    },
+
+    "courts": {
+      ".read": true,
+      "$courtId": {
+        "checkins": {
+          "$id": {
+            ".write": "!data.exists()",
+            ".validate": "newData.hasChildren(['ts']) && (!newData.hasChild('city') || newData.child('city').isString() && (newData.child('city').val() === 'tgm' || newData.child('city').val() === 'sibiu'))"
+          }
+        }
+      }
+    },
+
+    "bookings": {
+      ".read": true,
+      "$id": {
+        ".write": "!data.exists()",
+        ".validate": "newData.hasChildren(['court','ts']) && newData.child('court').isString() && newData.child('court').val().length <= 20 && (!newData.hasChild('city') || newData.child('city').isString() && (newData.child('city').val() === 'tgm' || newData.child('city').val() === 'sibiu'))"
+      }
+    },
+
+    "presence": {
+      ".read": true,
+      "$id": {
         ".write": true,
-        ".validate": "newData.hasChildren(['text','emoji','timestamp'])"
+        ".validate": "newData.hasChildren(['ts'])"
       }
     },
 
     "achievements": {
       ".read": true,
-      ".write": true
-    },
-
-    "adoptions": {
-      ".read": true,
-      ".write": true
-    },
-
-    "letterCount": {
-      ".read": true,
-      "total": {
-        ".write": true,
-        ".validate": "newData.isNumber() && newData.val() >= 0"
+      "$id": {
+        ".write": "!data.exists()",
+        ".validate": "newData.hasChildren(['type','ts']) && newData.child('type').isString() && newData.child('type').val().length <= 50"
       }
-    },
-
-    "budgetLive": {
-      ".read": true,
-      ".write": false,
-      "admin": {
-        ".write": true
-      }
-    },
-
-    "tasks": {
-      ".read": true,
-      ".write": true
     },
 
     "users": {
-      ".read": "auth !== null",
+      ".read": "auth != null && auth.uid === 'IIdfYqliTrdlYqjS0swd0swlRkV2'",
       "$uid": {
-        ".read": true,
-        ".write": true
+        ".write": "!data.exists()",
+        ".validate": "newData.hasChildren(['email','name'])"
       }
     },
 
     "leaderboard": {
       ".read": true,
-      ".write": true
-    },
-
-    "games": {
-      ".read": true,
-      ".write": true
-    },
-
-    "gallery": {
-      ".read": true,
-      ".write": true
-    },
-
-    "ratings": {
-      ".read": true,
-      ".write": true
-    },
-
-    "follows": {
-      ".read": true,
-      ".write": true
+      "$uid": {
+        ".write": "!data.exists()",
+        ".validate": "newData.hasChildren(['name','points'])"
+      }
     }
   }
 }

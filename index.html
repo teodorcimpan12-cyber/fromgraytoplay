@@ -4451,8 +4451,8 @@ const TIMELINE = [
   { y: 2025, ro: "Oct: Eroare administrativă 5M lei îngheață Baza Insulei — investigație Punctul.ro", en: "Oct: 5M lei admin error freezes Baza Insulei renovation — Punctul.ro investigation", hu: "Okt: 5 millió lejes hibával befagyasztják a Sziget sport bázist — Punctul.ro" },
   { y: 2026, ro: "Lansare From Grey to Play — platforma civică documentează cele 20 de terenuri din Târgu Mureș", en: "From Grey to Play launched — civic platform documents all 20 courts in Târgu Mureș", hu: "From Grey to Play indulása — a platform mind a 20 marosvásárhelyi pályát dokumentálja" }
 ];
-const ADMIN_PW = "teodor2026";
 const ADMIN_EMAIL = "teodor.cimpan12@gmail.com";
+const ADMIN_UID  = "IIdfYqliTrdlYqjS0swd0swlRkV2";
 
 /* === Toast === */
 function Toast({
@@ -9267,13 +9267,6 @@ function ProfilePage() {
       toast(t.error);
       return;
     }
-    if (lf.email.trim().toLowerCase() === ADMIN_EMAIL) {
-      if (lf.pw !== ADMIN_PW) {
-        toast(lang === "ro" ? "Parol\u0103 gre\u0219it\u0103 pentru contul de administrator." : "Wrong password for the admin account.");
-        return;
-      }
-      try { firebase.auth().signInWithEmailAndPassword(ADMIN_EMAIL, lf.pw).catch(function () {}); } catch (e) {}
-    }
     const uid = "u_" + Date.now();
     const nu = {
       id: uid,
@@ -9471,13 +9464,9 @@ function AdminLogin({
   const [pw, setPw] = useState("");
   const [err, setErr] = useState(false);
   const go = () => {
-    if (pw === ADMIN_PW) {
-      try { firebase.auth().signInWithEmailAndPassword(ADMIN_EMAIL, pw).catch(() => {}); } catch (e) {}
-      onAuth();
-    } else {
-      setErr(true);
-      setTimeout(() => setErr(false), 2e3);
-    }
+    firebase.auth().signInWithEmailAndPassword(ADMIN_EMAIL, pw)
+      .then(() => onAuth())
+      .catch(() => { setErr(true); setTimeout(() => setErr(false), 2e3); });
   };
   return /*#__PURE__*/React.createElement("div", {
     className: "admin-login"
@@ -10849,6 +10838,8 @@ function App() {
   const [onboard, setOnboard] = useState(() => !localStorage.getItem("g2p_ob"));
   const [adminMode, setAdminMode] = useState(false);
   const [adminAuth, setAdminAuth] = useState(false);
+  const [firebaseUser, setFirebaseUser] = useState(() => firebase.auth().currentUser);
+  useEffect(() => firebase.auth().onAuthStateChanged(u => setFirebaseUser(u)), []);
   useEffect(() => {
     localStorage.setItem("g2p_lang", lang);
     document.documentElement.lang = lang;
@@ -10981,7 +10972,7 @@ function App() {
     toast("📢 " + b.text);
   }, [settings && settings.broadcast && settings.broadcast.ts]);
   const t = T[lang];
-  const isAdmin = !!(user && user.email && user.email.trim().toLowerCase() === ADMIN_EMAIL);
+  const isAdmin = !!(firebaseUser && firebaseUser.uid === ADMIN_UID);
   // Auto-authenticate if logged-in user is the admin email — no password needed.
   useEffect(() => {
     if (isAdmin && adminMode) setAdminAuth(true);

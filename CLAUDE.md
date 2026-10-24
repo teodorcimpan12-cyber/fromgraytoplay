@@ -37,7 +37,7 @@ Utilizare:
 | Map | Leaflet 1.9.4 |
 | Fonts | Space Mono (headings), Libre Franklin (body) |
 | Theme | Light + dark via `[data-theme="dark"]` and CSS vars |
-| Auth | Firebase auth, admin pw at top of script (`ADMIN_PW`) |
+| Auth | Firebase Auth `signInWithEmailAndPassword`; `isAdmin` = `firebaseUser.uid === ADMIN_UID` |
 
 ## Design tokens (don't drift)
 
