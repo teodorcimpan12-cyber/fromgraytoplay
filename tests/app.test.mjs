@@ -64,6 +64,29 @@ test("TGM courts keep a 1-5 condition and valid status", () => {
   }
 });
 
+test("UI regressions: caret, squeezed tabs, fixed min-widths, stray decorative lines", () => {
+  assert.match(html, /\*\{caret-color:transparent\}/, "global caret guard missing");
+  assert.match(html, /\.tabs button\{flex-shrink:0/, "tab buttons must not shrink");
+  assert.doesNotMatch(html, /minWidth:\s*(3[6-9]\d|[4-9]\d\d)\b/, "inline minWidth >= 360px overflows phones");
+  assert.doesNotMatch(html, /\.section-title::after/, "section-title underline came back");
+  assert.doesNotMatch(html, /className: "bar"/, "caret-like logo bar came back");
+});
+
+test("map popups escape user-provided text", () => {
+  for (const m of html.matchAll(/bindPopup\(`([^`]*)`\)/g)) {
+    for (const expr of m[1].matchAll(/\$\{([^}]*)\}/g)) assert.match(expr[1], /^escHtml\(/, "unescaped popup value: " + expr[1]);
+  }
+});
+
+test("HoopGame: bent rim gap is smaller than the ball", () => {
+  const src = extractFunction("HoopGame");
+  const num = name => Number(src.match(new RegExp(name + " = ([0-9.]+)"))[1]);
+  assert.equal(num("BALL_R"), 0.12);
+  assert.ok(/front = \{ x: back\.x - 0\.193, y: RIM_H - 0\.112 \}/.test(src));
+  const gap = Math.hypot(0.193, 0.112) - 2 * num("TIP_R");
+  assert.ok(gap < 2 * num("BALL_R"), "a ball must not fit through the bent rim");
+});
+
 test("no hardcoded admin password in the app", () => {
   assert.doesNotMatch(html, /ADMIN_PW|teodor2026/);
 });
