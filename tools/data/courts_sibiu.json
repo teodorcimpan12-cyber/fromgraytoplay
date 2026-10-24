@@ -1,0 +1,1747 @@
+{
+  "generated_at": "2026-10-24T15:43:10.124Z",
+  "license": "Data © OpenStreetMap contributors, ODbL 1.0",
+  "courts": [
+    {
+      "id": "sb1",
+      "city": "sibiu",
+      "name": "Teren baschet — Ștrand",
+      "address": "Strada Doljului, Sibiu",
+      "lat": 45.788873,
+      "lng": 24.133839,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "strand",
+      "neighbourhoodLabel": "Ștrand",
+      "category": "basketball",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": true,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de baschet, iluminat (OpenStreetMap, neverificat pe teren).",
+        "en": "Basketball court, lit (OpenStreetMap, not field-verified).",
+        "hu": "Kosárlabdapálya, világítással (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "node/5963356826",
+          "source_url": "https://www.openstreetmap.org/node/5963356826",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Doljului, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.788873&lon=24.133839",
+          "retrieved_at": "2026-10-24T15:42:08.922Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Ștrand",
+          "method": "nearest OSM place node",
+          "distance_m": 269,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb2",
+      "city": "sibiu",
+      "name": "Stadionul CFR",
+      "address": "Strada Triajului, Sibiu",
+      "lat": 45.787104,
+      "lng": 24.181515,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "broscarie",
+      "neighbourhoodLabel": "Broscărie",
+      "category": "football",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de fotbal (OpenStreetMap, neverificat pe teren).",
+        "en": "Football court (OpenStreetMap, not field-verified).",
+        "hu": "Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/40123382",
+          "source_url": "https://www.openstreetmap.org/way/40123382",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Triajului, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.787104&lon=24.181515",
+          "retrieved_at": "2026-10-24T15:42:12.735Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Broscărie",
+          "method": "nearest OSM place node",
+          "distance_m": 259,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb3",
+      "city": "sibiu",
+      "name": "Teren fotbal — Ștrand",
+      "address": "Aleea Mihai Eminescu, Sibiu",
+      "lat": 45.783596,
+      "lng": 24.141875,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "strand",
+      "neighbourhoodLabel": "Ștrand",
+      "category": "football",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": true,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de fotbal, gazon artificial, iluminat (OpenStreetMap, neverificat pe teren).",
+        "en": "Football court, artificial turf, lit (OpenStreetMap, not field-verified).",
+        "hu": "Focipálya, műfű, világítással (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/45777492",
+          "source_url": "https://www.openstreetmap.org/way/45777492",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Aleea Mihai Eminescu, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.783596&lon=24.141875",
+          "retrieved_at": "2026-10-24T15:42:14.324Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Ștrand",
+          "method": "nearest OSM place node",
+          "distance_m": 597,
+          "confidence": "medium"
+        },
+        "photo": {
+          "value": null,
+          "source_url": "https://commons.wikimedia.org/wiki/File:Sibiu_Stadium_2023.jpg",
+          "license": "CC BY-SA 4.0",
+          "confidence": "low"
+        }
+      }
+    },
+    {
+      "id": "sb4",
+      "city": "sibiu",
+      "name": "Teren fotbal — Centrul Istoric",
+      "address": "Strada Bastionului, Sibiu",
+      "lat": 45.794313,
+      "lng": 24.145537,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "centrul_istoric",
+      "neighbourhoodLabel": "Centrul Istoric",
+      "category": "football",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de fotbal (OpenStreetMap, neverificat pe teren).",
+        "en": "Football court (OpenStreetMap, not field-verified).",
+        "hu": "Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/46837701",
+          "source_url": "https://www.openstreetmap.org/way/46837701",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Bastionului, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.794313&lon=24.145537",
+          "retrieved_at": "2026-10-24T15:42:19.272Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Centrul Istoric",
+          "method": "nearest OSM place node",
+          "distance_m": 445,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb5",
+      "city": "sibiu",
+      "name": "Teren fotbal — Valea Aurie",
+      "address": "Strada Valea Aurie, Sibiu",
+      "lat": 45.767418,
+      "lng": 24.129899,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "valea_aurie",
+      "neighbourhoodLabel": "Valea Aurie",
+      "category": "football",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de fotbal (OpenStreetMap, neverificat pe teren).",
+        "en": "Football court (OpenStreetMap, not field-verified).",
+        "hu": "Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/107725962",
+          "source_url": "https://www.openstreetmap.org/way/107725962",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Valea Aurie, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.767418&lon=24.129899",
+          "retrieved_at": "2026-10-24T15:42:20.970Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Valea Aurie",
+          "method": "nearest OSM place node",
+          "distance_m": 414,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb6",
+      "city": "sibiu",
+      "name": "Teren multisport — Ștrand",
+      "address": "Strada Bihorului, Sibiu",
+      "lat": 45.79038,
+      "lng": 24.135319,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "strand",
+      "neighbourhoodLabel": "Ștrand",
+      "category": "multiuse",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de multisport, asfalt, neiluminat (OpenStreetMap, neverificat pe teren).",
+        "en": "Multi-sport court, asphalt, unlit (OpenStreetMap, not field-verified).",
+        "hu": "Multisportpálya, aszfalt, világítás nélkül (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/108361050",
+          "source_url": "https://www.openstreetmap.org/way/108361050",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Bihorului, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.79038&lon=24.135319",
+          "retrieved_at": "2026-10-24T15:42:22.554Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Ștrand",
+          "method": "nearest OSM place node",
+          "distance_m": 325,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb7",
+      "city": "sibiu",
+      "name": "Teren fotbal — Centrul Istoric 2",
+      "address": "Strada Lemnelor, Sibiu",
+      "lat": 45.797623,
+      "lng": 24.136561,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "centrul_istoric",
+      "neighbourhoodLabel": "Centrul Istoric",
+      "category": "football",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de fotbal, iarbă (OpenStreetMap, neverificat pe teren).",
+        "en": "Football court, grass (OpenStreetMap, not field-verified).",
+        "hu": "Focipálya, fű (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/108361063",
+          "source_url": "https://www.openstreetmap.org/way/108361063",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Lemnelor, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.797623&lon=24.136561",
+          "retrieved_at": "2026-10-24T15:42:24.145Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Centrul Istoric",
+          "method": "nearest OSM place node",
+          "distance_m": 923,
+          "confidence": "low"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb8",
+      "city": "sibiu",
+      "name": "Teren fotbal — Ștrand 2",
+      "address": "Strada Maramureșului, Sibiu",
+      "lat": 45.792066,
+      "lng": 24.132525,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "strand",
+      "neighbourhoodLabel": "Ștrand",
+      "category": "football",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de fotbal, iarbă (OpenStreetMap, neverificat pe teren).",
+        "en": "Football court, grass (OpenStreetMap, not field-verified).",
+        "hu": "Focipálya, fű (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/108362122",
+          "source_url": "https://www.openstreetmap.org/way/108362122",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Maramureșului, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.792066&lon=24.132525",
+          "retrieved_at": "2026-10-24T15:42:25.685Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Ștrand",
+          "method": "nearest OSM place node",
+          "distance_m": 594,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb9",
+      "city": "sibiu",
+      "name": "Teren multisport — Centrul Civic",
+      "address": "Strada Doctor Ștefan Stâncă, Sibiu",
+      "lat": 45.788798,
+      "lng": 24.146726,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "centrul_civic",
+      "neighbourhoodLabel": "Centrul Civic",
+      "category": "multiuse",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de multisport, asfalt (OpenStreetMap, neverificat pe teren).",
+        "en": "Multi-sport court, asphalt (OpenStreetMap, not field-verified).",
+        "hu": "Multisportpálya, aszfalt (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/163783855",
+          "source_url": "https://www.openstreetmap.org/way/163783855",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Doctor Ștefan Stâncă, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.788798&lon=24.146726",
+          "retrieved_at": "2026-10-24T15:42:27.307Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Centrul Civic",
+          "method": "nearest OSM place node",
+          "distance_m": 177,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb10",
+      "city": "sibiu",
+      "name": "Teren multisport — Centrul Civic 2",
+      "address": "Aleea Filozofilor, Sibiu",
+      "lat": 45.794078,
+      "lng": 24.142951,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "centrul_civic",
+      "neighbourhoodLabel": "Centrul Civic",
+      "category": "multiuse",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de multisport (OpenStreetMap, neverificat pe teren).",
+        "en": "Multi-sport court (OpenStreetMap, not field-verified).",
+        "hu": "Multisportpálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/164323464",
+          "source_url": "https://www.openstreetmap.org/way/164323464",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Aleea Filozofilor, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.794078&lon=24.142951",
+          "retrieved_at": "2026-10-24T15:42:28.867Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Centrul Civic",
+          "method": "nearest OSM place node",
+          "distance_m": 557,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb11",
+      "city": "sibiu",
+      "name": "Teren multisport — Centrul Civic 3",
+      "address": "Strada Ion Rațiu, Sibiu",
+      "lat": 45.790974,
+      "lng": 24.142848,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "centrul_civic",
+      "neighbourhoodLabel": "Centrul Civic",
+      "category": "multiuse",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de multisport (OpenStreetMap, neverificat pe teren).",
+        "en": "Multi-sport court (OpenStreetMap, not field-verified).",
+        "hu": "Multisportpálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/164326344",
+          "source_url": "https://www.openstreetmap.org/way/164326344",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Ion Rațiu, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.790974&lon=24.142848",
+          "retrieved_at": "2026-10-24T15:42:30.452Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Centrul Civic",
+          "method": "nearest OSM place node",
+          "distance_m": 378,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb12",
+      "city": "sibiu",
+      "name": "Teren multisport — Hipodrom",
+      "address": "Aleea Geniștilor, Sibiu",
+      "lat": 45.780303,
+      "lng": 24.15919,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "hipodrom",
+      "neighbourhoodLabel": "Hipodrom",
+      "category": "multiuse",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de multisport (OpenStreetMap, neverificat pe teren).",
+        "en": "Multi-sport court (OpenStreetMap, not field-verified).",
+        "hu": "Multisportpálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/177519330",
+          "source_url": "https://www.openstreetmap.org/way/177519330",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Aleea Geniștilor, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.780303&lon=24.15919",
+          "retrieved_at": "2026-10-24T15:42:32.044Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Hipodrom",
+          "method": "nearest OSM place node",
+          "distance_m": 241,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb13",
+      "city": "sibiu",
+      "name": "Teren multisport — Vasile Aaron",
+      "address": "Strada Iezer, Sibiu",
+      "lat": 45.786603,
+      "lng": 24.173303,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "vasile_aaron",
+      "neighbourhoodLabel": "Vasile Aaron",
+      "category": "multiuse",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de multisport (OpenStreetMap, neverificat pe teren).",
+        "en": "Multi-sport court (OpenStreetMap, not field-verified).",
+        "hu": "Multisportpálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/224239288",
+          "source_url": "https://www.openstreetmap.org/way/224239288",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Iezer, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.786603&lon=24.173303",
+          "retrieved_at": "2026-10-24T15:42:33.589Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Vasile Aaron",
+          "method": "nearest OSM place node",
+          "distance_m": 202,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb14",
+      "city": "sibiu",
+      "name": "Teren fotbal — Hipodrom",
+      "address": "Strada Gorăslău, Sibiu",
+      "lat": 45.78269,
+      "lng": 24.15368,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "hipodrom",
+      "neighbourhoodLabel": "Hipodrom",
+      "category": "football",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de fotbal (OpenStreetMap, neverificat pe teren).",
+        "en": "Football court (OpenStreetMap, not field-verified).",
+        "hu": "Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/254764670",
+          "source_url": "https://www.openstreetmap.org/way/254764670",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Gorăslău, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.78269&lon=24.15368",
+          "retrieved_at": "2026-10-24T15:42:35.161Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Hipodrom",
+          "method": "nearest OSM place node",
+          "distance_m": 147,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb15",
+      "city": "sibiu",
+      "name": "Teren multisport — Hipodrom 2",
+      "address": "Aleea Buia, Sibiu",
+      "lat": 45.783471,
+      "lng": 24.150144,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "hipodrom",
+      "neighbourhoodLabel": "Hipodrom",
+      "category": "multiuse",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de multisport, asfalt (OpenStreetMap, neverificat pe teren).",
+        "en": "Multi-sport court, asphalt (OpenStreetMap, not field-verified).",
+        "hu": "Multisportpálya, aszfalt (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/254866441",
+          "source_url": "https://www.openstreetmap.org/way/254866441",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Aleea Buia, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.783471&lon=24.150144",
+          "retrieved_at": "2026-10-24T15:42:36.734Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Hipodrom",
+          "method": "nearest OSM place node",
+          "distance_m": 383,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb16",
+      "city": "sibiu",
+      "name": "Teren basket",
+      "address": "Strada Parcul Tineretului, Sibiu",
+      "lat": 45.796556,
+      "lng": 24.15681,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "centrul_istoric",
+      "neighbourhoodLabel": "Centrul Istoric",
+      "category": "basketball",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de baschet, asfalt, neiluminat (OpenStreetMap, neverificat pe teren).",
+        "en": "Basketball court, asphalt, unlit (OpenStreetMap, not field-verified).",
+        "hu": "Kosárlabdapálya, aszfalt, világítás nélkül (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/307353014",
+          "source_url": "https://www.openstreetmap.org/way/307353014",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Parcul Tineretului, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.796556&lon=24.15681",
+          "retrieved_at": "2026-10-24T15:42:38.283Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Centrul Istoric",
+          "method": "nearest OSM place node",
+          "distance_m": 307,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb17",
+      "city": "sibiu",
+      "name": "Teren multisport — Dumbrăvii",
+      "address": "Strada J.W. Goethe, Sibiu",
+      "lat": 45.776905,
+      "lng": 24.14131,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "dumbravii",
+      "neighbourhoodLabel": "Dumbrăvii",
+      "category": "multiuse",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de multisport, asfalt (OpenStreetMap, neverificat pe teren).",
+        "en": "Multi-sport court, asphalt (OpenStreetMap, not field-verified).",
+        "hu": "Multisportpálya, aszfalt (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/420832156",
+          "source_url": "https://www.openstreetmap.org/way/420832156",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada J.W. Goethe, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.776905&lon=24.14131",
+          "retrieved_at": "2026-10-24T15:42:39.862Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Dumbrăvii",
+          "method": "nearest OSM place node",
+          "distance_m": 154,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb18",
+      "city": "sibiu",
+      "name": "Teren baschet — Centrul Istoric",
+      "address": "Strada Gheorghe Lazăr, Sibiu",
+      "lat": 45.796312,
+      "lng": 24.154152,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "centrul_istoric",
+      "neighbourhoodLabel": "Centrul Istoric",
+      "category": "basketball",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": true,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de baschet, asfalt, iluminat (OpenStreetMap, neverificat pe teren).",
+        "en": "Basketball court, asphalt, lit (OpenStreetMap, not field-verified).",
+        "hu": "Kosárlabdapálya, aszfalt, világítással (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/439745819",
+          "source_url": "https://www.openstreetmap.org/way/439745819",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Gheorghe Lazăr, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.796312&lon=24.154152",
+          "retrieved_at": "2026-10-24T15:42:41.409Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Centrul Istoric",
+          "method": "nearest OSM place node",
+          "distance_m": 107,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb19",
+      "city": "sibiu",
+      "name": "Teren volei — Ștrand",
+      "address": "Strada Doljului, Sibiu",
+      "lat": 45.788876,
+      "lng": 24.133559,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "strand",
+      "neighbourhoodLabel": "Ștrand",
+      "category": "volleyball",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de volei, nisip, neiluminat (OpenStreetMap, neverificat pe teren).",
+        "en": "Volleyball court, sand, unlit (OpenStreetMap, not field-verified).",
+        "hu": "Röplabdapálya, homok, világítás nélkül (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/660410671",
+          "source_url": "https://www.openstreetmap.org/way/660410671",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Doljului, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.788876&lon=24.133559",
+          "retrieved_at": "2026-10-24T15:42:42.983Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Ștrand",
+          "method": "nearest OSM place node",
+          "distance_m": 288,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb20",
+      "city": "sibiu",
+      "name": "Teren baschet — Ștrand 2",
+      "address": "Strada Doljului, Sibiu",
+      "lat": 45.788876,
+      "lng": 24.13384,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "strand",
+      "neighbourhoodLabel": "Ștrand",
+      "category": "basketball",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": true,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de baschet, tartan, iluminat (OpenStreetMap, neverificat pe teren).",
+        "en": "Basketball court, tartan, lit (OpenStreetMap, not field-verified).",
+        "hu": "Kosárlabdapálya, tartan, világítással (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/660410672",
+          "source_url": "https://www.openstreetmap.org/way/660410672",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Doljului, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.788876&lon=24.13384",
+          "retrieved_at": "2026-10-24T15:42:44.537Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Ștrand",
+          "method": "nearest OSM place node",
+          "distance_m": 269,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb21",
+      "city": "sibiu",
+      "name": "Teren fotbal — Dumbrăvii",
+      "address": "Aleea Mihai Eminescu, Sibiu",
+      "lat": 45.783325,
+      "lng": 24.143786,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "dumbravii",
+      "neighbourhoodLabel": "Dumbrăvii",
+      "category": "football",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de fotbal (OpenStreetMap, neverificat pe teren).",
+        "en": "Football court (OpenStreetMap, not field-verified).",
+        "hu": "Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/1118595238",
+          "source_url": "https://www.openstreetmap.org/way/1118595238",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Aleea Mihai Eminescu, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.783325&lon=24.143786",
+          "retrieved_at": "2026-10-24T15:42:46.088Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Dumbrăvii",
+          "method": "nearest OSM place node",
+          "distance_m": 660,
+          "confidence": "low"
+        },
+        "photo": {
+          "value": null,
+          "source_url": "https://commons.wikimedia.org/wiki/File:Sibiu_Stadium_2023.jpg",
+          "license": "CC BY-SA 4.0",
+          "confidence": "low"
+        }
+      }
+    },
+    {
+      "id": "sb22",
+      "city": "sibiu",
+      "name": "Teren de sport",
+      "address": "Strada Săcel, Sibiu",
+      "lat": 45.772906,
+      "lng": 24.115548,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "tilisca",
+      "neighbourhoodLabel": "Tilișca",
+      "category": "multiuse",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de multisport (OpenStreetMap, neverificat pe teren).",
+        "en": "Multi-sport court (OpenStreetMap, not field-verified).",
+        "hu": "Multisportpálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/1198778213",
+          "source_url": "https://www.openstreetmap.org/way/1198778213",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Săcel, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.772906&lon=24.115548",
+          "retrieved_at": "2026-10-24T15:42:48.215Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Tilișca",
+          "method": "nearest OSM place node",
+          "distance_m": 585,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb23",
+      "city": "sibiu",
+      "name": "Teren multisport — Ștrand 2",
+      "address": "Strada Ștrandului, Sibiu",
+      "lat": 45.790442,
+      "lng": 24.13561,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "strand",
+      "neighbourhoodLabel": "Ștrand",
+      "category": "multiuse",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de multisport, asfalt, neiluminat (OpenStreetMap, neverificat pe teren).",
+        "en": "Multi-sport court, asphalt, unlit (OpenStreetMap, not field-verified).",
+        "hu": "Multisportpálya, aszfalt, világítás nélkül (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/1272219163",
+          "source_url": "https://www.openstreetmap.org/way/1272219163",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Ștrandului, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.790442&lon=24.13561",
+          "retrieved_at": "2026-10-24T15:42:49.797Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Ștrand",
+          "method": "nearest OSM place node",
+          "distance_m": 324,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb24",
+      "city": "sibiu",
+      "name": "Teren fotbal — Broscărie",
+      "address": "Strada 1 Decembrie, Sibiu",
+      "lat": 45.767994,
+      "lng": 24.195838,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "broscarie",
+      "neighbourhoodLabel": "Broscărie",
+      "category": "football",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de fotbal (OpenStreetMap, neverificat pe teren).",
+        "en": "Football court (OpenStreetMap, not field-verified).",
+        "hu": "Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/1276171956",
+          "source_url": "https://www.openstreetmap.org/way/1276171956",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada 1 Decembrie, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.767994&lon=24.195838",
+          "retrieved_at": "2026-10-24T15:42:51.385Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Broscărie",
+          "method": "nearest OSM place node",
+          "distance_m": 2507,
+          "confidence": "low"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb25",
+      "city": "sibiu",
+      "name": "Teren fotbal — Terezian",
+      "address": "Strada Aleea Postăvarilor, Sibiu",
+      "lat": 45.80544,
+      "lng": 24.150101,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "terezian",
+      "neighbourhoodLabel": "Terezian",
+      "category": "football",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de fotbal (OpenStreetMap, neverificat pe teren).",
+        "en": "Football court (OpenStreetMap, not field-verified).",
+        "hu": "Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/1282360956",
+          "source_url": "https://www.openstreetmap.org/way/1282360956",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Aleea Postăvarilor, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.80544&lon=24.150101",
+          "retrieved_at": "2026-10-24T15:42:52.976Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Terezian",
+          "method": "nearest OSM place node",
+          "distance_m": 458,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb26",
+      "city": "sibiu",
+      "name": "Teren fotbal — Terezian 2",
+      "address": "Aleea Târgul Cailor, Sibiu",
+      "lat": 45.806854,
+      "lng": 24.145861,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "terezian",
+      "neighbourhoodLabel": "Terezian",
+      "category": "football",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de fotbal (OpenStreetMap, neverificat pe teren).",
+        "en": "Football court (OpenStreetMap, not field-verified).",
+        "hu": "Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/1282954642",
+          "source_url": "https://www.openstreetmap.org/way/1282954642",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Aleea Târgul Cailor, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.806854&lon=24.145861",
+          "retrieved_at": "2026-10-24T15:42:54.555Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Terezian",
+          "method": "nearest OSM place node",
+          "distance_m": 129,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb27",
+      "city": "sibiu",
+      "name": "Teren baschet — Terezian",
+      "address": "Strada Lungă, Sibiu",
+      "lat": 45.806931,
+      "lng": 24.145678,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "terezian",
+      "neighbourhoodLabel": "Terezian",
+      "category": "basketball",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de baschet (OpenStreetMap, neverificat pe teren).",
+        "en": "Basketball court (OpenStreetMap, not field-verified).",
+        "hu": "Kosárlabdapálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/1282954643",
+          "source_url": "https://www.openstreetmap.org/way/1282954643",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Lungă, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.806931&lon=24.145678",
+          "retrieved_at": "2026-10-24T15:42:56.110Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Terezian",
+          "method": "nearest OSM place node",
+          "distance_m": 120,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb28",
+      "city": "sibiu",
+      "name": "Teren fotbal — Țiglari",
+      "address": "Viaductul Mihai Kogălniceanu, Sibiu",
+      "lat": 45.802735,
+      "lng": 24.128915,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "tiglari",
+      "neighbourhoodLabel": "Țiglari",
+      "category": "football",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de fotbal, gazon artificial (OpenStreetMap, neverificat pe teren).",
+        "en": "Football court, artificial turf (OpenStreetMap, not field-verified).",
+        "hu": "Focipálya, műfű (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/1416973766",
+          "source_url": "https://www.openstreetmap.org/way/1416973766",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Viaductul Mihai Kogălniceanu, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.802735&lon=24.128915",
+          "retrieved_at": "2026-10-24T15:42:57.678Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Țiglari",
+          "method": "nearest OSM place node",
+          "distance_m": 1051,
+          "confidence": "low"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb29",
+      "city": "sibiu",
+      "name": "Teren baschet — Centrul Civic",
+      "address": "Strada Doctor Ștefan Stâncă, Sibiu",
+      "lat": 45.789166,
+      "lng": 24.146691,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "centrul_civic",
+      "neighbourhoodLabel": "Centrul Civic",
+      "category": "basketball",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de baschet (OpenStreetMap, neverificat pe teren).",
+        "en": "Basketball court (OpenStreetMap, not field-verified).",
+        "hu": "Kosárlabdapálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/1512307233",
+          "source_url": "https://www.openstreetmap.org/way/1512307233",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Doctor Ștefan Stâncă, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.789166&lon=24.146691",
+          "retrieved_at": "2026-10-24T15:42:59.228Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Centrul Civic",
+          "method": "nearest OSM place node",
+          "distance_m": 142,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb30",
+      "city": "sibiu",
+      "name": "Teren baschet — Lazaret",
+      "address": "Strada Lazaret, Sibiu",
+      "lat": 45.801139,
+      "lng": 24.170713,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "lazaret",
+      "neighbourhoodLabel": "Lazaret",
+      "category": "basketball",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de baschet (OpenStreetMap, neverificat pe teren).",
+        "en": "Basketball court (OpenStreetMap, not field-verified).",
+        "hu": "Kosárlabdapálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/1513825739",
+          "source_url": "https://www.openstreetmap.org/way/1513825739",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Lazaret, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.801139&lon=24.170713",
+          "retrieved_at": "2026-10-24T15:43:00.784Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Lazaret",
+          "method": "nearest OSM place node",
+          "distance_m": 24,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb31",
+      "city": "sibiu",
+      "name": "Teren baschet — Lazaret 2",
+      "address": "Strada Macaralei, Sibiu",
+      "lat": 45.800871,
+      "lng": 24.170408,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "lazaret",
+      "neighbourhoodLabel": "Lazaret",
+      "category": "basketball",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de baschet, asfalt (OpenStreetMap, neverificat pe teren).",
+        "en": "Basketball court, asphalt (OpenStreetMap, not field-verified).",
+        "hu": "Kosárlabdapálya, aszfalt (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/1513825740",
+          "source_url": "https://www.openstreetmap.org/way/1513825740",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Macaralei, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.800871&lon=24.170408",
+          "retrieved_at": "2026-10-24T15:43:02.345Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Lazaret",
+          "method": "nearest OSM place node",
+          "distance_m": 51,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb32",
+      "city": "sibiu",
+      "name": "Teren baschet — Doamna Stanca",
+      "address": "Șoseaua Sibiului, Sibiu",
+      "lat": 45.777,
+      "lng": 24.169136,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "doamna_stanca",
+      "neighbourhoodLabel": "Doamna Stanca",
+      "category": "basketball",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de baschet (OpenStreetMap, neverificat pe teren).",
+        "en": "Basketball court (OpenStreetMap, not field-verified).",
+        "hu": "Kosárlabdapálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/1516691149",
+          "source_url": "https://www.openstreetmap.org/way/1516691149",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Șoseaua Sibiului, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.777&lon=24.169136",
+          "retrieved_at": "2026-10-24T15:43:03.935Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Doamna Stanca",
+          "method": "nearest OSM place node",
+          "distance_m": 345,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb33",
+      "city": "sibiu",
+      "name": "Teren baschet — Dumbrăvii",
+      "address": "Strada Nicolaus Olahus, Sibiu",
+      "lat": 45.78302,
+      "lng": 24.146306,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "dumbravii",
+      "neighbourhoodLabel": "Dumbrăvii",
+      "category": "basketball",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de baschet (OpenStreetMap, neverificat pe teren).",
+        "en": "Basketball court (OpenStreetMap, not field-verified).",
+        "hu": "Kosárlabdapálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/1517083899",
+          "source_url": "https://www.openstreetmap.org/way/1517083899",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Nicolaus Olahus, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.78302&lon=24.146306",
+          "retrieved_at": "2026-10-24T15:43:05.522Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Dumbrăvii",
+          "method": "nearest OSM place node",
+          "distance_m": 671,
+          "confidence": "low"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb34",
+      "city": "sibiu",
+      "name": "Teren baschet — Reșița",
+      "address": "Strada Ana Ipătescu, Sibiu",
+      "lat": 45.803389,
+      "lng": 24.165488,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "resita",
+      "neighbourhoodLabel": "Reșița",
+      "category": "basketball",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de baschet (OpenStreetMap, neverificat pe teren).",
+        "en": "Basketball court (OpenStreetMap, not field-verified).",
+        "hu": "Kosárlabdapálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/1517626704",
+          "source_url": "https://www.openstreetmap.org/way/1517626704",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Strada Ana Ipătescu, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.803389&lon=24.165488",
+          "retrieved_at": "2026-10-24T15:43:07.066Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Reșița",
+          "method": "nearest OSM place node",
+          "distance_m": 467,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    },
+    {
+      "id": "sb35",
+      "city": "sibiu",
+      "name": "Teren fotbal — Valea Aurie 2",
+      "address": "Aleea Călăreților, Sibiu",
+      "lat": 45.770167,
+      "lng": 24.132835,
+      "status": "unverified",
+      "condition": null,
+      "occupancy": "unknown",
+      "progress": 0,
+      "reports": 0,
+      "neighbourhood": "valea_aurie",
+      "neighbourhoodLabel": "Valea Aurie",
+      "category": "football",
+      "accessibility": {
+        "wheelchair": false,
+        "lighting": false,
+        "parking": false,
+        "flatSurface": false
+      },
+      "description": {
+        "ro": "Teren de fotbal (OpenStreetMap, neverificat pe teren).",
+        "en": "Football court (OpenStreetMap, not field-verified).",
+        "hu": "Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."
+      },
+      "img": null,
+      "sources": {
+        "osm": {
+          "value": "way/1517849282",
+          "source_url": "https://www.openstreetmap.org/way/1517849282",
+          "retrieved_at": "2026-10-24T15:38:53.393Z",
+          "confidence": "high"
+        },
+        "address": {
+          "value": "Aleea Călăreților, Sibiu",
+          "source_url": "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=45.770167&lon=24.132835",
+          "retrieved_at": "2026-10-24T15:43:08.628Z",
+          "confidence": "medium"
+        },
+        "neighbourhood": {
+          "value": "Valea Aurie",
+          "method": "nearest OSM place node",
+          "distance_m": 428,
+          "confidence": "medium"
+        },
+        "photo": null
+      }
+    }
+  ],
+  "neighbourhoods": {
+    "strand": "Ștrand",
+    "broscarie": "Broscărie",
+    "centrul_istoric": "Centrul Istoric",
+    "valea_aurie": "Valea Aurie",
+    "centrul_civic": "Centrul Civic",
+    "hipodrom": "Hipodrom",
+    "vasile_aaron": "Vasile Aaron",
+    "dumbravii": "Dumbrăvii",
+    "tilisca": "Tilișca",
+    "terezian": "Terezian",
+    "tiglari": "Țiglari",
+    "lazaret": "Lazaret",
+    "doamna_stanca": "Doamna Stanca",
+    "resita": "Reșița"
+  }
+}

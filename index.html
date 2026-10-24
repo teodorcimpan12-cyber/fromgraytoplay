@@ -1485,7 +1485,8 @@ T.hu.feedStatusChange = "Állapot frissítve: {court} → {status}";
 /* === Court weather helper (#12 from build brief) === */
 /* Maps the existing 1-5 condition score to a weather chip. */
 function getCourtWeather(condition, t) {
-  const c = Math.max(0, Math.min(5, Number(condition) || 0)) / 5;
+  if (condition == null) return { icon: "❔", key: "unverified", color: "#6B7280", label: t.unverified || "Neverificat" };
+  const c =Math.max(0, Math.min(5, Number(condition) || 0)) / 5;
   if (c >= 0.8) return { icon: "☀️", key: "weatherExcellent", color: "#10B981", label: t.weatherExcellent };
   if (c >= 0.6) return { icon: "🌤️", key: "weatherGood", color: "#22C55E", label: t.weatherGood };
   if (c >= 0.4) return { icon: "⛅", key: "weatherOkay", color: "#F59E0B", label: t.weatherOkay };
@@ -1510,6 +1511,10 @@ function anonName(s) {
 }
 
 /* === Push an activity entry. Fire-and-forget. === */
+function hoodName(key, lang) {
+  const cfg = CITY_CFG[ACTIVE_CITY];
+  return (cfg && cfg.hoods && cfg.hoods[key]) || (HOOD_DISPLAY[lang] || HOOD_DISPLAY.ro)[key] || key;
+}
 // activity/ mixes numeric and ISO-string timestamps.
 function tsOf(a) { return typeof a.timestamp === "number" ? a.timestamp : (Date.parse(a.timestamp || "") || 0); }
 // In-page replacement for window.confirm(), which browsers may silently suppress.
@@ -1541,7 +1546,7 @@ function logActivity(type, userName, courtId) {
 function shareCourt(court, t, toast) {
   const url = SITE + "/#court-" + court.id;
   const title = "From Grey to Play · " + court.name;
-  const text = court.name + " · " + (court.address || "Târgu Mureș");
+  const text = court.name + " · " + (court.address || cityName("ro"));
   if (navigator.share) {
     navigator.share({ title, text, url }).catch(() => {});
   } else {
@@ -1906,6 +1911,10 @@ function CourtHealthRing(props) {
   var lang = appCtx.lang, t = appCtx.t;
   var allReports = useFirebase("reports");
   var ratingsData = useFirebase("ratings/" + court.id);
+  if (court.condition == null && !(ratingsData && Object.keys(ratingsData).length)) {
+    return React.createElement("div", { className: "health-ring-wrap", style: { color: "#6B7280", fontSize: ".82rem" } },
+      "❔ " + (lang === "ro" ? "Scor indisponibil — teren neverificat. Evaluează-l după ce îl vizitezi." : lang === "hu" ? "Nincs pontszám — a pálya nincs ellenőrizve." : "No score yet — court not verified. Rate it after you visit."));
+  }
   var score = getCourtHealthScore(court, allReports, ratingsData);
   var color = score >= 70 ? "var(--green)" : score >= 40 ? "var(--coral)" : "var(--red)";
   var R = 36, circ = 2 * Math.PI * R;
@@ -1952,13 +1961,14 @@ function NeighborhoodRace() {
   var t = appCtx.t, lang = appCtx.lang;
   var activity = useFirebase("activity");
   var reports = useFirebase("reports");
-  var hoods = Object.keys(HOOD_COURT_MAP);
+  var hoodMap = ACTIVE_CITY === "tgm" ? HOOD_COURT_MAP : COURTS.reduce(function(m, c) { (m[c.neighbourhood] = m[c.neighbourhood] || []).push(c.id); return m; }, {});
+  var hoods = Object.keys(hoodMap);
   var scores = hoods.map(function(hood) {
-    var courtIds = HOOD_COURT_MAP[hood];
+    var courtIds = hoodMap[hood];
     var score = 0;
     if (activity) Object.values(activity).forEach(function(a) { if (courtIds.includes(a.courtId)) score += 1; });
     if (reports) Object.values(reports).forEach(function(r) { if (courtIds.includes(r.courtId)) score += 2; });
-    return { hood:hood, score:score, label:(HOOD_DISPLAY[lang]||HOOD_DISPLAY.en)[hood] };
+    return { hood:hood, score:score, label:hoodName(hood, lang) };
   });
   scores.sort(function(a,b) { return b.score - a.score; });
   var maxScore = Math.max.apply(null, scores.map(function(s){return s.score;}).concat([1]));
@@ -2784,7 +2794,15 @@ T.hu.receiptCourt1 = "pálya"; // TODO: HU review
 T.hu.receiptCourtN = "pálya"; // TODO: HU review
 
 /* === #4 Inequality receipt — canvas-rendered shareable "store receipt" === */
+function CityDataPending() {
+  var lang = useApp().lang;
+  return React.createElement("div", { className: "card", style: { borderLeft: "4px solid #6B7280", color: "var(--textSec)", fontSize: ".9rem" } },
+    "❔ " + (lang === "ro" ? "Pentru " + cityName(lang) + " starea terenurilor nu e încă verificată pe teren. Graficul apare după primele evaluări."
+      : lang === "hu" ? cityName(lang) + ": a pályák állapota még nincs helyszínen ellenőrizve." // TODO: HU review
+      : "Court condition in " + cityName(lang) + " is not field-verified yet. This chart appears after the first ratings."));
+}
 function InequalityReceipt() {
+  if (!COURTS.some(function (c) { return c.condition != null; })) return React.createElement(CityDataPending, null);
   var app = useApp();
   var t = app.t, lang = app.lang, toast = app.toast;
   var votes = useFirebase("votes");
@@ -3892,9 +3910,9 @@ function WantedPoster({ court, onClose }) {
     ctx.fillStyle = "#999"; ctx.font = "12px 'Space Mono',monospace"; ctx.textAlign = "left";
     [
       "📍 " + court.address,
-      "📊 " + (t.condition || "Stare") + ": " + court.condition + "/5",
+      "📊 " + (t.condition || "Stare") + ": " + (court.condition == null ? (t.unverified || "?") : court.condition + "/5"),
       "📋 " + (t.reports || "Rapoarte") + ": " + (court.reports || 0),
-      "🏘 " + (t.neighbourhood || "Cartier") + ": " + (court.neighbourhood || "—")
+      "🏘 " + (t.neighbourhood || "Cartier") + ": " + (court.neighbourhood ? hoodName(court.neighbourhood, lang) : "—")
     ].forEach(function(s, i) { ctx.fillText(s, 40, 370 + i * 42); });
     /* CTA */
     ctx.fillStyle = "#10B981"; _rrect(ctx, 40, H - 200, W - 80, 62, 14); ctx.fill();
@@ -4556,20 +4574,64 @@ const COURTS_BASE = [
 const COURTS_TGM = COURTS_BASE.map(c => ({ ...c, city: "tgm" }));
 const CITY_CFG = {
   tgm: { nameRo:"Târgu Mureș", nameEn:"Târgu Mureș", nameHu:"Marosvásárhely", center:[46.5427,24.5572], zoom:13 },
-  sibiu: { nameRo:"Sibiu", nameEn:"Sibiu / Hermannstadt", nameHu:"Nagyszeben", center:[45.7983,24.1256], zoom:13 }
+  sibiu: { nameRo:"Sibiu", nameEn:"Sibiu / Hermannstadt", nameHu:"Nagyszeben", center:[45.7983,24.1256], zoom:13, hoods:{"strand":"Ștrand","broscarie":"Broscărie","centrul_istoric":"Centrul Istoric","valea_aurie":"Valea Aurie","centrul_civic":"Centrul Civic","hipodrom":"Hipodrom","vasile_aaron":"Vasile Aaron","dumbravii":"Dumbrăvii","tilisca":"Tilișca","terezian":"Terezian","tiglari":"Țiglari","lazaret":"Lazaret","doamna_stanca":"Doamna Stanca","resita":"Reșița"} }
 };
 const ACTIVE_CITY = [new URLSearchParams(location.search).get("c"), localStorage.getItem("g2p_city")].find(c => c && CITY_CFG[c]) || "tgm";
+const CITY_HALL = {
+  tgm: { ro: "Consiliul Local și Primăria Municipiului Târgu Mureș", en: "Târgu Mureș City Council and City Hall", hu: "Marosvásárhely Helyi Tanácsa és Polgármesteri Hivatala",
+    registry: "Registratura Primăriei Municipiului Târgu Mureș", address: "Piața Victoriei nr. 3, 540026 Târgu Mureș", tel: "0265268330", telLabel: "0265-268.330", mail: "primaria@tirgumures.ro" },
+  sibiu: { ro: "Consiliul Local și Primăria Municipiului Sibiu", en: "Sibiu City Council and City Hall", hu: "Nagyszeben Helyi Tanácsa és Polgármesteri Hivatala", // TODO: HU review
+    registry: "Registratura Primăriei Municipiului Sibiu", address: "Str. Samuel Brukenthal nr. 2, 550178 Sibiu", tel: "0269208800", telLabel: "0269-208.800", mail: "pms@sibiu.ro",
+    source: "https://www.sibiu.ro/ro/contact", retrieved: "2026-10-24" }
+}[ACTIVE_CITY];
+function cityName(lang) {
+  const c = CITY_CFG[ACTIVE_CITY];
+  return lang === "hu" ? c.nameHu : lang === "en" ? c.nameEn : c.nameRo;
+}
+if (ACTIVE_CITY !== "tgm") {
+  ["ro", "en", "hu"].forEach(l => {
+    T[l].city = cityName(l) + (l === "ro" ? ", România" : l === "hu" ? ", Románia" : ", Romania");
+    T[l].dossierForCouncil = (l === "ro" ? "Pentru " : l === "en" ? "For the " : "") + CITY_HALL[l] + (l === "hu" ? " részére" : "");
+    T[l].heroKicker = cityName(l) + (l === "ro" ? " · terenuri sportive publice" : l === "en" ? " · public sports courts" : " · közpályák");
+  });
+}
+// Generated by tools/enrich_sibiu.mjs + tools/inject_sibiu.mjs — Data © OpenStreetMap contributors (ODbL). All unverified.
 const COURTS_SIBIU = [
-  { id:"sb1", name:"Teren Baschet Piața Cibin", address:"Piața Cibin, Sibiu", lat:45.7983, lng:24.1256, status:"unverified", condition:"unverified", neighbourhood:"centru", category:"basketball", city:"sibiu", progress:0, reports:0, accessibility:{wheelchair:false,lighting:false,parking:true,flatSurface:false}, description:"Teren baschet neverificat — sursă OpenStreetMap." },
-  { id:"sb2", name:"Teren Sport Turnișor", address:"Str. Turnișorului, Sibiu", lat:45.8123, lng:24.1089, status:"unverified", condition:"unverified", neighbourhood:"turnișor", category:"football", city:"sibiu", progress:0, reports:0, accessibility:{wheelchair:false,lighting:false,parking:false,flatSurface:false}, description:"Teren fotbal neverificat — sursă OpenStreetMap." },
-  { id:"sb3", name:"Teren Tenis Hipodrom", address:"Str. Hipodromului, Sibiu", lat:45.7856, lng:24.1312, status:"unverified", condition:"unverified", neighbourhood:"hipodrom", category:"tennis", city:"sibiu", progress:0, reports:0, accessibility:{wheelchair:false,lighting:false,parking:true,flatSurface:false}, description:"Teren tenis neverificat — sursă OpenStreetMap." },
-  { id:"sb4", name:"Complex Sport Strand", address:"Str. Ștefan cel Mare 1, Sibiu", lat:45.7901, lng:24.1178, status:"unverified", condition:"unverified", neighbourhood:"strand", category:"multiuse", city:"sibiu", progress:0, reports:0, accessibility:{wheelchair:false,lighting:false,parking:true,flatSurface:false}, description:"Complex sport neverificat — sursă OpenStreetMap." },
-  { id:"sb5", name:"Teren Baschet Gușterița", address:"Str. Gușterița 15, Sibiu", lat:45.8089, lng:24.1445, status:"unverified", condition:"unverified", neighbourhood:"gușterița", category:"basketball", city:"sibiu", progress:0, reports:0, accessibility:{wheelchair:false,lighting:false,parking:false,flatSurface:false}, description:"Teren baschet neverificat — sursă OpenStreetMap." },
-  { id:"sb6", name:"Teren Fotbal Lazaret", address:"Str. Lazaret 8, Sibiu", lat:45.8034, lng:24.1523, status:"unverified", condition:"unverified", neighbourhood:"lazaret", category:"football", city:"sibiu", progress:0, reports:0, accessibility:{wheelchair:false,lighting:false,parking:false,flatSurface:false}, description:"Teren fotbal neverificat — sursă OpenStreetMap." },
-  { id:"sb7", name:"Teren Sport Vasile Aaron", address:"Str. Vasile Aaron, Sibiu", lat:45.7967, lng:24.1067, status:"unverified", condition:"unverified", neighbourhood:"centru", category:"multiuse", city:"sibiu", progress:0, reports:0, accessibility:{wheelchair:false,lighting:false,parking:false,flatSurface:false}, description:"Teren multifuncțional neverificat — sursă OpenStreetMap." },
-  { id:"sb8", name:"Teren Tenis Ștrand Municipal", address:"Str. Someșului 2, Sibiu", lat:45.7878, lng:24.1334, status:"unverified", condition:"unverified", neighbourhood:"centru", category:"tennis", city:"sibiu", progress:0, reports:0, accessibility:{wheelchair:false,lighting:false,parking:true,flatSurface:false}, description:"Teren tenis la ștrandul municipal — neverificat." },
-  { id:"sb9", name:"Teren Baschet Șelimbăr", address:"Str. Lungă 3, Șelimbăr", lat:45.7745, lng:24.1412, status:"unverified", condition:"unverified", neighbourhood:"șelimbăr", category:"basketball", city:"sibiu", progress:0, reports:0, accessibility:{wheelchair:false,lighting:false,parking:false,flatSurface:false}, description:"Teren în apropierea Sibiului, neverificat." },
-  { id:"sb10", name:"Teren Sport Școala Mihai Viteazul", address:"Str. Mihai Viteazul 24, Sibiu", lat:45.8012, lng:24.1389, status:"unverified", condition:"unverified", neighbourhood:"centru", category:"multiuse", city:"sibiu", progress:0, reports:0, accessibility:{wheelchair:false,lighting:false,parking:false,flatSurface:true}, description:"Teren în incintă școlară, neverificat." }
+  {"id":"sb1","city":"sibiu","name":"Teren baschet — Ștrand","address":"Strada Doljului, Sibiu","lat":45.788873,"lng":24.133839,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"strand","category":"basketball","accessibility":{"wheelchair":false,"lighting":true,"parking":false,"flatSurface":false},"description":"Teren de baschet, iluminat (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de baschet, iluminat (OpenStreetMap, neverificat pe teren).","en":"Basketball court, lit (OpenStreetMap, not field-verified).","hu":"Kosárlabdapálya, világítással (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"node/5963356826","img":null},
+  {"id":"sb2","city":"sibiu","name":"Stadionul CFR","address":"Strada Triajului, Sibiu","lat":45.787104,"lng":24.181515,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"broscarie","category":"football","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","en":"Football court (OpenStreetMap, not field-verified).","hu":"Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/40123382","img":null},
+  {"id":"sb3","city":"sibiu","name":"Teren fotbal — Ștrand","address":"Aleea Mihai Eminescu, Sibiu","lat":45.783596,"lng":24.141875,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"strand","category":"football","accessibility":{"wheelchair":false,"lighting":true,"parking":false,"flatSurface":false},"description":"Teren de fotbal, gazon artificial, iluminat (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de fotbal, gazon artificial, iluminat (OpenStreetMap, neverificat pe teren).","en":"Football court, artificial turf, lit (OpenStreetMap, not field-verified).","hu":"Focipálya, műfű, világítással (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/45777492","img":null},
+  {"id":"sb4","city":"sibiu","name":"Teren fotbal — Centrul Istoric","address":"Strada Bastionului, Sibiu","lat":45.794313,"lng":24.145537,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"centrul_istoric","category":"football","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","en":"Football court (OpenStreetMap, not field-verified).","hu":"Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/46837701","img":null},
+  {"id":"sb5","city":"sibiu","name":"Teren fotbal — Valea Aurie","address":"Strada Valea Aurie, Sibiu","lat":45.767418,"lng":24.129899,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"valea_aurie","category":"football","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","en":"Football court (OpenStreetMap, not field-verified).","hu":"Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/107725962","img":null},
+  {"id":"sb6","city":"sibiu","name":"Teren multisport — Ștrand","address":"Strada Bihorului, Sibiu","lat":45.79038,"lng":24.135319,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"strand","category":"multiuse","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de multisport, asfalt, neiluminat (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de multisport, asfalt, neiluminat (OpenStreetMap, neverificat pe teren).","en":"Multi-sport court, asphalt, unlit (OpenStreetMap, not field-verified).","hu":"Multisportpálya, aszfalt, világítás nélkül (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/108361050","img":null},
+  {"id":"sb7","city":"sibiu","name":"Teren fotbal — Centrul Istoric 2","address":"Strada Lemnelor, Sibiu","lat":45.797623,"lng":24.136561,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"centrul_istoric","category":"football","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de fotbal, iarbă (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de fotbal, iarbă (OpenStreetMap, neverificat pe teren).","en":"Football court, grass (OpenStreetMap, not field-verified).","hu":"Focipálya, fű (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/108361063","img":null},
+  {"id":"sb8","city":"sibiu","name":"Teren fotbal — Ștrand 2","address":"Strada Maramureșului, Sibiu","lat":45.792066,"lng":24.132525,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"strand","category":"football","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de fotbal, iarbă (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de fotbal, iarbă (OpenStreetMap, neverificat pe teren).","en":"Football court, grass (OpenStreetMap, not field-verified).","hu":"Focipálya, fű (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/108362122","img":null},
+  {"id":"sb9","city":"sibiu","name":"Teren multisport — Centrul Civic","address":"Strada Doctor Ștefan Stâncă, Sibiu","lat":45.788798,"lng":24.146726,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"centrul_civic","category":"multiuse","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de multisport, asfalt (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de multisport, asfalt (OpenStreetMap, neverificat pe teren).","en":"Multi-sport court, asphalt (OpenStreetMap, not field-verified).","hu":"Multisportpálya, aszfalt (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/163783855","img":null},
+  {"id":"sb10","city":"sibiu","name":"Teren multisport — Centrul Civic 2","address":"Aleea Filozofilor, Sibiu","lat":45.794078,"lng":24.142951,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"centrul_civic","category":"multiuse","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de multisport (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de multisport (OpenStreetMap, neverificat pe teren).","en":"Multi-sport court (OpenStreetMap, not field-verified).","hu":"Multisportpálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/164323464","img":null},
+  {"id":"sb11","city":"sibiu","name":"Teren multisport — Centrul Civic 3","address":"Strada Ion Rațiu, Sibiu","lat":45.790974,"lng":24.142848,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"centrul_civic","category":"multiuse","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de multisport (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de multisport (OpenStreetMap, neverificat pe teren).","en":"Multi-sport court (OpenStreetMap, not field-verified).","hu":"Multisportpálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/164326344","img":null},
+  {"id":"sb12","city":"sibiu","name":"Teren multisport — Hipodrom","address":"Aleea Geniștilor, Sibiu","lat":45.780303,"lng":24.15919,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"hipodrom","category":"multiuse","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de multisport (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de multisport (OpenStreetMap, neverificat pe teren).","en":"Multi-sport court (OpenStreetMap, not field-verified).","hu":"Multisportpálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/177519330","img":null},
+  {"id":"sb13","city":"sibiu","name":"Teren multisport — Vasile Aaron","address":"Strada Iezer, Sibiu","lat":45.786603,"lng":24.173303,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"vasile_aaron","category":"multiuse","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de multisport (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de multisport (OpenStreetMap, neverificat pe teren).","en":"Multi-sport court (OpenStreetMap, not field-verified).","hu":"Multisportpálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/224239288","img":null},
+  {"id":"sb14","city":"sibiu","name":"Teren fotbal — Hipodrom","address":"Strada Gorăslău, Sibiu","lat":45.78269,"lng":24.15368,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"hipodrom","category":"football","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","en":"Football court (OpenStreetMap, not field-verified).","hu":"Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/254764670","img":null},
+  {"id":"sb15","city":"sibiu","name":"Teren multisport — Hipodrom 2","address":"Aleea Buia, Sibiu","lat":45.783471,"lng":24.150144,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"hipodrom","category":"multiuse","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de multisport, asfalt (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de multisport, asfalt (OpenStreetMap, neverificat pe teren).","en":"Multi-sport court, asphalt (OpenStreetMap, not field-verified).","hu":"Multisportpálya, aszfalt (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/254866441","img":null},
+  {"id":"sb16","city":"sibiu","name":"Teren basket","address":"Strada Parcul Tineretului, Sibiu","lat":45.796556,"lng":24.15681,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"centrul_istoric","category":"basketball","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de baschet, asfalt, neiluminat (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de baschet, asfalt, neiluminat (OpenStreetMap, neverificat pe teren).","en":"Basketball court, asphalt, unlit (OpenStreetMap, not field-verified).","hu":"Kosárlabdapálya, aszfalt, világítás nélkül (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/307353014","img":null},
+  {"id":"sb17","city":"sibiu","name":"Teren multisport — Dumbrăvii","address":"Strada J.W. Goethe, Sibiu","lat":45.776905,"lng":24.14131,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"dumbravii","category":"multiuse","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de multisport, asfalt (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de multisport, asfalt (OpenStreetMap, neverificat pe teren).","en":"Multi-sport court, asphalt (OpenStreetMap, not field-verified).","hu":"Multisportpálya, aszfalt (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/420832156","img":null},
+  {"id":"sb18","city":"sibiu","name":"Teren baschet — Centrul Istoric","address":"Strada Gheorghe Lazăr, Sibiu","lat":45.796312,"lng":24.154152,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"centrul_istoric","category":"basketball","accessibility":{"wheelchair":false,"lighting":true,"parking":false,"flatSurface":false},"description":"Teren de baschet, asfalt, iluminat (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de baschet, asfalt, iluminat (OpenStreetMap, neverificat pe teren).","en":"Basketball court, asphalt, lit (OpenStreetMap, not field-verified).","hu":"Kosárlabdapálya, aszfalt, világítással (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/439745819","img":null},
+  {"id":"sb19","city":"sibiu","name":"Teren volei — Ștrand","address":"Strada Doljului, Sibiu","lat":45.788876,"lng":24.133559,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"strand","category":"volleyball","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de volei, nisip, neiluminat (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de volei, nisip, neiluminat (OpenStreetMap, neverificat pe teren).","en":"Volleyball court, sand, unlit (OpenStreetMap, not field-verified).","hu":"Röplabdapálya, homok, világítás nélkül (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/660410671","img":null},
+  {"id":"sb20","city":"sibiu","name":"Teren baschet — Ștrand 2","address":"Strada Doljului, Sibiu","lat":45.788876,"lng":24.13384,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"strand","category":"basketball","accessibility":{"wheelchair":false,"lighting":true,"parking":false,"flatSurface":false},"description":"Teren de baschet, tartan, iluminat (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de baschet, tartan, iluminat (OpenStreetMap, neverificat pe teren).","en":"Basketball court, tartan, lit (OpenStreetMap, not field-verified).","hu":"Kosárlabdapálya, tartan, világítással (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/660410672","img":null},
+  {"id":"sb21","city":"sibiu","name":"Teren fotbal — Dumbrăvii","address":"Aleea Mihai Eminescu, Sibiu","lat":45.783325,"lng":24.143786,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"dumbravii","category":"football","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","en":"Football court (OpenStreetMap, not field-verified).","hu":"Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1118595238","img":null},
+  {"id":"sb22","city":"sibiu","name":"Teren de sport","address":"Strada Săcel, Sibiu","lat":45.772906,"lng":24.115548,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"tilisca","category":"multiuse","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de multisport (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de multisport (OpenStreetMap, neverificat pe teren).","en":"Multi-sport court (OpenStreetMap, not field-verified).","hu":"Multisportpálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1198778213","img":null},
+  {"id":"sb23","city":"sibiu","name":"Teren multisport — Ștrand 2","address":"Strada Ștrandului, Sibiu","lat":45.790442,"lng":24.13561,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"strand","category":"multiuse","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de multisport, asfalt, neiluminat (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de multisport, asfalt, neiluminat (OpenStreetMap, neverificat pe teren).","en":"Multi-sport court, asphalt, unlit (OpenStreetMap, not field-verified).","hu":"Multisportpálya, aszfalt, világítás nélkül (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1272219163","img":null},
+  {"id":"sb24","city":"sibiu","name":"Teren fotbal — Broscărie","address":"Strada 1 Decembrie, Sibiu","lat":45.767994,"lng":24.195838,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"broscarie","category":"football","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","en":"Football court (OpenStreetMap, not field-verified).","hu":"Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1276171956","img":null},
+  {"id":"sb25","city":"sibiu","name":"Teren fotbal — Terezian","address":"Strada Aleea Postăvarilor, Sibiu","lat":45.80544,"lng":24.150101,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"terezian","category":"football","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","en":"Football court (OpenStreetMap, not field-verified).","hu":"Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1282360956","img":null},
+  {"id":"sb26","city":"sibiu","name":"Teren fotbal — Terezian 2","address":"Aleea Târgul Cailor, Sibiu","lat":45.806854,"lng":24.145861,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"terezian","category":"football","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","en":"Football court (OpenStreetMap, not field-verified).","hu":"Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1282954642","img":null},
+  {"id":"sb27","city":"sibiu","name":"Teren baschet — Terezian","address":"Strada Lungă, Sibiu","lat":45.806931,"lng":24.145678,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"terezian","category":"basketball","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de baschet (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de baschet (OpenStreetMap, neverificat pe teren).","en":"Basketball court (OpenStreetMap, not field-verified).","hu":"Kosárlabdapálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1282954643","img":null},
+  {"id":"sb28","city":"sibiu","name":"Teren fotbal — Țiglari","address":"Viaductul Mihai Kogălniceanu, Sibiu","lat":45.802735,"lng":24.128915,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"tiglari","category":"football","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de fotbal, gazon artificial (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de fotbal, gazon artificial (OpenStreetMap, neverificat pe teren).","en":"Football court, artificial turf (OpenStreetMap, not field-verified).","hu":"Focipálya, műfű (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1416973766","img":null},
+  {"id":"sb29","city":"sibiu","name":"Teren baschet — Centrul Civic","address":"Strada Doctor Ștefan Stâncă, Sibiu","lat":45.789166,"lng":24.146691,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"centrul_civic","category":"basketball","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de baschet (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de baschet (OpenStreetMap, neverificat pe teren).","en":"Basketball court (OpenStreetMap, not field-verified).","hu":"Kosárlabdapálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1512307233","img":null},
+  {"id":"sb30","city":"sibiu","name":"Teren baschet — Lazaret","address":"Strada Lazaret, Sibiu","lat":45.801139,"lng":24.170713,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"lazaret","category":"basketball","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de baschet (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de baschet (OpenStreetMap, neverificat pe teren).","en":"Basketball court (OpenStreetMap, not field-verified).","hu":"Kosárlabdapálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1513825739","img":null},
+  {"id":"sb31","city":"sibiu","name":"Teren baschet — Lazaret 2","address":"Strada Macaralei, Sibiu","lat":45.800871,"lng":24.170408,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"lazaret","category":"basketball","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de baschet, asfalt (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de baschet, asfalt (OpenStreetMap, neverificat pe teren).","en":"Basketball court, asphalt (OpenStreetMap, not field-verified).","hu":"Kosárlabdapálya, aszfalt (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1513825740","img":null},
+  {"id":"sb32","city":"sibiu","name":"Teren baschet — Doamna Stanca","address":"Șoseaua Sibiului, Sibiu","lat":45.777,"lng":24.169136,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"doamna_stanca","category":"basketball","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de baschet (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de baschet (OpenStreetMap, neverificat pe teren).","en":"Basketball court (OpenStreetMap, not field-verified).","hu":"Kosárlabdapálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1516691149","img":null},
+  {"id":"sb33","city":"sibiu","name":"Teren baschet — Dumbrăvii","address":"Strada Nicolaus Olahus, Sibiu","lat":45.78302,"lng":24.146306,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"dumbravii","category":"basketball","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de baschet (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de baschet (OpenStreetMap, neverificat pe teren).","en":"Basketball court (OpenStreetMap, not field-verified).","hu":"Kosárlabdapálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1517083899","img":null},
+  {"id":"sb34","city":"sibiu","name":"Teren baschet — Reșița","address":"Strada Ana Ipătescu, Sibiu","lat":45.803389,"lng":24.165488,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"resita","category":"basketball","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de baschet (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de baschet (OpenStreetMap, neverificat pe teren).","en":"Basketball court (OpenStreetMap, not field-verified).","hu":"Kosárlabdapálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1517626704","img":null},
+  {"id":"sb35","city":"sibiu","name":"Teren fotbal — Valea Aurie 2","address":"Aleea Călăreților, Sibiu","lat":45.770167,"lng":24.132835,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"valea_aurie","category":"football","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","en":"Football court (OpenStreetMap, not field-verified).","hu":"Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1517849282","img":null}
 ];
 const COURTS_ALL = [...COURTS_TGM, ...COURTS_SIBIU];
 const COURTS = COURTS_ALL.filter(c => c.city === ACTIVE_CITY);
@@ -4764,7 +4826,7 @@ function Onboarding({
   const screens = [{
     emoji: "🏀",
     title: "FROM GREY TO PLAY",
-    sub: lang === "ro" ? "Documentăm inegalitatea infrastructurii sportive din Târgu Mureș" : "Documenting sports infrastructure inequality in Târgu Mureș",
+    sub: lang === "ro" ? "Documentăm inegalitatea infrastructurii sportive din " + cityName(lang) : "Documenting sports infrastructure inequality in " + cityName(lang),
     bg: "linear-gradient(135deg,#1A1A2E,#16213E)"
   }, {
     emoji: "🏚️ ↔ 🏟️",
@@ -5204,7 +5266,7 @@ function MapView({
     if (!ref.current || mapRef.current) return;
     const m = L.map(ref.current).setView(CITY_CFG[ACTIVE_CITY].center, CITY_CFG[ACTIVE_CITY].zoom);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OSM'
+      attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a> (ODbL)'
     }).addTo(m);
     // Heatmap: concentric translucent circles per court, radius/opacity
     // scaled by report density (static c.reports + live heatCounts).
@@ -5247,8 +5309,9 @@ function MapView({
       m.setView([myLoc.lat, myLoc.lng], 14);
     }
     mapRef.current = m;
-    setTimeout(() => m.invalidateSize(), 200);
+    const sizeTimer = setTimeout(() => m.invalidateSize(), 200);
     return () => {
+      clearTimeout(sizeTimer);
       m.remove();
       mapRef.current = null;
     };
@@ -6059,7 +6122,7 @@ function HomePage() {
       color: "#9CA3AF",
       maxWidth: 560
     }
-  }, lang === "ro" ? "Documentăm inegalitatea infrastructurii sportive din Târgu Mureș. Semnează petiția, raportează terenuri degradate." : "Documenting sports infrastructure inequality in Târgu Mureș. Sign the petition, report degraded courts.")), /*#__PURE__*/React.createElement("div", {
+  }, lang === "ro" ? "Documentăm inegalitatea infrastructurii sportive din " + cityName(lang) + ". Semnează petiția, raportează terenuri degradate." : "Documenting sports infrastructure inequality in " + cityName(lang) + ". Sign the petition, report degraded courts.")),/*#__PURE__*/React.createElement("div", {
     className: "grid grid-3 mt-3"
   }, /*#__PURE__*/React.createElement(StatTile, {
     value: COURTS.length, label: t.courtsReported, color: "var(--green)"
@@ -6230,7 +6293,7 @@ function CourtsPage() {
   }, t.neighbourhood), [...new Set(COURTS.map(c => c.neighbourhood))].map(h => React.createElement("option", {
     key: h,
     value: h
-  }, t[h] || h.charAt(0).toUpperCase() + h.slice(1))))), /*#__PURE__*/React.createElement("div", {
+  }, hoodName(h, lang))))),/*#__PURE__*/React.createElement("div", {
     className: "tabs"
   }, /*#__PURE__*/React.createElement("button", {
     className: tab === "map" ? "active" : "",
@@ -6283,8 +6346,8 @@ function CourtsPage() {
     title: getCourtWeather(c.condition, t).label,
     style: { background: getCourtWeather(c.condition, t).color + "22", color: getCourtWeather(c.condition, t).color, marginRight: ".3rem" }
   }, getCourtWeather(c.condition, t).icon, " ", getCourtWeather(c.condition, t).label), /*#__PURE__*/React.createElement("span", {
-    className: `badge ${c.status === "degraded" ? "badge-red" : c.status === "inProgress" ? "badge-coral" : "badge-green"}`
-  }, c.status === "degraded" ? t.degraded : c.status === "inProgress" ? t.inProgress : t.renovated),
+    className: `badge ${c.status === "unverified" ? "badge-gray" : c.status === "degraded" ? "badge-red" : c.status === "inProgress" ? "badge-coral" : "badge-green"}`
+  }, c.status === "unverified" ? t.unverified : c.status === "degraded" ? t.degraded : c.status === "inProgress" ? t.inProgress : t.renovated),
   gameCountFor(c.id) > 0 && /*#__PURE__*/React.createElement("span", {
     className: "badge badge-coral",
     style: { animation: "livePing 1.5s infinite" }
@@ -6465,7 +6528,12 @@ function CourtDetail({
     }
   }, "\u2715")), /*#__PURE__*/React.createElement("p", {
     className: "text-sm mb-1"
-  }, c.address), /*#__PURE__*/React.createElement("div", {
+  }, c.address), ((c.desc && c.desc[lang]) || c.description) && React.createElement("p", {
+    className: "text-sm mb-1",
+    style: { color: "var(--textSec)" }
+  }, (c.desc && c.desc[lang]) || c.description, c.osm && React.createElement("a", {
+    href: "https://www.openstreetmap.org/" + c.osm, target: "_blank", rel: "noopener", style: { color: "var(--green)", marginLeft: ".4rem" }
+  }, "OSM ↗")), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-1 mb-2",
     style: {
       flexWrap: "wrap"
@@ -6475,8 +6543,8 @@ function CourtDetail({
     title: getCourtWeather(c.condition, t).label,
     style: { background: getCourtWeather(c.condition, t).color + "22", color: getCourtWeather(c.condition, t).color, marginRight: ".3rem" }
   }, getCourtWeather(c.condition, t).icon, " ", getCourtWeather(c.condition, t).label), /*#__PURE__*/React.createElement("span", {
-    className: `badge ${c.status === "degraded" ? "badge-red" : c.status === "inProgress" ? "badge-coral" : "badge-green"}`
-  }, c.status === "degraded" ? t.degraded : c.status === "inProgress" ? t.inProgress : t.renovated), /*#__PURE__*/React.createElement("span", {
+    className: `badge ${c.status === "unverified" ? "badge-gray" : c.status === "degraded" ? "badge-red" : c.status === "inProgress" ? "badge-coral" : "badge-green"}`
+  }, c.status === "unverified" ? t.unverified : c.status === "degraded" ? t.degraded : c.status === "inProgress" ? t.inProgress : t.renovated), /*#__PURE__*/React.createElement("span", {
     className: `badge ${occ === "empty" ? "badge-green" : occ === "active" ? "badge-coral" : "badge-red"}`
   }, occ === "empty" ? "🟢 " + t.empty + " (0)" : occ === "active" ? "🟡 " + t.active + " (" + cnt + ")" : "🔴 " + t.full + " (" + cnt + ")")),
   React.createElement("div", { style:{marginTop:"1rem",display:"flex",alignItems:"center",gap:"1.5rem",flexWrap:"wrap",marginBottom:"1rem"} },
@@ -7248,7 +7316,7 @@ function PetitionPage() {
     style: {
       textAlign: "center"
     }
-  }, lang === "ro" ? "Alege viziunea ta pentru terenurile din Târgu Mureș" : "Choose your vision for Târgu Mureș courts"), React.createElement(PetitionMilestoneBar, { total: total }), !voted && !hoopDone && React.createElement(HoopGame, { onDone: hoopFinish }), !voted ? /*#__PURE__*/React.createElement("div", {
+  }, lang === "ro" ? "Alege viziunea ta pentru terenurile din " + cityName(lang) : "Choose your vision for " + cityName(lang) + " courts"), React.createElement(PetitionMilestoneBar, { total: total }), !voted && !hoopDone && React.createElement(HoopGame, { onDone: hoopFinish }), !voted ? /*#__PURE__*/React.createElement("div", {
     id: "g2p-vote-form",
     style: {
       maxWidth: 600,
@@ -7489,7 +7557,9 @@ function PetitionPage() {
   React.createElement(LetterCounter, null),
   React.createElement(PledgeWall, null));
 }
-const LETTER_AREAS = [
+const LETTER_AREAS = ACTIVE_CITY !== "tgm"
+  ? Object.entries(CITY_CFG[ACTIVE_CITY].hoods || {}).map(([k, v]) => ({ k, ro: v, en: v, hu: v }))
+  : [
   { k: "tudor",      ro: "Tudor",       en: "Tudor",       hu: "Tudor" },
   { k: "auchan",     ro: "Zona Auchan", en: "Auchan Area", hu: "Auchan körzet" },
   { k: "mureseni",   ro: "Mureșeni",    en: "Mureșeni",    hu: "Mureșeni" },
@@ -7509,13 +7579,20 @@ function LetterModal({
   } = useApp();
   const [n, setN] = useState("");
   const [a, setA] = useState("");
-  const [area, setArea] = useState("tudor");
+  const [area, setArea] = useState(LETTER_AREAS[0].k);
   const [why, setWhy] = useState("");
   const buildLetter = () => {
     const areaObj = LETTER_AREAS.find(x => x.k === area) || LETTER_AREAS[0];
     const areaLabel = areaObj[lang];
     const court = COURTS.find(c => c.neighbourhood === area && c.status === "degraded") || COURTS.find(c => c.neighbourhood === area) || COURTS[0];
     const web = SITE.replace("https://", "");
+    if (ACTIVE_CITY !== "tgm") {
+      const nC = COURTS.length;
+      if (lang === "ro") return `CĂTRE: ${CITY_HALL.ro}\n${CITY_HALL.address}\n\nSubsemnatul/a ${n || "___"}, domiciliat/ă în ${a || areaLabel},\n\nÎn calitate de locuitor al zonei ${areaLabel}, solicit un audit public al stării terenurilor sportive din municipiu, în special "${court.name}".\n${why ? "\nDe ce contează pentru mine: " + why + "\n" : ""}\nContext:\n- ${nC} terenuri sportive publice sunt cartografiate în OpenStreetMap pentru ${cityName("ro")}; starea lor nu este publicată oficial\n- ${total} cetățeni au semnat petiția online (${web})\n\nSolicit:\n1. Publicarea stării și a programului de întreținere pentru fiecare teren\n2. Includerea terenurilor degradate în bugetul de investiții\n\nCu stimă,\n${n || "___"}\nData: ${new Date().toLocaleDateString("ro-RO")}`;
+      // TODO: HU review
+      if (lang === "hu") return `CÍMZETT: ${CITY_HALL.hu}\n${CITY_HALL.address}\n\nAlulírott ${n || "___"}, lakcím: ${a || areaLabel},\n\na(z) ${areaLabel} környék lakójaként kérem a város sportpályái állapotának nyilvános felmérését, különösen a(z) "${court.name}" pályáét.\n${why ? "\nMiért fontos ez nekem: " + why + "\n" : ""}\nHáttér:\n- ${nC} nyilvános sportpálya szerepel az OpenStreetMap térképen (${cityName("hu")}); állapotukat hivatalosan nem teszik közzé\n- ${total} polgár írta alá az online petíciót (${web})\n\nKérem:\n1. Minden pálya állapotának és karbantartási tervének közzétételét\n2. A leromlott pályák felvételét a beruházási költségvetésbe\n\nTisztelettel,\n${n || "___"}\nDátum: ${new Date().toLocaleDateString("hu-HU")}`;
+      return `TO: ${CITY_HALL.en}\n${CITY_HALL.address}\n\nI, ${n || "___"}, residing at ${a || areaLabel},\n\nas a resident of the ${areaLabel} area, I request a public audit of the condition of the city's sports courts, in particular "${court.name}".\n${why ? "\nWhy this matters to me: " + why + "\n" : ""}\nContext:\n- ${nC} public sports courts are mapped in OpenStreetMap for ${cityName("en")}; their condition is not officially published\n- ${total} citizens signed the online petition (${web})\n\nI request:\n1. Publication of the condition and maintenance schedule of each court\n2. Inclusion of degraded courts in the investment budget\n\nSincerely,\n${n || "___"}\nDate: ${new Date().toLocaleDateString("en-GB")}`;
+    }
     if (lang === "ro") return `CĂTRE: Consiliul Local și Primăria Municipiului Târgu Mureș\n\nSubsemnatul/a ${n || "___"}, domiciliat/ă în ${a || areaLabel},\n\nÎn calitate de locuitor al zonei ${areaLabel}, solicit renovarea terenurilor sportive din cartierele periferice, în special "${court.name}".\n${why ? "\nDe ce contează pentru mine: " + why + "\n" : ""}\nArgumente:\n- ${total} cetățeni au semnat petiția online (${web})\n- 12 din 15 rezidenți consideră terenurile prea degradate\n- 5.000.000 lei înghețați printr-o eroare administrativă\n- 0% dintre terenurile periferice au fost renovate\n- Investiția se încadrează în Strategia Integrată de Dezvoltare Urbană (SIDU)\n\nPropuneri concrete:\n1. Flip-the-Court — renovarea terenurilor existente\n2. Street Canvas — mural comunitar ales prin vot\n\nCu stimă,\n${n || "___"}\nData: ${new Date().toLocaleDateString("ro-RO")}`;
     // TODO: HU review — draft translation, verify with a native speaker
     if (lang === "hu") return `CÍMZETT: Marosvásárhely Helyi Tanácsa és Polgármesteri Hivatala\n\nAlulírott ${n || "___"}, lakcím: ${a || areaLabel},\n\na(z) ${areaLabel} környék lakójaként kérem a peremkerületi sportpályák felújítását, különösen a(z) "${court.name}" pályáét.\n${why ? "\nMiért fontos ez nekem: " + why + "\n" : ""}\nÉrvek:\n- ${total} polgár írta alá az online petíciót (${web})\n- 15 lakosból 12 szerint a pályák túl rossz állapotúak\n- 5.000.000 lej befagyasztva adminisztratív hiba miatt\n- a peremkerületi pályák 0%-a lett felújítva\n- A beruházás illeszkedik az Integrált Városfejlesztési Stratégiához (SIDU)\n\nKonkrét javaslatok:\n1. Flip-the-Court — meglévő pályák felújítása\n2. Street Canvas — közösségi szavazással választott falfestmény\n\nTisztelettel,\n${n || "___"}\nDátum: ${new Date().toLocaleDateString("hu-HU")}`;
@@ -7569,8 +7646,8 @@ function LetterModal({
     toast(t.success);
   };
   const email = () => {
-    const subj = lang === "ro" ? "Renovarea terenurilor sportive — Târgu Mureș" : lang === "hu" ? "Sportpályák felújítása — Marosvásárhely" : "Renovation of sports courts — Târgu Mureș";
-    window.location.href = `mailto:?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(buildLetter())}`;
+    const subj = lang === "ro" ? "Renovarea terenurilor sportive — " + cityName(lang) : lang === "hu" ? "Sportpályák felújítása — " + cityName(lang) : "Renovation of sports courts — " + cityName(lang);
+    window.location.href = `mailto:${ACTIVE_CITY !== "tgm" ? CITY_HALL.mail : ""}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(buildLetter())}`;
     toast(t.success);
   };
   return /*#__PURE__*/React.createElement("div", {
@@ -7711,10 +7788,11 @@ function ForumTab() {
   });
   const [replyTo, setReplyTo] = useState(null);
   const [rt, setRt] = useState("");
+  const [hoodFilter, setHoodFilter] = useState("all");
   const list = posts ? Object.entries(posts).map(([id, p]) => ({
     id,
     ...p
-  })).reverse() : [];
+  })).filter(p => hoodFilter === "all" || p.category === hoodFilter).reverse() : [];
   const submit = () => {
     if (!f.title || !f.body) {
       toast(t.error);
@@ -7755,6 +7833,8 @@ function ForumTab() {
   return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "flex justify-between items-center mb-2"
   }, /*#__PURE__*/React.createElement("select", {
+    value: hoodFilter,
+    onChange: e => setHoodFilter(e.target.value),
     style: {
       width: "auto",
       padding: ".3rem",
@@ -7762,11 +7842,10 @@ function ForumTab() {
     }
   }, /*#__PURE__*/React.createElement("option", {
     value: "all"
-  }, t.allStatus), /*#__PURE__*/React.createElement("option", {
-    value: "tudor"
-  }, t.tudor), /*#__PURE__*/React.createElement("option", {
-    value: "auchan"
-  }, t.auchan)), /*#__PURE__*/React.createElement("button", {
+  }, t.allStatus), [...new Set(COURTS.map(c => c.neighbourhood))].map(h => React.createElement("option", {
+    key: h,
+    value: h
+  }, hoodName(h, lang)))),/*#__PURE__*/React.createElement("button", {
     className: "btn btn-green btn-sm",
     onClick: () => setShowNew(true)
   }, "+ ", t.newPost)), showNew && /*#__PURE__*/React.createElement("div", {
@@ -7816,11 +7895,10 @@ function ForumTab() {
     }
   }, /*#__PURE__*/React.createElement("option", {
     value: "general"
-  }, t.general), /*#__PURE__*/React.createElement("option", {
-    value: "tudor"
-  }, t.tudor), /*#__PURE__*/React.createElement("option", {
-    value: "auchan"
-  }, t.auchan))), /*#__PURE__*/React.createElement("div", {
+  }, t.general), [...new Set(COURTS.map(c => c.neighbourhood))].map(h => React.createElement("option", {
+    key: h,
+    value: h
+  }, hoodName(h, lang))))),/*#__PURE__*/React.createElement("div", {
     className: "flex gap-1"
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-green btn-sm",
@@ -8319,7 +8397,7 @@ function DossierButton() {
         doc.setTextColor(40, 40, 50); doc.setFont("helvetica", "bold");
         doc.text(c.name, M + 6, y);
         doc.setFont("helvetica", "normal"); doc.setTextColor(120, 120, 130); doc.setFontSize(8);
-        const sLabel = c.status === "degraded" ? t.degraded : c.status === "inProgress" ? t.inProgress : t.renovated;
+        const sLabel = c.status === "unverified" ? t.unverified : c.status === "degraded" ? t.degraded : c.status === "inProgress" ? t.inProgress : t.renovated;
         doc.text(sLabel + " · " + (c.address || ""), M + 6, y + 4);
         doc.setFontSize(9.5);
         y += 9;
@@ -8395,6 +8473,7 @@ function DossierButton() {
    NEIGHBOURHOOD INEQUALITY CHART
    ============================================================ */
 function HoodChart() {
+  if (!COURTS.some(function (c) { return c.condition != null; })) return React.createElement(CityDataPending, null);
   var app = useApp();
   var t = app.t, lang = app.lang;
   var hoodNames = {
@@ -8549,13 +8628,13 @@ function HoodChart() {
           React.createElement("div", null,
             React.createElement("span", { style: { fontWeight: 600 } }, c.name),
             React.createElement("span", { style: { color: "var(--textSec)", marginLeft: ".4rem", fontSize: ".72rem" } },
-              hoodNames[c.neighbourhood] || c.neighbourhood
+              hoodNames[c.neighbourhood] || hoodName(c.neighbourhood, lang)
             )
           ),
           React.createElement("div", { className: "flex items-center gap-2" },
             React.createElement("span", { style: { color: sColor, fontSize: ".72rem", fontWeight: 700 } }, sLabel),
             React.createElement("span", { style: { color: "var(--coral)", fontFamily: "'Barlow Condensed',monospace", fontWeight: 800, fontSize: "1rem" } },
-              c.condition + "/5"
+              c.condition == null ? "?" : c.condition + "/5"
             )
           )
         );
@@ -8637,6 +8716,7 @@ function OpenDataCard() {
 
 
 function CivicFactsTape() {
+  if (ACTIVE_CITY !== "tgm") return null;
   var lang = useApp().lang;
   return React.createElement("div", { className: "card mb-2", style: { padding: ".75rem" } },
     React.createElement("h4", { className: "text-xs mb-2", style: { color: "var(--textSec)", fontFamily: "Space Mono, monospace", letterSpacing: ".05em" } },
@@ -9112,27 +9192,40 @@ function TimelineSec() {
 function CityHallGuide() {
   var app = useApp(); var lang = app.lang;
   var L3 = function(ro, en, hu) { return lang === "en" ? en : lang === "hu" ? (hu || ro) : ro; };
-  var CONTACTS = [
+  var OTHER = ACTIVE_CITY !== "tgm";
+  var CONTACTS = OTHER ? [
+    { ic: "🏛️", name: L3("Registratura Primăriei", "City Hall registry", null), role: CITY_HALL.address + " · sursă: " + CITY_HALL.source + " (" + CITY_HALL.retrieved + ")", tel: CITY_HALL.tel, telLabel: CITY_HALL.telLabel, mail: CITY_HALL.mail }
+  ] : [
     { ic: "🏗️", name: "Direcția Tehnică — Ing. Racz Lucian", role: L3("Lucrări și investiții — contactul principal pentru renovări", "Works and investments — the main contact for renovations", null), tel: "0265262442", telLabel: "0265-262.442", mail: "tehnic@tirgumures.ro" },
     { ic: "⚽", name: "Serviciul Sport — Ciugudean Marina", role: L3("Buget operațional sport, finanțări cluburi — Str. N. Grigorescu 17-19", "Sport operations budget, club funding", null), tel: "0365882066", telLabel: "0365-882.066", mail: null },
     { ic: "📄", name: L3("Informații publice — Legea 544/2001", "Public information — Law 544/2001", null), role: L3("Răspuns obligatoriu în 10 zile lucrătoare", "Mandatory answer within 10 working days", null), tel: null, telLabel: null, mail: "infopublic@tirgumures.ro" },
     { ic: "🏛️", name: L3("Registratura Primăriei", "City Hall registry", null), role: "Piața Victoriei nr. 3, 540026 Târgu Mureș", tel: "0265268330", telLabel: "0265-268.330", mail: "primaria@tirgumures.ro" }
   ];
-  var STEPS = [
+  var STEPS = OTHER ? [
+    L3("Trimite cererea 544/2001 — buget sport, listă investiții, starea terenurilor (răspuns: 10 zile)", "Send the 544/2001 request — sport budget, investment list, court condition (answer: 10 days)", null),
+    L3("Depune petiția formală OG 27/2002 — răspuns obligatoriu în 30 de zile", "File the formal OG 27/2002 petition — mandatory answer in 30 days", null),
+    L3("Verifică pe teren terenurile marcate „Neverificat” și raportează starea în aplicație", "Field-check the courts marked “Unverified” and report their condition in the app", null)
+  ] : [
     L3("Trimite cererea 544/2001 — buget sport, listă investiții, HCL-uri terenuri (răspuns: 10 zile)", "Send the 544/2001 request — sport budget, investment list, court decisions (answer: 10 days)", null),
     L3("Depune petiția formală OG 27/2002 — răspuns obligatoriu în 30 de zile", "File the formal OG 27/2002 petition — mandatory answer in 30 days", null),
     L3("Contactează consilierii Mașca și Veress (POL) — au obținut 80.000 lei pentru terenul Plopilor", "Contact councillors Mașca and Veress (POL) — they secured 80,000 lei for the Plopilor court", null),
     L3("Programează întâlnirea cu Direcția Tehnică + Serviciul Sport", "Schedule the meeting with the Technical Directorate + Sport Service", null),
     L3("Comunicat de presă cu 1 săptămână înainte de întâlnire — Zi de Zi, Punctul.ro, Radio Mureș", "Press release one week before the meeting — Zi de Zi, Punctul.ro, Radio Mureș", null)
   ];
-  var ARGS = [
+  var ARGS = OTHER ? [] : [
     L3("Precedent intern: HCL ian. 2025 — 80.000 lei pentru Plopilor. Cerem consecvență pentru celelalte cartiere.", "Internal precedent: Jan 2025 council decision — 80,000 lei for Plopilor. We ask for consistency across the other neighbourhoods.", null),
     L3("Cost minim: 100.000–400.000 lei per teren = 0,1–0,4% din bugetul anual de sport (99,5 mil. lei).", "Minimal cost: 100,000–400,000 lei per court = 0.1–0.4% of the yearly sport budget (99.5M lei).", null),
     L3("Model Cluj-Napoca: 26,5 mil. lei investiți în Mănăștur după presiune civică — același tip de cartier.", "Cluj-Napoca model: 26.5M lei invested in Mănăștur after civic pressure — the same kind of neighbourhood.", null),
     L3("Fonduri UE disponibile: PR Centru OS 4.3 — 45,5 mil. EUR pentru regenerare urbană; terenurile sport sunt eligibile.", "EU funds available: PR Centru OS 4.3 — 45.5M EUR for urban regeneration; sport courts are eligible.", null)
   ];
+  if (OTHER) {
+    var cityRo = cityName("ro");
+    var m544 = "mailto:" + CITY_HALL.mail + "?subject=" + encodeURIComponent("Cerere de acces la informatii de interes public - Legea 544/2001 - terenuri sportive") + "&body=" + encodeURIComponent("Stimata doamna / Stimate domn,\n\nIn baza Legii nr. 544/2001, va solicit in format electronic:\n1. Bugetul pe sport si spatii publice pentru anul curent (capitolul 67)\n2. Lista terenurilor sportive publice administrate de municipiu si starea lor\n3. Lista proiectelor de investitii din ultimii 3 ani privind terenurile sportive\n\nTermenul legal de raspuns este de 10 zile lucratoare.\n\nCu respect,\n[numele tau]");
+    var mPet = "mailto:" + CITY_HALL.mail + "?subject=" + encodeURIComponent("Petitie - starea terenurilor sportive publice (OG 27/2002)") + "&body=" + encodeURIComponent("Catre Primarul si Consiliul Local al Municipiului " + cityRo + ",\n\nIn baza OG 27/2002, solicit:\n1. Publicarea starii si a programului de intretinere pentru fiecare teren sportiv public\n2. Includerea terenurilor degradate in bugetul de investitii\n\nDate: fromgreytoplay.netlify.app/?c=" + ACTIVE_CITY + "\n\nAstept raspuns motivat in termenul legal de 30 de zile.\n\nCu respect,\n[numele tau]");
+  } else {
   var m544 = "mailto:infopublic@tirgumures.ro?subject=" + encodeURIComponent("Cerere de acces la informatii de interes public - Legea 544/2001 - terenuri sportive") + "&body=" + encodeURIComponent("Stimata doamna / Stimate domn,\n\nIn baza Legii nr. 544/2001, va solicit in format electronic:\n1. Bugetul detaliat pe sport si spatii publice 2025 (capitolul 67)\n2. Lista proiectelor de investitii 2022-2025 privind terenurile sportive\n3. Extrasul din SIDU 2021-2030 privind infrastructura sportiva\n4. Hotararile de Consiliu Local 2022-2025 privind terenurile sportive\n5. Stadiul terenului multisport din str. Plopilor (HCL ian. 2025)\n\nTermenul legal de raspuns este de 10 zile lucratoare.\n\nCu respect,\n[numele tau]");
   var mPet = "mailto:primaria@tirgumures.ro?subject=" + encodeURIComponent("Petitie - renovarea terenurilor sportive din cartierele periferice (OG 27/2002)") + "&body=" + encodeURIComponent("Catre Primarul si Consiliul Local al Municipiului Targu Mures,\n\nIn baza OG 27/2002, solicit:\n1. Includerea in bugetul 2026 a minimum 500.000 lei pentru reabilitarea a minimum 3 terenuri sportive din cartierele periferice (Tudor Vladimirescu, Unirii, Dambu Pietros)\n2. O intalnire de lucru cu Directia Tehnica si Serviciul Sport in termen de 30 de zile\n3. Includerea terenurilor de cartier in actualizarea SIDU 2021-2030\n4. Raport anual de transparenta privind investitiile sportive pe cartiere\n\nDate complete: fromgreytoplay.netlify.app\n\nAstept raspuns motivat in termenul legal de 30 de zile.\n\nCu respect,\n[numele tau]");
+  }
   return React.createElement("div", { className: "mb-2" },
     React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--green)" } },
       React.createElement("h3", { className: "mb-1" }, "🏛️ ", L3("Ghid: cum obții renovarea de la Primărie", "Guide: how to get the renovation from City Hall", null)),
@@ -9168,7 +9261,7 @@ function CityHallGuide() {
       ARGS.map(function(a, i) {
         return React.createElement("p", { key: i, className: "text-sm", style: { padding: ".25rem 0", lineHeight: 1.5 } }, "• " + a);
       }),
-      React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)", fontWeight: 600 } },
+      !OTHER && React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)", fontWeight: 600 } },
         L3("Aliați în Consiliul Local: Dan-Sorin Mașca și Veress Beáta (POL) — au propus terenul Plopilor.", "Allies on the City Council: Dan-Sorin Mașca and Veress Beáta (POL) — they proposed the Plopilor court.", null))));
 }
 
@@ -9308,7 +9401,7 @@ function HelpPage() {
     style: { background: "#E4405F", color: "#fff" },
     onClick: () => {
       const url = SITE;
-      const text = lang === "ro" ? "Sus\u021Bin renovarea terenurilor sportive din T\u00E2rgu Mure\u0219! \uD83C\uDFC0" : "I support sports court renovation in T\u00E2rgu Mure\u0219! \uD83C\uDFC0";
+      const text = lang === "ro" ? "Sus\u021Bin renovarea terenurilor sportive din " + cityName(lang) + "! \uD83C\uDFC0" : "I support sports court renovation in " + cityName(lang) + "! \uD83C\uDFC0";
       if (navigator.share) { navigator.share({ title: "From Grey to Play", text, url }); }
       else { window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(url), "_blank"); }
     }
@@ -9316,22 +9409,22 @@ function HelpPage() {
     className: "card mb-2"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "mb-1"
-  }, "\uD83C\uDFDB\uFE0F ", lang === "ro" ? "Primăria Târgu Mureș" : "Târgu Mureș City Hall"), /*#__PURE__*/React.createElement("p", {
+  }, "\uD83C\uDFDB\uFE0F ", lang === "ro" ? "Primăria " + cityName(lang) : cityName(lang) + " City Hall"), /*#__PURE__*/React.createElement("p", {
     className: "text-sm"
-  }, "\uD83D\uDCCD Pia\u021Ba Victoriei nr. 3, 540026"), /*#__PURE__*/React.createElement("p", {
+  }, "\uD83D\uDCCD " + CITY_HALL.address),/*#__PURE__*/React.createElement("p", {
     className: "text-sm"
-  }, "\uD83D\uDCDE 0265-268.330"), /*#__PURE__*/React.createElement("p", {
+  }, "\uD83D\uDCDE " + CITY_HALL.telLabel),/*#__PURE__*/React.createElement("p", {
     className: "text-sm"
-  }, "\uD83D\uDCE7 primar@tirgumures.ro"), /*#__PURE__*/React.createElement("p", {
+  }, "\uD83D\uDCE7 " + (ACTIVE_CITY === "tgm" ? "primar@tirgumures.ro" : CITY_HALL.mail)),/*#__PURE__*/React.createElement("p", {
     className: "text-sm"
-  }, "\uD83C\uDF10 www.tirgumures.ro")), /*#__PURE__*/React.createElement("div", {
+  }, "\uD83C\uDF10 " + (ACTIVE_CITY === "tgm" ? "www.tirgumures.ro" : "www.sibiu.ro"))),/*#__PURE__*/React.createElement("div", {
     className: "card"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "mb-1"
   }, "\uD83D\uDCC4 ", lang === "ro" ? "Șablon cerere oficială" : "Official Request Template"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-green mt-1",
     onClick: () => {
-      const c = `CĂTRE: Registratura Primăriei Municipiului Târgu Mureș\nPiața Victoriei nr. 3, 540026\n\nSubsemnatul/a _____________, domiciliat/ă în _____________,\n\nsolicit:\n1. Informare privind stadiul renovării terenurilor sportive din cartierele periferice\n2. Alocarea de fonduri pentru programul pilot Flip-the-Court\n3. Accesarea fondurilor Erasmus+ Sport KA2\n\nCu stimă,\n_____________\nData: ${new Date().toLocaleDateString("ro-RO")}`;
+      const c = `CĂTRE: ${CITY_HALL.registry}\n${CITY_HALL.address}\n\nSubsemnatul/a _____________, domiciliat/ă în _____________,\n\nsolicit:\n1. Informare privind stadiul renovării terenurilor sportive din cartierele periferice\n2. Alocarea de fonduri pentru programul pilot Flip-the-Court\n3. Accesarea fondurilor Erasmus+ Sport KA2\n\nCu stimă,\n_____________\nData: ${new Date().toLocaleDateString("ro-RO")}`;
       const b = new Blob([c], {
         type: "text/plain"
       });
@@ -11001,7 +11094,7 @@ function EvidenceWall() {
   const uniqueWitnesses = new Set(imgs.map(p => p.author || "?")).size;
   const courtsDoc = new Set(imgs.filter(p => p.courtId).map(p => p.courtId)).size;
   const statusColor = s => s === "degraded" ? "var(--red)" : s === "inProgress" ? "var(--coral)" : "var(--green)";
-  const statusLabel = s => s === "degraded" ? t.degraded : s === "inProgress" ? t.inProgress : t.renovated;
+  const statusLabel = s => s === "unverified" ? t.unverified : s === "degraded" ? t.degraded : s === "inProgress" ? t.inProgress : t.renovated;
   const onFile = async e => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -11098,7 +11191,7 @@ function EvidenceWall() {
               React.createElement("div", { style: { padding: ".45rem .6rem" } },
                 c && React.createElement("div", { className: "flex gap-1 mb-1", style: { flexWrap: "wrap" } },
                   React.createElement("span", { className: "badge", style: { background: statusColor(c.status) + "22", color: statusColor(c.status), fontSize: ".7rem" } }, c.name.split(" ").slice(0,2).join(" ")),
-                  React.createElement("span", { className: "badge " + (c.status === "degraded" ? "badge-red" : c.status === "inProgress" ? "badge-coral" : "badge-green"), style: { fontSize: ".7rem" } }, statusLabel(c.status))
+                  React.createElement("span", { className: "badge " + (c.status === "unverified" ? "badge-gray" : c.status === "degraded" ? "badge-red" : c.status === "inProgress" ? "badge-coral" : "badge-green"), style: { fontSize: ".7rem" } }, statusLabel(c.status))
                 ),
                 p.caption && React.createElement("p", { style: { fontSize: ".78rem", marginBottom: ".25rem", lineHeight: 1.3 } }, p.caption),
                 React.createElement("div", { className: "flex justify-between" },
@@ -11171,13 +11264,7 @@ function ReportsPage() {
           ),
           React.createElement("select", { value: filterHood, onChange: e => setFilterHood(e.target.value), style: { width: "auto", padding: ".3rem .5rem", fontSize: ".82rem" } },
             React.createElement("option", { value: "all" }, t.neighbourhood),
-            React.createElement("option", { value: "tudor" }, t.tudor),
-            React.createElement("option", { value: "auchan" }, t.auchan),
-            React.createElement("option", { value: "mureseni" }, t.mureseni),
-            React.createElement("option", { value: "center" }, t.center),
-            React.createElement("option", { value: "pandurilor" }, t.pandurilor),
-            React.createElement("option", { value: "libertate" }, t.libertate),
-            React.createElement("option", { value: "unirii" }, t.unirii)
+            [...new Set(COURTS.map(c => c.neighbourhood))].map(h => React.createElement("option", { key: h, value: h }, hoodName(h, lang)))
           ),
           React.createElement("select", { value: filterCat, onChange: e => setFilterCat(e.target.value), style: { width: "auto", padding: ".3rem .5rem", fontSize: ".82rem" } },
             React.createElement("option", { value: "all" }, lang === "ro" ? "Categorie" : lang === "hu" ? "Kateg\xf3ria" : "Category"),
@@ -11309,7 +11396,8 @@ function Footer() {
       style: { color: "var(--green)" }
     }, "🔒 ", t.privacyPolicy || "Politică de Confidențialitate")), /*#__PURE__*/React.createElement("p", {
       className: "mt-1"
-    }, t.copyright), /*#__PURE__*/React.createElement("div", {
+    }, t.copyright), React.createElement("p", { className: "text-xs", style: { color: "var(--textSec)", marginTop: ".3rem" } },
+      "Sursă hărți și terenuri Sibiu: © ", React.createElement("a", { href: "https://www.openstreetmap.org/copyright", target: "_blank", rel: "noopener", style: { color: "var(--green)" } }, "OpenStreetMap contributors"), " (ODbL)"), /*#__PURE__*/React.createElement("div", {
       className: "flex items-center gap-2 mt-2",
       style: { justifyContent: "center", flexWrap: "wrap" }
     }, /*#__PURE__*/React.createElement("a", {

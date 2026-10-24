@@ -1,0 +1,582 @@
+{
+  "retrieved_at": "2026-10-24T15:38:53.393Z",
+  "source": "https://www.openstreetmap.org (ODbL)",
+  "bbox": "45.745,24.060,45.835,24.215",
+  "pitches": [
+    {
+      "osm": "node/5963356826",
+      "lat": 45.788873,
+      "lng": 24.133839,
+      "tags": {
+        "leisure": "pitch",
+        "lit": "yes",
+        "sport": "basketball"
+      }
+    },
+    {
+      "osm": "way/40123382",
+      "lat": 45.787104,
+      "lng": 24.181515,
+      "tags": {
+        "is_in:city": "Sibiu",
+        "leisure": "pitch",
+        "name": "Stadionul CFR",
+        "sport": "soccer"
+      }
+    },
+    {
+      "osm": "way/45777492",
+      "lat": 45.783596,
+      "lng": 24.141875,
+      "tags": {
+        "is_in:city": "Sibiu",
+        "is_in:country": "Romania",
+        "is_in:country_code": "RO",
+        "is_in:county": "Sibiu",
+        "leisure": "pitch",
+        "lit": "yes",
+        "sport": "soccer",
+        "surface": "artificial_turf"
+      }
+    },
+    {
+      "osm": "way/46837701",
+      "lat": 45.794313,
+      "lng": 24.145537,
+      "tags": {
+        "is_in:city": "Sibiu",
+        "leisure": "pitch",
+        "source": "Bing",
+        "sport": "soccer"
+      }
+    },
+    {
+      "osm": "way/107725962",
+      "lat": 45.767418,
+      "lng": 24.129899,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "soccer"
+      }
+    },
+    {
+      "osm": "way/108361050",
+      "lat": 45.79038,
+      "lng": 24.135319,
+      "tags": {
+        "leisure": "pitch",
+        "lit": "no",
+        "sport": "multi",
+        "surface": "asphalt"
+      }
+    },
+    {
+      "osm": "way/108361063",
+      "lat": 45.797623,
+      "lng": 24.136561,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "soccer",
+        "surface": "grass"
+      }
+    },
+    {
+      "osm": "way/108362122",
+      "lat": 45.792066,
+      "lng": 24.132525,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "soccer",
+        "surface": "grass"
+      }
+    },
+    {
+      "osm": "way/163783855",
+      "lat": 45.788798,
+      "lng": 24.146726,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "multi",
+        "surface": "asphalt"
+      }
+    },
+    {
+      "osm": "way/164323464",
+      "lat": 45.794078,
+      "lng": 24.142951,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "multi"
+      }
+    },
+    {
+      "osm": "way/164326344",
+      "lat": 45.790974,
+      "lng": 24.142848,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "multi"
+      }
+    },
+    {
+      "osm": "way/177519330",
+      "lat": 45.780303,
+      "lng": 24.15919,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "multi"
+      }
+    },
+    {
+      "osm": "way/224239288",
+      "lat": 45.786603,
+      "lng": 24.173303,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "multi"
+      }
+    },
+    {
+      "osm": "way/254764670",
+      "lat": 45.78269,
+      "lng": 24.15368,
+      "tags": {
+        "is_in:city": "Sibiu",
+        "is_in:country": "Romania",
+        "is_in:country_code": "RO",
+        "is_in:county": "Sibiu",
+        "leisure": "pitch",
+        "sport": "soccer"
+      }
+    },
+    {
+      "osm": "way/254866441",
+      "lat": 45.783471,
+      "lng": 24.150144,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "multi",
+        "surface": "asphalt"
+      }
+    },
+    {
+      "osm": "way/307353014",
+      "lat": 45.796556,
+      "lng": 24.15681,
+      "tags": {
+        "is_in:city": "Sibiu",
+        "is_in:country": "Romania",
+        "is_in:country_code": "RO",
+        "is_in:county": "Sibiu",
+        "leisure": "pitch",
+        "lit": "no",
+        "name": "Teren basket",
+        "sport": "basketball",
+        "surface": "asphalt"
+      }
+    },
+    {
+      "osm": "way/420832156",
+      "lat": 45.776905,
+      "lng": 24.14131,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "multi",
+        "surface": "asphalt"
+      }
+    },
+    {
+      "osm": "way/439745819",
+      "lat": 45.796312,
+      "lng": 24.154152,
+      "tags": {
+        "leisure": "pitch",
+        "lit": "yes",
+        "sport": "basketball",
+        "surface": "asphalt"
+      }
+    },
+    {
+      "osm": "way/660410671",
+      "lat": 45.788876,
+      "lng": 24.133559,
+      "tags": {
+        "leisure": "pitch",
+        "lit": "no",
+        "sport": "volleyball",
+        "surface": "sand"
+      }
+    },
+    {
+      "osm": "way/660410672",
+      "lat": 45.788876,
+      "lng": 24.13384,
+      "tags": {
+        "access": "yes",
+        "leisure": "pitch",
+        "lit": "yes",
+        "sport": "basketball",
+        "surface": "tartan"
+      }
+    },
+    {
+      "osm": "way/1118595238",
+      "lat": 45.783325,
+      "lng": 24.143786,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "soccer"
+      }
+    },
+    {
+      "osm": "way/1198778213",
+      "lat": 45.772906,
+      "lng": 24.115548,
+      "tags": {
+        "leisure": "pitch",
+        "name": "Teren de sport",
+        "sport": "tennis;basketball;soccer"
+      }
+    },
+    {
+      "osm": "way/1272219163",
+      "lat": 45.790442,
+      "lng": 24.13561,
+      "tags": {
+        "leisure": "pitch",
+        "lit": "no",
+        "sport": "multi",
+        "surface": "asphalt"
+      }
+    },
+    {
+      "osm": "way/1276171956",
+      "lat": 45.767994,
+      "lng": 24.195838,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "soccer"
+      }
+    },
+    {
+      "osm": "way/1282360956",
+      "lat": 45.80544,
+      "lng": 24.150101,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "soccer"
+      }
+    },
+    {
+      "osm": "way/1282954642",
+      "lat": 45.806854,
+      "lng": 24.145861,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "soccer"
+      }
+    },
+    {
+      "osm": "way/1282954643",
+      "lat": 45.806931,
+      "lng": 24.145678,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "osm": "way/1416973766",
+      "lat": 45.802735,
+      "lng": 24.128915,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "soccer",
+        "surface": "artificial_turf"
+      }
+    },
+    {
+      "osm": "way/1512307233",
+      "lat": 45.789166,
+      "lng": 24.146691,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "osm": "way/1513825739",
+      "lat": 45.801139,
+      "lng": 24.170713,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "osm": "way/1513825740",
+      "lat": 45.800871,
+      "lng": 24.170408,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball",
+        "surface": "asphalt"
+      }
+    },
+    {
+      "osm": "way/1516691149",
+      "lat": 45.777,
+      "lng": 24.169136,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "osm": "way/1517083899",
+      "lat": 45.78302,
+      "lng": 24.146306,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "osm": "way/1517626704",
+      "lat": 45.803389,
+      "lng": 24.165488,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "basketball"
+      }
+    },
+    {
+      "osm": "way/1517849282",
+      "lat": 45.770167,
+      "lng": 24.132835,
+      "tags": {
+        "leisure": "pitch",
+        "sport": "soccer"
+      }
+    }
+  ],
+  "places": [
+    {
+      "osm": "node/2043683118",
+      "name": "Turnișor",
+      "place": "suburb",
+      "lat": 45.7912398,
+      "lng": 24.1186515
+    },
+    {
+      "osm": "node/3620751526",
+      "name": "Gușterița",
+      "place": "suburb",
+      "lat": 45.8110916,
+      "lng": 24.1833964
+    },
+    {
+      "osm": "node/4314004287",
+      "name": "Orașul de Sus",
+      "place": "neighbourhood",
+      "lat": 45.7957618,
+      "lng": 24.1530162
+    },
+    {
+      "osm": "node/4314004474",
+      "name": "Centrul Istoric",
+      "place": "suburb",
+      "lat": 45.7969501,
+      "lng": 24.1498557
+    },
+    {
+      "osm": "node/4314009628",
+      "name": "Orașul de Jos",
+      "place": "neighbourhood",
+      "lat": 45.7996259,
+      "lng": 24.148111
+    },
+    {
+      "osm": "node/4314013485",
+      "name": "Ștrand",
+      "place": "suburb",
+      "lat": 45.7876521,
+      "lng": 24.1368335
+    },
+    {
+      "osm": "node/5894478047",
+      "name": "Ștrand II",
+      "place": "suburb",
+      "lat": 45.7824162,
+      "lng": 24.1305597
+    },
+    {
+      "osm": "node/5894480685",
+      "name": "Valea Aurie",
+      "place": "suburb",
+      "lat": 45.7704407,
+      "lng": 24.1262964
+    },
+    {
+      "osm": "node/5894482156",
+      "name": "Tilișca",
+      "place": "suburb",
+      "lat": 45.7745934,
+      "lng": 24.1226969
+    },
+    {
+      "osm": "node/5894497585",
+      "name": "Arhitecților",
+      "place": "suburb",
+      "lat": 45.7633621,
+      "lng": 24.148827
+    },
+    {
+      "osm": "node/5894511135",
+      "name": "Primăverii",
+      "place": "suburb",
+      "lat": 45.7542649,
+      "lng": 24.1381362
+    },
+    {
+      "osm": "node/5894513574",
+      "name": "Hipodrom IV",
+      "place": "suburb",
+      "lat": 45.7722077,
+      "lng": 24.144497
+    },
+    {
+      "osm": "node/5894517966",
+      "name": "Dumbrăvii",
+      "place": "suburb",
+      "lat": 45.7774021,
+      "lng": 24.143157
+    },
+    {
+      "osm": "node/5894518780",
+      "name": "Hipodrom III",
+      "place": "suburb",
+      "lat": 45.7774165,
+      "lng": 24.1525975
+    },
+    {
+      "osm": "node/5894520580",
+      "name": "Hipodrom II",
+      "place": "suburb",
+      "lat": 45.7835856,
+      "lng": 24.1550756
+    },
+    {
+      "osm": "node/5894520709",
+      "name": "Hipodrom I",
+      "place": "suburb",
+      "lat": 45.7809097,
+      "lng": 24.1621703
+    },
+    {
+      "osm": "node/5894522966",
+      "name": "Vasile Aaron",
+      "place": "suburb",
+      "lat": 45.7850328,
+      "lng": 24.1719878
+    },
+    {
+      "osm": "node/5894524810",
+      "name": "Trei Stejari",
+      "place": "suburb",
+      "lat": 45.7905714,
+      "lng": 24.1647723
+    },
+    {
+      "osm": "node/5894527457",
+      "name": "CFR Triaj (Broscărie)",
+      "place": "suburb",
+      "lat": 45.7888841,
+      "lng": 24.1836757
+    },
+    {
+      "osm": "node/5894528907",
+      "name": "Lazaret",
+      "place": "suburb",
+      "lat": 45.8020138,
+      "lng": 24.1726234
+    },
+    {
+      "osm": "node/5894533707",
+      "name": "Reșița",
+      "place": "suburb",
+      "lat": 45.8075631,
+      "lng": 24.1647895
+    },
+    {
+      "osm": "node/5894537963",
+      "name": "Veteranilor de Război",
+      "place": "suburb",
+      "lat": 45.8207698,
+      "lng": 24.1406176
+    },
+    {
+      "osm": "node/5894538765",
+      "name": "Tineretului",
+      "place": "suburb",
+      "lat": 45.8163441,
+      "lng": 24.1315851
+    },
+    {
+      "osm": "node/5894539717",
+      "name": "Țiglari",
+      "place": "suburb",
+      "lat": 45.8113265,
+      "lng": 24.1345729
+    },
+    {
+      "osm": "node/5894563120",
+      "name": "Terezian",
+      "place": "suburb",
+      "lat": 45.806375,
+      "lng": 24.1443458
+    },
+    {
+      "osm": "node/5894563969",
+      "name": "Nord - Vest",
+      "place": "suburb",
+      "lat": 45.8086923,
+      "lng": 24.1124095
+    },
+    {
+      "osm": "node/5894571584",
+      "name": "Centrul Civic",
+      "place": "suburb",
+      "lat": 45.7902657,
+      "lng": 24.1476145
+    },
+    {
+      "osm": "node/5894574103",
+      "name": "Doamna Stanca",
+      "place": "suburb",
+      "lat": 45.7775877,
+      "lng": 24.1647655
+    },
+    {
+      "osm": "way/40420810",
+      "name": "Cartier Valea Aurie",
+      "place": "neighbourhood",
+      "lat": 45.7706972,
+      "lng": 24.1273665
+    },
+    {
+      "osm": "way/51943818",
+      "name": "Cartier Lazaret",
+      "place": "neighbourhood",
+      "lat": 45.8010718,
+      "lng": 24.1710028
+    },
+    {
+      "osm": "way/75231570",
+      "name": "Viile Sibiului",
+      "place": "suburb",
+      "lat": 45.8344608,
+      "lng": 24.1585537
+    }
+  ]
+}
