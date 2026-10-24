@@ -2315,9 +2315,9 @@ function HoopGame(props) {
     if (rm || !cv) return;
     var ctx = cv.getContext("2d");
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var H = 300, W = 320;
+    var H = 340, W = 560;
     function resize() {
-      W = (cv.parentNode && cv.parentNode.clientWidth) || 320;
+      W = (cv.parentNode && cv.parentNode.clientWidth) || 560;
       cv.width = Math.round(W * dpr);
       cv.height = Math.round(H * dpr);
       cv.style.height = H + "px";
@@ -2325,169 +2325,297 @@ function HoopGame(props) {
     }
     resize();
     window.addEventListener("resize", resize);
-    var groundY = H - 36;
-    var R = 13;
-    var start = { x: 56, y: groundY - R };
+    var groundY = H - 48;
+    var R = 14;
+    var start = { x: 58, y: groundY - R };
     var ball = { x: start.x, y: start.y, vx: 0, vy: 0, rot: 0, flying: false };
     var drag = null, throws = 0, finished = false, bounces = 0, launchT = 0, clangT = 0;
-    // Static cracks for the asphalt strip, generated once.
+    var shake = 0;
+    var particles = [];
+    var THROWS_MAX = 3;
+    var shotDone = [false, false, false];
+    // Pre-generate static crack segments once
     var cracks = [];
-    for (var ci = 0; ci < 7; ci++) {
-      var seg = [], cxp = Math.random(), cyp = Math.random();
-      for (var cj = 0; cj < 4; cj++) { seg.push([cxp, cyp]); cxp += (Math.random() - 0.5) * 0.12; cyp += (Math.random() - 0.5) * 0.9; }
+    for (var ci = 0; ci < 9; ci++) {
+      var seg = [], cxp = Math.random(), cyp = 0;
+      for (var cj = 0; cj < 5; cj++) { seg.push([cxp, cyp]); cxp += (Math.random()-0.5)*0.1; cyp += Math.random()*0.28; }
       cracks.push(seg);
     }
+    // Pre-generate net strand offsets (avoid random in draw loop)
+    var netOff = [];
+    for (var nk = 0; nk <= 7; nk++) netOff.push((Math.random()-0.5)*3);
+
     function rimGeo() {
-      var poleX = W - 44;
-      var a = 25 * Math.PI / 180; // the bend
-      var x0 = poleX - 10, y0 = 118;
-      return { poleX: poleX, x0: x0, y0: y0, x1: x0 - 46 * Math.cos(a), y1: y0 + 46 * Math.sin(a) };
+      var bx = W - 68;
+      var rimY = H * 0.36;
+      return {
+        bx: bx, rimY: rimY,
+        fx: bx - 52, fy: rimY + 9,   // front rim (bent, drooping)
+        rx: bx - 8,  ry: rimY,        // rear rim (near backboard)
+        bbX: bx, bbY: rimY - 52, bbW: 11, bbH: 74,
+        poleX: bx + 5, poleW: 5
+      };
     }
-    function deflect() {
-      ball.vx = -Math.abs(ball.vx) * 0.45 - 90 - Math.random() * 60;
-      ball.vy = -Math.abs(ball.vy) * 0.3 - 70;
+
+    function spawnParticles(x, y) {
+      for (var i = 0; i < 10; i++) {
+        var ang = Math.random() * Math.PI * 2;
+        var spd = 90 + Math.random() * 150;
+        particles.push({ x: x, y: y, vx: Math.cos(ang)*spd, vy: Math.sin(ang)*spd - 55, life: 1, decay: 0.8 + Math.random()*0.5, r: 2 + Math.random()*2.5, col: Math.random()>0.4?"#F97316":"#FCD34D" });
+      }
+    }
+
+    function deflect(hx, hy) {
+      ball.vx = -Math.abs(ball.vx)*0.4 - 110 - Math.random()*80;
+      ball.vy = -Math.abs(ball.vy)*0.25 - 75 - Math.random()*50;
       clangT = performance.now();
+      shake = 7;
+      spawnParticles(hx || ball.x, hy || ball.y);
     }
+
     function endThrow() {
       throws += 1;
-      ball.flying = false;
-      bounces = 0;
+      shotDone[throws-1] = true;
+      ball.flying = false; bounces = 0;
       ball.x = start.x; ball.y = start.y; ball.vx = 0; ball.vy = 0; ball.rot = 0;
-      if (throws >= 2) {
-        finished = true;
-        setOver(true);
-      }
+      if (throws >= THROWS_MAX) { finished = true; setOver(true); }
     }
+
     function step(dt) {
+      for (var pi = particles.length-1; pi >= 0; pi--) {
+        var p = particles[pi];
+        p.x += p.vx*dt; p.y += (p.vy += 420*dt)*dt;
+        p.life -= p.decay*dt;
+        if (p.life <= 0) particles.splice(pi, 1);
+      }
       if (!ball.flying) return;
-      ball.vy += 1700 * dt;
-      ball.x += ball.vx * dt;
-      ball.y += ball.vy * dt;
-      ball.rot += ball.vx * dt * 0.02;
+      if (shake > 0.3) shake *= 0.78;
       var g = rimGeo();
-      // Backboard / pole: bounce back.
-      if (ball.x + R > g.poleX - 12 && ball.y > 58 && ball.y < 150 && ball.vx > 0) {
-        ball.x = g.poleX - 12 - R;
-        ball.vx = -Math.abs(ball.vx) * 0.5;
-        clangT = performance.now();
+      ball.vy += 1500*dt; ball.x += ball.vx*dt; ball.y += ball.vy*dt;
+      ball.rot += ball.vx*dt*0.024;
+      // Backboard
+      if (ball.x+R > g.bbX && ball.x-R < g.bbX+g.bbW && ball.y+R > g.bbY && ball.y-R < g.bbY+g.bbH && ball.vx > 0) {
+        ball.x = g.bbX-R; ball.vx = -Math.abs(ball.vx)*0.5;
+        clangT = performance.now(); shake = 4; spawnParticles(g.bbX, ball.y);
       }
-      // Rigged rim: distance to the bent rim segment — always knocks the ball out.
-      var dx = g.x1 - g.x0, dy = g.y1 - g.y0;
-      var tt = Math.max(0, Math.min(1, ((ball.x - g.x0) * dx + (ball.y - g.y0) * dy) / (dx * dx + dy * dy)));
-      var px = g.x0 + dx * tt, py = g.y0 + dy * tt;
-      if (Math.hypot(ball.x - px, ball.y - py) < R + 4) deflect();
-      // Guard zone above the basket mouth: no clean swish is possible.
-      var mx = (g.x0 + g.x1) / 2, my = (g.y0 + g.y1) / 2;
-      if (ball.vy > 0 && Math.hypot(ball.x - mx, ball.y - my) < 30) deflect();
-      // Ground bounce.
-      if (ball.y + R > groundY) {
-        ball.y = groundY - R;
-        ball.vy = -ball.vy * 0.45;
-        ball.vx *= 0.75;
-        bounces += 1;
-        if (Math.abs(ball.vy) < 60 && bounces >= 2) { endThrow(); return; }
+      // Front rim
+      if (Math.hypot(ball.x-g.fx, ball.y-g.fy) < R+5) deflect(g.fx, g.fy);
+      // Rear rim
+      if (Math.hypot(ball.x-g.rx, ball.y-g.ry) < R+5) deflect(g.rx, g.ry);
+      // Mid-basket guard (rigged — no swish possible)
+      var mx = (g.fx+g.rx)/2, my = (g.fy+g.ry)/2;
+      if (ball.vy > 0 && ball.x > g.fx-R && ball.x < g.rx+R && Math.abs(ball.y-my) < 26) deflect(mx, my);
+      // Ground
+      if (ball.y+R >= groundY) {
+        ball.y = groundY-R; ball.vy = -ball.vy*0.42; ball.vx *= 0.74; bounces++;
+        if (Math.abs(ball.vy) < 55 && bounces >= 2) { endThrow(); return; }
       }
-      if (ball.x < -60 || ball.x > W + 60 || performance.now() - launchT > 6000) endThrow();
+      if (ball.x < -80 || ball.x > W+80 || performance.now()-launchT > 7000) endThrow();
     }
+
+    function drawBall(bx, by) {
+      ctx.save(); ctx.translate(bx, by); ctx.rotate(ball.rot);
+      ctx.shadowColor = "rgba(0,0,0,.4)"; ctx.shadowBlur = 10; ctx.shadowOffsetY = 2;
+      var grad = ctx.createRadialGradient(-R*0.3, -R*0.3, 0, 0, 0, R);
+      grad.addColorStop(0, "#FF9A45"); grad.addColorStop(0.5, "#F97316"); grad.addColorStop(1, "#B45309");
+      ctx.fillStyle = grad; ctx.beginPath(); ctx.arc(0, 0, R, 0, Math.PI*2); ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = "rgba(90,35,0,.65)"; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(-R, 0); ctx.lineTo(R, 0); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(-R*0.65,-R*0.65); ctx.bezierCurveTo(-R*0.25,-R*0.1,R*0.25,-R*0.1,R*0.65,-R*0.65); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(-R*0.65,R*0.65); ctx.bezierCurveTo(-R*0.25,R*0.1,R*0.25,R*0.1,R*0.65,R*0.65); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0,-R); ctx.bezierCurveTo(R*0.5,-R*0.5,R*0.5,R*0.5,0,R); ctx.stroke();
+      ctx.fillStyle = "rgba(255,255,255,.2)";
+      ctx.beginPath(); ctx.ellipse(-R*0.28,-R*0.3,R*0.2,R*0.13,-0.5,0,Math.PI*2); ctx.fill();
+      ctx.restore();
+    }
+
     function draw() {
       var g = rimGeo();
-      var bg = ctx.createLinearGradient(0, 0, 0, H);
-      bg.addColorStop(0, "#2e333c"); bg.addColorStop(1, "#21252c");
-      ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
-      // asphalt
-      ctx.fillStyle = "#3a3e46"; ctx.fillRect(0, groundY, W, H - groundY);
-      ctx.strokeStyle = "rgba(12,12,16,.7)"; ctx.lineWidth = 1.4;
-      cracks.forEach(function (seg) {
+      var now = performance.now();
+      var freshClang = now - clangT < 160;
+      var sx = shake > 0.5 ? (Math.random()-0.5)*shake : 0;
+      var sy = shake > 0.5 ? (Math.random()-0.5)*shake : 0;
+      ctx.save(); ctx.translate(sx, sy);
+
+      // Sky
+      var sky = ctx.createLinearGradient(0, 0, 0, groundY);
+      sky.addColorStop(0, "#080D17"); sky.addColorStop(1, "#111827");
+      ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
+      // Spotlight glow
+      var spot = ctx.createRadialGradient(W*0.65, groundY, 10, W*0.65, groundY, 240);
+      spot.addColorStop(0, "rgba(249,115,22,.06)"); spot.addColorStop(1, "transparent");
+      ctx.fillStyle = spot; ctx.fillRect(0, 0, W, H);
+
+      // Court floor
+      var fl = ctx.createLinearGradient(0, groundY, 0, H);
+      fl.addColorStop(0, "#2A2F38"); fl.addColorStop(1, "#1E2228");
+      ctx.fillStyle = fl; ctx.fillRect(0, groundY, W, H-groundY);
+      // Cracks
+      ctx.strokeStyle = "rgba(0,0,0,.55)"; ctx.lineWidth = 1;
+      cracks.forEach(function(seg) {
         ctx.beginPath();
-        seg.forEach(function (p, i) {
-          var x = p[0] * W, y = groundY + 4 + Math.abs(p[1] % 1) * (H - groundY - 8);
-          if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y);
+        seg.forEach(function(p, i) {
+          var px = p[0]*W, py = groundY+4+p[1]*(H-groundY-8);
+          if (i) ctx.lineTo(px, py); else ctx.moveTo(px, py);
         });
         ctx.stroke();
       });
-      // pole + board + bent rim (no net)
-      ctx.fillStyle = "#565b64"; ctx.fillRect(g.poleX, 64, 7, groundY - 64);
-      ctx.fillStyle = "#8a909a"; ctx.fillRect(g.poleX - 12, 64, 8, 78);
-      var fresh = performance.now() - clangT < 120;
-      ctx.strokeStyle = fresh ? "#ffffff" : "#F97316";
-      ctx.lineWidth = 5; ctx.lineCap = "round";
-      ctx.beginPath(); ctx.moveTo(g.x0, g.y0); ctx.lineTo(g.x1, g.y1); ctx.stroke();
-      // hint + throws left
-      ctx.fillStyle = "rgba(255,255,255,.6)";
-      ctx.font = "12px 'Space Mono',monospace";
-      ctx.textAlign = "center";
-      ctx.fillText(tRef.current.hoopHint, W / 2, 26);
-      ctx.textAlign = "left";
-      for (var i = 0; i < 2 - throws; i++) {
-        ctx.fillStyle = "#F97316";
-        ctx.beginPath(); ctx.arc(16 + i * 18, 18, 5, 0, Math.PI * 2); ctx.fill();
+      // Floor line
+      ctx.strokeStyle = "rgba(255,255,255,.07)"; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(0, groundY); ctx.lineTo(W, groundY); ctx.stroke();
+
+      // Pole
+      var pGrad = ctx.createLinearGradient(g.poleX, 0, g.poleX+g.poleW, 0);
+      pGrad.addColorStop(0, "#555B66"); pGrad.addColorStop(0.5, "#8A909A"); pGrad.addColorStop(1, "#3A3F47");
+      ctx.fillStyle = pGrad; ctx.fillRect(g.poleX, g.bbY+g.bbH, g.poleW, groundY-g.bbY-g.bbH);
+
+      // Backboard shadow
+      ctx.fillStyle = "rgba(0,0,0,.22)"; ctx.fillRect(g.bbX+3, g.bbY+3, g.bbW, g.bbH);
+      // Backboard
+      var bbGrad = ctx.createLinearGradient(g.bbX, 0, g.bbX+g.bbW, 0);
+      bbGrad.addColorStop(0, "#E0E5EB"); bbGrad.addColorStop(1, "#B0B8C2");
+      ctx.fillStyle = bbGrad; ctx.fillRect(g.bbX, g.bbY, g.bbW, g.bbH);
+      // Target square
+      ctx.strokeStyle = "#F97316"; ctx.lineWidth = 1.5;
+      ctx.strokeRect(g.bbX+1, g.bbY+g.bbH*0.4, g.bbW-2, g.bbH*0.3);
+
+      // Rim support arm
+      ctx.strokeStyle = "#6B7280"; ctx.lineWidth = 2.5; ctx.lineCap = "round";
+      ctx.beginPath(); ctx.moveTo(g.bbX, g.ry); ctx.lineTo(g.rx, g.ry); ctx.stroke();
+
+      // Net (drawn before rim so rim sits on top)
+      ctx.strokeStyle = "rgba(255,255,255,.26)"; ctx.lineWidth = 0.9; ctx.lineCap = "round";
+      var netBot = g.fy + 36;
+      for (var ni = 0; ni <= 7; ni++) {
+        var nt = ni/7;
+        var nsx = g.fx+(g.rx-g.fx)*nt, nsy = g.fy+(g.ry-g.fy)*nt;
+        ctx.beginPath(); ctx.moveTo(nsx, nsy);
+        ctx.lineTo(nsx + netOff[ni], netBot - 4 + Math.sin(nt*Math.PI)*5);
+        ctx.stroke();
       }
-      // aim line
-      if (drag) {
-        var ax = start.x + (start.x - drag.x), ay = start.y + (start.y - drag.y);
-        ctx.strokeStyle = "rgba(255,255,255,.45)";
-        ctx.setLineDash([5, 6]); ctx.lineWidth = 2;
-        ctx.beginPath(); ctx.moveTo(ball.x, ball.y); ctx.lineTo(ax, ay); ctx.stroke();
-        ctx.setLineDash([]);
+      ctx.setLineDash([1.5, 2.5]);
+      for (var nj = 0; nj < 7; nj++) {
+        var nt1 = nj/7, nt2 = (nj+1)/7;
+        var nx1 = g.fx+(g.rx-g.fx)*nt1, nx2 = g.fx+(g.rx-g.fx)*nt2;
+        var ny1 = g.fy+(g.ry-g.fy)*nt1, ny2 = g.fy+(g.ry-g.fy)*nt2;
+        ctx.beginPath(); ctx.moveTo(nx1+netOff[nj], ny1+12); ctx.lineTo((nx1+nx2)/2, (ny1+ny2)/2+14); ctx.lineTo(nx2+netOff[nj+1], ny2+12); ctx.stroke();
       }
-      // ball
-      ctx.save();
-      ctx.translate(ball.x, ball.y); ctx.rotate(ball.rot);
-      ctx.fillStyle = "#F97316";
-      ctx.beginPath(); ctx.arc(0, 0, R, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = "rgba(120,50,8,.8)"; ctx.lineWidth = 1.5;
-      ctx.beginPath(); ctx.moveTo(-R, 0); ctx.lineTo(R, 0); ctx.stroke();
-      ctx.beginPath(); ctx.arc(0, -R * 1.4, R * 1.05, Math.PI * 0.25, Math.PI * 0.75); ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Rim tube
+      ctx.strokeStyle = freshClang ? "#FFFFFF" : "#F97316"; ctx.lineWidth = 4.5; ctx.lineCap = "round";
+      ctx.beginPath(); ctx.moveTo(g.fx, g.fy); ctx.lineTo(g.rx, g.ry); ctx.stroke();
+      // Rim end caps
+      ctx.fillStyle = freshClang ? "#fff" : "#E55E04";
+      ctx.beginPath(); ctx.arc(g.fx, g.fy, 4, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(g.rx, g.ry, 4, 0, Math.PI*2); ctx.fill();
+      if (freshClang) {
+        ctx.fillStyle = "rgba(249,115,22,.95)"; ctx.font = "bold 10px 'Space Mono',monospace"; ctx.textAlign = "center";
+        ctx.fillText("BENT!", g.fx - 18, g.fy - 10); ctx.textAlign = "left";
+      }
+
+      // Trajectory arc preview
+      if (drag && !ball.flying) {
+        var pvx = (start.x-drag.x)*12, pvy = (start.y-drag.y)*12;
+        var ppx = start.x, ppy = start.y, pdt = 0.016;
+        for (var pi2 = 0; pi2 < 52; pi2++) {
+          pvy += 1500*pdt; ppx += pvx*pdt; ppy += pvy*pdt;
+          if (ppy > groundY) break;
+          ctx.globalAlpha = (1-pi2/52)*0.4;
+          ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(ppx, ppy, 2.2, 0, Math.PI*2); ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        // Power bar
+        var pwr = Math.min(Math.hypot(drag.x-start.x, drag.y-start.y)/90, 1);
+        ctx.fillStyle = "rgba(0,0,0,.5)"; ctx.fillRect(start.x-20, start.y+R+6, 40, 5);
+        ctx.fillStyle = pwr > 0.7 ? "#F97316" : pwr > 0.4 ? "#F59E0B" : "#10B981";
+        ctx.fillRect(start.x-20, start.y+R+6, 40*pwr, 5);
+        ctx.strokeStyle = "rgba(255,255,255,.2)"; ctx.lineWidth = 1;
+        ctx.strokeRect(start.x-20, start.y+R+6, 40, 5);
+        // Rubber band lines from anchor above start
+        var ancX = start.x, ancY = start.y - R - 8;
+        ctx.strokeStyle = "rgba(255,200,80,.55)"; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(ancX-5, ancY); ctx.lineTo(ball.x, ball.y); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(ancX+5, ancY); ctx.lineTo(ball.x, ball.y); ctx.stroke();
+        ctx.fillStyle = "rgba(255,200,80,.7)"; ctx.beginPath(); ctx.arc(ancX-5, ancY, 2.5, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(ancX+5, ancY, 2.5, 0, Math.PI*2); ctx.fill();
+      }
+
+      // Ball ground shadow
+      ctx.fillStyle = "rgba(0,0,0,.2)"; ctx.beginPath();
+      ctx.ellipse(ball.x, groundY-2, R*0.75, R*0.22, 0, 0, Math.PI*2); ctx.fill();
+
+      // Ball
+      drawBall(ball.x, ball.y);
+
+      // Particles
+      particles.forEach(function(p) {
+        ctx.globalAlpha = Math.max(0, p.life);
+        ctx.fillStyle = p.col; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+
+      // Shot dots
+      ctx.fillStyle = "rgba(0,0,0,.45)";
+      ctx.beginPath(); ctx.moveTo(12+8,9); ctx.lineTo(12+56-8,9); ctx.quadraticCurveTo(12+56,9,12+56,9+8); ctx.lineTo(12+56,9+20-8); ctx.quadraticCurveTo(12+56,9+20,12+56-8,9+20); ctx.lineTo(12+8,9+20); ctx.quadraticCurveTo(12,9+20,12,9+20-8); ctx.lineTo(12,9+8); ctx.quadraticCurveTo(12,9,12+8,9); ctx.fill();
+      for (var si = 0; si < THROWS_MAX; si++) {
+        ctx.fillStyle = shotDone[si] ? "#F97316" : "rgba(255,255,255,.22)";
+        ctx.beginPath(); ctx.arc(24+si*18, 19, 5, 0, Math.PI*2); ctx.fill();
+      }
+      // Hint
+      if (!ball.flying && !finished) {
+        ctx.fillStyle = "rgba(255,255,255,.42)"; ctx.font = "10px 'Space Mono',monospace";
+        ctx.textAlign = "center"; ctx.fillText(tRef.current.hoopHint, W/2, 20); ctx.textAlign = "left";
+      }
       ctx.restore();
     }
+
     var raf, last = performance.now();
     function loop(now) {
       if (finished) { draw(); return; }
-      var dt = Math.min((now - last) / 1000, 0.032);
-      last = now;
-      step(dt);
-      draw();
+      var dt = Math.min((now-last)/1000, 0.032); last = now;
+      step(dt); draw();
       raf = requestAnimationFrame(loop);
     }
     raf = requestAnimationFrame(loop);
-    function pos(e) {
+
+    function getPos(e) {
       var r = cv.getBoundingClientRect();
-      return { x: e.clientX - r.left, y: e.clientY - r.top };
+      var scaleX = W / r.width, scaleY = H / r.height;
+      return { x: (e.clientX-r.left)*scaleX, y: (e.clientY-r.top)*scaleY };
     }
     function down(e) {
       if (finished || ball.flying) return;
-      var p = pos(e);
-      if (Math.hypot(p.x - ball.x, p.y - ball.y) < 52) {
+      var p = getPos(e);
+      if (Math.hypot(p.x-ball.x, p.y-ball.y) < 56) {
         drag = p;
-        if (cv.setPointerCapture && e.pointerId != null) { try { cv.setPointerCapture(e.pointerId); } catch (err) {} }
+        if (cv.setPointerCapture && e.pointerId != null) { try { cv.setPointerCapture(e.pointerId); } catch(err) {} }
         e.preventDefault();
       }
     }
     function move(e) {
       if (!drag) return;
-      var p = pos(e);
-      var ddx = p.x - start.x, ddy = p.y - start.y;
+      var p = getPos(e);
+      var ddx = p.x-start.x, ddy = p.y-start.y;
       var d = Math.hypot(ddx, ddy);
-      if (d > 90) { ddx *= 90 / d; ddy *= 90 / d; }
-      drag = { x: start.x + ddx, y: start.y + ddy };
+      if (d > 90) { ddx *= 90/d; ddy *= 90/d; }
+      drag = { x: start.x+ddx, y: start.y+ddy };
       ball.x = drag.x; ball.y = drag.y;
       e.preventDefault();
     }
     function up() {
       if (!drag) return;
-      var vx = (start.x - drag.x) * 11, vy = (start.y - drag.y) * 11;
+      var vx = (start.x-drag.x)*12, vy = (start.y-drag.y)*12;
       drag = null;
-      if (Math.hypot(vx, vy) < 80) { ball.x = start.x; ball.y = start.y; return; }
-      ball.vx = vx; ball.vy = vy;
-      ball.flying = true;
-      bounces = 0;
-      launchT = performance.now();
+      if (Math.hypot(vx, vy) < 85) { ball.x = start.x; ball.y = start.y; return; }
+      ball.vx = vx; ball.vy = vy; ball.flying = true; bounces = 0; launchT = performance.now();
     }
     cv.addEventListener("pointerdown", down);
     cv.addEventListener("pointermove", move);
     cv.addEventListener("pointerup", up);
     cv.addEventListener("pointercancel", up);
-    return function () {
+    return function() {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
       cv.removeEventListener("pointerdown", down);
@@ -2499,11 +2627,11 @@ function HoopGame(props) {
   if (rm) return null;
   return React.createElement("div", { className: "card mb-2", style: { padding: 0, borderLeft: "3px solid var(--coral)", maxWidth: 600, margin: "0 auto 1.2rem" } },
     React.createElement("div", { className: "hoop-wrap" },
-      React.createElement("canvas", { ref: cvRef, className: "hoop-canvas", height: 300 }),
+      React.createElement("canvas", { ref: cvRef, className: "hoop-canvas", height: 340 }),
       !over && React.createElement("button", { className: "hoop-skip", onClick: onDone }, t.hoopSkip + " →"),
       over && React.createElement("div", { className: "hoop-overlay" },
         React.createElement("p", { style: { color: "#fff", fontFamily: "'Space Mono',monospace", fontSize: ".95rem", maxWidth: 420, marginBottom: "1rem", lineHeight: 1.55 } }, t.hoopMiss),
-        React.createElement("button", { className: "btn btn-green", onClick: onDone }, "✊ " + t.hoopSign)
+        React.createElement("button", { className: "btn btn-green", onClick: onDone }, t.hoopSign)
       )
     )
   );
@@ -5000,15 +5128,27 @@ function Navbar() {
   }, theme === "dark" ? "\u2600\uFE0F" : "\uD83C\uDF19"),
   React.createElement(CitySwitch, null),
   /*#__PURE__*/React.createElement("button", {
-    title: firebaseUser && !isAdmin ? (firebaseUser.displayName || firebaseUser.email) : (lang === "ro" ? "Cont" : "Account"),
-    style: { fontSize:"1rem", background:"none", border:"none", cursor:"pointer", padding:"0 .2rem", opacity: firebaseUser && !isAdmin ? 1 : 0.55 },
+    title: firebaseUser && !isAdmin ? ((firebaseUser.displayName || firebaseUser.email) + (lang==="ro"?" \u2014 click pt. deconectare":" \u2014 click to sign out")) : (lang==="ro"?"Intr\u0103 \u00EEn cont":"Sign in"),
+    style: { display:"flex", alignItems:"center", gap:".28rem", height:28, padding:"0 .45rem", background: firebaseUser && !isAdmin ? "rgba(16,185,129,.12)" : "none", border: firebaseUser && !isAdmin ? "1px solid rgba(16,185,129,.3)" : "none", borderRadius:8, cursor:"pointer", color: firebaseUser && !isAdmin ? "var(--green)" : "var(--textSec)", fontSize:".7rem", fontFamily:"'Space Mono',monospace", transition:"all .18s" },
     onClick: () => { if (firebaseUser && !isAdmin) { firebase.auth().signOut(); } else if (!isAdmin) { setShowAuth(true); } }
-  }, firebaseUser && !isAdmin ? "\uD83D\uDC64" : "\uD83D\uDD13"),
+  },
+    React.createElement("svg",{width:14,height:14,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"},
+      ...(firebaseUser && !isAdmin
+        ? [React.createElement("path",{key:"a",d:"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"}),React.createElement("circle",{key:"b",cx:12,cy:7,r:4})]
+        : [React.createElement("rect",{key:"a",x:3,y:11,width:18,height:11,rx:2}),React.createElement("path",{key:"b",d:"M7 11V7a5 5 0 0 1 10 0v4"})]
+      )
+    ),
+    firebaseUser && !isAdmin ? React.createElement("span",null,(firebaseUser.displayName||firebaseUser.email||"").split(" ")[0].substring(0,10)) : null
+  ),
   /*#__PURE__*/React.createElement("button", {
     onClick: () => { location.hash = "#/admin"; },
-    title: "Admin",
-    style: { fontSize: "1rem", opacity: isAdmin ? 1 : 0.35, filter: isAdmin ? "none" : "grayscale(1)", background: "none", border: "none", cursor: "pointer", padding: "0 .2rem" }
-  }, "\uD83D\uDD11")), /*#__PURE__*/React.createElement("button", {
+    title: "Admin Panel",
+    style: { display:"flex", alignItems:"center", height:28, padding:"0 .3rem", opacity: isAdmin ? 1 : 0.3, background:"none", border:"none", cursor:"pointer", color: isAdmin ? "var(--coral)" : "var(--textSec)", transition:"all .18s" }
+  },
+    React.createElement("svg",{width:14,height:14,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"},
+      React.createElement("path",{d:"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"})
+    )
+  )), /*#__PURE__*/React.createElement("button", {
     className: "hamburger",
     onClick: () => setMob(true)
   }, "\u2630"))),
@@ -6895,50 +7035,84 @@ function ShareCardCanvas({ total }) {
     canvas.width = W; canvas.height = H;
     var ctx = canvas.getContext("2d");
 
-    ctx.fillStyle = "#0F1428";
-    ctx.fillRect(0, 0, W, H);
-
-    var g1 = ctx.createRadialGradient(220, 160, 20, 220, 160, 420);
-    g1.addColorStop(0, "rgba(16,185,129,.38)"); g1.addColorStop(1, "transparent");
+    // Background
+    ctx.fillStyle = "#060B15"; ctx.fillRect(0, 0, W, H);
+    // Subtle grid
+    ctx.strokeStyle = "rgba(255,255,255,.018)"; ctx.lineWidth = 1;
+    for (var gxi = 0; gxi <= W; gxi += 48) { ctx.beginPath(); ctx.moveTo(gxi,0); ctx.lineTo(gxi,H); ctx.stroke(); }
+    for (var gyi = 0; gyi <= H; gyi += 48) { ctx.beginPath(); ctx.moveTo(0,gyi); ctx.lineTo(W,gyi); ctx.stroke(); }
+    // Glow blobs
+    var g1 = ctx.createRadialGradient(180, 150, 0, 180, 150, 480);
+    g1.addColorStop(0, "rgba(16,185,129,.28)"); g1.addColorStop(1, "transparent");
     ctx.fillStyle = g1; ctx.fillRect(0, 0, W, H);
-
-    var g2 = ctx.createRadialGradient(990, 500, 20, 990, 500, 350);
-    g2.addColorStop(0, "rgba(249,115,22,.28)"); g2.addColorStop(1, "transparent");
+    var g2 = ctx.createRadialGradient(1060, 510, 0, 1060, 510, 360);
+    g2.addColorStop(0, "rgba(249,115,22,.22)"); g2.addColorStop(1, "transparent");
     ctx.fillStyle = g2; ctx.fillRect(0, 0, W, H);
+    var g3 = ctx.createRadialGradient(880, 190, 0, 880, 190, 280);
+    g3.addColorStop(0, "rgba(13,148,136,.14)"); g3.addColorStop(1, "transparent");
+    ctx.fillStyle = g3; ctx.fillRect(0, 0, W, H);
+    // Left gradient bar
+    var barGrad = ctx.createLinearGradient(0, 0, 0, H);
+    barGrad.addColorStop(0, "#10B981"); barGrad.addColorStop(0.5, "#0D9488"); barGrad.addColorStop(1, "#10B981");
+    ctx.fillStyle = barGrad; ctx.fillRect(0, 0, 6, H);
 
-    ctx.fillStyle = "#10B981"; ctx.fillRect(0, 0, 8, H);
+    // City pill — auto-sized
+    var pillText = "CIVIC INITIATIVE  ·  TÂRGU MUREȘ  ·  SIBIU";
+    ctx.font = "bold 13px monospace";
+    var pillW = ctx.measureText(pillText).width + 36;
+    var pillX = 80, pillY = 52, pillH = 34;
+    ctx.fillStyle = "rgba(16,185,129,.11)";
+    ctx.beginPath(); ctx.roundRect(pillX, pillY, pillW, pillH, 17); ctx.fill();
+    var pStroke = ctx.createLinearGradient(pillX, 0, pillX+pillW, 0);
+    pStroke.addColorStop(0, "rgba(16,185,129,.55)"); pStroke.addColorStop(0.6, "rgba(13,148,136,.35)"); pStroke.addColorStop(1, "rgba(249,115,22,.25)");
+    ctx.strokeStyle = pStroke; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.roundRect(pillX, pillY, pillW, pillH, 17); ctx.stroke();
+    ctx.fillStyle = "#10B981"; ctx.font = "bold 13px monospace"; ctx.textBaseline = "middle";
+    ctx.fillText(pillText, pillX + 18, pillY + pillH/2); ctx.textBaseline = "alphabetic";
 
-    ctx.fillStyle = "rgba(16,185,129,.15)";
-    ctx.beginPath(); ctx.roundRect(80, 58, 245, 34, 17); ctx.fill();
-    ctx.fillStyle = "#10B981"; ctx.font = "bold 14px monospace";
-    ctx.fillText("CIVIC INITIATIVE  ·  TÂRGU MUREȘ", 100, 81);
+    // Title
+    ctx.fillStyle = "#FFFFFF"; ctx.font = "bold 70px monospace";
+    ctx.fillText("FROM GREY", 80, 168);
+    var titleG = ctx.createLinearGradient(80, 0, 520, 0);
+    titleG.addColorStop(0, "#10B981"); titleG.addColorStop(0.55, "#0D9488"); titleG.addColorStop(1, "#F97316");
+    ctx.fillStyle = titleG; ctx.font = "bold 70px monospace";
+    ctx.fillText("TO PLAY", 80, 248);
+    ctx.fillStyle = "#6B7280"; ctx.font = "21px sans-serif";
+    ctx.fillText("Documentăm inegalitatea infrastructurii sportive", 80, 284);
 
-    ctx.fillStyle = "#10B981"; ctx.font = "bold 56px monospace";
-    ctx.fillText("FROM GREY TO PLAY", 80, 140);
-    ctx.fillStyle = "#6B7280"; ctx.font = "22px sans-serif";
-    ctx.fillText("Sports court inequality — documented by citizens", 80, 177);
+    // Divider
+    var div = ctx.createLinearGradient(80, 0, 1120, 0);
+    div.addColorStop(0, "rgba(16,185,129,.45)"); div.addColorStop(0.5, "rgba(255,255,255,.09)"); div.addColorStop(1, "rgba(249,115,22,.25)");
+    ctx.strokeStyle = div; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(80, 312); ctx.lineTo(1120, 312); ctx.stroke();
 
+    // Stat 1 — signatures
+    ctx.fillStyle = "#F97316"; ctx.font = "bold 100px monospace";
+    ctx.fillText(String(total || 0), 80, 430);
+    ctx.fillStyle = "#9CA3AF"; ctx.font = "bold 17px monospace";
+    ctx.fillText(lang === "ro" ? "SEMNĂTURI PE PETIȚIE" : "PETITION SIGNATURES", 80, 458);
+
+    // Vertical separator
     ctx.strokeStyle = "rgba(255,255,255,.07)"; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(80, 208); ctx.lineTo(1120, 208); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(680, 325); ctx.lineTo(680, 475); ctx.stroke();
 
-    ctx.fillStyle = "#FFFFFF"; ctx.font = "bold 148px monospace";
-    ctx.fillText(String(total || 0), 80, 400);
-    ctx.fillStyle = "#9CA3AF"; ctx.font = "26px sans-serif";
-    ctx.fillText(lang === "ro" ? "SEMNĂTURI PE PETIȚIE" : "PETITION SIGNATURES", 80, 440);
-
-    ctx.strokeStyle = "rgba(255,255,255,.1)"; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(680, 295); ctx.lineTo(680, 480); ctx.stroke();
-
+    // Stat 2 — degraded courts
     var deg = COURTS.filter(function(c) { return c.status === "degraded"; }).length;
-    ctx.fillStyle = "#F97316"; ctx.font = "bold 90px monospace";
-    ctx.fillText(deg + " / " + COURTS.length, 720, 400);
-    ctx.fillStyle = "#9CA3AF"; ctx.font = "22px sans-serif";
-    ctx.fillText(lang === "ro" ? "TERENURI DEGRADATE" : "DEGRADED COURTS", 720, 440);
+    ctx.fillStyle = "#10B981"; ctx.font = "bold 100px monospace";
+    ctx.fillText(deg + "/" + COURTS.length, 720, 430);
+    ctx.fillStyle = "#9CA3AF"; ctx.font = "bold 17px monospace";
+    ctx.fillText(lang === "ro" ? "TERENURI DEGRADATE" : "DEGRADED COURTS", 720, 458);
 
-    ctx.strokeStyle = "rgba(255,255,255,.07)"; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(80, 500); ctx.lineTo(1120, 500); ctx.stroke();
-    ctx.fillStyle = "#4B5563"; ctx.font = "18px monospace";
-    ctx.fillText("fromgreytoplay.netlify.app  ·  " + new Date().toLocaleDateString(), 80, 535);
+    // Footer
+    var footG = ctx.createLinearGradient(80, 0, 1120, 0);
+    footG.addColorStop(0, "rgba(16,185,129,.35)"); footG.addColorStop(1, "rgba(255,255,255,.04)");
+    ctx.strokeStyle = footG; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(80, 505); ctx.lineTo(1120, 505); ctx.stroke();
+    ctx.fillStyle = "#374151"; ctx.font = "bold 16px monospace";
+    ctx.fillText("fromgreytoplay.netlify.app", 80, 535);
+    var dateStr = new Date().toLocaleDateString(lang === "ro" ? "ro-RO" : "en-GB");
+    ctx.fillStyle = "#4B5563"; ctx.font = "16px monospace";
+    ctx.fillText(dateStr, 1120 - ctx.measureText(dateStr).width, 535);
 
     setReady(true);
   }, [total, lang]);
@@ -9634,100 +9808,126 @@ function AuthModal({ onClose }) {
     });
   };
 
+  function friendlyErr(msg) {
+    if (!msg) return "";
+    if (msg.includes("operation-not-supported") || msg.includes("location.protocol"))
+      return lang === "ro" ? "Google Sign-In necesită site-ul live. Accesează fromgreytoplay.netlify.app" : "Google Sign-In requires the live site. Visit fromgreytoplay.netlify.app";
+    if (msg.includes("user-not-found") || msg.includes("wrong-password") || msg.includes("invalid-credential") || msg.includes("INVALID_LOGIN"))
+      return lang === "ro" ? "Email sau parolă incorectă" : "Incorrect email or password";
+    if (msg.includes("email-already-in-use")) return lang === "ro" ? "Email deja înregistrat" : "Email already in use";
+    if (msg.includes("weak-password")) return lang === "ro" ? "Parolă prea slabă (min. 6 caractere)" : "Password too weak (min. 6 chars)";
+    if (msg.includes("too-many-requests")) return lang === "ro" ? "Prea multe încercări. Încearcă mai târziu." : "Too many attempts. Try again later.";
+    if (msg.includes("network-request-failed")) return lang === "ro" ? "Eroare de rețea. Verifică conexiunea." : "Network error. Check connection.";
+    return msg;
+  }
+
   const doLogin = () => {
     if (!email || !pw) { setErr(lang === "ro" ? "Completează email și parolă" : "Fill in email and password"); return; }
-    setBusy(true);
+    setBusy(true); setErr("");
     firebase.auth().signInWithEmailAndPassword(email, pw)
       .then(({user}) => { saveUser(user); toast(t.success); onClose(); })
-      .catch(e => { setErr(e.message); setBusy(false); });
+      .catch(e => { setErr(friendlyErr(e.message)); setBusy(false); });
   };
 
   const doSignup = () => {
     if (!name || !email || !pw) { setErr(lang === "ro" ? "Completează toate câmpurile" : "Fill in all fields"); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { setErr(lang === "ro" ? "Email invalid" : "Invalid email"); return; }
-    setBusy(true);
+    setBusy(true); setErr("");
     firebase.auth().createUserWithEmailAndPassword(email, pw)
       .then(({user}) => { user.updateProfile({ displayName: name }); saveUser(user, name); toast(t.success); onClose(); })
-      .catch(e => { setErr(e.message); setBusy(false); });
+      .catch(e => { setErr(friendlyErr(e.message)); setBusy(false); });
   };
 
   const doGoogle = () => {
-    setBusy(true);
+    setBusy(true); setErr("");
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider)
       .then(({user}) => { saveUser(user); toast(t.success); onClose(); })
-      .catch(e => { setErr(e.message); setBusy(false); });
+      .catch(e => { setErr(friendlyErr(e.message)); setBusy(false); });
   };
 
   const doPhone1 = () => {
     if (!phone) { setErr(lang === "ro" ? "Introduceți numărul de telefon" : "Enter phone number"); return; }
-    setBusy(true);
+    setBusy(true); setErr("");
     try {
       const rc = new firebase.auth.RecaptchaVerifier("g2p-recaptcha", { size: "invisible" });
       firebase.auth().signInWithPhoneNumber(phone, rc)
         .then(cr => { setConfirmResult(cr); setBusy(false); })
-        .catch(e => { setErr(e.message); setBusy(false); });
-    } catch(e) { setErr(e.message); setBusy(false); }
+        .catch(e => { setErr(friendlyErr(e.message)); setBusy(false); });
+    } catch(e) { setErr(friendlyErr(e.message)); setBusy(false); }
   };
 
   const doPhone2 = () => {
     if (!code || !confirmResult) return;
-    setBusy(true);
+    setBusy(true); setErr("");
     confirmResult.confirm(code)
       .then(({user}) => { saveUser(user); toast(t.success); onClose(); })
-      .catch(e => { setErr(e.message); setBusy(false); });
+      .catch(e => { setErr(friendlyErr(e.message)); setBusy(false); });
   };
 
-  const inp = { className: "mb-1", style: { width: "100%", boxSizing: "border-box" } };
+  const inpStyle = { width:"100%", boxSizing:"border-box", padding:".6rem .85rem", background:"rgba(255,255,255,.05)", border:"1px solid var(--border)", borderRadius:8, color:"var(--text)", fontSize:".9rem", fontFamily:"'Libre Franklin',sans-serif", marginBottom:".6rem", outline:"none", transition:"border-color .2s" };
+  const svgUser = React.createElement("svg",{width:13,height:13,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2.3,strokeLinecap:"round",strokeLinejoin:"round"},React.createElement("path",{d:"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"}),React.createElement("circle",{cx:12,cy:7,r:4}));
+  const svgUserPlus = React.createElement("svg",{width:13,height:13,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2.3,strokeLinecap:"round",strokeLinejoin:"round"},React.createElement("path",{d:"M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"}),React.createElement("circle",{cx:8.5,cy:7,r:4}),React.createElement("line",{x1:20,y1:8,x2:20,y2:14}),React.createElement("line",{x1:23,y1:11,x2:17,y2:11}));
+  const svgPhone = React.createElement("svg",{width:13,height:13,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2.3,strokeLinecap:"round",strokeLinejoin:"round"},React.createElement("rect",{x:5,y:2,width:14,height:20,rx:2}),React.createElement("line",{x1:12,y1:18,x2:12.01,y2:18}));
+  const googleG = React.createElement("svg",{width:18,height:18,viewBox:"0 0 24 24",style:{flexShrink:0}},React.createElement("path",{fill:"#4285F4",d:"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"}),React.createElement("path",{fill:"#34A853",d:"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"}),React.createElement("path",{fill:"#FBBC05",d:"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"}),React.createElement("path",{fill:"#EA4335",d:"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"}));
+  const tabs = [
+    { id:"login", label: lang==="ro"?"Intră":"Sign In", icon: svgUser },
+    { id:"signup", label: lang==="ro"?"Cont nou":"Sign Up", icon: svgUserPlus },
+    { id:"phone", label:"SMS", icon: svgPhone }
+  ];
 
   return React.createElement("div", {
     className: "modal-overlay",
     onClick: e => { if (e.target === e.currentTarget) onClose(); }
   },
-    React.createElement("div", { className: "modal-box", style: { maxWidth: 380 } },
-      React.createElement("div", { className: "flex", style: { justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" } },
-        React.createElement("h3", { style: { margin: 0 } }, "👤 " + (lang === "ro" ? "Cont G2P" : "G2P Account")),
-        React.createElement("button", { onClick: onClose, style: { background: "none", border: "none", fontSize: "1.2rem", cursor: "pointer", color: "var(--textSec)" } }, "✕")
-      ),
-      React.createElement("div", { className: "tabs", style: { marginBottom: "1rem" } },
-        ["login","signup","phone"].map(m =>
-          React.createElement("button", {
-            key: m,
-            className: "tab-btn" + (mode === m ? " active" : ""),
-            onClick: () => { setMode(m); setErr(""); }
-          }, m === "login" ? (lang === "ro" ? "🔐 Intră" : "🔐 Sign In") :
-             m === "signup" ? (lang === "ro" ? "✨ Cont nou" : "✨ Sign Up") :
-             "📱 SMS")
+    React.createElement("div", { className: "modal", style: { maxWidth: 400, padding: "1.75rem" } },
+      React.createElement("div", { style: { display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"1.5rem" } },
+        React.createElement("div", { style: { display:"flex", alignItems:"center", gap:".7rem" } },
+          React.createElement("div", { style: { width:38, height:38, borderRadius:"50%", background:"linear-gradient(135deg,var(--green),var(--teal))", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 } },
+            React.createElement("svg",{width:16,height:16,viewBox:"0 0 24 24",fill:"none",stroke:"#fff",strokeWidth:2.5,strokeLinecap:"round",strokeLinejoin:"round"},React.createElement("path",{d:"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"}),React.createElement("circle",{cx:12,cy:7,r:4}))
+          ),
+          React.createElement("div", null,
+            React.createElement("div", { style:{ fontWeight:700, fontFamily:"'Space Mono',monospace", fontSize:".92rem" } }, lang==="ro"?"Cont G2P":"G2P Account"),
+            React.createElement("div", { style:{ fontSize:".7rem", color:"var(--textSec)", marginTop:1 } }, "fromgreytoplay.netlify.app")
+          )
+        ),
+        React.createElement("button", { onClick: onClose, style:{ width:30, height:30, display:"flex", alignItems:"center", justifyContent:"center", background:"rgba(255,255,255,.06)", border:"1px solid var(--border)", borderRadius:8, cursor:"pointer", color:"var(--textSec)" } },
+          React.createElement("svg",{width:13,height:13,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2.5,strokeLinecap:"round"},React.createElement("line",{x1:18,y1:6,x2:6,y2:18}),React.createElement("line",{x1:6,y1:6,x2:18,y2:18}))
         )
       ),
-      err && React.createElement("div", { className: "err", style: { marginBottom: ".8rem", fontSize: ".82rem" } }, err),
+      React.createElement("div", { style:{ display:"flex", gap:".4rem", marginBottom:"1.25rem" } },
+        tabs.map(tab => React.createElement("button", {
+          key: tab.id,
+          onClick: () => { setMode(tab.id); setErr(""); },
+          style:{ flex:1, display:"flex", alignItems:"center", justifyContent:"center", gap:".3rem", padding:".5rem .4rem", border:"1px solid " + (mode===tab.id?"var(--green)":"var(--border)"), borderRadius:10, background: mode===tab.id?"rgba(16,185,129,.1)":"transparent", color: mode===tab.id?"var(--green)":"var(--textSec)", fontSize:".73rem", fontFamily:"'Space Mono',monospace", cursor:"pointer", transition:"all .18s", fontWeight: mode===tab.id?700:400 }
+        }, tab.icon, tab.label))
+      ),
+      err && React.createElement("div", { style:{ background:"rgba(220,38,38,.1)", border:"1px solid rgba(220,38,38,.3)", borderRadius:8, padding:".6rem .8rem", color:"#F87171", fontSize:".82rem", marginBottom:".85rem", lineHeight:1.4 } }, err),
       React.createElement("button", {
-        className: "btn btn-green btn-block mb-1",
-        onClick: doGoogle,
-        disabled: busy
-      }, "🟢 " + (lang === "ro" ? "Continuă cu Google" : "Continue with Google")),
-      React.createElement("div", { style: { textAlign: "center", color: "var(--textSec)", fontSize: ".78rem", margin: ".5rem 0" } },
-        lang === "ro" ? "— sau —" : "— or —"),
+        onClick: doGoogle, disabled: busy,
+        style:{ width:"100%", display:"flex", alignItems:"center", justifyContent:"center", gap:".7rem", padding:".72rem 1rem", border:"1px solid rgba(255,255,255,.13)", borderRadius:10, background:"rgba(255,255,255,.05)", color:"var(--text)", fontFamily:"'Libre Franklin',sans-serif", fontSize:".9rem", fontWeight:500, cursor: busy?"wait":"pointer", transition:"all .2s", marginBottom:".15rem" }
+      }, googleG, lang==="ro"?"Continuă cu Google":"Continue with Google"),
+      React.createElement("div", { style:{ display:"flex", alignItems:"center", gap:".7rem", margin:".9rem 0", color:"var(--textSec)", fontSize:".72rem" } },
+        React.createElement("div", { style:{ flex:1, height:1, background:"var(--border)" } }),
+        lang==="ro"?"sau":"or",
+        React.createElement("div", { style:{ flex:1, height:1, background:"var(--border)" } })
+      ),
       mode === "login" && React.createElement("div", null,
-        React.createElement("input", Object.assign({}, inp, { type: "email", placeholder: "Email", value: email, onChange: e => setEmail(e.target.value) })),
-        React.createElement("input", Object.assign({}, inp, { type: "password", placeholder: lang === "ro" ? "Parolă" : "Password", value: pw, onChange: e => setPw(e.target.value),
-          onKeyDown: e => e.key === "Enter" && doLogin() })),
-        React.createElement("button", { className: "btn btn-green btn-block", onClick: doLogin, disabled: busy },
-          busy ? "…" : (lang === "ro" ? "Intră în cont" : "Sign In"))
+        React.createElement("input", { style: inpStyle, type:"email", placeholder:"Email", value:email, onChange: e => setEmail(e.target.value) }),
+        React.createElement("input", { style: inpStyle, type:"password", placeholder: lang==="ro"?"Parolă":"Password", value:pw, onChange: e => setPw(e.target.value), onKeyDown: e => e.key==="Enter" && doLogin() }),
+        React.createElement("button", { className:"btn btn-green btn-block", onClick:doLogin, disabled:busy }, busy?"…":(lang==="ro"?"Intră în cont":"Sign In"))
       ),
       mode === "signup" && React.createElement("div", null,
-        React.createElement("input", Object.assign({}, inp, { placeholder: lang === "ro" ? "Numele tău" : "Your name", value: name, onChange: e => setName(e.target.value) })),
-        React.createElement("input", Object.assign({}, inp, { type: "email", placeholder: "Email", value: email, onChange: e => setEmail(e.target.value) })),
-        React.createElement("input", Object.assign({}, inp, { type: "password", placeholder: lang === "ro" ? "Parolă (min. 6 caractere)" : "Password (min. 6 chars)", value: pw, onChange: e => setPw(e.target.value) })),
-        React.createElement("button", { className: "btn btn-green btn-block", onClick: doSignup, disabled: busy },
-          busy ? "…" : (lang === "ro" ? "Creează cont" : "Create Account"))
+        React.createElement("input", { style: inpStyle, placeholder: lang==="ro"?"Numele tău":"Your name", value:name, onChange: e => setName(e.target.value) }),
+        React.createElement("input", { style: inpStyle, type:"email", placeholder:"Email", value:email, onChange: e => setEmail(e.target.value) }),
+        React.createElement("input", { style: inpStyle, type:"password", placeholder: lang==="ro"?"Parolă (min. 6 caractere)":"Password (min. 6 chars)", value:pw, onChange: e => setPw(e.target.value) }),
+        React.createElement("button", { className:"btn btn-green btn-block", onClick:doSignup, disabled:busy }, busy?"…":(lang==="ro"?"Creează cont":"Create Account"))
       ),
       mode === "phone" && React.createElement("div", null,
         !confirmResult ? React.createElement("div", null,
-          React.createElement("input", Object.assign({}, inp, { type: "tel", placeholder: "+40 7XX XXX XXX", value: phone, onChange: e => setPhone(e.target.value) })),
+          React.createElement("input", { style: inpStyle, type:"tel", placeholder:"+40 7XX XXX XXX", value:phone, onChange: e => setPhone(e.target.value) }),
           React.createElement("div", { id: "g2p-recaptcha" }),
-          React.createElement("button", { className: "btn btn-green btn-block", onClick: doPhone1, disabled: busy },
-            busy ? "…" : (lang === "ro" ? "Trimite SMS" : "Send SMS"))
+          React.createElement("button", { className:"btn btn-green btn-block", onClick:doPhone1, disabled:busy }, busy?"…":(lang==="ro"?"Trimite SMS":"Send SMS"))
         ) : React.createElement("div", null,
           React.createElement("p", { style: { fontSize: ".85rem", marginBottom: ".5rem" } }, lang === "ro" ? "Introdu codul primit prin SMS:" : "Enter the SMS code:"),
           React.createElement("input", Object.assign({}, inp, { type: "text", placeholder: "123456", value: code, onChange: e => setCode(e.target.value),
