@@ -178,7 +178,7 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .leaflet-container{font-family:inherit;z-index:1}
 /* Admin */
 .admin-shell{min-height:100vh;background:#0B0E18;color:#E5E7EB}
-.admin-hdr{background:#10131F;border-bottom:1px solid #1E2235;padding:.7rem 1.2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.admin-hdr{background:#10131F;border-bottom:1px solid #1E2235;padding:.7rem 1.2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:.6rem}
 .admin-hdr h1{font-family:'Space Mono',monospace;font-size:1rem;color:#10B981}
 .admin-body{display:flex;min-height:calc(100vh - 50px)}
 .admin-side{width:200px;background:#10131F;border-right:1px solid #1E2235;padding:.6rem 0;flex-shrink:0}
@@ -366,7 +366,31 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .h3d-btn,.btn-green{will-change:transform}
 /* Rule-everything: banner / presence / palette / maintenance / admin controls */
 .site-banner{text-align:center;padding:.5rem 1rem;font-size:.85rem;font-weight:600;color:#fff;animation:slideDown .3s}
-.sb-info{background:linear-gradient(90deg,var(--teal),var(--green))}
+.site-banner{position:relative;padding-right:2.4rem}
+.site-banner .sb-x{position:absolute;right:.6rem;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.18);border:none;color:#fff;width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:.8rem;line-height:1}
+.sb-info{background:linear-gradient(90deg,#0D9488,#10B981)}
+html.accent-on .btn-green:hover{background:var(--green);filter:brightness(.92);box-shadow:0 6px 20px color-mix(in srgb,var(--green) 40%,transparent)}
+html.accent-on .badge-green,html.accent-on .badge-resolved,html.accent-on .badge-official{background:color-mix(in srgb,var(--green) 15%,transparent)}
+html.accent-on .presence{border-color:color-mix(in srgb,var(--green) 35%,transparent)}
+html.accent-on .pet-submit:enabled{box-shadow:0 4px 16px color-mix(in srgb,var(--green) 30%,transparent)}
+html.accent-on .rcat-btn:hover,html.accent-on .rcat-btn.sel,html.accent-on .vol-check.on{background:color-mix(in srgb,var(--green) 8%,transparent)}
+.a-pal{display:flex;flex-direction:column;gap:.55rem;width:100%}
+.a-pal-row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.a-pal-row b{font-size:.7rem;color:#9CA3AF;width:74px;flex-shrink:0;font-family:'Space Mono',monospace;font-weight:400}
+.a-preset{display:flex;align-items:center;gap:.4rem;padding:.3rem .6rem .3rem .35rem;border-radius:20px;border:1px solid #1E2235;background:#0D101F;color:#E5E7EB;font-size:.74rem;cursor:pointer}
+.a-preset.on{border-color:#fff}
+.a-preset i{width:18px;height:18px;border-radius:50%;flex-shrink:0}
+.a-normal{background:linear-gradient(135deg,#10B981,#0D9488);color:#fff;border:none;border-radius:10px;padding:.7rem 1.1rem;font-weight:700;font-family:'Space Mono',monospace;cursor:pointer;font-size:.85rem;letter-spacing:.3px}
+.a-normal:hover{filter:brightness(1.08)}
+.a-auth{display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:#9CA3AF;flex-wrap:wrap}
+.a-auth .dot{width:8px;height:8px;border-radius:50%;background:#10B981}
+.a-auth .dot.bad{background:#DC2626}
+.acct-menu{position:absolute;right:0;top:calc(100% + 8px);min-width:220px;background:var(--bgCard);border:1px solid var(--border);border-radius:12px;box-shadow:0 18px 50px rgba(0,0,0,.25);padding:.4rem;z-index:500;animation:cpIn .18s}
+.acct-menu .am-hd{padding:.55rem .7rem .6rem;border-bottom:1px solid var(--border);margin-bottom:.3rem}
+.acct-menu .am-hd b{display:block;font-size:.85rem;color:var(--text)}
+.acct-menu .am-hd span{font-size:.72rem;color:var(--textSec);word-break:break-all}
+.acct-menu button{display:block;width:100%;text-align:left;background:none;border:none;padding:.5rem .7rem;border-radius:8px;font-size:.82rem;color:var(--text);cursor:pointer}
+.acct-menu button:hover{background:color-mix(in srgb,var(--green) 12%,transparent);color:var(--text)}
 .sb-warn{background:linear-gradient(90deg,var(--coral),#F59E0B)}
 .sb-alert{background:linear-gradient(90deg,var(--red),#B91C1C)}
 .presence{display:inline-flex;align-items:center;gap:.35rem;font-size:.72rem;color:var(--green);font-family:'Space Mono',monospace;padding:.15rem .55rem;border:1px solid rgba(16,185,129,.35);border-radius:20px;margin:0 .2rem}
@@ -569,6 +593,7 @@ button,select,summary,label,[role="button"],[role="tab"],.btn,.tabs button,nav a
 .card.card-link:hover{box-shadow:0 14px 40px rgba(0,0,0,.13),0 0 0 1px var(--cond-clr)}
 [data-theme="dark"] .card.card-link:hover{box-shadow:0 14px 40px rgba(0,0,0,.5),0 0 0 1px var(--cond-clr)}
 </style>
+<script>(function(){try{var a=JSON.parse(localStorage.getItem("g2p_accent")||"null");if(a&&a.p){var r=document.documentElement;r.style.setProperty("--green",a.p);if(a.s)r.style.setProperty("--teal",a.s);r.classList.add("accent-on");}}catch(e){}})();</script>
 <script>(function(){try{var t=localStorage.getItem("g2p_theme")||(window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 </head>
 <body>
@@ -597,6 +622,49 @@ firebase.initializeApp({
 });
 window.addEventListener("load", () => { try { firebase.analytics && firebase.analytics(); } catch (e) {} });
 const db = firebase.database();
+// Keep every account (owner included) signed in across refreshes/tabs.
+// Explicit LOCAL persistence; falls back to session storage in private mode.
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+  .catch(() => firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(() => {}));
+// Google sign-in falls back to a full-page redirect when popups are blocked
+// (mobile Safari, in-app browsers) — finish that flow here.
+firebase.auth().getRedirectResult().then(r => {
+  if (r && r.user) saveUserProfile(r.user);
+}).catch(() => {});
+// Create users/{uid} on first sign-in; never overwrite an existing profile.
+function saveUserProfile(fbUser, displayName) {
+  if (!fbUser) return;
+  const ref = db.ref("users/" + fbUser.uid);
+  ref.once("value").then(snap => {
+    if (!snap.exists()) ref.set({
+      name: displayName || fbUser.displayName || (fbUser.email || fbUser.phoneNumber || "user").split("@")[0],
+      email: fbUser.email || "",
+      role: "user",
+      points: 0,
+      badges: ["🌱"],
+      createdAt: Date.now()
+    });
+    else if (displayName && !snap.val().name) ref.child("name").set(displayName);
+  }).catch(() => {});
+}
+// Admin site colours: primary (--green) + secondary (--teal); cached locally
+// so the next load paints the right colour before Firebase answers.
+function applyAccent(p, s2) {
+  const r = document.documentElement;
+  if (p) {
+    r.style.setProperty("--green", p);
+    if (s2) r.style.setProperty("--teal", s2); else r.style.removeProperty("--teal");
+    r.classList.add("accent-on");
+    try { localStorage.setItem("g2p_accent", JSON.stringify({ p, s: s2 || "" })); } catch (e) {}
+  } else {
+    r.style.removeProperty("--green");
+    r.style.removeProperty("--teal");
+    r.classList.remove("accent-on");
+    try { localStorage.removeItem("g2p_accent"); } catch (e) {}
+  }
+  const m = document.querySelector('meta[name="theme-color"]');
+  if (m) m.setAttribute("content", p || "#10B981");
+}
 // Load admin string overrides from Firebase on startup
 db.ref("settings/strings").once("value").then(snap => {
   const ov = snap.val();
@@ -4969,12 +5037,13 @@ const ADMIN_UID  = "IIdfYqliTrdlYqjS0swd0swlRkV2";
 /* === Toast === */
 function Toast({
   msg,
-  onClose
+  onClose,
+  ms
 }) {
   useEffect(() => {
-    const t = setTimeout(onClose, 3000);
+    const t = setTimeout(onClose, ms || 3000);
     return () => clearTimeout(t);
-  }, []);
+  }, [msg]);
   return /*#__PURE__*/React.createElement("div", {
     className: "toast"
   }, msg);
@@ -5261,10 +5330,16 @@ function Navbar() {
     settings,
     setCmd,
     isAdmin,
-    firebaseUser
+    firebaseUser,
+    authReady,
+    openAuth,
+    signOut
   } = useApp();
   const [mob, setMob] = useState(false);
-  const [showAuth, setShowAuth] = useState(false);
+  const setShowAuth = v => v && openAuth();
+  const [acct, setAcct] = useState(false);
+  const acctName = firebaseUser ? (firebaseUser.displayName || firebaseUser.email || firebaseUser.phoneNumber || "") : "";
+  const L3 = (ro, en, hu) => lang === "ro" ? ro : lang === "hu" ? hu : en;
   const [showNotif, setShowNotif] = useState(false);
   const { follows } = useFollows();
   const followedIds = Object.keys(follows);
@@ -5349,18 +5424,31 @@ function Navbar() {
     onClick: e => switchTheme(e, theme, setTheme)
   }, theme === "dark" ? "\u2600\uFE0F" : "\uD83C\uDF19"),
   React.createElement(CitySwitch, null),
+  React.createElement("div", { style: { position: "relative" } },
   /*#__PURE__*/React.createElement("button", {
-    title: firebaseUser && !isAdmin ? ((firebaseUser.displayName || firebaseUser.email) + (lang==="ro"?" \u2014 click pt. deconectare":" \u2014 click to sign out")) : (lang==="ro"?"Intr\u0103 \u00EEn cont":"Sign in"),
-    style: { display:"flex", alignItems:"center", gap:".28rem", height:28, padding:"0 .45rem", background: firebaseUser && !isAdmin ? "rgba(16,185,129,.12)" : "none", border: firebaseUser && !isAdmin ? "1px solid rgba(16,185,129,.3)" : "none", borderRadius:8, cursor:"pointer", color: firebaseUser && !isAdmin ? "var(--green)" : "var(--textSec)", fontSize:".7rem", fontFamily:"'Space Mono',monospace", transition:"all .18s" },
-    onClick: () => { if (firebaseUser && !isAdmin) { firebase.auth().signOut(); } else if (!isAdmin) { setShowAuth(true); } }
+    title: firebaseUser ? acctName : L3("Intră în cont", "Sign in", "Bejelentkezés"),
+    "aria-haspopup": firebaseUser ? "menu" : undefined,
+    "aria-expanded": firebaseUser ? acct : undefined,
+    style: { display:"flex", alignItems:"center", gap:".28rem", height:28, padding:"0 .45rem", background: firebaseUser ? "color-mix(in srgb,var(--" + (isAdmin ? "coral" : "green") + ") 12%,transparent)" : "none", border: firebaseUser ? "1px solid color-mix(in srgb,var(--" + (isAdmin ? "coral" : "green") + ") 35%,transparent)" : "none", borderRadius:8, cursor:"pointer", color: firebaseUser ? (isAdmin ? "var(--coral)" : "var(--green)") : "var(--textSec)", fontSize:".7rem", fontFamily:"'Space Mono',monospace", transition:"all .18s", opacity: authReady ? 1 : .4 },
+    onClick: () => { if (!authReady) return; if (firebaseUser) setAcct(v => !v); else openAuth(); }
   },
+    isAdmin ? React.createElement("span", { "aria-hidden": "true" }, "\uD83D\uDC51") :
     React.createElement("svg",{width:14,height:14,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"},
-      ...(firebaseUser && !isAdmin
+      ...(firebaseUser
         ? [React.createElement("path",{key:"a",d:"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"}),React.createElement("circle",{key:"b",cx:12,cy:7,r:4})]
         : [React.createElement("rect",{key:"a",x:3,y:11,width:18,height:11,rx:2}),React.createElement("path",{key:"b",d:"M7 11V7a5 5 0 0 1 10 0v4"})]
       )
     ),
-    firebaseUser && !isAdmin ? React.createElement("span",null,(firebaseUser.displayName||firebaseUser.email||"").split(" ")[0].substring(0,10)) : null
+    firebaseUser ? React.createElement("span",null,acctName.split(/[ @]/)[0].substring(0,10)) : null
+  ),
+  acct && firebaseUser && React.createElement("div", { style: { position: "fixed", inset: 0, zIndex: 499 }, onClick: () => setAcct(false) }),
+  acct && firebaseUser && React.createElement("div", { className: "acct-menu", role: "menu" },
+    React.createElement("div", { className: "am-hd" },
+      React.createElement("b", null, (isAdmin ? "\uD83D\uDC51 " : "") + (firebaseUser.displayName || L3("Contul meu", "My account", "Fiókom"))),
+      React.createElement("span", null, firebaseUser.email || firebaseUser.phoneNumber || "")),
+    React.createElement("button", { role: "menuitem", onClick: () => { setAcct(false); setPage("profile"); } }, "\uD83D\uDC64 " + L3("Profilul meu", "My profile", "Profilom")),
+    isAdmin && React.createElement("button", { role: "menuitem", onClick: () => { setAcct(false); location.hash = "#/admin"; } }, "\uD83D\uDEE1\uFE0F Admin panel"),
+    React.createElement("button", { role: "menuitem", style: { color: "var(--red)" }, onClick: () => { setAcct(false); signOut(); } }, "\u21AA " + L3("Deconectare", "Sign out", "Kijelentkezés")))
   ),
   /*#__PURE__*/React.createElement("button", {
     onClick: () => { location.hash = "#/admin"; },
@@ -5374,7 +5462,6 @@ function Navbar() {
     className: "hamburger",
     onClick: () => setMob(true)
   }, "\u2630"))),
-  showAuth && ReactDOM.createPortal(React.createElement(AuthModal, { onClose: () => setShowAuth(false) }), document.body),
   showNotif && /*#__PURE__*/React.createElement(NotifPanel, { onClose: () => setShowNotif(false) }),
   showNotif && /*#__PURE__*/React.createElement("div", { style: { position:"fixed",inset:0,zIndex:399 }, onClick: () => setShowNotif(false) }),
   mob && /*#__PURE__*/React.createElement("div", {
@@ -5400,9 +5487,12 @@ function Navbar() {
   }, t.language), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-outline",
     onClick: e => switchTheme(e, theme, setTheme)
-  }, theme === "dark" ? "☀️" : "🌙"), !isAdmin && React.createElement("button", {
+  }, theme === "dark" ? "☀️" : "🌙"), firebaseUser && React.createElement("button", {
     className: "btn btn-sm btn-outline",
-    onClick: () => { setMob(false); if (firebaseUser) firebase.auth().signOut(); else setShowAuth(true); }
+    onClick: () => { setMob(false); setPage("profile"); }
+  }, (isAdmin ? "\uD83D\uDC51 " : "\uD83D\uDC64 ") + acctName.split(/[ @]/)[0].substring(0, 14)), authReady && React.createElement("button", {
+    className: "btn btn-sm btn-outline",
+    onClick: () => { setMob(false); if (firebaseUser) signOut(); else setShowAuth(true); }
   }, firebaseUser ? (lang === "ro" ? "Deconectare" : lang === "hu" ? "Kijelentkezés" : "Sign out") : (lang === "ro" ? "Cont (Google / email / SMS)" : lang === "hu" ? "Fiók" : "Account (Google / email / SMS)")), React.createElement("button", {
     className: "btn btn-sm btn-outline",
     onClick: () => { setMob(false); location.hash = "#/admin"; }
@@ -9837,41 +9927,8 @@ function ProfilePage() {
     setUser,
     toast
   } = useApp();
-  const [isReg, setIsReg] = useState(false);
-  const [lf, setLf] = useState({
-    email: "",
-    pw: "",
-    name: ""
-  });
-  const auth = () => {
-    if (!lf.email) {
-      toast(t.error);
-      return;
-    }
-    const uid = "u_" + Date.now();
-    const nu = {
-      id: uid,
-      name: lf.name || lf.email.split("@")[0],
-      email: lf.email,
-      points: 0,
-      badges: ["🌱"],
-      reports: [],
-      volunteer: false
-    };
-    db.ref("users/" + uid).set(nu);
-    db.ref("leaderboard/" + uid).set({
-      name: nu.name,
-      points: 0
-    });
-    setUser(nu);
-    localStorage.setItem("g2p_user", JSON.stringify(nu));
-    toast(t.success);
-  };
-  const { isAdmin, setAdminMode } = useApp();
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("g2p_user");
-  };
+  const { isAdmin, setAdminMode, openAuth, signOut, authReady } = useApp();
+  const logout = () => signOut();
   const cert = () => {
     const c = `══════════════════════\nCERTIFICAT VOLUNTAR\n══════════════════════\n\nFROM GREY TO PLAY\n\n${user?.name || "___"}\n\na participat ca voluntar.\nPuncte: ${user?.points || 0}\n\nManager: Cimpan Teodor\nData: ${new Date().toLocaleDateString()}\n══════════════════════`;
     const b = new Blob([c], {
@@ -9882,62 +9939,18 @@ function ProfilePage() {
     a.download = "certificat_voluntar_g2p.txt";
     a.click();
   };
-  if (!user) return /*#__PURE__*/React.createElement("div", {
-    className: "animate-in"
-  }, /*#__PURE__*/React.createElement("section", {
-    className: "section"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "container",
-    style: {
-      maxWidth: 380,
-      margin: "0 auto"
-    }
-  }, /*#__PURE__*/React.createElement("h2", {
-    className: "section-title",
-    style: {
-      textAlign: "center"
-    }
-  }, isReg ? t.signUp : t.signIn), isReg && /*#__PURE__*/React.createElement("input", {
-    placeholder: lang === "ro" ? "Numele tău" : "Your name",
-    value: lf.name,
-    onChange: e => setLf({
-      ...lf,
-      name: e.target.value
-    }),
-    className: "mb-1"
-  }), /*#__PURE__*/React.createElement("input", {
-    placeholder: t.email,
-    type: "email",
-    value: lf.email,
-    onChange: e => setLf({
-      ...lf,
-      email: e.target.value
-    }),
-    className: "mb-1"
-  }), /*#__PURE__*/React.createElement("input", {
-    placeholder: "Password",
-    type: "password",
-    value: lf.pw,
-    onChange: e => setLf({
-      ...lf,
-      pw: e.target.value
-    }),
-    className: "mb-1"
-  }), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-green btn-block mb-1",
-    onClick: auth
-  }, isReg ? t.signUp : t.signIn), /*#__PURE__*/React.createElement("p", {
-    className: "text-sm",
-    style: {
-      textAlign: "center"
-    }
-  }, /*#__PURE__*/React.createElement("a", {
-    href: "#",
-    onClick: e => {
-      e.preventDefault();
-      setIsReg(!isReg);
-    }
-  }, isReg ? lang === "ro" ? "Ai cont? Autentifică-te" : "Have account? Sign in" : lang === "ro" ? "Nu ai cont? Înregistrează-te" : "No account? Sign up")))));
+  if (!user) return React.createElement("div", { className: "animate-in" },
+    React.createElement("section", { className: "section" },
+      React.createElement("div", { className: "container", style: { maxWidth: 380, margin: "0 auto", textAlign: "center" } },
+        React.createElement("h2", { className: "section-title", style: { textAlign: "center" } }, t.signIn),
+        React.createElement("div", { className: "card" },
+          React.createElement("div", { style: { fontSize: "2.2rem", marginBottom: ".5rem" } }, "\uD83D\uDD10"),
+          React.createElement("p", { className: "text-sm mb-2", style: { color: "var(--textSec)" } },
+            lang === "ro" ? "Intră cu Google, email sau SMS. Rămâi conectat pe acest dispozitiv până apeși Deconectare."
+              : lang === "hu" ? "Lépj be Google-lel, e-maillel vagy SMS-sel. Ezen az eszközön bejelentkezve maradsz, amíg ki nem jelentkezel." // TODO: HU review
+              : "Sign in with Google, email or SMS. You stay signed in on this device until you sign out."),
+          React.createElement("button", { className: "btn btn-green btn-block", disabled: !authReady, onClick: openAuth },
+            authReady ? (t.signIn + " / " + t.signUp) : "…")))));
   return /*#__PURE__*/React.createElement("div", {
     className: "animate-in"
   }, /*#__PURE__*/React.createElement("section", {
@@ -9962,7 +9975,7 @@ function ProfilePage() {
       fontSize: "1.8rem",
       color: "#fff"
     }
-  }, user.name[0].toUpperCase()), /*#__PURE__*/React.createElement("h2", {
+  }, (user.name || "?")[0].toUpperCase()), /*#__PURE__*/React.createElement("h2", {
     className: "mt-1"
   }, user.name), /*#__PURE__*/React.createElement("p", {
     className: "text-sm",
@@ -10051,19 +10064,11 @@ function AuthModal({ onClose }) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
 
-  const saveUser = (fbUser, displayName) => {
-    const uid = fbUser.uid;
-    db.ref("users/" + uid).once("value").then(snap => {
-      if (!snap.exists()) {
-        db.ref("users/" + uid).set({
-          name: displayName || fbUser.displayName || (fbUser.email || "").split("@")[0],
-          email: fbUser.email || "",
-          role: "user",
-          createdAt: Date.now()
-        });
-      }
-    });
-  };
+  const saveUser = saveUserProfile;
+  const rcRef = useRef(null);
+  useEffect(() => () => { try { rcRef.current && rcRef.current.clear(); } catch (e) {} }, []);
+  const L3 = (ro, en, hu) => lang === "ro" ? ro : lang === "hu" ? hu : en;
+  const welcome = u => toast("👋 " + L3("Bun venit", "Welcome", "Üdv") + ", " + ((u && (u.displayName || (u.email || "").split("@")[0])) || "") + "!");
 
   function friendlyErr(msg) {
     if (!msg) return "";
@@ -10075,14 +10080,27 @@ function AuthModal({ onClose }) {
     if (msg.includes("weak-password")) return lang === "ro" ? "Parolă prea slabă (min. 6 caractere)" : "Password too weak (min. 6 chars)";
     if (msg.includes("too-many-requests")) return lang === "ro" ? "Prea multe încercări. Încearcă mai târziu." : "Too many attempts. Try again later.";
     if (msg.includes("network-request-failed")) return lang === "ro" ? "Eroare de rețea. Verifică conexiunea." : "Network error. Check connection.";
-    return msg;
+    if (msg.includes("invalid-email")) return L3("Email invalid", "Invalid email", "Érvénytelen e-mail");
+    if (msg.includes("popup-closed-by-user") || msg.includes("cancelled-popup-request")) return "";
+    if (msg.includes("unauthorized-domain")) return L3("Domeniul nu e autorizat în Firebase Auth.", "This domain isn't authorised in Firebase Auth.", "A domain nincs engedélyezve a Firebase Authban.");
+    if (msg.includes("invalid-phone-number")) return L3("Număr invalid — folosește formatul +40…", "Invalid number — use the +40… format", "Érvénytelen szám — +40… formátum");
+    if (msg.includes("invalid-verification-code")) return L3("Cod SMS greșit", "Wrong SMS code", "Hibás SMS-kód");
+    return msg.replace(/^Firebase:\s*/, "").replace(/\s*\(auth\/[^)]+\)\.?$/, "");
   }
 
   const doLogin = () => {
     if (!email || !pw) { setErr(lang === "ro" ? "Completează email și parolă" : "Fill in email and password"); return; }
     setBusy(true); setErr("");
     firebase.auth().signInWithEmailAndPassword(email, pw)
-      .then(({user}) => { saveUser(user); toast(t.success); onClose(); })
+      .then(({user}) => { saveUser(user); welcome(user); onClose(); })
+      .catch(e => { setErr(friendlyErr(e.message)); setBusy(false); });
+  };
+
+  const doReset = () => {
+    if (!email) { setErr(L3("Scrie emailul mai întâi, apoi apasă din nou.", "Type your email first, then tap again.", "Előbb írd be az e-mailt.")); return; }
+    setBusy(true); setErr("");
+    firebase.auth().sendPasswordResetEmail(email)
+      .then(() => { setBusy(false); toast("📧 " + L3("Link de resetare trimis pe " + email, "Reset link sent to " + email, "Visszaállító link elküldve: " + email)); })
       .catch(e => { setErr(friendlyErr(e.message)); setBusy(false); });
   };
 
@@ -10091,26 +10109,39 @@ function AuthModal({ onClose }) {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { setErr(lang === "ro" ? "Email invalid" : "Invalid email"); return; }
     setBusy(true); setErr("");
     firebase.auth().createUserWithEmailAndPassword(email, pw)
-      .then(({user}) => { user.updateProfile({ displayName: name }); saveUser(user, name); toast(t.success); onClose(); })
+      .then(({user}) => { user.updateProfile({ displayName: name }).catch(() => {}); saveUser(user, name); welcome({ displayName: name }); onClose(); })
       .catch(e => { setErr(friendlyErr(e.message)); setBusy(false); });
   };
 
   const doGoogle = () => {
     setBusy(true); setErr("");
     const provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
     firebase.auth().signInWithPopup(provider)
-      .then(({user}) => { saveUser(user); toast(t.success); onClose(); })
-      .catch(e => { setErr(friendlyErr(e.message)); setBusy(false); });
+      .then(({user}) => { saveUser(user); welcome(user); onClose(); })
+      .catch(e => {
+        // Popup blocked / unsupported (mobile, in-app browsers) → redirect flow.
+        if (/popup-blocked|operation-not-supported|web-storage-unsupported/.test(e.code || e.message || "")) {
+          firebase.auth().signInWithRedirect(provider).catch(e2 => { setErr(friendlyErr(e2.message)); setBusy(false); });
+          return;
+        }
+        setErr(friendlyErr(e.message)); setBusy(false);
+      });
   };
 
   const doPhone1 = () => {
     if (!phone) { setErr(lang === "ro" ? "Introduceți numărul de telefon" : "Enter phone number"); return; }
     setBusy(true); setErr("");
     try {
-      const rc = new firebase.auth.RecaptchaVerifier("g2p-recaptcha", { size: "invisible" });
-      firebase.auth().signInWithPhoneNumber(phone, rc)
+      // One verifier per modal — re-creating it throws "already rendered".
+      if (!rcRef.current) rcRef.current = new firebase.auth.RecaptchaVerifier("g2p-recaptcha", { size: "invisible" });
+      firebase.auth().signInWithPhoneNumber(phone.replace(/\s+/g, ""), rcRef.current)
         .then(cr => { setConfirmResult(cr); setBusy(false); })
-        .catch(e => { setErr(friendlyErr(e.message)); setBusy(false); });
+        .catch(e => {
+          setErr(friendlyErr(e.message)); setBusy(false);
+          try { rcRef.current.clear(); } catch (x) {}
+          rcRef.current = null;
+        });
     } catch(e) { setErr(friendlyErr(e.message)); setBusy(false); }
   };
 
@@ -10118,7 +10149,7 @@ function AuthModal({ onClose }) {
     if (!code || !confirmResult) return;
     setBusy(true); setErr("");
     confirmResult.confirm(code)
-      .then(({user}) => { saveUser(user); toast(t.success); onClose(); })
+      .then(({user}) => { saveUser(user); welcome(user); onClose(); })
       .catch(e => { setErr(friendlyErr(e.message)); setBusy(false); });
   };
 
@@ -10170,14 +10201,16 @@ function AuthModal({ onClose }) {
         React.createElement("div", { style:{ flex:1, height:1, background:"var(--border)" } })
       ),
       mode === "login" && React.createElement("div", null,
-        React.createElement("input", { style: inpStyle, type:"email", placeholder:"Email", value:email, onChange: e => setEmail(e.target.value) }),
-        React.createElement("input", { style: inpStyle, type:"password", placeholder: lang==="ro"?"Parolă":"Password", value:pw, onChange: e => setPw(e.target.value), onKeyDown: e => e.key==="Enter" && doLogin() }),
-        React.createElement("button", { className:"btn btn-green btn-block", onClick:doLogin, disabled:busy }, busy?"…":(lang==="ro"?"Intră în cont":"Sign In"))
+        React.createElement("input", { style: inpStyle, type:"email", autoComplete:"email", placeholder:"Email", value:email, onChange: e => setEmail(e.target.value) }),
+        React.createElement("input", { style: inpStyle, type:"password", autoComplete:"current-password", placeholder: lang==="ro"?"Parolă":"Password", value:pw, onChange: e => setPw(e.target.value), onKeyDown: e => e.key==="Enter" && doLogin() }),
+        React.createElement("button", { className:"btn btn-green btn-block", onClick:doLogin, disabled:busy }, busy?"…":(lang==="ro"?"Intră în cont":"Sign In")),
+        React.createElement("button", { onClick: doReset, disabled: busy, style: { display:"block", margin:".7rem auto 0", background:"none", border:"none", color:"var(--textSec)", fontSize:".75rem", cursor:"pointer", textDecoration:"underline" } },
+          L3("Ai uitat parola?", "Forgot password?", "Elfelejtett jelszó?"))
       ),
       mode === "signup" && React.createElement("div", null,
         React.createElement("input", { style: inpStyle, placeholder: lang==="ro"?"Numele tău":"Your name", value:name, onChange: e => setName(e.target.value) }),
         React.createElement("input", { style: inpStyle, type:"email", placeholder:"Email", value:email, onChange: e => setEmail(e.target.value) }),
-        React.createElement("input", { style: inpStyle, type:"password", placeholder: lang==="ro"?"Parolă (min. 6 caractere)":"Password (min. 6 chars)", value:pw, onChange: e => setPw(e.target.value) }),
+        React.createElement("input", { style: inpStyle, type:"password", placeholder: lang==="ro"?"Parolă (min. 6 caractere)":"Password (min. 6 chars)", value:pw, onChange: e => setPw(e.target.value), onKeyDown: e => e.key==="Enter" && doSignup() }),
         React.createElement("button", { className:"btn btn-green btn-block", onClick:doSignup, disabled:busy }, busy?"…":(lang==="ro"?"Creează cont":"Create Account"))
       ),
       mode === "phone" && React.createElement("div", null,
@@ -10187,8 +10220,8 @@ function AuthModal({ onClose }) {
           React.createElement("button", { className:"btn btn-green btn-block", onClick:doPhone1, disabled:busy }, busy?"…":(lang==="ro"?"Trimite SMS":"Send SMS"))
         ) : React.createElement("div", null,
           React.createElement("p", { style: { fontSize: ".85rem", marginBottom: ".5rem" } }, lang === "ro" ? "Introdu codul primit prin SMS:" : "Enter the SMS code:"),
-          React.createElement("input", Object.assign({}, inp, { type: "text", placeholder: "123456", value: code, onChange: e => setCode(e.target.value),
-            onKeyDown: e => e.key === "Enter" && doPhone2() })),
+          React.createElement("input", { style: inpStyle, type: "text", inputMode: "numeric", autoComplete: "one-time-code", placeholder: "123456", value: code, onChange: e => setCode(e.target.value),
+            onKeyDown: e => e.key === "Enter" && doPhone2() }),
           React.createElement("button", { className: "btn btn-green btn-block", onClick: doPhone2, disabled: busy },
             busy ? "…" : (lang === "ro" ? "Verifică codul" : "Verify Code"))
         )
@@ -10264,42 +10297,49 @@ function AdminLogin({
   onAuth,
   onBack
 }) {
+  const { firebaseUser, signOut } = useApp();
   const [pw, setPw] = useState("");
-  const [err, setErr] = useState(false);
-  const go = () => {
-    firebase.auth().signInWithEmailAndPassword(ADMIN_EMAIL, pw)
-      .then(() => onAuth())
-      .catch(() => { setErr(true); setTimeout(() => setErr(false), 2e3); });
+  const [err, setErr] = useState("");
+  const [busy, setBusy] = useState(false);
+  const fail = m => { setErr(m); setBusy(false); };
+  const done = u => {
+    if (u && u.uid === ADMIN_UID) { saveUserProfile(u); onAuth(); return; }
+    fail("This account is not the owner account.");
   };
-  return /*#__PURE__*/React.createElement("div", {
-    className: "admin-login"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "admin-login-box"
-  }, /*#__PURE__*/React.createElement("h2", null, "\uD83D\uDD12 ADMIN"), /*#__PURE__*/React.createElement("p", null, "From Grey to Play"), err && /*#__PURE__*/React.createElement("div", {
-    className: "err"
-  }, "Wrong password"), /*#__PURE__*/React.createElement("input", {
-    type: "password",
-    placeholder: "Password",
-    value: pw,
-    onChange: e => setPw(e.target.value),
-    onKeyDown: e => {
-      if (e.key === "Enter") go();
-    },
-    autoFocus: true
-  }), /*#__PURE__*/React.createElement("button", {
-    className: "ab",
-    onClick: go
-  }, "Log In"), /*#__PURE__*/React.createElement("button", {
-    onClick: onBack,
-    style: {
-      background: "none",
-      border: "none",
-      color: "#6B7280",
-      marginTop: ".6rem",
-      cursor: "pointer",
-      fontSize: ".8rem"
-    }
-  }, "\u2190 Back")));
+  const go = () => {
+    if (!pw) return;
+    setBusy(true); setErr("");
+    firebase.auth().signInWithEmailAndPassword(ADMIN_EMAIL, pw)
+      .then(r => done(r.user))
+      .catch(e => fail(/too-many-requests/.test(e.code || "") ? "Too many attempts — wait a minute." : /network/.test(e.code || "") ? "Network error." : "Wrong password"));
+  };
+  const google = () => {
+    setBusy(true); setErr("");
+    const pr = new firebase.auth.GoogleAuthProvider();
+    pr.setCustomParameters({ login_hint: ADMIN_EMAIL, prompt: "select_account" });
+    firebase.auth().signInWithPopup(pr).then(r => done(r.user)).catch(e => {
+      if (/popup-blocked|operation-not-supported/.test(e.code || "")) { firebase.auth().signInWithRedirect(pr); return; }
+      fail(/popup-closed|cancelled/.test(e.code || "") ? "" : "Google sign-in failed.");
+    });
+  };
+  const reset = () => firebase.auth().sendPasswordResetEmail(ADMIN_EMAIL)
+    .then(() => setErr("📧 Reset link sent to the owner email.")).catch(() => setErr("Could not send reset email."));
+  const ghost = { background: "none", border: "none", color: "#6B7280", marginTop: ".6rem", cursor: "pointer", fontSize: ".8rem", display: "block", width: "100%" };
+  return React.createElement("div", { className: "admin-login" },
+    React.createElement("div", { className: "admin-login-box" },
+      React.createElement("h2", null, "\uD83D\uDD12 ADMIN"),
+      React.createElement("p", null, "From Grey to Play"),
+      firebaseUser && firebaseUser.uid !== ADMIN_UID && React.createElement("div", { className: "err", style: { background: "rgba(249,115,22,.12)", color: "#FDBA74" } },
+        "Signed in as " + (firebaseUser.email || firebaseUser.phoneNumber || "another user") + " (not owner). ",
+        React.createElement("a", { href: "#", style: { color: "#fff" }, onClick: e => { e.preventDefault(); signOut(); } }, "Sign out")),
+      err && React.createElement("div", { className: "err" }, err),
+      React.createElement("input", { type: "password", placeholder: "Owner password", autoComplete: "current-password", value: pw,
+        onChange: e => setPw(e.target.value), onKeyDown: e => { if (e.key === "Enter") go(); }, autoFocus: true }),
+      React.createElement("button", { className: "ab", onClick: go, disabled: busy }, busy ? "…" : "Log In"),
+      React.createElement("button", { className: "ab", onClick: google, disabled: busy,
+        style: { marginTop: ".5rem", background: "#fff", color: "#1F2937" } }, "G  Continue with Google"),
+      React.createElement("button", { onClick: reset, style: ghost }, "Forgot password?"),
+      React.createElement("button", { onClick: onBack, style: ghost }, "\u2190 Back")));
 }
 /* === String Editor === */
 function StringEditor() {
@@ -10457,16 +10497,68 @@ function AdminGodTab() {
    follows in realtime: maintenance, banner, broadcast, feature
    flags, featured court, accent color, danger zone.
    ============================================================ */
+// G2P palette for the admin colour picker: [primary, secondary, name].
+// Presets set both --green (primary) and --teal (secondary); swatches set the
+// primary only. All are dark enough for white button text.
+const ACCENT_PRESETS = [
+  ["", "", "G2P Classic"],
+  ["#059669", "#0F766E", "G2P Forest"],
+  ["#047857", "#065F46", "G2P Pine"],
+  ["#16A34A", "#0D9488", "G2P Court"],
+  ["#65A30D", "#059669", "G2P Lime"],
+  ["#0D9488", "#0891B2", "G2P Lagoon"],
+  ["#0891B2", "#2563EB", "Ocean"],
+  ["#2563EB", "#7C3AED", "Royal"],
+  ["#7C3AED", "#DB2777", "Neon"],
+  ["#DB2777", "#F97316", "Mural"],
+  ["#EA580C", "#DC2626", "Sunset"],
+  ["#B45309", "#65A30D", "Clay court"],
+  ["#475569", "#0D9488", "Concrete"]
+];
+const ACCENT_SHADES = [
+  ["G2P green", ["#34D399", "#10B981", "#059669", "#047857", "#065F46", "#064E3B"]],
+  ["Grass", ["#4ADE80", "#22C55E", "#16A34A", "#15803D", "#166534"]],
+  ["Lime", ["#84CC16", "#65A30D", "#4D7C0F", "#3F6212"]],
+  ["Teal", ["#14B8A6", "#0D9488", "#0F766E", "#115E59"]],
+  ["Cyan", ["#06B6D4", "#0891B2", "#0E7490", "#155E75"]],
+  ["Blue", ["#3B82F6", "#2563EB", "#1D4ED8", "#1E40AF", "#4F46E5"]],
+  ["Purple", ["#A855F7", "#8B5CF6", "#7C3AED", "#6D28D9", "#5B21B6"]],
+  ["Pink", ["#EC4899", "#DB2777", "#BE185D", "#E11D48"]],
+  ["Warm", ["#F97316", "#EA580C", "#F59E0B", "#D97706", "#DC2626", "#B91C1C"]],
+  ["Neutral", ["#64748B", "#475569", "#334155", "#1F2937"]]
+];
+const BANNER_COLORS = [["", "Auto (by type)"], ["#10B981", "Green"], ["#0D9488", "Teal"], ["#2563EB", "Blue"], ["#7C3AED", "Purple"], ["#DB2777", "Pink"], ["#F97316", "Orange"], ["#DC2626", "Red"], ["#1F2937", "Dark"]];
+
+// BACK TO NORMAL: wipe every Site Control override (keeps sherifs + data).
+function resetSiteSettings() {
+  return db.ref("settings").update({
+    maintenance: null, banner: null, broadcast: null, flags: null,
+    accent: null, accent2: null, featuredCourtId: null, strings: null
+  }).then(() => {
+    applyAccent("", "");
+    document.documentElement.classList.remove("no-fx");
+    try { localStorage.removeItem("g2p_banner_x"); } catch (e) {}
+  });
+}
+
 function AdminSiteTab() {
+  const { toast } = useApp();
   const s = useFirebase("settings") || {};
   const flags = s.flags || {};
   const fbCourts = useFirebase("courts");
   const allCourts = COURTS_ALL.concat(fbCourts ? Object.entries(fbCourts).map(([id, c]) => ({ id, ...c })) : []);
-  const set = (path, val) => db.ref("settings/" + path).set(val);
+  // Every write reports success/failure — a silent permission error was why
+  // switches "didn't work" (they flipped, then snapped back).
+  const fail = e => toast("⛔ " + (/permission/i.test(e && e.message || "") ? "Permission denied — sign in again as owner." : (e && e.message) || "Write failed"), 6000);
+  const set = (path, val, okMsg) => db.ref("settings/" + path).set(val)
+    .then(() => okMsg && toast(okMsg)).catch(fail);
+  const banner = s.banner && typeof s.banner === "object" ? s.banner : {};
   const [bText, setBText] = useState("");
-  const [bType, setBType] = useState("info");
+  const [bType, setBType] = useState(banner.type || "info");
+  const [bColor, setBColor] = useState(banner.color || "");
   const [bcast, setBcast] = useState("");
-  const [sent, setSent] = useState(false);
+  const [custom, setCustom] = useState(s.accent || "#10B981");
+  const [custom2, setCustom2] = useState(s.accent2 || "#0D9488");
   const Row = (title, sub, child, danger) => React.createElement("div", { className: "a-row" + (danger ? " a-danger" : ""), key: title },
     React.createElement("div", { style: { minWidth: 0 } },
       React.createElement("div", { style: { fontWeight: 600, fontSize: ".88rem" } }, title),
@@ -10475,39 +10567,73 @@ function AdminSiteTab() {
   const Toggle = (on, onChange) => React.createElement("button", {
     className: "a-toggle" + (on ? " on" : ""), onClick: () => onChange(!on), "aria-pressed": !!on
   }, React.createElement("i", null));
-  const SWATCHES = [["", "Default"], ["#2563EB", "Blue"], ["#7C3AED", "Purple"], ["#DB2777", "Pink"], ["#F97316", "Orange"]];
+  const inS = { flex: 1, minWidth: 180, background: "#0D101F", border: "1px solid #1E2235", color: "#E5E7EB" };
+  const selS = { width: "auto", background: "#0D101F", border: "1px solid #1E2235", color: "#E5E7EB" };
+  const setAccent = (p, p2, name) => db.ref("settings").update({ accent: p || null, accent2: p2 || null })
+    .then(() => toast("🎨 " + (name || p || "Default"))).catch(fail);
+  const curP = s.accent || "", curS = s.accent2 || "";
+  const bcAge = s.broadcast && s.broadcast.ts ? Math.round((Date.now() - s.broadcast.ts) / 6e4) : null;
+  const previewBg = /^#[0-9a-fA-F]{6}$/.test(bColor) ? { background: bColor } : undefined;
   return React.createElement("div", null,
     React.createElement("h2", null, "⚙️ Site Control"),
     React.createElement("p", { style: { color: "#6B7280", fontSize: ".8rem", marginBottom: "1rem" } },
       "Live switches — every visitor's app reacts instantly. No deploy needed."),
+    React.createElement("div", { className: "a-row", style: { flexWrap: "wrap", borderColor: "#10B981" } },
+      React.createElement("div", { style: { minWidth: 0, flex: 1 } },
+        React.createElement("div", { style: { fontWeight: 700, fontSize: ".92rem" } }, "🩹 Something broke while testing?"),
+        React.createElement("div", { style: { color: "#9CA3AF", fontSize: ".74rem" } },
+          "Turns off maintenance, removes banner + broadcast, re-enables every feature, restores G2P colours, clears court of the week and custom texts. Votes, signups, users and sherifs are NOT touched.")),
+      React.createElement("button", { className: "a-normal", onClick: () => {
+        askConfirm("Reset all Site Control settings back to normal?").then(ok => ok && resetSiteSettings()
+          .then(() => { setBColor(""); setBType("info"); toast("✅ Back to normal — site restored to defaults", 5000); })
+          .catch(fail));
+      } }, "↺ BACK TO NORMAL")),
     React.createElement("h3", { className: "a-sec" }, "🚦 Status"),
     Row("Maintenance mode", "Locks the whole site behind a maintenance screen. Admin keeps access.",
-      Toggle(!!s.maintenance, v => set("maintenance", v)), !!s.maintenance),
+      Toggle(!!s.maintenance, v => set("maintenance", v, v ? "🛠️ Maintenance ON" : "✅ Maintenance OFF")), !!s.maintenance),
     React.createElement("h3", { className: "a-sec" }, "📣 Announcement banner"),
-    Row("Visible", "Shown under the navbar on every page.",
-      Toggle(!!(s.banner && s.banner.on), v => set("banner/on", v))),
+    Row("Visible", banner.text ? "Now: “" + banner.text + "”" : "No banner text saved yet.",
+      React.createElement(React.Fragment, null,
+        Toggle(banner.on === true, v => {
+          if (v && !banner.text) { toast("Write a banner text first, then Save."); return; }
+          set("banner/on", v, v ? "📣 Banner shown" : "🙈 Banner hidden");
+        }),
+        banner.text && React.createElement("button", { className: "a-del", title: "Delete banner", onClick: () => {
+          db.ref("settings/banner").remove().then(() => toast("🗑 Banner deleted")).catch(fail);
+        } }, "🗑"))),
     React.createElement("div", { className: "a-row", style: { flexWrap: "wrap" } },
-      React.createElement("input", { placeholder: (s.banner && s.banner.text) || "Banner text…", value: bText,
-        onChange: e => setBText(e.target.value), style: { flex: 1, minWidth: 180, background: "#0D101F", border: "1px solid #1E2235", color: "#E5E7EB" } }),
-      React.createElement("select", { value: bType, onChange: e => setBType(e.target.value),
-        style: { width: "auto", background: "#0D101F", border: "1px solid #1E2235", color: "#E5E7EB" } },
-        React.createElement("option", { value: "info" }, "info (green)"),
-        React.createElement("option", { value: "warn" }, "warn (orange)"),
-        React.createElement("option", { value: "alert" }, "alert (red)")),
+      React.createElement("input", { placeholder: banner.text || "Banner text…", value: bText,
+        onChange: e => setBText(e.target.value), style: inS, maxLength: 200 }),
+      React.createElement("select", { value: bType, onChange: e => setBType(e.target.value), style: selS },
+        React.createElement("option", { value: "info" }, "info"),
+        React.createElement("option", { value: "warn" }, "warn"),
+        React.createElement("option", { value: "alert" }, "alert")),
+      React.createElement("select", { value: bColor, onChange: e => setBColor(e.target.value), style: selS, title: "Banner colour (independent of site accent)" },
+        BANNER_COLORS.map(([hex, n]) => React.createElement("option", { key: n, value: hex }, n))),
       React.createElement("button", { className: "btn btn-sm btn-green", onClick: () => {
-        if (!bText.trim() && !(s.banner && s.banner.text)) return;
-        set("banner", { on: true, text: bText.trim() || (s.banner && s.banner.text) || "", type: bType });
+        const text = bText.trim() || banner.text || "";
+        if (!text) { toast("Write a banner text first."); return; }
+        set("banner", { on: true, text, type: bType, color: bColor || null }, "📣 Banner saved & shown");
         setBText("");
-      } }, "Save")),
+      } }, "Save & show")),
+    (bText.trim() || banner.text) && React.createElement("div", { className: "site-banner sb-" + bType, style: Object.assign({ borderRadius: 8, marginBottom: ".5rem", paddingRight: "1rem" }, previewBg) },
+      "Preview: " + (bText.trim() || banner.text)),
     React.createElement("h3", { className: "a-sec" }, "📢 Broadcast toast"),
     React.createElement("div", { className: "a-row", style: { flexWrap: "wrap" } },
-      React.createElement("input", { placeholder: "Message pushed live to every visitor, once…", value: bcast,
-        onChange: e => setBcast(e.target.value), style: { flex: 1, minWidth: 180, background: "#0D101F", border: "1px solid #1E2235", color: "#E5E7EB" } }),
+      React.createElement("input", { placeholder: "Message pushed live to every visitor, once…", value: bcast, maxLength: 160,
+        onChange: e => setBcast(e.target.value), onKeyDown: e => e.key === "Enter" && e.target.nextSibling && e.target.nextSibling.click(), style: inS }),
       React.createElement("button", { className: "btn btn-sm btn-green", onClick: () => {
-        if (!bcast.trim()) return;
-        set("broadcast", { text: bcast.trim(), ts: Date.now() });
-        setBcast(""); setSent(true); setTimeout(() => setSent(false), 2000);
-      } }, sent ? "Sent ✓" : "Send")),
+        const text = bcast.trim();
+        if (!text) { toast("Write a message first."); return; }
+        set("broadcast", { text, ts: firebase.database.ServerValue.TIMESTAMP }, "📢 Sent to everyone online: " + text);
+        setBcast("");
+      } }, "Send")),
+    Row("Last broadcast", s.broadcast && s.broadcast.text
+        ? "“" + s.broadcast.text + "” · " + (bcAge < 1 ? "just now" : bcAge < 60 ? bcAge + " min ago" : Math.round(bcAge / 60) + " h ago") + (bcAge >= 1440 ? " · expired (no longer shown)" : "")
+        : "None. Visitors see each message once, as an 8-second toast, for 24h.",
+      s.broadcast && React.createElement("button", { className: "a-del", onClick: () => {
+        db.ref("settings/broadcast").remove().then(() => toast("🗑 Broadcast cleared")).catch(fail);
+      } }, "Clear")),
     React.createElement("h3", { className: "a-sec" }, "🎛 Feature flags"),
     Row("Petition", "Page + nav link", Toggle(flags.petition !== false, v => set("flags/petition", v))),
     Row("Community", "Forum, events, gallery, teams", Toggle(flags.community !== false, v => set("flags/community", v))),
@@ -10519,15 +10645,31 @@ function AdminSiteTab() {
         style: { background: "#0D101F", border: "1px solid #1E2235", color: "#E5E7EB" } },
         React.createElement("option", { value: "" }, "— none —"),
         allCourts.map(c => React.createElement("option", { key: c.id, value: c.id }, c.name)))),
-    React.createElement("h3", { className: "a-sec" }, "🎨 Accent color"),
+    React.createElement("h3", { className: "a-sec" }, "🎨 Site colours (accent)"),
+    React.createElement("p", { style: { color: "#6B7280", fontSize: ".74rem", margin: "-.3rem 0 .5rem" } },
+      "Changes buttons, links, tabs and highlights for everyone. Works with or without a banner — the banner keeps its own colour."),
     React.createElement("div", { className: "a-row" },
-      React.createElement("div", { className: "flex gap-1" },
-        SWATCHES.map(([hex, name]) => React.createElement("button", {
-          key: name, title: name,
-          className: "a-swatch" + ((s.accent || "") === hex ? " on" : ""),
-          style: { background: hex || "#10B981" },
-          onClick: () => set("accent", hex)
-        })))),
+      React.createElement("div", { className: "a-pal" },
+        React.createElement("div", { className: "a-pal-row" },
+          React.createElement("b", null, "Themes"),
+          ACCENT_PRESETS.map(([p, p2, name]) => React.createElement("button", {
+            key: name, className: "a-preset" + (curP === p && curS === p2 ? " on" : ""), onClick: () => setAccent(p, p2, name)
+          }, React.createElement("i", { style: { background: "linear-gradient(135deg," + (p || "#10B981") + " 50%," + (p2 || "#0D9488") + " 50%)" } }), name))),
+        ACCENT_SHADES.map(([fam, list]) => React.createElement("div", { className: "a-pal-row", key: fam },
+          React.createElement("b", null, fam),
+          list.map(hex => React.createElement("button", {
+            key: hex, title: hex,
+            className: "a-swatch" + (curP.toUpperCase() === hex ? " on" : ""),
+            style: { background: hex },
+            onClick: () => setAccent(hex, curS, hex)
+          })))),
+        React.createElement("div", { className: "a-pal-row" },
+          React.createElement("b", null, "Custom"),
+          React.createElement("input", { type: "color", value: custom, onChange: e => setCustom(e.target.value), title: "Primary", style: { width: 44, height: 30, padding: 0, border: "none", background: "none" } }),
+          React.createElement("input", { type: "color", value: custom2, onChange: e => setCustom2(e.target.value), title: "Secondary", style: { width: 44, height: 30, padding: 0, border: "none", background: "none" } }),
+          React.createElement("button", { className: "btn btn-sm btn-green", onClick: () => setAccent(custom.toUpperCase(), custom2.toUpperCase(), "Custom") }, "Apply"),
+          React.createElement("button", { className: "a-del", onClick: () => setAccent("", "", "G2P Classic") }, "↺ Default"),
+          React.createElement("span", { style: { fontSize: ".72rem", color: "#9CA3AF" } }, "Now: " + (curP || "#10B981") + " / " + (curS || "#0D9488"))))),
     React.createElement(BudgetAdmin, null),
     React.createElement("h3", { className: "a-sec", style: { color: "#F87171" } }, "☢️ Danger zone"),
     Row("Reset petition votes", "Sets flip / mural / both to 0. Signup rows are kept.",
@@ -10579,8 +10721,10 @@ function AdminModTab() {
 }
 
 function AdminPanel({
-  onExit
+  onExit,
+  onSignOut
 }) {
+  const { firebaseUser, isAdmin, toast } = useApp();
   const [tab, setTab] = useState("site");
   const su = useFirebase("signups");
   const vo = useFirebase("votes");
@@ -10711,18 +10855,16 @@ function AdminPanel({
     className: "admin-shell"
   }, /*#__PURE__*/React.createElement("header", {
     className: "admin-hdr"
-  }, /*#__PURE__*/React.createElement("h1", null, "\uD83D\uDD12 ADMIN \u2014 From Grey to Play"), /*#__PURE__*/React.createElement("button", {
-    onClick: onExit,
-    style: {
-      background: "none",
-      border: "1px solid #1E2235",
-      color: "#9CA3AF",
-      padding: ".3rem .7rem",
-      borderRadius: 6,
-      fontSize: ".78rem",
-      cursor: "pointer"
-    }
-  }, "\u2715 Exit")), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("h1", null, "\uD83D\uDD12 ADMIN \u2014 From Grey to Play"), React.createElement("div", { className: "a-auth" },
+    React.createElement("span", { className: "dot" + (isAdmin ? "" : " bad") }),
+    React.createElement("span", null, isAdmin ? "Owner · " + ((firebaseUser && firebaseUser.email) || "") : "Not signed in as owner — changes will be rejected"),
+    React.createElement("button", { className: "a-normal", style: { padding: ".3rem .7rem", fontSize: ".72rem" }, onClick: () => {
+      askConfirm("Reset all Site Control settings back to normal?").then(ok => ok && resetSiteSettings()
+        .then(() => toast("✅ Back to normal — site restored to defaults", 5000))
+        .catch(e => toast("⛔ " + (e && e.message || "Reset failed"), 6000)));
+    } }, "↺ BACK TO NORMAL"),
+    React.createElement("button", { onClick: onExit, style: { background: "none", border: "1px solid #1E2235", color: "#9CA3AF", padding: ".3rem .7rem", borderRadius: 6, fontSize: ".78rem", cursor: "pointer" } }, "\u2190 Back to site"),
+    onSignOut && React.createElement("button", { onClick: onSignOut, style: { background: "none", border: "1px solid #7F1D1D", color: "#F87171", padding: ".3rem .7rem", borderRadius: 6, fontSize: ".78rem", cursor: "pointer" } }, "\u21AA Sign out"))), /*#__PURE__*/React.createElement("div", {
     className: "admin-body"
   }, /*#__PURE__*/React.createElement("nav", {
     className: "admin-side"
@@ -11705,19 +11847,41 @@ function App() {
     const h = p === "home" ? "" : "#" + p;
     if (location.hash !== h) history.pushState(null, "", h || location.pathname + location.search);
   }, []);
-  const [user, setUser] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem("g2p_user"));
-    } catch {
-      return null;
-    }
-  });
   const [toastMsg, setToastMsg] = useState("");
+  const [toastMs, setToastMs] = useState(3000);
+  const [authOpen, setAuthOpen] = useState(false);
   const [onboard, setOnboard] = useState(() => !localStorage.getItem("g2p_ob"));
   const [adminMode, setAdminMode] = useState(false);
   const [adminAuth, setAdminAuth] = useState(false);
   const [firebaseUser, setFirebaseUser] = useState(() => firebase.auth().currentUser);
-  useEffect(() => firebase.auth().onAuthStateChanged(u => setFirebaseUser(u)), []);
+  // authReady: Firebase has restored (or ruled out) the saved session. Until
+  // then we neither show "Sign in" nor the admin password screen.
+  const [authReady, setAuthReady] = useState(() => !!firebase.auth().currentUser);
+  useEffect(() => {
+    try { localStorage.removeItem("g2p_user"); } catch (e) {} // legacy password-less fake login
+    return firebase.auth().onAuthStateChanged(u => {
+      setFirebaseUser(u);
+      setAuthReady(true);
+      if (u) saveUserProfile(u);
+    });
+  }, []);
+  // App-level user = the real Firebase account merged with its users/{uid} profile.
+  const fbProfile = useFirebase(firebaseUser ? "users/" + firebaseUser.uid : null);
+  const user = firebaseUser ? Object.assign({
+    id: firebaseUser.uid,
+    name: firebaseUser.displayName || (firebaseUser.email || firebaseUser.phoneNumber || "user").split("@")[0],
+    email: firebaseUser.email || firebaseUser.phoneNumber || "",
+    points: 0,
+    badges: ["🌱"]
+  }, fbProfile || {}, { id: firebaseUser.uid }) : null;
+  const setUser = () => {};
+  const signOut = useCallback(() => {
+    firebase.auth().signOut().then(() => {
+      setToastMs(3000);
+      setToastMsg("👋 " + (T[lang] && T[lang].signOut ? T[lang].signOut + " ✓" : "Signed out"));
+    }).catch(() => {});
+  }, [lang]);
+  const openAuth = useCallback(() => setAuthOpen(true), []);
   useEffect(() => {
     localStorage.setItem("g2p_lang", lang);
     document.documentElement.lang = lang;
@@ -11806,12 +11970,13 @@ function App() {
       return () => { window.removeEventListener("beforeunload", bye); bye(); };
     } catch (e) { /* offline */ }
   }, []);
-  // Admin accent color override (settings/accent).
+  // Admin site colours (settings/accent + settings/accent2). Independent of the
+  // announcement banner, which has its own fixed colour.
   useEffect(() => {
-    const a = settings && settings.accent;
-    if (a) document.documentElement.style.setProperty("--green", a);
-    else document.documentElement.style.removeProperty("--green");
-  }, [settings && settings.accent]);
+    if (!settings) return; // not loaded yet — keep the cached colour from <head>
+    applyAccent(/^#[0-9a-fA-F]{6}$/.test(settings.accent || "") ? settings.accent : "",
+      /^#[0-9a-fA-F]{6}$/.test(settings.accent2 || "") ? settings.accent2 : "");
+  }, [settings, settings && settings.accent, settings && settings.accent2]);
   // Admin effects kill-switch (settings/flags/effects === false).
   useEffect(() => {
     const off = !!(settings && settings.flags && settings.flags.effects === false);
@@ -11839,18 +12004,25 @@ function App() {
     window.addEventListener("hashchange", h);
     return () => window.removeEventListener("hashchange", h);
   }, []);
-  const toast = useCallback(msg => {
+  // Toast auto-hides inside <Toast> (ms, default 3s); a new message restarts the timer.
+  const toast = useCallback((msg, ms) => {
+    setToastMs(ms || 3000);
     setToastMsg(msg);
-    setTimeout(() => setToastMsg(""), 3e3);
   }, []);
   // Admin broadcast: one realtime toast per message to every visitor.
+  // Only consumed once the visitor can actually see it (not during onboarding,
+  // maintenance or inside the admin panel) and only while < 24h old.
+  const bc = settings && settings.broadcast;
+  const bcVisible = !onboard && !adminMode && !(settings && settings.maintenance);
   useEffect(() => {
-    const b = settings && settings.broadcast;
-    if (!b || !b.ts || !b.text) return;
-    if (b.ts <= +(localStorage.getItem("g2p_bc_seen") || 0)) return;
-    localStorage.setItem("g2p_bc_seen", String(b.ts));
-    toast("📢 " + b.text);
-  }, [settings && settings.broadcast && settings.broadcast.ts]);
+    if (!bc || !bc.ts || !bc.text || !bcVisible) return;
+    if (Date.now() - bc.ts > 864e5) return;
+    if (bc.ts <= +(localStorage.getItem("g2p_bc_seen") || 0)) return;
+    localStorage.setItem("g2p_bc_seen", String(bc.ts));
+    toast("📢 " + bc.text, 8000);
+  }, [bc && bc.ts, bcVisible]);
+  // Visitors can dismiss the current announcement banner (per text).
+  const [bannerX, setBannerX] = useState(() => localStorage.getItem("g2p_banner_x") || "");
   const t = T[lang];
   const isAdmin = !!(firebaseUser && firebaseUser.uid === ADMIN_UID);
   const sherifData = useFirebase(firebaseUser ? "settings/sherifs/" + firebaseUser.uid : null);
@@ -11908,8 +12080,17 @@ function App() {
     isSherif,
     isPrivileged,
     firebaseUser,
+    authReady,
+    openAuth,
+    signOut,
     setAdminMode
   };
+  const toastEl = toastMsg && React.createElement(Toast, { key: toastMsg, msg: toastMsg, ms: toastMs, onClose: () => setToastMsg("") });
+  const authEl = authOpen && ReactDOM.createPortal(React.createElement(AuthModal, { onClose: () => setAuthOpen(false) }), document.body);
+  // Saved session still being restored → short neutral screen instead of a
+  // password prompt that the owner doesn't actually need.
+  if (adminMode && !authReady) return React.createElement("div", { className: "admin-login" },
+    React.createElement("div", { className: "admin-login-box" }, React.createElement("p", null, "⏳ …")));
   if (adminMode && !adminAuth && !isAdmin) return /*#__PURE__*/React.createElement(AppCtx.Provider, { value: ctx }, React.createElement(AdminLogin, {
     onAuth: () => setAdminAuth(true),
     onBack: () => {
@@ -11918,13 +12099,18 @@ function App() {
     }
   }));
   if (adminMode && (adminAuth || isAdmin)) return /*#__PURE__*/React.createElement(AppCtx.Provider, { value: ctx }, React.createElement(AdminBoundary, null, React.createElement(AdminPanel, {
+    // Exit keeps the owner signed in (like any real app); sign-out is explicit.
     onExit: () => {
       setAdminMode(false);
-      setAdminAuth(false);
-      firebase.auth().signOut().catch(() => {});
       location.hash = "";
+    },
+    onSignOut: () => {
+      setAdminMode(false);
+      setAdminAuth(false);
+      location.hash = "";
+      signOut();
     }
-  })));
+  })), toastEl);
   if (settings && settings.maintenance && !adminMode) return /*#__PURE__*/React.createElement("div", {
     className: "maint"
   }, /*#__PURE__*/React.createElement("div", { className: "maint-ic" }, "🛠️"),
@@ -11968,10 +12154,14 @@ function App() {
     "aria-hidden": "true"
   }), /*#__PURE__*/React.createElement(InstallBanner, {
     lang: lang
-  }), /*#__PURE__*/React.createElement(Navbar, null), settings && settings.banner && settings.banner.on && settings.banner.text && /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement(Navbar, null), settings && settings.banner && settings.banner.on === true && settings.banner.text && bannerX !== settings.banner.text && /*#__PURE__*/React.createElement("div", {
     className: "site-banner sb-" + (settings.banner.type || "info"),
+    style: /^#[0-9a-fA-F]{6}$/.test(settings.banner.color || "") ? { background: settings.banner.color } : undefined,
     role: "status"
-  }, settings.banner.text), cmd && /*#__PURE__*/React.createElement(CommandPalette, {
+  }, settings.banner.text, React.createElement("button", {
+    className: "sb-x", "aria-label": "Close",
+    onClick: () => { localStorage.setItem("g2p_banner_x", settings.banner.text); setBannerX(settings.banner.text); }
+  }, "\u2715")), cmd && /*#__PURE__*/React.createElement(CommandPalette, {
     onClose: () => setCmd(false)
   }), /*#__PURE__*/React.createElement("main", {
     style: {
@@ -11981,10 +12171,7 @@ function App() {
     key: page
   }, P())), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(FunEggs, null), React.createElement(SecretKeys, null), mayor && React.createElement(MayorMode, {
     onClose: () => setMayor(false)
-  }), /*#__PURE__*/React.createElement(Footer, null), toastMsg && /*#__PURE__*/React.createElement(Toast, {
-    msg: toastMsg,
-    onClose: () => setToastMsg("")
-  }));
+  }), /*#__PURE__*/React.createElement(Footer, null), toastEl, authEl);
 }
 try {
   ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));

@@ -5,7 +5,7 @@
    - CDN assets (unpkg, gstatic, Google Fonts): stale-while-revalidate.
    - Firebase Realtime Database traffic is never intercepted (live data).
    Bump CACHE on breaking changes to invalidate old caches. */
-const CACHE = "g2p-v5";
+const CACHE = "g2p-v6";
 const SHELL = ["/", "/manifest.json", "/icons/icon-192.png", "/icons/icon-512.png"];
 const CDN_HOSTS = ["unpkg.com", "www.gstatic.com", "fonts.googleapis.com", "fonts.gstatic.com"];
 
