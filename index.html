@@ -37,6 +37,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
@@ -541,8 +542,16 @@ body.godmode-fx{box-shadow:inset 0 0 0 4px #F59E0B,inset 0 0 70px rgba(245,158,1
 
 <script>/* === Firebase === */
 firebase.initializeApp({
-  databaseURL: "https://fromgreytoplay-default-rtdb.firebaseio.com"
+  apiKey: "AIzaSyB0kq79ID_H6plE7KhO7zQZa_S4Mg1g_Mo",
+  authDomain: "fromgreytoplay.firebaseapp.com",
+  databaseURL: "https://fromgreytoplay-default-rtdb.firebaseio.com",
+  projectId: "fromgreytoplay",
+  storageBucket: "fromgreytoplay.firebasestorage.app",
+  messagingSenderId: "186763946354",
+  appId: "1:186763946354:web:067794ec899a4d5a9b95eb",
+  measurementId: "G-Y6X5LSD42R"
 });
+firebase.analytics();
 const db = firebase.database();
 const {
   useState,

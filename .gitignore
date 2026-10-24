@@ -15,3 +15,6 @@ coverage
 # Python bytecode cache
 __pycache__/
 *.pyc
+
+# Session handoff files (context for Claude, not for repo)
+SESSION_HANDOFF.md
