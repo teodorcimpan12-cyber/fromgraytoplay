@@ -209,3 +209,16 @@ Highest civic-value next steps:
 1. Photo evidence wall (#2.1) — Firebase Storage, M.
 2. Letter-to-council generator (#2.2) — jsPDF, S.
 3. 3D hero (#1) — Three.js, L. Build in isolation first.
+
+- Admin repair pass: Site Control writes now report success/permission errors
+  (silent failures were why switches "snapped back"); ↺ BACK TO NORMAL
+  (`resetSiteSettings()`) in Site Control + admin header; banner has its own
+  colour (`settings/banner/color`, not tied to accent), delete button and
+  visitor ✕; broadcast is an 8s toast, consumed only when visible, expires
+  after 24h, shows "last broadcast" + Clear; accent palette = 13 two-tone
+  themes (`settings/accent` + `settings/accent2` → `--green`/`--teal`) +
+  44 shades + custom picker, cached pre-paint via `g2p_accent`.
+- Login: explicit LOCAL persistence, `authReady` gate, Google popup →
+  redirect fallback, password reset, SMS fix; `user` is derived from
+  Firebase Auth + `users/{uid}` (legacy password-less `g2p_user` removed);
+  owner gets 👑 account menu; exiting admin no longer signs out.
