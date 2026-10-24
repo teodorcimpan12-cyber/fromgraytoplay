@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ro">
 <head>
 <meta charset="UTF-8"/>
@@ -4802,11 +4802,6 @@ function Navbar() {
   })), /*#__PURE__*/React.createElement("button", {
     onClick: () => setPage("profile")
   }, user ? "👤 " + (user.name || t.profile) : t.signIn),
-  isAdmin && /*#__PURE__*/React.createElement("button", {
-    onClick: () => { location.hash = "#/admin"; },
-    style: { background: "var(--green)", color: "#fff", borderRadius: 6, fontWeight: 700, fontSize: ".78rem", padding: ".25rem .6rem" },
-    title: "Admin Panel"
-  }, "\uD83D\uDD11"),
   /*#__PURE__*/React.createElement("button", {
     onClick: () => setShowNotif(v => !v),
     style: { position: "relative" },
@@ -4814,7 +4809,6 @@ function Navbar() {
   }, "🔔", unreadCount > 0 && /*#__PURE__*/React.createElement("span", {
     style: { position:"absolute", top:"-4px", right:"-6px", background:"var(--coral)", color:"#fff", borderRadius:"50%", fontSize:".6rem", fontWeight:700, minWidth:"16px", height:"16px", lineHeight:"16px", textAlign:"center", padding:"0 2px" }
   }, unreadCount > 9 ? "9+" : unreadCount)),
-  /*#__PURE__*/React.createElement(PresenceBadge, null),
   /*#__PURE__*/React.createElement("button", {
     className: "nav-cmd",
     title: "Ctrl+K",
@@ -4823,9 +4817,15 @@ function Navbar() {
   }, "🔍"),
   /*#__PURE__*/React.createElement("button", {
     onClick: () => setLang(nextLang(lang))
-  }, t.language), /*#__PURE__*/React.createElement("button", {
+  }, t.language),
+  /*#__PURE__*/React.createElement("button", {
     onClick: e => switchTheme(e, theme, setTheme)
-  }, theme === "dark" ? "☀️" : "🌙")), /*#__PURE__*/React.createElement("button", {
+  }, theme === "dark" ? "\u2600\uFE0F" : "\uD83C\uDF19"),
+  /*#__PURE__*/React.createElement("button", {
+    onClick: () => { location.hash = "#/admin"; },
+    title: "Admin",
+    style: { fontSize: "1rem", opacity: isAdmin ? 1 : 0.35, filter: isAdmin ? "none" : "grayscale(1)", background: "none", border: "none", cursor: "pointer", padding: "0 .2rem" }
+  }, "\uD83D\uDD11")), /*#__PURE__*/React.createElement("button", {
     className: "hamburger",
     onClick: () => setMob(true)
   }, "\u2630"))),
@@ -9456,6 +9456,25 @@ function ProfilePage() {
   }, t.signOut))));
 }
 
+/* === Admin Error Boundary === */
+class AdminBoundary extends React.Component {
+  constructor(p) { super(p); this.state = { err: null }; }
+  static getDerivedStateFromError(e) { return { err: e }; }
+  render() {
+    if (this.state.err) return React.createElement("div", {
+      style: { padding: "2rem", maxWidth: 600, margin: "4rem auto", fontFamily: "monospace" }
+    },
+      React.createElement("h2", { style: { color: "#F87171", marginBottom: "1rem" } }, "⚠️ Admin panel error"),
+      React.createElement("pre", { style: { fontSize: ".75rem", color: "#9CA3AF", overflowX: "auto", whiteSpace: "pre-wrap" } }, String(this.state.err)),
+      React.createElement("button", {
+        style: { marginTop: "1rem", padding: ".4rem 1rem", background: "#10B981", color: "#fff", border: "none", borderRadius: 6, cursor: "pointer" },
+        onClick: () => this.setState({ err: null })
+      }, "↩ Retry")
+    );
+    return this.props.children;
+  }
+}
+
 /* === Admin === */
 function AdminLogin({
   onAuth,
@@ -11000,13 +11019,14 @@ function App() {
       location.hash = "";
     }
   }));
-  if (adminMode && (adminAuth || isAdmin)) return /*#__PURE__*/React.createElement(AppCtx.Provider, { value: ctx }, React.createElement(AdminPanel, {
+  if (adminMode && (adminAuth || isAdmin)) return /*#__PURE__*/React.createElement(AppCtx.Provider, { value: ctx }, React.createElement(AdminBoundary, null, React.createElement(AdminPanel, {
     onExit: () => {
       setAdminMode(false);
       setAdminAuth(false);
+      firebase.auth().signOut().catch(() => {});
       location.hash = "";
     }
-  }));
+  })));
   if (settings && settings.maintenance && !adminMode) return /*#__PURE__*/React.createElement("div", {
     className: "maint"
   }, /*#__PURE__*/React.createElement("div", { className: "maint-ic" }, "🛠️"),
