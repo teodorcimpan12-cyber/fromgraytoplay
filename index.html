@@ -5328,9 +5328,7 @@ function Navbar() {
     key: n.k,
     k: n.k,
     l: n.l
-  })), /*#__PURE__*/React.createElement("button", {
-    onClick: () => setPage("profile")
-  }, user ? "👤 " + (user.name || t.profile) : t.signIn),
+  })),
   /*#__PURE__*/React.createElement("button", {
     onClick: () => setShowNotif(v => !v),
     style: { position: "relative" },
@@ -5389,14 +5387,7 @@ function Navbar() {
     k: n.k,
     l: n.l,
     click: () => setMob(false)
-  })), /*#__PURE__*/React.createElement("a", {
-    href: "#",
-    onClick: e => {
-      e.preventDefault();
-      setPage("profile");
-      setMob(false);
-    }
-  }, user ? "👤 " + user.name : t.signIn), /*#__PURE__*/React.createElement("div", {
+  })), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-1",
     style: {
       padding: "1rem",
@@ -5457,6 +5448,7 @@ function MapView({
       });
     }
     courts.forEach(c => {
+      if (c.lat == null || c.lng == null) return;
       const col = c.status === "unverified" ? "#6B7280" : c.status === "degraded" ? "#DC2626" : c.status === "inProgress" ? "#F97316" : "#10B981";
       const icon = L.divIcon({
         html: `<div style="width:14px;height:14px;border-radius:50%;background:${col};border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3)"></div>`,
