@@ -24,3 +24,6 @@ SESSION_HANDOFF.md
 
 # Field-visit photo originals (keep GPS EXIF as proof; web copies live in img/sibiu/field/)
 field-raw/
+
+# Satellite tile cache + rendered strips (regenerate with tools/sat_strips.mjs)
+tools/.cache/

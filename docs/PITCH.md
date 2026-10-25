@@ -6,22 +6,21 @@ Timings are cumulative. Live demo on the phone, backup video ready. Speak to the
 
 ## Astra Hack — versiunea Sibiu, 60 de secunde (structura din kitul organizatorilor)
 
-> Construită în jurul **unei persoane reale din Sibiu** și **unui teren vizitat**. Completează `[…]` doar cu
-> ce s-a întâmplat cu adevărat (vezi `docs/VALIDATION.md` și `tools/data/field_sibiu.csv`). Dacă nu avem încă
-> persoana, nu inventăm una — folosim terenul și datele.
+> Construită în jurul **auditului din satelit** (`tools/SAT_AUDIT.md`) și, dacă o avem, **a unei persoane reale din
+> Sibiu** care a trimis o poză. Completează `[…]` doar cu rezultate reale; ce nu avem, nu spunem. Echipa nu a fost pe teren — nu pretindem asta.
 
 | Sec. | Ce spunem | Pe ecran |
 |---|---|---|
-| 0–10 | **Persoana:** „[Prenume], [vârstă], joacă [sport] pe terenul din [cartier]. Coșul e [ce am văzut noi acolo]. L-am cunoscut pe [data], lângă teren.” | Poza noastră cu terenul (fără fețe) |
-| 10–20 | **Soluția:** „From Grey to Play e harta stării fiecărui teren public din Sibiu — verificată pe teren, nu ghicită.” | `?c=sibiu`, harta: verde / portocaliu / roșu + gri |
-| 20–45 | **Demo:** teren din cartier → nota [N]/5 și pozele noastre → raportez o problemă → scrisoarea către Primăria Sibiu, gata ca PDF. *[Dacă merge: Court Doctor pe o poză nouă.]* | Telefon, drumul principal, nimic altceva |
-| 45–55 | **De ce contează:** „Am vizitat [N] terenuri. În centru media e [X]/5, în cartiere [Y]/5. Am arătat aplicația la [N] sibieni.” | Graficul pe cartiere („N din 35 verificate”) |
-| 55–60 | **Ce cerem:** „Primăria să publice starea fiecărui teren. Și voi: 3 luni de mentorat ca să acoperim tot orașul.” | — |
+| 0–10 | **Cârligul:** „Pe harta deschisă a Sibiului (OpenStreetMap) sunt 35 de terenuri de sport publice — o listă oficială nu există. Ne-am uitat la fiecare din satelit, pe 14 ani de imagini. [N] nu mai sunt ce spune harta.” | Cronologia unui teren (ex. sb13: teren 2011–2020 → șantier 2022) |
+| 10–20 | **Soluția:** „From Grey to Play pune pe aceeași hartă tot ce se poate ști despre un teren — satelit, investiții publice și ce spun cei care joacă acolo — fiecare cu sursa și data lui.” | `?c=sibiu`, harta |
+| 20–45 | **Demo:** teren din cartier → cronologia din satelit → „Raportează” cu poză [→ Court Doctor, dacă merge] → scrisoarea către Primăria Sibiu, cu dovezile atașate. | Telefon, drumul principal |
+| 45–55 | **De ce contează:** „Doi dintre noi au evaluat fiecare teren fără să știe cartierul; acord: [kappa]. AI-ul a fost de acord cu ei în [X]% din cazuri. [N] sibieni ne-au trimis cum arată azi. Cererea 544 e la primărie din 26 oct.” | `tools/SAT_AUDIT.md` (tabel) |
+| 55–60 | **Ce cerem:** „Primăria să publice lista și starea terenurilor ei. Și voi: 3 luni de mentorat ca să facem din asta un instrument pentru orice oraș.” | — |
 
 La final, o propoziție: **ce exista înainte vs. ce am construit în 24 de ore** (din `docs/PROGRESS.md`).
 Originea (Târgu Mureș, sondajul 12/15) intră doar dacă juriul întreabă „de unde a pornit” — nu e cârligul.
 
-**Nu spunem:** că un teren e „renovat” dacă doar arată bine; că o estimare AI e o inspecție; cifre din TGM despre Sibiu.
+**Nu spunem:** că am fost pe teren; că satelitul arată starea de azi; că un teren e „renovat” dacă doar arată bine; că o estimare AI e o inspecție; cifre din TGM despre Sibiu.
 
 ---
 

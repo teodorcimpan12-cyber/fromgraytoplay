@@ -1,5 +1,9 @@
 # Vizite pe teren — Sibiu (până pe 1 noiembrie 2026)
 
+> **Actualizare 25 oct.: echipa nu face vizite pe teren.** Verificarea se face de la distanță — vezi
+> `docs/REMOTE_VERIFICATION.md`. Protocolul de mai jos rămâne valabil pentru **sibienii** care vor să trimită poze
+> și o notă pentru un teren de lângă ei (aceeași scară 1–5, aceleași reguli: fără fețe, doar ce vezi).
+
 Scop: dovada **reală** a diferenței dintre terenurile din centru și cele din cartiere, la Sibiu.
 Nu trebuie vizitate toate cele 35. Trebuie **minimum 10**, din ambele grupe (centru și cartiere),
 ca graficul de inegalitate să se aprindă cu date adevărate.

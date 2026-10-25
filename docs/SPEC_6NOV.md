@@ -102,3 +102,25 @@ Spec-ul are deja: EXIF/GPS șters din poză înainte de trimitere, cheia doar pe
 - Pe hartă și în grafic, un teren cu doar estimare AI rămâne „Neverificat”, cu o insignă separată „Estimare AI: N/5”.
 - Exportul de date deschise (JSON/CSV) are coloana `condition_source`: `field` sau `ai_estimate`.
 - Pasul 5 din fluxul de mai sus („accept condition” de admin) se schimbă: adminul poate **programa o vizită**, nu poate transforma o estimare AI în condiție verificată.
+
+---
+
+## 5. Funcția de 24 de ore, revizuită (25 oct.): „Sibiul se verifică singur”
+
+Echipa nu merge pe teren, deci stratul „azi” vine de la sibieni. Funcția construită la hackathon leagă cele trei
+straturi existente (satelit, registre, sesizări) cu un flux pentru rezidenți:
+
+1. **Misiuni:** pe hartă, terenurile marcate de auditul din satelit ca „de revăzut”, „dispărut” sau „niciun teren
+   vizibil” apar cu un buton „Ajută-ne să verificăm”. Link direct per teren (`#court-sb13`), bun de pus în postări.
+2. **Verificare în 60 de secunde:** 3 întrebări (există terenul? se poate juca? ce lipsește?) + 1–3 poze fără persoane,
+   cu bifa de consimțământ din §4. Scriere în `verifications/{id}` (reguli validate, fără date personale).
+3. **Court Doctor (dacă trece testul din `tools/vision_spike.mjs`):** pre-verifică poza — e un teren? ce probleme
+   se văd? — ca ajutor pentru rezident, nu ca verdict.
+4. **Consens:** un teren devine „verificat de comunitate (N persoane, data)” doar după **2 verificări independente
+   care se potrivesc**. Una singură rămâne „raportat de 1 persoană”. Niciodată „verificat pe teren de echipă”.
+5. **Pe hartă și în grafic:** eticheta arată sursa: 🛰️ satelit (data capturii) · 📄 registru (link) · 🙋 comunitate (N, data).
+
+Ce există deja înainte de 6 nov. (nu se construiește la eveniment): auditul din satelit, registrul de investiții,
+sesizările cu poză. La eveniment se construiesc pașii 1–5.
+
+Plan de rezervă: dacă la ora 6 consensul nu merge, rămân misiunile (pasul 1) + sesizările existente.
