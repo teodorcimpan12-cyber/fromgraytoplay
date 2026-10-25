@@ -100,7 +100,7 @@
       ".read": true,
       "$courtId": {
         ".write": "!data.exists() || (auth != null && root.child('settings/sherifs/' + auth.uid).exists())",
-        ".validate": "!data.exists() ? (newData.child('name').isString() && newData.child('name').val().length >= 2 && newData.child('name').val().length <= 100 && (newData.child('city').val() === 'tgm' || newData.child('city').val() === 'sibiu') && newData.child('status').val() === 'unverified' && !newData.child('condition').exists() && (!newData.child('lat').exists() || newData.child('lat').isNumber()) && (!newData.child('lng').exists() || newData.child('lng').isNumber())) : true",
+        ".validate": "data.exists() || (!newData.child('name').exists() && !newData.child('city').exists() && !newData.child('status').exists() && !newData.child('condition').exists()) || (newData.child('name').isString() && newData.child('name').val().length >= 2 && newData.child('name').val().length <= 100 && (newData.child('city').val() === 'tgm' || newData.child('city').val() === 'sibiu') && newData.child('status').val() === 'unverified' && !newData.child('condition').exists() && (!newData.child('lat').exists() || newData.child('lat').isNumber()) && (!newData.child('lng').exists() || newData.child('lng').isNumber()))",
         "checkins": {
           "$uid": {
             ".write": true
