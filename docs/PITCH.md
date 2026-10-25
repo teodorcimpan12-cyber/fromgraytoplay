@@ -11,11 +11,11 @@ Timings are cumulative. Live demo on the phone, backup video ready. Speak to the
 
 | Sec. | Ce spunem | Pe ecran |
 |---|---|---|
-| 0–10 | **Cârligul:** „Pe harta deschisă a Sibiului (OpenStreetMap) sunt 35 de terenuri de sport publice — o listă oficială nu există. Ne-am uitat la fiecare din satelit, pe 14 ani de imagini. [N] nu mai sunt ce spune harta.” | Cronologia unui teren (ex. sb13: teren 2011–2020 → șantier 2022) |
-| 10–20 | **Soluția:** „From Grey to Play pune pe aceeași hartă tot ce se poate ști despre un teren — satelit, investiții publice și ce spun cei care joacă acolo — fiecare cu sursa și data lui.” | `?c=sibiu`, harta |
-| 20–45 | **Demo:** teren din cartier → cronologia din satelit → „Raportează” cu poză [→ Court Doctor, dacă merge] → scrisoarea către Primăria Sibiu, cu dovezile atașate. | Telefon, drumul principal |
-| 45–55 | **De ce contează:** „Doi dintre noi au evaluat fiecare teren fără să știe cartierul; acord: [kappa]. AI-ul a fost de acord cu ei în [X]% din cazuri. [N] sibieni ne-au trimis cum arată azi. Cererea 544 e la primărie din 26 oct.” | `tools/SAT_AUDIT.md` (tabel) |
-| 55–60 | **Ce cerem:** „Primăria să publice lista și starea terenurilor ei. Și voi: 3 luni de mentorat ca să facem din asta un instrument pentru orice oraș.” | — |
+| 0–10 | **Persoana + cifra:** „Ana are 15 ani și locuiește în Sibiu. Terenul din cartierul ei arată [foto/harta]. Primăria a promis 5.000.000 de lei pentru renovări. 0% realizate.” | App deschis pe `?c=sibiu`, harta cu un teren gri marcat; sau sb13: 2011→2022 |
+| 10–20 | **Soluția (1 frază):** „From Grey to Play verifică fiecare teren din satelit, cu dovezi datate și publice — fiecare cu sursa lui.” | Harta Sibiu + lista terenurilor |
+| 20–45 | **Demo (drumul principal):** teren → cronologie satelit → „Raportează” cu poză [→ Court Doctor, dacă spike funcționează] → scrisoarea automată către Primăria Sibiu. | Telefon, ecran mare |
+| 45–55 | **De ce contează:** „Doi dintre noi au evaluat 35 de terenuri independent din satelit; acord: [kappa]. Cererea 544 e la primărie din 26 oct. [N] terenuri au fost verificate de noi în aceste 24 de ore.” | `SAT_AUDIT.md` rezumat sau PROGRESS.md |
+| 55–60 | **Ce cerem:** „Vrem ca primăria să publice starea terenurilor ei. Și voi: 3 luni de mentorat ca să creștem asta la orice oraș.” | — |
 
 La final, o propoziție: **ce exista înainte vs. ce am construit în 24 de ore** (din `docs/PROGRESS.md`).
 Originea (Târgu Mureș, sondajul 12/15) intră doar dacă juriul întreabă „de unde a pornit” — nu e cârligul.
