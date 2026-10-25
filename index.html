@@ -77,7 +77,23 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .mobile-menu{position:fixed;inset:0;z-index:200;background:var(--bg);padding:3.5rem 1rem 1rem;overflow-y:auto;animation:slideR .2s}
 .mobile-menu a,.mobile-menu button{display:block;padding:.7rem 1rem;border-radius:8px;font-size:1rem;color:var(--text);background:none;border:none;text-align:left;width:100%}
 .mobile-menu a:hover,.mobile-menu a.active{background:var(--green);color:#fff}
-.mobile-close{position:absolute;top:.8rem;right:1rem;font-size:1.8rem;background:none;border:none;color:var(--text)}
+.mobile-menu .mobile-close{position:absolute;top:max(.75rem,env(safe-area-inset-top));right:1rem;width:44px;height:44px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:50%;border:1px solid var(--border);background:var(--bgCard);color:var(--text);box-shadow:var(--shadow);cursor:pointer;transition:transform .3s cubic-bezier(.2,.8,.2,1),background .2s,color .2s,border-color .2s;-webkit-tap-highlight-color:transparent}
+.mobile-menu .mobile-close:hover,.mobile-menu .mobile-close:focus-visible{background:var(--green);border-color:var(--green);color:var(--white);transform:rotate(90deg)}
+.mobile-menu .mobile-close:active{transform:rotate(90deg) scale(.9)}
+.mobile-menu .mobile-close svg{width:18px;height:18px}
+.mobile-menu-brand{position:absolute;top:max(.75rem,env(safe-area-inset-top));left:1rem;height:44px;display:flex;align-items:center;font-family:'Space Mono',monospace;font-weight:700;font-size:.85rem;letter-spacing:1px;color:var(--green)}
+/* Court detail actions: icon tiles that keep their full labels on any width */
+.cd-actions{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:.5rem;margin-top:1.1rem}
+.cd-act{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;min-height:64px;padding:.55rem .35rem;border-radius:12px;border:1.5px solid var(--border);background:var(--bgCard);color:var(--text);font-size:.78rem;font-weight:700;line-height:1.15;text-align:center;cursor:pointer;transition:transform .15s,box-shadow .2s,border-color .2s;-webkit-tap-highlight-color:transparent}
+.cd-act:hover,.cd-act:focus-visible{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--green)}
+.cd-act:active{transform:scale(.96)}
+.cd-ic{font-size:1.25rem;line-height:1}
+.cd-l{overflow-wrap:anywhere}
+.cd-green{background:var(--green);border-color:var(--green);color:var(--white)}
+.cd-coral{background:var(--coral);border-color:var(--coral);color:var(--white)}
+.cd-teal{background:var(--teal);border-color:var(--teal);color:var(--white)}
+.cd-red{background:var(--red);border-color:var(--red);color:var(--white)}
+.cd-line{color:var(--text)}
 .btn{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1.1rem;border-radius:8px;font-weight:600;font-size:.88rem;border:none;transition:background .2s,transform .15s,box-shadow .2s;min-height:44px;user-select:none;-webkit-user-select:none}
 .btn:active{transform:scale(.97)}
 .btn-green{background:var(--green);color:#fff}.btn-green:hover{background:#0ea472;box-shadow:0 6px 20px rgba(16,185,129,.4);transform:translateY(-1px)}
@@ -145,7 +161,10 @@ a[href^="tel:"],a[href^="mailto:"]{display:inline-flex;align-items:center;min-he
 .tm-foot{display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap;font-size:.7rem;color:var(--textSec);margin-top:.5rem}
 .modal-overlay{overflow-y:auto;overscroll-behavior:contain}
 .modal{overscroll-behavior:contain}
-.modal-head{position:sticky;top:-1.4rem;z-index:5;background:var(--bgCard);margin:-1.4rem -1.4rem 1rem;padding:1rem 1.4rem;border-bottom:1px solid var(--border)}
+.modal-head{position:sticky;top:-1.4rem;z-index:1200;background:var(--bgCard);margin:-1.4rem -1.4rem 1rem;padding:1rem 1.4rem;border-bottom:1px solid var(--border)}
+.leaflet-container{z-index:0}
+.mobile-menu .btn{display:inline-flex;align-items:center;gap:.35rem;width:auto;padding:.55rem .95rem;border:1.5px solid var(--border);border-radius:999px;font-size:.88rem;font-weight:600;color:var(--text);background:var(--bgCard)}
+.mobile-menu .btn:hover{border-color:var(--green);background:var(--bgCard);color:var(--text)}
 .modal-close{flex-shrink:0;width:40px;height:40px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .modal-close:hover{border-color:var(--green);color:var(--green)}
 .map-box{border-radius:var(--radius);overflow:hidden;height:380px;border:2px solid var(--border)}
@@ -237,6 +256,86 @@ a[href^="tel:"],a[href^="mailto:"]{display:inline-flex;align-items:center;min-he
 .about-quote footer{margin-top:.55rem;font-size:.85rem;color:var(--textSec);font-style:normal}
 .sc-cta{margin-top:1.2rem;padding:1.2rem;border-radius:var(--radius);display:flex;gap:1rem;align-items:center;justify-content:space-between;flex-wrap:wrap;background:color-mix(in srgb,var(--green) 9%,transparent);border:1px solid color-mix(in srgb,var(--green) 30%,transparent)}
 .sc-cta p{margin:0;flex:1 1 18rem;line-height:1.5}
+/* ===== Spectacle pack ===== */
+/* Showcase: tiles flip in in 3D, tilt toward the pointer, inner layers drift (parallax) */
+.sc-grid-v2{perspective:1100px}
+.sc-grid-v2 .sc-tile-v2{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .6s ease,box-shadow .3s,border-color .3s}
+.sc-grid-v2 .sc-tile-v2:hover,.sc-grid-v2 .sc-tile-v2:focus-visible{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-6px)}
+.sc-grid-v2 .sc-tile-v2.tilting{transition:transform .09s linear,box-shadow .3s,border-color .3s}
+.sc-grid-v2 .sc-tile-v2>*{position:relative;z-index:1;transition:transform .25s ease-out}
+.sc-grid-v2 .sc-tile-v2>div:first-child{transform:translate(calc(var(--px,0) * -12px),calc(var(--py,0) * -9px))}
+.sc-grid-v2 .sc-tile-v2 .sc-ic{transform:translate(calc(var(--px,0) * 10px),calc(var(--py,0) * 8px)) scale(1.08)}
+.sc-grid-v2 .sc-tile-v2::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(260px circle at var(--gx,50%) var(--gy,50%),color-mix(in srgb,var(--sc-acc,var(--green)) 24%,transparent),transparent 65%);opacity:0;transition:opacity .3s}
+.sc-grid-v2 .sc-tile-v2.tilting::after{opacity:1}
+.sc-grid-v2.pre .sc-tile-v2{opacity:0;transform:perspective(900px) rotateX(-78deg) translateY(70px)}
+.sc-grid-v2.enter .sc-tile-v2{transition-delay:calc(var(--i,0) * 120ms)}
+/* Story: a sticky stage that changes scene as you scroll, one idea per screen */
+.story{position:relative;background:var(--dark);color:var(--white)}
+.story-track{position:relative;height:calc(var(--n,4) * 100svh)}
+.story-stage{position:sticky;top:var(--navH,58px);height:calc(100svh - var(--navH,58px));overflow:hidden;background:radial-gradient(120% 90% at 50% 15%,var(--darkCard),var(--dark) 70%)}
+.st-scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4rem;padding:1.5rem 1.4rem 3rem;text-align:center;opacity:0;transform:translateY(40px) scale(.96);transition:opacity .7s ease,transform .8s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.st-scene.on{opacity:1;transform:none;pointer-events:auto}
+.st-scene.past{transform:translateY(-40px) scale(.98)}
+.st-h{font-family:'Barlow Condensed','Space Mono',monospace;font-weight:800;font-size:clamp(1.9rem,7.5vw,3.4rem);line-height:1.08;max-width:15ch;letter-spacing:-.3px}
+.st-h em{font-style:normal;color:var(--coral)}
+.st-p{max-width:34rem;font-size:clamp(.95rem,3.6vw,1.12rem);line-height:1.55;color:var(--lightGrey)}
+.st-src{font-size:.72rem;color:var(--lightGrey);opacity:.85}
+.st-src a{color:var(--green)}
+.st-vis{height:min(34svh,230px);width:min(86vw,420px);display:flex;align-items:center;justify-content:center;position:relative}
+.st-ball{font-size:clamp(4rem,18vw,6.5rem);animation:stBounce 1.05s cubic-bezier(.3,0,.7,1) infinite;filter:drop-shadow(0 18px 18px rgba(0,0,0,.45))}
+.st-shadow{position:absolute;bottom:6%;width:110px;height:16px;border-radius:50%;background:rgba(0,0,0,.55);filter:blur(4px);animation:stShadow 1.05s cubic-bezier(.3,0,.7,1) infinite}
+@keyframes stBounce{0%,100%{transform:translateY(-70px)}50%{transform:translateY(20px) scaleY(.92)}}
+@keyframes stShadow{0%,100%{transform:scale(.55);opacity:.35}50%{transform:scale(1);opacity:.8}}
+.st-court{width:100%;height:100%}
+.st-court .ln{fill:none;stroke:var(--lightGrey);stroke-width:2;opacity:calc(1 - var(--t,0) * .55)}
+.st-court .crk{fill:none;stroke:var(--dark);stroke-width:2.4;stroke-linecap:round;stroke-dasharray:240px;stroke-dashoffset:calc((1 - var(--t,0)) * 240px)}
+.st-court .floor{fill:var(--grey)}
+.st-court .floor-g{fill:var(--green);opacity:calc((1 - var(--t,0)) * .75)}
+.st-court .hoop{transform-box:fill-box;transform-origin:0% 100%;transform:rotate(calc(var(--t,0) * 24deg))}
+.st-num{font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(2.3rem,11vw,4.6rem);color:var(--coral);text-shadow:0 0 30px color-mix(in srgb,var(--coral) 45%,transparent);font-variant-numeric:tabular-nums;line-height:1}
+.st-stamp{display:inline-block;margin-top:.8rem;font-family:'Space Mono',monospace;font-weight:800;font-size:clamp(1.6rem,7vw,2.6rem);color:var(--red);border:4px solid var(--red);border-radius:10px;padding:.1rem .8rem;transform:rotate(-8deg) scale(2.4);opacity:0;transition:transform .35s cubic-bezier(.3,1.6,.5,1),opacity .2s}
+.st-stamp.hit{transform:rotate(-8deg) scale(1);opacity:1}
+.st-dots{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:300px}
+.st-dots i{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.18)}
+.st-dots i.on{background:var(--green);box-shadow:0 0 10px var(--green)}
+.st-phone{position:relative;width:120px;height:210px;border-radius:22px;border:3px solid var(--lightGrey);background:var(--darkCard);box-shadow:0 20px 50px rgba(0,0,0,.5);overflow:hidden}
+.st-phone i{display:block;height:7px;margin:9px 12px 0;border-radius:4px;background:color-mix(in srgb,var(--green) 55%,transparent)}
+.st-phone i:nth-child(2n){width:60%}
+.st-env{position:absolute;left:calc(50% - 60px + var(--t,0) * 150px);top:calc(45% - var(--t,0) * 40%);font-size:2rem;transition:left .1s linear,top .1s linear;transform:rotate(calc(var(--t,0) * 20deg))}
+.st-hall{position:absolute;right:2%;top:12%;font-size:3rem;filter:drop-shadow(0 6px 12px rgba(0,0,0,.4))}
+.st-rail{position:absolute;right:.9rem;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:9px;z-index:2}
+.st-rail i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);transition:all .3s}
+.st-rail i.on{background:var(--green);height:22px;border-radius:5px}
+.st-hint{position:absolute;bottom:1.1rem;left:50%;transform:translateX(-50%);font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:2px;color:var(--lightGrey);animation:stHint 1.6s ease-in-out infinite}
+@keyframes stHint{50%{transform:translate(-50%,6px);opacity:.5}}
+.story.static .story-track{height:auto}
+.story.static .story-stage{position:static;height:auto}
+.story.static .st-scene{position:static;opacity:1;transform:none;padding:3rem 1.2rem}
+.story.static .st-rail,.story.static .st-hint{display:none}
+/* Before / now: real dated satellite tiles, drag the divider */
+.sw-box{position:relative;width:100%;max-width:760px;margin:0 auto;aspect-ratio:16/10;max-height:420px;border-radius:var(--radius);overflow:hidden;background:var(--dark);touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:ew-resize;box-shadow:0 18px 50px rgba(0,0,0,.25)}
+.sw-box:focus-visible{outline:3px solid var(--green);outline-offset:3px}
+.sw-layer{position:absolute;inset:0;overflow:hidden}
+.sw-mosaic{position:absolute;left:50%;top:50%;width:768px;height:768px;transform-origin:0 0}
+.sw-mosaic img{position:absolute;width:256px;height:256px;max-width:none;display:block;user-select:none;-webkit-user-drag:none}
+.sw-b{clip-path:inset(0 0 0 var(--cut,50%))}
+.sw-line{position:absolute;top:0;bottom:0;left:var(--cut,50%);width:0;border-left:2px solid var(--white);box-shadow:0 0 14px rgba(0,0,0,.7);pointer-events:none}
+.sw-knob{position:absolute;top:50%;left:0;width:46px;height:46px;transform:translate(-50%,-50%);border-radius:50%;background:var(--white);color:var(--dark);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;box-shadow:0 6px 22px rgba(0,0,0,.5)}
+.sw-tag{position:absolute;top:.7rem;padding:.3rem .65rem;border-radius:999px;background:rgba(0,0,0,.66);color:var(--white);font-family:'Space Mono',monospace;font-size:.72rem;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);pointer-events:none}
+.sw-tag.l{left:.7rem}.sw-tag.r{right:.7rem}
+.sw-ring{position:absolute;left:50%;top:50%;width:84px;height:84px;margin:-42px 0 0 -42px;border:2.5px dashed var(--coral);border-radius:50%;pointer-events:none;animation:swRing 2.6s ease-in-out infinite}
+@keyframes swRing{50%{transform:scale(1.12);opacity:.65}}
+.sw-meta{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap;max-width:760px;margin:.7rem auto 0;font-size:.8rem;color:var(--textSec)}
+/* City in 3D: every court as a glowing pillar on the city plane */
+.cc-wrap{position:relative;border-radius:var(--radius);overflow:hidden;background:radial-gradient(110% 80% at 50% 30%,var(--darkCard),var(--dark));box-shadow:0 18px 50px rgba(0,0,0,.25)}
+.cc-wrap canvas{display:block;width:100%;height:min(62svh,440px);touch-action:pan-y;cursor:grab}
+.cc-wrap canvas:active{cursor:grabbing}
+.cc-info{position:absolute;left:.8rem;right:.8rem;bottom:.8rem;display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap;padding:.6rem .8rem;border-radius:10px;background:rgba(10,12,22,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:var(--white);font-size:.85rem}
+.cc-info b{font-family:'Space Mono',monospace}
+.cc-legend{position:absolute;left:.8rem;top:.7rem;display:flex;gap:.7rem;flex-wrap:wrap;font-size:.7rem;color:var(--lightGrey);pointer-events:none}
+.cc-legend span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:.3rem;background:var(--c)}
+@media(prefers-reduced-motion:reduce){.st-ball,.st-shadow,.st-hint,.sw-ring{animation:none}.st-scene{transition:opacity .2s}}
+.no-fx .st-ball,.no-fx .st-shadow,.no-fx .st-hint,.no-fx .sw-ring{animation:none}
 @media (max-width:600px){.showcase .sc-grid{grid-template-columns:1fr 1fr}.sc-tile{padding:.85rem}.sc-tile span:last-child{display:none}.pet-steps li{font-size:.75rem}}
 .ntf-scrim{position:fixed;inset:0;z-index:1200;background:rgba(0,0,0,.25)}
 .ntf-panel{position:fixed;top:64px;right:1rem;width:min(380px,calc(100vw - 2rem));max-height:72vh;z-index:1201;display:flex;flex-direction:column;background:var(--bgCard);color:var(--text);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 18px 50px rgba(0,0,0,.3);animation:slideUp .25s ease}
@@ -6003,10 +6102,12 @@ function Navbar() {
   showNotif && /*#__PURE__*/React.createElement(NotifPanel, { notif: notif, onClose: () => setShowNotif(false) }),
   mob && /*#__PURE__*/React.createElement("div", {
     className: "mobile-menu"
-  }, /*#__PURE__*/React.createElement("button", {
+  }, React.createElement("span", { className: "mobile-menu-brand" }, "FROM GREY TO PLAY"), /*#__PURE__*/React.createElement("button", {
     className: "mobile-close",
+    "aria-label": lang === "en" ? "Close menu" : lang === "hu" ? "Men\u00fc bez\u00e1r\u00e1sa" : "\u00cenchide meniul",
     onClick: () => setMob(false)
-  }, "\u2715"), navs.map(n => /*#__PURE__*/React.createElement(NL, {
+  }, React.createElement("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2.4, strokeLinecap: "round", "aria-hidden": "true" },
+    React.createElement("path", { d: "M6 6l12 12M18 6L6 18" }))), navs.map(n => /*#__PURE__*/React.createElement(NL, {
     key: n.k,
     k: n.k,
     l: n.l,
@@ -6912,6 +7013,38 @@ function Showcase() {
   const impact = tab => () => { sessionStorage.setItem("g2p_impact_tab", tab); setPage("impact"); scrollTo(0, 0); };
   const [cnt, setCnt] = useState(0);
   const [blk, setBlk] = useState(false);
+  // Tiles flip in once when the grid scrolls into view, then tilt toward the mouse.
+  const gridRef = useRef(null);
+  const [phase, setPhase] = useState(() => fxReduced() || !window.IntersectionObserver ? "" : "pre");
+  useEffect(() => {
+    if (phase !== "pre" || !gridRef.current) return;
+    let tid = 0;
+    const io = new IntersectionObserver(es => {
+      if (!es[0].isIntersecting) return;
+      io.disconnect();
+      setPhase("enter");
+      tid = setTimeout(() => setPhase(""), 1400);
+    }, { threshold: .2 });
+    io.observe(gridRef.current);
+    return () => { io.disconnect(); clearTimeout(tid); };
+  }, []);
+  const tilt = e => {
+    if (e.pointerType !== "mouse" || phase) return;
+    const el = e.currentTarget, r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - .5, py = (e.clientY - r.top) / r.height - .5;
+    el.style.setProperty("--ry", (px * 14).toFixed(2) + "deg");
+    el.style.setProperty("--rx", (-py * 12).toFixed(2) + "deg");
+    el.style.setProperty("--px", (px * 2).toFixed(3));
+    el.style.setProperty("--py", (py * 2).toFixed(3));
+    el.style.setProperty("--gx", ((px + .5) * 100).toFixed(1) + "%");
+    el.style.setProperty("--gy", ((py + .5) * 100).toFixed(1) + "%");
+    el.classList.add("tilting");
+  };
+  const untilt = e => {
+    const el = e.currentTarget;
+    ["--rx", "--ry", "--px", "--py"].forEach(p => el.style.removeProperty(p));
+    el.classList.remove("tilting");
+  };
   useEffect(() => {
     let v = 0;
     const id = setInterval(() => {
@@ -6967,10 +7100,11 @@ function Showcase() {
     React.createElement("div", { className: "container" },
       React.createElement("h2", { className: "section-title" }, "✨ " + L3("Ce poate face site-ul ăsta", "What this site can do", "Mit tud ez az oldal")),
       React.createElement("p", { className: "section-sub" }, L3("Patru instrumente. Fiecare face ceva diferit.", "Four tools. Each one does something different.", "Négy eszköz, mind más-más.")),
-      React.createElement("div", { className: "sc-grid sc-grid-v2" },
-        tiles.map(tile => React.createElement("button", {
+      React.createElement("div", { ref: gridRef, className: "sc-grid sc-grid-v2" + (phase ? " " + phase : "") },
+        tiles.map((tile, i) => React.createElement("button", {
           key: tile.key, className: "sc-tile sc-tile-v2", onClick: tile.action,
-          style: { "--sc-acc": tile.color }
+          style: { "--sc-acc": tile.color, "--i": i },
+          onPointerMove: tilt, onPointerLeave: untilt
         },
           tile.preview,
           React.createElement("span", { className: "sc-ic", "aria-hidden": "true" }, tile.icon),
@@ -6981,6 +7115,397 @@ function Showcase() {
       !firebaseUser && React.createElement("div", { className: "sc-cta" },
         React.createElement("p", null, L3("Toate merg mai bine cu un cont.", "Everything works better with an account.", "Fiókkal minden jobb.")),
         React.createElement("button", { className: "btn btn-green btn-lg", onClick: () => openAuth("signup") }, "👤 " + L3("Creează cont gratuit", "Create a free account", "Ingyenes fiók")))));
+}
+
+/* ===== Spectacle pack: the story on scroll, then-and-now from space, the city in 3D ===== */
+function fxReduced() {
+  return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches) || document.documentElement.classList.contains("no-fx");
+}
+function hexA(hex, a) {
+  const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex || "");
+  return m ? "rgba(" + parseInt(m[1], 16) + "," + parseInt(m[2], 16) + "," + parseInt(m[3], 16) + "," + a + ")" : "rgba(156,163,175," + a + ")";
+}
+
+function StoryScroll() {
+  const { lang, setPage } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const sib = ACTIVE_CITY === "sibiu";
+  const reports = useFirebase(sib ? "reports" : null);
+  const [still] = useState(fxReduced);
+  const [scene, setScene] = useState(0);
+  const ref = useRef(null), numRef = useRef(null), stampRef = useRef(null);
+  const N = 4;
+  const checked = {};
+  if (reports) Object.values(reports).forEach(r => { if (r && r.category === "condition" && r.courtId) checked[r.courtId] = 1; });
+  const sbCourts = COURTS.filter(c => c.city === "sibiu");
+  const lit = sbCourts.filter(c => checked[c.id]).length;
+  const money = v => Math.round(v).toLocaleString("ro-RO") + " lei";
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (still) {
+      if (numRef.current) numRef.current.textContent = money(5000000);
+      if (stampRef.current) stampRef.current.classList.add("hit");
+      return;
+    }
+    const nav = document.querySelector(".navbar");
+    let raf = 0, last = -1;
+    const tick = () => {
+      raf = 0;
+      const navH = nav ? nav.offsetHeight : 58;
+      el.style.setProperty("--navH", navH + "px");
+      const r = el.getBoundingClientRect();
+      const total = Math.max(1, r.height - (window.innerHeight - navH));
+      const p = Math.min(1, Math.max(0, (navH - r.top) / total));
+      const pos = p * N, idx = Math.min(N - 1, Math.floor(pos)), local = idx === N - 1 && p >= 1 ? 1 : Math.min(1, pos - idx);
+      el.querySelectorAll(".st-scene").forEach((s, i) => s.style.setProperty("--t", i < idx ? "1" : i > idx ? "0" : local.toFixed(3)));
+      if (idx !== last) { last = idx; setScene(idx); }
+      if (numRef.current) {
+        const v = idx > 2 ? 1 : idx < 2 ? 0 : Math.min(1, local / .55);
+        numRef.current.textContent = money(5000000 * (1 - Math.pow(1 - v, 3)));
+      }
+      if (stampRef.current) stampRef.current.classList.toggle("hit", idx > 2 || (idx === 2 && local > .6));
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(tick); };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    tick();
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); };
+  }, [still]);
+
+  const court = React.createElement("svg", { className: "st-court", viewBox: "0 0 300 200", "aria-hidden": "true" },
+    React.createElement("polygon", { className: "floor", points: "30,190 270,190 225,48 75,48" }),
+    React.createElement("polygon", { className: "floor-g", points: "30,190 270,190 225,48 75,48" }),
+    React.createElement("polygon", { className: "ln", points: "30,190 270,190 225,48 75,48" }),
+    React.createElement("line", { className: "ln", x1: 52, y1: 119, x2: 248, y2: 119 }),
+    React.createElement("ellipse", { className: "ln", cx: 150, cy: 119, rx: 30, ry: 12 }),
+    !sib && React.createElement("path", { className: "crk", d: "M62 182 L88 160 L82 146 L112 128 L108 108" }),
+    !sib && React.createElement("path", { className: "crk", d: "M236 186 L222 160 L242 140 L232 112 L246 96" }),
+    !sib && React.createElement("path", { className: "crk", d: "M140 60 L152 82 L134 98 L164 118 L150 140" }),
+    React.createElement("g", { className: "hoop" },
+      React.createElement("line", { x1: 150, y1: 48, x2: 150, y2: 14, stroke: "var(--lightGrey)", strokeWidth: 4 }),
+      React.createElement("rect", { x: 128, y: 2, width: 44, height: 18, rx: 2, fill: "var(--white)", opacity: .9 }),
+      React.createElement("ellipse", { cx: 150, cy: 24, rx: 10, ry: 3.5, fill: "none", stroke: "var(--coral)", strokeWidth: 3 })
+    ),
+    sib && React.createElement("text", { x: 150, y: 140, textAnchor: "middle", fontSize: 74, fontWeight: 800, fill: "var(--white)", style: { opacity: "var(--t,0)" } }, "?")
+  );
+  const scenes = [
+    {
+      vis: React.createElement(React.Fragment, null, React.createElement("span", { className: "st-shadow" }), React.createElement("span", { className: "st-ball", "aria-hidden": "true" }, "🏀")),
+      h: L3("Ai 15 ani și vrei doar să joci.", "You're 15 and you just want to play.", "15 éves vagy, és csak játszani akarsz."),
+      p: L3("După școală, cu prietenii. Mingea o ai. Îți trebuie doar un teren.", "After school, with your friends. You've got the ball. You just need a court.", "Iskola után, a barátaiddal. A labda megvan. Csak egy pálya kell.")
+    },
+    {
+      vis: court,
+      h: sib ? L3("Cum arată terenul de lângă tine?", "What does the court near you look like?", "Milyen a hozzád legközelebbi pálya?")
+             : L3("Cel mai apropiat teren arată așa.", "The nearest court looks like this.", "A legközelebbi pálya így néz ki."),
+      p: sib ? L3("Pe hartă sunt 35 de terenuri publice. Starea lor nu a verificat-o încă nimeni.", "There are 35 public courts on the map. Nobody has checked their condition yet.", "35 közpálya van a térképen. Az állapotukat még senki sem ellenőrizte.")
+             : L3("Coș îndoit, asfalt crăpat, linii șterse. Și nu e singurul.", "Bent hoop, cracked asphalt, faded lines. And it isn't the only one.", "Görbe kosár, repedezett aszfalt, kopott vonalak. És nem ez az egyetlen.")
+    },
+    sib ? {
+      vis: React.createElement("div", { className: "st-dots", "aria-hidden": "true" }, sbCourts.map(c => React.createElement("i", { key: c.id, className: checked[c.id] ? "on" : "" }))),
+      h: lit + " / " + sbCourts.length,
+      p: L3("terenuri verificate de comunitate. Fiecare punct e un teren real și se aprinde când cineva îl verifică.", "courts checked by the community. Each dot is a real court and lights up when someone checks it.", "pályát ellenőrzött a közösség. Minden pont egy valódi pálya, és kigyullad, ha valaki ellenőrzi."),
+      src: L3("Sursă: OpenStreetMap (ODbL) · verificări live", "Source: OpenStreetMap (ODbL) · live checks", "Forrás: OpenStreetMap (ODbL) · élő ellenőrzések")
+    } : {
+      vis: React.createElement("div", null, React.createElement("div", { ref: numRef, className: "st-num" }, money(0)), React.createElement("span", { ref: stampRef, className: "st-stamp" }, "0%")),
+      h: L3("promiși pentru renovări. Realizat: zero.", "promised for renovations. Delivered: zero.", "ígéret felújításra. Megvalósult: semmi."),
+      p: "",
+      src: L3("Surse: SIDU Târgu Mureș · Punctul.ro", "Sources: SIDU Târgu Mureș · Punctul.ro", "Források: SIDU Marosvásárhely · Punctul.ro")
+    },
+    {
+      vis: React.createElement(React.Fragment, null,
+        React.createElement("div", { className: "st-phone", "aria-hidden": "true" }, React.createElement("i"), React.createElement("i"), React.createElement("i"), React.createElement("i"), React.createElement("i"), React.createElement("i")),
+        React.createElement("span", { className: "st-env", "aria-hidden": "true" }, "✉️"),
+        React.createElement("span", { className: "st-hall", "aria-hidden": "true" }, "🏛️")),
+      h: L3("Acum poți face ceva.", "Now you can do something.", "Most tehetsz valamit."),
+      p: sib ? L3("Verifici un teren din telefon. Verificarea apare live pe hartă, iar scrisoarea pleacă la Primăria Sibiu.", "Check a court from your phone. It shows up live on the map, and the letter goes to Sibiu City Hall.", "Ellenőrizz egy pályát a telefonodról. Élőben megjelenik a térképen, a levél pedig a városházára megy.")
+             : L3("Raportezi din telefon, cu o poză. Semnezi petiția. Scrisoarea pleacă la Primărie, gata de depus.", "Report from your phone, with a photo. Sign the petition. The letter goes to City Hall, ready to file.", "Jelents a telefonodról, fotóval. Írd alá a petíciót. A levél kész, mehet a városházára."),
+      cta: true
+    }
+  ];
+  return React.createElement("section", { ref, className: "story" + (still ? " static" : ""), "aria-label": L3("Povestea", "The story", "A történet") },
+    React.createElement("div", { className: "story-track", style: { "--n": N } },
+      React.createElement("div", { className: "story-stage" },
+        scenes.map((s, i) => React.createElement("div", { key: i, className: "st-scene" + (still || i === scene ? " on" : i < scene ? " past" : "") },
+          React.createElement("div", { className: "st-vis" }, s.vis),
+          React.createElement("h2", { className: "st-h" }, s.h),
+          s.p && React.createElement("p", { className: "st-p" }, s.p),
+          s.src && React.createElement("span", { className: "st-src" }, s.src),
+          s.cta && React.createElement("div", { className: "flex gap-1", style: { flexWrap: "wrap", justifyContent: "center" } },
+            sib ? React.createElement("button", { className: "btn btn-green btn-lg", onClick: () => { setPage("courts"); scrollTo(0, 0); } }, "🩺 ", L3("Verifică un teren", "Check a court", "Ellenőrizz egy pályát"))
+                : React.createElement("button", { className: "btn btn-green btn-lg", onClick: () => { setPage("petition"); scrollTo(0, 0); } }, "✍️ ", L3("Semnează petiția", "Sign the petition", "Írd alá a petíciót")),
+            React.createElement("button", { className: "btn btn-outline btn-lg", style: { color: "var(--white)", borderColor: "var(--lightGrey)" }, onClick: () => { setPage(sib ? "petition" : "courts"); scrollTo(0, 0); } },
+              sib ? "✍️ " + L3("Petiția", "The petition", "A petíció") : "📍 " + L3("Vezi terenurile", "See the courts", "Pályák"))
+          )
+        )),
+        !still && React.createElement("div", { className: "st-rail", "aria-hidden": "true" }, scenes.map((_, i) => React.createElement("i", { key: i, className: i === scene ? "on" : "" }))),
+        !still && scene === 0 && React.createElement("div", { className: "st-hint", "aria-hidden": "true" }, "↓ ", L3("DERULEAZĂ", "SCROLL", "GÖRGESS"))
+      )
+    )
+  );
+}
+
+function SatSwipe() {
+  const { lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const [pick, setPick] = useState(null);
+  const [cut, setCut] = useState(50);
+  const [dead, setDead] = useState(false);
+  const boxRef = useRef(null), errs = useRef(0), touched = useRef(false);
+  useEffect(() => {
+    let alive = true;
+    tmPrecomputed().then(pre => {
+      if (!alive) return;
+      const ok = COURTS.filter(c => c.lat != null && !c.posFixed && pre[c.id] && pre[c.id].length >= 2);
+      const first = c => pre[c.id][0].date;
+      const pref = ACTIVE_CITY === "sibiu"
+        ? ok.find(c => c.id === "sb13")
+        : ok.filter(c => c.status === "degraded").sort((a, b) => first(a) < first(b) ? -1 : 1)[0];
+      const c = pref || ok.sort((a, b) => first(a) < first(b) ? -1 : 1)[0];
+      if (!c) { setDead(true); return; }
+      const caps = pre[c.id];
+      setPick({ court: c, a: caps[0], b: caps[caps.length - 1] });
+    });
+    return () => { alive = false; };
+  }, []);
+  // One sweep of the divider the first time it scrolls into view, to show it can be dragged.
+  useEffect(() => {
+    const el = boxRef.current;
+    if (!el || !pick || fxReduced() || !window.IntersectionObserver) return;
+    let raf = 0;
+    const io = new IntersectionObserver(es => {
+      if (!es[0].isIntersecting) return;
+      io.disconnect();
+      const t0 = performance.now(), keys = [50, 80, 20, 50];
+      const step = now => {
+        if (touched.current) return;
+        const k = Math.min(1, (now - t0) / 2200) * 3, i = Math.min(2, Math.floor(k)), f = k - i, e = f * f * (3 - 2 * f);
+        setCut(keys[i] + (keys[i + 1] - keys[i]) * e);
+        if (k < 3) raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame(step);
+    }, { threshold: .6 });
+    io.observe(el);
+    return () => { io.disconnect(); cancelAnimationFrame(raf); };
+  }, [pick]);
+  if (dead || !pick) return null;
+  const { court, a, b } = pick;
+  const z = 17, n = Math.pow(2, z) * 256, lr = court.lat * Math.PI / 180;
+  const wx = (court.lng + 180) / 360 * n, wy = (1 - Math.log(Math.tan(lr) + 1 / Math.cos(lr)) / Math.PI) / 2 * n;
+  const tx = Math.floor(wx / 256), ty = Math.floor(wy / 256);
+  const ox = wx - (tx - 1) * 256, oy = wy - (ty - 1) * 256;
+  const tiles = [];
+  for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) tiles.push({ x: tx + dx, y: ty + dy, l: (dx + 1) * 256, t: (dy + 1) * 256 });
+  const onErr = () => { errs.current++; if (errs.current > 6) setDead(true); };
+  const mosaic = cap => React.createElement("div", { className: "sw-mosaic", style: { transform: "scale(2) translate(" + (-ox) + "px," + (-oy) + "px)" } },
+    tiles.map(tl => React.createElement("img", { key: tl.x + "_" + tl.y, src: WB_TILE + cap.r + "/" + z + "/" + tl.y + "/" + tl.x, alt: "", draggable: false, loading: "lazy", onError: onErr, style: { left: tl.l, top: tl.t } })));
+  const moveTo = clientX => {
+    const r = boxRef.current.getBoundingClientRect();
+    setCut(Math.min(98, Math.max(2, (clientX - r.left) / r.width * 100)));
+  };
+  const down = e => {
+    touched.current = true;
+    e.currentTarget.setPointerCapture && e.currentTarget.setPointerCapture(e.pointerId);
+    moveTo(e.clientX);
+  };
+  const move = e => { if (e.buttons || e.pointerType === "touch") { if (e.currentTarget.hasPointerCapture && !e.currentTarget.hasPointerCapture(e.pointerId)) return; moveTo(e.clientX); } };
+  const key = e => {
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight") { e.preventDefault(); touched.current = true; setCut(c => Math.min(98, Math.max(2, c + (e.key === "ArrowLeft" ? -5 : 5)))); }
+  };
+  return React.createElement("section", { className: "section" },
+    React.createElement("div", { className: "container" },
+      React.createElement("h2", { className: "section-title" }, "🛰️ ", L3("Atunci și acum, din satelit", "Then and now, from space", "Akkor és most, műholdról")),
+      React.createElement("p", { className: "section-sub" }, L3("Trage de linie. Același teren, imagini reale, datate.", "Drag the line. The same court, real dated images.", "Húzd a vonalat. Ugyanaz a pálya, valódi, dátumozott képek.")),
+      React.createElement("div", {
+        ref: boxRef, className: "sw-box", style: { "--cut": cut + "%" }, tabIndex: 0, role: "slider",
+        "aria-label": L3("Comparație din satelit", "Satellite comparison", "Műholdas összehasonlítás") + " · " + court.name,
+        "aria-valuemin": 0, "aria-valuemax": 100, "aria-valuenow": Math.round(cut),
+        onPointerDown: down, onPointerMove: move, onKeyDown: key
+      },
+        React.createElement("div", { className: "sw-layer" }, mosaic(a)),
+        React.createElement("div", { className: "sw-layer sw-b" }, mosaic(b)),
+        React.createElement("span", { className: "sw-ring", "aria-hidden": "true" }),
+        React.createElement("span", { className: "sw-tag l" }, tmFmt(a.date, lang, true)),
+        React.createElement("span", { className: "sw-tag r" }, tmFmt(b.date, lang, true)),
+        React.createElement("div", { className: "sw-line", "aria-hidden": "true" }, React.createElement("span", { className: "sw-knob" }, "⟺"))
+      ),
+      React.createElement("div", { className: "sw-meta" },
+        React.createElement("span", null, "📍 ", React.createElement("b", null, court.name), " · ", tmSpan(a.date, b.date, lang)),
+        React.createElement("button", { className: "btn btn-sm btn-green", onClick: () => { location.hash = "#court-" + court.id; } }, L3("Toată arhiva terenului →", "Full archive of this court →", "A pálya teljes archívuma →"))
+      ),
+      React.createElement("p", { className: "text-xs", style: { maxWidth: 760, margin: ".5rem auto 0", color: "var(--textSec)" } },
+        L3("Imaginile arată ce se vedea din satelit la acele date, nu starea de azi a terenului. ", "The images show what satellites saw on those dates, not the court's condition today. ", "A képek azt mutatják, amit a műhold akkor látott, nem a pálya mai állapotát. "),
+        "Esri World Imagery Wayback · " + (b.provider || a.provider || ""))
+    )
+  );
+}
+
+function City3D() {
+  const { t, lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const cvRef = useRef(null);
+  const [sel, setSel] = useState(null);
+  const tRef = useRef(t);
+  tRef.current = t;
+  useEffect(() => {
+    const cv = cvRef.current;
+    if (!cv) return;
+    const ctx = cv.getContext("2d");
+    const still = fxReduced();
+    const pts = COURTS.filter(c => c.lat != null && c.lng != null);
+    if (pts.length < 2) return;
+    const cLat = pts.reduce((s, c) => s + c.lat, 0) / pts.length, cLng = pts.reduce((s, c) => s + c.lng, 0) / pts.length;
+    const k = Math.cos(cLat * Math.PI / 180);
+    const raw = pts.map(c => ({ c, x: (c.lng - cLng) * k, z: (c.lat - cLat) }));
+    const R = Math.max.apply(null, raw.map(p => Math.hypot(p.x, p.z))) || 1;
+    const nodes = raw.map((p, i) => {
+      const cond = typeof p.c.condition === "number" ? p.c.condition : null;
+      return { c: p.c, i, x: p.x / R, z: p.z / R, h: cond == null ? .05 : .14 + cond / 5 * .55, col: courtStatusView(p.c, tRef.current).color, known: cond != null };
+    });
+    const links = [];
+    nodes.forEach((a, i) => nodes.map((b, j) => ({ j, d: (a.x - b.x) * (a.x - b.x) + (a.z - b.z) * (a.z - b.z) }))
+      .filter(o => o.j !== i).sort((p, q) => p.d - q.d).slice(0, 2)
+      .forEach(o => { if (!links.some(l => (l[0] === i && l[1] === o.j) || (l[0] === o.j && l[1] === i))) links.push([i, o.j]); }));
+    const stars = Array.from({ length: 70 }, () => ({ x: Math.random(), y: Math.random(), r: Math.random() * 1.3 + .2, v: Math.random() * .012 + .003, a: Math.random() * .5 + .2 }));
+    const bursts = [];
+    let W = 0, H = 0, rot = .7, pitch = .95, raf = 0, last = 0, time = 0, visible = true, drag = null, hover = -1, selIdx = -1;
+    let proj = [];
+    const resize = () => {
+      const r = cv.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = r.width; H = r.height; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    const P = (x, y, z) => {
+      const cr = Math.cos(rot), sr = Math.sin(rot), xr = x * cr - z * sr, zr = x * sr + z * cr;
+      const cp = Math.cos(pitch), sp = Math.sin(pitch), yr = y * cp + zr * sp, zz = -y * sp + zr * cp;
+      const d = 3.2, s = Math.min(W, H * 1.7) * .42 * d / (d + zz);
+      return { x: W / 2 + xr * s, y: H * .58 - yr * s, s, z: zz };
+    };
+    const draw = () => {
+      ctx.clearRect(0, 0, W, H);
+      stars.forEach(s => { ctx.fillStyle = "rgba(255,255,255," + (s.a * (.6 + .4 * Math.sin(time * 2 + s.x * 20))) + ")"; ctx.beginPath(); ctx.arc(s.x * W, s.y * H * .7, s.r, 0, 6.283); ctx.fill(); });
+      ctx.lineWidth = 1;
+      [.4, .8, 1.15].forEach((rr, ri) => {
+        ctx.strokeStyle = "rgba(16,185,129," + (.22 - ri * .05) + ")";
+        ctx.beginPath();
+        for (let a = 0; a <= 64; a++) { const q = P(Math.cos(a / 64 * 6.283) * rr, 0, Math.sin(a / 64 * 6.283) * rr); a ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y); }
+        ctx.stroke();
+      });
+      proj = nodes.map(n => ({ n, b: P(n.x, 0, n.z), tp: P(n.x, n.h, n.z) }));
+      ctx.strokeStyle = "rgba(255,255,255,.1)";
+      links.forEach(l => { const a = proj[l[0]].b, b = proj[l[1]].b; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); });
+      proj.slice().sort((p, q) => q.b.z - p.b.z).forEach(p => {
+        const n = p.n, on = n.i === hover || n.i === selIdx, b = p.b, tp = p.tp, sz = Math.max(.6, b.s / 220);
+        ctx.fillStyle = hexA(n.col, .35);
+        ctx.beginPath(); ctx.ellipse(b.x, b.y, 7 * sz, 3 * sz, 0, 0, 6.283); ctx.fill();
+        if (!n.known) {
+          const ph = (time * .8 + n.i * .37) % 1;
+          ctx.strokeStyle = hexA(n.col, .7 * (1 - ph));
+          ctx.beginPath(); ctx.ellipse(b.x, b.y, (6 + ph * 18) * sz, (2.6 + ph * 7) * sz, 0, 0, 6.283); ctx.stroke();
+        }
+        const g = ctx.createLinearGradient(b.x, b.y, tp.x, tp.y);
+        g.addColorStop(0, hexA(n.col, .05)); g.addColorStop(1, hexA(n.col, .95));
+        ctx.strokeStyle = g; ctx.lineWidth = (on ? 5 : 3.2) * sz; ctx.lineCap = "round";
+        ctx.beginPath(); ctx.moveTo(b.x, b.y); ctx.lineTo(tp.x, tp.y); ctx.stroke();
+        const rg = ctx.createRadialGradient(tp.x, tp.y, 0, tp.x, tp.y, (on ? 18 : 11) * sz);
+        rg.addColorStop(0, "rgba(255,255,255,.95)"); rg.addColorStop(.25, hexA(n.col, .9)); rg.addColorStop(1, hexA(n.col, 0));
+        ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(tp.x, tp.y, (on ? 18 : 11) * sz, 0, 6.283); ctx.fill();
+        if (on) {
+          ctx.font = "600 12px 'Libre Franklin',sans-serif"; ctx.textAlign = "center";
+          const label = n.c.name.length > 34 ? n.c.name.slice(0, 33) + "…" : n.c.name, w = ctx.measureText(label).width + 14;
+          ctx.fillStyle = "rgba(10,12,22,.8)"; ctx.fillRect(tp.x - w / 2, tp.y - 34, w, 20);
+          ctx.fillStyle = "#fff"; ctx.fillText(label, tp.x, tp.y - 20);
+        }
+      });
+      for (let i = bursts.length - 1; i >= 0; i--) {
+        const q = bursts[i]; q.x += q.vx; q.y += q.vy; q.vy += .06; q.life -= .02;
+        if (q.life <= 0) { bursts.splice(i, 1); continue; }
+        ctx.fillStyle = hexA(q.col, q.life); ctx.beginPath(); ctx.arc(q.x, q.y, 2.2 * q.life + .4, 0, 6.283); ctx.fill();
+      }
+    };
+    const frame = ts => {
+      raf = requestAnimationFrame(frame);
+      const dt = Math.min(.05, last ? (ts - last) / 1000 : 0);
+      last = ts;
+      if (!visible || document.hidden || !W) return;
+      if (!still) {
+        time += dt;
+        if (!drag) rot += dt * .16;
+        stars.forEach(s => { s.x += s.v * dt; if (s.x > 1) s.x -= 1; });
+      }
+      draw();
+    };
+    const nearest = (cx, cy, max) => {
+      let best = -1, bd = max * max;
+      proj.forEach(p => { const dx = p.tp.x - cx, dy = p.tp.y - cy, d = dx * dx + dy * dy; if (d < bd) { bd = d; best = p.n.i; } });
+      return best;
+    };
+    const local = e => { const r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
+    const down = e => { const p = local(e); drag = { x: p.x, y: p.y, rot, pitch, moved: false, id: e.pointerId }; };
+    const move = e => {
+      const p = local(e);
+      if (drag && drag.id === e.pointerId) {
+        const dx = p.x - drag.x, dy = p.y - drag.y;
+        if (!drag.moved && Math.abs(dx) + Math.abs(dy) > 6) { drag.moved = true; try { cv.setPointerCapture(e.pointerId); } catch (err) {} }
+        if (drag.moved) { rot = drag.rot - dx * .009; pitch = Math.min(1.3, Math.max(.45, drag.pitch + dy * .004)); }
+      } else if (e.pointerType === "mouse") {
+        hover = nearest(p.x, p.y, 26);
+        cv.style.cursor = hover >= 0 ? "pointer" : "";
+      }
+    };
+    const up = e => {
+      if (!drag) return;
+      const wasTap = !drag.moved;
+      drag = null;
+      if (!wasTap) return;
+      const p = local(e), i = nearest(p.x, p.y, 30);
+      selIdx = i;
+      setSel(i >= 0 ? nodes[i].c : null);
+      if (i >= 0) {
+        const tp = proj.find(q => q.n.i === i).tp;
+        for (let j = 0; j < 28; j++) { const a = Math.random() * 6.283, v = Math.random() * 3 + 1; bursts.push({ x: tp.x, y: tp.y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1.5, life: 1, col: nodes[i].col }); }
+      }
+    };
+    const leave = () => { hover = -1; };
+    cv.addEventListener("pointerdown", down);
+    cv.addEventListener("pointermove", move);
+    cv.addEventListener("pointerup", up);
+    cv.addEventListener("pointercancel", () => { drag = null; });
+    cv.addEventListener("pointerleave", leave);
+    resize();
+    let ro = null, io = null;
+    if (window.ResizeObserver) { ro = new ResizeObserver(resize); ro.observe(cv); }
+    if (window.IntersectionObserver) { io = new IntersectionObserver(es => { visible = es[0].isIntersecting; }); io.observe(cv); }
+    raf = requestAnimationFrame(frame);
+    return () => {
+      cancelAnimationFrame(raf); ro && ro.disconnect(); io && io.disconnect();
+      cv.removeEventListener("pointerdown", down); cv.removeEventListener("pointermove", move);
+      cv.removeEventListener("pointerup", up); cv.removeEventListener("pointerleave", leave);
+    };
+  }, []);
+  const statuses = [...new Set(COURTS.map(c => c.status))];
+  return React.createElement("section", { className: "section" },
+    React.createElement("div", { className: "container" },
+      React.createElement("h2", { className: "section-title" }, "🌌 ", L3("Orașul, în 3D", "The city, in 3D", "A város 3D-ben")),
+      React.createElement("p", { className: "section-sub" }, L3(
+        "Fiecare stâlp e un teren real, așezat după coordonatele lui. Înălțimea arată starea (1–5) acolo unde a fost evaluată; punctele care pulsează nu au fost încă verificate.",
+        "Each pillar is a real court, placed by its coordinates. Height shows its condition (1–5) where it has been rated; pulsing dots haven't been checked yet.",
+        "Minden oszlop egy valódi pálya a koordinátái szerint. A magasság az állapotot (1–5) mutatja, ahol értékelték; a pulzáló pontokat még nem ellenőrizték.")),
+      React.createElement("div", { className: "cc-wrap" },
+        React.createElement("canvas", { ref: cvRef, role: "img", "aria-label": L3("Harta 3D a terenurilor", "3D map of the courts", "A pályák 3D térképe") }),
+        React.createElement("div", { className: "cc-legend", "aria-hidden": "true" },
+          statuses.map(s => React.createElement("span", { key: s, style: { "--c": courtStatusView({ status: s, condition: 4 }, t).color } }, s === "verified" ? t.fieldVerified : t[s] || s))),
+        React.createElement("div", { className: "cc-info" },
+          sel
+            ? React.createElement(React.Fragment, null,
+                React.createElement("span", null, "📍 ", React.createElement("b", null, sel.name), " · ", courtStatusView(sel, t).label),
+                React.createElement("button", { className: "btn btn-sm btn-green", onClick: () => { location.hash = "#court-" + sel.id; } }, L3("Deschide →", "Open →", "Megnyitás →")))
+            : React.createElement("span", null, "👆 ", L3("Trage ca să rotești orașul · atinge un stâlp", "Drag to spin the city · tap a pillar", "Húzd a forgatáshoz · érints meg egy oszlopot")))
+      )
+    )
+  );
 }
 
 function HomePage() {
@@ -7039,7 +7564,7 @@ function HomePage() {
   }, React.createElement("div", { className: "ac-icon" }, "\u270A"), /*#__PURE__*/React.createElement("h3", null, t.voteTitle)), /*#__PURE__*/React.createElement("button", {
     className: "action-card",
     onClick: () => setPage("help")
-  }, React.createElement("div", { className: "ac-icon" }, "\uD83E\uDD1D"), /*#__PURE__*/React.createElement("h3", null, t.quickVolunteer))))), React.createElement(Showcase, null), /*#__PURE__*/React.createElement("section", {
+  }, React.createElement("div", { className: "ac-icon" }, "\uD83E\uDD1D"), /*#__PURE__*/React.createElement("h3", null, t.quickVolunteer))))), React.createElement(StoryScroll, null), React.createElement(Showcase, null), React.createElement(SatSwipe, null), React.createElement(City3D, null), /*#__PURE__*/React.createElement("section", {
     className: "section",
     style: {
       background: "var(--bgCard)"
@@ -7505,39 +8030,19 @@ function CourtDetail({
   (c.status === "degraded" || c.status === "inProgress") && React.createElement(TaskBoard, { court: c }),
   c.category !== "gym" && React.createElement(AdoptCourt, { court: c }),
   React.createElement(CourtTimeline, { court: c }),
-  /*#__PURE__*/React.createElement("div", {
-    className: "flex gap-1 mt-2"
-  }, (useApp().settings?.flags?.booking) !== false && /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-green btn-sm",
-    onClick: onBook
-  }, "\uD83D\uDCC5 ", t.bookCourt), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-sm",
-    style: { background: "var(--coral)", color: "#fff" },
-    onClick: () => setShowPlay(true)
-  }, "\u26BD ", t.playNow), !ci ? /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-outline btn-sm",
-    onClick: doCI
-  }, "\uD83D\uDCCD ", t.checkIn) : /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-sm",
-    style: {
-      background: "var(--red)",
-      color: "#fff"
-    },
-    onClick: doCO
-  }, "\uD83D\uDCCD ", t.checkOut),
-  /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-sm " + (following ? "btn-outline" : ""),
-    style: following ? { borderColor:"var(--teal)", color:"var(--teal)" } : { background:"var(--teal)", color:"#fff" },
-    onClick: () => toggleFollow(c.id),
-    title: following ? t.unfollow : t.follow
-  }, following ? "\uD83D\uDD15 " + t.unfollow : "\uD83D\uDD14 " + t.follow),
-  /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-outline btn-sm",
-    onClick: () => shareCourt(c, t, toast),
-    title: t.shareCourt
-  }, "\uD83D\uDD17 " + t.shareCourt),
-  React.createElement("button", { className:"btn btn-outline btn-sm", onClick:()=>setShowQR(true) }, "\uD83D\uDCF1 QR"),
-  c.category !== "gym" && React.createElement("button", { className:"btn btn-outline btn-sm", onClick:()=>setShowWanted(true) }, "\uD83E\uDEA7 Poster"))),
+  (() => {
+    const act = (key, kind, onClick, ic, label) => React.createElement("button", { key, className: "cd-act cd-" + kind, onClick, title: label },
+      React.createElement("span", { className: "cd-ic", "aria-hidden": "true" }, ic),
+      React.createElement("span", { className: "cd-l" }, label));
+    return React.createElement("div", { className: "cd-actions" },
+      (useApp().settings?.flags?.booking) !== false && act("book", "green", onBook, "\uD83D\uDCC5", t.bookCourt),
+      act("play", "coral", () => setShowPlay(true), "\u26BD", t.playNow),
+      !ci ? act("ci", "line", doCI, "\uD83D\uDCCD", t.checkIn) : act("co", "red", doCO, "\uD83D\uDCCD", t.checkOut),
+      act("follow", following ? "line" : "teal", () => toggleFollow(c.id), following ? "\uD83D\uDD15" : "\uD83D\uDD14", following ? t.unfollow : t.follow),
+      act("share", "line", () => shareCourt(c, t, toast), "\uD83D\uDD17", t.shareCourt),
+      act("qr", "line", () => setShowQR(true), "\uD83D\uDCF1", "QR"),
+      c.category !== "gym" && act("poster", "line", () => setShowWanted(true), "\uD83E\uDEA7", lang === "en" ? "Poster" : lang === "hu" ? "Plak\u00E1t" : "Afi\u0219"));
+  })()),
   showPlay && React.createElement(PlayNowModal, { court: c, onClose: () => setShowPlay(false) }),
   showQR && React.createElement(CourtQRCard, { court: c, onClose: () => setShowQR(false) }),
   showWanted && React.createElement(WantedPoster, { court: c, onClose: () => setShowWanted(false) }),
