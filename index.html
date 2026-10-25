@@ -225,6 +225,13 @@ a[href^="tel:"],a[href^="mailto:"]{display:inline-flex;align-items:center;min-he
 .ntf-empty{padding:1.1rem;color:var(--textSec);font-size:.9rem;line-height:1.5}
 .ntf-empty p{margin:0 0 .6rem}
 @media (max-width:600px){.ntf-panel{top:auto;bottom:0;left:0;right:0;width:auto;max-height:80vh;border-radius:18px 18px 0 0;padding-bottom:env(safe-area-inset-bottom)}}
+.civic-orb{text-align:center;margin:1.8rem auto;max-width:520px;padding:1.2rem 1rem 1.1rem;border-radius:16px;background:radial-gradient(120% 90% at 50% 40%,color-mix(in srgb,var(--green) 10%,transparent),transparent 70%);border:1px solid color-mix(in srgb,var(--green) 22%,transparent)}
+.co-kicker{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:.2rem}
+.co-num{font-size:1rem;color:var(--textSec);margin-top:.2rem}.co-num b{font-family:'Space Mono',monospace;font-size:2rem;color:var(--text);margin-right:.15rem}
+.co-goal{display:flex;flex-direction:column;align-items:center;gap:.35rem;margin:.55rem auto 0;max-width:280px;font-size:.82rem;color:var(--textSec)}
+.co-bar{width:100%;height:6px;border-radius:999px;background:var(--border);overflow:hidden}.co-bar span{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--green));border-radius:inherit}
+.co-note{font-size:.8rem;color:var(--textSec);margin:.7rem 0 0}
+.sherif-mode .dng,.sherif-mode .a-del,.sherif-mode .a-normal{display:none!important}
 .g2p-nudge{position:fixed;right:1.25rem;bottom:1.25rem;z-index:900;width:min(360px,calc(100vw - 2rem));box-sizing:border-box;padding:1.25rem 1.25rem 1.1rem;border-radius:18px;background:color-mix(in srgb,var(--bgCard) 90%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid color-mix(in srgb,var(--green) 35%,var(--border));box-shadow:0 18px 50px rgba(0,0,0,.35);animation:slideUp .45s cubic-bezier(.2,.8,.2,1)}
 .g2p-nudge h3{font-size:1.02rem;line-height:1.3;margin:.35rem 1.6rem .45rem 0}
 .g2p-nudge p{font-size:.86rem;line-height:1.5;color:var(--textSec);margin:0 0 .9rem}
@@ -3088,146 +3095,109 @@ T.ro.hoopProofCount = "{n}/3 aruncări ar fi intrat pe un inel normal. Nu tu eș
 function CivicMomentum() {
   var cvRef = useRef(null);
   var app = useApp(); var lang = app.lang;
+  var L3 = function (ro, en, hu) { return lang === "en" ? en : lang === "hu" ? (hu || ro) : ro; };
+  var votes = useFirebase("votes");
+  var total = votes ? (votes.flip || 0) + (votes.mural || 0) + (votes.both || 0) : 0;
+  var nextMs = [50, 100, 200, 500, 1000, 2000, 5000].find(function (m) { return m > total; }) || total;
+  var totalRef = useRef(0);
+  totalRef.current = total;
   useEffect(function () {
     var cv = cvRef.current; if (!cv) return;
     var ctx = cv.getContext("2d");
-    var W = 0, H = 210, dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var raf, total = 0, prevTotal = 0, orbs = [], pingT = -9999, lastT = 0;
-
+    var W = 0, H = 240, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var raf, lastT = 0, shown = -1, parts = [], flyers = [], flash = 0;
+    var still = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches);
+    // Three tilted orbits around one sphere; each signature is a particle on one of them.
+    var ORBITS = [{ rx: 70, tilt: -0.32, sq: 0.28, sp: 0.55 }, { rx: 96, tilt: 0.38, sq: 0.24, sp: -0.38 }, { rx: 118, tilt: -0.08, sq: 0.2, sp: 0.26 }];
+    var COLS = ["#34D399", "#10B981", "#5EEAD4", "#A7F3D0"];
     function resize() {
-      W = (cv.parentNode && cv.parentNode.clientWidth) || 600;
+      W = (cv.parentNode && cv.parentNode.clientWidth) || 480;
       cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
     resize(); window.addEventListener("resize", resize);
-
-    function buildOrbs(n) {
-      orbs = [];
-      var cap = Math.min(n, 120);
-      for (var i = 0; i < cap; i++) {
-        var frac = cap > 1 ? i / (cap - 1) : 0;
-        var orbit = 28 + frac * 68;
-        var cols = ["#10B981","#0D9488","#34D399","#6EE7B7"];
-        orbs.push({
-          a: frac * Math.PI * 2 + Math.random() * 0.6,
-          r: orbit + (Math.random() - 0.5) * 10,
-          sp: (0.2 + Math.random() * 0.4) * (i % 2 ? 1 : -1),
-          sz: 1.4 + Math.random() * 1.8,
-          al: 0.45 + Math.random() * 0.55,
-          c: cols[Math.floor(Math.random() * cols.length)]
-        });
-      }
+    function mk(i) {
+      return { o: i % 3, a: (i * 2.399) % (Math.PI * 2), sz: 1.6 + ((i * 7) % 10) / 6, c: COLS[i % COLS.length], j: ((i * 13) % 9 - 4) };
     }
-
-    var votesRef = db.ref("votes");
-    function onVotes(snap) {
-      var v = snap.val() || {};
-      var n = (v.flip || 0) + (v.mural || 0) + (v.both || 0);
-      if (n !== total) { total = n; buildOrbs(n); }
-      if (n > prevTotal) { pingT = performance.now(); prevTotal = n; }
+    function sync() {
+      var n = Math.min(totalRef.current, 180);
+      if (shown < 0) { parts = []; for (var i = 0; i < n; i++) parts.push(mk(i)); shown = n; return; }
+      while (shown < n) { var p = mk(shown); flyers.push({ p: p, t: 0 }); shown++; flash = 1; }
     }
-    votesRef.on("value", onVotes);
-
+    function pos(p, k, cx, cy) {
+      var o = ORBITS[p.o], r = o.rx + p.j * (o.rx / 70) * 0.6;
+      var x = Math.cos(p.a) * r, y = Math.sin(p.a) * r * o.sq;
+      var c = Math.cos(o.tilt), s = Math.sin(o.tilt);
+      var sc = k == null ? 1 : k;
+      return { x: cx + (x * c - y * s) * sc, y: cy + (x * s + y * c) * sc, front: Math.sin(p.a) > 0 };
+    }
+    function drawOrbit(o, cx, cy, front) {
+      ctx.save(); ctx.translate(cx, cy); ctx.rotate(o.tilt); ctx.scale(1, o.sq);
+      ctx.beginPath(); ctx.arc(0, 0, o.rx, front ? 0 : Math.PI, front ? Math.PI : Math.PI * 2);
+      ctx.restore();
+      ctx.strokeStyle = front ? "rgba(52,211,153,.32)" : "rgba(52,211,153,.12)"; ctx.lineWidth = 1; ctx.stroke();
+    }
+    function dot(q, p, alpha) {
+      var depth = q.front ? 1 : 0.55;
+      ctx.globalAlpha = alpha * (q.front ? 1 : 0.45);
+      ctx.fillStyle = p.c; ctx.shadowColor = p.c; ctx.shadowBlur = q.front ? 8 : 2;
+      ctx.beginPath(); ctx.arc(q.x, q.y, p.sz * depth, 0, Math.PI * 2); ctx.fill();
+      ctx.shadowBlur = 0; ctx.globalAlpha = 1;
+    }
+    function sphere(cx, cy, t) {
+      var R = 30 + Math.sin(t / 900) * 1.2 + flash * 4;
+      var halo = ctx.createRadialGradient(cx, cy, R * 0.6, cx, cy, R * 2.6);
+      halo.addColorStop(0, "rgba(16,185,129," + (0.28 + flash * 0.3) + ")"); halo.addColorStop(1, "rgba(16,185,129,0)");
+      ctx.fillStyle = halo; ctx.beginPath(); ctx.arc(cx, cy, R * 2.6, 0, Math.PI * 2); ctx.fill();
+      // lit from the top-left: highlight, body, dark rim = a 3D ball without WebGL
+      var g = ctx.createRadialGradient(cx - R * 0.38, cy - R * 0.42, R * 0.1, cx, cy, R);
+      g.addColorStop(0, "#D1FAE5"); g.addColorStop(0.25, "#34D399"); g.addColorStop(0.7, "#059669"); g.addColorStop(1, "#064E3B");
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fill();
+      ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.clip();
+      ctx.strokeStyle = "rgba(255,255,255,.14)"; ctx.lineWidth = 1;
+      for (var k = -1; k <= 1; k++) { ctx.beginPath(); ctx.ellipse(cx, cy + k * R * 0.42, R, R * 0.16, 0, 0, Math.PI * 2); ctx.stroke(); }
+      var m = (t / 4000) % 1; ctx.beginPath(); ctx.ellipse(cx + (m - 0.5) * R * 1.2, cy, R * 0.22, R, 0, 0, Math.PI * 2); ctx.stroke();
+      ctx.restore();
+    }
     function draw(t) {
-      var dt = Math.min(t - lastT, 50); lastT = t;
+      var dt = still ? 0 : Math.min(t - lastT, 50) / 1000; lastT = t;
+      sync();
       var cx = W / 2, cy = H / 2;
       ctx.clearRect(0, 0, W, H);
-
-      // Radial glow behind core
-      var bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, 105);
-      bg.addColorStop(0, "rgba(16,185,129,.08)"); bg.addColorStop(1, "transparent");
-      ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
-
-      // Orbit rings (dashed)
-      ctx.setLineDash([2, 9]);
-      [32, 58, 86].forEach(function (r, i) {
-        ctx.strokeStyle = "rgba(16,185,129," + (0.09 - i * 0.025) + ")";
-        ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
+      parts.forEach(function (p) { p.a += ORBITS[p.o].sp * dt; });
+      var back = [], front = [];
+      parts.forEach(function (p) { var q = pos(p, 1, cx, cy); (q.front ? front : back).push([q, p]); });
+      ORBITS.forEach(function (o) { drawOrbit(o, cx, cy, false); });
+      back.forEach(function (e) { dot(e[0], e[1], 1); });
+      sphere(cx, cy, t);
+      ORBITS.forEach(function (o) { drawOrbit(o, cx, cy, true); });
+      front.forEach(function (e) { dot(e[0], e[1], 1); });
+      // a new signature flies in from outside and settles on its orbit
+      flyers = flyers.filter(function (f) {
+        f.t += dt * 0.9; f.p.a += ORBITS[f.p.o].sp * dt;
+        var k = 1 + Math.pow(1 - Math.min(f.t, 1), 2) * 3, q = pos(f.p, k, cx, cy);
+        dot(q, f.p, Math.min(1, f.t * 2));
+        if (f.t >= 1) { parts.push(f.p); return false; }
+        return true;
       });
-      ctx.setLineDash([]);
-
-      // Core pulse
-      var sinT = Math.sin(t / 720);
-      var pingFade = Math.max(0, 1 - (t - pingT) / 600);
-      var coreR = (11 + 2.5 * sinT) * (1 + pingFade * 0.35);
-      var cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, coreR * 3.2);
-      cg.addColorStop(0, "rgba(16,185,129," + (0.85 + pingFade * 0.15) + ")");
-      cg.addColorStop(0.35, "rgba(13,148,136,.3)"); cg.addColorStop(1, "transparent");
-      ctx.fillStyle = cg; ctx.beginPath(); ctx.arc(cx, cy, coreR * 3.2, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = pingFade > 0.1 ? "#6EE7B7" : "#10B981";
-      ctx.shadowColor = "#10B981"; ctx.shadowBlur = 12;
-      ctx.beginPath(); ctx.arc(cx, cy, coreR, 0, Math.PI * 2); ctx.fill();
-      ctx.shadowBlur = 0;
-
-      // Orbiting particles
-      orbs.forEach(function (o) {
-        o.a += o.sp * dt / 1000;
-        var ox = cx + Math.cos(o.a) * o.r, oy = cy + Math.sin(o.a) * o.r;
-        ctx.globalAlpha = o.al;
-        ctx.fillStyle = o.c; ctx.shadowColor = o.c; ctx.shadowBlur = 6;
-        ctx.beginPath(); ctx.arc(ox, oy, o.sz, 0, Math.PI * 2); ctx.fill();
-        ctx.shadowBlur = 0;
-      });
-      ctx.globalAlpha = 1;
-
-      // Centre count
-      ctx.textAlign = "center";
-      ctx.font = "bold 32px 'Space Mono',monospace";
-      ctx.fillStyle = total > 0 ? "#10B981" : "rgba(255,255,255,.3)";
-      ctx.fillText(total || "0", cx, cy + 7);
-      ctx.font = "9px 'Libre Franklin',sans-serif";
-      ctx.fillStyle = "rgba(255,255,255,.4)";
-      ctx.fillText(
-        lang === "ro" ? "semnături live" : lang === "hu" ? "élő aláírások" : "live signatures",
-        cx, cy + 23
-      );
-
-      // Milestone ring: lights up at 50, 100, 200, 500
-      var nextMs = [50,100,200,500,1000].find(function(m){ return m > total; }) || 1000;
-      var pct = total / nextMs;
-      ctx.strokeStyle = "rgba(249,115,22,.18)"; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(cx, cy, 95, -Math.PI/2, -Math.PI/2 + pct * Math.PI * 2); ctx.stroke();
-      ctx.font = "8px 'Space Mono',monospace"; ctx.fillStyle = "rgba(249,115,22,.6)";
-      ctx.fillText(
-        (lang==="ro"?"țintă: ":"target: ") + nextMs,
-        cx, cy - 102
-      );
-      ctx.textAlign = "left";
-      raf = requestAnimationFrame(draw);
+      flash = Math.max(0, flash - dt * 1.2);
+      if (!still || flyers.length) raf = requestAnimationFrame(draw);
     }
     raf = requestAnimationFrame(draw);
-
-    return function () {
-      cancelAnimationFrame(raf);
-      votesRef.off("value", onVotes);
-      window.removeEventListener("resize", resize);
-    };
+    return function () { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
   }, []);
-
-  return React.createElement("div", {
-    style: {
-      textAlign: "center", margin: "1.8rem auto", maxWidth: 520,
-      padding: "1.2rem 1rem", borderRadius: 16,
-      background: "linear-gradient(135deg,rgba(16,185,129,.05),rgba(13,148,136,.03))",
-      border: "1px solid rgba(16,185,129,.18)"
-    }
-  },
-    React.createElement("p", {
-      style: {
-        fontFamily: "'Space Mono',monospace", fontSize: ".65rem", letterSpacing: ".12em",
-        color: "var(--textSec)", marginBottom: ".5rem", textTransform: "uppercase"
-      }
-    }, lang==="ro"?"⬡ IMPULS CIVIC ÎN TIMP REAL":lang==="hu"?"⬡ ÉLŐ CIVIL LENDÜLET":"⬡ LIVE CIVIC MOMENTUM"),
-    React.createElement("canvas", { ref: cvRef, style: { display: "block", width: "100%", height: 210 } }),
-    React.createElement("p", {
-      style: { fontSize: ".72rem", color: "var(--textSec)", marginTop: ".5rem" }
-    }, lang==="ro"
-        ? "Fiecare semnătură devine o particulă vie. Inelul din stânga e îndoit — nu tu ești problema."
-        : lang==="hu"
-        ? "Minden aláírás egy élő részecskévé válik. A gyűrű hajlott — nem te vagy a hiba."
-        : "Each signature becomes a live particle. The ring is bent — you are not the problem."
-    )
-  );
+  var pct = nextMs > 0 ? Math.min(100, Math.round(total / nextMs * 100)) : 100;
+  return React.createElement("div", { className: "civic-orb" },
+    React.createElement("p", { className: "co-kicker" }, "● " + L3("Impuls civic în timp real", "Live civic momentum", "Élő civil lendület")),
+    React.createElement("canvas", { ref: cvRef, style: { display: "block", width: "100%", height: 240 }, role: "img",
+      "aria-label": L3(total + " semnături, fiecare e o particulă pe orbită", total + " signatures, each one a particle in orbit", total + " aláírás") }),
+    React.createElement("div", { className: "co-num" }, React.createElement("b", null, total), " " + L3("semnături", "signatures", "aláírás")),
+    total < nextMs && React.createElement("div", { className: "co-goal" },
+      React.createElement("div", { className: "co-bar" }, React.createElement("span", { style: { width: pct + "%" } })),
+      React.createElement("span", null, L3("Încă " + (nextMs - total) + " până la " + nextMs, (nextMs - total) + " more to reach " + nextMs, "Még " + (nextMs - total) + " a(z) " + nextMs + "-ig"))),
+    React.createElement("p", { className: "co-note" }, L3("Fiecare semnătură e o particulă pe orbită. Semnezi și tu? Apare una nouă, în direct.",
+      "Every signature is a particle in orbit. Sign, and a new one appears live.",
+      "Minden aláírás egy részecske a pályán. Írd alá, és megjelenik egy új.")));
 }
 
 /* === #3 Pixel wall strings === */
@@ -5802,11 +5772,11 @@ function Navbar() {
   })),
   /*#__PURE__*/React.createElement("button", {
     onClick: () => setShowNotif(v => !v),
-    style: { position: "relative" },
+    style: { position: "relative", padding: unreadCount > 0 ? ".35rem 1.15rem .35rem .35rem" : undefined },
     title: t.notifications,
     "aria-label": t.notifications + (unreadCount ? " (" + unreadCount + ")" : "")
   }, "🔔", unreadCount > 0 && /*#__PURE__*/React.createElement("span", {
-    style: { position:"absolute", top:"-4px", right:"-6px", background:"var(--coral)", color:"#fff", borderRadius:"50%", fontSize:".6rem", fontWeight:700, minWidth:"16px", height:"16px", lineHeight:"16px", textAlign:"center", padding:"0 2px" }
+    style: { position:"absolute", top:"1px", right:"0", background:"var(--coral)", color:"#fff", borderRadius:"50%", fontSize:".6rem", fontWeight:700, minWidth:"16px", height:"16px", lineHeight:"16px", textAlign:"center", padding:"0 2px" }
   }, unreadCount > 9 ? "9+" : unreadCount)),
   /*#__PURE__*/React.createElement("button", {
     className: "nav-cmd",
@@ -10905,7 +10875,8 @@ function AdminSherifsTab() {
     const found = users && Object.entries(users).find(([uid, u]) => u.email === inputEmail);
     if (!found) { toast(lang === "ro" ? "User negăsit. Trebuie să aibă cont G2P." : "User not found. They must have a G2P account."); return; }
     const [uid, u] = found;
-    db.ref("settings/sherifs/" + uid).set({ name: u.name, email: u.email, addedAt: Date.now() });
+    // settings/ is publicly readable, so the sheriff list stores no email.
+    db.ref("settings/sherifs/" + uid).set({ name: u.name || "Sherif", addedAt: Date.now() });
     setInputEmail("");
     toast("✅ Sherif adăugat!");
   };
@@ -10938,8 +10909,9 @@ function AdminSherifsTab() {
 }
 
 /* === Admin === */
-// Sheriffs may moderate what database.rules.json lets them write: reports, courts, forum, events.
-const SHERIF_TABS = ["reports", "courts", "forum", "events"];
+// Sheriffs edit the site and run the community: every tab except raw database access (God Mode),
+// people's emails (signups, users) and the sheriff list. Destructive buttons (.dng/.a-del/.a-normal) are hidden.
+const SHERIF_TABS = ["site", "moderation", "votes", "reports", "courts", "forum", "events", "leaderboard"];
 function AdminLogin({
   onAuth,
   onBack
@@ -11211,7 +11183,7 @@ function resetSiteSettings() {
 }
 
 function AdminSiteTab() {
-  const { toast } = useApp();
+  const { toast, isSherif } = useApp();
   const s = useFirebase("settings") || {};
   const flags = s.flags || {};
   const fbCourts = useFirebase("courts");
@@ -11340,12 +11312,12 @@ function AdminSiteTab() {
           React.createElement("button", { className: "a-del", onClick: () => setAccent("", "", "G2P Classic") }, "↺ Default"),
           React.createElement("span", { style: { fontSize: ".72rem", color: "#9CA3AF" } }, "Now: " + (curP || "#10B981") + " / " + (curS || "#0D9488"))))),
     React.createElement(BudgetAdmin, null),
-    React.createElement("h3", { className: "a-sec", style: { color: "#F87171" } }, "☢️ Danger zone"),
-    Row("Reset petition votes", "Sets flip / mural / both to 0. Signup rows are kept.",
+    !isSherif && React.createElement("h3", { className: "a-sec", style: { color: "#F87171" } }, "☢️ Danger zone"),
+    !isSherif && Row("Reset petition votes", "Sets flip / mural / both to 0. Signup rows are kept.",
       React.createElement("button", { className: "a-del", onClick: () => {
         askConfirm("Reset ALL votes to 0?").then(ok => ok && db.ref("votes").set({ flip: 0, mural: 0, both: 0 }));
       } }, "Reset"), true),
-    Row("Clear activity feed", "Removes every entry from activity/ (ticker + feed + notifications).",
+    !isSherif && Row("Clear activity feed", "Removes every entry from activity/ (ticker + feed + notifications).",
       React.createElement("button", { className: "a-del", onClick: () => {
         askConfirm("Delete the entire activity feed?").then(ok => ok && db.ref("activity").remove());
       } }, "Clear"), true));
@@ -11393,9 +11365,9 @@ function AdminPanel({
   onExit,
   onSignOut
 }) {
-  const { firebaseUser, isAdmin, toast } = useApp();
+  const { firebaseUser, isAdmin, toast, t } = useApp();
   const { isSherif: sherifOnly } = useApp();
-  const [tab, setTab] = useState(() => sherifOnly ? "reports" : "site");
+  const [tab, setTab] = useState("site");
   const su = useFirebase("signups");
   const vo = useFirebase("votes");
   const co = useFirebase("courts");
@@ -11522,10 +11494,10 @@ function AdminPanel({
     l: "👥 Users (" + ul.length + ")"
   }].filter(tb => !sherifOnly || SHERIF_TABS.indexOf(tb.k) >= 0);
   return /*#__PURE__*/React.createElement("div", {
-    className: "admin-shell"
+    className: "admin-shell" + (sherifOnly ? " sherif-mode" : "")
   }, /*#__PURE__*/React.createElement("header", {
     className: "admin-hdr"
-  }, /*#__PURE__*/React.createElement("h1", null, "\uD83D\uDD12 ADMIN \u2014 From Grey to Play"), React.createElement("div", { className: "a-auth" },
+  }, /*#__PURE__*/React.createElement("h1", null, sherifOnly ? "👮 ȘERIF — From Grey to Play" : "\uD83D\uDD12 ADMIN \u2014 From Grey to Play"), React.createElement("div", { className: "a-auth" },
     React.createElement("span", { className: "dot" + (isAdmin ? "" : " bad") }),
     React.createElement("span", null, isAdmin ? "Owner · " + ((firebaseUser && firebaseUser.email) || "") : sherifOnly ? "Sheriff · " + ((firebaseUser && firebaseUser.email) || "") : "Not signed in as owner — changes will be rejected"),
     !sherifOnly && React.createElement("button", { className: "a-normal", style: { padding: ".3rem .7rem", fontSize: ".72rem" }, onClick: () => {
