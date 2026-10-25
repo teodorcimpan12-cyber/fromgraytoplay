@@ -68,22 +68,30 @@ try {
   await send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
 
   for (const [city, courtId] of CITIES) {
-    let booted = false;
-    for (let attempt = 0; attempt < 3 && !booted; attempt++) {
+    let booted = false, cdnDown = false;
+    for (let attempt = 0; attempt < 5 && !booted; attempt++) {
       where = city + " boot";
+      const mark = problems.length;
       await send("Page.navigate", { url: base + "?c=" + city + "#home" });
       for (let i = 0; i < 50 && !booted; i++) {
         await sleep(400);
         booted = await evalJs("(() => { const s = [...document.querySelectorAll('button')].find(b => /^(Treci peste|Skip)/.test(b.textContent.trim())); if (s) s.click(); return !!document.querySelector('.nav-logo') && document.body.innerText.length > 400; })()");
       }
-      if (!booted) {
-        const cdn = await evalJs("typeof React !== 'undefined' && typeof firebase !== 'undefined'");
-        const parsed = await evalJs("!!window.__G2P_PARSED");
-        if (cdn && parsed) break;
-        if (!parsed && cdn) { problems.push(city + ": main script did not run (syntax error?)"); break; }
-      }
+      if (booted) break;
+      const cdn = await evalJs("typeof React !== 'undefined' && typeof ReactDOM !== 'undefined' && typeof firebase !== 'undefined' && typeof firebase.database === 'function'");
+      const parsed = await evalJs("!!window.__G2P_PARSED");
+      cdnDown = !cdn;
+      // A library that failed to download is the network, not our code: drop that attempt's errors and retry.
+      if (cdnDown) { problems.length = mark; await sleep(1500); continue; }
+      if (!parsed) problems.push(city + ": main script did not run (syntax error?)");
+      break;
     }
-    if (!booted) { problems.push(city + ": the app never rendered (blank page)"); continue; }
+    if (!booted) {
+      problems.push(cdnDown
+        ? city + ": React/Firebase could not be downloaded from the CDN after 5 tries — network problem, push again in a minute"
+        : city + ": the app never rendered (blank page)");
+      continue;
+    }
     for (const p of [...PAGES, "court-" + courtId]) {
       where = city + " #" + p;
       await evalJs("location.hash = '#" + p + "'");
