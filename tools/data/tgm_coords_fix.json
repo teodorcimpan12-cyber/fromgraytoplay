@@ -1,0 +1,403 @@
+[
+  {
+    "id": "c1",
+    "name": "Baza Mureșul — Teren Baschet",
+    "address": "Str. Plutelor 2",
+    "old": {
+      "lat": 46.5618,
+      "lng": 24.5512
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "Nominatim address: Casuta Weekend, 2 (no matching pitch ≤300 m)",
+    "moved_m": null
+  },
+  {
+    "id": "c2",
+    "name": "Baza Mureșul — Teren Fotbal",
+    "address": "Str. Plutelor 2",
+    "old": {
+      "lat": 46.5615,
+      "lng": 24.5518
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "Nominatim address: Casuta Weekend, 2 (no matching pitch ≤300 m)",
+    "moved_m": null
+  },
+  {
+    "id": "c3",
+    "name": "Complex Weekend — Teren Fotbal",
+    "address": "Str. Salcâmilor 1",
+    "old": {
+      "lat": 46.5448,
+      "lng": 24.5782
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "Nominatim address: 1, Strada Salcâmilor (no matching pitch ≤300 m)",
+    "moved_m": null
+  },
+  {
+    "id": "c4",
+    "name": "Complex Weekend — Teren Tenis",
+    "address": "Str. Salcâmilor 1",
+    "old": {
+      "lat": 46.5445,
+      "lng": 24.5786
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "Nominatim address: 1, Strada Salcâmilor (no matching pitch ≤300 m)",
+    "moved_m": null
+  },
+  {
+    "id": "c5",
+    "name": "Baza Sportivă Str. Insulei",
+    "address": "Str. Insulei 2",
+    "old": {
+      "lat": 46.5489,
+      "lng": 24.5701
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "Nominatim address: Strada Insulei, Podeni (no matching pitch ≤300 m)",
+    "moved_m": null
+  },
+  {
+    "id": "c6",
+    "name": "Teren Baschet Tudor Vladimirescu",
+    "address": "Str. Tudor Vladimirescu 45",
+    "old": {
+      "lat": 46.5512,
+      "lng": 24.5678
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "Nominatim address: 45, Strada Tudor Vladimirescu (no matching pitch ≤300 m)",
+    "moved_m": null
+  },
+  {
+    "id": "c7",
+    "name": "Teren Sport Str. Carpați",
+    "address": "Str. Carpați 18",
+    "old": {
+      "lat": 46.5528,
+      "lng": 24.571
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "Nominatim address: Strada Furnicilor, Aleea Carpați (no matching pitch ≤300 m)",
+    "moved_m": null
+  },
+  {
+    "id": "c8",
+    "name": "CS Torpi — Terenuri Sport",
+    "address": "Str. Sălciilor 11B",
+    "old": {
+      "lat": 46.5502,
+      "lng": 24.5659
+    },
+    "confident": true,
+    "new": {
+      "lat": 46.54056,
+      "lng": 24.537997
+    },
+    "osm": "way/198075642",
+    "via": "OSM name: Torpi",
+    "moved_m": 2388
+  },
+  {
+    "id": "c9",
+    "name": "Platoul Cornești — Teren Tenis",
+    "address": "Platoul Cornești",
+    "old": {
+      "lat": 46.5634,
+      "lng": 24.5432
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "not found",
+    "moved_m": null
+  },
+  {
+    "id": "c10",
+    "name": "Sala Sporturilor City Arena",
+    "address": "Str. Gheorghe Doja 246",
+    "old": {
+      "lat": 46.5394,
+      "lng": 24.5587
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "not found",
+    "moved_m": null
+  },
+  {
+    "id": "c11",
+    "name": "Stadionul Municipal",
+    "address": "Str. Gheorghe Doja 243",
+    "old": {
+      "lat": 46.5397,
+      "lng": 24.5578
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "not found",
+    "moved_m": null
+  },
+  {
+    "id": "c12",
+    "name": "Academica Transilvania — Teren Fotbal",
+    "address": "Str. N. Iorga 1",
+    "old": {
+      "lat": 46.5388,
+      "lng": 24.5508
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "not found",
+    "moved_m": null
+  },
+  {
+    "id": "c13",
+    "name": "Enjoy Sports Club",
+    "address": "Str. Liviu Rebreanu 29 (Pasajul Mocca)",
+    "old": {
+      "lat": 46.542,
+      "lng": 24.5572
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "not found",
+    "moved_m": null
+  },
+  {
+    "id": "c14",
+    "name": "Body Factory",
+    "address": "B-dul Pandurilor 3",
+    "old": {
+      "lat": 46.5335,
+      "lng": 24.549
+    },
+    "confident": true,
+    "new": {
+      "lat": 46.532592,
+      "lng": 24.581138
+    },
+    "osm": "way/1362299506",
+    "via": "Nominatim address: Bulevardul Pandurilor, Tudor Vladimirescu",
+    "moved_m": 2460
+  },
+  {
+    "id": "c15",
+    "name": "Teren Baschet Bulevardul 1 Decembrie",
+    "address": "B-dul 1 Decembrie 1918",
+    "old": {
+      "lat": 46.5351,
+      "lng": 24.5531
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "not found",
+    "moved_m": null
+  },
+  {
+    "id": "c16",
+    "name": "Teren Multifuncțional Libertății",
+    "address": "Str. Libertății 52",
+    "old": {
+      "lat": 46.5455,
+      "lng": 24.5645
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "Nominatim address: 52, Strada Libertății (no matching pitch ≤300 m)",
+    "moved_m": null
+  },
+  {
+    "id": "c17",
+    "name": "Teren Fotbal Micro 14-15",
+    "address": "Str. Unirii 80",
+    "old": {
+      "lat": 46.5378,
+      "lng": 24.549
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "Nominatim address: Strada Unirii, Sângeorgiu de Mureș (no matching pitch ≤300 m)",
+    "moved_m": null
+  },
+  {
+    "id": "c18",
+    "name": "Agora Fitness Center",
+    "address": "Str. Regele Ferdinand 4",
+    "old": {
+      "lat": 46.5435,
+      "lng": 24.5542
+    },
+    "confident": true,
+    "new": {
+      "lat": 46.53271,
+      "lng": 24.592535
+    },
+    "osm": "way/884334542",
+    "via": "OSM name: Agora Fitness Center",
+    "moved_m": 3168
+  },
+  {
+    "id": "c19",
+    "name": "SkyGYM",
+    "address": "Str. Călărașilor 112-114",
+    "old": {
+      "lat": 46.548,
+      "lng": 24.5605
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "not found",
+    "moved_m": null
+  },
+  {
+    "id": "c20",
+    "name": "Teren Fotbal Mureșeni",
+    "address": "Str. Dealul Sighișoarei 12",
+    "old": {
+      "lat": 46.5268,
+      "lng": 24.5591
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "not found",
+    "moved_m": null
+  },
+  {
+    "id": "c21",
+    "name": "Teren Multisport Str. Plopilor",
+    "address": "Str. Plopilor, cartier Unirii",
+    "old": {
+      "lat": 46.533,
+      "lng": 24.5408
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "not found",
+    "moved_m": null
+  },
+  {
+    "id": "c22",
+    "name": "Teren Sport Dâmbu Pietros",
+    "address": "Str. Băneasa, cartier Dâmbu Pietros",
+    "old": {
+      "lat": 46.556,
+      "lng": 24.584
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "not found",
+    "moved_m": null
+  },
+  {
+    "id": "c23",
+    "name": "Teren Mic Fotbal Str. 8 Martie",
+    "address": "Str. 8 Martie, cartier Dâmbu Pietros",
+    "old": {
+      "lat": 46.5538,
+      "lng": 24.58
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "not found",
+    "moved_m": null
+  },
+  {
+    "id": "c24",
+    "name": "Teren Sport Cartier Cornești",
+    "address": "Str. Verii, cartier Cornești",
+    "old": {
+      "lat": 46.566,
+      "lng": 24.57
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "not found",
+    "moved_m": null
+  },
+  {
+    "id": "c25",
+    "name": "Zona Fitness Platoul Cornești",
+    "address": "Platoul Cornești",
+    "old": {
+      "lat": 46.5645,
+      "lng": 24.546
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "not found",
+    "moved_m": null
+  },
+  {
+    "id": "c26",
+    "name": "Baza Sportivă UMFST",
+    "address": "Str. Gheorghe Marinescu 38",
+    "old": {
+      "lat": 46.542,
+      "lng": 24.535
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "not found",
+    "moved_m": null
+  },
+  {
+    "id": "c27",
+    "name": "Teren Baschet Aleea Carpați",
+    "address": "Aleea Carpați, cartier Tudor",
+    "old": {
+      "lat": 46.553,
+      "lng": 24.572
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "not found",
+    "moved_m": null
+  },
+  {
+    "id": "c28",
+    "name": "Teren Școlar Mureșeni",
+    "address": "Cartier Mureșeni (incintă școlară)",
+    "old": {
+      "lat": 46.529,
+      "lng": 24.556
+    },
+    "confident": false,
+    "new": null,
+    "osm": null,
+    "via": "not found",
+    "moved_m": null
+  }
+]

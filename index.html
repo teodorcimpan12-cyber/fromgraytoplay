@@ -106,6 +106,43 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .modal-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:1rem;animation:fadeIn .15s}
 .modal{background:var(--bgCard);border-radius:var(--radius);padding:1.4rem;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;animation:slideUp .2s}
 .modal-lg{max-width:700px}
+/* Satellite archive */
+.tm-card{border-left:3px solid var(--teal)}
+.tm-modes{display:flex;gap:.35rem;margin:.4rem 0 .6rem;flex-wrap:wrap}
+.tm-modes button{border:1px solid var(--border);background:var(--bg);color:var(--textSec);border-radius:8px;padding:.35rem .7rem;font:600 .78rem 'Space Mono',monospace;cursor:pointer;min-height:36px}
+.tm-modes button.on{border-color:var(--green);color:var(--green);background:rgba(16,185,129,.1)}
+.tm-stage{position:relative;border-radius:12px;overflow:hidden;background:#0b0f19}
+.tm-map{height:clamp(300px,52vh,460px);width:100%;background:#0b0f19}
+.tm-fs{background:var(--bgCard);overflow:auto;border-radius:0}
+.tm-fs .tm-map{height:calc(100vh - 230px)}
+.tm-skeleton{display:flex;align-items:center;justify-content:center;color:var(--textSec);font:600 .85rem 'Space Mono',monospace;background:linear-gradient(90deg,#0b0f19 0%,#151c2e 50%,#0b0f19 100%);background-size:200% 100%;animation:tmShimmer 1.4s linear infinite;border-radius:12px}
+@keyframes tmShimmer{to{background-position:-200% 0}}
+.tm-divider{position:absolute;top:0;bottom:0;width:36px;margin-left:-18px;z-index:500;touch-action:none;cursor:ew-resize}
+.tm-divider::before{content:"";position:absolute;top:0;bottom:0;left:17px;width:2px;background:#fff;box-shadow:0 0 8px rgba(0,0,0,.6)}
+.tm-knob{position:absolute;top:50%;left:18px;transform:translate(-50%,-50%);width:42px;height:42px;border-radius:50%;background:#fff;color:#0b0f19;display:flex;align-items:center;justify-content:center;font-weight:800;box-shadow:0 2px 14px rgba(0,0,0,.55)}
+.tm-label{position:absolute;top:10px;z-index:450;background:rgba(8,13,23,.84);color:#fff;border-radius:8px;padding:.35rem .6rem;display:flex;flex-direction:column;gap:1px;pointer-events:none;max-width:45%}
+.tm-label b{font:700 .8rem 'Space Mono',monospace}
+.tm-label span{font-size:.68rem;color:#cbd5e1}
+.tm-label-a{left:10px;border-left:3px solid #60A5FA}
+.tm-label-b{right:10px;text-align:right;border-right:3px solid var(--green)}
+.tm-label-big{left:50%;transform:translateX(-50%);text-align:center;max-width:90%;border-bottom:3px solid var(--green)}
+.tm-label-big b{font-size:1.15rem}
+.tm-pin{transform:translate(-50%,-260%);background:#F97316;color:#fff;font:700 10px 'Space Mono',monospace;padding:2px 7px;border-radius:6px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.45)}
+.tm-track{position:relative;height:58px;margin:.6rem .6rem 0}
+.tm-line{position:absolute;left:2%;right:2%;top:28px;height:2px;background:var(--border)}
+.tm-dot{position:absolute;top:21px;transform:translateX(-50%);width:16px;height:16px;border-radius:50%;border:2px solid var(--textSec);background:var(--bgCard);cursor:pointer;padding:0}
+.tm-dot::after{content:"";position:absolute;inset:-12px}
+.tm-dot span{position:absolute;top:19px;left:50%;transform:translateX(-50%);font:600 .66rem 'Space Mono',monospace;color:var(--textSec);white-space:nowrap}
+.tm-dot.up span{top:-19px}
+.tm-dot.a{border-color:#60A5FA;background:#60A5FA}.tm-dot.a span{color:#60A5FA}
+.tm-dot.b{border-color:var(--green);background:var(--green)}.tm-dot.b span{color:var(--green)}
+.tm-edit{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin:-.2rem 0 .6rem;padding:.5rem .7rem;border:1px dashed var(--green);border-radius:10px;font:600 .78rem 'Space Mono',monospace;color:var(--green)}
+.tm-foot{display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap;font-size:.7rem;color:var(--textSec);margin-top:.5rem}
+.modal-overlay{overflow-y:auto;overscroll-behavior:contain}
+.modal{overscroll-behavior:contain}
+.modal-head{position:sticky;top:-1.4rem;z-index:5;background:var(--bgCard);margin:-1.4rem -1.4rem 1rem;padding:1rem 1.4rem;border-bottom:1px solid var(--border)}
+.modal-close{flex-shrink:0;width:40px;height:40px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{border-color:var(--green);color:var(--green)}
 .map-box{border-radius:var(--radius);overflow:hidden;height:380px;border:2px solid var(--border)}
 .toast{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%);background:var(--darkCard);color:#fff;padding:.6rem 1.2rem;border-radius:8px;font-size:.85rem;z-index:400;animation:slideUp .2s;box-shadow:0 4px 20px rgba(0,0,0,.3)}
 .footer{background:var(--dark);color:#9CA3AF;padding:1.5rem 0;text-align:center;font-size:.82rem}
@@ -141,7 +178,7 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 @keyframes fabGlow{0%,100%{box-shadow:0 6px 24px rgba(16,185,129,.4)}60%{box-shadow:0 8px 36px rgba(16,185,129,.7)}}
 @keyframes livePing{0%{transform:scale(1);opacity:1}100%{transform:scale(2.2);opacity:0}}
-.animate-in{animation:slideUp .4s ease both}
+.animate-in{animation:slideUp .4s ease backwards}
 .fab{animation:fabGlow 2.4s ease-in-out infinite}
 .live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);position:relative;flex-shrink:0}
 .live-dot::after{content:'';position:absolute;inset:0;border-radius:50%;background:var(--green);animation:livePing 1.4s ease-out infinite}
@@ -296,7 +333,8 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 /* Section title accent bar */
 .section-title{position:relative}
 /* Smooth page enter */
-.animate-in{animation:pageEnter .55s cubic-bezier(.22,1,.36,1) both}
+/* backwards, not both: a retained transform/filter would make every fixed modal inside the page scroll with it */
+.animate-in{animation:pageEnter .55s cubic-bezier(.22,1,.36,1) backwards}
 @keyframes pageEnter{from{opacity:0;transform:translateY(18px) scale(.985);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
 /* Dossier button glow */
 .btn-dossier{background:linear-gradient(100deg,var(--green),var(--teal));color:#fff;position:relative;overflow:hidden}
@@ -2282,88 +2320,280 @@ function CouncilCountdown() {
 /* ============================================================
    SEASON 3 — CINEMA PACK (components + strings)
    ============================================================ */
-/* === #1 Satellite Time Machine strings === */
-T.ro.satTitle = "Mașina timpului din satelit";
-T.ro.satCaption = "Trage pentru a compara terenul în timp — dovadă din satelit.";
-T.ro.satNow = "Azi";
-T.ro.satHere = "TERENUL"; T.en.satHere = "THE COURT"; T.hu.satHere = "A P\u00C1LYA"; // TODO: HU review
-T.en.satTitle = "Satellite Time Machine";
-T.en.satCaption = "Drag to compare the court over time — evidence from space.";
-T.en.satNow = "Today";
-T.hu.satTitle = "Műholdas időgép"; // TODO: HU review
-T.hu.satCaption = "Húzd a csúszkát, és hasonlítsd össze a pályát az időben — bizonyíték az űrből."; // TODO: HU review
-T.hu.satNow = "Ma"; // TODO: HU review
+/* === Satellite archive: real dated captures (Esri World Imagery Wayback) ===
+   data/timemachine.json is precomputed by tools/build_timemachine.mjs; courts not in it are
+   resolved live with the same walk-back over data/wayback.json. */
+var WB_TILE = "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/";
+var WB_MAP = "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tilemap/";
+var tmCache = { pre: null, rel: null };
+function tmJson(url) {
+  return fetch(url).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); });
+}
+function tmPrecomputed() {
+  if (!tmCache.pre) tmCache.pre = tmJson("/data/timemachine.json").then(function (d) { return d.courts || {}; }).catch(function () { tmCache.pre = null; return {}; });
+  return tmCache.pre;
+}
+function tmReleases() {
+  if (!tmCache.rel) tmCache.rel = tmJson("/data/wayback.json").then(function (d) { return d.releases; });
+  return tmCache.rel;
+}
+function tmTile(lat, lng, z) {
+  var n = Math.pow(2, z), r = lat * Math.PI / 180;
+  return { x: Math.floor((lng + 180) / 360 * n), y: Math.floor((1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2 * n) };
+}
+function tmLive(court, onStep) {
+  return tmReleases().then(function (releases) {
+    var idxById = {}; releases.forEach(function (r, i) { idxById[r.id] = i; });
+    var t17 = tmTile(court.lat, court.lng, 17), rels = [];
+    function walk(idx, guard) {
+      if (idx < 0 || guard > 40) return Promise.resolve();
+      return tmJson(WB_MAP + releases[idx].id + "/17/" + t17.y + "/" + t17.x + "/1/1").then(function (t) {
+        if (!t.data || !t.data[0]) return;
+        var src = t.select && idxById[t.select[0]] != null ? idxById[t.select[0]] : idx;
+        rels.push(releases[src]); onStep && onStep(rels.length);
+        return walk(src - 1, guard + 1);
+      });
+    }
+    return walk(releases.length - 1, 0).then(function () {
+      return Promise.all(rels.map(function (rel) {
+        var lat = court.lat, lng = court.lng;
+        var u = rel.md + "/identify?f=json&geometry=" + lng + "," + lat + "&geometryType=esriGeometryPoint&sr=4326&layers=all&tolerance=0&mapExtent=" +
+          (lng - 0.001) + "," + (lat - 0.001) + "," + (lng + 0.001) + "," + (lat + 0.001) + "&imageDisplay=100,100,96&returnGeometry=false";
+        return tmJson(u).then(function (m) {
+          var best = (m.results || []).map(function (x) { return x.attributes; }).filter(function (a) { return a.SRC_DATE; })
+            .sort(function (a, b) { return (+a.SRC_RES || 99) - (+b.SRC_RES || 99); })[0];
+          if (!best) return null;
+          var d = String(best.SRC_DATE);
+          return { r: rel.id, date: d.slice(0, 4) + "-" + d.slice(4, 6) + "-" + d.slice(6, 8), res: Math.round(+best.SRC_RES * 100) / 100, provider: best.NICE_DESC || "", sensor: best.SRC_DESC || "", z: 17 };
+        }).catch(function () { return null; });
+      }));
+    }).then(function (metas) {
+      var seen = {}, out = [];
+      metas.forEach(function (m) { if (m && !seen[m.date]) { seen[m.date] = 1; out.push(m); } });
+      return out.sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+    });
+  });
+}
+function tmSensor(s) {
+  var m = { WV01: "WorldView-1", WV02: "WorldView-2", WV03: "WorldView-3", WV04: "WorldView-4", GE01: "GeoEye-1", QB02: "QuickBird", IK02: "IKONOS" };
+  if (m[s]) return m[s];
+  if (/SPOT\s*5/i.test(s)) return "SPOT 5";
+  return s || "";
+}
+function tmFmt(date, lang, short) {
+  var d = new Date(date + "T12:00:00Z");
+  return d.toLocaleDateString(lang === "hu" ? "hu-HU" : lang === "en" ? "en-GB" : "ro-RO", short ? { month: "short", year: "numeric" } : { day: "numeric", month: "long", year: "numeric" });
+}
+function tmSpan(a, b, lang) {
+  var d1 = new Date(a), d2 = new Date(b);
+  var months = Math.max(0, (d2.getFullYear() - d1.getFullYear()) * 12 + d2.getMonth() - d1.getMonth());
+  var y = Math.floor(months / 12), m = months % 12;
+  if (lang === "en") return (y ? y + (y === 1 ? " year" : " years") : "") + (y && m ? " " : "") + (m ? m + (m === 1 ? " month" : " months") : "") || "same month";
+  if (lang === "hu") return (y ? y + " év" : "") + (y && m ? " " : "") + (m ? m + " hónap" : "") || "ugyanaz a hónap"; // TODO: HU review
+  return (y ? y + (y === 1 ? " an" : " ani") : "") + (y && m ? " și " : "") + (m ? m + (m === 1 ? " lună" : " luni") : "") || "aceeași lună";
+}
 
-/* === #1 Satellite Time Machine — Esri Wayback (2014) crossfading into today === */
 function SatelliteTimeMachine(props) {
   var court = props.court;
   var app = useApp();
-  var t = app.t;
-  var mapEl = useRef(null);
-  var nowLayerRef = useRef(null);
-  var errRef = useRef(0);
-  var opSt = useState(50);
-  var op = opSt[0], setOp = opSt[1];
-  var deadSt = useState(false);
-  var dead = deadSt[0], setDead = deadSt[1];
+  var t = app.t, lang = app.lang, isAdmin = app.isAdmin, toast = app.toast;
+  var wrapRef = useRef(null), mapEl = useRef(null), mapRef = useRef(null), layersRef = useRef({}), ratioRef = useRef(0.5);
+  var editSt = useState(false), editing = editSt[0], setEditing = editSt[1];
+  var candSt = useState(null), cand = candSt[0], setCand = candSt[1];
+  var editRef = useRef(false), candMarkerRef = useRef(null);
+  editRef.current = editing;
+  var capsSt = useState(null), caps = capsSt[0], setCaps = capsSt[1];
+  var errSt = useState(null), err = errSt[0], setErr = errSt[1];
+  var stepSt = useState(0), steps = stepSt[0], setSteps = stepSt[1];
+  var aSt = useState(0), ai = aSt[0], setAi = aSt[1];
+  var bSt = useState(0), bi = bSt[0], setBi = bSt[1];
+  var pickSt = useState("a"), pick = pickSt[0], setPick = pickSt[1];
+  var modeSt = useState("compare"), mode = modeSt[0], setMode = modeSt[1];
+  var playSt = useState(false), playing = playSt[0], setPlaying = playSt[1];
+  var ratioSt = useState(0.5), ratio = ratioSt[0], setRatio = ratioSt[1];
+  var fsSt = useState(false), fs = fsSt[0], setFs = fsSt[1];
+  var tryN = useState(0), attempt = tryN[0], setAttempt = tryN[1];
+  var L3 = function (ro, en, hu) { return lang === "en" ? en : lang === "hu" ? (hu || en) : ro; };
+
   useEffect(function () {
-    if (dead || !mapEl.current || typeof L === "undefined") return;
-    var m = L.map(mapEl.current, { scrollWheelZoom: false }).setView([court.lat, court.lng], 18);
-    var then = L.tileLayer("https://wayback.maptiles.arcgis.com/arcgis/rest/services/world_imagery/wmts/1.0.0/default028mm/mapserver/tile/10/{z}/{y}/{x}", {
-      maxZoom: 18, attribution: "Esri World Imagery / Wayback"
-    });
-    var now = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
-      maxZoom: 18, opacity: op / 100
-    });
-    // If the Wayback service is unreachable, hide the whole card gracefully.
-    var onErr = function () { errRef.current += 1; if (errRef.current >= 8) setDead(true); };
-    then.on("tileerror", onErr);
-    then.addTo(m);
-    now.addTo(m);
-    L.circle([court.lat, court.lng], { radius: 26, color: "#F97316", weight: 3, fill: false, dashArray: "6 6" }).addTo(m);
+    var alive = true;
+    setCaps(null); setErr(null); setSteps(0);
+    tmPrecomputed().then(function (pre) {
+      if (!court.posFixed && pre[court.id] && pre[court.id].length) return pre[court.id];
+      return tmLive(court, function (n) { if (alive) setSteps(n); });
+    }).then(function (list) {
+      if (!alive) return;
+      if (!list || !list.length) { setErr("empty"); return; }
+      setCaps(list); setAi(0); setBi(list.length - 1);
+    }).catch(function () { if (alive) setErr("net"); });
+    return function () { alive = false; };
+  }, [court.id, attempt]);
+
+  // Map with two panes; pane B is clipped to the right of the divider.
+  useEffect(function () {
+    if (!caps || !mapEl.current || typeof L === "undefined") return;
+    var m = L.map(mapEl.current, { scrollWheelZoom: false, zoomControl: true, attributionControl: true, maxZoom: 19, minZoom: 14 }).setView([court.lat, court.lng], 18);
+    m.attributionControl.setPrefix(false);
+    m.createPane("tmA").style.zIndex = 200;
+    var pb = m.createPane("tmB"); pb.style.zIndex = 210; pb.style.transition = "opacity .7s ease";
+    L.circle([court.lat, court.lng], { radius: 22, color: "#F97316", weight: 2.5, fill: false, dashArray: "6 5", pane: "markerPane" }).addTo(m);
     L.marker([court.lat, court.lng], {
-      icon: L.divIcon({
-        html: '<div style="transform:translate(-50%,-240%);background:#F97316;color:#fff;font:700 10px \'Space Mono\',monospace;padding:2px 7px;border-radius:6px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.45)">\uD83C\uDFC0 ' + (t.satHere || "TERENUL") + '</div>',
-        className: "", iconSize: [0, 0]
-      }),
-      interactive: false
+      interactive: false, pane: "markerPane",
+      icon: L.divIcon({ className: "", iconSize: [0, 0], html: '<div class="tm-pin">🏀 ' + escHtml(t.satHere || "TERENUL") + "</div>" })
     }).addTo(m);
-    nowLayerRef.current = now;
-    var tid = setTimeout(function () { m.invalidateSize(); }, 200);
-    return function () {
-      clearTimeout(tid);
-      then.off("tileerror", onErr);
-      nowLayerRef.current = null;
-      m.remove();
+    mapRef.current = m; layersRef.current = {};
+    var clip = function () {
+      var size = m.getSize(), nw = m.containerPointToLayerPoint([0, 0]), se = m.containerPointToLayerPoint(size);
+      var x = nw.x + size.x * ratioRef.current;
+      pb.style.clip = "rect(" + nw.y + "px," + se.x + "px," + se.y + "px," + x + "px)";
     };
-  }, [court.id, dead]);
+    m.on("move zoom resize zoomend moveend", clip);
+    m.on("click", function (e) { if (editRef.current) setCand({ lat: +e.latlng.lat.toFixed(6), lng: +e.latlng.lng.toFixed(6) }); });
+    m._tmClip = clip;
+    var tid = setTimeout(function () { m.invalidateSize(); clip(); }, 120);
+    return function () { clearTimeout(tid); m.remove(); mapRef.current = null; layersRef.current = {}; };
+  }, [caps]);
+
+  function layerFor(i, pane) {
+    var key = pane + ":" + caps[i].r, m = mapRef.current, ls = layersRef.current;
+    if (!ls[key]) ls[key] = L.tileLayer(WB_TILE + caps[i].r + "/{z}/{y}/{x}", {
+      pane: pane, maxZoom: 19, maxNativeZoom: caps[i].z || 17, keepBuffer: 4,
+      attribution: "Esri World Imagery Wayback · " + escHtml(caps[i].provider || "")
+    });
+    return ls[key];
+  }
+  function show(pane, i) {
+    var m = mapRef.current; if (!m) return;
+    Object.keys(layersRef.current).forEach(function (k) {
+      if (k.indexOf(pane + ":") === 0 && m.hasLayer(layersRef.current[k]) && k !== pane + ":" + caps[i].r) m.removeLayer(layersRef.current[k]);
+    });
+    var l = layerFor(i, pane); if (!m.hasLayer(l)) l.addTo(m);
+  }
   useEffect(function () {
-    if (nowLayerRef.current) nowLayerRef.current.setOpacity(op / 100);
-  }, [op]);
-  if (dead) return null;
-  return React.createElement("div", { className: "card mt-2", style: { borderLeft: "3px solid var(--teal)" } },
-    React.createElement("h4", { className: "mb-1" }, "🛰️ ", t.satTitle),
-    React.createElement("div", { style: { position: "relative" } },
-      React.createElement("div", { className: "sat-map", ref: mapEl }),
-      React.createElement("span", { className: "sat-chip", style: { left: 8, opacity: Math.max(0.15, 1 - op / 100) } }, "2014"),
-      React.createElement("span", { className: "sat-chip", style: { right: 8, opacity: Math.max(0.15, op / 100) } }, t.satNow)
-    ),
-    React.createElement("div", { className: "sat-slider-row" },
-      React.createElement("span", { className: "sat-year" }, "2014"),
-      React.createElement("input", {
-        type: "range", min: 0, max: 100, value: op,
-        onChange: function (e) { setOp(+e.target.value); },
-        "aria-label": t.satTitle
-      }),
-      React.createElement("span", { className: "sat-year" }, t.satNow)
-    ),
-    React.createElement("div", { className: "flex gap-1 mt-1", style: { justifyContent: "center" } },
-      React.createElement("button", { className: "btn btn-sm " + (op < 25 ? "btn-green" : "btn-outline"), onClick: function () { setOp(0); } }, "2014"),
-      React.createElement("button", { className: "btn btn-sm " + (op >= 25 && op <= 75 ? "btn-green" : "btn-outline"), onClick: function () { setOp(50); } }, "50/50"),
-      React.createElement("button", { className: "btn btn-sm " + (op > 75 ? "btn-green" : "btn-outline"), onClick: function () { setOp(100); } }, t.satNow)
-    ),
-    React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, t.satCaption)
-  );
+    if (!caps || !mapRef.current) return;
+    show("tmA", ai); show("tmB", bi);
+    ratioRef.current = mode === "compare" ? ratio : 0;
+    mapRef.current._tmClip && mapRef.current._tmClip();
+  }, [caps, ai, bi, mode, ratio]);
+
+  useEffect(function () {
+    var m = mapRef.current; if (!m) return;
+    if (candMarkerRef.current) { m.removeLayer(candMarkerRef.current); candMarkerRef.current = null; }
+    if (cand) candMarkerRef.current = L.circleMarker([cand.lat, cand.lng], { radius: 9, color: "#fff", weight: 3, fillColor: "#10B981", fillOpacity: 1, pane: "markerPane" }).addTo(m);
+    mapEl.current && (mapEl.current.style.cursor = editing ? "crosshair" : "");
+  }, [cand, editing]);
+  function savePos() {
+    if (!cand) return;
+    db.ref("settings/courtPos/" + court.id).set({ lat: cand.lat, lng: cand.lng, ts: Date.now() }).then(function () {
+      court.lat = cand.lat; court.lng = cand.lng; court.posFixed = true;
+      try { var c = JSON.parse(localStorage.getItem("g2p_courtpos") || "{}"); c[court.id] = { lat: cand.lat, lng: cand.lng }; localStorage.setItem("g2p_courtpos", JSON.stringify(c)); } catch (e) {}
+      setEditing(false); setCand(null); setAttempt(function (n) { return n + 1; });
+      toast(L3("Poziție salvată. Arhiva se recalculează.", "Position saved. Rebuilding the archive.", "Pozíció mentve."));
+    }).catch(function (e) { toast(L3("Eroare: ", "Error: ", "Hiba: ") + e.message); });
+  }
+
+  // Chronology: step through captures; B fades in over A.
+  useEffect(function () {
+    if (!playing || !caps || mode !== "timeline") return;
+    var pane = mapRef.current && mapRef.current.getPane("tmB");
+    var id = setInterval(function () {
+      setBi(function (cur) {
+        var next = cur + 1 >= caps.length ? 0 : cur + 1;
+        setAi(cur);
+        if (pane) { pane.style.opacity = 0; requestAnimationFrame(function () { requestAnimationFrame(function () { pane.style.opacity = 1; }); }); }
+        return next;
+      });
+    }, 2600);
+    return function () { clearInterval(id); if (pane) pane.style.opacity = 1; };
+  }, [playing, caps, mode]);
+
+  useEffect(function () {
+    var onFs = function () { setFs(document.fullscreenElement === wrapRef.current); setTimeout(function () { mapRef.current && mapRef.current.invalidateSize(); }, 150); };
+    document.addEventListener("fullscreenchange", onFs);
+    return function () { document.removeEventListener("fullscreenchange", onFs); };
+  }, []);
+  useEffect(function () {
+    var m = mapRef.current; if (!m) return;
+    if (fs) m.scrollWheelZoom.enable(); else m.scrollWheelZoom.disable();
+  }, [fs]);
+
+  function dragDivider(e) {
+    var box = mapEl.current.getBoundingClientRect(), m = mapRef.current;
+    e.preventDefault();
+    if (m) m.dragging.disable();
+    var moveTo = function (cx) { var r = Math.min(0.98, Math.max(0.02, (cx - box.left) / box.width)); ratioRef.current = r; setRatio(r); m && m._tmClip && m._tmClip(); };
+    var mv = function (ev) { moveTo(ev.clientX); };
+    var up = function () { window.removeEventListener("pointermove", mv); window.removeEventListener("pointerup", up); if (m) m.dragging.enable(); };
+    window.addEventListener("pointermove", mv); window.addEventListener("pointerup", up);
+    moveTo(e.clientX);
+  }
+  function choose(i) {
+    setPlaying(false);
+    if (mode === "timeline") { setAi(bi); setBi(i); return; }
+    if (pick === "a") { if (i === bi) return; setAi(i); setPick("b"); } else { if (i === ai) return; setBi(i); setPick("a"); }
+  }
+  function toggleFs() {
+    var el = wrapRef.current; if (!el) return;
+    if (document.fullscreenElement) document.exitFullscreen(); else if (el.requestFullscreen) el.requestFullscreen();
+  }
+
+  var head = React.createElement("div", { className: "flex justify-between items-center mb-1", style: { gap: ".5rem", flexWrap: "wrap" } },
+    React.createElement("h4", { style: { margin: 0 } }, "🛰️ ", L3("Arhiva satelit", "Satellite archive", "Műholdas archívum")),
+    caps && React.createElement("span", { className: "text-xs", style: { color: "var(--textSec)" } },
+      caps.length + " " + L3("capturi reale", "real captures", "valós felvétel") + " · " + caps[0].date.slice(0, 4) + "–" + caps[caps.length - 1].date.slice(0, 4)));
+
+  if (err) return React.createElement("div", { className: "card mt-2 tm-card" }, head,
+    React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } },
+      err === "empty" ? L3("Nu există imagini istorice pentru acest punct.", "No historical imagery for this spot.", "Nincs történeti felvétel erre a pontra.")
+        : L3("Arhiva Esri nu răspunde acum.", "The Esri archive is not responding right now.", "Az Esri archívum most nem válaszol.")),
+    React.createElement("button", { className: "btn btn-sm btn-outline", onClick: function () { setAttempt(attempt + 1); } }, L3("Reîncearcă", "Retry", "Újra")));
+  if (!caps) return React.createElement("div", { className: "card mt-2 tm-card" }, head,
+    React.createElement("div", { className: "tm-map tm-skeleton" },
+      React.createElement("span", null, steps ? L3("Caut capturi… ", "Finding captures… ", "Felvételek keresése… ") + steps : L3("Se încarcă arhiva…", "Loading archive…", "Archívum betöltése…"))));
+
+  var A = caps[ai], B = caps[bi];
+  var t0 = new Date(caps[0].date).getTime(), t1 = new Date(caps[caps.length - 1].date).getTime(), spanMs = Math.max(1, t1 - t0);
+  var chip = function (c, side) {
+    return React.createElement("div", { className: "tm-label tm-label-" + side },
+      React.createElement("b", null, tmFmt(c.date, lang)),
+      React.createElement("span", null, String(c.res).replace(".", lang === "en" ? "." : ",") + " m/px · " + tmSensor(c.sensor) +
+        (c.res > 1 ? " · " + L3("rezoluție joasă", "low resolution", "alacsony felbontás") : "") +
+        (c.sensor === "WV01" ? " · " + L3("alb-negru: satelitul nu are senzor de culoare", "black & white: this satellite has no colour sensor", "fekete-fehér: a műholdnak nincs színérzékelője") : "")));
+  };
+  return React.createElement("div", { className: "card mt-2 tm-card" + (fs ? " tm-fs" : ""), ref: wrapRef },
+    head,
+    React.createElement("div", { className: "tm-modes" },
+      React.createElement("button", { className: mode === "compare" ? "on" : "", onClick: function () { setMode("compare"); setPlaying(false); } }, "⇆ " + L3("Comparare", "Compare", "Összehasonlítás")),
+      React.createElement("button", { className: mode === "timeline" ? "on" : "", onClick: function () { setMode("timeline"); } }, "⏱ " + L3("Cronologie", "Timeline", "Idővonal")),
+      mode === "timeline" && React.createElement("button", { className: playing ? "on" : "", onClick: function () { setPlaying(!playing); } }, playing ? "⏸ " + L3("Pauză", "Pause", "Szünet") : "▶ " + L3("Redă", "Play", "Lejátszás")),
+      isAdmin && React.createElement("button", { className: editing ? "on" : "", onClick: function () { setEditing(!editing); setCand(null); setPlaying(false); } }, "📍 " + L3("Corectează poziția", "Fix position", "Pozíció javítása")),
+      React.createElement("button", { onClick: toggleFs, "aria-label": "Fullscreen", style: { marginLeft: "auto" } }, fs ? "✕" : "⛶")),
+    editing && React.createElement("div", { className: "tm-edit" },
+      React.createElement("span", null, cand ? cand.lat + ", " + cand.lng : L3("Atinge terenul real pe imagine.", "Tap the real court on the image.", "Koppints a valódi pályára.")),
+      cand && React.createElement("button", { className: "btn btn-sm btn-green", onClick: savePos }, L3("Salvează poziția", "Save position", "Mentés")),
+      React.createElement("button", { className: "btn btn-sm btn-outline", onClick: function () { setEditing(false); setCand(null); } }, L3("Anulează", "Cancel", "Mégse"))),
+    React.createElement("div", { className: "tm-stage" },
+      React.createElement("div", { className: "tm-map", ref: mapEl }),
+      mode === "compare" && React.createElement("div", { className: "tm-divider", style: { left: (ratio * 100) + "%" }, onPointerDown: dragDivider },
+        React.createElement("div", { className: "tm-knob", role: "slider", "aria-valuemin": 0, "aria-valuemax": 100, "aria-valuenow": Math.round(ratio * 100), "aria-label": L3("Comparare imagini", "Compare images", "Képek összehasonlítása"), tabIndex: 0,
+          onKeyDown: function (e) { var d = e.key === "ArrowLeft" ? -0.05 : e.key === "ArrowRight" ? 0.05 : 0; if (d) { var r = Math.min(0.98, Math.max(0.02, ratio + d)); ratioRef.current = r; setRatio(r); } } }, "⇆")),
+      mode === "compare" ? chip(A, "a") : null,
+      chip(B, mode === "compare" ? "b" : "big")),
+    React.createElement("div", { className: "tm-track" },
+      React.createElement("div", { className: "tm-line" }),
+      caps.map(function (c, i) {
+        var pos = 4 + 92 * (new Date(c.date).getTime() - t0) / spanMs;
+        var isA = mode === "compare" && i === ai, isB = i === bi;
+        return React.createElement("button", {
+          key: c.r + c.date, className: "tm-dot" + (i % 2 ? " up" : "") + (isA ? " a" : "") + (isB ? " b" : ""), style: { left: pos + "%" },
+          title: tmFmt(c.date, lang) + " · " + c.res + " m/px", onClick: function () { choose(i); }
+        }, React.createElement("span", null, c.date.slice(0, 4)));
+      })),
+    React.createElement("div", { className: "tm-foot" },
+      mode === "compare"
+        ? React.createElement("span", null, "⏳ " + tmSpan(A.date, B.date, lang) + " · " + (pick === "a" ? L3("Atinge o dată pentru stânga", "Tap a date for the left side", "Válassz dátumot a bal oldalhoz") : L3("Atinge o dată pentru dreapta", "Tap a date for the right side", "Válassz dátumot a jobb oldalhoz")))
+        : React.createElement("span", null, L3("Fiecare cadru e o captură reală, nu o simulare.", "Every frame is a real capture, not a simulation.", "Minden kocka valós felvétel.")),
+      React.createElement("span", null, "© Esri World Imagery Wayback · " + (B.provider || ""))));
 }
 
 /* === #2 Hoop game strings === */
@@ -2720,6 +2950,9 @@ function HoopGame(props) {
   );
 }
 
+/* === Map + satellite strings === */
+T.ro.mapStreet = "Hartă"; T.en.mapStreet = "Map"; T.hu.mapStreet = "Térkép";
+T.ro.mapSat = "Satelit"; T.en.mapSat = "Satellite"; T.hu.mapSat = "Műhold";
 /* === Hoop physics strings === */
 T.ro.hoopGap = "Inel îndoit: deschidere {g} cm · minge 24 cm"; T.en.hoopGap = "Bent rim: {g} cm gap · ball 24 cm"; T.hu.hoopGap = "Hajlott gyűrű: {g} cm rés · labda 24 cm"; // TODO: HU review
 T.ro.hoopProof = "Pe un inel drept, aruncarea asta intra ✓"; T.en.hoopProof = "On a proper rim this shot scores ✓"; T.hu.hoopProof = "Ép gyűrűn ez a dobás bemenne ✓"; // TODO: HU review
@@ -4821,7 +5054,6 @@ function cityName(lang) {
 }
 if (ACTIVE_CITY !== "tgm") {
   ["ro", "en", "hu"].forEach(l => {
-    T[l].city = cityName(l) + (l === "ro" ? ", România" : l === "hu" ? ", Románia" : ", Romania");
     T[l].dossierForCouncil = (l === "ro" ? "Pentru " : l === "en" ? "For the " : "") + CITY_HALL[l] + (l === "hu" ? " részére" : "");
     T[l].heroKicker = cityName(l) + (l === "ro" ? " · terenuri sportive publice" : l === "en" ? " · public sports courts" : " · közpályák");
   });
@@ -4866,6 +5098,21 @@ const COURTS_SIBIU = [
 ];
 const COURTS_ALL = [...COURTS_TGM, ...COURTS_SIBIU];
 const COURTS = COURTS_ALL.filter(c => c.city === ACTIVE_CITY);
+// Admin position corrections (settings/courtPos), cached so they apply before the first render.
+function applyCourtPos(map) {
+  if (!map) return;
+  COURTS_ALL.forEach(c => {
+    const p = map[c.id];
+    if (p && isFinite(p.lat) && isFinite(p.lng)) { c.lat = +p.lat; c.lng = +p.lng; c.posFixed = true; }
+  });
+}
+try { applyCourtPos(JSON.parse(localStorage.getItem("g2p_courtpos") || "null")); } catch (e) {}
+db.ref("settings/courtPos").once("value").then(s => {
+  const next = JSON.stringify(s.val() || {});
+  let prev = null;
+  try { prev = localStorage.getItem("g2p_courtpos"); localStorage.setItem("g2p_courtpos", next); } catch (e) {}
+  if (prev !== next) applyCourtPos(s.val() || {});
+}).catch(() => {});
 
 var ESSAY = {
   ro: "Cauta Targu Mures pe Google si fotografiile iti vand un vis – trasee de alergare pe Platoul Cornesti, parcuri verzi, fatade colorate. Oras sportiv, zic ei. Dar ia autobuzul spre Tudor sau in spatele Auchan, si visul se crapa, la propriu. Terenurile sunt sparte, cosurile indoite, si nimanui pare sa-i pese. Am vrut sa aflu de ce.\n\nAm cautat mai intai dovezi academice. Un studiu din 2023 in Urban Science (publicat de MDPI) compara modul in care orasele europene gestioneaza infrastructura recreationala si argumenteaza ca distributia inegala tinde sa adanceasca decalajele sociale. Este un studiu amplu, transnational – nu se potriveste perfect pentru un singur oras romanesc – dar rationamentul mi-a ramas. Journal of Urban Health restrange focusul: absenta terenurilor sportive la nivel de cartier se coreleaza direct cu inactivitatea si izolarea tinerilor. Ceea ce a fost decisiv a fost descoperirea Strategiei Integrate de Dezvoltare Urbana (SIDU), publicata pe site-ul Primariei. Documentul admite deschis ca districtele periferice – cele cu populatiile cele mai tinere – primesc cele mai putine investitii in infrastructura.\n\nReportajele locale au adaugat culoare. O investigatie Punctul.ro din octombrie 2025 a expus cum o eroare administrativa de cinci milioane de lei a inghetat renovarea unei baze sportive de pe strada Insulei – birocratie la superlativ. Un alt reportaj Punctul.ro a explorat cum Cluj si Sibiu au transformat cu succes loturi urbane neglijate in hub-uri digitale, evidentiind prin contrast cat de putin a facut Targu Mures. Acum, presa poate sensationaliza, asa ca am verificat cu bugetul oficial al Primariei Targu Mures. Cifrele s-au aliniat: fondurile promise pentru renovari depasesc constant ceea ce se cheltuieste efectiv.\n\nTotusi, cercetarea de birou iti arata doar o parte din imagine. Pe parcursul a doua weekenduri, am strabatut Tudor, zona Auchan si terenurile de langa Sportcomplex, fotografiind asfalt crapat si cosuri indoite si le-am inregistrat pe Google My Maps. Am facut si un sondaj informal rapid – cincisprezece rezidenti, o intrebare: folosesti terenul cel mai aproape de tine? Doisprezece au spus nu, prea degradat. Trei au spus ocazional, din lipsa de alternative. Cincisprezece respondenti nu vor castiga un premiu de statistica, dar acel nivel de consens este greu de respins.\n\nPunand piesele cap la cap, apare un lant clar: pasul unu, municipalitatea concentreaza cheltuielile pe locatii centrale de profil inalt; pasul doi, terenurile periferice se degradeaza din pura neatentie; pasul trei, tinerii din acele zone isi pierd sansa la sport regulat si la viata sociala care vine cu el. Platoul Cornesti ar putea fi intr-un alt cod postal fata de periferie. Nu spun ca cineva actioneaza din rautate – bugetele limitate si prea multe cereri concurente probabil explica mult. Dar rezidentii din aceste cartiere nu au canale civice clare pentru a semnala problema, si aceasta tacere lasa ciclul sa se repete.\n\nPrima mea propunere este un pilot Flip-the-Court: alegem trei dintre cele mai degradate terenuri, le refacem suprafata si echipam fiecare cu un dulap de echipament rezistent la intemperii pe care localnicii il pot debloca printr-o aplicatie gratuita. Aplicatia functioneaza si ca instrument de feedback – oamenii evalueaza facilitatile, raporteaza daunele si sugereaza ce echipament sportiv sa fie aprovizionat. Ca finantare, micro-granturile EU pentru sport-tineret acopera costurile principale; cateva parteneriate cu sali de sport locale acopera intretinerea. De la obtinerea grantului pana la taierea panglicii, sase luni par realizabile.\n\nA doua idee se bazeaza mai mult pe arta decat pe tehnologie. O initiativa Street Canvas ar aduce artistii locali de graffiti si rezidentii impreuna pentru a picta murale colorate la scara mare pe suprafetele renovate – finantata aproape in intregime din spray paint donat si ore de voluntariat. De ce sa ne obosim? Cercetarile privind atasamentul de loc arata ca oamenii care ajuta fizic la modelarea unui spatiu public il trateaza ca pe al lor, iar ratele de vandalism scad corespunzator. O placa cenusie devine un loc de intalnire pe care oamenii chiar vor sa-l protejeze.\n\nNimic din toate acestea nu este cu adevarat despre baschet sau handbal. Este despre daca adresa ta ar trebui sa-ti limiteze oportunitatile. Un pilot mic, cateva murale, un efort comunitar incapatanat – pretul este modest. Singurul lucru scump este sa continuam sa nu facem nimic.",
@@ -5515,10 +5762,23 @@ function MapView({
   } = useApp();
   useEffect(() => {
     if (!ref.current || mapRef.current) return;
-    const m = L.map(ref.current).setView(CITY_CFG[ACTIVE_CITY].center, CITY_CFG[ACTIVE_CITY].zoom);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    const m = L.map(ref.current, { scrollWheelZoom: false, maxZoom: 19 }).setView(CITY_CFG[ACTIVE_CITY].center, CITY_CFG[ACTIVE_CITY].zoom);
+    m.attributionControl.setPrefix(false);
+    const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
       attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a> (ODbL)'
-    }).addTo(m);
+    });
+    const sat = L.layerGroup([
+      L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", { maxZoom: 19, attribution: "© Esri World Imagery, Maxar, Earthstar Geographics" }),
+      L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}", { maxZoom: 19 })
+    ]);
+    let base = "street";
+    try { base = localStorage.getItem("g2p_basemap") || "street"; } catch (e) {}
+    (base === "sat" ? sat : street).addTo(m);
+    L.control.layers({ [t.mapStreet || "Hartă"]: street, [t.mapSat || "Satelit"]: sat }, null, { position: "topright" }).addTo(m);
+    m.on("baselayerchange", e => { try { localStorage.setItem("g2p_basemap", e.layer === sat ? "sat" : "street"); } catch (err) {} });
+    m.on("click focus", () => m.scrollWheelZoom.enable());
+    m.on("mouseout", () => m.scrollWheelZoom.disable());
     // Heatmap: concentric translucent circles per court, radius/opacity
     // scaled by report density (static c.reports + live heatCounts).
     if (heat) {
@@ -5541,18 +5801,21 @@ function MapView({
       if (c.lat == null || c.lng == null) return;
       const col = c.status === "unverified" ? "#6B7280" : c.status === "degraded" ? "#DC2626" : c.status === "inProgress" ? "#F97316" : "#10B981";
       const icon = L.divIcon({
-        html: `<div style="width:14px;height:14px;border-radius:50%;background:${col};border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3)"></div>`,
+        html: `<div style="width:16px;height:16px;border-radius:50%;background:${col};border:2.5px solid #fff;box-shadow:0 1px 6px rgba(0,0,0,.45)"></div>`,
         className: "",
-        iconSize: [14, 14]
+        iconSize: [16, 16]
       });
       const mk = L.marker([c.lat, c.lng], {
         icon,
-        title: c.name || "",
-        alt: c.name || ""
+        alt: c.name || "",
+        keyboard: true
       }).addTo(m);
-      mk.bindPopup(`<b>${escHtml(c.name)}</b><br>${escHtml(c.address)}`);
+      mk.bindTooltip(`<b>${escHtml(c.name)}</b>${c.address ? "<br>" + escHtml(c.address) : ""}`, { direction: "top", offset: [0, -8] });
       if (onSelect) mk.on('click', () => onSelect(c));
+      else mk.bindPopup(`<b>${escHtml(c.name)}</b><br>${escHtml(c.address)}`);
     });
+    const pts = courts.filter(c => c.lat != null && c.lng != null).map(c => [c.lat, c.lng]);
+    if (pts.length > 1 && !myLoc) m.fitBounds(pts, { padding: [28, 28], maxZoom: 15 });
     if (myLoc) {
       const uIcon = L.divIcon({
         html: '<div style="width:18px;height:18px;border-radius:50%;background:#2563EB;border:3px solid #fff;box-shadow:0 0 0 5px rgba(37,99,235,.35)"></div>',
@@ -6570,8 +6833,9 @@ function CourtsPage() {
     onSelect: openCourt,
     heat: heat,
     heatCounts: heatCounts,
-    myLoc: myLoc
-  }), /*#__PURE__*/React.createElement("p", {
+    myLoc: myLoc,
+    height: "clamp(360px, 64vh, 680px)"
+  }),/*#__PURE__*/React.createElement("p", {
     className: "text-xs mt-1",
     style: { color: "var(--textSec)", textAlign: "center" }
   }, lang === "ro"
@@ -6764,23 +7028,29 @@ function CourtDetail({
     setCi(false);
     toast(t.success);
   };
+  useEffect(() => {
+    const onKey = e => { if (e.key === "Escape") onClose(); };
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => { document.body.style.overflow = prev; window.removeEventListener("keydown", onKey); };
+  }, []);
   return /*#__PURE__*/React.createElement("div", {
     className: "modal-overlay",
-    onClick: onClose
+    onClick: onClose,
+    role: "dialog",
+    "aria-modal": "true",
+    "aria-label": c.name
   }, /*#__PURE__*/React.createElement("div", {
     className: "modal modal-lg",
     onClick: e => e.stopPropagation()
   }, /*#__PURE__*/React.createElement("div", {
-    className: "flex justify-between items-center mb-2"
-  }, /*#__PURE__*/React.createElement("h2", null, c.name), /*#__PURE__*/React.createElement("button", {
+    className: "modal-head flex justify-between items-center mb-2"
+  }, /*#__PURE__*/React.createElement("h2", { style: { margin: 0, fontSize: "1.25rem" } }, c.name), /*#__PURE__*/React.createElement("button", {
     onClick: onClose,
-    style: {
-      background: "none",
-      border: "none",
-      fontSize: "1.4rem",
-      color: "var(--text)"
-    }
-  }, "\u2715")), /*#__PURE__*/React.createElement("p", {
+    "aria-label": lang === "ro" ? "\u00cenchide" : lang === "hu" ? "Bez\u00e1r\u00e1s" : "Close",
+    className: "modal-close"
+  }, "\u2715")),/*#__PURE__*/React.createElement("p", {
     className: "text-sm mb-1"
   }, c.address), ((c.desc && c.desc[lang]) || c.description) && React.createElement("p", {
     className: "text-sm mb-1",

@@ -1,0 +1,426 @@
+{
+  "retrieved_at": "2026-10-24T17:30:27.135Z",
+  "pitches": 109,
+  "courts": [
+    {
+      "id": "c1",
+      "name": "Baza Mureșul — Teren Baschet",
+      "category": "basketball",
+      "lat": 46.5618,
+      "lng": 24.5512,
+      "nearest": {
+        "osm": "way/1072030524",
+        "sport": "basketball",
+        "name": "",
+        "d": 1478,
+        "lat": 46.5505132,
+        "lng": 24.5614033
+      }
+    },
+    {
+      "id": "c2",
+      "name": "Baza Mureșul — Teren Fotbal",
+      "category": "football",
+      "lat": 46.5615,
+      "lng": 24.5518,
+      "nearest": {
+        "osm": "way/247901305",
+        "sport": "soccer",
+        "name": "",
+        "d": 522,
+        "lat": 46.5593763,
+        "lng": 24.5457105
+      }
+    },
+    {
+      "id": "c3",
+      "name": "Complex Weekend — Teren Fotbal",
+      "category": "football",
+      "lat": 46.5448,
+      "lng": 24.5782,
+      "nearest": {
+        "osm": "way/1073586311",
+        "sport": "soccer;handball",
+        "name": "",
+        "d": 732,
+        "lat": 46.545618,
+        "lng": 24.5686963
+      }
+    },
+    {
+      "id": "c4",
+      "name": "Complex Weekend — Teren Tenis",
+      "category": "tennis",
+      "lat": 46.5445,
+      "lng": 24.5786,
+      "nearest": {
+        "osm": "way/167410150",
+        "sport": "tennis",
+        "name": "",
+        "d": 966,
+        "lat": 46.5449233,
+        "lng": 24.5659869
+      }
+    },
+    {
+      "id": "c5",
+      "name": "Baza Sportivă Str. Insulei",
+      "category": "football",
+      "lat": 46.5489,
+      "lng": 24.5701,
+      "nearest": {
+        "osm": "way/173016764",
+        "sport": "soccer",
+        "name": "",
+        "d": 357,
+        "lat": 46.5520881,
+        "lng": 24.5706573
+      }
+    },
+    {
+      "id": "c6",
+      "name": "Teren Baschet Tudor Vladimirescu",
+      "category": "basketball",
+      "lat": 46.5512,
+      "lng": 24.5678,
+      "nearest": {
+        "osm": "way/1072030524",
+        "sport": "basketball",
+        "name": "",
+        "d": 495,
+        "lat": 46.5505132,
+        "lng": 24.5614033
+      }
+    },
+    {
+      "id": "c7",
+      "name": "Teren Sport Str. Carpați",
+      "category": "multiuse",
+      "lat": 46.5528,
+      "lng": 24.571,
+      "nearest": {
+        "osm": "way/173016764",
+        "sport": "soccer",
+        "name": "",
+        "d": 83,
+        "lat": 46.5520881,
+        "lng": 24.5706573
+      }
+    },
+    {
+      "id": "c8",
+      "name": "CS Torpi — Terenuri Sport",
+      "category": "multiuse",
+      "lat": 46.5502,
+      "lng": 24.5659,
+      "nearest": {
+        "osm": "way/1072030524",
+        "sport": "basketball",
+        "name": "",
+        "d": 346,
+        "lat": 46.5505132,
+        "lng": 24.5614033
+      }
+    },
+    {
+      "id": "c9",
+      "name": "Platoul Cornești — Teren Tenis",
+      "category": "tennis",
+      "lat": 46.5634,
+      "lng": 24.5432,
+      "nearest": {
+        "osm": "way/1546361350",
+        "sport": "tennis",
+        "name": "",
+        "d": 1625,
+        "lat": 46.5490465,
+        "lng": 24.5471612
+      }
+    },
+    {
+      "id": "c10",
+      "name": "Sala Sporturilor City Arena",
+      "category": "basketball",
+      "lat": 46.5394,
+      "lng": 24.5587,
+      "nearest": {
+        "osm": "way/967971978",
+        "sport": "basketball",
+        "name": "",
+        "d": 322,
+        "lat": 46.5366551,
+        "lng": 24.5573629
+      }
+    },
+    {
+      "id": "c11",
+      "name": "Stadionul Municipal",
+      "category": "football",
+      "lat": 46.5397,
+      "lng": 24.5578,
+      "nearest": {
+        "osm": "way/1369750903",
+        "sport": "basketball;soccer;handball",
+        "name": "",
+        "d": 637,
+        "lat": 46.5380553,
+        "lng": 24.5657736
+      }
+    },
+    {
+      "id": "c12",
+      "name": "Academica Transilvania — Teren Fotbal",
+      "category": "football",
+      "lat": 46.5388,
+      "lng": 24.5508,
+      "nearest": {
+        "osm": "way/198075642",
+        "sport": "soccer",
+        "name": "",
+        "d": 999,
+        "lat": 46.5405597,
+        "lng": 24.5379967
+      }
+    },
+    {
+      "id": "c13",
+      "name": "Enjoy Sports Club",
+      "category": "gym",
+      "lat": 46.542,
+      "lng": 24.5572,
+      "nearest": {
+        "osm": "way/330563078",
+        "sport": "basketball",
+        "name": "Teren de baschet",
+        "d": 506,
+        "lat": 46.5439949,
+        "lng": 24.5631534
+      }
+    },
+    {
+      "id": "c14",
+      "name": "Body Factory",
+      "category": "gym",
+      "lat": 46.5335,
+      "lng": 24.549,
+      "nearest": {
+        "osm": "way/181129550",
+        "sport": "basketball",
+        "name": "",
+        "d": 647,
+        "lat": 46.5388468,
+        "lng": 24.5456791
+      }
+    },
+    {
+      "id": "c15",
+      "name": "Teren Baschet Bulevardul 1 Decembrie",
+      "category": "basketball",
+      "lat": 46.5351,
+      "lng": 24.5531,
+      "nearest": {
+        "osm": "way/967971978",
+        "sport": "basketball",
+        "name": "",
+        "d": 369,
+        "lat": 46.5366551,
+        "lng": 24.5573629
+      }
+    },
+    {
+      "id": "c16",
+      "name": "Teren Multifuncțional Libertății",
+      "category": "multiuse",
+      "lat": 46.5455,
+      "lng": 24.5645,
+      "nearest": {
+        "osm": "way/167410214",
+        "sport": "multi",
+        "name": "",
+        "d": 148,
+        "lat": 46.5443384,
+        "lng": 24.5654404
+      }
+    },
+    {
+      "id": "c17",
+      "name": "Teren Fotbal Micro 14-15",
+      "category": "football",
+      "lat": 46.5378,
+      "lng": 24.549,
+      "nearest": {
+        "osm": "way/198075642",
+        "sport": "soccer",
+        "name": "",
+        "d": 896,
+        "lat": 46.5405597,
+        "lng": 24.5379967
+      }
+    },
+    {
+      "id": "c18",
+      "name": "Agora Fitness Center",
+      "category": "gym",
+      "lat": 46.5435,
+      "lng": 24.5542,
+      "nearest": {
+        "osm": "way/330563078",
+        "sport": "basketball",
+        "name": "Teren de baschet",
+        "d": 687,
+        "lat": 46.5439949,
+        "lng": 24.5631534
+      }
+    },
+    {
+      "id": "c19",
+      "name": "SkyGYM",
+      "category": "gym",
+      "lat": 46.548,
+      "lng": 24.5605,
+      "nearest": {
+        "osm": "way/88196706",
+        "sport": "soccer",
+        "name": "",
+        "d": 169,
+        "lat": 46.549522,
+        "lng": 24.5603976
+      }
+    },
+    {
+      "id": "c20",
+      "name": "Teren Fotbal Mureșeni",
+      "category": "football",
+      "lat": 46.5268,
+      "lng": 24.5591,
+      "nearest": {
+        "osm": "way/173315306",
+        "sport": "soccer",
+        "name": "",
+        "d": 291,
+        "lat": 46.5284137,
+        "lng": 24.5560993
+      }
+    },
+    {
+      "id": "c21",
+      "name": "Teren Multisport Str. Plopilor",
+      "category": "multiuse",
+      "lat": 46.533,
+      "lng": 24.5408,
+      "nearest": {
+        "osm": "way/181129550",
+        "sport": "basketball",
+        "name": "",
+        "d": 750,
+        "lat": 46.5388468,
+        "lng": 24.5456791
+      }
+    },
+    {
+      "id": "c22",
+      "name": "Teren Sport Dâmbu Pietros",
+      "category": "multiuse",
+      "lat": 46.556,
+      "lng": 24.584,
+      "nearest": {
+        "osm": "way/183330854",
+        "sport": "soccer",
+        "name": "",
+        "d": 290,
+        "lat": 46.5538336,
+        "lng": 24.5818794
+      }
+    },
+    {
+      "id": "c23",
+      "name": "Teren Mic Fotbal Str. 8 Martie",
+      "category": "football",
+      "lat": 46.5538,
+      "lng": 24.58,
+      "nearest": {
+        "osm": "way/183330854",
+        "sport": "soccer",
+        "name": "",
+        "d": 144,
+        "lat": 46.5538336,
+        "lng": 24.5818794
+      }
+    },
+    {
+      "id": "c24",
+      "name": "Teren Sport Cartier Cornești",
+      "category": "multiuse",
+      "lat": 46.566,
+      "lng": 24.57,
+      "nearest": {
+        "osm": "way/1071945833",
+        "sport": "soccer",
+        "name": "",
+        "d": 171,
+        "lat": 46.5649196,
+        "lng": 24.5715901
+      }
+    },
+    {
+      "id": "c25",
+      "name": "Zona Fitness Platoul Cornești",
+      "category": "multiuse",
+      "lat": 46.5645,
+      "lng": 24.546,
+      "nearest": {
+        "osm": "way/432444766",
+        "sport": "soccer",
+        "name": "",
+        "d": 363,
+        "lat": 46.5674071,
+        "lng": 24.5438459
+      }
+    },
+    {
+      "id": "c26",
+      "name": "Baza Sportivă UMFST",
+      "category": "multiuse",
+      "lat": 46.542,
+      "lng": 24.535,
+      "nearest": {
+        "osm": "way/198075642",
+        "sport": "soccer",
+        "name": "",
+        "d": 280,
+        "lat": 46.5405597,
+        "lng": 24.5379967
+      }
+    },
+    {
+      "id": "c27",
+      "name": "Teren Baschet Aleea Carpați",
+      "category": "basketball",
+      "lat": 46.553,
+      "lng": 24.572,
+      "nearest": {
+        "osm": "way/1072030524",
+        "sport": "basketball",
+        "name": "",
+        "d": 856,
+        "lat": 46.5505132,
+        "lng": 24.5614033
+      }
+    },
+    {
+      "id": "c28",
+      "name": "Teren Școlar Mureșeni",
+      "category": "multiuse",
+      "lat": 46.529,
+      "lng": 24.556,
+      "nearest": {
+        "osm": "way/173315306",
+        "sport": "soccer",
+        "name": "",
+        "d": 66,
+        "lat": 46.5284137,
+        "lng": 24.5560993
+      }
+    }
+  ]
+}
