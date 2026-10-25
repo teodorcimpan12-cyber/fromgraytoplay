@@ -271,7 +271,7 @@ a[href^="tel:"],a[href^="mailto:"]{display:inline-flex;align-items:center;min-he
 .sc-grid-v2.enter .sc-tile-v2{transition-delay:calc(var(--i,0) * 120ms)}
 /* Story: a sticky stage that changes scene as you scroll, one idea per screen */
 .story{position:relative;background:var(--dark);color:var(--white)}
-.story-track{position:relative;height:calc(var(--n,4) * 100svh)}
+.story-track{position:relative;height:calc(var(--n,4) * 75svh)}
 .story-stage{position:sticky;top:var(--navH,58px);height:calc(100svh - var(--navH,58px));overflow:hidden;background:radial-gradient(120% 90% at 50% 15%,var(--darkCard),var(--dark) 70%)}
 .st-scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4rem;padding:1.5rem 1.4rem 3rem;text-align:center;opacity:0;transform:translateY(40px) scale(.96);transition:opacity .7s ease,transform .8s cubic-bezier(.2,.8,.2,1);pointer-events:none}
 .st-scene.on{opacity:1;transform:none;pointer-events:auto}
@@ -313,17 +313,23 @@ a[href^="tel:"],a[href^="mailto:"]{display:inline-flex;align-items:center;min-he
 .story.static .st-scene{position:static;opacity:1;transform:none;padding:3rem 1.2rem}
 .story.static .st-rail,.story.static .st-hint{display:none}
 /* Before / now: real dated satellite tiles, drag the divider */
-.sw-box{position:relative;width:100%;max-width:760px;margin:0 auto;aspect-ratio:16/10;max-height:420px;border-radius:var(--radius);overflow:hidden;background:var(--dark);touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:ew-resize;box-shadow:0 18px 50px rgba(0,0,0,.25)}
+.sw-box{position:relative;width:100%;max-width:760px;margin:0 auto;aspect-ratio:16/10;max-height:420px;border-radius:var(--radius);overflow:hidden;background:var(--dark);touch-action:pan-y;user-select:none;-webkit-user-select:none;box-shadow:0 18px 50px rgba(0,0,0,.25)}
 .sw-box:focus-visible{outline:3px solid var(--green);outline-offset:3px}
 .sw-layer{position:absolute;inset:0;overflow:hidden}
 .sw-mosaic{position:absolute;left:50%;top:50%;width:768px;height:768px;transform-origin:0 0}
 .sw-mosaic img{position:absolute;width:256px;height:256px;max-width:none;display:block;user-select:none;-webkit-user-drag:none}
 .sw-b{clip-path:inset(0 0 0 var(--cut,50%))}
-.sw-line{position:absolute;top:0;bottom:0;left:var(--cut,50%);width:0;border-left:2px solid var(--white);box-shadow:0 0 14px rgba(0,0,0,.7);pointer-events:none}
-.sw-knob{position:absolute;top:50%;left:0;width:46px;height:46px;transform:translate(-50%,-50%);border-radius:50%;background:var(--white);color:var(--dark);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;box-shadow:0 6px 22px rgba(0,0,0,.5)}
-.sw-tag{position:absolute;top:.7rem;padding:.3rem .65rem;border-radius:999px;background:rgba(0,0,0,.66);color:var(--white);font-family:'Space Mono',monospace;font-size:.72rem;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);pointer-events:none}
+.sw-line{position:absolute;top:0;bottom:0;left:var(--cut,50%);width:44px;margin-left:-22px;cursor:ew-resize;touch-action:none;z-index:2}
+.sw-line::before{content:"";position:absolute;top:0;bottom:0;left:21px;width:2px;background:var(--white);box-shadow:0 0 14px rgba(0,0,0,.7)}
+.sw-box.zoomed{touch-action:none;cursor:grab}
+.sw-zoom{position:absolute;right:.6rem;bottom:.6rem;display:flex;flex-direction:column;gap:.35rem;z-index:3}
+.sw-zb{width:38px;height:38px;border-radius:10px;border:none;background:rgba(0,0,0,.66);color:var(--white);font-size:1.15rem;font-weight:700;line-height:1;cursor:pointer;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.sw-zb:disabled{opacity:.35;cursor:default}
+.sw-knob{position:absolute;top:50%;left:50%;width:48px;height:48px;transform:translate(-50%,-50%);border-radius:50%;background:var(--white);color:var(--dark);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 22px rgba(0,0,0,.5);pointer-events:none}
+.sw-knob svg{display:block}
+.sw-tag{position:absolute;z-index:3;top:.7rem;padding:.3rem .65rem;border-radius:999px;background:rgba(0,0,0,.66);color:var(--white);font-family:'Space Mono',monospace;font-size:.72rem;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);pointer-events:none}
 .sw-tag.l{left:.7rem}.sw-tag.r{right:.7rem}
-.sw-ring{position:absolute;left:50%;top:50%;width:84px;height:84px;margin:-42px 0 0 -42px;border:2.5px dashed var(--coral);border-radius:50%;pointer-events:none;animation:swRing 2.6s ease-in-out infinite}
+.sw-ring{position:absolute;left:50%;top:50%;border:2.5px dashed var(--coral);border-radius:50%;pointer-events:none;animation:swRing 2.6s ease-in-out infinite}
 @keyframes swRing{50%{transform:scale(1.12);opacity:.65}}
 .sw-meta{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap;max-width:760px;margin:.7rem auto 0;font-size:.8rem;color:var(--textSec)}
 /* City in 3D: every court as a glowing pillar on the city plane */
@@ -7253,20 +7259,23 @@ function SatSwipe() {
   const [pick, setPick] = useState(null);
   const [cut, setCut] = useState(50);
   const [dead, setDead] = useState(false);
-  const boxRef = useRef(null), errs = useRef(0), touched = useRef(false);
+  const [view, setView] = useState({ zoom: 1, vx: null, vy: null });
+  const boxRef = useRef(null), errs = useRef(0), touched = useRef(false), ptrs = useRef({}), gest = useRef(null), lastTap = useRef(0);
+  const viewRef = useRef(view);
+  viewRef.current = view;
   useEffect(() => {
     let alive = true;
     tmPrecomputed().then(pre => {
       if (!alive) return;
       const ok = COURTS.filter(c => c.lat != null && !c.posFixed && pre[c.id] && pre[c.id].length >= 2);
-      const first = c => pre[c.id][0].date;
-      const pref = ACTIVE_CITY === "sibiu"
-        ? ok.find(c => c.id === "sb13")
-        : ok.filter(c => c.status === "degraded").sort((a, b) => first(a) < first(b) ? -1 : 1)[0];
-      const c = pref || ok.sort((a, b) => first(a) < first(b) ? -1 : 1)[0];
+      // A sharp colour image says more than an older blurry or black-and-white one.
+      const good = caps => caps.filter(x => x.res <= .6 && !/WV01|SPOT/i.test(x.sensor || ""));
+      const pairOf = c => { const g = good(pre[c.id]); return g.length >= 2 ? [g[0], g[g.length - 1]] : [pre[c.id][0], pre[c.id][pre[c.id].length - 1]]; };
+      const preferred = ACTIVE_CITY === "sibiu" ? "sb13" : "c11";
+      const c = ok.find(x => x.id === preferred) || ok.find(x => good(pre[x.id]).length >= 2) || ok[0];
       if (!c) { setDead(true); return; }
-      const caps = pre[c.id];
-      setPick({ court: c, a: caps[0], b: caps[caps.length - 1] });
+      const [a, b] = pairOf(c);
+      setPick({ court: c, a, b });
     });
     return () => { alive = false; };
   }, []);
@@ -7296,40 +7305,104 @@ function SatSwipe() {
   const wx = (court.lng + 180) / 360 * n, wy = (1 - Math.log(Math.tan(lr) + 1 / Math.cos(lr)) / Math.PI) / 2 * n;
   const tx = Math.floor(wx / 256), ty = Math.floor(wy / 256);
   const ox = wx - (tx - 1) * 256, oy = wy - (ty - 1) * 256;
+  const BASE = 2, MAXZ = 2.6;
+  const S = BASE * view.zoom;
+  // Keep the view inside the 3x3 tile mosaic.
+  const clampView = (vx, vy, zoom) => {
+    const r = boxRef.current ? boxRef.current.getBoundingClientRect() : { width: 360, height: 225 };
+    const s = BASE * zoom, hw = r.width / 2 / s, hh = r.height / 2 / s;
+    return { zoom, vx: Math.min(768 - hw, Math.max(hw, vx)), vy: Math.min(768 - hh, Math.max(hh, vy)) };
+  };
+  const vx = view.vx == null ? ox : view.vx, vy = view.vy == null ? oy : view.vy;
   const tiles = [];
   for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) tiles.push({ x: tx + dx, y: ty + dy, l: (dx + 1) * 256, t: (dy + 1) * 256 });
   const onErr = () => { errs.current++; if (errs.current > 6) setDead(true); };
-  const mosaic = cap => React.createElement("div", { className: "sw-mosaic", style: { transform: "scale(2) translate(" + (-ox) + "px," + (-oy) + "px)" } },
+  const mosaic = cap => React.createElement("div", { className: "sw-mosaic", style: { transform: "scale(" + S + ") translate(" + (-vx) + "px," + (-vy) + "px)" } },
     tiles.map(tl => React.createElement("img", { key: tl.x + "_" + tl.y, src: WB_TILE + cap.r + "/" + z + "/" + tl.y + "/" + tl.x, alt: "", draggable: false, loading: "lazy", onError: onErr, style: { left: tl.l, top: tl.t } })));
-  const moveTo = clientX => {
-    const r = boxRef.current.getBoundingClientRect();
-    setCut(Math.min(98, Math.max(2, (clientX - r.left) / r.width * 100)));
+  const zoomTo = (zoom, fx, fy) => {
+    // Zoom around a focal point (box-relative px), so what is under the finger stays under it.
+    const r = boxRef.current.getBoundingClientRect(), v = viewRef.current;
+    const cvx = v.vx == null ? ox : v.vx, cvy = v.vy == null ? oy : v.vy;
+    const zz = Math.min(MAXZ, Math.max(1, zoom)), s0 = BASE * v.zoom, s1 = BASE * zz;
+    const px = fx == null ? 0 : fx - r.width / 2, py = fy == null ? 0 : fy - r.height / 2;
+    const mx = cvx + px / s0, my = cvy + py / s0;
+    setView(clampView(mx - px / s1, my - py / s1, zz));
   };
-  const down = e => {
+  const local = e => { const r = boxRef.current.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top, w: r.width }; };
+  const onDown = e => {
     touched.current = true;
-    e.currentTarget.setPointerCapture && e.currentTarget.setPointerCapture(e.pointerId);
-    moveTo(e.clientX);
+    const p = local(e);
+    ptrs.current[e.pointerId] = p;
+    const ids = Object.keys(ptrs.current);
+    const onHandle = !!(e.target.closest && e.target.closest(".sw-line"));
+    try { boxRef.current.setPointerCapture(e.pointerId); } catch (err) {}
+    if (ids.length === 2) {
+      const [p1, p2] = ids.map(i => ptrs.current[i]);
+      gest.current = { mode: "pinch", d: Math.hypot(p1.x - p2.x, p1.y - p2.y) || 1, zoom: viewRef.current.zoom, fx: (p1.x + p2.x) / 2, fy: (p1.y + p2.y) / 2 };
+    } else if (onHandle) {
+      gest.current = { mode: "cut" };
+    } else {
+      const now = Date.now();
+      if (now - lastTap.current < 300) { zoomTo(viewRef.current.zoom > 1.4 ? 1 : 2, p.x, p.y); lastTap.current = 0; gest.current = null; return; }
+      lastTap.current = now;
+      const v = viewRef.current;
+      gest.current = viewRef.current.zoom > 1 ? { mode: "pan", x: p.x, y: p.y, vx: v.vx == null ? ox : v.vx, vy: v.vy == null ? oy : v.vy } : { mode: "tapcut", x: p.x };
+    }
   };
-  const move = e => { if (e.buttons || e.pointerType === "touch") { if (e.currentTarget.hasPointerCapture && !e.currentTarget.hasPointerCapture(e.pointerId)) return; moveTo(e.clientX); } };
+  const onMove = e => {
+    if (!(e.pointerId in ptrs.current)) return;
+    const p = local(e);
+    ptrs.current[e.pointerId] = p;
+    const g = gest.current;
+    if (!g) return;
+    if (g.mode === "pinch") {
+      const ids = Object.keys(ptrs.current);
+      if (ids.length < 2) return;
+      const [p1, p2] = ids.map(i => ptrs.current[i]);
+      zoomTo(g.zoom * (Math.hypot(p1.x - p2.x, p1.y - p2.y) / g.d), g.fx, g.fy);
+    } else if (g.mode === "cut") {
+      setCut(Math.min(98, Math.max(2, p.x / p.w * 100)));
+    } else if (g.mode === "pan") {
+      const s = BASE * viewRef.current.zoom;
+      setView(clampView(g.vx - (p.x - g.x) / s, g.vy - (p.y - g.y) / s, viewRef.current.zoom));
+    }
+  };
+  const onUp = e => {
+    const g = gest.current;
+    // A plain tap on the image (not zoomed) moves the divider there.
+    if (g && g.mode === "tapcut") { const p = local(e); if (Math.abs(p.x - g.x) < 8) setCut(Math.min(98, Math.max(2, p.x / p.w * 100))); }
+    delete ptrs.current[e.pointerId];
+    gest.current = null;
+  };
   const key = e => {
     if (e.key === "ArrowLeft" || e.key === "ArrowRight") { e.preventDefault(); touched.current = true; setCut(c => Math.min(98, Math.max(2, c + (e.key === "ArrowLeft" ? -5 : 5)))); }
+    if (e.key === "+" || e.key === "=") { e.preventDefault(); zoomTo(viewRef.current.zoom + .4); }
+    if (e.key === "-") { e.preventDefault(); zoomTo(viewRef.current.zoom - .4); }
   };
+  const ringX = (ox - vx) * S, ringY = (oy - vy) * S, ringD = 42 * S;
+  const zbtn = (lbl, aria, fn, dis) => React.createElement("button", { className: "sw-zb", "aria-label": aria, disabled: dis, onPointerDown: e => e.stopPropagation(), onClick: fn }, lbl);
   return React.createElement("section", { className: "section" },
     React.createElement("div", { className: "container" },
       React.createElement("h2", { className: "section-title" }, "🛰️ ", L3("Atunci și acum, din satelit", "Then and now, from space", "Akkor és most, műholdról")),
-      React.createElement("p", { className: "section-sub" }, L3("Trage de linie. Același teren, imagini reale, datate.", "Drag the line. The same court, real dated images.", "Húzd a vonalat. Ugyanaz a pálya, valódi, dátumozott képek.")),
+      React.createElement("p", { className: "section-sub" }, L3("Trage de cerc ca să compari. Mărește cu două degete sau cu dublu-tap.", "Drag the circle to compare. Pinch or double-tap to zoom.", "Húzd a kört az összehasonlításhoz. Két ujjal vagy dupla koppintással nagyíts.")),
       React.createElement("div", {
-        ref: boxRef, className: "sw-box", style: { "--cut": cut + "%" }, tabIndex: 0, role: "slider",
+        ref: boxRef, className: "sw-box" + (view.zoom > 1 ? " zoomed" : ""), style: { "--cut": cut + "%" }, tabIndex: 0, role: "slider",
         "aria-label": L3("Comparație din satelit", "Satellite comparison", "Műholdas összehasonlítás") + " · " + court.name,
         "aria-valuemin": 0, "aria-valuemax": 100, "aria-valuenow": Math.round(cut),
-        onPointerDown: down, onPointerMove: move, onKeyDown: key
+        onPointerDown: onDown, onPointerMove: onMove, onPointerUp: onUp, onPointerCancel: onUp, onKeyDown: key
       },
         React.createElement("div", { className: "sw-layer" }, mosaic(a)),
         React.createElement("div", { className: "sw-layer sw-b" }, mosaic(b)),
-        React.createElement("span", { className: "sw-ring", "aria-hidden": "true" }),
+        React.createElement("span", { className: "sw-ring", "aria-hidden": "true", style: { width: ringD, height: ringD, marginLeft: ringX - ringD / 2, marginTop: ringY - ringD / 2 } }),
         React.createElement("span", { className: "sw-tag l" }, tmFmt(a.date, lang, true)),
         React.createElement("span", { className: "sw-tag r" }, tmFmt(b.date, lang, true)),
-        React.createElement("div", { className: "sw-line", "aria-hidden": "true" }, React.createElement("span", { className: "sw-knob" }, "⟺"))
+        React.createElement("div", { className: "sw-line" },
+          React.createElement("span", { className: "sw-knob", "aria-hidden": "true" },
+            React.createElement("svg", { viewBox: "0 0 24 24", width: 22, height: 22, fill: "none", stroke: "currentColor", strokeWidth: 2.6, strokeLinecap: "round", strokeLinejoin: "round" },
+              React.createElement("path", { d: "M9 6l-6 6 6 6M15 6l6 6-6 6" })))),
+        React.createElement("div", { className: "sw-zoom" },
+          zbtn("＋", L3("Mărește", "Zoom in", "Nagyítás"), () => zoomTo(view.zoom + .4), view.zoom >= MAXZ - .01),
+          zbtn("－", L3("Micșorează", "Zoom out", "Kicsinyítés"), () => zoomTo(view.zoom - .4), view.zoom <= 1.01))
       ),
       React.createElement("div", { className: "sw-meta" },
         React.createElement("span", null, "📍 ", React.createElement("b", null, court.name), " · ", tmSpan(a.date, b.date, lang)),
@@ -7362,15 +7435,22 @@ function City3D() {
     const R = Math.max.apply(null, raw.map(p => Math.hypot(p.x, p.z))) || 1;
     const nodes = raw.map((p, i) => {
       const cond = typeof p.c.condition === "number" ? p.c.condition : null;
-      return { c: p.c, i, x: p.x / R, z: p.z / R, h: cond == null ? .05 : .14 + cond / 5 * .55, col: courtStatusView(p.c, tRef.current).color, known: cond != null };
+      const x = p.x / R, z = p.z / R;
+      return { c: p.c, i, x, z, r: Math.hypot(x, z), h: cond == null ? .05 : .14 + cond / 5 * .55, col: courtStatusView(p.c, tRef.current).color, known: cond != null };
     });
     const links = [];
     nodes.forEach((a, i) => nodes.map((b, j) => ({ j, d: (a.x - b.x) * (a.x - b.x) + (a.z - b.z) * (a.z - b.z) }))
       .filter(o => o.j !== i).sort((p, q) => p.d - q.d).slice(0, 2)
       .forEach(o => { if (!links.some(l => (l[0] === i && l[1] === o.j) || (l[0] === o.j && l[1] === i))) links.push([i, o.j]); }));
-    const stars = Array.from({ length: 70 }, () => ({ x: Math.random(), y: Math.random(), r: Math.random() * 1.3 + .2, v: Math.random() * .012 + .003, a: Math.random() * .5 + .2 }));
-    const bursts = [];
-    let W = 0, H = 0, rot = .7, pitch = .95, raf = 0, last = 0, time = 0, visible = true, drag = null, hover = -1, selIdx = -1;
+    // Light pulses that travel along the links between neighbouring courts.
+    const pulses = links.map((l, i) => ({ l, p: (i * .37) % 1, v: .18 + (i % 5) * .04 }));
+    const stars = Array.from({ length: 80 }, () => ({ x: Math.random(), y: Math.random(), r: Math.random() * 1.3 + .2, v: Math.random() * .012 + .003, a: Math.random() * .5 + .2 }));
+    const bursts = [], ripples = [];
+    let shooting = null, nextShoot = 3 + Math.random() * 4;
+    let W = 0, H = 0, rot = .7, pitch = still ? .95 : 1.32, zoom = still ? 1 : .78, raf = 0, last = 0, time = 0, grow = still ? 1 : 0, started = still;
+    let visible = true, drag = null, hover = -1, selIdx = -1, vel = 0, flyTo = null, idleUntil = 0;
+    const ptrs = {};
+    let pinch = null;
     let proj = [];
     const resize = () => {
       const r = cv.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -7380,51 +7460,81 @@ function City3D() {
     const P = (x, y, z) => {
       const cr = Math.cos(rot), sr = Math.sin(rot), xr = x * cr - z * sr, zr = x * sr + z * cr;
       const cp = Math.cos(pitch), sp = Math.sin(pitch), yr = y * cp + zr * sp, zz = -y * sp + zr * cp;
-      const d = 3.2, s = Math.min(W, H * 1.7) * .42 * d / (d + zz);
+      const d = 3.2, s = Math.min(W, H * 1.7) * .42 * zoom * d / (d + zz);
       return { x: W / 2 + xr * s, y: H * .58 - yr * s, s, z: zz };
     };
+    const growOf = n => Math.min(1, Math.max(0, grow * 1.6 - n.r * .6));
+    const ease = v => 1 - Math.pow(1 - v, 3);
     const draw = () => {
       ctx.clearRect(0, 0, W, H);
       stars.forEach(s => { ctx.fillStyle = "rgba(255,255,255," + (s.a * (.6 + .4 * Math.sin(time * 2 + s.x * 20))) + ")"; ctx.beginPath(); ctx.arc(s.x * W, s.y * H * .7, s.r, 0, 6.283); ctx.fill(); });
+      if (shooting) {
+        const q = shooting, tail = 70;
+        const g = ctx.createLinearGradient(q.x, q.y, q.x - q.vx * tail, q.y - q.vy * tail);
+        g.addColorStop(0, "rgba(255,255,255," + q.life + ")"); g.addColorStop(1, "rgba(255,255,255,0)");
+        ctx.strokeStyle = g; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(q.x, q.y); ctx.lineTo(q.x - q.vx * tail, q.y - q.vy * tail); ctx.stroke();
+      }
       ctx.lineWidth = 1;
       [.4, .8, 1.15].forEach((rr, ri) => {
-        ctx.strokeStyle = "rgba(16,185,129," + (.22 - ri * .05) + ")";
+        ctx.strokeStyle = "rgba(16,185,129," + ((.22 - ri * .05) * Math.min(1, grow * 2)) + ")";
         ctx.beginPath();
         for (let a = 0; a <= 64; a++) { const q = P(Math.cos(a / 64 * 6.283) * rr, 0, Math.sin(a / 64 * 6.283) * rr); a ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y); }
         ctx.stroke();
       });
-      proj = nodes.map(n => ({ n, b: P(n.x, 0, n.z), tp: P(n.x, n.h, n.z) }));
+      proj = nodes.map(n => { const g = ease(growOf(n)); return { n, g, b: P(n.x, 0, n.z), tp: P(n.x, n.h * g, n.z) }; });
       ctx.strokeStyle = "rgba(255,255,255,.1)";
       links.forEach(l => { const a = proj[l[0]].b, b = proj[l[1]].b; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); });
+      if (grow >= 1) pulses.forEach(q => {
+        const a = proj[q.l[0]].b, b = proj[q.l[1]].b, px = a.x + (b.x - a.x) * q.p, py = a.y + (b.y - a.y) * q.p;
+        const rg = ctx.createRadialGradient(px, py, 0, px, py, 5);
+        rg.addColorStop(0, "rgba(167,243,208,.9)"); rg.addColorStop(1, "rgba(167,243,208,0)");
+        ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(px, py, 5, 0, 6.283); ctx.fill();
+      });
+      ripples.forEach(rp => {
+        const n = nodes[rp.i], s = 1 - rp.life;
+        ctx.strokeStyle = hexA(n.col, rp.life * .8); ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        for (let a = 0; a <= 40; a++) { const q = P(n.x + Math.cos(a / 40 * 6.283) * s * .3, 0, n.z + Math.sin(a / 40 * 6.283) * s * .3); a ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y); }
+        ctx.stroke();
+      });
       proj.slice().sort((p, q) => q.b.z - p.b.z).forEach(p => {
         const n = p.n, on = n.i === hover || n.i === selIdx, b = p.b, tp = p.tp, sz = Math.max(.6, b.s / 220);
-        ctx.fillStyle = hexA(n.col, .35);
+        if (p.g <= 0) return;
+        ctx.fillStyle = hexA(n.col, .35 * p.g);
         ctx.beginPath(); ctx.ellipse(b.x, b.y, 7 * sz, 3 * sz, 0, 0, 6.283); ctx.fill();
         if (!n.known) {
           const ph = (time * .8 + n.i * .37) % 1;
-          ctx.strokeStyle = hexA(n.col, .7 * (1 - ph));
+          ctx.strokeStyle = hexA(n.col, .7 * (1 - ph) * p.g);
           ctx.beginPath(); ctx.ellipse(b.x, b.y, (6 + ph * 18) * sz, (2.6 + ph * 7) * sz, 0, 0, 6.283); ctx.stroke();
+        }
+        if (n.i === selIdx) {
+          // A soft beam of light over the chosen court.
+          const bg = ctx.createLinearGradient(tp.x, tp.y, tp.x, tp.y - 120 * sz);
+          bg.addColorStop(0, hexA(n.col, .45)); bg.addColorStop(1, hexA(n.col, 0));
+          ctx.fillStyle = bg; ctx.fillRect(tp.x - 6 * sz, tp.y - 120 * sz, 12 * sz, 120 * sz);
         }
         const g = ctx.createLinearGradient(b.x, b.y, tp.x, tp.y);
         g.addColorStop(0, hexA(n.col, .05)); g.addColorStop(1, hexA(n.col, .95));
         ctx.strokeStyle = g; ctx.lineWidth = (on ? 5 : 3.2) * sz; ctx.lineCap = "round";
         ctx.beginPath(); ctx.moveTo(b.x, b.y); ctx.lineTo(tp.x, tp.y); ctx.stroke();
-        const rg = ctx.createRadialGradient(tp.x, tp.y, 0, tp.x, tp.y, (on ? 18 : 11) * sz);
+        const glow = (on ? 18 : 11) * sz * (.6 + .4 * p.g);
+        const rg = ctx.createRadialGradient(tp.x, tp.y, 0, tp.x, tp.y, glow);
         rg.addColorStop(0, "rgba(255,255,255,.95)"); rg.addColorStop(.25, hexA(n.col, .9)); rg.addColorStop(1, hexA(n.col, 0));
-        ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(tp.x, tp.y, (on ? 18 : 11) * sz, 0, 6.283); ctx.fill();
+        ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(tp.x, tp.y, glow, 0, 6.283); ctx.fill();
         if (on) {
           ctx.font = "600 12px 'Libre Franklin',sans-serif"; ctx.textAlign = "center";
           const label = n.c.name.length > 34 ? n.c.name.slice(0, 33) + "…" : n.c.name, w = ctx.measureText(label).width + 14;
-          ctx.fillStyle = "rgba(10,12,22,.8)"; ctx.fillRect(tp.x - w / 2, tp.y - 34, w, 20);
+          ctx.fillStyle = "rgba(10,12,22,.82)"; ctx.fillRect(tp.x - w / 2, tp.y - 34, w, 20);
           ctx.fillStyle = "#fff"; ctx.fillText(label, tp.x, tp.y - 20);
         }
       });
       for (let i = bursts.length - 1; i >= 0; i--) {
-        const q = bursts[i]; q.x += q.vx; q.y += q.vy; q.vy += .06; q.life -= .02;
+        const q = bursts[i];
         if (q.life <= 0) { bursts.splice(i, 1); continue; }
         ctx.fillStyle = hexA(q.col, q.life); ctx.beginPath(); ctx.arc(q.x, q.y, 2.2 * q.life + .4, 0, 6.283); ctx.fill();
       }
     };
+    const angDiff = (a, b) => { let d = (b - a) % 6.283; if (d > 3.1416) d -= 6.283; if (d < -3.1416) d += 6.283; return d; };
     const frame = ts => {
       raf = requestAnimationFrame(frame);
       const dt = Math.min(.05, last ? (ts - last) / 1000 : 0);
@@ -7432,8 +7542,28 @@ function City3D() {
       if (!visible || document.hidden || !W) return;
       if (!still) {
         time += dt;
-        if (!drag) rot += dt * .16;
+        if (started && grow < 1) {
+          // Entrance: the pillars rise while the camera settles into place.
+          grow = Math.min(1, grow + dt / 1.8);
+          const e = ease(grow);
+          pitch = 1.32 + (.95 - 1.32) * e; zoom = .78 + (1 - .78) * e;
+        }
+        if (flyTo != null) {
+          const d = angDiff(rot, flyTo);
+          rot += d * Math.min(1, dt * 4);
+          if (Math.abs(d) < .002) flyTo = null;
+        } else if (!drag) {
+          rot += vel * dt;
+          vel *= Math.pow(.05, dt);
+          if (Math.abs(vel) < .02 && time > idleUntil) rot += dt * .16;
+        }
         stars.forEach(s => { s.x += s.v * dt; if (s.x > 1) s.x -= 1; });
+        pulses.forEach(q => { q.p += q.v * dt; if (q.p > 1) q.p -= 1; });
+        for (let i = ripples.length - 1; i >= 0; i--) { ripples[i].life -= dt * .9; if (ripples[i].life <= 0) ripples.splice(i, 1); }
+        bursts.forEach(q => { q.x += q.vx; q.y += q.vy; q.vy += .06; q.life -= .02; });
+        nextShoot -= dt;
+        if (!shooting && nextShoot <= 0) { shooting = { x: Math.random() * W * .7 + W * .2, y: Math.random() * H * .25, vx: -4.5, vy: 1.6, life: 1 }; nextShoot = 6 + Math.random() * 8; }
+        if (shooting) { shooting.x += shooting.vx; shooting.y += shooting.vy; shooting.life -= dt * 1.4; if (shooting.life <= 0) shooting = null; }
       }
       draw();
     };
@@ -7443,46 +7573,85 @@ function City3D() {
       return best;
     };
     const local = e => { const r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
-    const down = e => { const p = local(e); drag = { x: p.x, y: p.y, rot, pitch, moved: false, id: e.pointerId }; };
+    const down = e => {
+      const p = local(e);
+      ptrs[e.pointerId] = p;
+      const ids = Object.keys(ptrs);
+      if (ids.length === 2) {
+        const [a, b] = ids.map(i => ptrs[i]);
+        pinch = { d: Math.hypot(a.x - b.x, a.y - b.y) || 1, zoom };
+        drag = null;
+        try { cv.setPointerCapture(e.pointerId); } catch (err) {}
+        return;
+      }
+      flyTo = null; vel = 0;
+      drag = { x: p.x, y: p.y, rot, pitch, moved: false, id: e.pointerId, lx: p.x, lt: performance.now() };
+    };
     const move = e => {
       const p = local(e);
+      if (e.pointerId in ptrs) ptrs[e.pointerId] = p;
+      if (pinch) {
+        const ids = Object.keys(ptrs);
+        if (ids.length >= 2) { const [a, b] = ids.map(i => ptrs[i]); zoom = Math.min(2.2, Math.max(.7, pinch.zoom * Math.hypot(a.x - b.x, a.y - b.y) / pinch.d)); if (still) draw(); }
+        return;
+      }
       if (drag && drag.id === e.pointerId) {
         const dx = p.x - drag.x, dy = p.y - drag.y;
         if (!drag.moved && Math.abs(dx) + Math.abs(dy) > 6) { drag.moved = true; try { cv.setPointerCapture(e.pointerId); } catch (err) {} }
-        if (drag.moved) { rot = drag.rot - dx * .009; pitch = Math.min(1.3, Math.max(.45, drag.pitch + dy * .004)); }
+        if (drag.moved) {
+          // Dragging right turns the city to the right, as if you were spinning a globe.
+          rot = drag.rot + dx * .009;
+          pitch = Math.min(1.3, Math.max(.45, drag.pitch + dy * .004));
+          const now = performance.now();
+          if (now - drag.lt > 0) vel = vel * .5 + ((p.x - drag.lx) * .009 / ((now - drag.lt) / 1000)) * .5;
+          drag.lx = p.x; drag.lt = now;
+          if (still) draw();
+        }
       } else if (e.pointerType === "mouse") {
         hover = nearest(p.x, p.y, 26);
         cv.style.cursor = hover >= 0 ? "pointer" : "";
+        if (still) draw();
       }
     };
     const up = e => {
+      delete ptrs[e.pointerId];
+      if (pinch) { if (Object.keys(ptrs).length < 2) pinch = null; return; }
       if (!drag) return;
       const wasTap = !drag.moved;
+      if (performance.now() - drag.lt > 90) vel = 0;
       drag = null;
+      idleUntil = time + 2.5;
       if (!wasTap) return;
+      vel = 0;
       const p = local(e), i = nearest(p.x, p.y, 30);
       selIdx = i;
       setSel(i >= 0 ? nodes[i].c : null);
       if (i >= 0) {
-        const tp = proj.find(q => q.n.i === i).tp;
-        for (let j = 0; j < 28; j++) { const a = Math.random() * 6.283, v = Math.random() * 3 + 1; bursts.push({ x: tp.x, y: tp.y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1.5, life: 1, col: nodes[i].col }); }
+        const n = nodes[i], tp = proj.find(q => q.n.i === i).tp;
+        for (let j = 0; j < 30; j++) { const a = Math.random() * 6.283, v = Math.random() * 3 + 1; bursts.push({ x: tp.x, y: tp.y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1.5, life: 1, col: n.col }); }
+        ripples.push({ i, life: 1 }, { i, life: 1.35 });
+        if (!still && n.r > .05) { flyTo = Math.atan2(-n.x, -n.z); idleUntil = time + 6; }
+        if (navigator.vibrate) navigator.vibrate(12);
       }
+      if (still) draw();
     };
     const leave = () => { hover = -1; };
+    const cancel = e => { delete ptrs[e.pointerId]; drag = null; pinch = null; };
     cv.addEventListener("pointerdown", down);
     cv.addEventListener("pointermove", move);
     cv.addEventListener("pointerup", up);
-    cv.addEventListener("pointercancel", () => { drag = null; });
+    cv.addEventListener("pointercancel", cancel);
     cv.addEventListener("pointerleave", leave);
     resize();
     let ro = null, io = null;
-    if (window.ResizeObserver) { ro = new ResizeObserver(resize); ro.observe(cv); }
-    if (window.IntersectionObserver) { io = new IntersectionObserver(es => { visible = es[0].isIntersecting; }); io.observe(cv); }
+    if (window.ResizeObserver) { ro = new ResizeObserver(() => { resize(); if (still) draw(); }); ro.observe(cv); }
+    if (window.IntersectionObserver) io = new IntersectionObserver(es => { visible = es[0].isIntersecting; if (visible) started = true; }, { threshold: .35 });
+    if (io) io.observe(cv); else started = true;
     raf = requestAnimationFrame(frame);
     return () => {
       cancelAnimationFrame(raf); ro && ro.disconnect(); io && io.disconnect();
       cv.removeEventListener("pointerdown", down); cv.removeEventListener("pointermove", move);
-      cv.removeEventListener("pointerup", up); cv.removeEventListener("pointerleave", leave);
+      cv.removeEventListener("pointerup", up); cv.removeEventListener("pointercancel", cancel); cv.removeEventListener("pointerleave", leave);
     };
   }, []);
   const statuses = [...new Set(COURTS.map(c => c.status))];
@@ -7502,7 +7671,7 @@ function City3D() {
             ? React.createElement(React.Fragment, null,
                 React.createElement("span", null, "📍 ", React.createElement("b", null, sel.name), " · ", courtStatusView(sel, t).label),
                 React.createElement("button", { className: "btn btn-sm btn-green", onClick: () => { location.hash = "#court-" + sel.id; } }, L3("Deschide →", "Open →", "Megnyitás →")))
-            : React.createElement("span", null, "👆 ", L3("Trage ca să rotești orașul · atinge un stâlp", "Drag to spin the city · tap a pillar", "Húzd a forgatáshoz · érints meg egy oszlopot")))
+            : React.createElement("span", null, "👆 ", L3("Rotește cu degetul · mărește cu două degete · atinge un stâlp", "Spin with a finger · pinch to zoom · tap a pillar", "Forgasd egy ujjal · két ujjal nagyíts · érints meg egy oszlopot")))
       )
     )
   );
