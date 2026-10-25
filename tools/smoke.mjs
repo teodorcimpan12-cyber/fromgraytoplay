@@ -37,7 +37,7 @@ const base = "http://127.0.0.1:" + server.address().port + "/";
 
 const port = 9400 + Math.floor(Math.random() * 400);
 const profile = await mkdtemp(join(tmpdir(), "g2p-smoke-"));
-const chrome = spawn(CHROME, ["--headless=new", "--remote-debugging-port=" + port, "--user-data-dir=" + profile, "--no-first-run", "--window-size=390,844", "about:blank"], { stdio: "ignore" });
+const chrome = spawn(CHROME, ["--headless=new", "--disable-quic", "--remote-debugging-port=" + port, "--user-data-dir=" + profile, "--no-first-run", "--window-size=390,844", "about:blank"], { stdio: "ignore" });
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const problems = [];
 let ws;
