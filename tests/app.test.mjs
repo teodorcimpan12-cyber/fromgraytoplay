@@ -44,12 +44,18 @@ test("court ids are unique across cities", () => {
   assert.equal(new Set(ids).size, ids.length);
 });
 
-test("Sibiu courts are unverified, inside the city and from OSM", () => {
+test("Sibiu courts are unverified or field-verified, inside the city and from OSM", () => {
   assert.ok(data.COURTS_SIBIU.length >= 30);
   for (const c of data.COURTS_SIBIU) {
     assert.equal(c.city, "sibiu");
-    assert.equal(c.status, "unverified");
-    assert.equal(c.condition, null);
+    assert.ok(["unverified", "verified"].includes(c.status), c.id);
+    if (c.status === "unverified") assert.equal(c.condition, null, c.id);
+    else {
+      // A score only ever comes from a team visit to a public court (tools/import_field.mjs).
+      assert.ok(Number.isInteger(c.condition) && c.condition >= 1 && c.condition <= 5, c.id);
+      assert.ok(c.field && /^\d{4}-\d{2}-\d{2}$/.test(c.field.visitedOn), c.id + " verified without a visit date");
+      assert.equal(c.field.access, "public", c.id);
+    }
     assert.ok(c.lat > 45.74 && c.lat < 45.84 && c.lng > 24.06 && c.lng < 24.22, c.id + " outside Sibiu");
     assert.match(c.osm, /^(node|way|relation)\/\d+$/);
     assert.ok(data.CITY_CFG.sibiu.hoods[c.neighbourhood], c.id + " has unknown neighbourhood " + c.neighbourhood);
@@ -97,4 +103,41 @@ test("every T key in ro exists in en and hu", () => {
   const missing = l => Object.keys(T.ro).filter(k => !(k in T[l]));
   assert.deepEqual(missing("en"), []);
   assert.deepEqual(missing("hu"), []);
+});
+
+test("courtStatusView never calls a field-verified court renovated", () => {
+  const { courtStatusView } = load([extractFunction("courtStatusView")], ["courtStatusView"]);
+  const tt = { fieldVerified: "Verificat pe teren", renovated: "Renovat", unverified: "Neverificat", degraded: "Degradat" };
+  const good = courtStatusView({ status: "verified", condition: 5 }, tt);
+  assert.equal(good.badge, "badge-green");
+  assert.match(good.label, /^Verificat pe teren · 5\/5$/);
+  assert.doesNotMatch(good.label, /Renovat/);
+  assert.equal(courtStatusView({ status: "verified", condition: 3 }, tt).badge, "badge-coral");
+  const bad = courtStatusView({ status: "verified", condition: 2 }, tt);
+  assert.equal(bad.badge, "badge-red");
+  assert.equal(bad.bad, true);
+  assert.equal(courtStatusView({ status: "unverified", condition: null }, tt).badge, "badge-gray");
+  assert.equal(courtStatusView({ status: "renovated", condition: 5 }, tt).label, "Renovat");
+});
+
+test("check-in nodes are not extra courts; extra courts stay in their city", () => {
+  const { extraCourts } = load([
+    "const COURTS_ALL = [{ id: 'c1' }, { id: 'sb28' }];",
+    "const ACTIVE_CITY = 'sibiu';",
+    extractFunction("extraCourts")
+  ], ["extraCourts"]);
+  const fb = {
+    sb28: { checkins: { g1: { name: "Guest" } } },
+    "-new1": { name: "Teren nou", city: "sibiu" },
+    "-new2": { name: "Teren vechi" },
+    "-noname": { city: "sibiu" }
+  };
+  assert.deepEqual(Array.from(extraCourts(fb), c => c.id), ["-new1"]);
+  assert.deepEqual(Array.from(extraCourts(fb, true), c => c.id), ["-new1", "-new2"]);
+  assert.equal(extraCourts(null).length, 0);
+});
+
+test("submitted courts never get invented coordinates", () => {
+  assert.doesNotMatch(html, /lat:\s*[\d.]+\s*\+\s*Math\.random/);
+  assert.doesNotMatch(html, /lng:\s*[\d.]+\s*\+\s*Math\.random/);
 });

@@ -21,3 +21,6 @@ SESSION_HANDOFF.md
 
 # Local Netlify folder
 .netlify
+
+# Field-visit photo originals (keep GPS EXIF as proof; web copies live in img/sibiu/field/)
+field-raw/

@@ -902,6 +902,8 @@ const T = {
     multiuse: "Multifuncțional",
     degraded: "Degradat",
     unverified: "Neverificat",
+    fieldVerified: "Verificat pe teren",
+    verifiedShare: "{n} din {m} terenuri verificate pe teren — restul nu intră în calcul.",
     inProgress: "În lucru",
     renovated: "Renovat",
     empty: "Liber",
@@ -1052,6 +1054,8 @@ const T = {
     multiuse: "Multi-use",
     degraded: "Degraded",
     unverified: "Unverified",
+    fieldVerified: "Field-verified",
+    verifiedShare: "{n} of {m} courts field-verified — the rest are not counted.",
     inProgress: "In progress",
     renovated: "Renovated",
     empty: "Empty",
@@ -1202,6 +1206,8 @@ const T = {
     multiuse: "Többcélú",
     degraded: "Leromlott",
     unverified: "Nem ellenőrzött",
+    fieldVerified: "Helyszínen ellenőrizve", // TODO: HU review
+    verifiedShare: "{m} pályából {n} helyszínen ellenőrizve — a többi nem számít bele.", // TODO: HU review
     inProgress: "Folyamatban",
     renovated: "Felújítva",
     empty: "Üres",
@@ -1588,6 +1594,34 @@ T.hu.geolocate = "Automatikus helymeghatározás";
 T.hu.nextStep = "Tovább →";
 T.hu.prevStep = "← Vissza";
 T.hu.feedStatusChange = "Állapot frissítve: {court} → {status}";
+
+/* === Court status view: one place that turns a court's status into colour, badge and label ===
+   "verified" = scored on a team field visit (Sibiu, tools/import_field.mjs). It is coloured by the real
+   condition and never labelled "renovated": a well-kept court is not a renovated one. */
+function courtStatusView(court, t) {
+  var s = court && court.status;
+  if (s === "verified") {
+    var cond = court.condition, tone = cond >= 4 ? "green" : cond === 3 ? "coral" : "red";
+    return { color: tone === "green" ? "#10B981" : tone === "coral" ? "#F97316" : "#DC2626", badge: "badge-" + tone,
+      admin: tone === "red" ? "a-badge-r" : "a-badge-g", label: (t.fieldVerified || "Verificat pe teren") + " · " + cond + "/5", bad: cond <= 2 };
+  }
+  if (s === "unverified") return { color: "#6B7280", badge: "badge-gray", admin: "a-badge-t", label: t.unverified || "Neverificat", bad: false };
+  if (s === "degraded") return { color: "#DC2626", badge: "badge-red", admin: "a-badge-r", label: t.degraded || "Degradat", bad: true };
+  if (s === "inProgress") return { color: "#F97316", badge: "badge-coral", admin: "a-badge-o", label: t.inProgress || "În lucru", bad: false };
+  return { color: "#10B981", badge: "badge-green", admin: "a-badge-g", label: t.renovated || "Renovat", bad: false };
+}
+
+/* Citizen-submitted courts live at courts/{pushId}. The same node also stores check-ins for the
+   built-in courts (courts/sb28/checkins), which must not be read as an extra court. */
+function extraCourts(fbCourts, allCities) {
+  if (!fbCourts) return [];
+  var known = {};
+  COURTS_ALL.forEach(function (c) { known[c.id] = 1; });
+  return Object.keys(fbCourts).filter(function (id) {
+    var c = fbCourts[id];
+    return !known[id] && c && c.name && (allCities || (c.city || "tgm") === ACTIVE_CITY);
+  }).map(function (id) { return Object.assign({ id: id }, fbCourts[id]); });
+}
 
 /* === Court weather helper (#12 from build brief) === */
 /* Maps the existing 1-5 condition score to a weather chip. */
@@ -3257,6 +3291,20 @@ T.hu.receiptSupporters = "TÁMOGATÓK"; // TODO: HU review
 T.hu.receiptCourt1 = "pálya"; // TODO: HU review
 T.hu.receiptCourtN = "pálya"; // TODO: HU review
 
+/* Inequality views only use courts with a real 1–5 score (all of TGM; field-verified Sibiu courts) and
+   need at least two scored neighbourhoods — a gap has two sides. Unscored courts never count as 0. */
+function scoredCourts() { return COURTS.filter(function (c) { return c.condition != null; }); }
+function gapReady() {
+  var hs = {}; scoredCourts().forEach(function (c) { hs[c.neighbourhood] = 1; });
+  return Object.keys(hs).length >= 2;
+}
+function VerifiedShare() {
+  var t = useApp().t, n = scoredCourts().length;
+  if (n === COURTS.length) return null;
+  return React.createElement("div", { style: { fontSize: ".78rem", color: "var(--textSec)", margin: ".25rem 0 .6rem" } },
+    "✔ " + t.verifiedShare.replace("{n}", n).replace("{m}", COURTS.length));
+}
+
 /* === #4 Inequality receipt — canvas-rendered shareable "store receipt" === */
 function CityDataPending() {
   var lang = useApp().lang;
@@ -3266,7 +3314,7 @@ function CityDataPending() {
       : "Court condition in " + cityName(lang) + " is not field-verified yet. This chart appears after the first ratings."));
 }
 function InequalityReceipt() {
-  if (!COURTS.some(function (c) { return c.condition != null; })) return React.createElement(CityDataPending, null);
+  if (!gapReady()) return React.createElement(CityDataPending, null);
   var app = useApp();
   var t = app.t, lang = app.lang, toast = app.toast;
   var votes = useFirebase("votes");
@@ -3300,24 +3348,26 @@ function InequalityReceipt() {
     ctx.fillText("FROM GREY TO PLAY", W / 2, 58);
     ctx.font = "13px 'Space Mono',monospace";
     ctx.fillStyle = "#6B7280";
-    ctx.fillText("TÂRGU MUREȘ · " + new Date().toLocaleDateString(lang === "ro" ? "ro-RO" : lang === "hu" ? "hu-HU" : "en-GB"), W / 2, 84);
+    ctx.fillText(cityName(lang).toUpperCase() + " · " + new Date().toLocaleDateString(lang === "ro" ? "ro-RO" : lang === "hu" ? "hu-HU" : "en-GB"), W / 2, 84);
     ctx.fillStyle = ink;
     ctx.font = "bold 16px 'Space Mono',monospace";
     ctx.fillText(t.receiptTitle.toUpperCase(), W / 2, 116);
     dash(138);
     // Per-neighbourhood line items from the hardcoded COURTS dataset.
-    var hoodKeys = ["center", "tudor", "mureseni", "auchan", "pandurilor", "libertate", "unirii", "dambu", "cornesti"];
+    var scored = scoredCourts();
+    var hoodKeys = ACTIVE_CITY === "tgm" ? ["center", "tudor", "mureseni", "auchan", "pandurilor", "libertate", "unirii", "dambu", "cornesti"]
+      : scored.map(function (c) { return c.neighbourhood; }).filter(function (h, i, a) { return a.indexOf(h) === i; });
     var y = 174;
     ctx.font = "15px 'Space Mono',monospace";
     hoodKeys.forEach(function (hk) {
-      var cs = COURTS.filter(function (c) { return c.neighbourhood === hk; });
+      var cs = scored.filter(function (c) { return c.neighbourhood === hk; });
       if (!cs.length) return;
-      var avg = Math.round(cs.reduce(function (s, c) { return s + (c.condition || 0); }, 0) / cs.length);
+      var avg = Math.round(cs.reduce(function (s, c) { return s + c.condition; }, 0) / cs.length);
       var mark = avg >= 4 ? "✓" : avg >= 3 ? "~" : "✗";
       var markCol = avg >= 4 ? "#10B981" : avg >= 3 ? "#F97316" : "#DC2626";
       ctx.textAlign = "left";
       ctx.fillStyle = ink;
-      ctx.fillText(String(t[hk] || hk).toUpperCase(), 36, y);
+      ctx.fillText(String(ACTIVE_CITY === "tgm" ? (t[hk] || hk) : hoodName(hk, lang)).toUpperCase(), 36, y);
       ctx.fillText(cs.length + " " + (cs.length === 1 ? t.receiptCourt1 : t.receiptCourtN), 270, y);
       ctx.fillText(avg + "/5", 448, y);
       ctx.fillStyle = markCol;
@@ -3794,7 +3844,7 @@ function CityPulse(props) {
       ctx.fillText("🏛️", W / 2, H * 0.46 + 5);
       COURTS.forEach(function (c) {
         var p = proj(c.lat, c.lng);
-        var col = c.status === "unverified" ? "#6B7280" : c.status === "degraded" ? "#DC2626" : c.status === "inProgress" ? "#F97316" : "#10B981";
+        var col = courtStatusView(c, t).color;
         ctx.save();
         ctx.shadowColor = col;
         ctx.shadowBlur = 14;
@@ -4362,8 +4412,7 @@ function WantedPoster({ court, onClose }) {
     var nameLines = _wrapText(ctx, court.name, W - 60);
     nameLines.forEach(function(ln, i) { ctx.fillText(ln, W / 2, 210 + i * 32); });
     /* status badge */
-    var scol = court.status === "unverified" ? "#6B7280" : court.status === "degraded" ? "#DC2626" : court.status === "inProgress" ? "#F97316" : "#10B981";
-    var slbl = court.status === "unverified" ? (t.unverified || "Neverificat") : court.status === "degraded" ? (t.degraded || "Degradat") : court.status === "inProgress" ? (t.inProgress || "În lucru") : (t.renovated || "Renovat");
+    var sview = courtStatusView(court, t), scol = sview.color, slbl = sview.label;
     ctx.fillStyle = scol; _rrect(ctx, W / 2 - 88, 268, 176, 38, 9); ctx.fill();
     ctx.fillStyle = "#fff"; ctx.font = "bold 15px 'Space Mono',monospace";
     ctx.fillText(slbl, W / 2, 291);
@@ -5058,7 +5107,7 @@ if (ACTIVE_CITY !== "tgm") {
     T[l].heroKicker = cityName(l) + (l === "ro" ? " · terenuri sportive publice" : l === "en" ? " · public sports courts" : " · közpályák");
   });
 }
-// Generated by tools/enrich_sibiu.mjs + tools/inject_sibiu.mjs — Data © OpenStreetMap contributors (ODbL). All unverified.
+// Generated by tools/enrich_sibiu.mjs + tools/inject_sibiu.mjs — Data © OpenStreetMap contributors (ODbL). 0 of 35 field-verified.
 const COURTS_SIBIU = [
   {"id":"sb1","city":"sibiu","name":"Teren baschet — Ștrand","address":"Strada Doljului, Sibiu","lat":45.788873,"lng":24.133839,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"strand","category":"basketball","accessibility":{"wheelchair":false,"lighting":true,"parking":false,"flatSurface":false},"description":"Teren de baschet, iluminat (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de baschet, iluminat (OpenStreetMap, neverificat pe teren).","en":"Basketball court, lit (OpenStreetMap, not field-verified).","hu":"Kosárlabdapálya, világítással (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"node/5963356826","img":null},
   {"id":"sb2","city":"sibiu","name":"Stadionul CFR","address":"Strada Triajului, Sibiu","lat":45.787104,"lng":24.181515,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"broscarie","category":"football","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","en":"Football court (OpenStreetMap, not field-verified).","hu":"Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/40123382","img":null},
@@ -5529,7 +5578,7 @@ function FeaturedCourt() {
   const fbCourts = useFirebase("courts");
   const id = settings && settings.featuredCourtId;
   if (!id) return null;
-  const extra = fbCourts ? Object.entries(fbCourts).map(([cid, c]) => ({ id: cid, ...c })) : [];
+  const extra = extraCourts(fbCourts);
   const c = COURTS.concat(extra).find(x => x.id === id);
   if (!c) return null;
   const w = getCourtWeather(c.condition, t);
@@ -5799,7 +5848,7 @@ function MapView({
     }
     courts.forEach(c => {
       if (c.lat == null || c.lng == null) return;
-      const col = c.status === "unverified" ? "#6B7280" : c.status === "degraded" ? "#DC2626" : c.status === "inProgress" ? "#F97316" : "#10B981";
+      const col = courtStatusView(c, t).color;
       const icon = L.divIcon({
         html: `<div style="width:16px;height:16px;border-radius:50%;background:${col};border:2.5px solid #fff;box-shadow:0 1px 6px rgba(0,0,0,.45)"></div>`,
         className: "",
@@ -6704,10 +6753,7 @@ function CourtsPage() {
     if (fbReports) Object.values(fbReports).forEach(r => { if (r.courtId) out[r.courtId] = (out[r.courtId] || 0) + 1; });
     return out;
   }, [fbReports]);
-  const extra = fbCourts ? Object.entries(fbCourts).map(([id, c]) => ({
-    id,
-    ...c
-  })) : [];
+  const extra = extraCourts(fbCourts);
   const all = [...COURTS, ...extra];
   // Season 3: live court heat — check-ins within the last 2 hours.
   const heatNow = id => {
@@ -6791,13 +6837,12 @@ function CourtsPage() {
     }
   }, /*#__PURE__*/React.createElement("option", {
     value: "all"
-  }, t.allStatus), /*#__PURE__*/React.createElement("option", {
-    value: "degraded"
-  }, t.degraded), /*#__PURE__*/React.createElement("option", {
-    value: "inProgress"
-  }, t.inProgress), /*#__PURE__*/React.createElement("option", {
-    value: "renovated"
-  }, t.renovated)), /*#__PURE__*/React.createElement("select", {
+  }, t.allStatus), ["degraded", "inProgress", "renovated", "verified", "unverified"]
+    .filter(s => all.some(c => c.status === s))
+    .map(s => /*#__PURE__*/React.createElement("option", {
+      key: s,
+      value: s
+    }, s === "verified" ? t.fieldVerified : t[s]))), /*#__PURE__*/React.createElement("select", {
     value: hood,
     onChange: e => setHood(e.target.value),
     style: {
@@ -6864,8 +6909,8 @@ function CourtsPage() {
     title: getCourtWeather(c.condition, t).label,
     style: { background: getCourtWeather(c.condition, t).color + "22", color: getCourtWeather(c.condition, t).color, marginRight: ".3rem" }
   }, getCourtWeather(c.condition, t).icon, " ", getCourtWeather(c.condition, t).label), /*#__PURE__*/React.createElement("span", {
-    className: `badge ${c.status === "unverified" ? "badge-gray" : c.status === "degraded" ? "badge-red" : c.status === "inProgress" ? "badge-coral" : "badge-green"}`
-  }, c.status === "unverified" ? t.unverified : c.status === "degraded" ? t.degraded : c.status === "inProgress" ? t.inProgress : t.renovated),
+    className: `badge ${courtStatusView(c, t).badge}`
+  }, courtStatusView(c, t).label),
   gameCountFor(c.id) > 0 && /*#__PURE__*/React.createElement("span", {
     className: "badge badge-coral",
     style: { animation: "livePing 1.5s infinite" }
@@ -7067,8 +7112,8 @@ function CourtDetail({
     title: getCourtWeather(c.condition, t).label,
     style: { background: getCourtWeather(c.condition, t).color + "22", color: getCourtWeather(c.condition, t).color, marginRight: ".3rem" }
   }, getCourtWeather(c.condition, t).icon, " ", getCourtWeather(c.condition, t).label), /*#__PURE__*/React.createElement("span", {
-    className: `badge ${c.status === "unverified" ? "badge-gray" : c.status === "degraded" ? "badge-red" : c.status === "inProgress" ? "badge-coral" : "badge-green"}`
-  }, c.status === "unverified" ? t.unverified : c.status === "degraded" ? t.degraded : c.status === "inProgress" ? t.inProgress : t.renovated), /*#__PURE__*/React.createElement("span", {
+    className: `badge ${courtStatusView(c, t).badge}`
+  }, courtStatusView(c, t).label), /*#__PURE__*/React.createElement("span", {
     className: `badge ${occ === "empty" ? "badge-green" : occ === "active" ? "badge-coral" : "badge-red"}`
   }, occ === "empty" ? "🟢 " + t.empty + " (0)" : occ === "active" ? "🟡 " + t.active + " (" + cnt + ")" : "🔴 " + t.full + " (" + cnt + ")")),
   React.createElement("div", { style:{marginTop:"1rem",display:"flex",alignItems:"center",gap:"1.5rem",flexWrap:"wrap",marginBottom:"1rem"} },
@@ -7208,14 +7253,20 @@ function ReportModal({
       toast(t.error);
       return;
     }
+    // Coordinates only from the reporter's GPS — a court without them is listed, never placed at a guessed spot.
+    // The citizen's 1–5 estimate is kept as reportedCondition; `condition` is reserved for verified scores.
+    const { condition: reportedCondition, lat, lng, ...rest } = f;
     db.ref("courts").push({
-      ...f,
-      status: "degraded",
+      ...rest,
+      city: ACTIVE_CITY,
+      status: "unverified",
+      condition: null,
+      reportedCondition,
       occupancy: "empty",
       progress: 0,
       date: new Date().toISOString(),
-      lat: 46.545 + Math.random() * 0.02,
-      lng: 24.555 + Math.random() * 0.02,
+      lat: typeof lat === "number" ? lat : null,
+      lng: typeof lng === "number" ? lng : null,
       reports: 1,
       accessibility: {
         wheelchair: false,
@@ -7230,7 +7281,9 @@ function ReportModal({
   };
   const gps = () => {
     if (navigator.geolocation) navigator.geolocation.getCurrentPosition(p => updateF({
-      address: `${p.coords.latitude.toFixed(4)}, ${p.coords.longitude.toFixed(4)}`
+      address: `${p.coords.latitude.toFixed(4)}, ${p.coords.longitude.toFixed(4)}`,
+      lat: +p.coords.latitude.toFixed(5),
+      lng: +p.coords.longitude.toFixed(5)
     }));
   };
   const cancelAndClear = () => {
@@ -7689,9 +7742,11 @@ function ShareCardCanvas({ total }) {
     ctx.beginPath(); ctx.moveTo(680, 325); ctx.lineTo(680, 475); ctx.stroke();
 
     // Stat 2 — degraded courts
-    var deg = COURTS.filter(function(c) { return c.status === "degraded"; }).length;
+    // Only scored courts count (all of TGM; field-verified elsewhere) — "0/35 degraded" for an unvisited city would be false.
+    var scoredN = scoredCourts();
+    var deg = scoredN.filter(function(c) { return courtStatusView(c, T[lang] || T.ro).bad; }).length;
     ctx.fillStyle = "#10B981"; ctx.font = "bold 100px monospace";
-    ctx.fillText(deg + "/" + COURTS.length, 720, 430);
+    ctx.fillText(scoredN.length ? deg + "/" + scoredN.length : "—", 720, 430);
     ctx.fillStyle = "#9CA3AF"; ctx.font = "bold 17px monospace";
     ctx.fillText(lang === "ro" ? "TERENURI DEGRADATE" : "DEGRADED COURTS", 720, 458);
 
@@ -8684,6 +8739,7 @@ function GalleryTab() {
     const c = COURTS.find(x => x.id === im.courtId);
     const nb = im.neighbourhood || (c && c.neighbourhood);
     const st = im.status || (c && c.status);
+    const sv = !im.status && c ? courtStatusView(c, t) : null;
     return /*#__PURE__*/React.createElement("div", {
       key: im.id,
       className: "card",
@@ -8700,8 +8756,8 @@ function GalleryTab() {
     }, nb && /*#__PURE__*/React.createElement("span", {
       className: "badge badge-teal"
     }, nb), st && /*#__PURE__*/React.createElement("span", {
-      className: "badge " + statusCls(st)
-    }, t[st] || st)), c && /*#__PURE__*/React.createElement("div", {
+      className: "badge " + (sv ? sv.badge : statusCls(st))
+    }, sv ? sv.label : (t[st] || st))), c && /*#__PURE__*/React.createElement("div", {
       className: "font-bold text-sm mt-1"
     }, c.name), im.caption && /*#__PURE__*/React.createElement("div", {
       className: "text-xs",
@@ -8917,12 +8973,12 @@ function DossierButton() {
       doc.setFontSize(9.5);
       COURTS.forEach(c => {
         if (y > 275) { doc.addPage(); y = 24; }
-        const sc = c.status === "degraded" ? coral : green;
+        const sc = courtStatusView(c, t).bad ? coral : green;
         doc.setFillColor(...sc); doc.circle(M + 1.5, y - 1.5, 1.5, "F");
         doc.setTextColor(40, 40, 50); doc.setFont("helvetica", "bold");
         doc.text(c.name, M + 6, y);
         doc.setFont("helvetica", "normal"); doc.setTextColor(120, 120, 130); doc.setFontSize(8);
-        const sLabel = c.status === "unverified" ? t.unverified : c.status === "degraded" ? t.degraded : c.status === "inProgress" ? t.inProgress : t.renovated;
+        const sLabel = courtStatusView(c, t).label;
         doc.text(sLabel + " · " + (c.address || ""), M + 6, y + 4);
         doc.setFontSize(9.5);
         y += 9;
@@ -8998,7 +9054,7 @@ function DossierButton() {
    NEIGHBOURHOOD INEQUALITY CHART
    ============================================================ */
 function HoodChart() {
-  if (!COURTS.some(function (c) { return c.condition != null; })) return React.createElement(CityDataPending, null);
+  if (!gapReady()) return React.createElement(CityDataPending, null);
   var app = useApp();
   var t = app.t, lang = app.lang;
   var hoodNames = {
@@ -9011,7 +9067,7 @@ function HoodChart() {
     unirii:     "Unirii"
   };
   var hoods = {};
-  COURTS.forEach(function(c) {
+  scoredCourts().forEach(function(c) {
     if (!hoods[c.neighbourhood]) hoods[c.neighbourhood] = [];
     hoods[c.neighbourhood].push(c);
   });
@@ -9022,8 +9078,8 @@ function HoodChart() {
       var a = c.accessibility;
       return s + [a.wheelchair, a.lighting, a.parking, a.flatSurface].filter(Boolean).length;
     }, 0) / (courts.length * 4) * 100;
-    var degraded = courts.filter(function(c) { return c.status === "degraded"; }).length;
-    return { id: id, name: hoodNames[id] || id, courts: courts, avg: avg, acc: acc, degraded: degraded };
+    var degraded = courts.filter(function(c) { return courtStatusView(c, t).bad; }).length;
+    return { id: id, name: ACTIVE_CITY === "tgm" ? (hoodNames[id] || id) : hoodName(id, lang), courts: courts, avg: avg, acc: acc, degraded: degraded };
   }).sort(function(a, b) { return a.avg - b.avg; });
 
   var worstAvg = rows[0] ? rows[0].avg : 1;
@@ -9038,6 +9094,7 @@ function HoodChart() {
   }
 
   return React.createElement("div", null,
+    React.createElement(VerifiedShare, null),
     // Gap callout
     React.createElement("div", { className: "hood-gap-callout" },
       React.createElement("div", { className: "flex justify-between items-center", style: { flexWrap: "wrap", gap: ".5rem" } },
@@ -9059,13 +9116,22 @@ function HoodChart() {
         React.createElement("div", { className: "flex gap-3" },
           React.createElement("div", { style: { textAlign: "center" } },
             React.createElement("div", { style: { fontSize: "1.6rem", fontFamily: "'Barlow Condensed',monospace", fontWeight: 800, color: "var(--red)", lineHeight: 1 } },
-              COURTS.filter(function(c) { return c.status === "degraded"; }).length
+              scoredCourts().filter(function(c) { return courtStatusView(c, t).bad; }).length
             ),
             React.createElement("div", { style: { fontSize: ".68rem", color: "var(--textSec)" } },
               lang === "ro" ? "degradate" : "degraded"
             )
           ),
-          React.createElement("div", { style: { textAlign: "center" } },
+          // Outside TGM nothing is being renovated yet — show the good courts among those scored instead.
+          ACTIVE_CITY !== "tgm" && React.createElement("div", { style: { textAlign: "center" } },
+            React.createElement("div", { style: { fontSize: "1.6rem", fontFamily: "'Barlow Condensed',monospace", fontWeight: 800, color: "var(--green)", lineHeight: 1 } },
+              scoredCourts().filter(function(c) { return c.condition >= 4; }).length
+            ),
+            React.createElement("div", { style: { fontSize: ".68rem", color: "var(--textSec)" } },
+              lang === "ro" ? "în stare bună" : lang === "hu" ? "jó állapotú" : "in good shape" // TODO: HU review
+            )
+          ),
+          ACTIVE_CITY === "tgm" && React.createElement("div", { style: { textAlign: "center" } },
             React.createElement("div", { style: { fontSize: "1.6rem", fontFamily: "'Barlow Condensed',monospace", fontWeight: 800, color: "var(--coral)", lineHeight: 1 } },
               COURTS.filter(function(c) { return c.status === "inProgress"; }).length
             ),
@@ -9073,7 +9139,7 @@ function HoodChart() {
               lang === "ro" ? "în lucru" : "in progress"
             )
           ),
-          React.createElement("div", { style: { textAlign: "center" } },
+          ACTIVE_CITY === "tgm" && React.createElement("div", { style: { textAlign: "center" } },
             React.createElement("div", { style: { fontSize: "1.6rem", fontFamily: "'Barlow Condensed',monospace", fontWeight: 800, color: "var(--green)", lineHeight: 1 } },
               COURTS.filter(function(c) { return c.status === "renovated"; }).length
             ),
@@ -9139,12 +9205,7 @@ function HoodChart() {
         lang === "ro" ? "Toate terenurile" : lang === "hu" ? "Minden pálya" : "All courts"
       ),
       COURTS.map(function(c) {
-        var sColor = c.status === "degraded" ? "var(--red)" : c.status === "inProgress" ? "var(--coral)" : "var(--green)";
-        var sLabel = c.status === "degraded"
-          ? (lang === "ro" ? "Degradat" : lang === "hu" ? "Leromlott" : "Degraded")
-          : c.status === "inProgress"
-            ? (lang === "ro" ? "În lucru" : lang === "hu" ? "Folyamatban" : "In Progress")
-            : (lang === "ro" ? "Renovat" : lang === "hu" ? "Felújított" : "Renovated");
+        var sView = courtStatusView(c, T[lang] || T.ro), sColor = sView.color, sLabel = sView.label;
         return React.createElement("div", {
           key: c.id,
           className: "flex justify-between items-center",
@@ -9179,8 +9240,7 @@ function OpenDataCard() {
   const fbCourts = useFirebase("courts");
   const ratings = useFirebase("ratings");
   const buildCourts = () => {
-    const extra = fbCourts ? Object.entries(fbCourts).map(([id, c]) => ({ id, ...c })) : [];
-    return [...COURTS, ...extra];
+    return [...COURTS_ALL, ...extraCourts(fbCourts, true)];
   };
   const buildReports = () => reports ? Object.entries(reports).map(([id, r]) => ({
     id,
@@ -10816,7 +10876,7 @@ function AdminSiteTab() {
   const s = useFirebase("settings") || {};
   const flags = s.flags || {};
   const fbCourts = useFirebase("courts");
-  const allCourts = COURTS_ALL.concat(fbCourts ? Object.entries(fbCourts).map(([id, c]) => ({ id, ...c })) : []);
+  const allCourts = COURTS_ALL.concat(extraCourts(fbCourts, true));
   // Every write reports success/failure — a silent permission error was why
   // switches "didn't work" (they flipped, then snapped back).
   const fail = e => toast("⛔ " + (/permission/i.test(e && e.message || "") ? "Permission denied — sign in again as owner." : (e && e.message) || "Write failed"), 6000);
@@ -11334,7 +11394,7 @@ function AdminPanel({
   }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Name"), /*#__PURE__*/React.createElement("th", null, "Status"), /*#__PURE__*/React.createElement("th", null, "Cond"), /*#__PURE__*/React.createElement("th", null, "Date"), /*#__PURE__*/React.createElement("th", null, "Actions"))), /*#__PURE__*/React.createElement("tbody", null, cl.map(c => /*#__PURE__*/React.createElement("tr", {
     key: c.id
   }, /*#__PURE__*/React.createElement("td", null, c.name), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("span", {
-    className: `a-badge ${c.status === "degraded" ? "a-badge-r" : "a-badge-g"}`
+    className: `a-badge ${courtStatusView(c, t).admin}`
   }, c.status)), /*#__PURE__*/React.createElement("td", null, c.condition, "/5"), /*#__PURE__*/React.createElement("td", null, c.date ? new Date(c.date).toLocaleDateString() : ""), /*#__PURE__*/React.createElement("td", {
     className: "acts"
   }, /*#__PURE__*/React.createElement("button", {
@@ -11536,7 +11596,7 @@ function QuickReportModal({ onClose }) {
   const [f, setF] = useState({ category: "", description: "", photoDataUrl: null, courtId: "", courtName: "", neighborhood: "", lat: null, lng: null });
   const [locating, setLocating] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const allCourts = [...COURTS, ...(fbCourts ? Object.entries(fbCourts).map(([id, c]) => ({ id, ...c })) : [])];
+  const allCourts = [...COURTS, ...extraCourts(fbCourts)];
   const cats = [
     { k: "surface", e: "🏗️", l: t.catSurface },
     { k: "hoop",    e: "🏀", l: t.catHoop },
@@ -11669,8 +11729,8 @@ function EvidenceWall() {
   const filtered = filterCourt === "all" ? imgs : imgs.filter(p => p.courtId === filterCourt);
   const uniqueWitnesses = new Set(imgs.map(p => p.author || "?")).size;
   const courtsDoc = new Set(imgs.filter(p => p.courtId).map(p => p.courtId)).size;
-  const statusColor = s => s === "degraded" ? "var(--red)" : s === "inProgress" ? "var(--coral)" : "var(--green)";
-  const statusLabel = s => s === "unverified" ? t.unverified : s === "degraded" ? t.degraded : s === "inProgress" ? t.inProgress : t.renovated;
+  const statusColor = c => courtStatusView(c, t).color;
+  const statusLabel = c => courtStatusView(c, t).label;
   const onFile = async e => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -11766,8 +11826,8 @@ function EvidenceWall() {
               React.createElement("img", { src: p.img, alt: p.caption || "evidence", loading: "lazy", style: { width: "100%", display: "block", objectFit: "cover", maxHeight: 220, minHeight: 80 } }),
               React.createElement("div", { style: { padding: ".45rem .6rem" } },
                 c && React.createElement("div", { className: "flex gap-1 mb-1", style: { flexWrap: "wrap" } },
-                  React.createElement("span", { className: "badge", style: { background: statusColor(c.status) + "22", color: statusColor(c.status), fontSize: ".7rem" } }, c.name.split(" ").slice(0,2).join(" ")),
-                  React.createElement("span", { className: "badge " + (c.status === "unverified" ? "badge-gray" : c.status === "degraded" ? "badge-red" : c.status === "inProgress" ? "badge-coral" : "badge-green"), style: { fontSize: ".7rem" } }, statusLabel(c.status))
+                  React.createElement("span", { className: "badge", style: { background: statusColor(c) + "22", color: statusColor(c), fontSize: ".7rem" } }, c.name.split(" ").slice(0,2).join(" ")),
+                  React.createElement("span", { className: "badge " + courtStatusView(c, t).badge, style: { fontSize: ".7rem" } }, statusLabel(c))
                 ),
                 p.caption && React.createElement("p", { style: { fontSize: ".78rem", marginBottom: ".25rem", lineHeight: 1.3 } }, p.caption),
                 React.createElement("div", { className: "flex justify-between" },
