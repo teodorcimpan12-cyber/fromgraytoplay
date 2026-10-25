@@ -2304,6 +2304,7 @@ function getNextCouncilDate() {
 }
 
 function CouncilCountdown() {
+  if (ACTIVE_CITY !== "tgm") return null; // the session calendar below is Târgu Mureș's; the city never changes without a reload
   var appCtx = useApp();
   var t = appCtx.t, lang = appCtx.lang;
   var diffState = useState(0);
@@ -3742,12 +3743,16 @@ function CityPulse(props) {
   var rm = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches);
   var events = React.useMemo(function () {
     var ev = [];
+    // Outside Târgu Mureș only count this city's courts and signups (signups without a city tag are all TGM).
+    var own = ACTIVE_CITY === "tgm" ? null : COURTS.reduce(function (m, c) { m[c.id] = 1; return m; }, {});
     if (activity) Object.values(activity).forEach(function (a) {
       var ts = typeof a.timestamp === "number" ? a.timestamp : (Date.parse(a.timestamp || "") || 0);
       if (!ts) return;
+      if (own && !own[a.courtId]) return;
       ev.push({ ts: ts, type: a.type || "other", courtId: a.courtId || null });
     });
     if (signups) Object.values(signups).forEach(function (s) {
+      if ((s.city || "tgm") !== ACTIVE_CITY) return;
       var ts = Date.parse(s.date || "") || (typeof s.timestamp === "number" ? s.timestamp : 0);
       if (!ts) return;
       ev.push({ ts: ts, type: "signup", courtId: null });
@@ -3757,7 +3762,7 @@ function CityPulse(props) {
   }, [activity, signups]);
   var stats = React.useMemo(function() {
     if (!events.length) return null;
-    var totalSignups = signups ? Object.keys(signups).length : 0;
+    var totalSignups = signups ? Object.values(signups).filter(function (s) { return (s.city || "tgm") === ACTIVE_CITY; }).length : 0;
     var activeDays = {};
     events.forEach(function(e) { var d = new Date(e.ts).toLocaleDateString("ro-RO"); activeDays[d] = (activeDays[d]||0)+1; });
     var peakEntry = Object.entries(activeDays).sort(function(a,b){return b[1]-a[1];})[0];
@@ -5326,6 +5331,16 @@ const TIMELINE = [
   { y: 2025, ro: "Ian: HCL aprobă 80.000 lei pentru terenul Plopilor — primul teren de cartier în 12 ani (consilieri Mașca + Veress, POL)", en: "Jan: HCL approves 80,000 lei for Plopilor court — first neighbourhood court in 12 years (Mașca + Veress, POL)", hu: "Jan: HCL jóváhagyja a Plopilor pálya 80 000 lejes felújítását — 12 év után az első kerületi pálya" },
   { y: 2025, ro: "Oct: Eroare administrativă 5M lei îngheață Baza Insulei — investigație Punctul.ro", en: "Oct: 5M lei admin error freezes Baza Insulei renovation — Punctul.ro investigation", hu: "Okt: 5 millió lejes hibával befagyasztják a Sziget sport bázist — Punctul.ro" },
   { y: 2026, ro: "Lansare From Grey to Play — platforma civică documentează cele 20 de terenuri din Târgu Mureș", en: "From Grey to Play launched — civic platform documents all 20 courts in Târgu Mureș", hu: "From Grey to Play indulása — a platform mind a 20 marosvásárhelyi pályát dokumentálja" }
+];
+// Sibiu: only events with a public source (docs/INVESTITII_SIBIU.md). `lei` marks a public investment.
+const TIMELINE_SIBIU = [
+  { y: "2020", lei: "565.000 lei", src: "https://www.turnulsfatului.ro/2020/10/15/primaria-sibiu-teren-modern-pentru-handbal-si-baschet-la-liceul-onisifor-ghibu-177144", ro: "Teren multifuncțional nou la Liceul Onisifor Ghibu (Ștrand) — curte de școală", en: "New multi-sport court at Onisifor Ghibu High School (Ștrand) — a school yard", hu: "Új többfunkciós pálya az Onisifor Ghibu Líceumnál (Ștrand) — iskolaudvar" }, // TODO: HU review
+  { y: "2022", src: "https://livingatlas.arcgis.com/wayback/", ro: "Ultimele imagini din satelit (Esri) pentru 34 din cele 35 de terenuri de cartier sunt din 2021–2022", en: "The latest satellite images (Esri) of 34 of the 35 neighbourhood courts date from 2021–2022", hu: "A 35 lakótelepi pályából 34-ről a legfrissebb műholdkép (Esri) 2021–2022-es" }, // TODO: HU review
+  { y: "2023", lei: "12,5 mil. lei", src: "https://sibiuindependent.ro/2023/04/21/scoala-radu-selejan-va-avea-o-sala-de-sport-si-terenuri-exterioare-pentru-handbal-baschet-si-minifotbal/", ro: "Anunț: sală de sport și 2 terenuri exterioare la Școala Radu Selejan (Vasile Aaron)", en: "Announced: sports hall and 2 outdoor courts at Radu Selejan School (Vasile Aaron)", hu: "Bejelentés: tornaterem és 2 kültéri pálya a Radu Selejan Iskolánál (Vasile Aaron)" }, // TODO: HU review
+  { y: "2023", lei: "> 1 mil. lei", src: "https://www.oradesibiu.ro/2023/05/31/teren-de-sport-la-scoala-8-de-pe-strada-lupeni-primaria-a-lansat-licitatia/", ro: "Licitație pentru terenul de baschet și minifotbal de la Școala nr. 8 (Str. Lupeni)", en: "Tender for the basketball and mini-football court at School no. 8 (Lupeni St.)", hu: "Közbeszerzés a 8-as iskola kosár- és kispályájára (Lupeni utca)" }, // TODO: HU review
+  { y: "2024", lei: "12,7 mil. lei", src: "https://bazesportive.sibiu.ro/obor", ro: "Se deschide Baza Sportivă Obor — gratuită cu programare (terenul mare cu plată)", en: "Obor Sports Base opens — free with booking (the main pitch is paid)", hu: "Megnyílik az Obor Sportbázis — foglalással ingyenes (a nagy pálya fizetős)" }, // TODO: HU review
+  { y: "2026", src: "https://sibiuindependent.ro/2026/09/30/primaria-sibiu-scoate-la-licitatie-lucrarile-pentru-o-noua-sala-de-sport-si-doua-terenuri-la-scoala-radu-selejan/", ro: "Sept: licitația pentru sala și terenurile de la Școala Radu Selejan", en: "Sept: tender for the hall and courts at Radu Selejan School", hu: "Szept.: közbeszerzés a Radu Selejan Iskola termére és pályáira" }, // TODO: HU review
+  { y: "2026", ro: "Oct: From Grey to Play adaugă Sibiul — 35 de terenuri publice din OpenStreetMap, neverificate; începe auditul din satelit", en: "Oct: From Grey to Play adds Sibiu — 35 public courts from OpenStreetMap, unverified; the satellite audit begins", hu: "Okt.: a From Grey to Play felveszi Nagyszebent — 35 nyilvános pálya az OpenStreetMapből, ellenőrizetlenül; indul a műholdas felmérés" } // TODO: HU review
 ];
 const ADMIN_EMAIL = "teodor.cimpan12@gmail.com";
 const ADMIN_UID  = "IIdfYqliTrdlYqjS0swd0swlRkV2";
@@ -9422,7 +9437,7 @@ function ImpactPage() {
     onClick: () => setTab("tl")
   }, "\uD83D\uDCC5"), React.createElement("button", { className: tab === "hood" ? "active" : "", onClick: function() { setTab("hood"); }, title: "Neighbourhoods" }, "\uD83C\uDFD8"),
   React.createElement("button", { className: tab === "race" ? "active" : "", onClick: function() { setTab("race"); }, title: t.neighborhoodRace||"Cursa cartierelor" }, "\uD83C\uDFC1")),
-  tab === "proiecte" && React.createElement(ProiecteTab, null), tab === "calc" && React.createElement(React.Fragment, null, React.createElement(ImpactCalc, null), React.createElement(InequalityReceipt, null)), tab === "city" && /*#__PURE__*/React.createElement(CityComp, null), tab === "budget" && React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(BudgetViz, null), React.createElement(BudgetWatchdog, null)), tab === "carbon" && /*#__PURE__*/React.createElement(CarbonCalc, null), tab === "health" && /*#__PURE__*/React.createElement(HealthCalc, null), tab === "mental" && /*#__PURE__*/React.createElement(MentalSec, null), tab === "tl" && /*#__PURE__*/React.createElement(TimelineSec, null), tab === "hood" && React.createElement(HoodChart, null),
+  tab === "proiecte" && React.createElement(ProiecteTab, null), tab === "calc" && React.createElement(React.Fragment, null, React.createElement(ImpactCalc, null), React.createElement(InequalityReceipt, null)), tab === "city" && (ACTIVE_CITY === "tgm" ? /*#__PURE__*/React.createElement(CityComp, null) : React.createElement(SatAuditCard, null)), tab === "budget" && (ACTIVE_CITY === "tgm" ? React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(BudgetViz, null), React.createElement(BudgetWatchdog, null)) : React.createElement(SibiuInvest, null)), tab === "carbon" && /*#__PURE__*/React.createElement(CarbonCalc, null), tab === "health" && /*#__PURE__*/React.createElement(HealthCalc, null), tab === "mental" && /*#__PURE__*/React.createElement(MentalSec, null), tab === "tl" && /*#__PURE__*/React.createElement(TimelineSec, null), tab === "hood" && React.createElement(HoodChart, null),
   tab === "race" && React.createElement(React.Fragment, null,
     React.createElement(CouncilCountdown, null),
     React.createElement(NeighborhoodRace, null)
@@ -9441,7 +9456,7 @@ function ImpactCalc() {
   }, t.courtsRenovated, ": ", n), /*#__PURE__*/React.createElement("input", {
     type: "range",
     min: "1",
-    max: "20",
+    max: String(COURTS.length),
     value: n,
     onChange: e => setN(+e.target.value),
     className: "mt-1"
@@ -9644,7 +9659,7 @@ function HealthCalc() {
   }, t.courtsRenovated, ": ", n), /*#__PURE__*/React.createElement("input", {
     type: "range",
     min: "1",
-    max: "20",
+    max: String(COURTS.length),
     value: n,
     onChange: e => setN(+e.target.value),
     className: "mb-2"
@@ -9735,7 +9750,8 @@ function TimelineSec() {
   const {
     lang
   } = useApp();
-  return /*#__PURE__*/React.createElement("div", null, TIMELINE.map((ev, i) => /*#__PURE__*/React.createElement("div", {
+  const list = ACTIVE_CITY === "sibiu" ? TIMELINE_SIBIU : TIMELINE;
+  return /*#__PURE__*/React.createElement("div", null, list.map((ev, i) => /*#__PURE__*/React.createElement("div", {
     key: i,
     className: "flex gap-2 mb-2"
   }, /*#__PURE__*/React.createElement("div", {
@@ -9750,10 +9766,10 @@ function TimelineSec() {
       width: 10,
       height: 10,
       borderRadius: "50%",
-      background: i === TIMELINE.length - 1 ? "var(--green)" : "var(--coral)",
+      background: i === list.length - 1 ? "var(--green)" : "var(--coral)",
       flexShrink: 0
     }
-  }), i < TIMELINE.length - 1 && /*#__PURE__*/React.createElement("div", {
+  }), i < list.length - 1 && /*#__PURE__*/React.createElement("div", {
     style: {
       width: 2,
       flex: 1,
@@ -9766,9 +9782,50 @@ function TimelineSec() {
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "badge badge-teal"
-  }, ev.y), /*#__PURE__*/React.createElement("p", {
+  }, ev.y), ev.lei && /*#__PURE__*/React.createElement("span", {
+    className: "badge badge-green",
+    style: { marginLeft: ".4rem" }
+  }, ev.lei), /*#__PURE__*/React.createElement("p", {
     className: "mt-1"
-  }, ev[lang])))));
+  }, ev[lang] || ev.ro), ev.src && /*#__PURE__*/React.createElement("a", {
+    href: ev.src, target: "_blank", rel: "noopener",
+    style: { fontSize: ".75rem", color: "var(--textSec)" }
+  }, "🔗 ", new URL(ev.src).hostname.replace(/^www\./, ""))))));
+}
+
+/* Sibiu has no "promised vs spent" budget data: show the sourced public investments instead, and say what they don't cover. */
+function SibiuInvest() {
+  const { lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const inv = TIMELINE_SIBIU.filter(ev => ev.lei);
+  return React.createElement("div", { className: "card" },
+    React.createElement("h3", { className: "mb-1" }, "💰 ", L3("Investiții publice în terenuri de sport — Sibiu", "Public investment in sports courts — Sibiu", "Sportpálya-beruházások — Nagyszeben")), // TODO: HU review
+    inv.map((ev, i) => React.createElement("div", { key: i, className: "flex justify-between", style: { gap: ".75rem", padding: ".45rem 0", borderBottom: "1px solid var(--border)", flexWrap: "wrap" } },
+      React.createElement("div", { style: { flex: "1 1 16rem" } }, React.createElement("b", null, ev.y), " · ", ev[lang] || ev.ro, " ",
+        React.createElement("a", { href: ev.src, target: "_blank", rel: "noopener", style: { fontSize: ".75rem", color: "var(--textSec)" } }, "🔗")),
+      React.createElement("div", { className: "font-bold", style: { color: "var(--green)", whiteSpace: "nowrap" } }, ev.lei))),
+    React.createElement("p", { className: "mt-2", style: { fontSize: ".85rem", color: "var(--textSec)" } },
+      L3("Toate investițiile găsite sunt baze mari sau curți de școală. Niciunul dintre cele 35 de terenuri de cartier de pe hartă nu apare încă într-o investiție cu sursă — de confirmat cu Primăria (cerere conform Legii 544/2001).",
+         "Every investment found is a large base or a school yard. None of the 35 neighbourhood courts on the map appears yet in a sourced investment — to be confirmed with City Hall (Law 544/2001 request).",
+         "Minden talált beruházás nagy sportbázis vagy iskolaudvar. A térkép 35 lakótelepi pályája közül egyik sem szerepel még forrással igazolt beruházásban — a Polgármesteri Hivatallal kell megerősíteni (544/2001-es kérelem).")) // TODO: HU review
+  );
+}
+
+/* Sibiu "city" tab: the satellite audit, until its results exist. */
+function SatAuditCard() {
+  const { lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  return React.createElement("div", { className: "card" },
+    React.createElement("h3", { className: "mb-1" }, "🛰️ ", L3("Sibiu din satelit", "Sibiu from space", "Nagyszeben műholdról")),
+    React.createElement("p", null, L3(
+      "Fiecare dintre cele " + COURTS.length + " terenuri e verificat pe 6–7 imagini din satelit din 2011–2022: există? s-a construit, s-a refăcut, a dispărut? Doi membri ai echipei evaluează independent, fără să știe cartierul; un rezultat apare doar unde sunt de acord.",
+      "Each of the " + COURTS.length + " courts is checked on 6–7 satellite images from 2011–2022: does it exist? was it built, resurfaced, removed? Two team members review independently, without knowing the neighbourhood; a result appears only where they agree.",
+      "Mind a " + COURTS.length + " pályát 6–7 műholdképen ellenőrizzük 2011–2022 között: létezik? épült, felújították, eltűnt? Két csapattag egymástól függetlenül értékel, a városrész ismerete nélkül; eredmény csak egyezés esetén jelenik meg.")), // TODO: HU review
+    React.createElement("p", { style: { fontSize: ".85rem", color: "var(--textSec)" } }, L3(
+      "Imaginile din satelit nu arată starea de azi. Rezultatele apar aici după evaluare. Sursă: Esri World Imagery Wayback; contururi © OpenStreetMap.",
+      "Satellite images do not show today's condition. Results appear here after the review. Source: Esri World Imagery Wayback; outlines © OpenStreetMap.",
+      "A műholdképek nem a mai állapotot mutatják. Az eredmények az értékelés után jelennek meg. Forrás: Esri World Imagery Wayback; körvonalak © OpenStreetMap.")) // TODO: HU review
+  );
 }
 
 /* === City Hall Guide — real contacts, legal procedures, arguments.
