@@ -201,6 +201,41 @@ a[href^="tel:"],a[href^="mailto:"]{display:inline-flex;align-items:center;min-he
 .sc-tile:hover,.sc-tile:focus-visible{transform:translateY(-3px);border-color:var(--green);box-shadow:var(--shadow)}
 .sc-tile b{font-size:1.02rem}.sc-tile span:last-child{font-size:.86rem;line-height:1.45;color:var(--textSec)}
 .sc-ic{font-size:1.6rem}
+/* Showcase v2 */
+.sc-grid-v2{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem}
+.sc-tile-v2{position:relative;overflow:hidden;min-height:190px;border-top:3px solid var(--sc-acc,var(--green));gap:.4rem}
+.sc-tile-v2:hover,.sc-tile-v2:focus-visible{transform:translateY(-5px) scale(1.01);border-color:var(--sc-acc,var(--green));box-shadow:0 16px 40px rgba(0,0,0,.16),0 0 0 2px var(--sc-acc,var(--green))}
+.sc-sat-anim{display:flex;gap:3px;height:44px;border-radius:8px;overflow:hidden;margin-bottom:.5rem}
+.sc-sat-strip{flex:1;border-radius:4px}
+.sc-sat-s1{background:linear-gradient(160deg,#1a3d1a,#2e6b2e);animation:sc-sat-f 3.5s ease-in-out infinite}
+.sc-sat-s2{background:linear-gradient(160deg,#3d3d1a,#7a7a1a);animation:sc-sat-f 3.5s ease-in-out infinite .6s}
+.sc-sat-s3{background:linear-gradient(160deg,#2a2a3d,#5a5a7a);animation:sc-sat-f 3.5s ease-in-out infinite 1.2s}
+@keyframes sc-sat-f{0%,100%{opacity:.55;filter:brightness(.8)}50%{opacity:1;filter:brightness(1.35)}}
+.sc-cnt-wrap{display:flex;align-items:baseline;gap:.6rem;margin-bottom:.5rem;flex-wrap:wrap}
+.sc-cnt-num{font-family:'Space Mono',monospace;font-size:1.75rem;font-weight:700;color:var(--coral);line-height:1}
+.sc-cnt-zero{font-family:'Space Mono',monospace;font-size:1rem;font-weight:700;color:var(--red);background:color-mix(in srgb,var(--red) 15%,transparent);padding:2px 7px;border-radius:5px}
+.sc-blink{animation:sc-blk .55s ease-in-out 4}
+@keyframes sc-blk{0%,100%{opacity:1}50%{opacity:.08}}
+.sc-orb-mini{position:relative;width:50px;height:50px;margin-bottom:.5rem}
+.sc-orb-ring{position:absolute;inset:0;border-radius:50%;border:2.5px solid var(--green);animation:sc-ring 2.4s ease-in-out infinite}
+.sc-orb-core{position:absolute;inset:9px;border-radius:50%;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--green) 70%,#fff),var(--green));animation:sc-beat 2.4s ease-in-out infinite}
+@keyframes sc-ring{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.45);opacity:.1}}
+@keyframes sc-beat{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.sc-letter-mini{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--textSec);background:color-mix(in srgb,var(--green) 7%,var(--bg));border:1px solid color-mix(in srgb,var(--green) 20%,transparent);border-radius:6px;padding:6px 8px;margin-bottom:.5rem;white-space:pre;line-height:1.5;animation:sc-lf 4s ease-in-out infinite}
+@keyframes sc-lf{0%,20%{opacity:.35}40%,75%{opacity:1}100%{opacity:.35}}
+@media(max-width:600px){.sc-grid-v2{grid-template-columns:1fr 1fr}.sc-tile-v2{min-height:160px}.sc-tile-v2 span:last-child{display:none}}
+/* About hero */
+.about-hero{background:var(--bgCard);border-bottom:1px solid var(--border)}
+.about-team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.8rem;margin:1.5rem 0}
+.about-member{display:flex;flex-direction:column;align-items:center;gap:.35rem;padding:1rem .6rem;border-radius:var(--radius);border:1px solid color-mix(in srgb,var(--mc,var(--green)) 25%,var(--border));background:color-mix(in srgb,var(--mc,var(--green)) 6%,var(--bgCard));text-align:center;transition:transform .18s,box-shadow .18s;cursor:default}
+.about-member:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.about-avatar{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;font-size:.95rem;color:var(--white);background:var(--mc,var(--green))}
+.about-badge{font-size:.72rem;background:color-mix(in srgb,var(--coral) 15%,transparent);color:var(--coral);padding:2px 6px;border-radius:20px;font-weight:600}
+.about-member strong{font-size:.88rem;line-height:1.3}
+.about-member span{font-size:.78rem;color:var(--textSec)}
+.about-quote{border-left:4px solid var(--green);margin:1.2rem 0 0;padding:.85rem 1.2rem;background:color-mix(in srgb,var(--green) 7%,var(--bg));border-radius:0 var(--radius) var(--radius) 0}
+.about-quote p{margin:0;font-style:italic;line-height:1.65;font-size:1.02rem}
+.about-quote footer{margin-top:.55rem;font-size:.85rem;color:var(--textSec);font-style:normal}
 .sc-cta{margin-top:1.2rem;padding:1.2rem;border-radius:var(--radius);display:flex;gap:1rem;align-items:center;justify-content:space-between;flex-wrap:wrap;background:color-mix(in srgb,var(--green) 9%,transparent);border:1px solid color-mix(in srgb,var(--green) 30%,transparent)}
 .sc-cta p{margin:0;flex:1 1 18rem;line-height:1.5}
 @media (max-width:600px){.showcase .sc-grid{grid-template-columns:1fr 1fr}.sc-tile{padding:.85rem}.sc-tile span:last-child{display:none}.pet-steps li{font-size:.75rem}}
@@ -1020,8 +1055,8 @@ const T = {
     myReports: "Rapoartele mele",
     myBookings: "Rezervările mele",
     volunteerCertificate: "Certificat voluntar",
-    owner: "Cimpan Teodor",
-    madeBy: "Creat și gestionat de",
+    owner: "Cîmpan Teodor",
+    madeBy: "Coordonat de",
     city: "Târgu Mureș, România",
     copyright: "© 2026 From Grey to Play",
     impactCalc: "Calculator impact",
@@ -1172,8 +1207,8 @@ const T = {
     myReports: "My Reports",
     myBookings: "My Bookings",
     volunteerCertificate: "Volunteer Certificate",
-    owner: "Cimpan Teodor",
-    madeBy: "Created and managed by",
+    owner: "Cîmpan Teodor",
+    madeBy: "Coordinated by",
     city: "Târgu Mureș, Romania",
     copyright: "© 2026 From Grey to Play",
     impactCalc: "Impact Calculator",
@@ -1324,8 +1359,8 @@ const T = {
     myReports: "Bejelentéseim",
     myBookings: "Foglalásaim",
     volunteerCertificate: "Önkéntes igazolás",
-    owner: "Cimpan Teodor",
-    madeBy: "Készítette és kezeli",
+    owner: "Cîmpan Teodor",
+    madeBy: "Koordinálta",
     city: "Marosvásárhely, Románia",
     copyright: "© 2026 From Grey to Play",
     impactCalc: "Hatás-kalkulátor",
@@ -5384,7 +5419,9 @@ const TIMELINE = [
   { y: 2023, ro: "Parcul Tudor Vladimirescu finalizat — 14,5 milioane lei fonduri UE (POR 2014-2020, ADR Centru)", en: "Tudor Vladimirescu Park completed — 14.5M lei EU funds (POR 2014-2020, ADR Centru)", hu: "Tudor Vladimirescu park elkészült — 14,5M lej EU-forrás (POR 2014-2020)" },
   { y: 2025, ro: "Ian: HCL aprobă 80.000 lei pentru terenul Plopilor — primul teren de cartier în 12 ani (consilieri Mașca + Veress, POL)", en: "Jan: HCL approves 80,000 lei for Plopilor court — first neighbourhood court in 12 years (Mașca + Veress, POL)", hu: "Jan: HCL jóváhagyja a Plopilor pálya 80 000 lejes felújítását — 12 év után az első kerületi pálya" },
   { y: 2025, ro: "Oct: Eroare administrativă 5M lei îngheață Baza Insulei — investigație Punctul.ro", en: "Oct: 5M lei admin error freezes Baza Insulei renovation — Punctul.ro investigation", hu: "Okt: 5 millió lejes hibával befagyasztják a Sziget sport bázist — Punctul.ro" },
-  { y: 2026, ro: "Lansare From Grey to Play — platforma civică documentează cele 20 de terenuri din Târgu Mureș", en: "From Grey to Play launched — civic platform documents all 20 courts in Târgu Mureș", hu: "From Grey to Play indulása — a platform mind a 20 marosvásárhelyi pályát dokumentálja" }
+  { y: 2026, ro: "Lansare From Grey to Play — platforma civică documentează cele 20 de terenuri din Târgu Mureș", en: "From Grey to Play launched — civic platform documents all 20 courts in Târgu Mureș", hu: "From Grey to Play indulása — a platform mind a 20 marosvásárhelyi pályát dokumentálja" },
+  { y: "Oct 2026", ro: "Cîmpan Teodor — Loc 1 Național, concurs ATW (Ask-Think-Write) · EdVenture, pentru eseul despre G2P", en: "Cîmpan Teodor — National #1, ATW (Ask-Think-Write) competition · EdVenture, for the G2P essay", hu: "Cîmpan Teodor — Nemzeti 1. helyezett, ATW (Kérdezz-Gondolkodj-Írj) verseny · EdVenture, a G2P-esszéért" }, // TODO: HU review
+  { y: "Nov 2026", ro: "Astra Hack Sibiu · Innovation Week — From Grey to Play prezentată la hackathon (6–7 nov)", en: "Astra Hack Sibiu · Innovation Week — From Grey to Play presented at hackathon (6–7 Nov)", hu: "Astra Hack Szeben · Innovation Week — From Grey to Play a hackathonon (nov. 6–7)" } // TODO: HU review
 ];
 // Sibiu: only events with a public source (docs/INVESTITII_SIBIU.md). `lei` marks a public investment.
 const TIMELINE_SIBIU = [
@@ -6737,32 +6774,80 @@ function StatTile({ value, label, color }) {
 /* "What this site can do": the deep features most visitors never find, one tap each. Copy states only what exists. */
 function Showcase() {
   const { lang, setPage, firebaseUser, openAuth } = useApp();
-  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
-  const other = Object.keys(CITY_CFG).find(k => k !== ACTIVE_CITY);
-  const otherName = other ? (CITY_CFG[other][lang === "hu" ? "nameHu" : lang === "en" ? "nameEn" : "nameRo"]) : "";
-  const impact = tab => () => { sessionStorage.setItem("g2p_impact_tab", tab); setPage("impact"); scrollTo(0, 0); };
+  const L3 = (ro, en, hu) => lang === “en” ? en : lang === “hu” ? (hu || ro) : ro;
   const firstCourt = COURTS.find(c => c.lat != null);
+  const impact = tab => () => { sessionStorage.setItem(“g2p_impact_tab”, tab); setPage(“impact”); scrollTo(0, 0); };
+  const [cnt, setCnt] = useState(0);
+  const [blk, setBlk] = useState(false);
+  useEffect(() => {
+    let v = 0;
+    const id = setInterval(() => {
+      v = Math.min(v + 90000, 5000000);
+      setCnt(v);
+      if (v >= 5000000) { clearInterval(id); setTimeout(() => setBlk(true), 300); }
+    }, 30);
+    return () => clearInterval(id);
+  }, []);
   const tiles = [
-    ["🛰️", L3("Terenurile văzute din satelit", "Courts seen from space", "Pályák műholdról"), L3("Imagini reale din 2011–2022: vezi cum s-a schimbat (sau nu) fiecare teren.", "Real images from 2011–2022: see how each court changed — or didn't.", "Valódi képek 2011–2022 között."), () => { if (firstCourt) location.hash = "#court-" + firstCourt.id; }],
-    ["📅", L3("Cronologia", "The timeline", "Idővonal"), L3("Ce s-a promis, ce s-a investit și când — cu sursa fiecărui fapt.", "What was promised, invested and when — every fact with its source.", "Mit ígértek, mit fektettek be és mikor — forrással."), impact("tl")],
-    ["🧾", L3("Cifrele care șochează", "The numbers that shock", "Megdöbbentő számok"), L3("Inegalitatea dintre cartiere, pe o singură „chitanță”.", "The gap between neighbourhoods, on a single “receipt”.", "A városrészek közötti különbség egy „nyugtán”."), impact("calc")],
-    ["🗺️", L3("Două orașe", "Two cities", "Két város"), L3("Târgu Mureș și Sibiu, cu aceleași instrumente. Vezi " + otherName + ".", "Târgu Mureș and Sibiu with the same tools. See " + otherName + ".", "Marosvásárhely és Nagyszeben. Nézd meg: " + otherName + "."), () => { if (!other) return; try { localStorage.setItem("g2p_city", other); } catch (e) {} const u = new URL(location.href); u.searchParams.set("c", other); u.hash = ""; location.href = u.toString(); }],
-    ["🧬", L3("Pulsul orașului", "City pulse", "A város pulzusa"), L3("Fiecare semnătură și sesizare, reluată ca o animație.", "Every signature and report, replayed as an animation.", "Minden aláírás és bejelentés animációként."), () => { sessionStorage.setItem("g2p_open_pulse", "1"); setPage("impact"); scrollTo(0, 0); }],
-    ["📄", L3("Dosar PDF pentru consiliu", "A PDF file for the council", "PDF-dosszié a tanácsnak"), L3("Statistici, terenuri și sesizări, gata de dus la Primărie.", "Stats, courts and reports, ready to take to City Hall.", "Statisztikák és bejelentések, a városházának."), impact("calc")],
-    ["✉️", L3("Scrisoare către Primărie", "Letter to City Hall", "Levél a városházának"), L3("Scrisoare oficială completată automat, cu adresa corectă.", "An official letter filled in for you, with the right address.", "Hivatalos levél, kitöltve."), () => { setPage("petition"); scrollTo(0, 0); }],
-    ["📊", L3("Pagina de impact", "The impact page", "Hatás oldal"), L3("Sănătate, mediu, buget: ce ar schimba terenuri reparate.", "Health, environment, budget: what repaired courts would change.", "Egészség, környezet, költségvetés."), impact("calc")]
+    {
+      key: “sat”, icon: “🛰️”, color: “var(--teal)”,
+      preview: React.createElement(“div”, { className: “sc-sat-anim”, “aria-hidden”: “true” },
+        React.createElement(“div”, { className: “sc-sat-strip sc-sat-s1” }),
+        React.createElement(“div”, { className: “sc-sat-strip sc-sat-s2” }),
+        React.createElement(“div”, { className: “sc-sat-strip sc-sat-s3” })
+      ),
+      title: L3(“Terenuri văzute din satelit”, “Courts from space”, “Pályák műholdról”),
+      desc: L3(“Imagini reale 2011–2022: apasă pe orice teren.”, “Real images 2011–2022: tap any court.”, “Valódi képek 2011–2022: érintsd a pályát.”),
+      action: () => { if (firstCourt) location.hash = “#court-” + firstCourt.id; }
+    },
+    {
+      key: “cnt”, icon: “💸”, color: “var(--coral)”,
+      preview: React.createElement(“div”, { className: “sc-cnt-wrap”, “aria-hidden”: “true” },
+        React.createElement(“span”, { className: “sc-cnt-num” }, (cnt / 1e6).toFixed(1) + “M lei”),
+        React.createElement(“span”, { className: “sc-cnt-zero” + (blk ? “ sc-blink” : “”) }, “0%”)
+      ),
+      title: L3(“Chitanța inegalității”, “The inequality receipt”, “Az egyenlőtlenség nyugtája”),
+      desc: L3(“5.000.000 lei promise. Zero renovate.”, “5,000,000 lei promised. Zero renovated.”, “5 000 000 lej ígérve. Nulla felújítva.”),
+      action: impact(“calc”)
+    },
+    {
+      key: “pulse”, icon: “🧬”, color: “var(--green)”,
+      preview: React.createElement(“div”, { className: “sc-orb-mini”, “aria-hidden”: “true” },
+        React.createElement(“div”, { className: “sc-orb-ring” }),
+        React.createElement(“div”, { className: “sc-orb-core” })
+      ),
+      title: L3(“Pulsul orașului”, “City pulse”, “A város pulzusa”),
+      desc: L3(“Fiecare semnătură și sesizare animată.”, “Every signature and report animated.”, “Minden aláírás animálva.”),
+      action: () => { sessionStorage.setItem(“g2p_open_pulse”, “1”); setPage(“impact”); scrollTo(0, 0); }
+    },
+    {
+      key: “letter”, icon: “✉️”, color: “var(--green)”,
+      preview: React.createElement(“div”, { className: “sc-letter-mini”, “aria-hidden”: “true” },
+        React.createElement(“span”, null, L3(“Stimate Primar,\nVă sesizez că...”, “Dear Mayor,\nI hereby report...”, “Tisztelt Polgármester,\nezúton jelzem...”))
+      ),
+      title: L3(“Scrisoare la Primărie”, “Letter to City Hall”, “Levél a városházának”),
+      desc: L3(“Oficială, completată automat. Tu o trimiți.”, “Official, auto-filled. You send it.”, “Hivatalos, automatikusan kitöltve.”),
+      action: () => { setPage(“petition”); scrollTo(0, 0); }
+    }
   ];
-  return React.createElement("section", { className: "section showcase" },
-    React.createElement("div", { className: "container" },
-      React.createElement("h2", { className: "section-title" }, "✨ " + L3("Ce poate face site-ul ăsta", "What this site can do", "Mit tud ez az oldal")),
-      React.createElement("p", { className: "section-sub" }, L3("Majoritatea vizitatorilor văd doar harta. Iată restul — câte un clic fiecare.", "Most visitors only see the map. Here's the rest — one tap each.", "A legtöbben csak a térképet látják. Íme a többi.")),
-      React.createElement("div", { className: "sc-grid" }, tiles.map((x, i) => React.createElement("button", { key: i, className: "sc-tile", onClick: x[3] },
-        React.createElement("span", { className: "sc-ic", "aria-hidden": "true" }, x[0]),
-        React.createElement("b", null, x[1]),
-        React.createElement("span", null, x[2])))),
-      !firebaseUser && React.createElement("div", { className: "sc-cta" },
-        React.createElement("p", null, L3("Toate merg mai bine cu un cont: semnezi dintr-un clic, urmărești terenurile tale și sesizările tale nu se pierd.", "Everything works better with an account: one-tap signing, follow your courts, your reports never get lost.", "Fiókkal minden jobb: egy kattintásos aláírás, követett pályák.")),
-        React.createElement("button", { className: "btn btn-green btn-lg", onClick: () => openAuth("signup") }, "👤 " + L3("Creează cont gratuit", "Create a free account", "Ingyenes fiók")))));
+  return React.createElement(“section”, { className: “section showcase” },
+    React.createElement(“div”, { className: “container” },
+      React.createElement(“h2”, { className: “section-title” }, “✨ “ + L3(“Ce poate face site-ul ăsta”, “What this site can do”, “Mit tud ez az oldal”)),
+      React.createElement(“p”, { className: “section-sub” }, L3(“Patru instrumente. Fiecare face ceva diferit.”, “Four tools. Each one does something different.”, “Négy eszköz, mind más-más.”)),
+      React.createElement(“div”, { className: “sc-grid sc-grid-v2” },
+        tiles.map(tile => React.createElement(“button”, {
+          key: tile.key, className: “sc-tile sc-tile-v2”, onClick: tile.action,
+          style: { “--sc-acc”: tile.color }
+        },
+          tile.preview,
+          React.createElement(“span”, { className: “sc-ic”, “aria-hidden”: “true” }, tile.icon),
+          React.createElement(“b”, null, tile.title),
+          React.createElement(“span”, null, tile.desc)
+        ))
+      ),
+      !firebaseUser && React.createElement(“div”, { className: “sc-cta” },
+        React.createElement(“p”, null, L3(“Toate merg mai bine cu un cont.”, “Everything works better with an account.”, “Fiókkal minden jobb.”)),
+        React.createElement(“button”, { className: “btn btn-green btn-lg”, onClick: () => openAuth(“signup”) }, “👤 “ + L3(“Creează cont gratuit”, “Create a free account”, “Ingyenes fiók”)))));
 }
 
 function HomePage() {
@@ -8757,7 +8842,7 @@ function EventsTab() {
     style: {
       color: "var(--textSec)"
     }
-  }, lang === "ro" ? "Niciun eveniment programat. Evenimentele vor fi adăugate de Cimpan Teodor." : "No events scheduled yet."));
+  }, lang === "ro" ? "Niciun eveniment programat. Evenimentele vor fi adăugate de Cîmpan Teodor." : "No events scheduled yet."));
   return /*#__PURE__*/React.createElement("div", {
     className: "grid gap-1"
   }, list.map(ev => /*#__PURE__*/React.createElement("div", {
@@ -10242,6 +10327,7 @@ function AboutPage() {
     email: "",
     message: ""
   });
+  const [essayOpen, setEssayOpen] = useState(false);
   const subPartner = () => {
     if (!pf.company || !pf.email) {
       toast(t.error);
@@ -10258,9 +10344,42 @@ function AboutPage() {
       message: ""
     });
   };
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const teamMembers = [
+    { i: "CT", name: "Cîmpan Teodor", role: L3("Coordonator", "Coordinator", "Koordinátor"), badge: true, color: "var(--green)" },
+    { i: "TM", name: "Trofin Matei", role: L3("Verificare Satelit", "Satellite Review", "Műhold-ellenőrzés"), color: "var(--teal)" },
+    { i: "ȚM", name: "Țurcanu Mihai", role: L3("Verificare Satelit", "Satellite Review", "Műhold-ellenőrzés"), color: "var(--teal)" },
+    { i: "CI", name: "Cernescu Ionuț", role: L3("Verificare Date", "Data Review", "Adatellenőrzés"), color: "var(--coral)" },
+    { i: "DI", name: "Drăgan Ilie", role: L3("Verificare Date", "Data Review", "Adatellenőrzés"), color: "var(--coral)" }
+  ];
+  const heroSection = React.createElement("section", { className: "section about-hero" },
+    React.createElement("div", { className: "container" },
+      React.createElement("h2", { className: "section-title" }, "👥 " + L3("Echipa", "The Team", "A csapat")),
+      React.createElement("p", { className: "section-sub" },
+        L3("Proiect civic coordonat de Cîmpan Teodor · ", "Civic project coordinated by Cîmpan Teodor · ", "Cîmpan Teodor koordinálta · "),
+        React.createElement("span", { style: { color: "var(--coral)", fontWeight: 600 } }, "🏆 " + L3("Loc 1 Național ATW · EdVenture 2026", "National #1 ATW · EdVenture 2026", "Nemzeti 1. helyezett ATW · EdVenture 2026"))
+      ),
+      React.createElement("div", { className: "about-team-grid" },
+        teamMembers.map((m, idx) => React.createElement("div", { key: idx, className: "about-member", style: { "--mc": m.color } },
+          React.createElement("div", { className: "about-avatar" }, m.i),
+          m.badge && React.createElement("span", { className: "about-badge" }, "🏆 ATW #1"),
+          React.createElement("strong", null, m.name),
+          React.createElement("span", null, m.role)
+        ))
+      ),
+      React.createElement("blockquote", { className: "about-quote" },
+        React.createElement("p", null, L3(
+          "Terenul din cartierul meu era spart. Coșul era îndoit. Nimeni nu facea nimic — am decis să documentăm.",
+          "The court in my neighbourhood was broken. The hoop was bent. Nobody was doing anything — so we decided to document it.",
+          "A pályám tönkrement. A kosár görbe volt. Senki sem csinált semmit — úgy döntöttük, dokumentálunk."
+        )),
+        React.createElement("footer", null, "— Cîmpan Teodor, " + L3("Coordonator", "Coordinator", "Koordinátor"))
+      )
+    )
+  );
   return /*#__PURE__*/React.createElement("div", {
     className: "animate-in"
-  }, /*#__PURE__*/React.createElement("section", {
+  }, heroSection, /*#__PURE__*/React.createElement("section", {
     className: "section"
   }, /*#__PURE__*/React.createElement("div", {
     className: "container"
@@ -10282,19 +10401,19 @@ function AboutPage() {
     onClick: () => setTab("press")
   }, "\uD83D\uDCF0 ", t.pressKit)), tab === "project" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "card"
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      borderLeft: "6px solid var(--green)",
-      paddingLeft: "1rem",
-      marginBottom: "1.2rem"
-    }
-  }, /*#__PURE__*/React.createElement("h3", null, "FROM GREY TO PLAY")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      whiteSpace: "pre-wrap",
-      lineHeight: 1.7,
-      fontSize: ".92rem"
-    }
-  }, ESSAY[lang] || ESSAY.ro)), /*#__PURE__*/React.createElement("div", {
+  },
+  React.createElement("div", { className: "flex justify-between items-center", style: { borderLeft: "6px solid var(--coral)", paddingLeft: "1rem", marginBottom: "1rem" } },
+    React.createElement("div", null,
+      React.createElement("h3", { style: { margin: 0 } }, "🏆 FROM GREY TO PLAY"),
+      React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)", margin: ".25rem 0 0" } },
+        L3("Lucrare câștigătoare · Loc 1 Național · EdVenture ATW 2026", "Winning essay · National #1 · EdVenture ATW 2026", "Nyertes dolgozat · Nemzeti 1. · EdVenture ATW 2026")
+      )
+    ),
+    React.createElement("button", { className: "btn btn-sm", style: { flexShrink: 0 }, onClick: () => setEssayOpen(o => !o) },
+      essayOpen ? L3("Închide ✕", "Close ✕", "Bezár ✕") : "📖 " + L3("Citește lucrarea", "Read essay", "Dolgozat")
+    )
+  ),
+  essayOpen && React.createElement("div", { style: { whiteSpace: "pre-wrap", lineHeight: 1.7, fontSize: ".92rem", paddingTop: ".8rem", borderTop: "1px solid var(--border)" } }, ESSAY[lang] || ESSAY.ro)), /*#__PURE__*/React.createElement("div", {
     className: "card mt-2"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "mb-2"
@@ -10442,7 +10561,7 @@ function AboutPage() {
   }, lang === "ro" ? "Pachet pentru presă" : "Press pack"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-green",
     onClick: () => {
-      const c = `FROM GREY TO PLAY — Press Kit\n\nProject: Civic initiative — Târgu Mureș\nOwner: Cimpan Teodor\nWeb: ${SITE.replace("https://", "")}\n\nKey Stats:\n- 12/15 residents say courts too degraded\n- 5M lei frozen by admin error\n- 0% peripheral courts renovated\n- 3km gap\n\nProposals:\n1. Flip-the-Court\n2. Street Canvas\n\nContact: fromgreytoplay@gmail.com`;
+      const c = `FROM GREY TO PLAY — Press Kit\n\nProject: Civic initiative — Târgu Mureș\nOwner: Cîmpan Teodor\nWeb: ${SITE.replace("https://", "")}\n\nKey Stats:\n- 12/15 residents say courts too degraded\n- 5M lei frozen by admin error\n- 0% peripheral courts renovated\n- 3km gap\n\nProposals:\n1. Flip-the-Court\n2. Street Canvas\n\nContact: fromgreytoplay@gmail.com`;
       const b = new Blob([c], {
         type: "text/plain"
       });
@@ -10469,7 +10588,7 @@ function ProfilePage() {
   const { isAdmin, setAdminMode, openAuth, signOut, authReady } = useApp();
   const logout = () => signOut();
   const cert = () => {
-    const c = `══════════════════════\nCERTIFICAT VOLUNTAR\n══════════════════════\n\nFROM GREY TO PLAY\n\n${user?.name || "___"}\n\na participat ca voluntar.\nPuncte: ${user?.points || 0}\n\nManager: Cimpan Teodor\nData: ${new Date().toLocaleDateString()}\n══════════════════════`;
+    const c = `══════════════════════\nCERTIFICAT VOLUNTAR\n══════════════════════\n\nFROM GREY TO PLAY\n\n${user?.name || "___"}\n\na participat ca voluntar.\nPuncte: ${user?.points || 0}\n\nCoordinator: Cîmpan Teodor\nData: ${new Date().toLocaleDateString()}\n══════════════════════`;
     const b = new Blob([c], {
       type: "text/plain"
     });
@@ -10888,10 +11007,10 @@ function AdminSherifsTab() {
 
   const sh = sherifs ? Object.entries(sherifs) : [];
   return React.createElement("div", null,
-    React.createElement("h2", null, "👮 Sherifs"),
+    React.createElement("h2", null, "👮 " + (lang === "ro" ? "Șerifi" : "Sheriffs")),
     React.createElement("p", { style: { color: "#6B7280", fontSize: ".85rem", marginBottom: "1rem" } },
-      lang === "ro" ? "Sheriflii pot modera conținut dar NU pot reseta voturi sau petiție. Admin suprem: teodor.cimpan12@gmail.com" :
-      "Sherifs can moderate content but CANNOT reset votes or petition. Supreme admin: teodor.cimpan12@gmail.com"),
+      lang === "ro" ? "Șerifii editează site-ul și moderează comunitatea, dar NU pot șterge, reseta sau vedea emailurile oamenilor. Admin suprem: teodor.cimpan12@gmail.com" :
+      "Sheriffs edit the site and moderate the community, but CANNOT delete, reset or see people's emails. Supreme admin: teodor.cimpan12@gmail.com"),
     React.createElement("div", { className: "flex gap-1 mb-2" },
       React.createElement("input", { value: inputEmail, onChange: e => setInputEmail(e.target.value), placeholder: "Email utilizator existent", style: { flex: 1 }, onKeyDown: e => e.key === "Enter" && addSherif() }),
       React.createElement("button", { className: "btn btn-green", onClick: addSherif }, "+ Adaugă Sherif")
@@ -11488,7 +11607,7 @@ function AdminPanel({
     l: "🏆 Leaderboard"
   }, {
     k: "sherifs",
-    l: "👮 Sherifs"
+    l: "👮 Sheriffs"
   }, {
     k: "users",
     l: "👥 Users (" + ul.length + ")"
@@ -12268,8 +12387,8 @@ function PrivacyPolicyModal({ onClose }) {
         React.createElement("h4", { className: "mb-1 mt-1" }, lang === "ro" ? "1. Cine prelucrează datele" : "1. Data controller"),
         React.createElement("p", { className: "mb-1", style: { color: "var(--textSec)" } },
           lang === "ro"
-            ? "Operatorul de date este Cimpan Teodor, inițiatorul platformei civice \"From Grey to Play\" (fromgreytoplay.netlify.app). Contact: addtru@gmail.com"
-            : "Data controller: Cimpan Teodor, initiator of the civic platform \"From Grey to Play\" (fromgreytoplay.netlify.app). Contact: addtru@gmail.com"
+            ? "Operatorul de date este Cîmpan Teodor, coordonatorul platformei civice \"From Grey to Play\" (fromgreytoplay.netlify.app). Contact: addtru@gmail.com"
+            : "Data controller: Cîmpan Teodor, coordinator of the civic platform \"From Grey to Play\" (fromgreytoplay.netlify.app). Contact: addtru@gmail.com"
         ),
         React.createElement("h4", { className: "mb-1 mt-2" }, lang === "ro" ? "2. Ce date colectăm" : "2. Data collected"),
         React.createElement("p", { className: "mb-1", style: { color: "var(--textSec)" } },

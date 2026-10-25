@@ -6,8 +6,8 @@ Departament: Compartiment Informații Publice
 Email: infopublic@tirgumures.ro
 Adresă: Piața Victoriei nr. 3, 540026, Târgu Mureș
 
-De la: Cimpan Teodor
-       Inițiator platformă civică „From Grey to Play"
+De la: Cîmpan Teodor
+       Coordonator platformă civică „From Grey to Play"
        Email: addtru@gmail.com
 
 Data: [completați data]
@@ -62,7 +62,7 @@ care urmărește îmbunătățirea infrastructurii sportive din cartierele
 periferice ale Municipiului Târgu Mureș.
 
 Cu respect,
-Cimpan Teodor
+Cîmpan Teodor
 addtru@gmail.com
 fromgreytoplay.netlify.app
 
