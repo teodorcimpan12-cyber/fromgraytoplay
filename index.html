@@ -1644,6 +1644,14 @@ T.ro.geolocate = "Localizare automată";
 T.ro.nextStep = "Continuă →";
 T.ro.prevStep = "← Înapoi";
 T.ro.feedStatusChange = "Status actualizat: {court} → {status}";
+T.ro.conditionCheck = "Verifică teren";
+T.ro.conditionGood = "✅ Bun";
+T.ro.conditionDegraded = "⚠️ Degradat";
+T.ro.conditionAbandoned = "🚫 Abandonat";
+T.ro.conditionSubmitted = "Verificare trimisă! Mulțumim.";
+T.ro.sibiuVerifyTitle = "Ești în Sibiu? Verifică un teren.";
+T.ro.sibiuReportsCount = "verificări primite";
+T.ro.verifyCourtCTA = "Verifică acum";
 
 T.en.reportPageTitle = "Reports";
 T.en.reportNew = "New report";
@@ -1674,6 +1682,14 @@ T.en.geolocate = "Auto-locate";
 T.en.nextStep = "Next →";
 T.en.prevStep = "← Back";
 T.en.feedStatusChange = "Status updated: {court} → {status}";
+T.en.conditionCheck = "Verify court";
+T.en.conditionGood = "✅ Good";
+T.en.conditionDegraded = "⚠️ Degraded";
+T.en.conditionAbandoned = "🚫 Abandoned";
+T.en.conditionSubmitted = "Verification sent! Thank you.";
+T.en.sibiuVerifyTitle = "In Sibiu? Verify a court.";
+T.en.sibiuReportsCount = "verifications received";
+T.en.verifyCourtCTA = "Verify now";
 
 // TODO: HU review
 T.hu.reportPageTitle = "Bejelentések";
@@ -1705,6 +1721,14 @@ T.hu.geolocate = "Automatikus helymeghatározás";
 T.hu.nextStep = "Tovább →";
 T.hu.prevStep = "← Vissza";
 T.hu.feedStatusChange = "Állapot frissítve: {court} → {status}";
+T.hu.conditionCheck = "Pálya ellenőrzése"; // TODO: HU review
+T.hu.conditionGood = "✅ Jó"; // TODO: HU review
+T.hu.conditionDegraded = "⚠️ Leromlott"; // TODO: HU review
+T.hu.conditionAbandoned = "🚫 Elhagyott"; // TODO: HU review
+T.hu.conditionSubmitted = "Ellenőrzés elküldve! Köszönjük."; // TODO: HU review
+T.hu.sibiuVerifyTitle = "Szibenben vagy? Ellenőrizz egy pályát."; // TODO: HU review
+T.hu.sibiuReportsCount = "ellenőrzés érkezett"; // TODO: HU review
+T.hu.verifyCourtCTA = "Ellenőrzés most"; // TODO: HU review
 
 /* === Court status view: one place that turns a court's status into colour, badge and label ===
    "verified" = scored on a team field visit (Sibiu, tools/import_field.mjs). It is coloured by the real
@@ -7017,7 +7041,7 @@ function CourtsPage() {
   }, "\uD83C\uDFDF\uFE0F ", t.courts), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-green btn-sm",
     onClick: () => setShowRep(true)
-  }, "+ ", t.reportCourt)), /*#__PURE__*/React.createElement("div", {
+  }, "+ ", t.reportCourt)), /*#__PURE__*/React.createElement(SibiuProgressBanner, null), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-1 mb-2",
     style: {
       flexWrap: "wrap"
@@ -12060,7 +12084,7 @@ function QuickReportModal({ onClose }) {
     setSubmitting(true);
     const vk = getVoterKey();
     const now = new Date().toISOString();
-    const payload = { courtId: f.courtId, courtName: f.courtName, neighborhood: f.neighborhood, category: f.category, description: f.description, status: "received", createdAt: now, updatedAt: now, voterKey: vk, userName: user ? user.name : "Anonim" };
+    const payload = { courtId: f.courtId, courtName: f.courtName, neighborhood: f.neighborhood, category: f.category, description: f.description, status: "received", city: ACTIVE_CITY, createdAt: now, updatedAt: now, voterKey: vk, userName: user ? user.name : "Anonim" };
     if (f.photoDataUrl) payload.photoDataUrl = f.photoDataUrl;
     if (f.lat) { payload.lat = f.lat; payload.lng = f.lng; }
     db.ref("reports").push(payload).then(() => {
@@ -12120,6 +12144,113 @@ function QuickReportModal({ onClose }) {
         )
       )
     )
+  );
+}
+
+/* === Court Condition Quick — Sibiu hackathon feature === */
+function CourtConditionQuick({ onClose }) {
+  const { t, user, toast } = useApp();
+  const fbCourts = useFirebase("courts");
+  const [courtId, setCourtId] = useState("");
+  const [condition, setCondition] = useState("");
+  const [photoDataUrl, setPhotoDataUrl] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const allCourts = [...COURTS, ...extraCourts(fbCourts)];
+  const selectedCourt = allCourts.find(c => c.id === courtId);
+  const conds = [
+    { k: "good",      l: t.conditionGood },
+    { k: "degraded",  l: t.conditionDegraded },
+    { k: "abandoned", l: t.conditionAbandoned }
+  ];
+  const pickPhoto = async e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const data = await compressImage(file, 900, 0.7);
+    setPhotoDataUrl(data);
+  };
+  const submit = () => {
+    if (!courtId || !condition) { toast(t.error); return; }
+    setSubmitting(true);
+    const now = new Date().toISOString();
+    const userName = user ? user.name : "Anonim";
+    const payload = {
+      courtId, courtName: selectedCourt ? selectedCourt.name : courtId,
+      category: "condition", conditionReport: condition,
+      description: t.conditionCheck + ": " + condition,
+      status: "received", city: ACTIVE_CITY,
+      createdAt: now, updatedAt: now,
+      voterKey: getVoterKey(), userName
+    };
+    if (photoDataUrl) payload.photoDataUrl = photoDataUrl;
+    db.ref("reports").push(payload).then(() => {
+      db.ref("activity").push({ type: "conditionReport", userName, courtId, courtName: payload.courtName, condition, city: ACTIVE_CITY, timestamp: now });
+      toast(t.conditionSubmitted);
+      setSubmitting(false);
+      onClose();
+    });
+  };
+  return React.createElement("div", { className: "modal-overlay", onClick: onClose },
+    React.createElement("div", { className: "modal", onClick: e => e.stopPropagation() },
+      React.createElement("div", { className: "flex justify-between items-center mb-2" },
+        React.createElement("h2", { style: { fontSize: "1rem" } }, "🏟️ ", t.conditionCheck),
+        React.createElement("button", { className: "btn btn-sm btn-outline", onClick: onClose }, t.cancel)
+      ),
+      React.createElement("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, t.step3Location),
+      React.createElement("select", { value: courtId, onChange: e => setCourtId(e.target.value), className: "mb-2" },
+        React.createElement("option", { value: "" }, "— " + t.reportSelectCourt + " —"),
+        allCourts.map(c => React.createElement("option", { key: c.id, value: c.id }, c.name))
+      ),
+      React.createElement("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, t.conditionCheck),
+      React.createElement("div", { className: "rcat-grid" },
+        conds.map(c => React.createElement("button", {
+          key: c.k, className: "rcat-btn" + (condition === c.k ? " sel" : ""),
+          onClick: () => setCondition(c.k),
+          style: { fontSize: ".88rem", padding: ".5rem .3rem", lineHeight: 1.3 }
+        }, c.l))
+      ),
+      React.createElement("p", { className: "text-sm mt-2 mb-1", style: { color: "var(--textSec)" } }, t.addPhotoOpt),
+      photoDataUrl
+        ? React.createElement("div", { style: { position: "relative", marginBottom: ".5rem" } },
+            React.createElement("img", { src: photoDataUrl, alt: "prev", style: { width: "100%", borderRadius: 8, maxHeight: 120, objectFit: "cover" } }),
+            React.createElement("button", { onClick: () => setPhotoDataUrl(null), style: { position: "absolute", top: 4, right: 4, background: "rgba(0,0,0,.5)", color: "#fff", border: "none", borderRadius: "50%", width: 24, height: 24, cursor: "pointer", fontSize: ".8rem" } }, "✕")
+          )
+        : React.createElement("label", { style: { display: "block", cursor: "pointer", marginBottom: ".5rem" } },
+            React.createElement("div", { className: "card", style: { textAlign: "center", padding: ".6rem", border: "2px dashed var(--border)", boxShadow: "none" } }, "📷 ", t.choosePhoto),
+            React.createElement("input", { type: "file", accept: "image/*", capture: "environment", style: { display: "none" }, onChange: pickPhoto })
+          ),
+      React.createElement("button", { className: "btn btn-green btn-block mt-2", disabled: !courtId || !condition || submitting, onClick: submit }, submitting ? "..." : t.submit)
+    )
+  );
+}
+
+/* === Sibiu Progress Banner === */
+function SibiuProgressBanner() {
+  if (ACTIVE_CITY !== "sibiu") return null;
+  const { t } = useApp();
+  const [open, setOpen] = useState(false);
+  const allReports = useFirebase("reports");
+  const sibiuCount = allReports
+    ? Object.values(allReports).filter(r => r.city === "sibiu" && r.category === "condition").length
+    : 0;
+  return React.createElement("div", {
+    style: {
+      background: "linear-gradient(135deg, var(--green) 0%, var(--teal) 100%)",
+      color: "#fff", borderRadius: "var(--radius)", padding: "1rem", marginBottom: "1rem",
+      boxShadow: "var(--shadow)"
+    }
+  },
+    React.createElement("div", { className: "flex justify-between items-center" },
+      React.createElement("div", null,
+        React.createElement("strong", { style: { fontSize: ".93rem", display: "block", marginBottom: ".2rem" } }, t.sibiuVerifyTitle),
+        React.createElement("span", { style: { fontSize: ".8rem", opacity: .88 } }, "🏟️ ", sibiuCount, " ", t.sibiuReportsCount)
+      ),
+      React.createElement("button", {
+        className: "btn btn-sm",
+        style: { background: "#fff", color: "var(--green)", fontWeight: 700, whiteSpace: "nowrap", marginLeft: ".5rem", flexShrink: 0 },
+        onClick: () => setOpen(true)
+      }, "＋ ", t.verifyCourtCTA)
+    ),
+    open && React.createElement(CourtConditionQuick, { onClose: () => setOpen(false) })
   );
 }
 
