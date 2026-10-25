@@ -4,6 +4,31 @@ Timings are cumulative. Live demo on the phone, backup video ready. Speak to the
 
 ---
 
+## Astra Hack — versiunea Sibiu, 60 de secunde (structura din kitul organizatorilor)
+
+> Construită în jurul **unei persoane reale din Sibiu** și **unui teren vizitat**. Completează `[…]` doar cu
+> ce s-a întâmplat cu adevărat (vezi `docs/VALIDATION.md` și `tools/data/field_sibiu.csv`). Dacă nu avem încă
+> persoana, nu inventăm una — folosim terenul și datele.
+
+| Sec. | Ce spunem | Pe ecran |
+|---|---|---|
+| 0–10 | **Persoana:** „[Prenume], [vârstă], joacă [sport] pe terenul din [cartier]. Coșul e [ce am văzut noi acolo]. L-am cunoscut pe [data], lângă teren.” | Poza noastră cu terenul (fără fețe) |
+| 10–20 | **Soluția:** „From Grey to Play e harta stării fiecărui teren public din Sibiu — verificată pe teren, nu ghicită.” | `?c=sibiu`, harta: verde / portocaliu / roșu + gri |
+| 20–45 | **Demo:** teren din cartier → nota [N]/5 și pozele noastre → raportez o problemă → scrisoarea către Primăria Sibiu, gata ca PDF. *[Dacă merge: Court Doctor pe o poză nouă.]* | Telefon, drumul principal, nimic altceva |
+| 45–55 | **De ce contează:** „Am vizitat [N] terenuri. În centru media e [X]/5, în cartiere [Y]/5. Am arătat aplicația la [N] sibieni.” | Graficul pe cartiere („N din 35 verificate”) |
+| 55–60 | **Ce cerem:** „Primăria să publice starea fiecărui teren. Și voi: 3 luni de mentorat ca să acoperim tot orașul.” | — |
+
+La final, o propoziție: **ce exista înainte vs. ce am construit în 24 de ore** (din `docs/PROGRESS.md`).
+Originea (Târgu Mureș, sondajul 12/15) intră doar dacă juriul întreabă „de unde a pornit” — nu e cârligul.
+
+**Nu spunem:** că un teren e „renovat” dacă doar arată bine; că o estimare AI e o inspecție; cifre din TGM despre Sibiu.
+
+---
+
+## Versiunea originală (Târgu Mureș), 3 minute
+
+---
+
 ## RO
 
 **0:00 — Cârligul (20 s)**

@@ -64,3 +64,41 @@ officially.
 ### Acceptance
 - `?c=sibiu` → PDF addressed to Primăria Sibiu, Str. Samuel Brukenthal nr. 2, with that court's data.
 - Countdown visible on Impact for letters sent.
+
+---
+
+## 3. Plan de rezervă pentru cele 24 de ore (adăugat 25 oct., după verdictul /court)
+
+| Ora | Verificare | Dacă nu |
+|---|---|---|
+| 0–2 | Spec recitit; cheia API e în variabilele Netlify; testul din `tools/vision_spike.mjs` a mers înainte de eveniment | Fără cheie → doar Scrisoarea v2 |
+| 6 | Court Doctor cap-coadă pe **un** teren: poză → JSON → card → raport | Oprim Court Doctor, trecem pe Scrisoarea v2 |
+| 12 | Scrisoarea v2 generează PDF cu dovezi pentru un teren din Sibiu | Rămânem pe Scrisoarea v1 (merge deja) |
+| 18 | **Înghețare.** Doar reparații. Demo repetat de 3 ori, video de rezervă înregistrat | — |
+
+Demo-ul funcționează și **cu zero funcții noi**: harta Sibiului cu terenurile verificate pe teren + scrisoarea v1.
+
+## 4. Consimțământ și confidențialitate pentru Court Doctor
+
+Spec-ul are deja: EXIF/GPS șters din poză înainte de trimitere, cheia doar pe server, limită 3/oră, eticheta
+„Estimare AI — nu e o inspecție oficială”. Mai lipsea:
+
+**Linia de consimțământ** (bifă obligatorie înainte de încărcare):
+- RO: „Trimit această poză pentru o estimare automată a stării terenului. Poza e procesată de un model AI extern
+  (Anthropic) printr-o funcție a acestui site, fără datele de localizare din fișier. Nu fotografiez persoane.”
+- EN: "I'm sending this photo for an automatic estimate of the court's condition. It is processed by an external AI
+  model (Anthropic) through this site's server function, without the file's location data. I'm not photographing people."
+- HU: `// TODO: HU review` — de tradus de un vorbitor nativ.
+
+**Notă de confidențialitate** (link lângă bifă, 4 rânduri):
+1. Ce trimitem: poza (fără EXIF/GPS), sportul, suprafața și orașul terenului. Nimic despre tine.
+2. Cui: funcției Netlify a site-ului, care o trimite la API-ul Anthropic; poza nu e folosită la antrenarea modelelor.
+   *(De verificat de Boss în termenii Anthropic înainte de a o afirma pe site.)*
+3. Ce păstrăm: dacă confirmi raportul — poza comprimată și diagnosticul, în `reports/`, ca orice sesizare. Dacă nu confirmi — nimic.
+4. Ștergere: scrie la adresa din pagina de confidențialitate.
+
+**Scorurile AI rămân separate de cele verificate:**
+- Diagnosticul se scrie în `reports/{id}.diagnosis`, **niciodată** în `condition` (care rămâne doar pentru vizite pe teren — `status: "verified"`).
+- Pe hartă și în grafic, un teren cu doar estimare AI rămâne „Neverificat”, cu o insignă separată „Estimare AI: N/5”.
+- Exportul de date deschise (JSON/CSV) are coloana `condition_source`: `field` sau `ai_estimate`.
+- Pasul 5 din fluxul de mai sus („accept condition” de admin) se schimbă: adminul poate **programa o vizită**, nu poate transforma o estimare AI în condiție verificată.
