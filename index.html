@@ -56,7 +56,7 @@
 <noscript><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/></noscript>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--dark:#1A1A2E;--darkCard:#16213E;--green:#10B981;--coral:#F97316;--teal:#0D9488;--grey:#6B7280;--darkGrey:#374151;--light:#F8FAFC;--lightGrey:#D1D5DB;--white:#FFFFFF;--red:#DC2626;--bg:var(--light);--bgCard:var(--white);--text:var(--darkGrey);--textSec:var(--grey);--border:var(--lightGrey);--navBg:var(--white);--shadow:0 2px 12px rgba(0,0,0,.08);--radius:12px}
+:root{--dark:#1A1A2E;--darkCard:#16213E;--green:#10B981;--coral:#F97316;--teal:#0D9488;--grey:#6B7280;--darkGrey:#374151;--light:#F8FAFC;--lightGrey:#D1D5DB;--white:#FFFFFF;--red:#DC2626;--bg:var(--light);--bgCard:var(--white);--text:var(--darkGrey);--textSec:var(--grey);--border:var(--lightGrey);--navBg:var(--white);--shadow:0 2px 12px rgba(0,0,0,.08);--radius:12px;--monitor:#04130E;--monitorEdge:#123528;--monitorGrid:rgba(16,185,129,.09);--monitorText:#D1FAE5}
 [data-theme="dark"]{--bg:var(--dark);--bgCard:var(--darkCard);--text:#E5E7EB;--textSec:#9CA3AF;--border:#374151;--navBg:#0F172A;--shadow:0 2px 12px rgba(0,0,0,.4)}
 html{scroll-behavior:smooth}
 body{font-family:'Libre Franklin',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background .3s,color .3s}
@@ -353,7 +353,32 @@ a[href^="tel:"],a[href^="mailto:"]{display:inline-flex;align-items:center;min-he
 .admin-login-box input:focus{border-color:#10B981;outline:none}
 .admin-login-box .ab{width:100%;padding:.65rem;background:#10B981;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer}
 .admin-login-box .err{color:#DC2626;font-size:.78rem;margin-bottom:.5rem}
-@media(max-width:700px){.admin-side{display:none}}
+.admin-burger,.admin-side-hd,.admin-scrim{display:none}
+@media(max-width:700px){
+.admin-hdr{padding:.55rem .8rem;padding-top:max(.55rem,env(safe-area-inset-top));gap:.5rem}
+.admin-hdr h1{font-size:.82rem;flex:1 1 0;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admin-burger{display:inline-flex;align-items:center;gap:.5rem;min-height:40px;max-width:62vw;background:#1A1D2E;border:1px solid #2A3050;color:#E5E7EB;border-radius:10px;padding:.4rem .75rem .4rem .6rem;font-size:.82rem;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.admin-burger:active{transform:scale(.97)}
+.admin-burger .cur{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.admin-burger .bars{display:inline-flex;flex-direction:column;gap:3px;flex-shrink:0}
+.admin-burger .bars i{display:block;width:16px;height:2px;border-radius:2px;background:#10B981}
+.admin-burger .bars i:nth-child(2){width:11px}
+.a-auth{width:100%;font-size:.7rem}
+.a-auth>span:nth-child(2){min-width:0;max-width:calc(100% - 1.2rem);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.admin-body{display:block}
+.admin-main{padding:.9rem .8rem calc(1.5rem + env(safe-area-inset-bottom));max-width:100%;min-width:0}
+.admin-side{position:fixed;top:0;left:0;bottom:0;width:min(290px,84vw);z-index:1002;transform:translateX(-104%);transition:transform .3s cubic-bezier(.2,.8,.2,1),visibility 0s linear .3s;overflow-y:auto;overscroll-behavior:contain;padding:0 0 calc(1rem + env(safe-area-inset-bottom));visibility:hidden}
+.admin-side.open{transform:none;visibility:visible;transition:transform .3s cubic-bezier(.2,.8,.2,1),visibility 0s;box-shadow:16px 0 48px rgba(0,0,0,.55)}
+.admin-side button{padding:.85rem 1.1rem;font-size:.92rem;min-height:46px}
+.admin-side-hd{display:flex;align-items:center;justify-content:space-between;gap:.5rem;position:sticky;top:0;z-index:1;background:#10131F;border-bottom:1px solid #1E2235;padding:.8rem 1rem;padding-top:max(.8rem,env(safe-area-inset-top));font-family:'Space Mono',monospace;font-size:.78rem;color:#10B981;letter-spacing:1px;text-transform:uppercase}
+.admin-side-hd button{width:auto;min-height:0;padding:.3rem .55rem;border:1px solid #1E2235!important;border-radius:8px;font-size:.9rem;line-height:1}
+.admin-side-ft{padding:.9rem 1.1rem 0;font-size:.68rem;color:#4B5563}
+.admin-scrim{display:block;position:fixed;inset:0;z-index:1001;background:rgba(4,6,12,.62);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .25s}
+.admin-scrim.open{opacity:1;pointer-events:auto}
+}
+@media(max-width:700px) and (prefers-reduced-motion:reduce){.admin-side,.admin-scrim{transition:none}}
+.admin-side-ft{display:none}
+@media(max-width:700px){.admin-side-ft{display:block}}
 
 /* ===== 3D hero (scoped .h3d-*) ===== */
 .h3d-hero{position:relative;width:100%;height:72vh;min-height:460px;max-height:760px;overflow:hidden;background:linear-gradient(180deg,#39414c,#262b33 50%,#161a20);color:#fff;font-family:'Libre Franklin',sans-serif}
@@ -605,6 +630,35 @@ html.accent-on .rcat-btn:hover,html.accent-on .rcat-btn.sel,html.accent-on .vol-
 .health-trend-badge.down{background:rgba(220,38,38,.15);color:var(--red)}
 .health-trend-badge.mid{background:rgba(249,115,22,.12);color:var(--coral)}
 @media(prefers-reduced-motion:reduce){.health-ring-fill{transition:none}}
+/* === Court Pulse (ECG monitor) === */
+.cpulse{position:relative;margin:0 0 1rem;border-radius:var(--radius);background:var(--monitor);border:1px solid var(--monitorEdge);overflow:hidden;box-shadow:inset 0 0 40px rgba(0,0,0,.55),var(--shadow)}
+.cpulse::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px);opacity:.35}
+.cpulse-top{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.6rem .85rem .25rem}
+.cpulse-ttl{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:2px;text-transform:uppercase;color:var(--monitorText);opacity:.8;display:flex;align-items:center;gap:.45rem;min-width:0}
+.cpulse-rec{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0;animation:cpBlink 1.6s steps(2) infinite}
+.cpulse-read{display:flex;align-items:baseline;gap:.3rem;font-family:'Space Mono',monospace;flex-shrink:0}
+.cpulse-heart{display:inline-block;font-size:1rem;line-height:1}
+.cpulse-heart.beat{animation:cpBeat .34s ease-out}
+.cpulse-bpm{font-size:1.65rem;font-weight:700;line-height:1;font-variant-numeric:tabular-nums;text-shadow:0 0 14px currentColor}
+.cpulse-unit{font-size:.6rem;letter-spacing:1px;color:var(--monitorText);opacity:.65}
+.cpulse-scope{position:relative;height:96px;background-image:linear-gradient(var(--monitorGrid) 1px,transparent 1px),linear-gradient(90deg,var(--monitorGrid) 1px,transparent 1px);background-size:16px 16px;background-position:-1px -1px}
+.cpulse-scope canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.cpulse-head{position:absolute;left:0;top:0;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border-radius:50%;background:var(--white);box-shadow:0 0 10px 3px currentColor;pointer-events:none;will-change:transform;opacity:0}
+.cpulse-nosig{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.6rem;font-family:'Space Mono',monospace;font-size:.82rem;letter-spacing:4px;color:var(--monitorText);animation:cpBlink 2.2s steps(2) infinite}
+.cpulse-nosig span{background:var(--monitor);padding:.2rem .7rem;border:1px solid var(--monitorEdge);border-radius:6px}
+.cpulse-bot{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:.5rem .8rem;padding:.5rem .85rem .75rem;flex-wrap:wrap}
+.cpulse-msg{font-size:.82rem;font-weight:700;min-width:0}
+.cpulse-src{flex-basis:100%;font-size:.66rem;line-height:1.4;color:var(--monitorText);opacity:.55}
+.cpulse-btn{position:relative;z-index:1;background:transparent;border:1px solid currentColor;color:inherit;border-radius:999px;padding:.35rem .85rem;font-size:.76rem;font-weight:700;cursor:pointer;min-height:34px;white-space:nowrap}
+.cpulse-btn:hover,.cpulse-btn.on{background:rgba(255,255,255,.08);box-shadow:0 0 16px -4px currentColor}
+.cpulse-btn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+@keyframes cpBeat{0%{transform:scale(1)}28%{transform:scale(1.5)}100%{transform:scale(1)}}
+@keyframes cpBlink{50%{opacity:.3}}
+@media(prefers-reduced-motion:reduce){.cpulse-rec,.cpulse-nosig,.cpulse-heart.beat{animation:none}}
+.no-fx .cpulse-rec,.no-fx .cpulse-nosig,.no-fx .cpulse-heart.beat{animation:none}
+.sb-dots{display:flex;flex-wrap:wrap;gap:4px;margin-top:.6rem}
+.sb-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.28);transition:transform .3s,background .3s}
+.sb-dot.on{background:var(--white);box-shadow:0 0 8px rgba(255,255,255,.9);transform:scale(1.15)}
 /* === Neighborhood Race === */
 .race-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:.7rem;margin-bottom:.75rem}
 .race-rank{font-family:'Space Mono',monospace;font-weight:900;font-size:1.5rem;width:28px;text-align:center;flex-shrink:0}
@@ -749,7 +803,7 @@ button,select,summary,label,[role="button"],[role="tab"],.btn,.tabs button,nav a
 <script defer src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
 <script defer src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
-<script>/* === Firebase === */
+<script>window.__G2P_PARSED = 1; /* === Firebase === */
 firebase.initializeApp({
   apiKey: "AIzaSyB0kq79ID_H6plE7KhO7zQZa_S4Mg1g_Mo",
   authDomain: "fromgreytoplay.firebaseapp.com",
@@ -1652,6 +1706,21 @@ T.ro.conditionSubmitted = "Verificare trimisă! Mulțumim.";
 T.ro.sibiuVerifyTitle = "Ești în Sibiu? Verifică un teren.";
 T.ro.sibiuReportsCount = "verificări primite";
 T.ro.verifyCourtCTA = "Verifică acum";
+T.ro.sibiuCourtsChecked = "terenuri verificate de comunitate";
+T.ro.feedConditionReport = "{name} a verificat starea terenului {court}";
+T.ro.actConditionReport = "a verificat starea terenului";
+T.ro.courtPulseTitle = "Pulsul terenului";
+T.ro.pulseListen = "🔊 Ascultă";
+T.ro.pulseStop = "🔇 Oprește";
+T.ro.pulseSteady = "Ritm stabil — terenul trăiește";
+T.ro.pulseIrregular = "Aritmie — terenul are probleme";
+T.ro.pulseWeak = "Puls slab — terenul se stinge";
+T.ro.pulseFlat = "Linie plată — scor de sănătate aproape zero";
+T.ro.pulseNoSignal = "FĂRĂ SEMNAL";
+T.ro.pulseNoSignalDesc = "Nimeni nu l-a verificat încă. Dă-i primul puls.";
+T.ro.pulseFirst = "🩺 Verifică-l tu primul";
+T.ro.pulseFromScore = "Ritm simbolic, calculat din scorul de sănătate (stare + sesizări + evaluări).";
+T.ro.pulseFromCommunity = "Din {n} verificări ale comunității · neconfirmat oficial.";
 
 T.en.reportPageTitle = "Reports";
 T.en.reportNew = "New report";
@@ -1690,6 +1759,21 @@ T.en.conditionSubmitted = "Verification sent! Thank you.";
 T.en.sibiuVerifyTitle = "In Sibiu? Verify a court.";
 T.en.sibiuReportsCount = "verifications received";
 T.en.verifyCourtCTA = "Verify now";
+T.en.sibiuCourtsChecked = "courts checked by the community";
+T.en.feedConditionReport = "{name} checked the condition of {court}";
+T.en.actConditionReport = "checked the court's condition";
+T.en.courtPulseTitle = "Court pulse";
+T.en.pulseListen = "🔊 Listen";
+T.en.pulseStop = "🔇 Stop";
+T.en.pulseSteady = "Steady rhythm — this court is alive";
+T.en.pulseIrregular = "Arrhythmia — this court is struggling";
+T.en.pulseWeak = "Weak pulse — this court is fading";
+T.en.pulseFlat = "Flatline — health score near zero";
+T.en.pulseNoSignal = "NO SIGNAL";
+T.en.pulseNoSignalDesc = "Nobody has checked it yet. Give it its first pulse.";
+T.en.pulseFirst = "🩺 Be the first to check it";
+T.en.pulseFromScore = "Symbolic rhythm, computed from the health score (condition + reports + ratings).";
+T.en.pulseFromCommunity = "From {n} community checks · not officially confirmed.";
 
 // TODO: HU review
 T.hu.reportPageTitle = "Bejelentések";
@@ -1726,9 +1810,24 @@ T.hu.conditionGood = "✅ Jó"; // TODO: HU review
 T.hu.conditionDegraded = "⚠️ Leromlott"; // TODO: HU review
 T.hu.conditionAbandoned = "🚫 Elhagyott"; // TODO: HU review
 T.hu.conditionSubmitted = "Ellenőrzés elküldve! Köszönjük."; // TODO: HU review
-T.hu.sibiuVerifyTitle = "Szibenben vagy? Ellenőrizz egy pályát."; // TODO: HU review
+T.hu.sibiuVerifyTitle = "Nagyszebenben vagy? Ellenőrizz egy pályát."; // TODO: HU review
 T.hu.sibiuReportsCount = "ellenőrzés érkezett"; // TODO: HU review
 T.hu.verifyCourtCTA = "Ellenőrzés most"; // TODO: HU review
+T.hu.sibiuCourtsChecked = "pályát ellenőrzött a közösség"; // TODO: HU review
+T.hu.feedConditionReport = "{name} ellenőrizte a(z) {court} pálya állapotát"; // TODO: HU review
+T.hu.actConditionReport = "ellenőrizte a pálya állapotát"; // TODO: HU review
+T.hu.courtPulseTitle = "A pálya pulzusa"; // TODO: HU review
+T.hu.pulseListen = "🔊 Hallgasd"; // TODO: HU review
+T.hu.pulseStop = "🔇 Leállítás"; // TODO: HU review
+T.hu.pulseSteady = "Egyenletes ritmus — a pálya él"; // TODO: HU review
+T.hu.pulseIrregular = "Aritmia — a pálya bajban van"; // TODO: HU review
+T.hu.pulseWeak = "Gyenge pulzus — a pálya halványul"; // TODO: HU review
+T.hu.pulseFlat = "Egyenes vonal — az egészségpontszám közel nulla"; // TODO: HU review
+T.hu.pulseNoSignal = "NINCS JEL"; // TODO: HU review
+T.hu.pulseNoSignalDesc = "Még senki sem ellenőrizte. Add meg az első pulzusát."; // TODO: HU review
+T.hu.pulseFirst = "🩺 Ellenőrizd elsőként"; // TODO: HU review
+T.hu.pulseFromScore = "Szimbolikus ritmus az egészségpontszámból (állapot + bejelentések + értékelések)."; // TODO: HU review
+T.hu.pulseFromCommunity = "{n} közösségi ellenőrzés alapján · hivatalosan nem megerősített."; // TODO: HU review
 
 /* === Court status view: one place that turns a court's status into colour, badge and label ===
    "verified" = scored on a team field visit (Sibiu, tools/import_field.mjs). It is coloured by the real
@@ -1825,7 +1924,7 @@ function activityCity(a) {
   const c = a.courtId && COURTS_ALL.find(x => x.id === a.courtId);
   return c ? (c.city || "tgm") : "tgm";
 }
-const ACTIVITY_ICONS = { "check-in": "🏀", petition: "✍️", photo: "📸", report: "⚠️", game: "⚽", join: "🤝", pixel: "🎨", adopt: "💚" };
+const ACTIVITY_ICONS = { "check-in": "🏀", petition: "✍️", photo: "📸", report: "⚠️", conditionReport: "🩺", game: "⚽", join: "🤝", pixel: "🎨", adopt: "💚" };
 // Human sentence for an activity row, from the T.feed* templates.
 function activityMsg(a, t) {
   const c = a.courtId && COURTS_ALL.find(x => x.id === a.courtId);
@@ -2180,7 +2279,8 @@ function getCourtHealthScore(court, allReports, ratingsData) {
   var score = 0;
   var cond = court.condition || 0;
   score += (cond / 5) * 40;
-  var openReps = allReports ? Object.values(allReports).filter(function(r) { return r.courtId === court.id && r.status !== "resolved"; }).length : (court.reports || 0);
+  // Condition checks are verification, not open problems.
+  var openReps = allReports ? Object.values(allReports).filter(function(r) { return r.courtId === court.id && r.status !== "resolved" && r.category !== "condition"; }).length : (court.reports || 0);
   score -= Math.min(openReps * 6, 24);
   if (ratingsData) {
     var rVals = Object.values(ratingsData);
@@ -4441,6 +4541,7 @@ function CourtTimeline({ court }) {
   var typeLabel = function(type) {
     if (type === "check-in") return t.actCheckin || "checked in";
     if (type === "report")   return t.actReport  || "filed a report";
+    if (type === "conditionReport") return t.actConditionReport;
     if (type === "photo")    return t.actPhoto   || "added photo evidence";
     if (type === "adopt")    return t.actAdopt   || "adopted the court";
     if (type === "task")     return t.actTask    || "volunteered for a repair";
@@ -6798,9 +6899,9 @@ function StatTile({ value, label, color }) {
 /* "What this site can do": the deep features most visitors never find, one tap each. Copy states only what exists. */
 function Showcase() {
   const { lang, setPage, firebaseUser, openAuth } = useApp();
-  const L3 = (ro, en, hu) => lang === “en” ? en : lang === “hu” ? (hu || ro) : ro;
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
   const firstCourt = COURTS.find(c => c.lat != null);
-  const impact = tab => () => { sessionStorage.setItem(“g2p_impact_tab”, tab); setPage(“impact”); scrollTo(0, 0); };
+  const impact = tab => () => { sessionStorage.setItem("g2p_impact_tab", tab); setPage("impact"); scrollTo(0, 0); };
   const [cnt, setCnt] = useState(0);
   const [blk, setBlk] = useState(false);
   useEffect(() => {
@@ -6814,64 +6915,64 @@ function Showcase() {
   }, []);
   const tiles = [
     {
-      key: “sat”, icon: “🛰️”, color: “var(--teal)”,
-      preview: React.createElement(“div”, { className: “sc-sat-anim”, “aria-hidden”: “true” },
-        React.createElement(“div”, { className: “sc-sat-strip sc-sat-s1” }),
-        React.createElement(“div”, { className: “sc-sat-strip sc-sat-s2” }),
-        React.createElement(“div”, { className: “sc-sat-strip sc-sat-s3” })
+      key: "sat", icon: "🛰️", color: "var(--teal)",
+      preview: React.createElement("div", { className: "sc-sat-anim", "aria-hidden": "true" },
+        React.createElement("div", { className: "sc-sat-strip sc-sat-s1" }),
+        React.createElement("div", { className: "sc-sat-strip sc-sat-s2" }),
+        React.createElement("div", { className: "sc-sat-strip sc-sat-s3" })
       ),
-      title: L3(“Terenuri văzute din satelit”, “Courts from space”, “Pályák műholdról”),
-      desc: L3(“Imagini reale 2011–2022: apasă pe orice teren.”, “Real images 2011–2022: tap any court.”, “Valódi képek 2011–2022: érintsd a pályát.”),
-      action: () => { if (firstCourt) location.hash = “#court-” + firstCourt.id; }
+      title: L3("Terenuri văzute din satelit", "Courts from space", "Pályák műholdról"),
+      desc: L3("Imagini reale 2011–2022: apasă pe orice teren.", "Real images 2011–2022: tap any court.", "Valódi képek 2011–2022: érintsd a pályát."),
+      action: () => { if (firstCourt) location.hash = "#court-" + firstCourt.id; }
     },
     {
-      key: “cnt”, icon: “💸”, color: “var(--coral)”,
-      preview: React.createElement(“div”, { className: “sc-cnt-wrap”, “aria-hidden”: “true” },
-        React.createElement(“span”, { className: “sc-cnt-num” }, (cnt / 1e6).toFixed(1) + “M lei”),
-        React.createElement(“span”, { className: “sc-cnt-zero” + (blk ? “ sc-blink” : “”) }, “0%”)
+      key: "cnt", icon: "💸", color: "var(--coral)",
+      preview: React.createElement("div", { className: "sc-cnt-wrap", "aria-hidden": "true" },
+        React.createElement("span", { className: "sc-cnt-num" }, (cnt / 1e6).toFixed(1) + "M lei"),
+        React.createElement("span", { className: "sc-cnt-zero" + (blk ? " sc-blink" : "") }, "0%")
       ),
-      title: L3(“Chitanța inegalității”, “The inequality receipt”, “Az egyenlőtlenség nyugtája”),
-      desc: L3(“5.000.000 lei promise. Zero renovate.”, “5,000,000 lei promised. Zero renovated.”, “5 000 000 lej ígérve. Nulla felújítva.”),
-      action: impact(“calc”)
+      title: L3("Chitanța inegalității", "The inequality receipt", "Az egyenlőtlenség nyugtája"),
+      desc: L3("5.000.000 lei promise. Zero renovate.", "5,000,000 lei promised. Zero renovated.", "5 000 000 lej ígérve. Nulla felújítva."),
+      action: impact("calc")
     },
     {
-      key: “pulse”, icon: “🧬”, color: “var(--green)”,
-      preview: React.createElement(“div”, { className: “sc-orb-mini”, “aria-hidden”: “true” },
-        React.createElement(“div”, { className: “sc-orb-ring” }),
-        React.createElement(“div”, { className: “sc-orb-core” })
+      key: "pulse", icon: "🧬", color: "var(--green)",
+      preview: React.createElement("div", { className: "sc-orb-mini", "aria-hidden": "true" },
+        React.createElement("div", { className: "sc-orb-ring" }),
+        React.createElement("div", { className: "sc-orb-core" })
       ),
-      title: L3(“Pulsul orașului”, “City pulse”, “A város pulzusa”),
-      desc: L3(“Fiecare semnătură și sesizare animată.”, “Every signature and report animated.”, “Minden aláírás animálva.”),
-      action: () => { sessionStorage.setItem(“g2p_open_pulse”, “1”); setPage(“impact”); scrollTo(0, 0); }
+      title: L3("Pulsul orașului", "City pulse", "A város pulzusa"),
+      desc: L3("Fiecare semnătură și sesizare animată.", "Every signature and report animated.", "Minden aláírás animálva."),
+      action: () => { sessionStorage.setItem("g2p_open_pulse", "1"); setPage("impact"); scrollTo(0, 0); }
     },
     {
-      key: “letter”, icon: “✉️”, color: “var(--green)”,
-      preview: React.createElement(“div”, { className: “sc-letter-mini”, “aria-hidden”: “true” },
-        React.createElement(“span”, null, L3(“Stimate Primar,\nVă sesizez că...”, “Dear Mayor,\nI hereby report...”, “Tisztelt Polgármester,\nezúton jelzem...”))
+      key: "letter", icon: "✉️", color: "var(--green)",
+      preview: React.createElement("div", { className: "sc-letter-mini", "aria-hidden": "true" },
+        React.createElement("span", null, L3("Stimate Primar,\nVă sesizez că...", "Dear Mayor,\nI hereby report...", "Tisztelt Polgármester,\nezúton jelzem..."))
       ),
-      title: L3(“Scrisoare la Primărie”, “Letter to City Hall”, “Levél a városházának”),
-      desc: L3(“Oficială, completată automat. Tu o trimiți.”, “Official, auto-filled. You send it.”, “Hivatalos, automatikusan kitöltve.”),
-      action: () => { setPage(“petition”); scrollTo(0, 0); }
+      title: L3("Scrisoare la Primărie", "Letter to City Hall", "Levél a városházának"),
+      desc: L3("Oficială, completată automat. Tu o trimiți.", "Official, auto-filled. You send it.", "Hivatalos, automatikusan kitöltve."),
+      action: () => { setPage("petition"); scrollTo(0, 0); }
     }
   ];
-  return React.createElement(“section”, { className: “section showcase” },
-    React.createElement(“div”, { className: “container” },
-      React.createElement(“h2”, { className: “section-title” }, “✨ “ + L3(“Ce poate face site-ul ăsta”, “What this site can do”, “Mit tud ez az oldal”)),
-      React.createElement(“p”, { className: “section-sub” }, L3(“Patru instrumente. Fiecare face ceva diferit.”, “Four tools. Each one does something different.”, “Négy eszköz, mind más-más.”)),
-      React.createElement(“div”, { className: “sc-grid sc-grid-v2” },
-        tiles.map(tile => React.createElement(“button”, {
-          key: tile.key, className: “sc-tile sc-tile-v2”, onClick: tile.action,
-          style: { “--sc-acc”: tile.color }
+  return React.createElement("section", { className: "section showcase" },
+    React.createElement("div", { className: "container" },
+      React.createElement("h2", { className: "section-title" }, "✨ " + L3("Ce poate face site-ul ăsta", "What this site can do", "Mit tud ez az oldal")),
+      React.createElement("p", { className: "section-sub" }, L3("Patru instrumente. Fiecare face ceva diferit.", "Four tools. Each one does something different.", "Négy eszköz, mind más-más.")),
+      React.createElement("div", { className: "sc-grid sc-grid-v2" },
+        tiles.map(tile => React.createElement("button", {
+          key: tile.key, className: "sc-tile sc-tile-v2", onClick: tile.action,
+          style: { "--sc-acc": tile.color }
         },
           tile.preview,
-          React.createElement(“span”, { className: “sc-ic”, “aria-hidden”: “true” }, tile.icon),
-          React.createElement(“b”, null, tile.title),
-          React.createElement(“span”, null, tile.desc)
+          React.createElement("span", { className: "sc-ic", "aria-hidden": "true" }, tile.icon),
+          React.createElement("b", null, tile.title),
+          React.createElement("span", null, tile.desc)
         ))
       ),
-      !firebaseUser && React.createElement(“div”, { className: “sc-cta” },
-        React.createElement(“p”, null, L3(“Toate merg mai bine cu un cont.”, “Everything works better with an account.”, “Fiókkal minden jobb.”)),
-        React.createElement(“button”, { className: “btn btn-green btn-lg”, onClick: () => openAuth(“signup”) }, “👤 “ + L3(“Creează cont gratuit”, “Create a free account”, “Ingyenes fiók”)))));
+      !firebaseUser && React.createElement("div", { className: "sc-cta" },
+        React.createElement("p", null, L3("Toate merg mai bine cu un cont.", "Everything works better with an account.", "Fiókkal minden jobb.")),
+        React.createElement("button", { className: "btn btn-green btn-lg", onClick: () => openAuth("signup") }, "👤 " + L3("Creează cont gratuit", "Create a free account", "Ingyenes fiók")))));
 }
 
 function HomePage() {
@@ -7293,7 +7394,7 @@ function CourtDetail({
     toast(t.success);
   };
   useEffect(() => {
-    const onKey = e => { if (e.key === "Escape") onClose(); };
+    const onKey = e => { if (e.key === "Escape" && !e.defaultPrevented) onClose(); };
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
@@ -7344,6 +7445,7 @@ function CourtDetail({
       )
     )
   ),
+  React.createElement(CourtPulse, { court: c }),
   /*#__PURE__*/React.createElement("h4", {
     className: "mb-1"
   }, "Progress"), /*#__PURE__*/React.createElement("div", {
@@ -10988,6 +11090,31 @@ function AuthModal({ onClose, initialMode }) {
   );
 }
 
+/* A crash inside one page must never blank the whole site: nav, footer and other pages keep working. */
+class PageBoundary extends React.Component {
+  constructor(p) { super(p); this.state = { err: null }; }
+  static getDerivedStateFromError(e) { return { err: e }; }
+  componentDidCatch(e, info) { console.error("[G2P page crash]", e, info && info.componentStack); }
+  render() {
+    if (!this.state.err) return this.props.children;
+    const l = document.documentElement.lang;
+    const L = (ro, en, hu) => l === "en" ? en : l === "hu" ? hu : ro;
+    return React.createElement("section", { className: "section" },
+      React.createElement("div", { className: "container", style: { maxWidth: 520, textAlign: "center" } },
+        React.createElement("div", { className: "card", style: { padding: "2rem 1.2rem" } },
+          React.createElement("div", { style: { fontSize: "2.4rem", marginBottom: ".5rem" } }, "🏀"),
+          React.createElement("h2", { style: { fontSize: "1.1rem", marginBottom: ".5rem" } }, L("Mingea a ieșit din teren.", "The ball went out of bounds.", "A labda kiment a pályáról.")),
+          React.createElement("p", { className: "text-sm mb-2", style: { color: "var(--textSec)" } }, L("Pagina asta a întâmpinat o eroare. Restul site-ului funcționează.", "This page hit an error. The rest of the site still works.", "Ez az oldal hibába ütközött. Az oldal többi része működik.")),
+          React.createElement("div", { className: "flex gap-1", style: { justifyContent: "center", flexWrap: "wrap" } },
+            React.createElement("button", { className: "btn btn-green", onClick: () => location.reload() }, "↻ ", L("Reîncarcă", "Reload", "Újratöltés")),
+            React.createElement("button", { className: "btn btn-outline", onClick: () => { location.hash = "#home"; this.setState({ err: null }); } }, "🏠 ", L("Acasă", "Home", "Kezdőlap"))
+          )
+        )
+      )
+    );
+  }
+}
+
 class AdminBoundary extends React.Component {
   constructor(p) { super(p); this.state = { err: null }; }
   static getDerivedStateFromError(e) { return { err: e }; }
@@ -11511,6 +11638,48 @@ function AdminPanel({
   const { firebaseUser, isAdmin, toast, t } = useApp();
   const { isSherif: sherifOnly } = useApp();
   const [tab, setTab] = useState("site");
+  const [navOpen, setNavOpen] = useState(false);
+  const navRef = useRef(null), burgerRef = useRef(null), swipe = useRef(null);
+  useEffect(() => {
+    if (!navOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = e => { if (e.key === "Escape") setNavOpen(false); };
+    window.addEventListener("keydown", onKey);
+    const wide = window.matchMedia("(min-width:701px)");
+    const onWide = () => { if (wide.matches) setNavOpen(false); };
+    if (wide.addEventListener) wide.addEventListener("change", onWide);
+    const act = navRef.current && navRef.current.querySelector("button.active");
+    if (act) act.focus({ preventScroll: true });
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+      if (wide.removeEventListener) wide.removeEventListener("change", onWide);
+      if (burgerRef.current) burgerRef.current.focus({ preventScroll: true });
+    };
+  }, [navOpen]);
+  const pickTab = k => { setTab(k); setNavOpen(false); window.scrollTo(0, 0); };
+  // Drag the drawer closed with a finger, like a native app.
+  const navTouch = {
+    onTouchStart: e => { if (navOpen) swipe.current = { x: e.touches[0].clientX, y: e.touches[0].clientY, dx: 0, lock: null }; },
+    onTouchMove: e => {
+      const s = swipe.current, el = navRef.current;
+      if (!s || !el) return;
+      const dx = e.touches[0].clientX - s.x, dy = e.touches[0].clientY - s.y;
+      if (!s.lock && Math.abs(dx) + Math.abs(dy) > 8) s.lock = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+      if (s.lock !== "x") return;
+      s.dx = Math.min(0, dx);
+      el.style.transition = "none";
+      el.style.transform = "translateX(" + s.dx + "px)";
+    },
+    onTouchEnd: () => {
+      const s = swipe.current, el = navRef.current;
+      swipe.current = null;
+      if (!s || !el) return;
+      el.style.transition = ""; el.style.transform = "";
+      if (s.dx < -70) setNavOpen(false);
+    }
+  };
   const su = useFirebase("signups");
   const vo = useFirebase("votes");
   const co = useFirebase("courts");
@@ -11640,7 +11809,16 @@ function AdminPanel({
     className: "admin-shell" + (sherifOnly ? " sherif-mode" : "")
   }, /*#__PURE__*/React.createElement("header", {
     className: "admin-hdr"
-  }, /*#__PURE__*/React.createElement("h1", null, sherifOnly ? "👮 ȘERIF — From Grey to Play" : "\uD83D\uDD12 ADMIN \u2014 From Grey to Play"), React.createElement("div", { className: "a-auth" },
+  }, React.createElement("button", {
+    ref: burgerRef,
+    className: "admin-burger",
+    "aria-label": "Menu",
+    "aria-controls": "admin-nav",
+    "aria-expanded": navOpen,
+    onClick: () => setNavOpen(true)
+  }, React.createElement("span", { className: "bars", "aria-hidden": "true" }, React.createElement("i"), React.createElement("i"), React.createElement("i")),
+    React.createElement("span", { className: "cur" }, (tabs.find(tb => tb.k === tab) || tabs[0] || { l: "Menu" }).l)
+  ), /*#__PURE__*/React.createElement("h1", null, sherifOnly ? "👮 ȘERIF — From Grey to Play" : "\uD83D\uDD12 ADMIN \u2014 From Grey to Play"), React.createElement("div", { className: "a-auth" },
     React.createElement("span", { className: "dot" + (isAdmin ? "" : " bad") }),
     React.createElement("span", null, isAdmin ? "Owner · " + ((firebaseUser && firebaseUser.email) || "") : sherifOnly ? "Sheriff · " + ((firebaseUser && firebaseUser.email) || "") : "Not signed in as owner — changes will be rejected"),
     !sherifOnly && React.createElement("button", { className: "a-normal", style: { padding: ".3rem .7rem", fontSize: ".72rem" }, onClick: () => {
@@ -11651,13 +11829,24 @@ function AdminPanel({
     React.createElement("button", { onClick: onExit, style: { background: "none", border: "1px solid #1E2235", color: "#9CA3AF", padding: ".3rem .7rem", borderRadius: 6, fontSize: ".78rem", cursor: "pointer" } }, "\u2190 Back to site"),
     onSignOut && React.createElement("button", { onClick: onSignOut, style: { background: "none", border: "1px solid #7F1D1D", color: "#F87171", padding: ".3rem .7rem", borderRadius: 6, fontSize: ".78rem", cursor: "pointer" } }, "\u21AA Sign out"))), /*#__PURE__*/React.createElement("div", {
     className: "admin-body"
-  }, /*#__PURE__*/React.createElement("nav", {
-    className: "admin-side"
-  }, tabs.map(tb => /*#__PURE__*/React.createElement("button", {
+  }, React.createElement("div", {
+    className: "admin-scrim" + (navOpen ? " open" : ""),
+    onClick: () => setNavOpen(false),
+    "aria-hidden": "true"
+  }), /*#__PURE__*/React.createElement("nav", Object.assign({
+    id: "admin-nav",
+    ref: navRef,
+    className: "admin-side" + (navOpen ? " open" : ""),
+    "aria-label": sherifOnly ? "Sheriff menu" : "Admin menu"
+  }, navTouch), React.createElement("div", { className: "admin-side-hd" },
+    React.createElement("span", null, sherifOnly ? "👮 Șerif" : "🔒 Admin"),
+    React.createElement("button", { onClick: () => setNavOpen(false), "aria-label": "Close menu" }, "✕")
+  ), tabs.map(tb => /*#__PURE__*/React.createElement("button", {
     key: tb.k,
     className: tab === tb.k ? "active" : "",
-    onClick: () => setTab(tb.k)
-  }, tb.l))), /*#__PURE__*/React.createElement("div", {
+    "aria-current": tab === tb.k ? "page" : undefined,
+    onClick: () => pickTab(tb.k)
+  }, tb.l)), React.createElement("div", { className: "admin-side-ft" }, (firebaseUser && firebaseUser.email) || "")), /*#__PURE__*/React.createElement("div", {
     className: "admin-main"
   }, tab === "site" && React.createElement(AdminSiteTab, null), tab === "god" && React.createElement(AdminGodTab, null), tab === "moderation" && React.createElement(AdminModTab, null), tab === "signups" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Petition Signups"), /*#__PURE__*/React.createElement("div", {
     className: "a-stats"
@@ -12148,10 +12337,16 @@ function QuickReportModal({ onClose }) {
 }
 
 /* === Court Condition Quick — Sibiu hackathon feature === */
-function CourtConditionQuick({ onClose }) {
+function CourtConditionQuick({ onClose, courtId: presetCourt }) {
   const { t, user, toast } = useApp();
   const fbCourts = useFirebase("courts");
-  const [courtId, setCourtId] = useState("");
+  const [courtId, setCourtId] = useState(presetCourt || "");
+  useEffect(() => {
+    // Capture phase so Escape closes only this modal, not a CourtDetail underneath.
+    const onKey = e => { if (e.key === "Escape") { e.preventDefault(); e.stopImmediatePropagation(); onClose(); } };
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, []);
   const [condition, setCondition] = useState("");
   const [photoDataUrl, setPhotoDataUrl] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -12176,18 +12371,18 @@ function CourtConditionQuick({ onClose }) {
     const payload = {
       courtId, courtName: selectedCourt ? selectedCourt.name : courtId,
       category: "condition", conditionReport: condition,
-      description: t.conditionCheck + ": " + condition,
+      description: (conds.find(x => x.k === condition) || {}).l || condition,
       status: "received", city: ACTIVE_CITY,
       createdAt: now, updatedAt: now,
       voterKey: getVoterKey(), userName
     };
     if (photoDataUrl) payload.photoDataUrl = photoDataUrl;
     db.ref("reports").push(payload).then(() => {
-      db.ref("activity").push({ type: "conditionReport", userName, courtId, courtName: payload.courtName, condition, city: ACTIVE_CITY, timestamp: now });
+      logActivity("conditionReport", userName, courtId);
       toast(t.conditionSubmitted);
       setSubmitting(false);
       onClose();
-    });
+    }).catch(() => { setSubmitting(false); toast(t.error); });
   };
   return React.createElement("div", { className: "modal-overlay", onClick: onClose },
     React.createElement("div", { className: "modal", onClick: e => e.stopPropagation() },
@@ -12223,34 +12418,264 @@ function CourtConditionQuick({ onClose }) {
   );
 }
 
-/* === Sibiu Progress Banner === */
+/* === Sibiu Progress Banner: one dot per Sibiu court, lit once the community has checked it === */
 function SibiuProgressBanner() {
-  if (ACTIVE_CITY !== "sibiu") return null;
+  return ACTIVE_CITY === "sibiu" ? React.createElement(SibiuProgressBannerInner, null) : null;
+}
+function SibiuProgressBannerInner() {
   const { t } = useApp();
   const [open, setOpen] = useState(false);
   const allReports = useFirebase("reports");
-  const sibiuCount = allReports
-    ? Object.values(allReports).filter(r => r.city === "sibiu" && r.category === "condition").length
-    : 0;
+  const checked = {};
+  if (allReports) Object.values(allReports).forEach(r => { if (r && r.category === "condition" && r.courtId) checked[r.courtId] = 1; });
+  const sbCourts = COURTS.filter(c => c.city === "sibiu");
+  const lit = sbCourts.filter(c => checked[c.id]).length;
   return React.createElement("div", {
     style: {
       background: "linear-gradient(135deg, var(--green) 0%, var(--teal) 100%)",
-      color: "#fff", borderRadius: "var(--radius)", padding: "1rem", marginBottom: "1rem",
+      color: "var(--white)", borderRadius: "var(--radius)", padding: "1rem", marginBottom: "1rem",
       boxShadow: "var(--shadow)"
     }
   },
-    React.createElement("div", { className: "flex justify-between items-center" },
-      React.createElement("div", null,
+    React.createElement("div", { className: "flex justify-between items-center", style: { gap: ".6rem" } },
+      React.createElement("div", { style: { minWidth: 0 } },
         React.createElement("strong", { style: { fontSize: ".93rem", display: "block", marginBottom: ".2rem" } }, t.sibiuVerifyTitle),
-        React.createElement("span", { style: { fontSize: ".8rem", opacity: .88 } }, "🏟️ ", sibiuCount, " ", t.sibiuReportsCount)
+        React.createElement("span", { style: { fontSize: ".8rem", opacity: .9, fontFamily: "'Space Mono',monospace" } }, "🩺 ", lit, " / ", sbCourts.length, " ", t.sibiuCourtsChecked)
       ),
       React.createElement("button", {
         className: "btn btn-sm",
-        style: { background: "#fff", color: "var(--green)", fontWeight: 700, whiteSpace: "nowrap", marginLeft: ".5rem", flexShrink: 0 },
+        style: { background: "var(--white)", color: "var(--green)", fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0 },
         onClick: () => setOpen(true)
       }, "＋ ", t.verifyCourtCTA)
     ),
-    open && React.createElement(CourtConditionQuick, { onClose: () => setOpen(false) })
+    React.createElement("div", { className: "sb-dots", "aria-hidden": "true" },
+      sbCourts.map(c => React.createElement("span", { key: c.id, className: "sb-dot" + (checked[c.id] ? " on" : ""), title: c.name }))
+    ),
+    open && ReactDOM.createPortal(React.createElement(CourtConditionQuick, { onClose: () => setOpen(false) }), document.body)
+  );
+}
+
+/* === Court Pulse: an ECG monitor whose rhythm comes from the court's real health data === */
+function pulseFromScore(s) {
+  if (s >= 70) return { bpm: 72, amp: 1, irregular: 0, tone: "var(--green)", state: "steady" };
+  if (s >= 40) return { bpm: 104, amp: .75, irregular: .35, tone: "var(--coral)", state: "irregular" };
+  if (s >= 10) return { bpm: 44, amp: .42, irregular: .5, tone: "var(--red)", state: "weak" };
+  return { bpm: 0, amp: 0, irregular: 0, tone: "var(--red)", state: "flat" };
+}
+function courtPulseModel(court, allReports, ratingsData) {
+  const rated = ratingsData && Object.keys(ratingsData).length > 0;
+  if (court.condition != null || rated) {
+    return Object.assign({ kind: "score" }, pulseFromScore(getCourtHealthScore(court, allReports, ratingsData)));
+  }
+  const checks = allReports ? Object.values(allReports).filter(r => r && r.courtId === court.id && r.category === "condition" && r.conditionReport) : [];
+  if (!checks.length) return { kind: "none", bpm: 0, amp: 0, irregular: 0, tone: "var(--grey)", state: "none" };
+  checks.sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")));
+  const s = { good: 80, degraded: 50, abandoned: 12 }[checks[0].conditionReport];
+  return Object.assign({ kind: "community", count: checks.length }, pulseFromScore(s == null ? 50 : s));
+}
+function ecgWave(p) {
+  const g = (c, w, a) => a * Math.exp(-Math.pow((p - c) / w, 2));
+  return g(.16, .03, .11) + g(.34, .012, -.13) + g(.37, .014, 1) + g(.40, .014, -.28) + g(.6, .055, .26);
+}
+function pulseRng(str) {
+  let a = 2166136261;
+  for (let i = 0; i < str.length; i++) { a ^= str.charCodeAt(i); a = Math.imul(a, 16777619); }
+  return function () {
+    a = a + 0x6D2B79F5 | 0;
+    let x = Math.imul(a ^ a >>> 15, 1 | a);
+    x = x + Math.imul(x ^ x >>> 7, 61 | x) ^ x;
+    return ((x ^ x >>> 14) >>> 0) / 4294967296;
+  };
+}
+function CourtPulse({ court }) {
+  const { t } = useApp();
+  const allReports = useFirebase("reports");
+  const ratingsData = useFirebase("ratings/" + court.id);
+  const m = courtPulseModel(court, allReports, ratingsData);
+  const [listening, setListening] = useState(false);
+  const [verify, setVerify] = useState(false);
+  const boxRef = useRef(null), scopeRef = useRef(null), canvasRef = useRef(null), headRef = useRef(null), heartRef = useRef(null), bpmRef = useRef(null);
+  const audio = useRef(null);
+  // The animation loop reads the latest model from here, so live Firebase updates change the rhythm without a restart.
+  const live = useRef({});
+  live.current.m = m;
+  live.current.listening = listening;
+
+  const onBeat = (amp, interval) => {
+    const h = heartRef.current;
+    if (h) { h.classList.remove("beat"); void h.offsetWidth; h.classList.add("beat"); }
+    if (bpmRef.current && interval > 0) bpmRef.current.textContent = String(Math.round(60 / interval));
+    const a = audio.current;
+    if (!live.current.listening || !a || a.ctx.state !== "running") return;
+    const now = a.ctx.currentTime;
+    const thump = (when, vol) => {
+      const o = a.ctx.createOscillator(), g = a.ctx.createGain();
+      o.type = "triangle";
+      o.frequency.setValueAtTime(110, when);
+      o.frequency.exponentialRampToValueAtTime(52, when + .13);
+      g.gain.setValueAtTime(.0001, when);
+      g.gain.exponentialRampToValueAtTime(vol, when + .012);
+      g.gain.exponentialRampToValueAtTime(.0001, when + .17);
+      o.connect(g); g.connect(a.body); o.start(when); o.stop(when + .2);
+    };
+    thump(now, .25 + .55 * amp);
+    thump(now + .16, .12 + .3 * amp);
+    const b = a.ctx.createOscillator(), bg = a.ctx.createGain();
+    b.frequency.value = 960;
+    bg.gain.setValueAtTime(.0001, now);
+    bg.gain.exponentialRampToValueAtTime(.05, now + .006);
+    bg.gain.exponentialRampToValueAtTime(.0001, now + .09);
+    b.connect(bg); bg.connect(a.ctx.destination); b.start(now); b.stop(now + .1);
+    if (navigator.vibrate) navigator.vibrate(amp > .6 ? [32, 110, 22] : [18, 140, 12]);
+  };
+  const onBeatRef = useRef(onBeat);
+  onBeatRef.current = onBeat;
+
+  useEffect(() => {
+    const cv = canvasRef.current, scope = scopeRef.current, head = headRef.current, box = boxRef.current;
+    if (!cv || !scope || !box) return;
+    const ctx = cv.getContext("2d");
+    const still = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches) || document.documentElement.classList.contains("no-fx");
+    const rnd = pulseRng(String(court.id));
+    const SPEED = 72;
+    let W = 0, H = 0, x = 0, acc = 0, lastY = null, simT = 0, lastTs = 0, raf = 0, visible = true;
+    let nextBeat = .35, beatStart = -10, beatDur = .8, beatAmp = 0, beatGap = 0, rFired = true, color = "", toneKey = "";
+    const yOf = v => H * .6 - v * H * .5;
+    const sample = model => {
+      if (model.bpm === 0) return (rnd() - .5) * .014;
+      if (simT >= nextBeat) {
+        const base = 60 / model.bpm;
+        // After a model change (e.g. first live check) the schedule may lag; resync instead of firing a burst of beats.
+        beatStart = simT - nextBeat > base ? simT : nextBeat;
+        beatDur = Math.min(base * .9, .75);
+        const dropped = model.irregular > 0 && rnd() < model.irregular * .3;
+        beatAmp = dropped ? 0 : model.amp * (1 - model.irregular * .4 * rnd());
+        rFired = beatAmp === 0;
+        beatGap = base * (1 + model.irregular * (rnd() - .5) * 1.2);
+        nextBeat = beatStart + beatGap;
+      }
+      const p = (simT - beatStart) / beatDur;
+      return (p >= 0 && p < 1 ? ecgWave(p) * beatAmp : 0) + (rnd() - .5) * .022;
+    };
+    const resize = () => {
+      const r = scope.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = Math.max(1, Math.round(r.width)); H = Math.max(1, Math.round(r.height));
+      cv.width = W * dpr; cv.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      x = 0; lastY = null;
+      if (still) {
+        const model = live.current.m;
+        color = getComputedStyle(box).color; toneKey = model.tone;
+        ctx.clearRect(0, 0, W, H);
+        ctx.beginPath(); ctx.lineWidth = 2; ctx.strokeStyle = color; ctx.lineJoin = "round";
+        for (let i = 0; i < W; i++) { simT += 1 / SPEED; const y = yOf(sample(model)); i ? ctx.lineTo(i, y) : ctx.moveTo(i, y); }
+        ctx.stroke();
+      }
+    };
+    const frame = ts => {
+      raf = requestAnimationFrame(frame);
+      const dt = Math.min(.05, lastTs ? (ts - lastTs) / 1000 : 0);
+      lastTs = ts;
+      if (!visible || document.hidden || !W) return;
+      const model = live.current.m;
+      if (still) {
+        // No sweep animation, but the heart still beats for sound and haptics.
+        if (model.tone !== toneKey) resize();
+        simT += dt;
+        if (model.bpm && simT >= nextBeat) { sample(model); if (beatAmp) onBeatRef.current(beatAmp, beatGap); }
+        return;
+      }
+      if (model.tone !== toneKey) { toneKey = model.tone; color = getComputedStyle(box).color; }
+      acc += dt * SPEED;
+      if (acc < 1) return;
+      ctx.lineWidth = 2; ctx.lineJoin = "round"; ctx.lineCap = "round";
+      ctx.strokeStyle = color; ctx.shadowColor = color; ctx.shadowBlur = 8;
+      ctx.beginPath();
+      if (lastY != null) ctx.moveTo(x, lastY);
+      while (acc >= 1) {
+        acc -= 1;
+        simT += 1 / SPEED;
+        const y = yOf(sample(model));
+        x += 1;
+        if (x >= W) { ctx.stroke(); ctx.beginPath(); x = 0; ctx.moveTo(0, y); }
+        else if (lastY == null) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+        lastY = y;
+        if (!rFired && simT >= beatStart + .37 * beatDur) { rFired = true; onBeatRef.current(beatAmp, beatGap); }
+      }
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+      const gap = 22;
+      ctx.clearRect(x + 2, 0, gap, H);
+      if (x + 2 + gap > W) ctx.clearRect(0, 0, x + 2 + gap - W, H);
+      if (head) { head.style.opacity = model.kind === "none" ? "0" : "1"; head.style.transform = "translate(" + x + "px," + lastY + "px)"; }
+    };
+    resize();
+    let ro = null, io = null;
+    if (window.ResizeObserver) { ro = new ResizeObserver(resize); ro.observe(scope); }
+    if (window.IntersectionObserver) { io = new IntersectionObserver(es => { visible = es[0].isIntersecting; }); io.observe(scope); }
+    raf = requestAnimationFrame(frame);
+    return () => { cancelAnimationFrame(raf); ro && ro.disconnect(); io && io.disconnect(); };
+  }, [court.id]);
+
+  // A flatline is a continuous tone, as on a real monitor.
+  useEffect(() => {
+    const a = audio.current;
+    if (!a || !listening || m.state !== "flat") return;
+    const o = a.ctx.createOscillator(), g = a.ctx.createGain();
+    o.frequency.value = 960; g.gain.value = .035;
+    o.connect(g); g.connect(a.ctx.destination); o.start();
+    return () => { try { g.gain.setTargetAtTime(0, a.ctx.currentTime, .04); o.stop(a.ctx.currentTime + .25); } catch (e) {} };
+  }, [listening, m.state]);
+
+  useEffect(() => () => {
+    if (!audio.current) return;
+    if (navigator.vibrate) navigator.vibrate(0);
+    try { audio.current.ctx.close(); } catch (e) {}
+  }, []);
+
+  const toggleListen = () => {
+    if (listening) { setListening(false); if (navigator.vibrate) navigator.vibrate(0); return; }
+    if (!audio.current) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (AC) {
+        const ctx = new AC();
+        const body = ctx.createBiquadFilter();
+        body.type = "lowpass"; body.frequency.value = 700;
+        body.connect(ctx.destination);
+        audio.current = { ctx, body };
+      }
+    }
+    if (audio.current && audio.current.ctx.state === "suspended") audio.current.ctx.resume();
+    setListening(true);
+  };
+
+  const none = m.kind === "none";
+  const msg = none ? t.pulseNoSignalDesc : { steady: t.pulseSteady, irregular: t.pulseIrregular, weak: t.pulseWeak, flat: t.pulseFlat }[m.state];
+  const src = m.kind === "score" ? t.pulseFromScore : m.kind === "community" ? t.pulseFromCommunity.replace("{n}", m.count) : "";
+  return React.createElement("div", { ref: boxRef, className: "cpulse", style: { color: m.tone }, role: "group", "aria-label": t.courtPulseTitle },
+    React.createElement("div", { className: "cpulse-top" },
+      React.createElement("span", { className: "cpulse-ttl" }, React.createElement("span", { className: "cpulse-rec", style: { color: m.tone } }), t.courtPulseTitle),
+      React.createElement("span", { className: "cpulse-read", "aria-label": none ? t.pulseNoSignal : m.bpm + " BPM" },
+        React.createElement("span", { ref: heartRef, className: "cpulse-heart", "aria-hidden": "true" }, "♥"),
+        React.createElement("span", { ref: bpmRef, className: "cpulse-bpm" }, none ? "--" : String(m.bpm)),
+        React.createElement("span", { className: "cpulse-unit" }, "BPM")
+      )
+    ),
+    React.createElement("div", { ref: scopeRef, className: "cpulse-scope" },
+      React.createElement("canvas", { ref: canvasRef, "aria-hidden": "true" }),
+      React.createElement("span", { ref: headRef, className: "cpulse-head" }),
+      none && React.createElement("div", { className: "cpulse-nosig" }, React.createElement("span", null, t.pulseNoSignal))
+    ),
+    React.createElement("div", { className: "cpulse-bot" },
+      React.createElement("span", { className: "cpulse-msg", style: none ? { color: "var(--monitorText)" } : null }, msg),
+      none
+        ? React.createElement("button", { className: "cpulse-btn", style: { color: "var(--green)" }, onClick: () => setVerify(true) }, t.pulseFirst)
+        : React.createElement("button", { className: "cpulse-btn" + (listening ? " on" : ""), "aria-pressed": listening, onClick: toggleListen }, listening ? t.pulseStop : t.pulseListen),
+      src && React.createElement("span", { className: "cpulse-src" }, src)
+    ),
+    verify && ReactDOM.createPortal(React.createElement(CourtConditionQuick, { courtId: court.id, onClose: () => setVerify(false) }), document.body)
   );
 }
 
@@ -12417,8 +12842,9 @@ function ReportsPage() {
   const allReps = fbReports
     ? Object.entries(fbReports).map(([id, r]) => ({ id, ...r })).sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""))
     : [];
-  const catEmoji = { surface: "🏗️", hoop: "🏀", fence: "🚧", lighting: "💡", trash: "🗑️", safety: "⚠️", other: "📌" };
-  const catLabel = k => ({ surface: t.catSurface, hoop: t.catHoop, fence: t.catFence, lighting: t.catLighting, trash: t.catTrash, safety: t.catSafety, other: t.catOther }[k] || k);
+  const catEmoji = { surface: "🏗️", hoop: "🏀", fence: "🚧", lighting: "💡", trash: "🗑️", safety: "⚠️", other: "📌", condition: "🩺" };
+  const catLabel = k => ({ surface: t.catSurface, hoop: t.catHoop, fence: t.catFence, lighting: t.catLighting, trash: t.catTrash, safety: t.catSafety, other: t.catOther, condition: t.conditionCheck }[k] || k);
+  const condLabel = { good: t.conditionGood, degraded: t.conditionDegraded, abandoned: t.conditionAbandoned };
   const sBadge = { received: "badge-received", analyzing: "badge-analyzing", planned: "badge-planned", resolved: "badge-resolved" };
   const sLabel = k => ({ received: t.statusReceived, analyzing: t.statusAnalyzing, planned: t.statusPlanned, resolved: t.statusResolved }[k] || k);
   const visible = allReps.filter(r => {
@@ -12485,7 +12911,7 @@ function ReportsPage() {
                   ),
                   React.createElement("span", { className: "badge " + (sBadge[r.status] || "badge-received") }, sLabel(r.status))
                 ),
-                React.createElement("p", { style: { fontSize: ".85rem", marginBottom: ".5rem" } }, r.description),
+                React.createElement("p", { style: { fontSize: ".85rem", marginBottom: ".5rem" } }, (r.category === "condition" && condLabel[r.conditionReport]) || r.description),
                 r.photoDataUrl && React.createElement("img", { src: r.photoDataUrl, alt: "report", style: { width: "100%", borderRadius: 8, maxHeight: 150, objectFit: "cover", marginBottom: ".5rem" } }),
                 React.createElement(ReportTimeline, { status: r.status }),
                 r.official && r.official.note && React.createElement("div", { className: "card mt-1", style: { background: "rgba(16,185,129,.06)", border: "1px solid rgba(16,185,129,.2)", padding: ".6rem", boxShadow: "none" } },
@@ -13079,7 +13505,7 @@ function App() {
     }
   }, /*#__PURE__*/React.createElement("div", {
     key: page
-  }, P())), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(FunEggs, null), React.createElement(SecretKeys, null), mayor && React.createElement(MayorMode, {
+  }, React.createElement(PageBoundary, null, P()))), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(FunEggs, null), React.createElement(SecretKeys, null), mayor && React.createElement(MayorMode, {
     onClose: () => setMayor(false)
   }), /*#__PURE__*/React.createElement(Footer, null), toastEl, authEl, nudgeEl);
 }
@@ -13090,5 +13516,17 @@ try {
 }
 </script>
 
+<script>
+/* Boot guard: if the main script could not even be parsed, show a way out instead of a frozen splash. */
+window.addEventListener("load", function () {
+  if (window.__G2P_PARSED) return;
+  var r = document.getElementById("root");
+  if (!r) return;
+  r.innerHTML = '<div style="min-height:70vh;display:flex;align-items:center;justify-content:center;padding:2rem;font-family:sans-serif;text-align:center">' +
+    '<div><div style="font-size:2.5rem">🏀</div><h2 style="margin:.5rem 0">From Grey to Play</h2>' +
+    '<p style="opacity:.75;margin-bottom:1rem">Site-ul se actualizează. Reîncarcă pagina în câteva secunde.<br>The site is updating. Reload in a few seconds.</p>' +
+    '<button onclick="location.reload()" style="padding:.6rem 1.2rem;border:0;border-radius:10px;background:var(--green);color:var(--white);font-weight:700;cursor:pointer">↻ Reîncarcă / Reload</button></div></div>';
+});
+</script>
 </body>
 </html>

@@ -1,4 +1,12 @@
-# Static single-file PWA — no build step; the repo root is the publish directory.
+# Static single-file PWA; the repo root is the publish directory.
+# The "build" is a safety gate only: if any check fails, Netlify cancels the deploy
+# and the last good version stays live. See tools/predeploy-check.mjs.
+[build]
+  publish = "."
+  command = "node tools/predeploy-check.mjs"
+
+[build.environment]
+  NODE_VERSION = "22"
 
 # HTML: browsers always revalidate (Netlify default), while the CDN may serve a
 # stale copy for up to a day while it revalidates in the background.

@@ -1,0 +1,3 @@
+#!/bin/sh
+# G2P safety gate: a commit that would break the site is refused.
+node tools/predeploy-check.mjs || { echo "✋ Commit refused. Fix the problems above, then commit again."; exit 1; }

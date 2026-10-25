@@ -141,3 +141,39 @@ test("submitted courts never get invented coordinates", () => {
   assert.doesNotMatch(html, /lat:\s*[\d.]+\s*\+\s*Math\.random/);
   assert.doesNotMatch(html, /lng:\s*[\d.]+\s*\+\s*Math\.random/);
 });
+
+test("every inline script in index.html parses (no smart quotes as delimiters)", () => {
+  const re = /<script(?![^>]*\bsrc=)([^>]*)>([\s\S]*?)<\/script>/g;
+  let m, n = 0;
+  while ((m = re.exec(html))) {
+    if (/type="(application\/ld\+json|module)"/.test(m[1])) continue;
+    n++;
+    assert.doesNotThrow(() => new Function(m[2]), "inline script #" + n + " has a syntax error");
+  }
+  assert.ok(n > 0);
+});
+
+test("community condition checks are not counted as open problems", () => {
+  const { getCourtHealthScore } = load([extractFunction("getCourtHealthScore")], ["getCourtHealthScore"]);
+  const checks = { a: { courtId: "x", status: "received", category: "condition", conditionReport: "good" } };
+  assert.equal(getCourtHealthScore({ id: "x", condition: 5 }, checks, null), 40);
+});
+
+test("court pulse: no data means no signal, never an invented rhythm", () => {
+  const { courtPulseModel } = load([
+    extractFunction("getCourtHealthScore"), extractFunction("pulseFromScore"), extractFunction("courtPulseModel")
+  ], ["courtPulseModel"]);
+  assert.equal(courtPulseModel({ id: "sb1", condition: null }, {}, null).kind, "none");
+  assert.equal(courtPulseModel({ id: "sb1", condition: null }, { r: { courtId: "sb2", category: "condition", conditionReport: "good" } }, null).kind, "none");
+  const c = courtPulseModel({ id: "sb1", condition: null }, { r: { courtId: "sb1", category: "condition", conditionReport: "abandoned", createdAt: "2026-10-26" } }, null);
+  assert.equal(c.kind, "community"); assert.equal(c.count, 1); assert.equal(c.state, "weak");
+  assert.equal(courtPulseModel({ id: "c1", condition: 5 }, {}, { a: { surface: 5, lighting: 5, equipment: 5, safety: 5 } }).state, "steady");
+});
+
+test("no translation key is assigned twice (a later assignment silently overrides the first)", () => {
+  for (const lang of ["ro", "en", "hu"]) {
+    const keys = [...html.matchAll(new RegExp("^T\." + lang + "\.([A-Za-z0-9_]+) =", "gm"))].map(m => m[1]);
+    const dupes = keys.filter((k, i) => keys.indexOf(k) !== i);
+    assert.deepEqual(dupes, [], "duplicate T." + lang + " keys: " + dupes.join(", "));
+  }
+});

@@ -1,0 +1,4 @@
+#!/bin/sh
+# G2P safety gate: nothing reaches GitHub (and Netlify) unless it parses, passes tests and renders in a real browser.
+node tools/predeploy-check.mjs || { echo "✋ Push refused (static checks)."; exit 1; }
+node tools/smoke.mjs || { echo "✋ Push refused (the site crashes in a real browser)."; exit 1; }

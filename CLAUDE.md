@@ -28,6 +28,23 @@ Utilizare:
   per the roadmap §5.6. Do NOT edit it for shipped features; only when
   the user explicitly says "migrate."
 
+## Safety gates (TOP PRIORITY — the live site must never break)
+
+A syntax error anywhere in the main `<script>` blanks the entire site (happened in
+`905ade1` and again in `ef587ba`: smart quotes `“en”` used as JS delimiters).
+Three gates now stand between a mistake and production:
+
+1. **Netlify build** runs `node tools/predeploy-check.mjs` (see `netlify.toml`). Any failure
+   cancels the deploy; the last good version stays live.
+2. **git pre-commit** runs the same static check; **pre-push** adds `tools/smoke.mjs`
+   (real headless Chrome: every page × both cities + a court detail, fails on any crash).
+   Hooks live in `tools/hooks/`; install with `node tools/install-hooks.mjs`.
+3. **Runtime**: `PageBoundary` keeps nav/footer alive if one page crashes; a boot guard
+   at the end of `<body>` shows a reload screen if the main script failed to parse.
+
+Rules: never `--no-verify`; never paste code with typographic quotes; run
+`node tools/predeploy-check.mjs` and `node tools/smoke.mjs` before saying "done".
+
 ## Tech baseline
 
 | Layer | Choice |
