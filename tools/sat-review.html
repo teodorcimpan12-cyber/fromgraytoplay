@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Sibiu din satelit — evaluare terenuri</title>
+<style>
+  :root { --bg:#0f1220; --card:#181c2f; --text:#e8eaf2; --sec:#9aa1b8; --green:#10B981; --coral:#F97316; --red:#DC2626; --border:#2a2f48; --radius:12px; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 "Libre Franklin", system-ui, sans-serif; }
+  .wrap { max-width:1180px; margin:0 auto; padding:16px; }
+  h1 { font:700 1.35rem "Space Mono", monospace; margin:.2rem 0 .3rem; }
+  h2 { font:700 1.05rem "Space Mono", monospace; margin:0 0 .6rem; }
+  .sec { color:var(--sec); font-size:.88rem; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px; margin:12px 0; }
+  .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  select, input, textarea, button { font:inherit; color:var(--text); background:#0f1324; border:1px solid var(--border); border-radius:8px; padding:.45rem .6rem; }
+  button { cursor:pointer; }
+  button.primary { background:var(--green); border-color:var(--green); color:#04140d; font-weight:700; }
+  button:disabled { opacity:.45; cursor:default; }
+  .layout { display:grid; grid-template-columns: 220px 1fr; gap:14px; }
+  @media (max-width: 820px) { .layout { grid-template-columns: 1fr; } }
+  .list { max-height:70vh; overflow:auto; }
+  .list button { display:flex; justify-content:space-between; width:100%; margin:0 0 6px; text-align:left; }
+  .list button.on { border-color:var(--green); }
+  .list .done { color:var(--green); }
+  .strip { display:grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap:10px; }
+  .cap { background:#0b0e1a; border:1px solid var(--border); border-radius:10px; padding:6px; cursor:zoom-in; }
+  .cap.sel { border-color:var(--coral); }
+  .cap canvas { width:100%; aspect-ratio:1; display:block; border-radius:6px; image-rendering:auto; }
+  .cap .d { font:700 .8rem "Space Mono", monospace; margin-top:4px; display:flex; justify-content:space-between; }
+  .cap select { width:100%; margin-top:4px; padding:.25rem .4rem; font-size:.82rem; }
+  .cap select.unset { border-color:var(--coral); }
+  .big { display:grid; grid-template-columns: minmax(0, 480px) 1fr; gap:14px; }
+  @media (max-width: 820px) { .big { grid-template-columns: 1fr; } }
+  .big canvas { width:100%; max-width:480px; aspect-ratio:1; border-radius:10px; border:1px solid var(--border); }
+  fieldset { border:1px solid var(--border); border-radius:10px; margin:0 0 10px; padding:8px 10px; }
+  legend { font-weight:700; padding:0 4px; }
+  label.opt { display:inline-flex; gap:5px; align-items:center; margin:2px 12px 2px 0; }
+  textarea { width:100%; min-height:60px; }
+  table { border-collapse:collapse; width:100%; font-size:.85rem; }
+  th, td { border-bottom:1px solid var(--border); padding:4px 6px; text-align:left; }
+  .tablewrap { overflow-x:auto; }
+  .warn { border-left:4px solid var(--coral); }
+  .flag { color:var(--coral); font-weight:700; }
+  [hidden] { display:none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🛰️ Sibiu din satelit</h1>
+  <div class="sec">From Grey to Play · evaluare la distanță a terenurilor publice din Sibiu, pe imagini din satelit
+    Esri World Imagery Wayback (2011–2025). Imagini: Esri, Maxar, Earthstar Geographics și comunitatea GIS. Contururi: © OpenStreetMap contributors (ODbL).</div>
+
+  <div class="card warn" id="intro">
+    <h2>Cum lucrezi (10 minute de citit, ~2 ore de evaluat)</h2>
+    <ol class="sec" style="margin:0;padding-left:1.2rem">
+      <li>Alege-ți numele. Evaluările se salvează automat în acest browser.</li>
+      <li>Pentru fiecare teren vezi toate imaginile din satelit, de la cea mai veche la cea mai nouă. Conturul galben e locul unde OpenStreetMap spune că e terenul — imaginile vechi pot fi decalate câțiva metri, judecă după ce vezi, nu după contur.</li>
+      <li>Sub <b>fiecare</b> imagine alegi dacă acolo se vede un teren de sport. Apoi răspunzi la 5 întrebări despre imaginea cea mai nouă.</li>
+      <li><b>Lucrezi singur.</b> Nu te uita la evaluările colegilor și nu le discuta până nu termină toți — altfel nu mai măsurăm nimic.</li>
+      <li>Nu știi în ce cartier e terenul — intenționat. Judecă doar ce vezi.</li>
+      <li>Dacă nu se vede clar, alege „Nu se poate spune”. Un „nu știu” cinstit valorează mai mult decât o ghicitoare.</li>
+      <li>La final apasă <b>Exportă</b> și trimite fișierul lui Teodor.</li>
+    </ol>
+  </div>
+
+  <div class="card row">
+    <label>Evaluator
+      <select id="reviewer">
+        <option value="">— alege —</option>
+        <option>Cîmpan Teodor</option><option>Trofin Matei</option><option>Țurcanu Mihai</option>
+        <option>Cernescu Ionuț</option><option>Drăgan Ilie</option>
+      </select>
+    </label>
+    <label class="opt"><input type="checkbox" id="outline" checked> contur</label>
+    <span class="sec" id="progress"></span>
+    <span style="flex:1"></span>
+    <button id="export" disabled>⬇️ Exportă</button>
+    <button id="copy" disabled>📋 Copiază</button>
+  </div>
+
+  <div class="layout" id="main" hidden>
+    <div class="card list" id="list"></div>
+    <div>
+      <div class="card">
+        <h2 id="title"></h2>
+        <div class="sec" id="meta"></div>
+        <div class="strip" id="strip" style="margin-top:10px"></div>
+      </div>
+      <div class="card big">
+        <div><canvas id="bigc" width="480" height="480"></canvas><div class="sec" id="bigd"></div></div>
+        <form id="form">
+          <fieldset><legend>1. Se vede terenul în imaginea cea mai nouă?</legend>
+            <label class="opt"><input type="radio" name="visible" value="yes">Da</label>
+            <label class="opt"><input type="radio" name="visible" value="partly">Parțial (umbră, copaci)</label>
+            <label class="opt"><input type="radio" name="visible" value="no">Nu — e altceva (iarbă, clădire, șantier, parcare)</label>
+            <label class="opt"><input type="radio" name="visible" value="unsure">Nu se poate spune</label>
+          </fieldset>
+          <fieldset><legend>2. Suprafața, în imaginea cea mai nouă</legend>
+            <label class="opt"><input type="radio" name="surface" value="uniform">Uniformă, curată</label>
+            <label class="opt"><input type="radio" name="surface" value="patchy">Pete / fisuri / zone diferite</label>
+            <label class="opt"><input type="radio" name="surface" value="overgrown">Acoperită parțial de vegetație</label>
+            <label class="opt"><input type="radio" name="surface" value="unsure">Nu se poate spune</label>
+          </fieldset>
+          <fieldset><legend>3. Marcajele (liniile) în imaginea cea mai nouă</legend>
+            <label class="opt"><input type="radio" name="markings" value="clear">Clare</label>
+            <label class="opt"><input type="radio" name="markings" value="faint">Slabe</label>
+            <label class="opt"><input type="radio" name="markings" value="none">Nu se văd</label>
+            <label class="opt"><input type="radio" name="markings" value="unsure">Nu se poate spune</label>
+          </fieldset>
+          <fieldset><legend>4. Din ce imagine arată terenul la fel ca în cea mai nouă?</legend>
+            <div class="sec">Alege cea mai veche imagine în care terenul arată deja ca acum. Dacă arată la fel în toate, alege prima.</div>
+            <select name="since" id="since"></select>
+            <div style="margin-top:6px">Ce s-a schimbat înainte de acea imagine?
+              <select name="change">
+                <option value="">—</option>
+                <option value="none">Nimic, arată la fel în toate</option>
+                <option value="resurfaced">Suprafață nouă / refăcut</option>
+                <option value="built">Teren construit de la zero</option>
+                <option value="degraded">S-a degradat</option>
+                <option value="construction">Șantier / lucrări în curs</option>
+                <option value="removed">A dispărut / alt folos</option>
+                <option value="other">Altceva (scrie mai jos)</option>
+                <option value="unsure">Nu se poate spune</option>
+              </select>
+            </div>
+          </fieldset>
+          <fieldset><legend>5. Cât de sigur ești?</legend>
+            <label class="opt"><input type="radio" name="confidence" value="1">Puțin</label>
+            <label class="opt"><input type="radio" name="confidence" value="2">Destul</label>
+            <label class="opt"><input type="radio" name="confidence" value="3">Foarte</label>
+          </fieldset>
+          <textarea name="notes" placeholder="Observații (opțional): ce ai văzut, ce te-a făcut să alegi așa"></textarea>
+          <div class="row" style="margin-top:8px">
+            <button type="button" id="prev">← Înapoi</button>
+            <button type="submit" class="primary">Salvează și mergi mai departe →</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var WB_TILE = "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/";
+  var BOX_M = 110, OUT = 480, THUMB = 240;
+  var state = { courts: [], caps: {}, polys: {}, idx: 0, sel: -1, reviewer: "", data: {} };
+  var $ = function (id) { return document.getElementById(id); };
+
+  function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem(k) || "null"); localStorage.setItem(k, JSON.stringify(v)); } catch (e) { return null; } }
+  function getJSON(u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(u + " HTTP " + r.status); return r.json(); }); }
+
+  // --- geometry: Web Mercator pixels at zoom z ---
+  function px(lat, lng, z) {
+    var n = 256 * Math.pow(2, z), s = Math.sin(lat * Math.PI / 180);
+    return { x: (lng + 180) / 360 * n, y: (0.5 - Math.log((1 + s) / (1 - s)) / (4 * Math.PI)) * n };
+  }
+  function mpp(lat, z) { return 156543.03392 * Math.cos(lat * Math.PI / 180) / Math.pow(2, z); }
+  function centre(c) {
+    var p = state.polys[c.id];
+    if (!p) return { lat: c.lat, lng: c.lng };
+    var la = 0, lo = 0; p.forEach(function (q) { la += q[0]; lo += q[1]; });
+    return { lat: la / p.length, lng: lo / p.length };
+  }
+
+  var tileCache = {};
+  function tile(r, z, x, y) {
+    var k = r + "/" + z + "/" + y + "/" + x;
+    if (!tileCache[k]) tileCache[k] = new Promise(function (res) {
+      var im = new Image(); im.crossOrigin = "anonymous";
+      im.onload = function () { res(im); }; im.onerror = function () { res(null); };
+      im.src = WB_TILE + k;
+    });
+    return tileCache[k];
+  }
+
+  // Draws one capture, BOX_M metres wide, centred on the court, into canvas cv (size S×S).
+  function render(c, cap, cv, outline) {
+    var S = cv.width, ctx = cv.getContext("2d"), ce = centre(c), z = cap.z;
+    var half = BOX_M / 2 / mpp(ce.lat, z), p0 = px(ce.lat, ce.lng, z);
+    var x0 = p0.x - half, y0 = p0.y - half, scale = S / (2 * half);
+    var tx0 = Math.floor(x0 / 256), tx1 = Math.floor((x0 + 2 * half) / 256), ty0 = Math.floor(y0 / 256), ty1 = Math.floor((y0 + 2 * half) / 256);
+    var jobs = [];
+    for (var tx = tx0; tx <= tx1; tx++) for (var ty = ty0; ty <= ty1; ty++) (function (tx, ty) {
+      jobs.push(tile(cap.r, z, tx, ty).then(function (im) { return { im: im, tx: tx, ty: ty }; }));
+    })(tx, ty);
+    return Promise.all(jobs).then(function (ts) {
+      ctx.fillStyle = "#0b0e1a"; ctx.fillRect(0, 0, S, S);
+      ctx.imageSmoothingQuality = "high";
+      var missing = 0;
+      ts.forEach(function (t) {
+        if (!t.im) { missing++; return; }
+        ctx.drawImage(t.im, (t.tx * 256 - x0) * scale, (t.ty * 256 - y0) * scale, 256 * scale, 256 * scale);
+      });
+      var path = polyPath(c, z, x0, y0, scale, S);
+      if (outline && path) { ctx.save(); ctx.strokeStyle = "rgba(255,214,10,.95)"; ctx.lineWidth = Math.max(1.5, S / 240); ctx.setLineDash([6, 4]); ctx.stroke(path); ctx.restore(); }
+      return { missing: missing };
+    });
+  }
+  function polyPath(c, z, x0, y0, scale, S) {
+    var p = state.polys[c.id], path = new Path2D();
+    if (!p) { // OSM point only: a 28×15 m box around it, marked as approximate
+      var ce = centre(c), q = px(ce.lat, ce.lng, z), m = mpp(ce.lat, z);
+      var w = 14 / m, h = 7.5 / m;
+      path.rect((q.x - w - x0) * scale, (q.y - h - y0) * scale, 2 * w * scale, 2 * h * scale);
+      return path;
+    }
+    p.forEach(function (v, i) { var q = px(v[0], v[1], z), X = (q.x - x0) * scale, Y = (q.y - y0) * scale; if (i) path.lineTo(X, Y); else path.moveTo(X, Y); });
+    path.closePath(); return path;
+  }
+
+
+  // --- UI ---
+  function court() { return state.courts[state.idx]; }
+  function caps(c) { return state.caps[c.id] || []; }
+  var SPORT = { basketball: "baschet", football: "fotbal", multiuse: "multisport", volleyball: "volei" };
+
+  function drawList() {
+    var done = 0;
+    $("list").innerHTML = "";
+    state.courts.forEach(function (c, i) {
+      var b = document.createElement("button"), ok = !!state.data[c.id];
+      if (ok) done++;
+      b.className = i === state.idx ? "on" : "";
+      b.innerHTML = "<span>" + c.id + " · " + (SPORT[c.category] || c.category) + "</span><span class='done'>" + (ok ? "✔" : "") + "</span>";
+      b.onclick = function () { state.idx = i; show(); };
+      $("list").appendChild(b);
+    });
+    $("progress").textContent = done + " / " + state.courts.length + " evaluate";
+    $("export").disabled = $("copy").disabled = !done;
+  }
+
+  function show() {
+    var c = court(), cs = caps(c), outline = $("outline").checked;
+    drawList();
+    $("title").textContent = c.id + " · teren de " + (SPORT[c.category] || c.category);
+    $("meta").textContent = cs.length + " imagini din satelit, " + (cs[0] ? cs[0].date : "?") + " → " + (cs.length ? cs[cs.length - 1].date : "?") +
+      (state.polys[c.id] ? "" : " · contur aproximativ (în OSM terenul e doar un punct)");
+    var strip = $("strip"); strip.innerHTML = "";
+    var since = $("since"); since.innerHTML = "<option value=''>— alege imaginea —</option>";
+    cs.forEach(function (cap, i) {
+      var d = document.createElement("div"); d.className = "cap";
+      var cv = document.createElement("canvas"); cv.width = cv.height = THUMB;
+      d.appendChild(cv);
+      var lbl = document.createElement("div"); lbl.className = "d";
+      lbl.innerHTML = "<span>" + cap.date + "</span><span>" + cap.res + " m</span>";
+      d.appendChild(lbl);
+      var vs = document.createElement("select");
+      vs.dataset.date = cap.date; vs.className = "tl unset";
+      vs.innerHTML = "<option value=''>teren vizibil?</option><option value='yes'>✔ se vede teren</option><option value='no'>✖ nu e teren</option><option value='unsure'>? nu se poate spune</option>";
+      vs.onclick = function (e) { e.stopPropagation(); };
+      vs.onchange = function () { vs.className = "tl" + (vs.value ? "" : " unset"); };
+      d.appendChild(vs);
+      d.onclick = function () { pick(i); };
+      strip.appendChild(d);
+      render(c, cap, cv, outline);
+      var o = document.createElement("option"); o.value = cap.date; o.textContent = cap.date; since.appendChild(o);
+    });
+    pick(cs.length - 1);
+    fill(state.data[c.id] || {});
+  }
+
+  function pick(i) {
+    var c = court(), cap = caps(c)[i];
+    state.sel = i;
+    [].forEach.call($("strip").children, function (d, j) { d.className = "cap" + (j === i ? " sel" : ""); });
+    if (!cap) return;
+    $("bigd").textContent = cap.date + " · rezoluție " + cap.res + " m/pixel · " + (cap.provider || "") + " " + (cap.sensor || "") + (i === caps(c).length - 1 ? " · cea mai nouă" : "");
+    render(c, cap, $("bigc"), $("outline").checked);
+  }
+
+  function fill(v) {
+    var f = $("form");
+    ["visible", "surface", "markings", "confidence"].forEach(function (n) {
+      [].forEach.call(f.elements[n], function (r) { r.checked = String(v[n]) === r.value; });
+    });
+    f.elements.since.value = v.since || ""; f.elements.change.value = v.change || ""; f.elements.notes.value = v.notes || "";
+    [].forEach.call(document.querySelectorAll("#strip select.tl"), function (sel) {
+      sel.value = (v.timeline && v.timeline[sel.dataset.date]) || ""; sel.className = "tl" + (sel.value ? "" : " unset");
+    });
+  }
+  function read() {
+    var f = $("form"), v = {};
+    ["visible", "surface", "markings", "confidence"].forEach(function (n) { var r = f.querySelector("input[name=" + n + "]:checked"); v[n] = r ? r.value : ""; });
+    v.since = f.elements.since.value; v.change = f.elements.change.value; v.notes = f.elements.notes.value.trim();
+    v.timeline = {};
+    [].forEach.call(document.querySelectorAll("#strip select.tl"), function (sel) { v.timeline[sel.dataset.date] = sel.value; });
+    return v;
+  }
+
+  $("form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var v = read();
+    if (Object.keys(v.timeline).some(function (d) { return !v.timeline[d]; })) { alertInline("Alege sub fiecare imagine dacă se vede un teren („nu se poate spune” e valid)."); return; }
+    if (!v.visible || !v.surface || !v.markings || !v.since || !v.change || !v.confidence) { alertInline("Răspunde la toate cele 5 întrebări („Nu se poate spune” e un răspuns valid)."); return; }
+    v.confidence = +v.confidence; v.savedAt = new Date().toISOString();
+    state.data[court().id] = v;
+    store("g2p_sat_" + state.reviewer, state.data);
+    if (state.idx < state.courts.length - 1) state.idx++;
+    show();
+  });
+  $("prev").onclick = function () { if (state.idx > 0) { state.idx--; show(); } };
+  $("outline").onchange = show;
+  function alertInline(msg) {
+    var p = $("form").querySelector(".msg") || document.createElement("div");
+    p.className = "msg flag"; p.textContent = msg; $("form").appendChild(p);
+    setTimeout(function () { p.remove(); }, 4000);
+  }
+
+  $("reviewer").onchange = function () {
+    state.reviewer = this.value;
+    $("main").hidden = !state.reviewer;
+    if (!state.reviewer) return;
+    state.data = store("g2p_sat_" + state.reviewer) || {};
+    var first = state.courts.findIndex(function (c) { return !state.data[c.id]; });
+    state.idx = first < 0 ? 0 : first;
+    show();
+  };
+
+  function payload() {
+    return JSON.stringify({ tool: "sat-review", version: 2, reviewer: state.reviewer, exportedAt: new Date().toISOString(),
+      source: "Esri World Imagery Wayback; outlines © OpenStreetMap contributors", reviews: state.data }, null, 2);
+  }
+  function download(name, text) {
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([text], { type: "application/json" }));
+    a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  }
+  var slug = function (s) { return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-"); };
+  $("export").onclick = function () { download("sat-review-" + slug(state.reviewer) + ".json", payload()); };
+  $("copy").onclick = function () {
+    navigator.clipboard.writeText(payload()).then(function () { alertInline("Copiat. Lipește textul într-un mesaj către Teodor."); }, function () { alertInline("Copierea nu a mers — folosește Exportă."); });
+  };
+
+  // --- boot ---
+  Promise.all([getJSON("data/courts_sibiu.json"), getJSON("../data/timemachine.json"), getJSON("data/sibiu_court_polygons.json")]).then(function (r) {
+    state.courts = r[0].courts.slice().sort(function (a, b) { return +a.id.slice(2) - +b.id.slice(2); });
+    state.caps = r[1].courts; state.polys = r[2];
+    var last = store("g2p_sat_last");
+    if (last) { $("reviewer").value = last; $("reviewer").onchange.call($("reviewer")); }
+    $("reviewer").addEventListener("change", function () { store("g2p_sat_last", this.value); });
+  }).catch(function (e) {
+    $("intro").insertAdjacentHTML("beforeend", "<p class='flag'>Nu s-au putut încărca datele: " + e.message + "</p>");
+  });
+})();
+</script>
+</body>
+</html>
