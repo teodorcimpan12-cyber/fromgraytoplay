@@ -20,8 +20,7 @@ if (!CHROME) { console.log("⚠ smoke: Chrome not found — skipped (the Netlify
 
 const PAGES = ["home", "courts", "reports", "petition", "community", "impact", "help", "about", "profile"];
 const CITIES = [["tgm", "c1"], ["sibiu", "sb1"]];
-// Known, harmless: Leaflet teardown race when a map unmounts mid-animation.
-const IGNORE = [/_leaflet_pos/, /ERR_|net::|Failed to load resource|vibrate/i];
+const IGNORE = [/ERR_|net::|Failed to load resource|vibrate/i];
 const TYPES = { ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript", ".json": "application/json", ".png": "image/png", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".css": "text/css", ".webp": "image/webp" };
 
 const root = process.cwd();

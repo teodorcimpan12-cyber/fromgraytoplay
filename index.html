@@ -859,6 +859,15 @@ function applyAccent(p, s2) {
   const m = document.querySelector('meta[name="theme-color"]');
   if (m) m.setAttribute("content", p || "#10B981");
 }
+// Leaflet 1.9 schedules zoom-end work in timers that map.remove() does not cancel; when a page
+// unmounts its map mid-zoom those callbacks read a deleted pane and throw "_leaflet_pos".
+if (window.L && L.Map && !L.Map.prototype.__g2pSafe) {
+  L.Map.prototype.__g2pSafe = true;
+  const panePos = L.Map.prototype._getMapPanePos;
+  L.Map.prototype._getMapPanePos = function () { return this._mapPane ? panePos.call(this) : new L.Point(0, 0); };
+  const zoomEnd = L.Map.prototype._onZoomTransitionEnd;
+  L.Map.prototype._onZoomTransitionEnd = function () { if (this._mapPane) return zoomEnd.apply(this, arguments); };
+}
 // Load admin string overrides from Firebase on startup
 db.ref("settings/strings").once("value").then(snap => {
   const ov = snap.val();
