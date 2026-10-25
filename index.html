@@ -178,6 +178,53 @@ a[href^="tel:"],a[href^="mailto:"]{display:inline-flex;align-items:center;min-he
 .install-banner .ib-x{background:none;border:none;color:rgba(255,255,255,.7);font-size:1.1rem;cursor:pointer;position:absolute;right:.5rem}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes slideUp{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.pet-steps{max-width:640px;margin:0 auto 1.25rem}
+.pet-steps ol{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;margin:0;padding:0}
+.pet-steps li{display:flex;flex-direction:column;align-items:center;gap:.3rem;text-align:center;font-size:.85rem;color:var(--textSec)}
+.ps-n{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.05rem;border:2px solid var(--border);background:var(--bgCard)}
+.pet-steps li.now .ps-n{border-color:var(--green);color:var(--green);box-shadow:0 0 0 4px color-mix(in srgb,var(--green) 20%,transparent)}
+.pet-steps li.now{color:var(--text);font-weight:700}
+.pet-steps li.done .ps-n{background:var(--green);border-color:var(--green);color:var(--white)}
+.ps-now{margin:.8rem 0 0;padding:.75rem 1rem;border-radius:var(--radius);background:color-mix(in srgb,var(--green) 10%,transparent);border:1px solid color-mix(in srgb,var(--green) 35%,transparent);font-size:1.05rem;font-weight:600;text-align:center;color:var(--text)}
+.pet-acct,.pet-share{max-width:640px;margin:0 auto 1.25rem;text-align:center;padding:1.5rem}
+.pet-acct h3,.pet-share h3{font-size:1.25rem;margin-bottom:.5rem}
+.pet-acct p,.pet-share p{font-size:1rem;line-height:1.55;color:var(--textSec);margin-bottom:1rem}
+.pet-acct-row{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center}
+.pet-acct-row .btn,.btn-lg{min-height:52px;font-size:1.05rem;padding:.75rem 1.4rem}
+.pet-acct-row .btn{flex:1 1 12rem}
+.pet-skip{margin-top:1rem;background:none;border:none;color:var(--textSec);text-decoration:underline;font-size:.9rem;cursor:pointer;min-height:44px}
+.pet-share-hd{font-size:2.4rem}
+.pet-share-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.5rem;margin-top:.9rem}
+.pet-share-btn{display:flex;align-items:center;justify-content:center;gap:.45rem;min-height:50px;border-radius:var(--radius);border:none;background:var(--pc);color:var(--white);font-weight:700;font-size:.98rem;text-decoration:none;cursor:pointer}
+.showcase .sc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.8rem}
+.sc-tile{display:flex;flex-direction:column;align-items:flex-start;gap:.35rem;text-align:left;padding:1.1rem;border-radius:var(--radius);border:1px solid var(--border);background:var(--bgCard);color:var(--text);cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s}
+.sc-tile:hover,.sc-tile:focus-visible{transform:translateY(-3px);border-color:var(--green);box-shadow:var(--shadow)}
+.sc-tile b{font-size:1.02rem}.sc-tile span:last-child{font-size:.86rem;line-height:1.45;color:var(--textSec)}
+.sc-ic{font-size:1.6rem}
+.sc-cta{margin-top:1.2rem;padding:1.2rem;border-radius:var(--radius);display:flex;gap:1rem;align-items:center;justify-content:space-between;flex-wrap:wrap;background:color-mix(in srgb,var(--green) 9%,transparent);border:1px solid color-mix(in srgb,var(--green) 30%,transparent)}
+.sc-cta p{margin:0;flex:1 1 18rem;line-height:1.5}
+@media (max-width:600px){.showcase .sc-grid{grid-template-columns:1fr 1fr}.sc-tile{padding:.85rem}.sc-tile span:last-child{display:none}.pet-steps li{font-size:.75rem}}
+.ntf-scrim{position:fixed;inset:0;z-index:1200;background:rgba(0,0,0,.25)}
+.ntf-panel{position:fixed;top:64px;right:1rem;width:min(380px,calc(100vw - 2rem));max-height:72vh;z-index:1201;display:flex;flex-direction:column;background:var(--bgCard);color:var(--text);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 18px 50px rgba(0,0,0,.3);animation:slideUp .25s ease}
+.ntf-hd{display:flex;align-items:center;gap:.5rem;padding:.75rem .9rem;border-bottom:1px solid var(--border)}
+.ntf-hd strong{flex:1}
+.ntf-link{background:none;border:none;color:var(--green);font-weight:600;font-size:.85rem;cursor:pointer;min-height:40px}
+.ntf-x{width:40px;height:40px;border:none;background:none;color:var(--textSec);font-size:1.5rem;cursor:pointer}
+.ntf-tabs{display:flex;gap:.3rem;padding:.5rem .6rem;border-bottom:1px solid var(--border)}
+.ntf-tabs button{flex:1;min-height:40px;border-radius:999px;border:1px solid var(--border);background:none;color:var(--textSec);font-size:.82rem;font-weight:600;cursor:pointer}
+.ntf-tabs button.on{background:var(--green);border-color:var(--green);color:var(--white)}
+.ntf-list{overflow-y:auto;flex:1}
+.ntf-row{display:flex;gap:.7rem;align-items:center;width:100%;text-align:left;padding:.75rem .9rem;border:none;border-bottom:1px solid var(--border);background:none;color:var(--text);cursor:pointer;min-height:56px}
+.ntf-row:hover{background:color-mix(in srgb,var(--green) 6%,transparent)}
+.ntf-row.unread{background:color-mix(in srgb,var(--green) 10%,transparent)}
+.ntf-ic{font-size:1.2rem;flex-shrink:0}
+.ntf-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:.15rem}
+.ntf-txt{font-size:.9rem;line-height:1.35}
+.ntf-body time{font-size:.74rem;color:var(--textSec)}
+.ntf-dot{width:9px;height:9px;border-radius:50%;background:var(--green);flex-shrink:0}
+.ntf-empty{padding:1.1rem;color:var(--textSec);font-size:.9rem;line-height:1.5}
+.ntf-empty p{margin:0 0 .6rem}
+@media (max-width:600px){.ntf-panel{top:auto;bottom:0;left:0;right:0;width:auto;max-height:80vh;border-radius:18px 18px 0 0;padding-bottom:env(safe-area-inset-bottom)}}
 .g2p-nudge{position:fixed;right:1.25rem;bottom:1.25rem;z-index:900;width:min(360px,calc(100vw - 2rem));box-sizing:border-box;padding:1.25rem 1.25rem 1.1rem;border-radius:18px;background:color-mix(in srgb,var(--bgCard) 90%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid color-mix(in srgb,var(--green) 35%,var(--border));box-shadow:0 18px 50px rgba(0,0,0,.35);animation:slideUp .45s cubic-bezier(.2,.8,.2,1)}
 .g2p-nudge h3{font-size:1.02rem;line-height:1.3;margin:.35rem 1.6rem .45rem 0}
 .g2p-nudge p{font-size:.86rem;line-height:1.5;color:var(--textSec);margin:0 0 .9rem}
@@ -1337,6 +1384,9 @@ T.ro.gameJoined = "Te-ai alăturat jocului!";
 T.ro.gameFull = "Jocul e complet!";
 T.ro.feedGame = "{name} a pornit un joc la {court}";
 T.ro.feedJoin = "{name} s-a alăturat unui joc la {court}";
+T.ro.feedAdopt = "{name} a adoptat un teren";
+T.ro.feedPixel = "{name} a pictat pe murala colectivă";
+T.ro.feedPhoto = "{name} a adăugat o poză la {court}";
 T.en.playNow = "Play now";
 T.en.playNowSub = "Organise a pickup game";
 T.en.sport = "Sport";
@@ -1353,6 +1403,9 @@ T.en.gameJoined = "You joined the game!";
 T.en.gameFull = "Game is full!";
 T.en.feedGame = "{name} started a game at {court}";
 T.en.feedJoin = "{name} joined a game at {court}";
+T.en.feedAdopt = "{name} adopted a court";
+T.en.feedPixel = "{name} painted on the shared mural";
+T.en.feedPhoto = "{name} added a photo at {court}";
 T.hu.playNow = "Játszani most"; // TODO: HU review
 T.hu.playNowSub = "Szervezz alkalmi meccset"; // TODO: HU review
 T.hu.sport = "Sport";
@@ -1369,6 +1422,9 @@ T.hu.gameJoined = "Csatlakoztál a játékhoz!";
 T.hu.gameFull = "A játék megtelt!";
 T.hu.feedGame = "{name} játékot indított: {court}"; // TODO: HU review
 T.hu.feedJoin = "{name} csatlakozott egy játékhoz: {court}"; // TODO: HU review
+T.hu.feedAdopt = "{name} örökbe fogadott egy pályát"; // TODO: HU review
+T.hu.feedPixel = "{name} festett a közös falfestményre"; // TODO: HU review
+T.hu.feedPhoto = "{name} fotót adott hozzá: {court}"; // TODO: HU review
 
 /* B3 — Follow court + notifications */
 T.ro.follow = "Urmărește";
@@ -1692,10 +1748,25 @@ function askConfirm(msg) {
 function logActivity(type, userName, courtId) {
   try {
     db.ref("activity").push({
-      type, userName: anonName(userName), courtId: courtId || null, timestamp: Date.now()
+      type, userName: anonName(userName), courtId: courtId || null, city: ACTIVE_CITY, timestamp: Date.now()
     });
   } catch (e) { /* offline — silently drop */ }
   try { bumpStreak(); } catch (e) { /* streak is best-effort */ }
+}
+// Which city an activity row belongs to: its own tag, else its court's city, else TGM (all untagged history is TGM).
+function activityCity(a) {
+  if (a.city) return a.city;
+  const c = a.courtId && COURTS_ALL.find(x => x.id === a.courtId);
+  return c ? (c.city || "tgm") : "tgm";
+}
+const ACTIVITY_ICONS = { "check-in": "🏀", petition: "✍️", photo: "📸", report: "⚠️", game: "⚽", join: "🤝", pixel: "🎨", adopt: "💚" };
+// Human sentence for an activity row, from the T.feed* templates.
+function activityMsg(a, t) {
+  const c = a.courtId && COURTS_ALL.find(x => x.id === a.courtId);
+  const courtName = c ? c.name : (a.courtId || "");
+  const tplKey = "feed" + (a.type === "check-in" ? "Checkin" : (a.type || "").charAt(0).toUpperCase() + (a.type || "").slice(1));
+  const tpl = t[tplKey] || ((a.userName || "Anon") + " — " + (a.type || ""));
+  return tpl.replace("{name}", a.userName || "Anon").replace("{court}", courtName);
 }
 // Downscale + JPEG-compress a File so it fits in RTDB as a data URL (~80-150KB).
 // Storage bucket isn't configured (config has only databaseURL), so photos live
@@ -5476,67 +5547,68 @@ function InstallBanner({
 
 /* === Navbar === */
 /* B3 — Notifications panel */
-function NotifPanel({ onClose }) {
-  const { t, lang } = useApp();
+/* Notifications: this city's activity (or only followed courts) + the latest admin announcement.
+   "Seen" is a timestamp in localStorage; the bell shows the unread count for everyone, not only followers. */
+function useNotifications() {
   const { follows } = useFollows();
   const followedIds = Object.keys(follows);
   const actData = useFirebase("activity");
-  const COURT_NAMES = COURTS.reduce((acc, c) => (acc[c.id] = c.name, acc), {});
-  const ICONS = { "check-in": "🏀", petition: "✍️", photo: "📸", report: "⚠️", game: "⚽", join: "🤝" };
-  const seen = parseInt(localStorage.getItem("g2p_notif_seen") || "0", 10);
-  const items = actData
-    ? Object.entries(actData)
-        .map(([id, a]) => ({ id, ...a }))
-        .filter(a => followedIds.length === 0 || (a.courtId && followedIds.includes(a.courtId)))
-        .sort((a, b) => tsOf(b) - tsOf(a))
-        .slice(0, 20)
-    : [];
-  const markRead = () => {
-    localStorage.setItem("g2p_notif_seen", String(Date.now()));
+  const settings = useFirebase("settings");
+  const [seen, setSeen] = useState(() => parseInt(localStorage.getItem("g2p_notif_seen") || "0", 10) || 0);
+  const all = actData ? Object.entries(actData).map(([id, a]) => ({ id, ...a, ts: tsOf(a) }))
+    .filter(a => a.ts && activityCity(a) === ACTIVE_CITY).sort((a, b) => b.ts - a.ts).slice(0, 40) : [];
+  const bc = settings && settings.broadcast && settings.broadcast.text ? { id: "bc", type: "broadcast", text: settings.broadcast.text, ts: settings.broadcast.ts || 0 } : null;
+  const mine = all.filter(a => a.courtId && followedIds.indexOf(a.courtId) >= 0);
+  const unread = all.filter(a => a.ts > seen).length + (bc && bc.ts > seen ? 1 : 0);
+  const markRead = () => { const n = Date.now(); try { localStorage.setItem("g2p_notif_seen", String(n)); } catch (e) {} setSeen(n); };
+  return { all, mine, bc, unread, seen, markRead, followedIds };
+}
+
+function NotifPanel({ onClose, notif }) {
+  const { t, lang, setPage } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const [tab, setTab] = useState("all");
+  const { all, mine, bc, seen, markRead, followedIds } = notif;
+  const list = tab === "mine" ? mine : all;
+  useEffect(() => {
+    const h = e => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", h);
+    return () => window.removeEventListener("keydown", h);
+  }, []);
+  const open = a => {
     onClose();
+    if (a.courtId) location.hash = "#court-" + a.courtId;
+    else if (a.type === "petition") setPage("petition");
+    else if (a.type === "pixel") setPage("community");
   };
-  const ago = ts => {
-    if (!ts) return "—";
-    const s = Math.floor((Date.now() - ts) / 1000);
-    if (s < 60) return s + "s";
-    if (s < 3600) return Math.floor(s / 60) + "m";
-    if (s < 86400) return Math.floor(s / 3600) + "h";
-    return Math.floor(s / 86400) + "d";
-  };
-  return React.createElement("div", {
-    style: {
-      position: "fixed", top: "64px", right: "1rem", width: "320px", maxWidth: "calc(100vw - 2rem)",
-      background: "var(--bgCard)", border: "1px solid var(--border)", borderRadius: "var(--radius)",
-      boxShadow: "0 8px 32px rgba(0,0,0,.18)", zIndex: 400, maxHeight: "70vh", display: "flex", flexDirection: "column"
-    }
+  const row = (a, body, icon) => React.createElement("button", {
+    key: a.id, className: "ntf-row" + (a.ts > seen ? " unread" : ""), onClick: () => open(a)
   },
-    React.createElement("div", { style: { padding: ".8rem 1rem", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" } },
-      React.createElement("strong", { style: { fontFamily: "'Space Mono',monospace", fontSize: ".9rem" } }, "🔔 ", t.notifications),
-      React.createElement("button", { onClick: markRead, style: { background: "none", border: "none", fontSize: ".75rem", color: "var(--green)", cursor: "pointer", fontWeight: 600 } }, t.markRead)
-    ),
-    React.createElement("div", { style: { overflowY: "auto", flex: 1 } },
-      followedIds.length === 0 && items.length > 0 && React.createElement("p", { style: { padding: ".5rem 1rem 0", color: "var(--textSec)", fontSize: ".72rem", margin: 0 } }, t.notifGlobalHint || "Activitate recenta din tot orasul."),
-      items.length === 0
-        ? React.createElement("p", { style: { padding: "1rem", color: "var(--textSec)", fontSize: ".88rem" } }, t.notifNone)
-        : items.map(a => React.createElement("div", {
-            key: a.id,
-            style: {
-              display: "flex", gap: ".6rem", alignItems: "center", padding: ".65rem 1rem",
-              borderBottom: "1px solid var(--border)",
-              background: (a.timestamp || 0) > seen ? "var(--green)12" : "transparent"
-            }
-          },
-            React.createElement("span", { style: { fontSize: "1.1rem", flexShrink: 0 } }, ICONS[a.type] || "•"),
-            React.createElement("div", { style: { flex: 1, minWidth: 0 } },
-              React.createElement("p", { style: { margin: 0, fontSize: ".82rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } },
-                React.createElement("strong", null, COURT_NAMES[a.courtId] || a.courtId || a.type || "\u2022"), " · ", a.userName || "Anon"
-              ),
-              React.createElement("time", { style: { fontSize: ".7rem", color: "var(--textSec)", fontFamily: "'Space Mono',monospace" } }, relTime(a.timestamp, lang))
-            ),
-            (a.timestamp || 0) > seen && React.createElement("span", { style: { width: 8, height: 8, borderRadius: "50%", background: "var(--green)", flexShrink: 0 } })
-          ))
-    )
-  );
+    React.createElement("span", { className: "ntf-ic", "aria-hidden": "true" }, icon),
+    React.createElement("span", { className: "ntf-body" },
+      React.createElement("span", { className: "ntf-txt" }, body),
+      React.createElement("time", null, relTime(a.ts, lang))),
+    a.ts > seen && React.createElement("span", { className: "ntf-dot", "aria-label": L3("nou", "new", "új") }));
+  return ReactDOM.createPortal(React.createElement(React.Fragment, null,
+    React.createElement("div", { className: "ntf-scrim", onClick: onClose }),
+    React.createElement("div", { className: "ntf-panel", role: "dialog", "aria-label": t.notifications },
+      React.createElement("div", { className: "ntf-hd" },
+        React.createElement("strong", null, "🔔 ", t.notifications),
+        React.createElement("button", { className: "ntf-link", onClick: markRead }, L3("Marchează citite", "Mark all read", "Mind olvasott")),
+        React.createElement("button", { className: "ntf-x", onClick: onClose, "aria-label": L3("Închide", "Close", "Bezárás") }, "×")),
+      React.createElement("div", { className: "ntf-tabs", role: "tablist" },
+        React.createElement("button", { role: "tab", "aria-selected": tab === "all", className: tab === "all" ? "on" : "", onClick: () => setTab("all") }, L3("Tot orașul", "Whole city", "Az egész város") + " · " + cityName(lang)),
+        React.createElement("button", { role: "tab", "aria-selected": tab === "mine", className: tab === "mine" ? "on" : "", onClick: () => setTab("mine") }, L3("Terenurile mele", "My courts", "Pályáim") + (followedIds.length ? " (" + followedIds.length + ")" : ""))),
+      React.createElement("div", { className: "ntf-list" },
+        bc && tab === "all" && row(bc, React.createElement("b", null, bc.text), "📢"),
+        tab === "mine" && followedIds.length === 0
+          ? React.createElement("div", { className: "ntf-empty" },
+              React.createElement("p", null, "⭐ " + L3("Nu urmărești încă niciun teren.", "You don't follow any court yet.", "Még nem követsz pályát.")),
+              React.createElement("p", null, L3("Deschide un teren și apasă „Urmărește”: aici vezi tot ce se întâmplă acolo — check-in-uri, poze, sesizări.", "Open a court and tap “Follow”: you'll see everything that happens there — check-ins, photos, reports.", "Nyiss meg egy pályát és kövesd: itt látod, mi történik ott.")),
+              React.createElement("button", { className: "btn btn-green btn-sm", onClick: () => { onClose(); setPage("courts"); } }, L3("Alege un teren", "Pick a court", "Válassz pályát")))
+          : list.length === 0
+            ? React.createElement("p", { className: "ntf-empty" }, L3("Nicio activitate încă în " + cityName(lang) + ". Fii primul: fă check-in la un teren.", "No activity yet in " + cityName(lang) + ". Be the first: check in at a court.", "Még nincs aktivitás. Légy az első!"))
+            : list.map(a => row(a, activityMsg(a, t), ACTIVITY_ICONS[a.type] || "•"))))), document.body);
 }
 
 /* Live presence counter — presence/{voterKey} written from App. */
@@ -5670,13 +5742,8 @@ function Navbar() {
   const acctName = firebaseUser ? (nickname || (user && user.name) || firebaseUser.displayName || firebaseUser.email || firebaseUser.phoneNumber || "") : "";
   const L3 = (ro, en, hu) => lang === "ro" ? ro : lang === "hu" ? hu : en;
   const [showNotif, setShowNotif] = useState(false);
-  const { follows } = useFollows();
-  const followedIds = Object.keys(follows);
-  const actData = useFirebase(followedIds.length > 0 ? "activity" : null);
-  const seen = parseInt(localStorage.getItem("g2p_notif_seen") || "0", 10);
-  const unreadCount = actData && followedIds.length > 0
-    ? Object.values(actData).filter(a => a.courtId && followedIds.includes(a.courtId) && (a.timestamp || 0) > seen).length
-    : 0;
+  const notif = useNotifications();
+  const unreadCount = notif.unread;
   const navs = [{
     k: "home",
     l: t.home
@@ -5736,7 +5803,8 @@ function Navbar() {
   /*#__PURE__*/React.createElement("button", {
     onClick: () => setShowNotif(v => !v),
     style: { position: "relative" },
-    title: t.notifications
+    title: t.notifications,
+    "aria-label": t.notifications + (unreadCount ? " (" + unreadCount + ")" : "")
   }, "🔔", unreadCount > 0 && /*#__PURE__*/React.createElement("span", {
     style: { position:"absolute", top:"-4px", right:"-6px", background:"var(--coral)", color:"#fff", borderRadius:"50%", fontSize:".6rem", fontWeight:700, minWidth:"16px", height:"16px", lineHeight:"16px", textAlign:"center", padding:"0 2px" }
   }, unreadCount > 9 ? "9+" : unreadCount)),
@@ -5792,8 +5860,7 @@ function Navbar() {
     className: "hamburger",
     onClick: () => setMob(true)
   }, "\u2630"))),
-  showNotif && /*#__PURE__*/React.createElement(NotifPanel, { onClose: () => setShowNotif(false) }),
-  showNotif && /*#__PURE__*/React.createElement("div", { style: { position:"fixed",inset:0,zIndex:399 }, onClick: () => setShowNotif(false) }),
+  showNotif && /*#__PURE__*/React.createElement(NotifPanel, { notif: notif, onClose: () => setShowNotif(false) }),
   mob && /*#__PURE__*/React.createElement("div", {
     className: "mobile-menu"
   }, /*#__PURE__*/React.createElement("button", {
@@ -5817,7 +5884,10 @@ function Navbar() {
   }, t.language), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-outline",
     onClick: e => switchTheme(e, theme, setTheme)
-  }, theme === "dark" ? "☀️" : "🌙"), firebaseUser && React.createElement("button", {
+  }, theme === "dark" ? "☀️" : "🌙"), React.createElement("button", {
+    className: "btn btn-sm btn-outline",
+    onClick: () => { setMob(false); setShowNotif(true); }
+  }, "🔔 " + (unreadCount ? unreadCount + " " : "") + t.notifications), firebaseUser && React.createElement("button", {
     className: "btn btn-sm btn-outline",
     onClick: () => { setMob(false); setPage("profile"); }
   }, (isAdmin ? "\uD83D\uDC51 " : isSherif ? "\uD83D\uDC6E " : "\uD83D\uDC64 ") + acctName.split(/[ @]/)[0].substring(0, 14)), firebaseUser && React.createElement("button", {
@@ -6694,6 +6764,37 @@ function StatTile({ value, label, color }) {
   );
 }
 
+/* "What this site can do": the deep features most visitors never find, one tap each. Copy states only what exists. */
+function Showcase() {
+  const { lang, setPage, firebaseUser, openAuth } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const other = Object.keys(CITY_CFG).find(k => k !== ACTIVE_CITY);
+  const otherName = other ? (CITY_CFG[other][lang === "hu" ? "nameHu" : lang === "en" ? "nameEn" : "nameRo"]) : "";
+  const impact = tab => () => { sessionStorage.setItem("g2p_impact_tab", tab); setPage("impact"); scrollTo(0, 0); };
+  const firstCourt = COURTS.find(c => c.lat != null);
+  const tiles = [
+    ["🛰️", L3("Terenurile văzute din satelit", "Courts seen from space", "Pályák műholdról"), L3("Imagini reale din 2011–2022: vezi cum s-a schimbat (sau nu) fiecare teren.", "Real images from 2011–2022: see how each court changed — or didn't.", "Valódi képek 2011–2022 között."), () => { if (firstCourt) location.hash = "#court-" + firstCourt.id; }],
+    ["📅", L3("Cronologia", "The timeline", "Idővonal"), L3("Ce s-a promis, ce s-a investit și când — cu sursa fiecărui fapt.", "What was promised, invested and when — every fact with its source.", "Mit ígértek, mit fektettek be és mikor — forrással."), impact("tl")],
+    ["🧾", L3("Cifrele care șochează", "The numbers that shock", "Megdöbbentő számok"), L3("Inegalitatea dintre cartiere, pe o singură „chitanță”.", "The gap between neighbourhoods, on a single “receipt”.", "A városrészek közötti különbség egy „nyugtán”."), impact("calc")],
+    ["🗺️", L3("Două orașe", "Two cities", "Két város"), L3("Târgu Mureș și Sibiu, cu aceleași instrumente. Vezi " + otherName + ".", "Târgu Mureș and Sibiu with the same tools. See " + otherName + ".", "Marosvásárhely és Nagyszeben. Nézd meg: " + otherName + "."), () => { if (!other) return; try { localStorage.setItem("g2p_city", other); } catch (e) {} const u = new URL(location.href); u.searchParams.set("c", other); u.hash = ""; location.href = u.toString(); }],
+    ["🧬", L3("Pulsul orașului", "City pulse", "A város pulzusa"), L3("Fiecare semnătură și sesizare, reluată ca o animație.", "Every signature and report, replayed as an animation.", "Minden aláírás és bejelentés animációként."), () => { sessionStorage.setItem("g2p_open_pulse", "1"); setPage("impact"); scrollTo(0, 0); }],
+    ["📄", L3("Dosar PDF pentru consiliu", "A PDF file for the council", "PDF-dosszié a tanácsnak"), L3("Statistici, terenuri și sesizări, gata de dus la Primărie.", "Stats, courts and reports, ready to take to City Hall.", "Statisztikák és bejelentések, a városházának."), impact("calc")],
+    ["✉️", L3("Scrisoare către Primărie", "Letter to City Hall", "Levél a városházának"), L3("Scrisoare oficială completată automat, cu adresa corectă.", "An official letter filled in for you, with the right address.", "Hivatalos levél, kitöltve."), () => { setPage("petition"); scrollTo(0, 0); }],
+    ["📊", L3("Pagina de impact", "The impact page", "Hatás oldal"), L3("Sănătate, mediu, buget: ce ar schimba terenuri reparate.", "Health, environment, budget: what repaired courts would change.", "Egészség, környezet, költségvetés."), impact("calc")]
+  ];
+  return React.createElement("section", { className: "section showcase" },
+    React.createElement("div", { className: "container" },
+      React.createElement("h2", { className: "section-title" }, "✨ " + L3("Ce poate face site-ul ăsta", "What this site can do", "Mit tud ez az oldal")),
+      React.createElement("p", { className: "section-sub" }, L3("Majoritatea vizitatorilor văd doar harta. Iată restul — câte un clic fiecare.", "Most visitors only see the map. Here's the rest — one tap each.", "A legtöbben csak a térképet látják. Íme a többi.")),
+      React.createElement("div", { className: "sc-grid" }, tiles.map((x, i) => React.createElement("button", { key: i, className: "sc-tile", onClick: x[3] },
+        React.createElement("span", { className: "sc-ic", "aria-hidden": "true" }, x[0]),
+        React.createElement("b", null, x[1]),
+        React.createElement("span", null, x[2])))),
+      !firebaseUser && React.createElement("div", { className: "sc-cta" },
+        React.createElement("p", null, L3("Toate merg mai bine cu un cont: semnezi dintr-un clic, urmărești terenurile tale și sesizările tale nu se pierd.", "Everything works better with an account: one-tap signing, follow your courts, your reports never get lost.", "Fiókkal minden jobb: egy kattintásos aláírás, követett pályák.")),
+        React.createElement("button", { className: "btn btn-green btn-lg", onClick: () => openAuth("signup") }, "👤 " + L3("Creează cont gratuit", "Create a free account", "Ingyenes fiók")))));
+}
+
 function HomePage() {
   const {
     t,
@@ -6750,7 +6851,7 @@ function HomePage() {
   }, React.createElement("div", { className: "ac-icon" }, "\u270A"), /*#__PURE__*/React.createElement("h3", null, t.voteTitle)), /*#__PURE__*/React.createElement("button", {
     className: "action-card",
     onClick: () => setPage("help")
-  }, React.createElement("div", { className: "ac-icon" }, "\uD83E\uDD1D"), /*#__PURE__*/React.createElement("h3", null, t.quickVolunteer))))), /*#__PURE__*/React.createElement("section", {
+  }, React.createElement("div", { className: "ac-icon" }, "\uD83E\uDD1D"), /*#__PURE__*/React.createElement("h3", null, t.quickVolunteer))))), React.createElement(Showcase, null), /*#__PURE__*/React.createElement("section", {
     className: "section",
     style: {
       background: "var(--bgCard)"
@@ -7827,14 +7928,94 @@ function ShareCardCanvas({ total }) {
   );
 }
 
+/* Petition step bar: 1 account · 2 name + email · 3 vote · 4 share. Big type on purpose (older visitors). */
+function PetitionSteps({ step }) {
+  const { lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const steps = [
+    ["👤", L3("Fă-ți cont", "Create an account", "Fiók")],
+    ["✍️", L3("Nume și email", "Name and email", "Név és e-mail")],
+    ["✊", L3("Votează", "Vote", "Szavazz")],
+    ["📣", L3("Distribuie", "Share", "Oszd meg")]
+  ];
+  const now = [
+    L3("Pasul 1: fă-ți un cont (durează 30 de secunde).", "Step 1: create an account (takes 30 seconds).", "1. lépés: hozz létre fiókot."),
+    L3("Pasul 2: scrie-ți numele și emailul mai jos.", "Step 2: type your name and email below.", "2. lépés: írd be a neved és e-mailed."),
+    L3("Pasul 3: alege o variantă, bifează acordul și apasă butonul verde.", "Step 3: pick an option, tick the consent box and press the green button.", "3. lépés: válassz, jelöld be és nyomd meg a zöld gombot."),
+    L3("Ultimul pas: trimite petiția la prieteni și familie.", "Last step: send the petition to friends and family.", "Utolsó lépés: küldd el barátaidnak."),
+    L3("Gata! Mulțumim — fiecare distribuire aduce alți oameni.", "Done! Thank you — every share brings more people.", "Kész! Köszönjük!")
+  ][step - 1];
+  return React.createElement("div", { className: "pet-steps", "aria-label": now },
+    React.createElement("ol", null, steps.map((st, i) => React.createElement("li", {
+      key: i, className: i + 1 < step ? "done" : i + 1 === step ? "now" : ""
+    }, React.createElement("span", { className: "ps-n" }, i + 1 < step ? "✓" : i + 1), React.createElement("span", { className: "ps-l" }, st[0] + " " + st[1])))),
+    React.createElement("p", { className: "ps-now" }, now));
+}
+
+function PetitionAccountStep({ onSignup, onLogin, onSkip }) {
+  const { lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  return React.createElement("div", { className: "card pet-acct" },
+    React.createElement("h3", null, "👤 " + L3("Întâi, un cont", "First, an account", "Először egy fiók")),
+    React.createElement("p", null, L3("Cu un cont, semnătura ta e a unei persoane reale, nu un clic anonim, iar data viitoare nu mai scrii nimic din nou.",
+      "With an account your signature belongs to a real person, not an anonymous click, and next time you don't type anything again.",
+      "Fiókkal az aláírásod egy valódi emberé, nem névtelen kattintás.")),
+    React.createElement("div", { className: "pet-acct-row" },
+      React.createElement("button", { className: "btn btn-green btn-lg", onClick: onSignup }, L3("Creează cont", "Create account", "Fiók létrehozása")),
+      React.createElement("button", { className: "btn btn-outline btn-lg", onClick: onLogin }, L3("Am deja cont", "I already have one", "Már van fiókom"))),
+    React.createElement("button", { className: "pet-skip", onClick: onSkip }, L3("Nu pot face cont acum — semnez doar cu nume și email", "I can't make an account now — sign with name and email only", "Most nem tudok fiókot — csak névvel és e-maillel")));
+}
+
+/* After voting: one big "please share" block with the platforms people actually use. */
+function PetitionShare({ total, onShared }) {
+  const { lang, toast } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const url = SITE + "/?c=" + ACTIVE_CITY + "#petition";
+  const msg = L3("Am semnat petiția pentru terenuri de sport mai bune în " + cityName(lang) + ". Semnează și tu, durează un minut:",
+    "I signed the petition for better sports courts in " + cityName(lang) + ". Sign it too, it takes a minute:",
+    "Aláírtam a petíciót jobb sportpályákért (" + cityName(lang) + "). Írd alá te is:");
+  const e = encodeURIComponent;
+  const hit = () => onShared();
+  const native = () => {
+    if (navigator.share) navigator.share({ title: "From Grey to Play", text: msg, url }).then(hit).catch(() => {});
+  };
+  const copy = () => {
+    const done = () => { hit(); toast("🔗 " + L3("Link copiat", "Link copied", "Link másolva")); };
+    if (navigator.clipboard) navigator.clipboard.writeText(msg + " " + url).then(done).catch(() => {});
+  };
+  const P = [
+    ["WhatsApp", "💬", "https://wa.me/?text=" + e(msg + " " + url), "#25D366"],
+    ["Facebook", "📘", "https://www.facebook.com/sharer/sharer.php?u=" + e(url), "#1877F2"],
+    ["Telegram", "✈️", "https://t.me/share/url?url=" + e(url) + "&text=" + e(msg), "#229ED9"],
+    ["X", "𝕏", "https://twitter.com/intent/tweet?text=" + e(msg) + "&url=" + e(url), "#111827"],
+    ["Email", "✉️", "mailto:?subject=" + e(L3("Semnează petiția From Grey to Play", "Sign the From Grey to Play petition", "Petíció")) + "&body=" + e(msg + "\n\n" + url), "#6B7280"]
+  ];
+  return React.createElement("div", { className: "card pet-share" },
+    React.createElement("div", { className: "pet-share-hd" }, "🎉"),
+    React.createElement("h3", null, L3("Mulțumim! Acum te rugăm: distribuie petiția", "Thank you! Now please: share the petition", "Köszönjük! Most kérlek, oszd meg")),
+    React.createElement("p", null, L3("O petiție cu " + total + " de semnături e ușor de ignorat. Fiecare om căruia i-o trimiți o face mai greu de ignorat.",
+      "A petition with " + total + " signatures is easy to ignore. Everyone you send it to makes it harder to ignore.",
+      "Egy " + total + " aláírásos petíciót könnyű figyelmen kívül hagyni. Minden megosztás nehezebbé teszi.")),
+    navigator.share && React.createElement("button", { className: "btn btn-green btn-lg btn-block", onClick: native }, "📣 " + L3("Distribuie petiția", "Share the petition", "Petíció megosztása")),
+    React.createElement("div", { className: "pet-share-grid" },
+      P.map(([n, ic, href, col]) => React.createElement("a", { key: n, className: "pet-share-btn", href, target: "_blank", rel: "noopener", onClick: hit, style: { "--pc": col } },
+        React.createElement("span", { "aria-hidden": "true" }, ic), n)),
+      React.createElement("button", { className: "pet-share-btn", onClick: copy, style: { "--pc": "var(--teal)" } }, React.createElement("span", { "aria-hidden": "true" }, "🔗"), L3("Copiază link", "Copy link", "Link másolása"))));
+}
+
 function PetitionPage() {
   const {
     t,
     lang,
     toast,
-    user
+    user,
+    firebaseUser,
+    authReady,
+    openAuth
   } = useApp();
   const votes = useFirebase("votes");
+  const [noAcct, setNoAcct] = useState(false);
+  const [shared, setShared] = useState(() => !!localStorage.getItem("g2p_shared"));
   const [ch, setCh] = useState("");
   const [voted, setVoted] = useState(() => !!localStorage.getItem("g2p_voted"));
   const [hoopDone, setHoopDone] = useState(() => !!localStorage.getItem("g2p_hoop"));
@@ -7848,6 +8029,12 @@ function PetitionPage() {
   };
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
+  // Fill name + email from the account as soon as the person signs in.
+  useEffect(() => {
+    if (!user) return;
+    if (!name && user.name) setName(user.name);
+    if (!email && user.email && user.email.indexOf("@") > 0) setEmail(user.email);
+  }, [user && user.id]);
   const [vol, setVol] = useState(false);
   const [consent, setConsent] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
@@ -7934,7 +8121,11 @@ function PetitionPage() {
     style: {
       textAlign: "center"
     }
-  }, lang === "ro" ? "Alege viziunea ta pentru terenurile din " + cityName(lang) : "Choose your vision for " + cityName(lang) + " courts"), React.createElement(PetitionMilestoneBar, { total: total }), !voted && !hoopDone && React.createElement(HoopGame, { onDone: hoopFinish }), !voted ? /*#__PURE__*/React.createElement("div", {
+  }, lang === "ro" ? "Alege viziunea ta pentru terenurile din " + cityName(lang) : "Choose your vision for " + cityName(lang) + " courts"), React.createElement(PetitionMilestoneBar, { total: total }),
+  React.createElement(PetitionSteps, { step: voted ? (shared ? 5 : 4) : (firebaseUser || noAcct) ? (name.trim().length >= 2 && emailOk ? 3 : 2) : 1 }),
+  !voted && authReady && !firebaseUser && !noAcct && React.createElement(PetitionAccountStep, { onSignup: () => openAuth("signup"), onLogin: () => openAuth(), onSkip: () => setNoAcct(true) }),
+  voted && React.createElement(PetitionShare, { total: total, onShared: () => { setShared(true); try { localStorage.setItem("g2p_shared", "1"); } catch (e) {} } }),
+  !voted && !(firebaseUser || noAcct) ? null : !voted ? /*#__PURE__*/React.createElement("div", {
     id: "g2p-vote-form",
     style: {
       maxWidth: 600,
@@ -8110,39 +8301,6 @@ function PetitionPage() {
   }, total), /*#__PURE__*/React.createElement("div", {
     className: "stat-label"
   }, t.totalVotes))), /*#__PURE__*/React.createElement("div", {
-    className: "card mt-2"
-  }, /*#__PURE__*/React.createElement("h3", {
-    className: "mb-1"
-  }, t.share), /*#__PURE__*/React.createElement("div", {
-    className: "flex gap-1",
-    style: {
-      flexWrap: "wrap"
-    }
-  }, /*#__PURE__*/React.createElement("a", {
-    className: "btn btn-sm",
-    style: {
-      background: "#25D366",
-      color: "#fff"
-    },
-    href: `https://wa.me/?text=${encodeURIComponent(st + " " + url)}`,
-    target: "_blank"
-  }, "\uD83D\uDCAC WhatsApp"), /*#__PURE__*/React.createElement("a", {
-    className: "btn btn-sm",
-    style: {
-      background: "#1877F2",
-      color: "#fff"
-    },
-    href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-    target: "_blank"
-  }, "\uD83D\uDCD8 Facebook"), /*#__PURE__*/React.createElement("a", {
-    className: "btn btn-sm",
-    style: {
-      background: "#1DA1F2",
-      color: "#fff"
-    },
-    href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(st)}&url=${encodeURIComponent(url)}`,
-    target: "_blank"
-  }, "\uD83D\uDC26 Twitter"))), /*#__PURE__*/React.createElement("div", {
     style: {
       textAlign: "center",
       marginTop: "1rem"
@@ -8326,7 +8484,7 @@ function ActivityFeed() {
   const { t, lang } = useApp();
   const data = useFirebase("activity");
   const list = data
-    ? Object.entries(data).map(([id, a]) => ({ id, ...a })).sort((a, b) => tsOf(b) - tsOf(a)).slice(0, 30)
+    ? Object.entries(data).map(([id, a]) => ({ id, ...a })).filter(a => activityCity(a) === ACTIVE_CITY).sort((a, b) => tsOf(b) - tsOf(a)).slice(0, 30)
     : [];
   const COURT_NAMES = COURTS.reduce((acc, c) => (acc[c.id] = c.name, acc), {});
   const ICONS = { "check-in": "🏀", petition: "✍️", photo: "📸", report: "⚠️", game: "⚽", join: "🤝" };
@@ -9410,7 +9568,7 @@ function ImpactPage() {
     t,
     lang
   } = useApp();
-  const [tab, setTab] = useState("calc");
+  const [tab, setTab] = useState(() => { const v = sessionStorage.getItem("g2p_impact_tab"); sessionStorage.removeItem("g2p_impact_tab"); return v || "calc"; });
   const [pulse, setPulse] = useState(false);
   // Command palette deep-link: open City Pulse on arrival.
   useEffect(() => {
@@ -12393,7 +12551,7 @@ function App() {
       setToastMsg("👋 " + (T[lang] && T[lang].signOut ? T[lang].signOut + " ✓" : "Signed out"));
     }).catch(() => {});
   }, [lang]);
-  const openAuth = useCallback(() => setAuthOpen(true), []);
+  const openAuth = useCallback(mode => setAuthOpen(mode === "signup" ? "signup" : true), []);
   useEffect(() => {
     localStorage.setItem("g2p_lang", lang);
     document.documentElement.lang = lang;
