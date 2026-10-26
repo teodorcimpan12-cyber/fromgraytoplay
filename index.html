@@ -1393,6 +1393,23 @@ button.nav-cmd:hover .nav-glass{transform:rotate(-18deg) scale(1.15)}
   .help-opt,.help-act,.srcsheet,.srcpop,.pressqr-box{animation:none}
   .help-sweep{display:none}
 }
+.rq-wrap{display:grid;gap:.8rem;margin:0 0 1.2rem}
+.rq{border-left:5px solid var(--coral);display:flex;flex-direction:column;gap:.5rem}
+.rq-done{border-left-color:var(--green)}
+.rq-over{border-left-color:var(--red)}
+.rq-top{display:flex;justify-content:space-between;align-items:center;gap:.5rem;flex-wrap:wrap}
+.rq-k{font-family:'Space Mono',monospace;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--textSec)}
+.rq-st{font-size:.72rem;font-weight:700;border-radius:999px;padding:.15rem .6rem;background:color-mix(in srgb,var(--coral) 15%,transparent);color:var(--coral)}
+.rq-done .rq-st{background:color-mix(in srgb,var(--green) 15%,transparent);color:var(--green)}
+.rq-over .rq-st{background:color-mix(in srgb,var(--red) 15%,transparent);color:var(--red)}
+.rq-h{margin:0;font-size:1.02rem}
+.rq-meta{display:flex;flex-wrap:wrap;gap:.3rem 1.2rem;font-size:.82rem;color:var(--textSec)}
+.rq-meta b{color:var(--text);font-family:'Space Mono',monospace}
+.rq-bar{position:relative;height:22px;border-radius:999px;background:var(--border);overflow:hidden}
+.rq-bar i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--teal),var(--coral));border-radius:999px;transition:width .8s}
+.rq-bar span{position:relative;display:block;text-align:center;font-size:.72rem;font-weight:700;line-height:22px;color:var(--text);font-family:'Space Mono',monospace}
+.rq-list{margin:.1rem 0 0;padding-left:1.1rem;font-size:.85rem;line-height:1.55}
+.rq-foot{margin:0;font-size:.76rem;color:var(--textSec)}
 /* === Premium polish v2 === */
 /* 1. Scroll progress bar */
 #g2p-progress{position:fixed;top:0;left:0;right:0;z-index:9999;height:2px;background:linear-gradient(90deg,var(--green),var(--teal) 55%,var(--coral));transform-origin:left;transform:scaleX(0);pointer-events:none;will-change:transform}
@@ -12084,6 +12101,7 @@ function SourcesTab({ onEssay }) {
   const shown = all.filter(s => f === "all" || s.city === f);
   const goBack = () => { setPage(from.page); const y = from.y; setTimeout(() => window.scrollTo(0, y), 450); };
   return React.createElement("div", null,
+    React.createElement(RequestTracker, null),
     React.createElement("div", { className: "src-filter", role: "group" },
       [["all", ui.filterAll]].concat(groups).map(([k, label]) => React.createElement("button", { key: k, className: "g2chip" + (f === k ? " g2chip-on" : ""), "aria-pressed": f === k, onClick: () => setF(k) },
         label + " · " + (k === "all" ? all.length : all.filter(s => s.city === k).length)))),
@@ -14921,6 +14939,50 @@ function ReportCard({ r, now, onCourt }) {
     waiting > 0 && e("p", { className: "rp-wait", title: L3("Timp scurs de la trimitere", "Time since it was sent", "Elküldés óta eltelt idő") }, "⏳ " + L3("Așteaptă de ", "Waiting for ", "Vár: ") + waitText(waiting, lang)));
 }
 
+/* === Official requests to City Hall (Law 544/2001), shown in public with their registration numbers.
+   The law gives 10 days from registration to answer (or to announce an extension to at most 30 days).
+   When an answer arrives: set `answeredAt`, and add what it says to SOURCES as a new source. === */
+const CITY_REQUESTS = [
+  { city: "tgm", to: "Primăria Târgu Mureș", regNo: "51941", reg: "2026-10-26", answeredAt: null,
+    asked: {
+      ro: ["Bugetul detaliat pe sport și spații publice 2025 (cap. 67)", "Proiectele de investiții 2022–2025 pentru terenuri sportive", "Extrasul din SIDU 2021–2030 despre infrastructura sportivă", "Hotărârile de Consiliu Local 2022–2025 despre terenuri sportive", "Stadiul terenului multisport din str. Plopilor (HCL ian. 2025)"],
+      en: ["Detailed 2025 budget for sport and public spaces (chapter 67)", "2022–2025 investment projects for sports courts", "The SIDU 2021–2030 section on sports infrastructure", "2022–2025 City Council decisions on sports courts", "Status of the multi-sport court on Plopilor St. (Jan 2025 decision)"],
+      hu: ["A sport és közterek 2025-ös részletes költségvetése (67. fejezet)", "Sportpálya-beruházások 2022–2025", "A SIDU 2021–2030 sportinfrastruktúra-része", "Helyi tanácsi határozatok 2022–2025 a sportpályákról", "A Plopilor utcai multisport pálya állapota (2025. jan. határozat)"] } }, // TODO: HU review
+  { city: "sibiu", to: "Primăria Sibiu", regNo: "86747", reg: "2026-10-26", answeredAt: null,
+    asked: {
+      ro: ["Bugetul pe sport și spații publice pentru anul curent (cap. 67)", "Lista terenurilor sportive publice administrate de municipiu și starea lor", "Proiectele de investiții din ultimii 3 ani pentru terenuri sportive"],
+      en: ["This year's budget for sport and public spaces (chapter 67)", "The list of public sports courts run by the city and their condition", "Investment projects for sports courts in the last 3 years"],
+      hu: ["Az idei sport- és köztér-költségvetés (67. fejezet)", "A város által kezelt közpályák listája és állapotuk", "Az elmúlt 3 év sportpálya-beruházásai"] } } // TODO: HU review
+];
+function RequestTracker() {
+  const { lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const list = CITY_REQUESTS.filter(r => r.city === ACTIVE_CITY);
+  if (!list.length) return null;
+  const DAY = 864e5, now = Date.now();
+  const fmt = ms => new Date(ms).toLocaleDateString(lang === "en" ? "en-GB" : lang === "hu" ? "hu-HU" : "ro-RO", { day: "numeric", month: "short" });
+  return React.createElement("div", { className: "rq-wrap" }, list.map(r => {
+    const reg = new Date(r.reg + "T00:00:00").getTime(), due = reg + 10 * DAY, max = reg + 30 * DAY;
+    const left = Math.ceil((due - now) / DAY), pct = Math.max(0, Math.min(100, (now - reg) / (due - reg) * 100));
+    const st = r.answeredAt ? "done" : now <= due ? "wait" : now <= max ? "late" : "over";
+    const stLabel = { done: L3("Răspuns primit", "Answer received", "Válasz megérkezett"), wait: L3("Așteptăm răspunsul", "Waiting for the answer", "Várjuk a választ"), late: L3("Au trecut cele 10 zile — așteptăm, revenim", "The 10 days have passed — we're following up", "Letelt a 10 nap — újra írunk"), over: L3("Nici termenul maxim n-a fost respectat", "Even the maximum deadline was missed", "A végső határidő is lejárt") }[st];
+    return React.createElement("article", { key: r.regNo, className: "card rq rq-" + st },
+      React.createElement("div", { className: "rq-top" },
+        React.createElement("span", { className: "rq-k" }, "🏛️ " + L3("Cerere oficială · Legea 544/2001", "Official request · Law 544/2001", "Hivatalos kérelem · 544/2001-es törvény")),
+        React.createElement("span", { className: "rq-st" }, stLabel)),
+      React.createElement("h3", { className: "rq-h" }, L3("Am cerut datele direct de la ", "We asked for the data straight from ", "Az adatokat közvetlenül kértük: ") + r.to),
+      React.createElement("div", { className: "rq-meta" },
+        React.createElement("span", null, L3("Nr. înregistrare ", "Registration no. ", "Iktatószám "), React.createElement("b", null, r.regNo + " / " + new Date(reg).toLocaleDateString("ro-RO"))),
+        React.createElement("span", null, L3("Termen legal: ", "Legal deadline: ", "Törvényes határidő: "), React.createElement("b", null, fmt(due)), " · " + L3("cu prelungire, max. ", "with extension, max. ", "hosszabbítással max. ") + fmt(max))),
+      st === "wait" && React.createElement("div", { className: "rq-bar", role: "progressbar", "aria-valuenow": Math.round(pct), "aria-valuemin": 0, "aria-valuemax": 100 },
+        React.createElement("i", { style: { width: pct + "%" } }),
+        React.createElement("span", null, left <= 0 ? L3("azi e ultima zi", "today is the last day", "ma az utolsó nap") : L3("mai sunt " + left + (left === 1 ? " zi" : " zile"), left + (left === 1 ? " day" : " days") + " left", "még " + left + " nap"))),
+      React.createElement("ul", { className: "rq-list" }, (r.asked[lang] || r.asked.ro).map((x, i) => React.createElement("li", { key: i }, x))),
+      React.createElement("p", { className: "rq-foot" }, r.answeredAt ? L3("Ce scrie în răspuns e acum la Surse, cu link.", "What the answer says is now under Sources, with a link.", "A válasz tartalma most a Forrásoknál van, linkkel.")
+        : L3("Când vine răspunsul, îl publicăm aici și la Surse — exact ce scrie în el.", "When the answer arrives, we publish it here and under Sources — exactly what it says.", "Ha megjön a válasz, itt és a Forrásoknál közzétesszük — pontosan azt, ami benne áll.")));
+  }));
+}
+
 function ReportsPage() {
   const { t, lang, firebaseUser } = useApp();
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
@@ -14999,6 +15061,7 @@ function ReportsPage() {
           stageNames.map((n, i) => e("button", { key: i, className: "rp-stage s" + i + (stage === i ? " on" : ""), "aria-pressed": stage === i, onClick: () => setStage(stage === i ? -1 : i) },
             e("b", null, counts[i]), e("span", null, n), e("small", null, stageHelp[i])))),
         oldest && e("p", { className: "rp-oldest" }, "⏳ " + L3("Cea mai veche sesizare nerezolvată așteaptă de ", "The oldest unresolved report has waited ", "A legrégebbi megoldatlan bejelentés ennyi ideje vár: ") + waitText(now - oldest, lang) + "."),
+        e(RequestTracker, null),
         e("div", { className: "rp-tools" },
           e("div", { className: "tabs" },
             e("button", { className: tab === "all" ? "active" : "", onClick: () => setTab("all") }, t.allReports),
