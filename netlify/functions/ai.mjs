@@ -44,7 +44,7 @@ Max 170 words. Language: ${LANG[lang] || "Romanian"}. Plain text, no markdown.`;
 // ANTHROPIC_API_KEY (a JWT) + ANTHROPIC_BASE_URL, so the user's key lives in ANTHROPIC_API_KEY1;
 // without an own key we fall back to the gateway.
 function endpoint() {
-  const own = [process.env.ANTHROPIC_API_KEY1, process.env.ANTHROPIC_API_KEY].find(k => k && k.trim().startsWith("sk-ant-api"));
+  const own = [process.env.ANTHROPIC_API_KEY1, process.env.ANTHROPIC_API_KEY].find(k => k && /^sk-ant-(?!admin)/.test(k.trim()));
   if (own) return { key: own.trim(), url: "https://api.anthropic.com/v1/messages", via: "own" };
   if (process.env.ANTHROPIC_API_KEY && process.env.ANTHROPIC_BASE_URL)
     return { key: process.env.ANTHROPIC_API_KEY, url: process.env.ANTHROPIC_BASE_URL.replace(/\/+$/, "") + "/v1/messages", via: "gateway" };
@@ -70,7 +70,9 @@ export default async (req, context) => {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: { "access-control-allow-origin": okOrigin || "https://fromgreytoplay.netlify.app", "access-control-allow-headers": "content-type", "access-control-allow-methods": "POST, OPTIONS", "vary": "origin" } });
   if (req.method !== "POST") return json(405, { error: "method" }, okOrigin);
   if (!okOrigin) return json(403, { error: "origin" });
-  if (!endpoint()) return json(503, { error: "not_configured" }, okOrigin);
+  // Names and key kinds only (never values), so a wrong paste in the Netlify env is easy to spot.
+  if (!endpoint()) return json(503, { error: "not_configured", vars: Object.keys(process.env).filter(n => /^ANTHROPIC/.test(n))
+    .map(n => n + ":" + (((process.env[n] || "").trim().match(/^sk-ant-([a-z]+)/) || [])[1] || (/^eyJ/.test(process.env[n] || "") ? "jwt" : (process.env[n] || "").length ? "other" : "empty"))) }, okOrigin);
 
   const ip = (context && context.ip) || req.headers.get("x-nf-client-connection-ip") || "?";
   const now = Date.now(), h = (hits.get(ip) || []).filter(t => now - t < 3600e3);
