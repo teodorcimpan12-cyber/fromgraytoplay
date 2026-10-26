@@ -105,7 +105,9 @@ export default async (req, context) => {
     if (e.status === 401) {
       // shape of the key only (never the key), to spot paste mistakes in the Netlify env
       const k = String(process.env.ANTHROPIC_API_KEY);
-      out.key = { len: k.length, prefix: k.startsWith("sk-ant-api"), space: /\s/.test(k), quote: /["']/.test(k) };
+      const kind = (k.match(/^sk-ant-([a-z]+)/) || [])[1] || (k.startsWith("eyJ") ? "jwt" : "other");
+      out.key = { len: k.length, kind, space: /\s/.test(k), quote: /["']/.test(k),
+        vars: Object.keys(process.env).filter(n => /anthropic|claude|api_?key/i.test(n)) };
     }
     return json(502, out, okOrigin);
   }
