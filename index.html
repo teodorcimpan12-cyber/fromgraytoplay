@@ -991,6 +991,119 @@ html.g2p-shake .card,html.g2p-shake .stat-tile{animation:cardShake .5s 3}
 .catch-end .flex{justify-content:center;margin-top:1rem}
 .no-fx .egg-fx,.no-fx .egg-layer .cr{display:none}
 @media(prefers-reduced-motion:reduce){.egg-fx,.cr{display:none}html.g2p-shake .card,html.g2p-shake .stat-tile{animation:none}}
+/* === Reports v2: pipeline, map + list, 3-step form === */
+.rp-top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
+.rp-pipe{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem;margin-bottom:.6rem}
+.rp-stage{position:relative;text-align:left;background:var(--bgCard);border:1px solid var(--border);border-radius:14px;padding:.75rem .8rem .7rem;cursor:pointer;color:var(--text);font-family:inherit;transition:transform .2s,border-color .2s,box-shadow .2s;overflow:hidden}
+.rp-stage::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--st)}
+.rp-stage:not(:last-child)::after{content:"→";position:absolute;right:.55rem;top:.6rem;color:var(--textSec);font-size:.9rem}
+.rp-stage b{display:block;font:700 1.7rem/1 'Space Mono',monospace;color:var(--st)}
+.rp-stage span{display:block;font-weight:700;font-size:.86rem;margin-top:.3rem}
+.rp-stage small{display:block;font-size:.7rem;color:var(--textSec);line-height:1.3;margin-top:.15rem}
+.rp-stage:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.rp-stage.on{border-color:var(--st);box-shadow:0 0 0 2px var(--st)}
+.rp-stage.s0{--st:var(--grey)}.rp-stage.s1{--st:var(--coral)}.rp-stage.s2{--st:var(--teal)}.rp-stage.s3{--st:var(--green)}
+.rp-oldest{font-size:.8rem;color:var(--textSec);margin:.2rem 0 .8rem;font-family:'Space Mono',monospace}
+.rp-tools{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.6rem}
+.rp-tools .tabs{margin:0}
+.rp-view{display:inline-flex;border:1px solid var(--border);border-radius:999px;overflow:hidden;background:var(--bgCard)}
+.rp-view button{border:0;background:none;color:var(--text);padding:.45rem .9rem;font-size:.82rem;cursor:pointer;font-family:inherit;min-height:40px}
+.rp-view button.on{background:var(--green);color:var(--white)}
+.rp-chips{display:flex;gap:.4rem;overflow-x:auto;padding-bottom:.35rem;margin-bottom:.6rem;scrollbar-width:thin;align-items:center}
+.rp-chip{flex-shrink:0;border:1px solid var(--border);background:var(--bgCard);color:var(--text);border-radius:999px;padding:.38rem .8rem;font-size:.8rem;cursor:pointer;font-family:inherit;white-space:nowrap;min-height:36px}
+.rp-chip.on{background:var(--green);border-color:var(--green);color:var(--white)}
+.rp-hood{width:auto;flex-shrink:0;padding:.35rem .5rem;font-size:.8rem;border-radius:999px}
+.rp-courtchip{border:0;background:var(--teal);color:var(--white);border-radius:999px;padding:.35rem .9rem;font-size:.8rem;cursor:pointer;margin-bottom:.6rem;font-family:inherit}
+.rp-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:1rem;align-items:start}
+.rp-split .rp-map{position:sticky;top:78px}
+.rp-map{border-radius:14px;overflow:hidden;border:1px solid var(--border)}
+.rp-map-empty{min-height:260px;display:grid;place-items:center;text-align:center;padding:1.5rem;color:var(--textSec);background:var(--bgCard);font-size:.88rem}
+.rp-list{display:grid;gap:.7rem;min-width:0}
+.rp-card{padding:.9rem 1rem;margin:0}
+.rp-card.solved{border-left:4px solid var(--green)}
+.rp-head{display:flex;gap:.65rem;align-items:flex-start}
+.rp-ic{width:40px;height:40px;border-radius:12px;background:var(--bg);display:grid;place-items:center;font-size:1.3rem;flex-shrink:0}
+.rp-who{flex:1;min-width:0}
+.rp-court{display:block;border:0;background:none;padding:0;font:700 .92rem 'Libre Franklin',sans-serif;color:var(--text);cursor:pointer;text-align:left;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rp-court:hover{color:var(--green);text-decoration:underline}
+.rp-who small{display:block;font-size:.74rem;color:var(--textSec);margin-top:.1rem}
+.rp-desc{font-size:.87rem;margin:.55rem 0;overflow-wrap:anywhere}
+.rp-photo{display:block;width:100%;border:0;padding:0;background:none;cursor:zoom-in;border-radius:10px;overflow:hidden;margin-bottom:.4rem}
+.rp-photo img{display:block;width:100%;max-height:170px;object-fit:cover;transition:max-height .35s}
+.rp-photo.big{cursor:zoom-out}.rp-photo.big img{max-height:70vh;object-fit:contain;background:var(--dark)}
+.rp-proof{font-size:.78rem;background:var(--bg);border:1px dashed var(--teal);border-radius:10px;padding:.45rem .65rem;margin:.4rem 0;color:var(--text)}
+.rp-official{background:var(--bg);border:1px solid var(--green);border-radius:10px;padding:.55rem .7rem;margin-top:.45rem}
+.rp-official p{font-size:.85rem;margin:.35rem 0 .1rem}.rp-official small{font-size:.72rem;color:var(--textSec)}
+.rp-wait{font:600 .74rem 'Space Mono',monospace;color:var(--coral);margin-top:.45rem}
+.rp-empty{text-align:center;padding:2rem 1.2rem}
+.rp-empty h3{margin:.4rem 0}.rp-empty p{color:var(--textSec);font-size:.88rem;max-width:380px;margin:0 auto 1rem}
+.rt-date{font-size:.62rem;color:var(--textSec);margin-top:.1rem;font-family:'Space Mono',monospace}
+.rt-step.reached .rt-label{color:var(--text);font-weight:600}
+@media(max-width:620px){.rp-pipe{grid-template-columns:repeat(2,minmax(0,1fr))}.rp-stage:nth-child(2)::after{display:none}.rp-stage b{font-size:1.4rem}}
+.rq-steps{display:flex;gap:.35rem;list-style:none;padding:0;margin:.2rem 0 .7rem}
+.rq-steps li{flex:1;min-width:0}
+.rq-steps button{width:100%;display:flex;align-items:center;gap:.4rem;justify-content:center;border:1px solid var(--border);background:var(--bg);color:var(--textSec);border-radius:999px;padding:.35rem .4rem;font-size:.78rem;cursor:pointer;font-family:inherit;min-height:36px}
+.rq-steps button:disabled{cursor:default;opacity:.6}
+.rq-steps b{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:var(--border);color:var(--text);font-size:.7rem;flex-shrink:0}
+.rq-steps li.on button{border-color:var(--green);color:var(--text);font-weight:700}
+.rq-steps li.on b,.rq-steps li.done b{background:var(--green);color:var(--white)}
+.rq-sum{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.6rem}
+.rq-sum span{background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:.2rem .65rem;font-size:.76rem;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rq-pane{animation:rqIn .28s cubic-bezier(.2,1,.3,1)}
+@keyframes rqIn{from{opacity:0;transform:translateX(18px)}}
+.rq-courts{display:grid;gap:.35rem;max-height:46vh;overflow-y:auto}
+.rq-court{display:flex;align-items:center;gap:.6rem;text-align:left;border:1px solid var(--border);background:var(--bgCard);color:var(--text);border-radius:12px;padding:.55rem .7rem;cursor:pointer;font-family:inherit;min-height:48px}
+.rq-court:hover,.rq-court.sel{border-color:var(--green)}
+.rq-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.rq-cn{flex:1;min-width:0}.rq-cn b{display:block;font-size:.88rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rq-cn small{display:block;font-size:.72rem;color:var(--textSec);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rq-km{font:700 .72rem 'Space Mono',monospace;color:var(--green);flex-shrink:0}
+.rq-cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:.5rem}
+.rq-cat{display:flex;flex-direction:column;align-items:center;gap:.3rem;border:1px solid var(--border);background:var(--bgCard);color:var(--text);border-radius:14px;padding:.8rem .4rem;cursor:pointer;font-size:.8rem;font-family:inherit;transition:transform .15s,border-color .15s}
+.rq-cat span{font-size:1.7rem}
+.rq-cat:hover{transform:translateY(-2px);border-color:var(--green)}.rq-cat.sel{border-color:var(--green);box-shadow:0 0 0 2px var(--green)}
+.rq-drop{display:flex;flex-direction:column;align-items:center;gap:.25rem;border:2px dashed var(--border);border-radius:14px;padding:1.1rem;cursor:pointer;text-align:center}
+.rq-drop:hover{border-color:var(--green)}.rq-drop small{color:var(--textSec);font-size:.76rem}
+.rq-photo{position:relative}.rq-photo img{width:100%;max-height:220px;object-fit:cover;border-radius:12px;display:block}
+.rq-photo button{position:absolute;top:6px;right:6px;width:32px;height:32px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:var(--white);cursor:pointer}
+.rq-acct{font-size:.78rem;color:var(--textSec);margin:.5rem 0 0}
+.ev-vote{border:1px solid var(--border);background:var(--bgCard);color:var(--text);border-radius:999px;padding:.15rem .55rem;font-size:.72rem;cursor:pointer;font-family:inherit}
+.ev-vote.on{background:var(--green);border-color:var(--green);color:var(--white)}
+.ba-wrap{margin-bottom:1rem}.ba-wrap h4{font-size:.9rem;margin-bottom:.5rem}
+.ba-pair{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;padding:.5rem;margin-bottom:.6rem}
+.ba-pair figure{margin:0;position:relative}.ba-pair img{width:100%;height:160px;object-fit:cover;border-radius:8px;display:block}
+.ba-pair figcaption{position:absolute;left:6px;top:6px;background:rgba(0,0,0,.6);color:var(--white);font-size:.68rem;padding:.1rem .45rem;border-radius:6px}
+.ba-pair p{grid-column:1/-1;font-size:.78rem;margin:0;color:var(--textSec)}
+@media(prefers-reduced-motion:reduce){.rq-pane{animation:none}.rp-stage{transition:none}}
+/* === Community v2: overview + purposeful tabs === */
+.cm-tabs{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:thin;scroll-margin-top:72px}
+.cm-tabs button{flex-shrink:0;white-space:nowrap}
+.cm-purpose{font-size:.88rem;color:var(--textSec);margin:-.2rem 0 1rem;padding-left:.7rem;border-left:3px solid var(--green)}
+.cm-strip{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
+.cm-strip span{display:inline-flex;align-items:center;gap:.45rem;background:var(--bgCard);border:1px solid var(--border);border-radius:999px;padding:.35rem .85rem;font-size:.8rem;font-family:'Space Mono',monospace}
+.cm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem}
+.cm-card{position:relative;display:flex;flex-direction:column;gap:.35rem;text-align:left;background:var(--bgCard);border:1px solid var(--border);border-radius:16px;padding:1rem 1.05rem;color:var(--text);cursor:pointer;font-family:inherit;min-height:170px;transition:transform .25s cubic-bezier(.2,1,.3,1),border-color .2s,box-shadow .25s;overflow:hidden}
+.cm-card::before{content:"";position:absolute;inset:auto -30% -60% auto;width:160px;height:160px;border-radius:50%;background:radial-gradient(var(--green),transparent 70%);opacity:.08;transition:opacity .3s}
+.cm-card:hover{transform:translateY(-3px);border-color:var(--green);box-shadow:0 14px 34px rgba(0,0,0,.14)}
+.cm-card:hover::before{opacity:.18}
+.cm-card.wide{grid-column:span 2}
+.cm-k{font:700 .95rem 'Space Mono',monospace}
+.cm-p{font-size:.76rem;color:var(--textSec);line-height:1.35}
+.cm-live{flex:1;display:flex;flex-direction:column;justify-content:center;font-size:.86rem;min-width:0}
+.cm-live b{display:block;overflow-wrap:anywhere}
+.cm-live small{color:var(--textSec);font-size:.74rem}
+.cm-list{display:flex;flex-direction:column;gap:.2rem}
+.cm-list>span{overflow-wrap:anywhere}
+.cm-num{display:inline!important;font:700 1.8rem 'Space Mono',monospace;color:var(--green)}
+.cm-empty{color:var(--textSec);font-size:.82rem}
+.cm-photo{display:flex;align-items:center;gap:.6rem}.cm-photo img{width:64px;height:48px;object-fit:cover;border-radius:8px}
+.cm-cta{font-weight:700;font-size:.8rem;color:var(--green)}
+.cm-emptycard{text-align:center;padding:1.8rem 1.2rem}
+.cm-emptycard h3{margin:.4rem 0}.cm-emptycard p{color:var(--textSec);font-size:.88rem;max-width:400px;margin:.4rem auto 1rem}
+.cm-welcome{border-left:4px solid var(--green)}
+.cm-propose{display:grid;gap:.5rem;max-width:420px;margin:0 auto;text-align:left}
+@media(max-width:860px){.cm-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.cm-grid{grid-template-columns:1fr}.cm-card.wide{grid-column:auto}.cm-card{min-height:0}}
+@media(prefers-reduced-motion:reduce){.cm-card{transition:none}}
 /* === Theme scoreboard + language flags + theme effects === */
 button.theme-board.theme-board{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 8px 0 7px;background:linear-gradient(#141a2b,#090c16);border:1px solid rgba(255,255,255,.16);border-radius:7px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 2px 8px rgba(0,0,0,.28);transition:transform .18s,box-shadow .18s;color:inherit}
 button.theme-board.theme-board:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 4px 14px rgba(0,0,0,.35),0 0 0 2px color-mix(in srgb,var(--tbc) 35%,transparent)}
@@ -2054,9 +2167,10 @@ T.ro.catLighting = "Iluminat";
 T.ro.catTrash = "Gunoi";
 T.ro.catSafety = "Siguranță";
 T.ro.catOther = "Altele";
-T.ro.statusReceived = "Primit";
-T.ro.statusAnalyzing = "În analiză";
-T.ro.statusPlanned = "Planificat";
+T.ro.cmOverview = "Pe scurt"; T.en.cmOverview = "Overview"; T.hu.cmOverview = "Áttekintés"; // TODO: HU review
+T.ro.statusReceived = "Trimis";
+T.ro.statusAnalyzing = "Văzut";
+T.ro.statusPlanned = "La Primărie";
 T.ro.statusResolved = "Rezolvat";
 T.ro.reportSubmitted = "Sesizare trimisă! Mulțumim.";
 T.ro.reportSelectCourt = "Selectează terenul";
@@ -2107,9 +2221,9 @@ T.en.catLighting = "Lighting";
 T.en.catTrash = "Trash";
 T.en.catSafety = "Safety";
 T.en.catOther = "Other";
-T.en.statusReceived = "Received";
-T.en.statusAnalyzing = "Analyzing";
-T.en.statusPlanned = "Planned";
+T.en.statusReceived = "Sent";
+T.en.statusAnalyzing = "Seen";
+T.en.statusPlanned = "At City Hall";
 T.en.statusResolved = "Resolved";
 T.en.reportSubmitted = "Report submitted! Thank you.";
 T.en.reportSelectCourt = "Select court";
@@ -2161,9 +2275,9 @@ T.hu.catLighting = "Világítás";
 T.hu.catTrash = "Szemét";
 T.hu.catSafety = "Biztonság";
 T.hu.catOther = "Egyéb";
-T.hu.statusReceived = "Beérkezett";
-T.hu.statusAnalyzing = "Elemzés alatt";
-T.hu.statusPlanned = "Tervezett";
+T.hu.statusReceived = "Elküldve"; // TODO: HU review
+T.hu.statusAnalyzing = "Látták"; // TODO: HU review
+T.hu.statusPlanned = "A Városházán"; // TODO: HU review
 T.hu.statusResolved = "Megoldva";
 T.hu.reportSubmitted = "Bejelentés elküldve! Köszönjük.";
 T.hu.reportSelectCourt = "Válassz pályát";
@@ -9976,12 +10090,7 @@ function ActivityFeed() {
     : [];
   const COURT_NAMES = COURTS.reduce((acc, c) => (acc[c.id] = c.name, acc), {});
   const ICONS = { "check-in": "🏀", petition: "✍️", photo: "📸", report: "⚠️", game: "⚽", join: "🤝" };
-  const msgFor = a => {
-    const courtName = a.courtId ? (COURT_NAMES[a.courtId] || a.courtId) : "";
-    const tplKey = "feed" + (a.type === "check-in" ? "Checkin" : (a.type || "").charAt(0).toUpperCase() + (a.type || "").slice(1));
-    const tpl = t[tplKey] || ((a.userName || "Anon") + " — " + (a.type || ""));
-    return tpl.replace("{name}", a.userName || "Anon").replace("{court}", courtName);
-  };
+  const msgFor = a => activityMsg(a, t);
   const ago = ts => {
     if (!ts) return "—";
     const s = Math.floor((Date.now() - ts) / 1000);
@@ -10015,26 +10124,158 @@ function ActivityFeed() {
 }
 
 /* === Community === */
+/* === Community: an overview of the 7 tabs first, then each tab with one line saying what it is for === */
+// The organiser does not compete: his own entry stays out of the public leaderboard (name modesty rule).
+function isOwnerName(n) { const x = String(n || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); return x.indexOf("teodor") >= 0 && x.indexOf("cimpan") >= 0; }
+// Shared by the activity feed and the overview: names always shown as "First L.".
+function activityMsg(a, t) {
+  const c = a.courtId ? COURTS.find(x => x.id === a.courtId) : null, courtName = c ? c.name : (a.courtId || "");
+  const tplKey = "feed" + (a.type === "check-in" ? "Checkin" : (a.type || "").charAt(0).toUpperCase() + (a.type || "").slice(1));
+  const who = anonName(a.userName || "Anon");
+  const tpl = t[tplKey] || (who + " — " + (a.type || ""));
+  return tpl.replace("{name}", who).replace("{court}", courtName);
+}
+const COMMUNITY_TABS = ["activity", "pixel", "forum", "events", "gallery", "teams", "leaderboard"];
+function communityTabLabel(tb, t) {
+  return tb === "overview" ? "✨ " + t.cmOverview : tb === "activity" ? "📡 " + t.liveActivity : tb === "pixel" ? "🎨 Pixel" : tb === "forum" ? "💬 " + t.forum : tb === "events" ? "📅 " + t.events : tb === "gallery" ? "📸 " + t.gallery : tb === "teams" ? "⚽ " + t.teams : "🏆 " + t.leaderboard;
+}
 function CommunityPage() {
-  const {
-    t
-  } = useApp();
-  const [tab, setTab] = useState("activity");
-  return /*#__PURE__*/React.createElement("div", {
-    className: "animate-in"
-  }, /*#__PURE__*/React.createElement("section", {
-    className: "section"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "container"
-  }, /*#__PURE__*/React.createElement("h2", {
-    className: "section-title"
-  }, "\uD83E\uDD1D ", t.community), /*#__PURE__*/React.createElement("div", {
-    className: "tabs"
-  }, ["activity", "pixel", "forum", "events", "gallery", "teams", "leaderboard"].map(tb => /*#__PURE__*/React.createElement("button", {
-    key: tb,
-    className: tab === tb ? "active" : "",
-    onClick: () => setTab(tb)
-  }, tb === "activity" ? "📡 " + t.liveActivity : tb === "pixel" ? "🎨 Pixel" : tb === "forum" ? "💬 " + t.forum : tb === "events" ? "📅 " + t.events : tb === "gallery" ? "📸 " + t.gallery : tb === "teams" ? "⚽ " + t.teams : "🏆 " + t.leaderboard))), tab === "activity" && /*#__PURE__*/React.createElement(ActivityFeed, null), tab === "pixel" && React.createElement(PixelWall, null), tab === "forum" && /*#__PURE__*/React.createElement(ForumTab, null), tab === "events" && /*#__PURE__*/React.createElement(EventsTab, null), tab === "gallery" && /*#__PURE__*/React.createElement(GalleryTab, null), tab === "teams" && /*#__PURE__*/React.createElement(TeamsTab, null), tab === "leaderboard" && /*#__PURE__*/React.createElement(LBTab, null))));
+  const { t, lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const [tab, setTab] = useState("overview");
+  const go = tb => { setTab(tb); const el = document.querySelector(".cm-tabs"); if (el && el.getBoundingClientRect().top < 0) el.scrollIntoView({ behavior: "smooth", block: "start" }); };
+  const purpose = {
+    activity: L3("Tot ce se întâmplă acum: semnături, verificări, poze. În timp real.", "Everything happening right now: signatures, checks, photos. Live.", "Minden, ami most történik: aláírások, ellenőrzések, fotók. Élőben."),
+    pixel: L3("Un mural comun de 48×48. Fiecare pune câte un pixel la 10 minute.", "One shared 48×48 mural. Everyone adds one pixel every 10 minutes.", "Egy közös 48×48-as falkép. Mindenki 10 percenként tehet egy pixelt."),
+    forum: L3("Idei și probleme din cartierul tău. Votează ce contează.", "Ideas and problems from your neighbourhood. Vote for what matters.", "Ötletek és gondok a környékedről. Szavazz arra, ami számít."),
+    events: L3("Meciuri și întâlniri pe terenuri. Propune unul în 2 minute.", "Games and meetups on the courts. Propose one in 2 minutes.", "Meccsek és találkozók a pályákon. Javasolj egyet 2 perc alatt."),
+    gallery: L3("Cum arată terenurile azi, în pozele voastre.", "What the courts look like today, in your photos.", "Hogy néznek ki ma a pályák, a ti fotóitokon."),
+    teams: L3("Fă-ți echipa de cartier și provoacă alte cartiere.", "Build your neighbourhood team and challenge the others.", "Alakíts környékbeli csapatot, és hívd ki a többieket."),
+    leaderboard: L3("Cine ajută cel mai mult: voturi, sesizări, voluntariat.", "Who helps the most: votes, reports, volunteering.", "Ki segít a legtöbbet: szavazatok, bejelentések, önkéntesség.")
+  };
+  const e = React.createElement;
+  return e("div", { className: "animate-in" },
+    e("section", { className: "section" },
+      e("div", { className: "container" },
+        e("h2", { className: "section-title" }, "🤝 ", t.community),
+        e("div", { className: "tabs cm-tabs", role: "tablist" }, ["overview"].concat(COMMUNITY_TABS).map(tb => e("button", { key: tb, role: "tab", "aria-selected": tab === tb, className: tab === tb ? "active" : "", onClick: () => go(tb) }, communityTabLabel(tb, t)))),
+        tab !== "overview" && e("p", { className: "cm-purpose" }, purpose[tab]),
+        tab === "overview" && e(CommunityOverview, { go: go, purpose: purpose }),
+        tab === "activity" && e(ActivityFeed, null),
+        tab === "pixel" && e(PixelWall, null),
+        tab === "forum" && e(ForumTab, null),
+        tab === "events" && e(EventsTab, null),
+        tab === "gallery" && e(GalleryTab, null),
+        tab === "teams" && e(TeamsTab, null),
+        tab === "leaderboard" && e(LBTab, null))));
+}
+
+// One live card per tab. Gallery photos are heavy (base64), so only the newest one is read.
+function CommunityOverview({ go, purpose }) {
+  const { t, lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const activity = useFirebase("activity"), pixels = useFirebase("pixels"), forum = useFirebase("forum"), events = useFirebase("events"),
+    teams = useFirebase("teams"), lb = useFirebase("leaderboard"), presence = useFirebase("presence");
+  const [photo, setPhoto] = useState(undefined);
+  useEffect(() => {
+    const ref = db.ref("gallery").limitToLast(1);
+    const h = s => { const v = s.val(); const k = v && Object.keys(v)[0]; setPhoto(k ? v[k] : null); };
+    ref.on("value", h, () => setPhoto(null));
+    return () => ref.off("value", h);
+  }, []);
+  const vals = o => o ? Object.keys(o).map(k => Object.assign({ id: k }, o[k])) : [];
+  const acts = vals(activity).filter(a => a && activityCity(a) === ACTIVE_CITY).sort((a, b) => tsOf(b) - tsOf(a));
+  const day = Date.now() - 86400000;
+  const today = acts.filter(a => tsOf(a) > day).length;
+  const posts = vals(forum).sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
+  const upcoming = vals(events).filter(ev => !ev.date || new Date(ev.date).getTime() > Date.now() - 86400000).sort((a, b) => String(a.date || "").localeCompare(String(b.date || "")));
+  const tms = vals(teams), top = vals(lb).filter(u => !isOwnerName(u.name)).sort((a, b) => (b.points || 0) - (a.points || 0)).slice(0, 3);
+  const online = presence ? Object.keys(presence).length : 0;
+  const px = pixels ? Object.keys(pixels).length : 0;
+  const e = React.createElement;
+  const Card = (tb, body, cta, extra) => e("button", { key: tb, className: "cm-card" + (extra || ""), onClick: () => go(tb) },
+    e("span", { className: "cm-k" }, communityTabLabel(tb, t)),
+    e("span", { className: "cm-p" }, purpose[tb]),
+    e("span", { className: "cm-live" }, body),
+    e("span", { className: "cm-cta" }, cta + " →"));
+  const empty = s => e("i", { className: "cm-empty" }, s);
+  return e("div", null,
+    e("div", { className: "cm-strip" },
+      e("span", null, e("b", { className: "live-dot" }), online + " " + L3("online acum", "online now", "online most")),
+      e("span", null, "⚡ " + today + " " + L3("acțiuni în ultimele 24 h", "actions in the last 24 h", "művelet az elmúlt 24 órában")),
+      e("span", null, "🏆 " + vals(lb).filter(u => !isOwnerName(u.name)).length + " " + L3("în clasament", "on the leaderboard", "a ranglistán"))),
+    e("div", { className: "cm-grid" },
+      Card("activity", acts.length
+        ? e("span", { className: "cm-list" }, acts.slice(0, 3).map(a => e("span", { key: a.id }, activityMsg(a, t), e("small", null, " · " + relTime(a.timestamp, lang)))))
+        : empty(L3("Liniște. Fă tu prima mișcare.", "Quiet. Make the first move.", "Csend. Tedd meg az első lépést.")), L3("Vezi fluxul", "See the feed", "Hírfolyam"), " wide"),
+      Card("events", upcoming.length
+        ? e("span", null, e("b", null, upcoming[0].title), e("small", null, (upcoming[0].date || "") + (upcoming[0].location ? " · " + upcoming[0].location : "")))
+        : empty(L3("Niciun meci programat încă.", "No game scheduled yet.", "Még nincs meccs kiírva.")), upcoming.length ? L3("Vin și eu", "I'm in", "Ott leszek") : L3("Organizează primul meci — 2 minute", "Organise the first game — 2 minutes", "Szervezd meg az első meccset — 2 perc")),
+      Card("forum", posts.length
+        ? e("span", null, e("b", null, posts[0].title), e("small", null, posts.length + " " + L3("discuții", "threads", "téma")))
+        : empty(L3("Echipa a lăsat un mesaj de bun venit.", "The team left a welcome note.", "A csapat üdvözlő üzenetet hagyott.")), posts.length ? L3("Intră în discuție", "Join in", "Szólj hozzá") : L3("Scrie prima idee", "Post the first idea", "Írd meg az első ötletet")),
+      Card("pixel", e("span", null, e("b", { className: "cm-num" }, px), e("small", null, " / 2304 " + L3("pixeli pictați", "pixels painted", "kifestett pixel"))), L3("Pune un pixel", "Place a pixel", "Tegyél egy pixelt")),
+      Card("gallery", photo
+        ? e("span", { className: "cm-photo" }, e("img", { src: photo.img, alt: photo.caption || t.gallery, loading: "lazy" }), e("small", null, anonName(photo.author || "Anonim")))
+        : empty(photo === undefined ? "…" : L3("Nicio poză încă. Terenul tău arată cum arată.", "No photos yet. Show us your court.", "Még nincs fotó. Mutasd meg a pályádat.")), L3("Adaugă o poză", "Add a photo", "Tölts fel fotót")),
+      Card("teams", tms.length
+        ? e("span", null, e("b", { className: "cm-num" }, tms.length), e("small", null, " " + L3("echipe", "teams", "csapat")))
+        : empty(L3("Nicio echipă încă. Cartierul tău poate fi primul.", "No teams yet. Your area can be first.", "Még nincs csapat. A te környéked lehet az első.")), tms.length ? L3("Vezi echipele", "See the teams", "Csapatok") : L3("Fă prima echipă", "Start the first team", "Alapítsd meg az elsőt")),
+      Card("leaderboard", top.length
+        ? e("span", { className: "cm-list" }, top.map((u, i) => e("span", { key: i }, ["🥇", "🥈", "🥉"][i] + " " + anonName(u.name || "User"), e("small", null, " · " + (u.points || 0) + " pts"))))
+        : empty(L3("Clasamentul așteaptă primul punct.", "The board is waiting for its first point.", "A ranglista az első pontra vár.")), L3("Vezi clasamentul", "See the board", "Ranglista"))));
+}
+// Always on top of the forum: a short note from the team (rendered, not stored).
+function ForumWelcome() {
+  const { lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  return React.createElement("div", { className: "card mb-1 cm-welcome" },
+    React.createElement("div", { className: "flex justify-between items-center" },
+      React.createElement("span", { className: "badge badge-green" }, "📌 " + L3("fixat", "pinned", "kitűzve")),
+      React.createElement("span", { className: "text-xs", style: { color: "var(--textSec)" } }, L3("Echipa G2P", "G2P team", "G2P csapat"))),
+    React.createElement("h4", { className: "mt-1" }, "👋 " + L3("Bun venit pe forum!", "Welcome to the forum!", "Üdv a fórumon!")),
+    React.createElement("p", { className: "text-sm mt-1" }, L3(
+      "Aici vorbim despre terenurile din cartierul tău: ce e stricat, ce idei ai, cu cine joci. Scrie scurt și concret, votează postările bune și fără atacuri la persoană. O problemă de pe teren ajunge mai repede la Primărie din Sesizări.",
+      "This is where we talk about the courts in your area: what is broken, what you would change, who you play with. Keep it short and concrete, vote up the good posts, no personal attacks. A problem on a court reaches City Hall faster through Reports.",
+      "Itt a környékbeli pályákról beszélünk: mi romlott el, milyen ötleteid vannak, kivel játszol. Írj röviden és konkrétan, szavazz a jó bejegyzésekre, személyeskedés nélkül. A pályán látott gond a Bejelentéseken át gyorsabban jut el a Városházára.")),
+    React.createElement("p", { className: "text-xs", style: { color: "var(--textSec)" } }, "— " + L3("Echipa G2P", "The G2P team", "A G2P csapat")));
+}
+// Only sheriffs publish events, so the empty Events tab lets anyone propose a game: it lands in the forum.
+function ProposeGame({ more }) {
+  const { lang, toast, user } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const [open, setOpen] = useState(false);
+  const [f, setF] = useState({ court: COURTS[0] ? COURTS[0].id : "", date: "", time: "17:00", sport: "basket" });
+  const [sent, setSent] = useState(false);
+  const sports = { basket: "🏀 " + L3("Baschet", "Basketball", "Kosárlabda"), fotbal: "⚽ " + L3("Fotbal", "Football", "Foci"), volei: "🏐 " + L3("Volei", "Volleyball", "Röplabda"), tenis: "🎾 " + L3("Tenis", "Tennis", "Tenisz") };
+  const send = () => {
+    const c = COURTS.find(x => x.id === f.court);
+    if (!c || !f.date) { toast(L3("Alege terenul și ziua.", "Pick the court and the day.", "Válaszd ki a pályát és a napot.")); return; }
+    db.ref("forum").push({
+      title: "📅 " + sports[f.sport] + " · " + c.name + " · " + f.date + " " + f.time,
+      body: L3("Propun un meci aici. Cine vine? Scrie în răspunsuri.", "I'm proposing a game here. Who's in? Reply below.", "Meccset javaslok itt. Ki jön? Írj alább."),
+      category: c.neighbourhood || "general", neighbourhood: c.neighbourhood || "general", type: "proposal",
+      author: anonName(user?.name || "Anonim"), date: new Date().toISOString(), upvotes: 0, downvotes: 0, pinned: false, replies: {}
+    }).then(() => { setSent(true); g2pSfx("whistle"); toast("✓ " + L3("Propunere trimisă în Forum.", "Proposal posted in the Forum.", "Javaslat elküldve a Fórumba.")); })
+      .catch(() => toast(L3("Nu s-a putut trimite.", "Could not send.", "Nem sikerült elküldeni.")));
+  };
+  const e = React.createElement;
+  return e("div", { className: "card cm-emptycard" },
+    e("div", { style: { fontSize: "2.2rem" } }, "📅"),
+    e("h3", null, more ? L3("Vrei încă un meci?", "Want another game?", "Még egy meccs?") : L3("Niciun meci programat încă.", "No game scheduled yet.", "Még nincs meccs kiírva.")),
+    sent ? e("p", null, L3("Gata! Propunerea ta e în Forum. Echipa o mută aici când e confirmată.", "Done! Your proposal is in the Forum. The team moves it here once it is confirmed.", "Kész! A javaslatod a Fórumban van. A csapat ide teszi, ha megerősítették."))
+    : !open ? e(React.Fragment, null,
+        e("p", null, L3("Alegi terenul, ziua și ora. Restul se adună singur.", "Pick the court, the day and the time. People will show up.", "Válaszd ki a pályát, a napot és az időt. A többi jön magától.")),
+        e("button", { className: "btn btn-green", onClick: () => setOpen(true) }, "＋ " + L3("Organizează primul meci — 2 minute", "Organise the first game — 2 minutes", "Szervezd meg az első meccset — 2 perc")))
+    : e("div", { className: "cm-propose" },
+        e("select", { value: f.sport, onChange: ev => setF(o => ({ ...o, sport: ev.target.value })), "aria-label": L3("Sport", "Sport", "Sport") }, Object.keys(sports).map(k => e("option", { key: k, value: k }, sports[k]))),
+        e("select", { value: f.court, onChange: ev => setF(o => ({ ...o, court: ev.target.value })), "aria-label": L3("Teren", "Court", "Pálya") }, COURTS.map(c => e("option", { key: c.id, value: c.id }, c.name))),
+        e("div", { className: "flex gap-1" },
+          e("input", { type: "date", value: f.date, min: new Date().toISOString().slice(0, 10), onChange: ev => setF(o => ({ ...o, date: ev.target.value })), "aria-label": L3("Ziua", "Day", "Nap"), style: { flex: 1 } }),
+          e("input", { type: "time", value: f.time, onChange: ev => setF(o => ({ ...o, time: ev.target.value })), "aria-label": L3("Ora", "Time", "Időpont"), style: { width: 120 } })),
+        e("div", { className: "flex gap-1", style: { justifyContent: "center" } },
+          e("button", { className: "btn btn-outline btn-sm", onClick: () => setOpen(false) }, L3("Renunță", "Cancel", "Mégse")),
+          e("button", { className: "btn btn-green btn-sm", onClick: send }, "📣 " + L3("Propune meciul", "Propose the game", "Meccs javaslása")))));
 }
 function ForumTab() {
   const {
@@ -10066,7 +10307,7 @@ function ForumTab() {
     db.ref("forum").push({
       ...f,
       neighbourhood: f.category,
-      author: user?.name || "Anonim",
+      author: anonName(user?.name || "Anonim"),
       date: new Date().toISOString(),
       upvotes: 0,
       downvotes: 0,
@@ -10088,7 +10329,7 @@ function ForumTab() {
   const addReply = pid => {
     if (!rt) return;
     db.ref(`forum/${pid}/replies`).push({
-      author: user?.name || "Anonim",
+      author: anonName(user?.name || "Anonim"),
       body: rt,
       date: new Date().toISOString()
     });
@@ -10116,7 +10357,7 @@ function ForumTab() {
   }, "+ ", t.newPost)), showNew && /*#__PURE__*/React.createElement("div", {
     className: "card mb-2"
   }, /*#__PURE__*/React.createElement("input", {
-    placeholder: "Title",
+    placeholder: lang === "en" ? "Title" : lang === "hu" ? "Cím" : "Titlu",
     value: f.title,
     onChange: e => setF({
       ...f,
@@ -10124,7 +10365,7 @@ function ForumTab() {
     }),
     className: "mb-1"
   }), /*#__PURE__*/React.createElement("textarea", {
-    placeholder: "Content",
+    placeholder: lang === "en" ? "What is it about?" : lang === "hu" ? "Miről szól?" : "Despre ce e vorba?",
     value: f.body,
     onChange: e => setF({
       ...f,
@@ -10171,17 +10412,10 @@ function ForumTab() {
   }, t.submit), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline btn-sm",
     onClick: () => setShowNew(false)
-  }, t.cancel))), list.length === 0 && /*#__PURE__*/React.createElement("div", {
-    className: "card",
-    style: {
-      textAlign: "center",
-      padding: "2rem"
-    }
-  }, /*#__PURE__*/React.createElement("p", {
-    style: {
-      color: "var(--textSec)"
-    }
-  }, t.noData)), list.map(p => /*#__PURE__*/React.createElement("div", {
+  }, t.cancel))), React.createElement(ForumWelcome, null), list.length === 0 && !showNew && React.createElement("div", { className: "card cm-emptycard" },
+    React.createElement("div", { style: { fontSize: "2rem" } }, "💬"),
+    React.createElement("p", null, lang === "en" ? "No threads yet. Yours can be the first." : lang === "hu" ? "Még nincs téma. A tiéd lehet az első." : "Nicio discuție încă. A ta poate fi prima."),
+    React.createElement("button", { className: "btn btn-green", onClick: () => setShowNew(true) }, "+ " + t.newPost)), list.map(p => /*#__PURE__*/React.createElement("div", {
     key: p.id,
     className: "card mb-1"
   }, /*#__PURE__*/React.createElement("div", {
@@ -10202,7 +10436,7 @@ function ForumTab() {
     style: {
       color: "var(--textSec)"
     }
-  }, "\u2014 ", p.author), /*#__PURE__*/React.createElement("div", {
+  }, "\u2014 ", anonName(p.author)), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-1 mt-1"
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-sm btn-outline",
@@ -10228,7 +10462,7 @@ function ForumTab() {
     style: {
       color: "var(--textSec)"
     }
-  }, "\u2014 ", r.author))), replyTo === p.id && /*#__PURE__*/React.createElement("div", {
+  }, "\u2014 ", anonName(r.author)))), replyTo === p.id && /*#__PURE__*/React.createElement("div", {
     className: "flex gap-1 mt-1"
   }, /*#__PURE__*/React.createElement("input", {
     placeholder: t.reply + "...",
@@ -10261,21 +10495,7 @@ function EventsTab() {
     const s = new Date(ev.date).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
     window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.title)}&dates=${s}/${s}&details=${encodeURIComponent(ev.desc || '')}`, '_blank');
   };
-  if (!list.length) return /*#__PURE__*/React.createElement("div", {
-    className: "card",
-    style: {
-      textAlign: "center",
-      padding: "2rem"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: "2rem"
-    }
-  }, "\uD83D\uDCC5"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      color: "var(--textSec)"
-    }
-  }, lang === "ro" ? "Niciun eveniment programat. Evenimentele vor fi anunțate aici." : "No events scheduled yet."));
+  if (!list.length) return React.createElement(ProposeGame, null);
   return /*#__PURE__*/React.createElement("div", {
     className: "grid gap-1"
   }, list.map(ev => /*#__PURE__*/React.createElement("div", {
@@ -10304,7 +10524,7 @@ function EventsTab() {
   }, "\u2713 ", t.rsvp), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline btn-sm",
     onClick: () => addCal(ev)
-  }, "\uD83D\uDCC5 ", t.addToCalendar)))));
+  }, "\uD83D\uDCC5 ", t.addToCalendar)))), React.createElement(ProposeGame, { more: true }));
 }
 function GalleryTab() {
   const {
@@ -10418,7 +10638,7 @@ function GalleryTab() {
     style: { fontSize: "2rem" }
   }, "📸"), /*#__PURE__*/React.createElement("p", {
     style: { color: "var(--textSec)" }
-  }, t.noPhotos)) : /*#__PURE__*/React.createElement("div", {
+  }, lang === "en" ? "No photos yet. Show what your court looks like today, with the form above." : lang === "hu" ? "Még nincs fotó. Mutasd meg a fenti űrlappal, hogy néz ki ma a pályád." : "Nicio poză încă. Arată-ne cum arată azi terenul tău, din formularul de mai sus.")) : /*#__PURE__*/React.createElement("div", {
     className: "grid grid-3"
   }, imgs.map(im => {
     const c = COURTS.find(x => x.id === im.courtId);
@@ -10452,7 +10672,7 @@ function GalleryTab() {
     }, /*#__PURE__*/React.createElement("span", {
       className: "text-xs",
       style: { color: "var(--textSec)" }
-    }, im.author || im.courtId), /*#__PURE__*/React.createElement("button", {
+    }, anonName(im.author || "Anonim")), /*#__PURE__*/React.createElement("button", {
       className: "btn btn-sm btn-outline",
       onClick: () => {
         db.ref(`gallery/${im.id}/votes`).transaction(v => (v || 0) + 1);
@@ -10531,7 +10751,7 @@ function TeamsTab() {
     style: {
       color: "var(--textSec)"
     }
-  }, lang === "ro" ? "Nicio echipă creată încă." : "No teams yet.")) : /*#__PURE__*/React.createElement("div", {
+  }, lang === "en" ? "No teams yet. Your neighbourhood can be the first." : lang === "hu" ? "Még nincs csapat. A te környéked lehet az első." : "Nicio echipă încă. Cartierul tău poate fi primul."), !show && React.createElement("button", { className: "btn btn-green mt-1", onClick: () => setShow(true) }, "⚽ " + (lang === "en" ? "Start the first team" : lang === "hu" ? "Alapítsd meg az első csapatot" : "Fă prima echipă"))) : /*#__PURE__*/React.createElement("div", {
     className: "grid grid-3"
   }, list.map(tm => /*#__PURE__*/React.createElement("div", {
     key: tm.id,
@@ -10549,7 +10769,7 @@ function LBTab() {
   } = useApp();
   const lb = useFirebase("leaderboard");
   const medals = ["🥇", "🥈", "🥉"];
-  const list = lb ? Object.values(lb).sort((a, b) => (b.points || 0) - (a.points || 0)).slice(0, 20) : [];
+  const list = lb ? Object.values(lb).filter(u => u && !isOwnerName(u.name)).sort((a, b) => (b.points || 0) - (a.points || 0)).slice(0, 20) : [];
   if (!list.length) return /*#__PURE__*/React.createElement("div", {
     className: "card",
     style: {
@@ -10581,7 +10801,7 @@ function LBTab() {
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "font-bold"
-  }, u.name || "User")), /*#__PURE__*/React.createElement("span", {
+  }, anonName(u.name || "User"))), /*#__PURE__*/React.createElement("span", {
     className: "font-bold text-green"
   }, u.points || 0, " pts"))), /*#__PURE__*/React.createElement("div", {
     className: "card mt-1",
@@ -13022,6 +13242,7 @@ function AdminPanel({
   const rl = re ? Object.entries(re).map(([id, r]) => ({ id, ...r })).sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || "")) : [];
   const [noteId, setNoteId] = useState(null);
   const [noteText, setNoteText] = useState("");
+  const [chDate, setChDate] = useState(""), [chReg, setChReg] = useState("");
   const flip = vo?.flip || 0,
     mural = vo?.mural || 0,
     both = vo?.both || 0,
@@ -13292,20 +13513,31 @@ function AdminPanel({
             React.createElement("td", { className: "acts" },
               React.createElement("select", {
                 value: r.status,
-                onChange: e => { const now = new Date().toISOString(); db.ref("reports/" + r.id).update({ status: e.target.value, updatedAt: now }); db.ref("activity").push({ type: "statusChange", courtName: r.courtName, status: e.target.value, timestamp: now }); },
+                onChange: e => { const now = new Date().toISOString(); db.ref("reports/" + r.id).update({ status: e.target.value, updatedAt: now, ["statusAt/" + e.target.value]: now }); if (e.target.value === "planned" && !(r.cityHall && r.cityHall.regNo)) { setNoteId(r.id); setNoteText(r.official ? r.official.note : ""); setChDate(now.slice(0, 10)); setChReg(""); } db.ref("activity").push({ type: "statusChange", courtName: r.courtName, status: e.target.value, timestamp: now }); },
                 style: { background: "#1A1D2E", border: "1px solid #1E2235", color: "#E5E7EB", borderRadius: 4, padding: ".15rem .3rem", fontSize: ".7rem", cursor: "pointer" }
               },
-                React.createElement("option", { value: "received" }, "received"),
-                React.createElement("option", { value: "analyzing" }, "analyzing"),
-                React.createElement("option", { value: "planned" }, "planned"),
-                React.createElement("option", { value: "resolved" }, "resolved")
+                React.createElement("option", { value: "received" }, "1 · Trimis"),
+                React.createElement("option", { value: "analyzing" }, "2 · Văzut"),
+                React.createElement("option", { value: "planned" }, "3 · La Primărie"),
+                React.createElement("option", { value: "resolved" }, "4 · Rezolvat")
               ),
-              React.createElement("button", { onClick: () => { setNoteId(noteId === r.id ? null : r.id); setNoteText(r.official ? r.official.note : ""); } }, "📝"),
+              React.createElement("button", { title: "Răspuns oficial + dovada trimiterii la Primărie", onClick: () => { setNoteId(noteId === r.id ? null : r.id); setNoteText(r.official ? r.official.note : ""); setChDate(r.cityHall && r.cityHall.sentAt ? r.cityHall.sentAt.slice(0, 10) : ""); setChReg((r.cityHall && r.cityHall.regNo) || ""); } }, "📝"),
               React.createElement("button", { className: "dng", onClick: () => askConfirm("Delete?").then(ok => ok && db.ref("reports/" + r.id).remove()) }, "✕")
             )
           ),
           noteId === r.id && React.createElement("tr", null,
             React.createElement("td", { colSpan: 7, style: { padding: ".5rem .7rem" } },
+              React.createElement("div", { style: { display: "flex", gap: ".4rem", flexWrap: "wrap", alignItems: "center", marginBottom: ".45rem" } },
+                React.createElement("span", { style: { fontSize: ".75rem", color: "#9CA3AF" } }, "📨 Trimis la Primărie:"),
+                React.createElement("input", { type: "date", value: chDate, onChange: e => setChDate(e.target.value), style: { background: "#1A1D2E", border: "1px solid #1E2235", color: "#E5E7EB", borderRadius: 6, padding: ".3rem .5rem", fontSize: ".8rem" } }),
+                React.createElement("input", { value: chReg, onChange: e => setChReg(e.target.value), placeholder: "Nr. înregistrare (ex. 12345/2026)", maxLength: 60, style: { flex: 1, minWidth: 140, background: "#1A1D2E", border: "1px solid #1E2235", color: "#E5E7EB", borderRadius: 6, padding: ".35rem .6rem", fontSize: ".8rem" } }),
+                React.createElement("button", {
+                  style: { background: "#0D9488", color: "#fff", border: "none", borderRadius: 6, padding: ".35rem .7rem", cursor: "pointer", fontSize: ".78rem", fontWeight: 700 },
+                  onClick: () => {
+                    if (!chDate && !chReg.trim()) { db.ref("reports/" + r.id + "/cityHall").remove(); return; }
+                    db.ref("reports/" + r.id + "/cityHall").set({ sentAt: chDate ? new Date(chDate + "T12:00:00").toISOString() : null, regNo: chReg.trim() || null }).then(() => toast("✓ Saved")).catch(() => toast("❌ Permission denied"));
+                  }
+                }, "Save proof")),
               React.createElement("div", { style: { display: "flex", gap: ".4rem" } },
                 React.createElement("input", { value: noteText, onChange: e => setNoteText(e.target.value), placeholder: "Official note / răspuns oficial...", style: { flex: 1, background: "#1A1D2E", border: "1px solid #1E2235", color: "#E5E7EB", borderRadius: 6, padding: ".35rem .6rem", fontSize: ".8rem" } }),
                 React.createElement("button", {
@@ -13520,116 +13752,138 @@ function getVoterKey() {
   return k;
 }
 
-/* === Quick Report FAB + 3-step Modal === */
+/* === Quick Report FAB + 3-step Modal ===
+   Court → issue → photo, about 20 seconds. Sending needs an account: a visitor who is not
+   signed in keeps the draft (sessionStorage g2p_report_draft), signs in, and the form comes
+   back exactly as they left it — also after a full-page Google redirect. */
+const REPORT_CATS = [["surface", "🏗️"], ["hoop", "🏀"], ["fence", "🚧"], ["lighting", "💡"], ["trash", "🗑️"], ["safety", "⚠️"], ["other", "📌"]];
+function reportDraft() { try { return JSON.parse(sessionStorage.getItem("g2p_report_draft") || "null"); } catch (e) { return null; } }
+function openReport(courtId) { try { window.dispatchEvent(new CustomEvent("g2p:report", { detail: { courtId: courtId || "" } })); } catch (e) {} }
 function QuickReportFAB() {
-  const { t } = useApp();
+  const { t, firebaseUser } = useApp();
   const [open, setOpen] = useState(false);
+  useEffect(() => {
+    const h = e => setOpen({ courtId: (e.detail && e.detail.courtId) || "" });
+    window.addEventListener("g2p:report", h);
+    return () => window.removeEventListener("g2p:report", h);
+  }, []);
+  // Back from signing in with a draft waiting: reopen it.
+  useEffect(() => { if (firebaseUser && reportDraft()) setOpen(o => o || {}); }, [firebaseUser && firebaseUser.uid]);
   return React.createElement(React.Fragment, null,
-    React.createElement("button", { className: "fab", onClick: () => setOpen(true) }, "＋ ", t.reportFab),
-    open && React.createElement(QuickReportModal, { onClose: () => setOpen(false) })
+    React.createElement("button", { className: "fab", onClick: () => setOpen({}) }, "＋ ", t.reportFab),
+    open && React.createElement(QuickReportModal, { courtId: open.courtId, onClose: () => setOpen(false) })
   );
 }
-function QuickReportModal({ onClose }) {
-  const { t, user, toast } = useApp();
+function QuickReportModal({ onClose, courtId: preset }) {
+  const { t, user, toast, lang, firebaseUser, openAuth } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
   const fbCourts = useFirebase("courts");
-  const [step, setStep] = useState(1);
-  const [f, setF] = useState({ category: "", description: "", photoDataUrl: null, courtId: "", courtName: "", neighborhood: "", lat: null, lng: null });
+  const { awardBadge } = useBadges();
+  const [draft0] = useState(reportDraft);
+  const [step, setStep] = useState(draft0 ? 3 : preset ? 2 : 1);
+  const [f, setF] = useState(draft0 || { courtId: preset || "", category: "", note: "", photoDataUrl: null, lat: null, lng: null });
+  const [q, setQ] = useState("");
+  const [here, setHere] = useState(null);
   const [locating, setLocating] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const allCourts = [...COURTS, ...extraCourts(fbCourts)];
-  const cats = [
-    { k: "surface", e: "🏗️", l: t.catSurface },
-    { k: "hoop",    e: "🏀", l: t.catHoop },
-    { k: "fence",   e: "🚧", l: t.catFence },
-    { k: "lighting",e: "💡", l: t.catLighting },
-    { k: "trash",   e: "🗑️", l: t.catTrash },
-    { k: "safety",  e: "⚠️", l: t.catSafety },
-    { k: "other",   e: "📌", l: t.catOther }
-  ];
+  useEffect(() => {
+    const onKey = e => { if (e.key === "Escape" && document.querySelectorAll(".modal-overlay").length < 2) { e.preventDefault(); e.stopImmediatePropagation(); onClose(); } };
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, []);
+  const allCourts = [...COURTS, ...extraCourts(fbCourts)].filter(c => (c.city || "tgm") === ACTIVE_CITY);
+  const court = allCourts.find(c => c.id === f.courtId);
+  const catLabel = k => ({ surface: t.catSurface, hoop: t.catHoop, fence: t.catFence, lighting: t.catLighting, trash: t.catTrash, safety: t.catSafety, other: t.catOther }[k] || k);
+  const dist = c => here && c.lat != null ? Math.hypot((c.lat - here.lat) * 111, (c.lng - here.lng) * 111 * Math.cos(here.lat * Math.PI / 180)) : null;
+  const norm = s => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  const list = allCourts
+    .filter(c => !q || norm(c.name + " " + (c.address || "") + " " + (c.neighbourhood || "")).indexOf(norm(q)) >= 0)
+    .sort((a, b) => here ? (dist(a) || 99) - (dist(b) || 99) : 0)
+    .slice(0, q || here ? 8 : 6);
   const geolocate = () => {
-    if (!navigator.geolocation) return;
+    if (!navigator.geolocation) { toast(t.error); return; }
     setLocating(true);
     navigator.geolocation.getCurrentPosition(
-      p => { setF(o => ({ ...o, lat: p.coords.latitude, lng: p.coords.longitude })); setLocating(false); },
-      () => setLocating(false)
+      p => { setHere({ lat: p.coords.latitude, lng: p.coords.longitude }); setF(o => ({ ...o, lat: p.coords.latitude, lng: p.coords.longitude })); setLocating(false); },
+      () => { setLocating(false); toast(L3("Nu am primit locația. Caută terenul după nume.", "No location. Search the court by name.", "Nincs hely. Keresd a pályát név szerint.")); },
+      { timeout: 8000 }
     );
   };
   const pickPhoto = async e => {
     const file = e.target.files[0];
     if (!file) return;
-    const data = await compressImage(file, 900, 0.7);
-    setF(o => ({ ...o, photoDataUrl: data }));
+    try { const data = await compressImage(file, 900, 0.7); setF(o => ({ ...o, photoDataUrl: data })); } catch (err) { toast(t.error); }
   };
-  const selectCourt = id => {
-    const c = allCourts.find(x => x.id === id);
-    setF(o => ({ ...o, courtId: id, courtName: c ? c.name : "", neighborhood: c ? (c.neighbourhood || "") : "" }));
+  const login = () => {
+    try { sessionStorage.setItem("g2p_report_draft", JSON.stringify(f)); }
+    catch (e) { try { sessionStorage.setItem("g2p_report_draft", JSON.stringify(Object.assign({}, f, { photoDataUrl: null }))); } catch (e2) {} }
+    openAuth();
   };
   const submit = () => {
-    if (!f.category || !f.description.trim() || !f.courtId) { toast(t.error); return; }
+    if (!firebaseUser) { login(); return; }
+    if (!f.category || !f.courtId) { toast(t.error); return; }
     setSubmitting(true);
-    const vk = getVoterKey();
     const now = new Date().toISOString();
-    const payload = { courtId: f.courtId, courtName: f.courtName, neighborhood: f.neighborhood, category: f.category, description: f.description, status: "received", city: ACTIVE_CITY, createdAt: now, updatedAt: now, voterKey: vk, userName: user ? user.name : "Anonim" };
+    const userName = anonName(user ? user.name : "");
+    const payload = {
+      courtId: f.courtId, courtName: court ? court.name : f.courtId, neighborhood: court ? (court.neighbourhood || "") : "",
+      category: f.category, description: (f.note || "").trim().slice(0, 2000) || catLabel(f.category),
+      status: "received", statusAt: { received: now }, city: ACTIVE_CITY, createdAt: now, updatedAt: now,
+      voterKey: getVoterKey(), uid: firebaseUser.uid, userName: userName
+    };
     if (f.photoDataUrl) payload.photoDataUrl = f.photoDataUrl;
     if (f.lat) { payload.lat = f.lat; payload.lng = f.lng; }
     db.ref("reports").push(payload).then(() => {
-      db.ref("activity").push({ type: "report", userName: payload.userName, courtId: f.courtId, courtName: f.courtName, timestamp: now });
+      db.ref("activity").push({ type: "report", userName: userName, courtId: f.courtId, courtName: payload.courtName, timestamp: now });
+      try { sessionStorage.removeItem("g2p_report_draft"); } catch (e) {}
+      awardBadge("reporter");
+      g2pSfx("whistle");
       toast(t.reportSubmitted);
       setSubmitting(false);
       onClose();
-    });
+    }).catch(() => { setSubmitting(false); toast(t.error); });
   };
-  const dots = [1,2,3];
-  return React.createElement("div", { className: "modal-overlay", onClick: onClose },
-    React.createElement("div", { className: "modal modal-lg", onClick: e => e.stopPropagation() },
-      React.createElement("div", { className: "flex justify-between items-center mb-1" },
-        React.createElement("h2", { style: { fontSize: "1rem" } }, "⚠️ ", t.reportNew, " (", step, "/3)"),
-        React.createElement("button", { className: "btn btn-sm btn-outline", onClick: onClose }, t.cancel)
-      ),
-      React.createElement("div", { className: "flex gap-1 mb-2", style: { justifyContent: "center" } },
-        dots.map(s => React.createElement("div", { key: s, style: { width: 10, height: 10, borderRadius: "50%", background: s <= step ? "var(--green)" : "var(--border)", transition: "background .2s" } }))
-      ),
-      step === 1 && React.createElement("div", null,
-        React.createElement("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, t.step1Category),
-        React.createElement("div", { className: "rcat-grid" },
-          cats.map(c => React.createElement("button", { key: c.k, className: "rcat-btn" + (f.category === c.k ? " sel" : ""), onClick: () => setF(o => ({ ...o, category: c.k })) },
-            React.createElement("div", { style: { fontSize: "1.4rem", marginBottom: ".2rem" } }, c.e), c.l))
-        ),
-        React.createElement("button", { className: "btn btn-green btn-block mt-2", disabled: !f.category, onClick: () => setStep(2) }, t.nextStep)
-      ),
-      step === 2 && React.createElement("div", null,
-        React.createElement("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, t.step2Details),
-        React.createElement("textarea", { placeholder: t.description + "...", value: f.description, onChange: e => setF(o => ({ ...o, description: e.target.value })), rows: 4, className: "mb-1", style: { resize: "vertical" } }),
-        React.createElement("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, t.addPhotoOpt),
+  const close = () => { try { sessionStorage.removeItem("g2p_report_draft"); } catch (e) {} onClose(); };
+  const e = React.createElement;
+  const stepNames = [L3("Terenul", "Court", "Pálya"), L3("Problema", "Problem", "Probléma"), L3("Poza", "Photo", "Fotó")];
+  return e("div", { className: "modal-overlay", onClick: close },
+    e("div", { className: "modal modal-lg rq", onClick: ev => ev.stopPropagation(), role: "dialog", "aria-modal": "true", "aria-label": t.reportNew },
+      e("div", { className: "flex justify-between items-center mb-1" },
+        e("h2", { style: { fontSize: "1rem", margin: 0 } }, "⚠️ ", t.reportNew),
+        e("button", { className: "btn btn-sm btn-outline", onClick: close }, t.cancel)),
+      e("ol", { className: "rq-steps" }, stepNames.map((n, i) => e("li", { key: i, className: i + 1 < step ? "done" : i + 1 === step ? "on" : "" },
+        e("button", { disabled: i + 1 > step, onClick: () => setStep(i + 1) }, e("b", null, i + 1 < step ? "✓" : i + 1), n)))),
+      (court || f.category) && e("div", { className: "rq-sum" },
+        court && e("span", null, "📍 " + court.name),
+        f.category && e("span", null, (REPORT_CATS.find(c => c[0] === f.category) || [0, "📌"])[1] + " " + catLabel(f.category))),
+      step === 1 && e("div", { className: "rq-pane", key: "s1" },
+        e("div", { className: "flex gap-1 mb-1" },
+          e("input", { value: q, onChange: ev => setQ(ev.target.value), placeholder: L3("Caută terenul (nume, stradă, cartier)", "Search the court (name, street, area)", "Pálya keresése (név, utca, negyed)"), "aria-label": t.reportSelectCourt, style: { flex: 1 } }),
+          e("button", { className: "btn btn-sm btn-outline", onClick: geolocate, disabled: locating, style: { whiteSpace: "nowrap" } }, locating ? "…" : "📍 " + L3("Lângă mine", "Near me", "Közelben"))),
+        e("div", { className: "rq-courts" }, list.map(c => e("button", { key: c.id, className: "rq-court" + (f.courtId === c.id ? " sel" : ""), onClick: () => { setF(o => ({ ...o, courtId: c.id })); setStep(2); } },
+          e("span", { className: "rq-dot", style: { background: courtStatusView(c, t).color } }),
+          e("span", { className: "rq-cn" }, e("b", null, c.name), e("small", null, c.address || hoodName(c.neighbourhood, lang) || "")),
+          dist(c) != null && e("span", { className: "rq-km" }, dist(c) < 1 ? Math.round(dist(c) * 1000) + " m" : dist(c).toFixed(1) + " km"))),
+          !list.length && e("p", { className: "text-sm", style: { color: "var(--textSec)" } }, L3("Niciun teren găsit.", "No court found.", "Nincs ilyen pálya.")))),
+      step === 2 && e("div", { className: "rq-pane", key: "s2" },
+        e("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, L3("Ce e în neregulă? Atinge una.", "What is wrong? Tap one.", "Mi a baj? Koppints egyre.")),
+        e("div", { className: "rq-cats" }, REPORT_CATS.map(c => e("button", { key: c[0], className: "rq-cat" + (f.category === c[0] ? " sel" : ""), onClick: () => { setF(o => ({ ...o, category: c[0] })); g2pSfx("click"); setStep(3); } },
+          e("span", { "aria-hidden": "true" }, c[1]), catLabel(c[0]))))),
+      step === 3 && e("div", { className: "rq-pane", key: "s3" },
         f.photoDataUrl
-          ? React.createElement("div", { style: { position: "relative", marginBottom: ".5rem" } },
-              React.createElement("img", { src: f.photoDataUrl, alt: "prev", style: { width: "100%", borderRadius: 8, maxHeight: 160, objectFit: "cover" } }),
-              React.createElement("button", { onClick: () => setF(o => ({ ...o, photoDataUrl: null })), style: { position: "absolute", top: 4, right: 4, background: "rgba(0,0,0,.5)", color: "#fff", border: "none", borderRadius: "50%", width: 24, height: 24, cursor: "pointer", fontSize: ".8rem" } }, "✕")
-            )
-          : React.createElement("label", { style: { display: "block", cursor: "pointer", marginBottom: ".5rem" } },
-              React.createElement("div", { className: "card", style: { textAlign: "center", padding: ".7rem", border: "2px dashed var(--border)", boxShadow: "none" } }, "📷 ", t.choosePhoto),
-              React.createElement("input", { type: "file", accept: "image/*", capture: "environment", style: { display: "none" }, onChange: pickPhoto })
-            ),
-        React.createElement("div", { className: "flex gap-1 mt-1" },
-          React.createElement("button", { className: "btn btn-outline", onClick: () => setStep(1) }, t.prevStep),
-          React.createElement("button", { className: "btn btn-green", style: { flex: 1 }, disabled: !f.description.trim(), onClick: () => setStep(3) }, t.nextStep)
-        )
-      ),
-      step === 3 && React.createElement("div", null,
-        React.createElement("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, t.step3Location),
-        React.createElement("select", { value: f.courtId, onChange: e => selectCourt(e.target.value), className: "mb-1" },
-          React.createElement("option", { value: "" }, "— " + t.reportSelectCourt + " —"),
-          allCourts.map(c => React.createElement("option", { key: c.id, value: c.id }, c.name))
-        ),
-        React.createElement("button", { className: "btn btn-sm btn-outline mb-1", onClick: geolocate, disabled: locating }, locating ? "..." : "📍 " + t.geolocate),
-        f.lat && React.createElement("p", { className: "text-xs mb-1", style: { color: "var(--green)" } }, "📍 " + f.lat.toFixed(4) + ", " + f.lng.toFixed(4)),
-        React.createElement("div", { className: "flex gap-1 mt-2" },
-          React.createElement("button", { className: "btn btn-outline", onClick: () => setStep(2) }, t.prevStep),
-          React.createElement("button", { className: "btn btn-green", style: { flex: 1 }, disabled: !f.courtId || submitting, onClick: submit }, submitting ? "..." : t.submit)
-        )
-      )
-    )
-  );
+          ? e("div", { className: "rq-photo" },
+              e("img", { src: f.photoDataUrl, alt: L3("Poza ta", "Your photo", "A fotód") }),
+              e("button", { onClick: () => setF(o => ({ ...o, photoDataUrl: null })), "aria-label": L3("Scoate poza", "Remove photo", "Fotó törlése") }, "✕"))
+          : e("label", { className: "rq-drop" },
+              e("span", { style: { fontSize: "2rem" } }, "📷"),
+              e("b", null, L3("Fă o poză", "Take a photo", "Készíts fotót")),
+              e("small", null, L3("Opțional, dar o poză valorează cât 100 de cuvinte la Primărie.", "Optional, but a photo is worth 100 words at City Hall.", "Nem kötelező, de egy fotó 100 szót ér a Városházán.")),
+              e("input", { type: "file", accept: "image/*", capture: "environment", style: { display: "none" }, onChange: pickPhoto })),
+        e("textarea", { value: f.note, onChange: ev => setF(o => ({ ...o, note: ev.target.value })), rows: 2, maxLength: 2000, placeholder: L3("Vrei să adaugi ceva? (opțional)", "Anything to add? (optional)", "Szeretnél még valamit írni? (nem kötelező)"), style: { marginTop: ".6rem", resize: "vertical" } }),
+        !firebaseUser && e("p", { className: "rq-acct" }, "🔐 " + L3("Sesizările cer un cont, ca Primăria să le ia în serios. Ce ai completat rămâne aici.", "Reports need an account so City Hall takes them seriously. What you filled in stays here.", "A bejelentéshez fiók kell, hogy a Városháza komolyan vegye. Amit kitöltöttél, megmarad.")),
+        e("button", { className: "btn btn-green btn-block mt-1", disabled: submitting || !f.courtId || !f.category, onClick: submit },
+          submitting ? "…" : firebaseUser ? "📨 " + t.submit : "🔐 " + L3("Intră în cont și trimite", "Sign in and send", "Belépés és küldés")))
+    ));
 }
 
 /* === Court Condition Quick — Sibiu hackathon feature === */
@@ -13976,24 +14230,6 @@ function CourtPulse({ court }) {
   );
 }
 
-/* === Report Status Timeline === */
-function ReportTimeline({ status }) {
-  const { t } = useApp();
-  const steps = [
-    { k: "received", l: t.statusReceived },
-    { k: "analyzing", l: t.statusAnalyzing },
-    { k: "planned", l: t.statusPlanned },
-    { k: "resolved", l: t.statusResolved }
-  ];
-  const idx = steps.findIndex(s => s.k === status);
-  return React.createElement("div", { className: "report-timeline" },
-    steps.map((s, i) => React.createElement("div", { key: s.k, className: "rt-step" },
-      React.createElement("div", { className: "rt-dot" + (i < idx ? " done" : i === idx ? " active" : "") }, i < idx ? "✓" : ""),
-      React.createElement("div", { className: "rt-label" }, s.l)
-    ))
-  );
-}
-
 /* === Reports Page === */
 /* === Evidence Wall (#2.1) === */
 function EvidenceWall() {
@@ -14005,11 +14241,28 @@ function EvidenceWall() {
   const [caption, setCaption] = useState("");
   const [gps, setGps] = useState(null);
   const [showUpload, setShowUpload] = useState(false);
+  const [kind, setKind] = useState("evidence");
+  const { lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const [myVotes, setMyVotes] = useState(() => { try { return JSON.parse(localStorage.getItem("g2p_gvotes") || "{}") || {}; } catch (e) { return {}; } });
   const fileRef = useRef(null);
   const gallery = useFirebase("gallery");
+  // Most-voted evidence first, then the newest.
   const imgs = gallery
-    ? Object.entries(gallery).map(([id, g]) => ({ id, ...g })).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))
+    ? Object.entries(gallery).map(([id, g]) => ({ id, ...g })).filter(g => g && g.img && (!g.courtId || COURTS.some(c => c.id === g.courtId)))
+        .sort((a, b) => ((b.votes || 0) - (a.votes || 0)) || ((b.timestamp || 0) - (a.timestamp || 0)))
     : [];
+  const vote = id => {
+    if (myVotes[id]) return;
+    const next = Object.assign({}, myVotes, { [id]: 1 });
+    setMyVotes(next);
+    try { localStorage.setItem("g2p_gvotes", JSON.stringify(next)); } catch (e) {}
+    db.ref("gallery/" + id + "/votes").transaction(v => (v || 0) + 1);
+    g2pSfx("click");
+  };
+  // Courts that have both a "before" and an "after" photo get a side-by-side pair on top.
+  const pairs = COURTS.map(c => ({ c: c, b: imgs.find(p => p.courtId === c.id && p.kind === "before"), a: imgs.find(p => p.courtId === c.id && p.kind === "after") })).filter(x => x.b && x.a);
+  const kindLabel = k => k === "before" ? L3("Înainte", "Before", "Előtte") : k === "after" ? L3("După", "After", "Utána") : L3("Dovadă", "Evidence", "Bizonyíték");
   const filtered = filterCourt === "all" ? imgs : imgs.filter(p => p.courtId === filterCourt);
   const uniqueWitnesses = new Set(imgs.map(p => p.author || "?")).size;
   const courtsDoc = new Set(imgs.filter(p => p.courtId).map(p => p.courtId)).size;
@@ -14036,7 +14289,7 @@ function EvidenceWall() {
       courtId: selCourt, courtName: c.name, neighbourhood: c.neighbourhood, status: c.status,
       caption: caption.trim(), img: preview,
       author: anonName(user?.name || "Anonim"), voterKey: getVoterKey(),
-      gps: gps || null, isEvidence: true, votes: 0, timestamp: Date.now()
+      gps: gps || null, isEvidence: true, kind: kind, votes: 0, timestamp: Date.now()
     }).then(() => {
       logActivity("photo", user?.name || "Anonim", selCourt);
       toast(t.evidenceAdded);
@@ -14079,6 +14332,8 @@ function EvidenceWall() {
       React.createElement("select", { value: selCourt, onChange: e => setSelCourt(e.target.value), className: "mb-1" },
         COURTS.map(c => React.createElement("option", { key: c.id, value: c.id }, c.name))
       ),
+      React.createElement("div", { className: "rp-chips", style: { marginBottom: ".5rem" } }, ["evidence", "before", "after"].map(k =>
+        React.createElement("button", { key: k, className: "rp-chip" + (kind === k ? " on" : ""), onClick: () => setKind(k) }, (k === "before" ? "⏪ " : k === "after" ? "⏩ " : "📸 ") + kindLabel(k)))),
       React.createElement("textarea", { value: caption, onChange: e => setCaption(e.target.value), rows: 2, placeholder: t.photoCaptionPh, className: "mb-1" }),
       React.createElement("div", { className: "flex gap-1" },
         React.createElement("button", {
@@ -14092,6 +14347,13 @@ function EvidenceWall() {
         }, busy ? "..." : t.addToWall)
       )
     ),
+    pairs.length > 0 && React.createElement("div", { className: "ba-wrap" },
+      React.createElement("h4", null, "⏪⏩ " + L3("Înainte / După", "Before / After", "Előtte / Utána")),
+      pairs.map(x => React.createElement("div", { key: x.c.id, className: "ba-pair card" },
+        [x.b, x.a].map(p => React.createElement("figure", { key: p.id },
+          React.createElement("img", { src: p.img, alt: kindLabel(p.kind) + " — " + x.c.name, loading: "lazy" }),
+          React.createElement("figcaption", null, kindLabel(p.kind) + (p.timestamp ? " · " + new Date(p.timestamp).toLocaleDateString() : "")))),
+        React.createElement("p", null, "📍 " + x.c.name)))),
     imgs.length > 0 && React.createElement("div", { className: "flex gap-1 mb-2", style: { overflowX: "auto", paddingBottom: ".3rem" } },
       React.createElement("button", { className: "btn btn-sm " + (filterCourt === "all" ? "btn-green" : "btn-outline"), onClick: () => setFilterCourt("all") }, t.allCourts),
       courtsWithPhotos.map(c => React.createElement("button", {
@@ -14114,8 +14376,11 @@ function EvidenceWall() {
                   React.createElement("span", { className: "badge " + courtStatusView(c, t).badge, style: { fontSize: ".7rem" } }, statusLabel(c))
                 ),
                 p.caption && React.createElement("p", { style: { fontSize: ".78rem", marginBottom: ".25rem", lineHeight: 1.3 } }, p.caption),
+                React.createElement("div", { className: "flex justify-between items-center" },
+                  React.createElement("span", { style: { fontSize: ".68rem", color: "var(--textSec)" } }, (p.kind && p.kind !== "evidence" ? kindLabel(p.kind) + " · " : "") + anonName(p.author || "Anonim")),
+                  React.createElement("button", { className: "ev-vote" + (myVotes[p.id] ? " on" : ""), onClick: () => vote(p.id), "aria-pressed": !!myVotes[p.id], title: L3("Dovadă bună", "Good evidence", "Jó bizonyíték") }, "👍 " + (p.votes || 0))),
                 React.createElement("div", { className: "flex justify-between" },
-                  React.createElement("span", { style: { fontSize: ".68rem", color: "var(--textSec)" } }, p.author || "Anonim"),
+                  React.createElement("span", null),
                   React.createElement("span", { style: { fontSize: ".68rem", color: "var(--textSec)" } },
                     p.gps ? "📍 " : "",
                     p.timestamp ? new Date(p.timestamp).toLocaleDateString() : ""
@@ -14128,104 +14393,165 @@ function EvidenceWall() {
   );
 }
 
-function ReportsPage() {
+/* === Report Status Timeline ===
+   Status keys stay as stored (received/analyzing/planned/resolved); the labels say what
+   they mean for the visitor: sent → seen → at City Hall → resolved. "planned" is the
+   City Hall step and carries the proof (cityHall.sentAt + cityHall.regNo). */
+const REPORT_STAGES = ["received", "analyzing", "planned", "resolved"];
+function reportStage(r) { const i = REPORT_STAGES.indexOf(r && r.status); return i < 0 ? 0 : i; }
+function fmtDay(iso, lang) { if (!iso) return ""; const d = new Date(iso); return isNaN(d) ? "" : d.toLocaleDateString(lang === "en" ? "en-GB" : lang === "hu" ? "hu-HU" : "ro-RO", { day: "numeric", month: "short" }); }
+function waitText(ms, lang) {
+  const h = Math.max(0, Math.floor(ms / 3600000)), d = Math.floor(h / 24);
+  if (lang === "en") return d ? d + " d " + (h % 24) + " h" : h + " h";
+  if (lang === "hu") return d ? d + " n " + (h % 24) + " ó" : h + " ó";
+  return d ? d + (d === 1 ? " zi " : " zile ") + (h % 24) + " h" : h + " h";
+}
+function ReportTimeline({ r }) {
   const { t, lang } = useApp();
-  const [tab, setTab] = useState("all");
-  const [filterStatus, setFilterStatus] = useState("all");
-  const [filterHood, setFilterHood] = useState("all");
-  const [filterCat, setFilterCat] = useState("all");
-  const fbReports = useFirebase("reports");
-  const vk = getVoterKey();
-  const allReps = fbReports
-    ? Object.entries(fbReports).map(([id, r]) => ({ id, ...r })).sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""))
-    : [];
-  const catEmoji = { surface: "🏗️", hoop: "🏀", fence: "🚧", lighting: "💡", trash: "🗑️", safety: "⚠️", other: "📌", condition: "🩺" };
-  const catLabel = k => ({ surface: t.catSurface, hoop: t.catHoop, fence: t.catFence, lighting: t.catLighting, trash: t.catTrash, safety: t.catSafety, other: t.catOther, condition: t.conditionCheck }[k] || k);
+  const idx = reportStage(r), at = r.statusAt || {};
+  const dates = [at.received || r.createdAt, at.analyzing, (r.cityHall && r.cityHall.sentAt) || at.planned, at.resolved];
+  const labels = [t.statusReceived, t.statusAnalyzing, t.statusPlanned, t.statusResolved];
+  return React.createElement("div", { className: "report-timeline", "aria-label": labels[idx] },
+    labels.map((l, i) => React.createElement("div", { key: i, className: "rt-step" + (i <= idx ? " reached" : "") },
+      React.createElement("div", { className: "rt-dot" + (i < idx || (i === idx && idx === 3) ? " done" : i === idx ? " active" : "") }, i < idx || idx === 3 ? "✓" : ""),
+      React.createElement("div", { className: "rt-label" }, l),
+      i <= idx && dates[i] && React.createElement("div", { className: "rt-date" }, fmtDay(dates[i], lang))
+    ))
+  );
+}
+
+function ReportCard({ r, now, onCourt }) {
+  const { t, lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const [big, setBig] = useState(false);
+  const cat = REPORT_CATS.find(c => c[0] === r.category);
+  const isCheck = r.category === "condition";
   const condLabel = { good: t.conditionGood, degraded: t.conditionDegraded, abandoned: t.conditionAbandoned };
-  const sBadge = { received: "badge-received", analyzing: "badge-analyzing", planned: "badge-planned", resolved: "badge-resolved" };
-  const sLabel = k => ({ received: t.statusReceived, analyzing: t.statusAnalyzing, planned: t.statusPlanned, resolved: t.statusResolved }[k] || k);
-  const visible = allReps.filter(r => {
-    if (tab === "mine" && r.voterKey !== vk) return false;
-    if (filterStatus !== "all" && r.status !== filterStatus) return false;
-    if (filterHood !== "all" && r.neighborhood !== filterHood) return false;
-    if (filterCat !== "all" && r.category !== filterCat) return false;
+  const catLabel = k => ({ surface: t.catSurface, hoop: t.catHoop, fence: t.catFence, lighting: t.catLighting, trash: t.catTrash, safety: t.catSafety, other: t.catOther, condition: t.conditionCheck }[k] || k);
+  const stage = reportStage(r);
+  const sBadge = ["badge-received", "badge-analyzing", "badge-planned", "badge-resolved"][stage];
+  const waiting = !isCheck && stage < 3 && r.createdAt ? now - new Date(r.createdAt).getTime() : 0;
+  const e = React.createElement;
+  return e("article", { className: "rp-card card" + (stage === 3 ? " solved" : "") },
+    e("div", { className: "rp-head" },
+      e("span", { className: "rp-ic", "aria-hidden": "true" }, isCheck ? "🩺" : cat ? cat[1] : "📌"),
+      e("div", { className: "rp-who" },
+        e("button", { className: "rp-court", onClick: () => onCourt(r.courtId) }, r.courtName || r.courtId),
+        e("small", null, catLabel(r.category) + " · " + anonName(r.userName || "Anonim") + " · " + fmtDay(r.createdAt, lang))),
+      isCheck ? e("span", { className: "badge badge-analyzing" }, L3("verificare", "check", "ellenőrzés")) : e("span", { className: "badge " + sBadge }, [t.statusReceived, t.statusAnalyzing, t.statusPlanned, t.statusResolved][stage])),
+    e("p", { className: "rp-desc" }, (isCheck && condLabel[r.conditionReport]) || r.description),
+    r.photoDataUrl && e("button", { className: "rp-photo" + (big ? " big" : ""), onClick: () => setBig(b => !b), "aria-label": L3("Mărește poza", "Enlarge photo", "Fotó nagyítása") },
+      e("img", { src: r.photoDataUrl, alt: L3("Poză sesizare", "Report photo", "Bejelentés fotó"), loading: "lazy" })),
+    !isCheck && e(ReportTimeline, { r: r }),
+    r.cityHall && (r.cityHall.sentAt || r.cityHall.regNo) && e("p", { className: "rp-proof" },
+      "📨 " + L3("Trimis la Primărie", "Sent to City Hall", "Elküldve a Városházának") + (r.cityHall.sentAt ? " · " + fmtDay(r.cityHall.sentAt, lang) : "") + (r.cityHall.regNo ? " · " + L3("Nr. înreg. ", "Reg. no. ", "Iktatószám: ") + r.cityHall.regNo : "")),
+    r.official && r.official.note && e("div", { className: "rp-official" },
+      e("span", { className: "badge badge-official" }, "🏛️ " + t.officialResponse),
+      e("p", null, r.official.note),
+      r.official.at && e("small", null, fmtDay(r.official.at, lang))),
+    waiting > 0 && e("p", { className: "rp-wait", title: L3("Timp scurs de la trimitere", "Time since it was sent", "Elküldés óta eltelt idő") }, "⏳ " + L3("Așteaptă de ", "Waiting for ", "Vár: ") + waitText(waiting, lang)));
+}
+
+function ReportsPage() {
+  const { t, lang, firebaseUser } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const [tab, setTab] = useState("all");
+  const [stage, setStage] = useState(-1);
+  const [cat, setCat] = useState("all");
+  const [hood, setHood] = useState("all");
+  const [court, setCourt] = useState(null);
+  const [view, setView] = useState("list");
+  const [wide, setWide] = useState(() => !!(window.matchMedia && window.matchMedia("(min-width:900px)").matches));
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => { const id = setInterval(() => setNow(Date.now()), 60000); return () => clearInterval(id); }, []);
+  useEffect(() => {
+    if (!window.matchMedia) return;
+    const mq = window.matchMedia("(min-width:900px)"), h = () => setWide(mq.matches);
+    mq.addEventListener ? mq.addEventListener("change", h) : mq.addListener(h);
+    return () => { mq.removeEventListener ? mq.removeEventListener("change", h) : mq.removeListener(h); };
+  }, []);
+  const fbReports = useFirebase("reports");
+  const fbCourts = useFirebase("courts");
+  const vk = getVoterKey();
+  const base = fbReports
+    ? Object.entries(fbReports).map(([id, r]) => ({ id, ...r })).filter(r => r && (r.city || "tgm") === ACTIVE_CITY)
+        .sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""))
+    : [];
+  const issues = base.filter(r => r.category !== "condition");
+  const counts = REPORT_STAGES.map((s, i) => issues.filter(r => reportStage(r) === i).length);
+  const visible = base.filter(r => {
+    if (tab === "mine" && r.voterKey !== vk && !(firebaseUser && r.uid === firebaseUser.uid)) return false;
+    if (stage >= 0 && (r.category === "condition" || reportStage(r) !== stage)) return false;
+    if (cat !== "all" && r.category !== cat) return false;
+    if (hood !== "all" && r.neighborhood !== hood) return false;
+    if (court && r.courtId !== court) return false;
     return true;
   });
-  const subText = { ro: "Sesizările cetățenilor — stadiu transparent, actualizat \xeen timp real.", en: "Citizens’ reports — transparent status, updated in real time.", hu: "A polg\xe1rok bejelent\xe9sei — \xe1tl\xe1that\xf3 \xe1llapot, val\xf3s idejű friss\xedt\xe9ssel." };
-  return React.createElement("div", { className: "animate-in" },
-    React.createElement("section", { className: "section" },
-      React.createElement("div", { className: "container" },
-        React.createElement("div", { className: "flex justify-between items-center mb-2" },
-          React.createElement("div", null,
-            React.createElement("h2", { className: "section-title" }, "⚠️ ", t.reportPageTitle),
-            React.createElement("p", { className: "section-sub" }, subText[lang] || subText.ro)
-          ),
-          React.createElement("div", { className: "flex gap-2", style: { flexShrink: 0 } },
-            React.createElement("div", { style: { textAlign: "center" } },
-              React.createElement("div", { className: "stat-number", style: { fontSize: "1.3rem" } }, allReps.length),
-              React.createElement("div", { className: "stat-label" }, "Total")
-            ),
-            React.createElement("div", { style: { textAlign: "center" } },
-              React.createElement("div", { className: "stat-number", style: { fontSize: "1.3rem", color: "var(--green)" } }, allReps.filter(r => r.status === "resolved").length),
-              React.createElement("div", { className: "stat-label" }, t.statusResolved)
-            )
-          )
-        ),
-        React.createElement("div", { className: "tabs mb-2" },
-          React.createElement("button", { className: tab === "all" ? "active" : "", onClick: () => setTab("all") }, t.allReports),
-          React.createElement("button", { className: tab === "mine" ? "active" : "", onClick: () => setTab("mine") }, t.myReportsOnly),
-          React.createElement("button", { className: tab === "evidence" ? "active" : "", onClick: () => setTab("evidence") }, t.evidenceTab)
-        ),
-        tab === "evidence" ? React.createElement(EvidenceWall, null) :
-        React.createElement(React.Fragment, null,
-        React.createElement("div", { className: "flex gap-1 mb-2", style: { flexWrap: "wrap" } },
-          React.createElement("select", { value: filterStatus, onChange: e => setFilterStatus(e.target.value), style: { width: "auto", padding: ".3rem .5rem", fontSize: ".82rem" } },
-            React.createElement("option", { value: "all" }, t.allStatus),
-            ["received","analyzing","planned","resolved"].map(s => React.createElement("option", { key: s, value: s }, sLabel(s)))
-          ),
-          React.createElement("select", { value: filterHood, onChange: e => setFilterHood(e.target.value), style: { width: "auto", padding: ".3rem .5rem", fontSize: ".82rem" } },
-            React.createElement("option", { value: "all" }, t.neighbourhood),
-            [...new Set(COURTS.map(c => c.neighbourhood))].map(h => React.createElement("option", { key: h, value: h }, hoodName(h, lang)))
-          ),
-          React.createElement("select", { value: filterCat, onChange: e => setFilterCat(e.target.value), style: { width: "auto", padding: ".3rem .5rem", fontSize: ".82rem" } },
-            React.createElement("option", { value: "all" }, lang === "ro" ? "Categorie" : lang === "hu" ? "Kateg\xf3ria" : "Category"),
-            Object.keys(catEmoji).map(k => React.createElement("option", { key: k, value: k }, catEmoji[k] + " " + catLabel(k)))
-          )
-        ),
-        visible.length === 0
-          ? React.createElement("div", { className: "card", style: { textAlign: "center", padding: "2rem" } },
-              React.createElement("p", { style: { color: "var(--textSec)" } }, t.noReports)
-            )
-          : React.createElement("div", { className: "grid gap-1" },
-              visible.map(r => React.createElement("div", { key: r.id, className: "card card-accent" },
-                React.createElement("div", { className: "flex justify-between items-center mb-1" },
-                  React.createElement("div", { className: "flex gap-1 items-center" },
-                    React.createElement("span", { style: { fontSize: "1.2rem" } }, catEmoji[r.category] || "📌"),
-                    React.createElement("div", null,
-                      React.createElement("div", { style: { fontWeight: 700, fontSize: ".9rem" } }, r.courtName || r.courtId),
-                      React.createElement("div", { style: { fontSize: ".75rem", color: "var(--textSec)" } }, catLabel(r.category), " · ", r.userName || "Anonim")
-                    )
-                  ),
-                  React.createElement("span", { className: "badge " + (sBadge[r.status] || "badge-received") }, sLabel(r.status))
-                ),
-                React.createElement("p", { style: { fontSize: ".85rem", marginBottom: ".5rem" } }, (r.category === "condition" && condLabel[r.conditionReport]) || r.description),
-                r.photoDataUrl && React.createElement("img", { src: r.photoDataUrl, alt: "report", style: { width: "100%", borderRadius: 8, maxHeight: 150, objectFit: "cover", marginBottom: ".5rem" } }),
-                React.createElement(ReportTimeline, { status: r.status }),
-                r.official && r.official.note && React.createElement("div", { className: "card mt-1", style: { background: "rgba(16,185,129,.06)", border: "1px solid rgba(16,185,129,.2)", padding: ".6rem", boxShadow: "none" } },
-                  React.createElement("div", { className: "flex gap-1 items-center mb-1" },
-                    React.createElement("span", { className: "badge badge-official" }, "🏛️ " + t.officialResponse)
-                  ),
-                  React.createElement("p", { style: { fontSize: ".85rem" } }, r.official.note),
-                  r.official.at && React.createElement("p", { style: { fontSize: ".72rem", color: "var(--textSec)", marginTop: ".2rem" } }, new Date(r.official.at).toLocaleDateString())
-                ),
-                React.createElement("p", { style: { fontSize: ".7rem", color: "var(--textSec)", marginTop: ".35rem" } }, r.createdAt ? new Date(r.createdAt).toLocaleDateString() : "")
-              ))
-            )
-      )
-        )
-    ),
-    React.createElement(QuickReportFAB, null)
-  );
+  const allCourts = [...COURTS, ...extraCourts(fbCourts)];
+  const courtIds = [...new Set(visible.map(r => r.courtId))].sort().join(",");
+  const mapCourts = React.useMemo(() => allCourts.filter(c => courtIds.split(",").indexOf(c.id) >= 0), [courtIds, fbCourts]);
+  const courtName = court && ((allCourts.find(c => c.id === court) || {}).name || court);
+  const oldest = issues.filter(r => reportStage(r) < 3 && r.createdAt).map(r => new Date(r.createdAt).getTime()).sort((a, b) => a - b)[0];
+  const hoods = [...new Set(COURTS.filter(c => (c.city || "tgm") === ACTIVE_CITY).map(c => c.neighbourhood).filter(Boolean))];
+  const stageNames = [t.statusReceived, t.statusAnalyzing, t.statusPlanned, t.statusResolved];
+  const stageHelp = [
+    L3("a ajuns la noi", "reached us", "megérkezett hozzánk"),
+    L3("echipa a verificat", "the team checked it", "a csapat megnézte"),
+    L3("trimis oficial, cu nr. de înregistrare", "sent officially, with a reg. number", "hivatalosan elküldve, iktatószámmal"),
+    L3("reparat pe teren", "fixed on the ground", "megjavítva a pályán")
+  ];
+  const pickCourt = id => { setCourt(id); if (!wide) setView("list"); };
+  const e = React.createElement;
+  const map = e("div", { className: "rp-map" },
+    mapCourts.length
+      ? e(MapView, { courts: mapCourts, height: wide ? "520px" : "420px", onSelect: c => pickCourt(c.id) })
+      : e("div", { className: "rp-map-empty" }, "🗺️ " + L3("Pe hartă apar terenurile cu sesizări.", "Courts with reports show up on the map.", "A térképen a bejelentett pályák jelennek meg.")));
+  const listEl = e("div", { className: "rp-list" },
+    visible.length === 0
+      ? e("div", { className: "card rp-empty" },
+          e("div", { style: { fontSize: "2.4rem" } }, base.length ? "🔎" : "📣"),
+          e("h3", null, base.length ? L3("Nimic pe filtrul ăsta.", "Nothing for this filter.", "Erre a szűrőre nincs semmi.") : t.noReports),
+          e("p", null, base.length
+            ? L3("Schimbă filtrele sau vezi toate sesizările.", "Change the filters or see every report.", "Módosítsd a szűrőket, vagy nézd meg az összeset.")
+            : L3("Ai văzut un coș rupt, gropi sau lumini stinse? Spune-ne în 20 de secunde.", "Seen a broken hoop, potholes or dead lights? Tell us in 20 seconds.", "Láttál törött kosarat, kátyút vagy nem működő világítást? Mondd el 20 másodperc alatt.")),
+          base.length
+            ? e("button", { className: "btn btn-outline btn-sm", onClick: () => { setStage(-1); setCat("all"); setHood("all"); setCourt(null); setTab("all"); } }, L3("Arată tot", "Show all", "Mindet mutasd"))
+            : e("button", { className: "btn btn-green", onClick: () => openReport() }, "＋ " + L3("Fă prima sesizare", "Make the first report", "Tedd meg az első bejelentést")))
+      : visible.map(r => e(ReportCard, { key: r.id, r: r, now: now, onCourt: pickCourt })));
+  return e("div", { className: "animate-in" },
+    e("section", { className: "section" },
+      e("div", { className: "container" },
+        e("div", { className: "rp-top" },
+          e("div", null,
+            e("h2", { className: "section-title" }, "⚠️ ", t.reportPageTitle),
+            e("p", { className: "section-sub" }, L3("Fiecare sesizare are un drum: o vezi pas cu pas, până la Primărie și înapoi.", "Every report has a path: follow it step by step, to City Hall and back.", "Minden bejelentésnek útja van: kövesd lépésről lépésre a Városházáig és vissza."))),
+          e("button", { className: "btn btn-green", onClick: () => openReport() }, "＋ " + t.reportNew)),
+        e("div", { className: "rp-pipe", role: "group", "aria-label": L3("Drumul unei sesizări", "A report's path", "Egy bejelentés útja") },
+          stageNames.map((n, i) => e("button", { key: i, className: "rp-stage s" + i + (stage === i ? " on" : ""), "aria-pressed": stage === i, onClick: () => setStage(stage === i ? -1 : i) },
+            e("b", null, counts[i]), e("span", null, n), e("small", null, stageHelp[i])))),
+        oldest && e("p", { className: "rp-oldest" }, "⏳ " + L3("Cea mai veche sesizare nerezolvată așteaptă de ", "The oldest unresolved report has waited ", "A legrégebbi megoldatlan bejelentés ennyi ideje vár: ") + waitText(now - oldest, lang) + "."),
+        e("div", { className: "rp-tools" },
+          e("div", { className: "tabs" },
+            e("button", { className: tab === "all" ? "active" : "", onClick: () => setTab("all") }, t.allReports),
+            e("button", { className: tab === "mine" ? "active" : "", onClick: () => setTab("mine") }, t.myReportsOnly),
+            e("button", { className: tab === "evidence" ? "active" : "", onClick: () => setTab("evidence") }, t.evidenceTab)),
+          tab !== "evidence" && !wide && e("div", { className: "rp-view", role: "group" },
+            e("button", { className: view === "list" ? "on" : "", "aria-pressed": view === "list", onClick: () => setView("list") }, "📋 " + L3("Listă", "List", "Lista")),
+            e("button", { className: view === "map" ? "on" : "", "aria-pressed": view === "map", onClick: () => setView("map") }, "🗺️ " + L3("Hartă", "Map", "Térkép")))),
+        tab === "evidence" ? e(EvidenceWall, null) : e(React.Fragment, null,
+          e("div", { className: "rp-chips" },
+            e("button", { className: "rp-chip" + (cat === "all" ? " on" : ""), onClick: () => setCat("all") }, "✨ " + L3("Toate", "All", "Mind")),
+            REPORT_CATS.concat([["condition", "🩺"]]).map(c => e("button", { key: c[0], className: "rp-chip" + (cat === c[0] ? " on" : ""), onClick: () => setCat(cat === c[0] ? "all" : c[0]) },
+              c[1] + " " + ({ surface: t.catSurface, hoop: t.catHoop, fence: t.catFence, lighting: t.catLighting, trash: t.catTrash, safety: t.catSafety, other: t.catOther, condition: t.conditionCheck }[c[0]]))),
+            hoods.length > 1 && e("select", { value: hood, onChange: ev => setHood(ev.target.value), className: "rp-hood", "aria-label": t.neighbourhood },
+              e("option", { value: "all" }, t.neighbourhood),
+              hoods.map(h => e("option", { key: h, value: h }, hoodName(h, lang))))),
+          court && e("button", { className: "rp-courtchip", onClick: () => setCourt(null) }, "📍 " + courtName + "  ✕"),
+          wide
+            ? e("div", { className: "rp-split" }, map, listEl)
+            : view === "map" ? map : listEl)
+      )),
+    e(QuickReportFAB, null));
 }
 
 /* === Privacy Policy Modal (RGPD / GDPR Art. 6(1)(a)) === */
