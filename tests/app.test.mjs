@@ -66,7 +66,7 @@ test("Sibiu courts are unverified or field-verified, inside the city and from OS
 test("TGM courts keep a 1-5 condition and valid status", () => {
   for (const c of data.COURTS_TGM) {
     assert.ok(c.condition >= 1 && c.condition <= 5, c.id);
-    assert.ok(["degraded", "inProgress", "renovated"].includes(c.status), c.id);
+    assert.ok(["degraded", "inProgress", "renovated", "excellent"].includes(c.status), c.id);
   }
 });
 

@@ -1746,6 +1746,7 @@ const T = {
     multiuse: "Multifuncțional",
     degraded: "Degradat",
     unverified: "Neverificat",
+    excellent: "Excelent",
     satellite: "Din satelit", satGone: "Nu se vede teren din satelit", satWorn: "Uzat, din satelit", satOk: "Întreg, din satelit",
     fieldVerified: "Verificat pe teren",
     verifiedShare: "{n} din {m} terenuri verificate pe teren — restul nu intră în calcul.",
@@ -1899,6 +1900,7 @@ const T = {
     multiuse: "Multi-use",
     degraded: "Degraded",
     unverified: "Unverified",
+    excellent: "Excellent",
     satellite: "From satellite", satGone: "No court seen from satellite", satWorn: "Worn, from satellite", satOk: "Intact, from satellite",
     fieldVerified: "Field-verified",
     verifiedShare: "{n} of {m} courts field-verified — the rest are not counted.",
@@ -2052,6 +2054,7 @@ const T = {
     multiuse: "Többcélú",
     degraded: "Leromlott",
     unverified: "Nem ellenőrzött",
+    excellent: "Kiváló", // TODO: HU review
     satellite: "Műholdról", satGone: "Műholdról nem látszik pálya", satWorn: "Kopott, műholdról", satOk: "Ép, műholdról", // TODO: HU review
     fieldVerified: "Helyszínen ellenőrizve", // TODO: HU review
     verifiedShare: "{m} pályából {n} helyszínen ellenőrizve — a többi nem számít bele.", // TODO: HU review
@@ -2535,6 +2538,7 @@ function courtStatusView(court, t) {
       admin: tone === "red" ? "a-badge-r" : "a-badge-g", label: (t.fieldVerified || "Verificat pe teren") + " · " + cond + "/5", bad: cond <= 2 };
   }
   if (s === "unverified") return { color: "#6B7280", badge: "badge-gray", admin: "a-badge-t", label: t.unverified || "Neverificat", bad: false };
+  if (s === "excellent") return { color: "#10B981", badge: "badge-green", admin: "a-badge-g", label: t.excellent || "Excelent", bad: false };
   if (s === "satellite") {
     var sv = (court.sat && court.sat.v) || "ok", yr = court.sat && court.sat.at ? " " + court.sat.at.slice(0, 4) : "";
     return sv === "gone" ? { color: "#9F1239", badge: "badge-red", admin: "a-badge-r", label: (t.satGone || "Nu se vede teren din satelit") + yr, bad: true }
@@ -5991,7 +5995,7 @@ const COURTS_BASE = [
     name: "Stadionul Municipal",
     address: "Str. Gheorghe Doja 243",
     lat: 46.5397, lng: 24.5578,
-    status: "renovated",
+    status: "excellent",
     neighbourhood: "center",
     category: "football",
     condition: 5,
@@ -6272,7 +6276,7 @@ const COURTS_BASE = [
     name: "Stadionul Trans-Sil",
     address: "Str. Insulei",
     lat: 46.5496, lng: 24.5458,
-    status: "renovated",
+    status: "excellent",
     neighbourhood: "center",
     category: "football",
     condition: 5,
@@ -9458,7 +9462,7 @@ function CourtsPage() {
     }
   }, /*#__PURE__*/React.createElement("option", {
     value: "all"
-  }, t.allStatus), ["degraded", "inProgress", "renovated", "verified", "satellite", "unverified"]
+  }, t.allStatus), ["degraded", "inProgress", "renovated", "excellent", "verified", "satellite", "unverified"]
     .filter(s => all.some(c => c.status === s))
     .map(s => /*#__PURE__*/React.createElement("option", {
       key: s,
@@ -9749,7 +9753,7 @@ function CourtDetail({
     )
   ),
   React.createElement(CourtPulse, { court: c }),
-  React.createElement(AiCourtCard, { court: c, onLetter: c.category !== "gym" && c.status !== "renovated" ? () => setShowLetter(true) : null }),
+  React.createElement(AiCourtCard, { court: c, onLetter: c.category !== "gym" && c.status !== "renovated" && c.status !== "excellent" ? () => setShowLetter(true) : null }),
   /*#__PURE__*/React.createElement("h4", {
     className: "mb-1"
   }, "Progress"), /*#__PURE__*/React.createElement("div", {
@@ -9814,7 +9818,7 @@ function CourtDetail({
       act("share", "line", () => shareCourt(c, t, toast), "\uD83D\uDD17", t.shareCourt),
       act("qr", "line", () => setShowQR(true), "\uD83D\uDCF1", "QR"),
       c.category !== "gym" && act("poster", "line", () => setShowWanted(true), "\uD83E\uDEA7", lang === "en" ? "Poster" : lang === "hu" ? "Plak\u00E1t" : "Afi\u0219"),
-      c.category !== "gym" && c.status !== "renovated" && act("letter", "line", () => setShowLetter(true), "\u2709\uFE0F", lang === "en" ? "AI letter" : lang === "hu" ? "AI-lev\u00E9l" : "Scrisoare AI")); // TODO: HU review
+      c.category !== "gym" && c.status !== "renovated" && c.status !== "excellent" && act("letter", "line", () => setShowLetter(true), "\u2709\uFE0F", lang === "en" ? "AI letter" : lang === "hu" ? "AI-lev\u00E9l" : "Scrisoare AI")); // TODO: HU review
   })()),
   // Portals: inside the court modal (animated transform) a fixed overlay is trapped in the modal's box.
   // The wrapper stops clicks bubbling (React tree) to the court overlay, which would close the court too.
@@ -16080,7 +16084,7 @@ function mascotOff() { try { return localStorage.getItem("g2p_mascot_off") === "
 function moodOfCourt(c) {
   if (!c) return null;
   if (c.status === "degraded") return "sad";
-  if (c.status === "renovated") return "happy";
+  if (c.status === "renovated" || c.status === "excellent") return "happy";
   if (c.status === "unverified") return "curious";
   if (c.status === "satellite") return c.sat && c.sat.v === "ok" ? "happy" : "sad";
   return null;
