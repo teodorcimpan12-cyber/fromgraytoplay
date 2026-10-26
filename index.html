@@ -56,7 +56,7 @@
 <noscript><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/></noscript>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--dark:#1A1A2E;--darkCard:#16213E;--green:#10B981;--coral:#F97316;--teal:#0D9488;--grey:#6B7280;--darkGrey:#374151;--light:#F8FAFC;--lightGrey:#D1D5DB;--white:#FFFFFF;--red:#DC2626;--bg:var(--light);--bgCard:var(--white);--text:var(--darkGrey);--textSec:var(--grey);--border:var(--lightGrey);--navBg:var(--white);--shadow:0 2px 12px rgba(0,0,0,.08);--radius:12px;--monitor:#04130E;--monitorEdge:#123528;--monitorGrid:rgba(16,185,129,.09);--monitorText:#D1FAE5}
+:root{--dark:#1A1A2E;--darkCard:#16213E;--green:#10B981;--coral:#F97316;--teal:#0D9488;--grey:#6B7280;--darkGrey:#374151;--light:#F8FAFC;--lightGrey:#D1D5DB;--white:#FFFFFF;--red:#DC2626;--bg:var(--light);--bgCard:var(--white);--text:var(--darkGrey);--textSec:var(--grey);--border:var(--lightGrey);--navBg:var(--white);--shadow:0 2px 12px rgba(0,0,0,.08);--radius:12px;--monitor:#04130E;--monitorEdge:#123528;--monitorGrid:rgba(16,185,129,.09);--monitorText:#D1FAE5;--flagBlue1:#002B7F;--flagYellow1:#FCD116;--flagRed1:#CE1126;--flagBlue2:#012169;--flagRed2:#C8102E;--flagRed3:#CD2A3E;--flagGreen3:#436F4D;--flagWhite:#FFFFFF}
 [data-theme="dark"]{--bg:var(--dark);--bgCard:var(--darkCard);--text:#E5E7EB;--textSec:#9CA3AF;--border:#374151;--navBg:#0F172A;--shadow:0 2px 12px rgba(0,0,0,.4)}
 html{scroll-behavior:smooth}
 body{font-family:'Libre Franklin',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background .3s,color .3s}
@@ -270,10 +270,10 @@ a[href^="tel:"],a[href^="mailto:"]{display:inline-flex;align-items:center;min-he
 .sc-grid-v2.pre .sc-tile-v2{opacity:0;transform:perspective(900px) rotateX(-78deg) translateY(70px)}
 .sc-grid-v2.enter .sc-tile-v2{transition-delay:calc(var(--i,0) * 120ms)}
 /* Story: a sticky stage that changes scene as you scroll, one idea per screen */
-.story{position:relative;background:var(--dark);color:var(--white)}
+.story{position:relative;color:var(--white);padding:12px 0}
 .story-track{position:relative;height:calc(var(--n,4) * 75svh)}
-.story-stage{position:sticky;top:var(--navH,58px);height:calc(100svh - var(--navH,58px));overflow:hidden;background:radial-gradient(120% 90% at 50% 15%,var(--darkCard),var(--dark) 70%)}
-.st-scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4rem;padding:1.5rem 1.4rem 3rem;text-align:center;opacity:0;transform:translateY(40px) scale(.96);transition:opacity .7s ease,transform .8s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.story-stage{--stH:min(calc(100svh - var(--navH,58px) - 24px),max(560px,calc((100svh - var(--navH,58px)) * .75)));position:sticky;top:calc(var(--navH,58px) + (100svh - var(--navH,58px) - var(--stH)) / 2);height:var(--stH);width:min(calc(100% - 24px),1100px);margin:0 auto;border-radius:24px;overflow:hidden;background:radial-gradient(120% 90% at 50% 15%,var(--darkCard),var(--dark) 70%);box-shadow:0 24px 60px rgba(0,0,0,.28)}
+.st-scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:1.2rem 1.4rem 2.4rem;text-align:center;opacity:0;transform:translateY(40px) scale(.96);transition:opacity .7s ease,transform .8s cubic-bezier(.2,.8,.2,1);pointer-events:none}
 .st-scene.on{opacity:1;transform:none;pointer-events:auto}
 .st-scene.past{transform:translateY(-40px) scale(.98)}
 .st-h{font-family:'Barlow Condensed','Space Mono',monospace;font-weight:800;font-size:clamp(1.9rem,7.5vw,3.4rem);line-height:1.08;max-width:15ch;letter-spacing:-.3px}
@@ -281,7 +281,7 @@ a[href^="tel:"],a[href^="mailto:"]{display:inline-flex;align-items:center;min-he
 .st-p{max-width:34rem;font-size:clamp(.95rem,3.6vw,1.12rem);line-height:1.55;color:var(--lightGrey)}
 .st-src{font-size:.72rem;color:var(--lightGrey);opacity:.85}
 .st-src a{color:var(--green)}
-.st-vis{height:min(34svh,230px);width:min(86vw,420px);display:flex;align-items:center;justify-content:center;position:relative}
+.st-vis{height:min(26svh,200px);width:min(86vw,420px);display:flex;align-items:center;justify-content:center;position:relative}
 .st-ball{font-size:clamp(4rem,18vw,6.5rem);animation:stBounce 1.05s cubic-bezier(.3,0,.7,1) infinite;filter:drop-shadow(0 18px 18px rgba(0,0,0,.45))}
 .st-shadow{position:absolute;bottom:6%;width:110px;height:16px;border-radius:50%;background:rgba(0,0,0,.55);filter:blur(4px);animation:stShadow 1.05s cubic-bezier(.3,0,.7,1) infinite}
 @keyframes stBounce{0%,100%{transform:translateY(-70px)}50%{transform:translateY(20px) scaleY(.92)}}
@@ -897,6 +897,148 @@ body.godmode-fx{box-shadow:inset 0 0 0 4px #F59E0B,inset 0 0 70px rgba(245,158,1
 @keyframes celebOut{to{opacity:0;visibility:hidden}}
 .no-fx .celeb,.no-fx .mascot{display:none}
 @media(prefers-reduced-motion:reduce){.celeb,.mascot{display:none}}
+/* === Theme scoreboard + language flags + theme effects === */
+button.theme-board.theme-board{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 8px 0 7px;background:linear-gradient(#141a2b,#090c16);border:1px solid rgba(255,255,255,.16);border-radius:7px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 2px 8px rgba(0,0,0,.28);transition:transform .18s,box-shadow .18s;color:inherit}
+button.theme-board.theme-board:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 4px 14px rgba(0,0,0,.35),0 0 0 2px color-mix(in srgb,var(--tbc) 35%,transparent)}
+button.theme-board.theme-board:active{transform:scale(.94)}
+.theme-board{--tbc:var(--flagYellow1)}
+.theme-board.night{--tbc:var(--green)}
+.theme-board.ot{--tbc:var(--coral)}
+.tb-led{width:7px;height:7px;border-radius:50%;background:var(--tbc);box-shadow:0 0 8px var(--tbc),0 0 2px var(--tbc);animation:tbLed 2.4s ease-in-out infinite}
+@keyframes tbLed{50%{opacity:.45}}
+.tb-win{position:relative;display:inline-block;min-width:6.4ch;perspective:140px;text-align:center;font:700 10px/1 'Space Mono',monospace;letter-spacing:1.2px;color:var(--tbc);text-shadow:0 0 6px color-mix(in srgb,var(--tbc) 70%,transparent)}
+.tb-win{padding:3px 5px;border-radius:3px;background:linear-gradient(rgba(36,44,64,1) 0 48%,rgba(0,0,0,.9) 48% 52%,rgba(14,18,30,1) 52%)}
+.mobile-menu button.lang-flip.lang-flip,.mobile-menu button.theme-board.theme-board{width:auto;flex:0 0 auto;border-radius:999px}
+.story-stage{border:1px solid rgba(255,255,255,.07)}
+.tb-flap{display:inline-block;transform-origin:50% 0;animation:tbFlip .46s cubic-bezier(.3,1.5,.5,1)}
+@keyframes tbFlip{0%{transform:rotateX(-100deg);opacity:.2}60%{opacity:1}}
+.theme-board.ot .tb-flap{animation:tbFlip .46s cubic-bezier(.3,1.5,.5,1),tbOt .3s steps(2) .46s 6}
+@keyframes tbOt{50%{opacity:.25}}
+button.theme-board.big{height:36px;padding:0 12px 0 10px}
+.theme-board.big .tb-win{font-size:12px;min-width:7ch}
+button.lang-flip.lang-flip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 8px 0 6px;border-radius:8px;border:1px solid var(--border);background:transparent;cursor:pointer;color:var(--text);font:700 .7rem 'Space Mono',monospace;transition:transform .18s,border-color .18s}
+button.lang-flip.lang-flip:hover{border-color:var(--green);transform:translateY(-1px)}
+button.lang-flip.lang-flip:active{transform:scale(.94)}
+button.lang-flip.big{height:36px;padding:0 12px 0 9px;font-size:.8rem}
+.lf-card{position:relative;display:block;width:24px;height:16px;border-radius:3px;overflow:hidden;transform-style:preserve-3d;box-shadow:0 0 0 1px rgba(0,0,0,.18),0 1px 3px rgba(0,0,0,.25)}
+.lang-flip.big .lf-card{width:30px;height:20px}
+.lf-card::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-130%)}
+.lang-flip:hover .lf-card::after{transition:transform .7s ease;transform:translateX(130%)}
+.flag{display:block;width:100%;height:100%;transform-origin:0 50%}
+.lang-flip:hover .flag{animation:flagWave 1.2s ease-in-out infinite}
+@keyframes flagWave{0%,100%{transform:skewY(0) scaleX(1)}35%{transform:skewY(-5deg) scaleX(.95)}70%{transform:skewY(3deg) scaleX(.98)}}
+.lang-flip.flipping .lf-card{animation:lfFlip .42s cubic-bezier(.45,0,.3,1.4)}
+@keyframes lfFlip{0%{transform:perspective(80px) rotateY(0)}48%{transform:perspective(80px) rotateY(90deg) scale(.9)}52%{transform:perspective(80px) rotateY(-90deg) scale(.9)}100%{transform:perspective(80px) rotateY(0)}}
+.tfx{position:fixed;inset:0;z-index:9500;pointer-events:none;overflow:hidden;--nb:var(--light)}
+.tfx.to-dark{--nb:var(--dark)}
+.tfx-black{position:absolute;inset:0;background:rgba(3,4,10,1);animation:tfxBlack 2.1s forwards}
+@keyframes tfxBlack{0%{opacity:0}15%{opacity:1}55%{opacity:1}85%,100%{opacity:0}}
+.tfx-tower{position:absolute;top:0;left:var(--x);width:0;animation:tfxOut 2.1s forwards}
+@keyframes tfxOut{0%,80%{opacity:1}100%{opacity:0}}
+.tfx-lamp{position:absolute;top:8px;left:-30px;width:60px;height:28px;padding:4px;display:grid;grid-template-columns:repeat(3,1fr);gap:3px;background:rgba(20,24,36,1);border:2px solid rgba(90,96,112,1);border-radius:4px;transform:rotate(calc(var(--r) * -8deg))}
+.tfx-lamp i{border-radius:50%;background:rgba(60,64,76,1);animation:tfxBulb .18s var(--d) forwards}
+@keyframes tfxBulb{to{background:rgba(255,252,232,1);box-shadow:0 0 10px 3px rgba(255,246,200,.95),0 0 26px 8px rgba(255,236,170,.55)}}
+.tfx-beam{position:absolute;top:30px;left:-45vmax;width:90vmax;height:150vh;transform-origin:50% 0;clip-path:polygon(47% 0,53% 0,100% 100%,0 100%);background:linear-gradient(rgba(255,250,225,.85),rgba(255,248,215,.25) 55%,rgba(255,248,215,0) 85%);mix-blend-mode:screen;opacity:0;animation:tfxBeam 1.25s var(--d) forwards}
+@keyframes tfxBeam{0%{opacity:0;transform:rotate(calc(var(--r) * -30deg))}12%{opacity:.95}70%{opacity:.75;transform:rotate(calc(var(--r) * 10deg))}100%{opacity:0;transform:rotate(calc(var(--r) * 16deg))}}
+.tfx-dawn{position:absolute;inset:0;background:linear-gradient(0deg,rgba(255,196,92,1),rgba(249,115,22,1) 30%,rgba(124,58,237,.95) 62%,rgba(26,26,46,1));background-size:100% 220%;animation:tfxDawn 1.9s forwards}
+@keyframes tfxDawn{0%{opacity:0;background-position:0 0}22%{opacity:1}50%{opacity:1}100%{opacity:0;background-position:0 100%}}
+.tfx-sun{position:absolute;left:50%;bottom:-36vmin;width:36vmin;height:36vmin;margin-left:-18vmin;border-radius:50%;background:radial-gradient(circle,rgba(255,251,224,1) 0 40%,rgba(255,214,102,1) 62%,rgba(255,190,60,0) 72%);box-shadow:0 0 120px 60px rgba(255,214,120,.55);animation:tfxRise 1.9s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes tfxRise{0%{transform:translateY(0)}70%{opacity:1}100%{transform:translateY(-78vh);opacity:0}}
+.tfx-tint{position:absolute;inset:0;background:var(--nb);animation:tfxTint 1.7s forwards}
+.tfx-tint.slow{animation-duration:1.6s}
+@keyframes tfxTint{0%,30%{opacity:0}42%,52%{opacity:1}100%{opacity:0}}
+.tfx-arc{position:absolute;left:0;top:0;animation:tfxArcX 1.7s linear forwards}
+@keyframes tfxArcX{from{transform:translateX(-30vmin)}to{transform:translateX(calc(100vw + 4vmin))}}
+.tfx-ball{position:relative;width:26vmin;height:26vmin;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,170,90,1),rgba(234,88,12,1) 60%,rgba(154,52,18,1));box-shadow:0 18px 40px rgba(0,0,0,.35);animation:tfxArcY 1.7s forwards}
+.tfx-ball svg{position:absolute;inset:0;width:100%;height:100%;animation:tfxSeams 1.7s forwards}
+.tfx-ball i{position:absolute;border-radius:50%;background:rgba(120,124,140,.45);opacity:0}
+.tfx-ball i:nth-of-type(1){left:22%;top:30%;width:20%;height:20%}
+.tfx-ball i:nth-of-type(2){left:58%;top:55%;width:14%;height:14%}
+.tfx-ball i:nth-of-type(3){left:40%;top:70%;width:9%;height:9%}
+.tfx-ball.sun{animation:tfxArcY 1.7s forwards,tfxToSun 1.7s forwards}
+.tfx-ball.moon{animation:tfxArcY 1.7s forwards,tfxToMoon 1.7s forwards}
+.tfx-ball.moon i{animation:tfxCrater 1.7s forwards}
+@keyframes tfxArcY{0%{transform:translateY(78vh)}50%{transform:translateY(10vh);animation-timing-function:ease-in}100%{transform:translateY(80vh)}}
+@keyframes tfxSeams{0%,38%{opacity:1}50%,100%{opacity:0}}
+@keyframes tfxToSun{0%,38%{background:radial-gradient(circle at 35% 30%,rgba(255,170,90,1),rgba(234,88,12,1) 60%,rgba(154,52,18,1))}50%,100%{background:radial-gradient(circle,rgba(255,251,224,1) 0 45%,rgba(255,206,84,1));box-shadow:0 0 90px 40px rgba(255,214,120,.6)}}
+@keyframes tfxToMoon{0%,38%{background:radial-gradient(circle at 35% 30%,rgba(255,170,90,1),rgba(234,88,12,1) 60%,rgba(154,52,18,1))}50%,100%{background:radial-gradient(circle at 35% 30%,rgba(248,250,252,1),rgba(203,213,225,1) 70%);box-shadow:0 0 80px 30px rgba(203,213,255,.45)}}
+@keyframes tfxCrater{0%,40%{opacity:0}55%,100%{opacity:1}}
+.tfx-sky{position:absolute;inset:0;background:linear-gradient(var(--nb),color-mix(in srgb,var(--nb) 80%,var(--coral)));opacity:0;animation:tfxSky 1.65s forwards}
+@keyframes tfxSky{0%{opacity:0}40%,62%{opacity:1}92%,100%{opacity:0}}
+.tfx-block{position:absolute;bottom:0;left:calc(var(--i) * 100% / 7 + 6px);width:calc(100% / 7 - 12px);height:var(--h);box-sizing:border-box;padding:20px 14px 0;display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:22px;gap:16px 12px;align-content:start;overflow:hidden;background:color-mix(in srgb,var(--nb) 78%,var(--text));border-radius:4px 4px 0 0;box-shadow:0 0 0 2px color-mix(in srgb,var(--nb) 60%,var(--text));transform:translateY(105%);animation:tfxBlockIn .4s calc(var(--i) * 80ms) cubic-bezier(.2,1.2,.3,1) forwards,tfxBlockOut .4s calc(1050ms + var(--i) * 60ms) ease-in forwards}
+.tfx.to-dark .tfx-block{background:rgba(22,24,40,1);box-shadow:0 0 0 2px rgba(44,48,70,1)}
+.tfx-block i{display:block;width:100%;min-width:8px;height:100%;border-radius:2px;background:rgba(0,0,0,.18)}
+.tfx.to-dark .tfx-block i.lit{animation:tfxWin .12s calc(250ms + var(--w)) forwards}
+.tfx.to-light .tfx-block i{background:rgba(125,211,252,.5)}
+.tfx.to-light .tfx-block i.lit{background:rgba(255,214,102,.9);animation:tfxWinOff .12s calc(250ms + var(--w)) forwards}
+@keyframes tfxWin{to{background:rgba(255,214,102,1);box-shadow:0 0 12px rgba(255,214,102,.7)}}
+@keyframes tfxWinOff{to{background:rgba(125,211,252,.5)}}
+@keyframes tfxBlockIn{to{transform:translateY(0)}}
+@keyframes tfxBlockOut{from{transform:translateY(0)}to{transform:translateY(105%)}}
+.tfx-blob{position:absolute;left:var(--x);top:var(--y);width:62vmax;height:62vmax;margin:-31vmax 0 0 -31vmax;border-radius:50%;background:radial-gradient(circle,var(--nb) 52%,transparent 70%);transform:scale(0);animation:tfxBlob .42s calc(var(--i) * 30ms) cubic-bezier(.2,.9,.3,1) forwards}
+@keyframes tfxBlob{to{transform:scale(1)}}
+.tfx.k-spray{animation:tfxFade 1.5s forwards}
+@keyframes tfxFade{0%,62%{opacity:1}100%{opacity:0}}
+.tfx-tag{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-8deg) scale(.4);font:700 clamp(4rem,22vmin,12rem)/1 'Space Mono',monospace;color:var(--coral);text-shadow:4px 4px 0 var(--green),0 0 30px color-mix(in srgb,var(--coral) 60%,transparent);opacity:0;animation:tfxTag .5s .3s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes tfxTag{to{opacity:1;transform:translate(-50%,-50%) rotate(-8deg) scale(1)}}
+.tfx-ref{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2vmin;background:repeating-linear-gradient(90deg,rgba(17,17,17,1) 0 7vw,rgba(245,245,245,1) 7vw 14vw);animation:tfxRef 1.5s cubic-bezier(.7,0,.3,1) forwards}
+@keyframes tfxRef{0%{transform:translateX(100%)}32%,62%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+.tfx-ref b{font:700 clamp(2rem,9vmin,5rem)/1 'Space Mono',monospace;color:var(--white);background:var(--dark);padding:.3em .6em;border-radius:12px;letter-spacing:3px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.tfx-t{position:relative;width:18vmin;height:18vmin}
+.tfx-t i{position:absolute;background:var(--coral);border-radius:1.4vmin;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.tfx-t i:first-child{left:0;right:0;top:0;height:4.4vmin}
+.tfx-t i:last-child{left:calc(50% - 2.2vmin);width:4.4vmin;top:0;bottom:0;animation:tfxTap .25s .55s 2 alternate}
+@keyframes tfxTap{to{transform:translateY(-1.2vmin)}}
+.tfx-court{position:absolute;left:5vw;top:10vh;width:90vw;height:80vh;fill:none;stroke:var(--green);stroke-width:1.6;stroke-linecap:round;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--green) 70%,transparent));animation:tfxFade 1.6s forwards}
+.tfx-court *{stroke-dasharray:900;stroke-dashoffset:900;animation:tfxDraw .9s cubic-bezier(.5,0,.3,1) forwards}
+.tfx-court *:nth-child(2n){animation-delay:.12s}
+@keyframes tfxDraw{to{stroke-dashoffset:0}}
+/* === Search palette v2: glass, categories, visual results === */
+.cp-overlay{background:radial-gradient(120% 80% at 50% 0%,rgba(16,185,129,.16),rgba(8,10,22,.62) 60%);backdrop-filter:blur(10px) saturate(1.2);-webkit-backdrop-filter:blur(10px) saturate(1.2)}
+.cp.cp2{width:min(640px,100%);background:color-mix(in srgb,var(--bgCard) 82%,transparent);backdrop-filter:blur(22px) saturate(1.5);-webkit-backdrop-filter:blur(22px) saturate(1.5);border:1px solid color-mix(in srgb,var(--white) 18%,transparent);border-radius:20px;box-shadow:0 40px 100px rgba(0,0,0,.5),inset 0 1px 0 color-mix(in srgb,var(--white) 25%,transparent);animation:cp2In .34s cubic-bezier(.2,1.2,.3,1)}
+@keyframes cp2In{from{opacity:0;transform:translateY(-18px) scale(.94);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+.cp.cp2.shake{animation:cp2Shake .5s}
+@keyframes cp2Shake{20%,60%{transform:translateX(-10px) rotate(-1deg)}40%,80%{transform:translateX(10px) rotate(1deg)}}
+.cp-top{display:flex;align-items:center;gap:.6rem;padding:.35rem .9rem;border-bottom:1px solid var(--border)}
+.cp-glass{width:22px;height:22px;color:var(--green);flex-shrink:0;animation:cpGlass 2.6s ease-in-out infinite}
+.cp-glass svg{width:100%;height:100%}
+@keyframes cpGlass{0%,100%{transform:rotate(0)}50%{transform:rotate(-14deg) scale(1.08)}}
+.cp2 .cp-input{flex:1;border:0;padding:.85rem 0;font-size:1.05rem;background:transparent}
+.cp2 .cp-input:focus{outline:none;box-shadow:none}
+.cp-esc,.cp-hint kbd{font:700 .62rem 'Space Mono',monospace;padding:.15rem .4rem;border-radius:5px;border:1px solid var(--border);background:color-mix(in srgb,var(--text) 6%,transparent);color:var(--textSec);cursor:pointer}
+.cp-cats{display:flex;gap:.35rem;padding:.55rem .8rem;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.cp-cats::-webkit-scrollbar{display:none}
+.cp-cat{flex-shrink:0;display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--border);background:transparent;color:var(--textSec);border-radius:999px;padding:.28rem .7rem;font-size:.76rem;cursor:pointer;transition:all .18s}
+.cp-cat b{font:700 .62rem 'Space Mono',monospace;opacity:.7}
+.cp-cat:hover{color:var(--text);border-color:var(--green)}
+.cp-cat.on{background:var(--green);border-color:var(--green);color:var(--white);box-shadow:0 4px 14px color-mix(in srgb,var(--green) 40%,transparent)}
+.cp2 .cp-list{max-height:min(52vh,460px);padding:.45rem}
+.cp2 .cp-item{gap:.75rem;padding:.5rem .6rem;border-radius:12px;animation:cpItem .3s calc(var(--i) * 18ms) both}
+@keyframes cpItem{from{opacity:0;transform:translateY(6px)}}
+.cp2 .cp-item.sel{background:color-mix(in srgb,var(--green) 13%,transparent);box-shadow:inset 3px 0 0 var(--green)}
+.cp-ic{position:relative;flex-shrink:0;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:1.05rem;background:color-mix(in srgb,var(--text) 7%,transparent)}
+.cp-ic-courts{background:color-mix(in srgb,var(--green) 14%,transparent)}
+.cp-ic-reports{background:color-mix(in srgb,var(--coral) 15%,transparent)}
+.cp-ic-actions{background:color-mix(in srgb,var(--teal) 15%,transparent)}
+.cp-ic i{position:absolute;right:-2px;bottom:-2px;width:11px;height:11px;border-radius:50%;border:2px solid var(--bgCard)}
+.cp-l{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.25}
+.cp-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cp-l small{color:var(--textSec);font-size:.74rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cp-l mark{background:color-mix(in srgb,var(--green) 28%,transparent);color:inherit;border-radius:3px;padding:0 1px}
+.cp-go{opacity:0;color:var(--green);font-weight:700;transition:opacity .15s}
+.cp-item.sel .cp-go{opacity:1}
+.cp-item.egg .cp-ic{animation:cpEgg 1.8s ease-in-out infinite}
+@keyframes cpEgg{0%,100%{transform:rotate(0)}10%{transform:rotate(-12deg)}20%{transform:rotate(10deg)}30%{transform:rotate(0)}}
+.cp2 .cp-empty{padding:2rem 1rem}
+.cp-empty-ball{font-size:2.2rem;animation:stBounce 1.05s cubic-bezier(.3,0,.7,1) infinite;margin-bottom:.4rem;transform-origin:50% 100%}
+.cp2 .cp-hint{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+.cp-city{margin-left:auto}
+@media(max-width:600px){.cp-overlay{padding-top:8vh}.cp2 .cp-hint span:not(.cp-city){display:none}.cp-city{margin-left:0}}
+button.nav-cmd{display:inline-grid;place-items:center;width:30px;height:28px;border-radius:8px;color:var(--text);transition:background .18s,color .18s}
+button.nav-cmd:hover{background:color-mix(in srgb,var(--green) 14%,transparent);color:var(--green)}
+.nav-glass{width:17px;height:17px;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+button.nav-cmd:hover .nav-glass{transform:rotate(-18deg) scale(1.15)}
+.ng-shine{opacity:.55}
 /* === Premium polish v2 === */
 /* 1. Scroll progress bar */
 #g2p-progress{position:fixed;top:0;left:0;right:0;z-index:9999;height:2px;background:linear-gradient(90deg,var(--green),var(--teal) 55%,var(--coral));transform-origin:left;transform:scaleX(0);pointer-events:none;will-change:transform}
@@ -926,6 +1068,8 @@ button,select,summary,label,[role="button"],[role="tab"],.btn,.tabs button,nav a
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<!-- Some networks reset gstatic.com (seen on the owner's Wi-Fi): same Firebase build from jsDelivr, still in order -->
+<script>if(!window.firebase||!firebase.database||!firebase.auth){document.write('<script src="https://cdn.jsdelivr.net/npm/firebase@9.23.0/firebase-app-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@9.23.0/firebase-database-compat.js"><\/script><script src="https://cdn.jsdelivr.net/npm/firebase@9.23.0/firebase-auth-compat.js"><\/script>');}</script>
 <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
 <!-- Non-critical: analytics is initialised on load; jsPDF is only read on click (window.jspdf, guarded) -->
@@ -2105,14 +2249,26 @@ function downloadFile(name, content, mime) {
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 
-/* Show-off: theme switch with a circular reveal (View Transitions API).
-   Falls back to a plain toggle on unsupported browsers / reduced motion. */
+/* Theme switch: a little show every time (60% stadium floodlights / sunrise, 40% a random
+   neighbourhood gag). The real switch happens while the effect covers the screen, so the
+   swap itself is never seen. Falls back to the circular reveal, or a plain toggle. */
+function themeFxBlocked() {
+  return fxReduced() || document.documentElement.classList.contains("no-fx");
+}
+const THEME_FX_ALT = ["ball", "blackout", "spray", "whistle", "lines"];
 function switchTheme(e, theme, setTheme) {
   const next = theme === "dark" ? "light" : "dark";
+  const apply = () => setTheme(next);
+  if (window.__g2pThemeFx && !themeFxBlocked()) {
+    if (window.__g2pThemeFxBusy) return;
+    const kind = Math.random() < .6 ? "flood" : THEME_FX_ALT[Math.floor(Math.random() * THEME_FX_ALT.length)];
+    window.dispatchEvent(new CustomEvent("g2p:themefx", { detail: { next: next, kind: kind, apply: apply } }));
+    return;
+  }
   const rm = window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches;
-  if (!document.startViewTransition || rm || !ReactDOM.flushSync) { setTheme(next); return; }
+  if (!document.startViewTransition || rm || !ReactDOM.flushSync) { apply(); return; }
   const x = (e && e.clientX) || window.innerWidth / 2, y = (e && e.clientY) || 40;
-  const vt = document.startViewTransition(() => { ReactDOM.flushSync(() => setTheme(next)); });
+  const vt = document.startViewTransition(() => { ReactDOM.flushSync(apply); });
   vt.ready.then(() => {
     const r = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
     document.documentElement.animate(
@@ -2120,6 +2276,211 @@ function switchTheme(e, theme, setTheme) {
       { duration: 550, easing: "cubic-bezier(.22,1,.36,1)", pseudoElement: "::view-transition-new(root)" }
     );
   }).catch(() => {});
+}
+
+/* Tiny synthesized sports sounds (no files). Only ever called from a user action, so the
+   AudioContext starts after the visitor's first interaction. g2p_sound=0 mutes them. */
+let _sfxCtx = null;
+function g2pSfx(name) {
+  try {
+    if (localStorage.getItem("g2p_sound") === "0") return;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    if (!_sfxCtx) _sfxCtx = new AC();
+    const ac = _sfxCtx;
+    if (ac.state === "suspended") ac.resume();
+    const t0 = ac.currentTime + .01;
+    const out = ac.createGain(); out.gain.value = .22; out.connect(ac.destination);
+    const noise = (dur, type, freq, q, vol, at) => {
+      const n = Math.max(1, Math.floor(ac.sampleRate * dur)), buf = ac.createBuffer(1, n, ac.sampleRate), d = buf.getChannelData(0);
+      for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+      const src = ac.createBufferSource(); src.buffer = buf;
+      const f = ac.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q || 1;
+      const g = ac.createGain(); const s = t0 + (at || 0);
+      g.gain.setValueAtTime(vol, s); g.gain.exponentialRampToValueAtTime(.001, s + dur);
+      src.connect(f); f.connect(g); g.connect(out); src.start(s); src.stop(s + dur + .02);
+    };
+    const tone = (type, f1, f2, dur, vol, at) => {
+      const o = ac.createOscillator(), g = ac.createGain(), s = t0 + (at || 0);
+      o.type = type; o.frequency.setValueAtTime(f1, s); if (f2) o.frequency.exponentialRampToValueAtTime(f2, s + dur);
+      g.gain.setValueAtTime(.0001, s); g.gain.exponentialRampToValueAtTime(vol, s + .012); g.gain.exponentialRampToValueAtTime(.001, s + dur);
+      o.connect(g); g.connect(out); o.start(s); o.stop(s + dur + .02);
+      return o;
+    };
+    if (name === "clack") { noise(.05, "bandpass", 1900, 2, .9); tone("sine", 110, 55, .14, .5); }
+    else if (name === "powerdown") { tone("sawtooth", 180, 40, .32, .18); }
+    else if (name === "flip") { noise(.018, "highpass", 2500, 1, .5); }
+    else if (name === "click") { noise(.012, "bandpass", 3200, 3, .7); }
+    else if (name === "bounce") { tone("sine", 150, 55, .16, .8); noise(.03, "lowpass", 600, 1, .3); }
+    else if (name === "swish") { noise(.28, "bandpass", 5200, .7, .35); }
+    else if (name === "spray") { noise(.55, "highpass", 4200, .5, .32); noise(.3, "highpass", 5000, .5, .22, .45); }
+    else if (name === "squeak") { tone("triangle", 1300, 2300, .09, .25); tone("triangle", 1900, 1400, .08, .2, .1); }
+    else if (name === "chime") { tone("sine", 660, 0, .7, .3); tone("sine", 990, 0, .7, .2, .09); }
+    else if (name === "birds") { tone("sine", 3000, 4600, .07, .12); tone("sine", 3200, 4900, .07, .1, .12); tone("sine", 2900, 4300, .06, .09, .5); }
+    else if (name === "whistle") {
+      [2850, 3050].forEach(f => {
+        const o = tone("square", f, 0, .5, .07);
+        const lfo = ac.createOscillator(), lg = ac.createGain(); lfo.frequency.value = 32; lg.gain.value = 70;
+        lfo.connect(lg); lg.connect(o.frequency); lfo.start(t0); lfo.stop(t0 + .52);
+      });
+    }
+  } catch (e) {}
+}
+
+/* Full-screen theme effect layer, mounted once in App. */
+function ThemeFx() {
+  const { settings } = useApp();
+  const fxOff = !!(settings && settings.flags && settings.flags.effects === false);
+  const [run, setRun] = useState(null);
+  useEffect(() => {
+    if (fxOff) { window.__g2pThemeFx = false; return; }
+    window.__g2pThemeFx = true;
+    const h = e => {
+      const d = e.detail || {};
+      if (window.__g2pThemeFxBusy) return;
+      window.__g2pThemeFxBusy = true;
+      setRun({ id: Date.now(), next: d.next, kind: d.kind, apply: d.apply });
+    };
+    window.addEventListener("g2p:themefx", h);
+    return () => { window.removeEventListener("g2p:themefx", h); window.__g2pThemeFx = false; window.__g2pThemeFxBusy = false; };
+  }, [fxOff]);
+  useEffect(() => {
+    if (!run) return;
+    const dark = run.next === "dark", T = [];
+    const at = (ms, f) => T.push(setTimeout(f, ms));
+    // [when the screen is covered → swap theme, total length]
+    const plan = {
+      flood: dark ? [330, 2100] : [420, 1900],
+      ball: [700, 1700], blackout: [760, 1650], spray: [700, 1500], whistle: [560, 1500], lines: [650, 1600]
+    }[run.kind] || [400, 1500];
+    if (run.kind === "flood") {
+      if (dark) { g2pSfx("powerdown"); [520, 720, 920, 1120].forEach(ms => at(ms, () => g2pSfx("clack"))); }
+      else { at(250, () => g2pSfx("chime")); at(900, () => g2pSfx("birds")); }
+    } else if (run.kind === "ball") { g2pSfx("bounce"); at(330, () => g2pSfx("bounce")); at(760, () => g2pSfx("chime")); }
+    else if (run.kind === "blackout") { for (let i = 0; i < 7; i++) at(90 * i, () => g2pSfx("click")); }
+    else if (run.kind === "spray") { g2pSfx("spray"); }
+    else if (run.kind === "whistle") { g2pSfx("whistle"); at(1050, () => g2pSfx("whistle")); }
+    else if (run.kind === "lines") { g2pSfx("squeak"); at(380, () => g2pSfx("squeak")); }
+    at(plan[0], () => { try { run.apply(); } catch (e) {} });
+    at(plan[1], () => { setRun(null); window.__g2pThemeFxBusy = false; });
+    return () => { T.forEach(clearTimeout); window.__g2pThemeFxBusy = false; };
+  }, [run]);
+  if (!run) return null;
+  const dark = run.next === "dark", k = run.kind;
+  const e = React.createElement;
+  const L = (n, f) => Array.from({ length: n }, (_, i) => f(i));
+  let body = null;
+  if (k === "flood" && dark) {
+    body = e(React.Fragment, null,
+      e("div", { className: "tfx-black" }),
+      L(4, i => e("div", { key: i, className: "tfx-tower", style: { "--x": (10 + i * 26.6) + "%", "--d": (520 + i * 200) + "ms", "--r": (i < 2 ? 1 : -1) } },
+        e("div", { className: "tfx-beam" }), e("div", { className: "tfx-lamp" }, L(6, j => e("i", { key: j }))))));
+  } else if (k === "flood") {
+    body = e(React.Fragment, null, e("div", { className: "tfx-dawn" }), e("div", { className: "tfx-sun" }));
+  } else if (k === "ball") {
+    body = e(React.Fragment, null, e("div", { className: "tfx-tint" }),
+      e("div", { className: "tfx-arc" }, e("div", { className: "tfx-ball " + (dark ? "moon" : "sun") },
+        e("svg", { viewBox: "0 0 100 100", "aria-hidden": "true" },
+          e("path", { d: "M50 2v96M2 50h96M18 14c18 20 18 52 0 72M82 14c-18 20-18 52 0 72", fill: "none", stroke: "rgba(0,0,0,.55)", strokeWidth: 3.2 })),
+        e("i"), e("i"), e("i"))));
+  } else if (k === "blackout") {
+    body = e(React.Fragment, null, e("div", { className: "tfx-sky" }),
+      L(7, i => e("div", { key: i, className: "tfx-block", style: { "--i": i, "--h": [72, 56, 88, 63, 94, 60, 80][i] + "%" } },
+        L(52, j => e("i", { key: j, className: ((i * 7 + j * 13) % 5 < 2) ? "lit" : "", style: { "--w": ((i * 131 + j * 71) % 900) + "ms" } })))));
+  } else if (k === "spray") {
+    body = e(React.Fragment, null,
+      L(16, i => e("div", { key: i, className: "tfx-blob", style: { "--x": ((i * 37) % 100) + "%", "--y": ((i * 61) % 100) + "%", "--i": i } })),
+      e("div", { className: "tfx-tag" }, "G2P"));
+  } else if (k === "whistle") {
+    body = e("div", { className: "tfx-ref" }, e("div", { className: "tfx-t" }, e("i"), e("i")), e("b", null, "TIME-OUT"));
+  } else if (k === "lines") {
+    body = e(React.Fragment, null, e("div", { className: "tfx-tint slow" }),
+      e("svg", { className: "tfx-court", viewBox: "0 0 280 150", preserveAspectRatio: "xMidYMid meet", "aria-hidden": "true" },
+        e("rect", { x: 6, y: 6, width: 268, height: 138, rx: 2 }),
+        e("line", { x1: 140, y1: 6, x2: 140, y2: 144 }),
+        e("circle", { cx: 140, cy: 75, r: 18 }),
+        e("path", { d: "M6 30h40a45 45 0 0 1 0 90H6M274 30h-40a45 45 0 0 0 0 90h40" }),
+        e("rect", { x: 6, y: 55, width: 52, height: 40 }), e("rect", { x: 222, y: 55, width: 52, height: 40 })));
+  }
+  return e("div", { key: run.id, className: "tfx k-" + k + (dark ? " to-dark" : " to-light"), "aria-hidden": "true" }, body);
+}
+
+/* Theme button: a mechanical DAY / NIGHT scoreboard. Switch 5 times in a few seconds and it
+   goes into overtime. */
+function ThemeBoard({ big }) {
+  const { theme, setTheme, lang } = useApp();
+  const [ot, setOt] = useState(false);
+  const hits = useRef([]);
+  const W = { ro: ["ZI", "NOAPTE", "PRELUNGIRI"], en: ["DAY", "NIGHT", "OVERTIME"], hu: ["NAP", "ÉJ", "HOSSZABBÍTÁS"] }[lang] || ["ZI", "NOAPTE", "PRELUNGIRI"];
+  const label = ot ? W[2] : theme === "dark" ? W[1] : W[0];
+  const onClick = e => {
+    const now = Date.now();
+    hits.current = hits.current.filter(t => now - t < 6000).concat(now);
+    if (hits.current.length >= 5 && !ot) {
+      hits.current = [];
+      setOt(true); g2pSfx("whistle");
+      try { window.dispatchEvent(new CustomEvent("g2p:egg", { detail: { id: "overtime" } })); } catch (err) {}
+      setTimeout(() => setOt(false), 2600);
+      return;
+    }
+    if (!window.__g2pThemeFx || themeFxBlocked()) g2pSfx("flip");
+    switchTheme(e, theme, setTheme);
+  };
+  const next = theme === "dark" ? W[0] : W[1];
+  return React.createElement("button", {
+    className: "theme-board" + (big ? " big" : "") + (theme === "dark" ? " night" : " day") + (ot ? " ot" : ""),
+    onClick: onClick, title: next, "aria-label": (lang === "en" ? "Switch to " : lang === "hu" ? "Váltás: " : "Treci pe ") + next.toLowerCase()
+  },
+    React.createElement("span", { className: "tb-led", "aria-hidden": "true" }),
+    React.createElement("span", { className: "tb-win", "aria-hidden": "true" },
+      React.createElement("span", { key: label, className: "tb-flap" }, label)));
+}
+
+/* Hand-drawn flags: Windows has no emoji flags, so these are SVG. */
+function FlagIcon({ code }) {
+  const e = React.createElement;
+  if (code === "en") return e("svg", { className: "flag", viewBox: "0 0 60 40", "aria-hidden": "true" },
+    e("rect", { width: 60, height: 40, fill: "var(--flagBlue2)" }),
+    e("path", { d: "M0 0L60 40M60 0L0 40", stroke: "var(--flagWhite)", strokeWidth: 8 }),
+    e("path", { d: "M0 0L60 40M60 0L0 40", stroke: "var(--flagRed2)", strokeWidth: 3 }),
+    e("path", { d: "M30 0v40M0 20h60", stroke: "var(--flagWhite)", strokeWidth: 12 }),
+    e("path", { d: "M30 0v40M0 20h60", stroke: "var(--flagRed2)", strokeWidth: 7 }));
+  if (code === "hu") return e("svg", { className: "flag", viewBox: "0 0 30 20", "aria-hidden": "true" },
+    e("rect", { width: 30, height: 7, fill: "var(--flagRed3)" }),
+    e("rect", { y: 6.6, width: 30, height: 6.8, fill: "var(--flagWhite)" }),
+    e("rect", { y: 13.3, width: 30, height: 6.7, fill: "var(--flagGreen3)" }));
+  return e("svg", { className: "flag", viewBox: "0 0 30 20", "aria-hidden": "true" },
+    e("rect", { width: 10.2, height: 20, fill: "var(--flagBlue1)" }),
+    e("rect", { x: 10, width: 10.2, height: 20, fill: "var(--flagYellow1)" }),
+    e("rect", { x: 20, width: 10, height: 20, fill: "var(--flagRed1)" }));
+}
+const LANG_NAMES = { ro: "Română", en: "English", hu: "Magyar" };
+
+/* Language button: shows the current flag; a click flips it in 3D to the next language and
+   the page cross-fades into the new text. */
+function LangFlip({ big }) {
+  const { lang, setLang } = useApp();
+  const [flip, setFlip] = useState(false);
+  const busy = useRef(false);
+  const next = nextLang(lang);
+  const go = () => {
+    if (busy.current) return;
+    if (fxReduced()) { setLang(next); return; }
+    busy.current = true; setFlip(true); g2pSfx("flip");
+    setTimeout(() => {
+      const swap = () => setLang(next);
+      if (document.startViewTransition && ReactDOM.flushSync) document.startViewTransition(() => ReactDOM.flushSync(swap));
+      else swap();
+    }, 190);
+    setTimeout(() => { setFlip(false); busy.current = false; }, 420);
+  };
+  return React.createElement("button", {
+    className: "lang-flip" + (big ? " big" : "") + (flip ? " flipping" : ""),
+    onClick: go, title: LANG_NAMES[next],
+    "aria-label": LANG_NAMES[lang] + " → " + LANG_NAMES[next]
+  },
+    React.createElement("span", { className: "lf-card" }, React.createElement(FlagIcon, { code: lang })),
+    React.createElement("span", { className: "lf-code" }, lang.toUpperCase()));
 }
 
 function compressImage(file, maxDim, quality) {
@@ -5895,53 +6256,158 @@ function PresenceBadge() {
    COMMAND PALETTE — Ctrl/Cmd+K. Pages, courts, quick actions.
    ============================================================ */
 function CommandPalette({ onClose }) {
-  const { t, lang, setLang, theme, setTheme, setPage, settings } = useApp();
+  const { t, lang, setLang, theme, setTheme, setPage, settings, toast } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro; // TODO: HU review
   const [q, setQ] = useState("");
   const [idx, setIdx] = useState(0);
-  const inputRef = useRef(null);
+  const [cat, setCat] = useState("all");
+  const [shake, setShake] = useState(0);
+  const inputRef = useRef(null), listRef = useRef(null);
+  const reports = useFirebase("reports");
   useEffect(() => { if (inputRef.current) inputRef.current.focus(); }, []);
-  const norm = s => (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const norm = s => (s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
   const flags = (settings && settings.flags) || {};
+  const courtById = {};
+  COURTS.forEach(c => { courtById[c.id] = c; });
+  const go = pg => () => { setPage(pg); scrollTo(0, 0); };
+  const CATS = [
+    ["all", L3("Tot", "All", "Minden"), "✨"],
+    ["courts", L3("Terenuri", "Courts", "Pályák"), "📍"],
+    ["reports", L3("Sesizări", "Reports", "Bejelentések"), "⚠️"],
+    ["pages", L3("Pagini", "Pages", "Oldalak"), "🧭"],
+    ["actions", L3("Acțiuni", "Actions", "Műveletek"), "⚡"]
+  ];
   const items = [];
-  [["home", t.home, "🏠"], ["courts", t.courts, "🏟️"], ["reports", t.reportPageTitle, "⚠️"],
-   ["petition", t.petition, "✊"], ["community", t.community, "💬"], ["impact", t.impact, "📊"],
-   ["help", t.help, "🤝"], ["about", t.about, "ℹ️"], ["profile", t.profile, "👤"]]
+  [["home", t.home, "🏠", L3("acasa start", "start", "")], ["courts", t.courts, "🏟️", L3("harta terenuri", "map", "térkép")],
+   ["reports", t.reportPageTitle, "⚠️", L3("probleme sesizari", "issues", "")], ["petition", t.petition, "✊", L3("semnatura vot", "sign vote", "")],
+   ["community", t.community, "💬", L3("forum galerie evenimente echipe pixel clasament", "forum gallery events teams pixel leaderboard", "")],
+   ["impact", t.impact, "📊", L3("statistici cifre", "stats numbers", "")], ["help", t.help, "🤝", L3("voluntar doneaza distribuie contact", "volunteer donate share contact", "")],
+   ["about", t.about, "ℹ️", L3("echipa surse finantare parteneri presa", "team sources funding partners press", "")], ["profile", t.profile, "👤", L3("cont insigne", "account badges", "")]]
     .filter(pg => flags[pg[0]] !== false)
-    .forEach(pg => items.push({ g: t.cmdPages, ic: pg[2], l: pg[1], run: () => setPage(pg[0]) }));
-  COURTS.forEach(c => items.push({ g: t.cmdCourts, ic: "📍", l: c.name, sub: c.address, run: () => { location.hash = "#court-" + c.id; } }));
-  items.push({ g: t.cmdActions, ic: theme === "dark" ? "☀️" : "🌙", l: t.cmdTheme, run: () => switchTheme(null, theme, setTheme) });
-  items.push({ g: t.cmdActions, ic: "🌐", l: t.cmdLang + " (" + nextLang(lang).toUpperCase() + ")", run: () => setLang(nextLang(lang)) });
-  if (flags.impact !== false) items.push({ g: t.cmdActions, ic: "🧬", l: t.pulseTitle, run: () => { sessionStorage.setItem("g2p_open_pulse", "1"); setPage("impact"); } });
-  items.push({ g: t.cmdActions, ic: "🏛️", l: "Mayor Mode", run: () => { window.dispatchEvent(new Event("g2p-mayor")); } });
-  const list = q ? items.filter(i => norm(i.l + " " + (i.sub || "")).indexOf(norm(q)) >= 0) : items;
+    .forEach(pg => items.push({ c: "pages", ic: pg[2], l: pg[1], kw: pg[3], run: go(pg[0]) }));
+  COURTS.forEach(c => {
+    const v = courtStatusView(c, t);
+    items.push({ c: "courts", ic: "📍", l: c.name, sub: c.address, kw: (c.neighbourhood || "") + " " + (c.category || ""), dot: v.color, chip: v.label, chipCls: v.badge, pop: (c.reports || 0), run: () => { location.hash = "#court-" + c.id; } });
+  });
+  const catEmoji = { surface: "🏗️", hoop: "🏀", fence: "🚧", lighting: "💡", trash: "🗑️", safety: "⚠️", other: "📌", condition: "🩺" };
+  const ago = ts => { const m = Math.max(1, Math.round((Date.now() - ts) / 60000)); return m < 60 ? m + " min" : m < 1440 ? Math.round(m / 60) + " h" : Math.round(m / 1440) + (lang === "en" ? " d" : lang === "hu" ? " n" : " z"); };
+  if (reports) Object.keys(reports).map(k => Object.assign({ id: k }, reports[k]))
+    .filter(r => r && courtById[r.courtId])
+    .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).slice(0, 60)
+    .forEach(r => items.push({ c: "reports", ic: catEmoji[r.category] || "📌", l: String(r.issue || r.note || L3("Sesizare", "Report", "Bejelentés")).slice(0, 80),
+      sub: courtById[r.courtId].name + (r.timestamp ? " · " + ago(r.timestamp) : ""), kw: r.category || "",
+      chip: r.status === "resolved" ? L3("rezolvat", "resolved", "megoldva") : null, chipCls: "badge-green", run: () => { location.hash = "#court-" + r.courtId; } }));
+  const A = (ic, l, kw, run) => items.push({ c: "actions", ic: ic, l: l, kw: kw, run: run });
+  if (flags.petition !== false) A("✍️", L3("Semnează petiția", "Sign the petition", "Írd alá a petíciót"), "vot", go("petition"));
+  A("📸", L3("Raportează o problemă", "Report a problem", "Probléma bejelentése"), "sesizare poza photo", go("reports"));
+  A("🩺", L3("Verifică un teren", "Check a court", "Ellenőrizz egy pályát"), "stare condition", go("courts"));
+  A("📚", L3("Sursele datelor", "Data sources", "Adatforrások"), "surse sources dovezi", go("about"));
+  A(theme === "dark" ? "☀️" : "🌙", t.cmdTheme, "dark light tema zi noapte", () => switchTheme(null, theme, setTheme));
+  A("🌐", t.cmdLang + " → " + LANG_NAMES[nextLang(lang)], "limba language nyelv", () => setLang(nextLang(lang)));
+  if (flags.impact !== false) A("🧬", t.pulseTitle, "pulse", () => { sessionStorage.setItem("g2p_open_pulse", "1"); setPage("impact"); });
+  A("🏛️", "Mayor Mode", "fixit primar", () => { window.dispatchEvent(new Event("g2p-mayor")); });
+  const mascotIsOff = mascotOff();
+  A("🏀", mascotIsOff ? L3("Adu mingea înapoi", "Bring the ball back", "Hozd vissza a labdát") : L3("Ascunde mingea", "Hide the ball", "Labda elrejtése"), "mascota mascot", () => {
+    try { if (mascotIsOff) localStorage.removeItem("g2p_mascot_off"); else localStorage.setItem("g2p_mascot_off", "1"); } catch (e) {}
+    window.dispatchEvent(new CustomEvent("g2p:mascot"));
+  });
+  let soundOff = false; try { soundOff = localStorage.getItem("g2p_sound") === "0"; } catch (e) {}
+  A(soundOff ? "🔈" : "🔇", soundOff ? L3("Pornește sunetele", "Turn sounds on", "Hangok be") : L3("Oprește sunetele", "Mute sounds", "Hangok ki"), "sunet sound audio", () => {
+    try { localStorage.setItem("g2p_sound", soundOff ? "1" : "0"); } catch (e) {}
+    toast(soundOff ? "🔈" : "🔇");
+  });
+
+  // Search: every word must appear; names that start with the query come first.
+  const words = norm(q).split(/\s+/).filter(Boolean);
+  let list = items.filter(i => cat === "all" || i.c === cat);
+  if (words.length) {
+    list = list.map(i => { const hay = norm(i.l + " " + (i.sub || "") + " " + (i.kw || "")); const nl = norm(i.l);
+      return words.every(w => hay.indexOf(w) >= 0) ? { i: i, s: (nl.indexOf(words[0]) === 0 ? 0 : nl.indexOf(words[0]) > 0 ? 1 : 2) } : null; })
+      .filter(Boolean).sort((a, b) => a.s - b.s).map(x => x.i);
+  }
+  // Empty box: recent picks, the most-reported courts, and one button you should not press.
+  let recent = [];
+  try { recent = JSON.parse(localStorage.getItem("g2p_cp_recent") || "[]"); } catch (e) {}
+  const suggest = !words.length && cat === "all";
+  if (suggest) {
+    const rec = recent.map(l => items.find(i => i.l === l)).filter(Boolean).slice(0, 4).map(i => Object.assign({}, i, { g: L3("Recente", "Recent", "Legutóbbi"), ic2: "🕘" }));
+    const pop = items.filter(i => i.c === "courts").sort((a, b) => b.pop - a.pop).slice(0, 4).map(i => Object.assign({}, i, { g: L3("Cele mai raportate", "Most reported", "Legtöbbet jelentett") }));
+    const egg = { c: "actions", g: L3("Altceva", "Something else", "Más"), ic: "🙈", l: L3("Nu apăsa aici", "Don't press this", "Ne nyomd meg"), sub: "", egg: true, run: null };
+    list = rec.concat(pop, items.filter(i => i.c === "actions").slice(0, 4).map(i => Object.assign({}, i, { g: L3("Acțiuni rapide", "Quick actions", "Gyors műveletek") })), [egg]);
+  }
   const sel = Math.max(0, Math.min(idx, list.length - 1));
-  const exec = i => { if (!i) return; onClose(); i.run(); };
+  useEffect(() => {
+    const el = listRef.current && listRef.current.querySelector(".cp-item.sel");
+    if (el && el.scrollIntoView) el.scrollIntoView({ block: "nearest" });
+  }, [sel]);
+  const exec = i => {
+    if (!i) return;
+    if (i.egg) {
+      setShake(s => s + 1); g2pSfx("whistle");
+      try { window.dispatchEvent(new CustomEvent("g2p:egg", { detail: { id: "dontpress" } })); } catch (e) {}
+      toast(L3("Ți-am zis. 😏", "Told you. 😏", "Mondtam. 😏"));
+      return;
+    }
+    try { localStorage.setItem("g2p_cp_recent", JSON.stringify([i.l].concat(recent.filter(x => x !== i.l)).slice(0, 6))); } catch (e) {}
+    onClose(); i.run();
+  };
   const key = e => {
     if (e.key === "ArrowDown") { setIdx(v => Math.min(v + 1, list.length - 1)); e.preventDefault(); }
     else if (e.key === "ArrowUp") { setIdx(v => Math.max(v - 1, 0)); e.preventDefault(); }
+    else if (e.key === "Tab") { e.preventDefault(); const n = CATS.findIndex(c => c[0] === cat); setCat(CATS[(n + (e.shiftKey ? CATS.length - 1 : 1)) % CATS.length][0]); setIdx(0); }
     else if (e.key === "Enter") exec(list[sel]);
     else if (e.key === "Escape") onClose();
   };
+  const mark = s => {
+    if (!words.length || !s) return s;
+    const n = norm(s), w = words[0], at = n.indexOf(w);
+    if (at < 0) return s;
+    return React.createElement(React.Fragment, null, s.slice(0, at), React.createElement("mark", null, s.slice(at, at + w.length)), s.slice(at + w.length));
+  };
+  const counts = {};
+  items.forEach(i => { counts[i.c] = (counts[i.c] || 0) + 1; });
+  const groupName = i => i.g || (CATS.find(c => c[0] === i.c) || [0, ""])[1];
   let lastG = null;
   return React.createElement("div", { className: "cp-overlay", onClick: onClose },
-    React.createElement("div", { className: "cp", onClick: e => e.stopPropagation(), role: "dialog", "aria-modal": "true", "aria-label": t.cmdPlaceholder },
-      React.createElement("input", { ref: inputRef, className: "cp-input", placeholder: t.cmdPlaceholder, value: q,
-        onChange: e => { setQ(e.target.value); setIdx(0); }, onKeyDown: key, "aria-label": t.cmdPlaceholder }),
-      React.createElement("div", { className: "cp-list", role: "listbox" },
+    React.createElement("div", { key: shake, className: "cp cp2" + (shake ? " shake" : ""), onClick: e => e.stopPropagation(), role: "dialog", "aria-modal": "true", "aria-label": t.cmdPlaceholder },
+      React.createElement("div", { className: "cp-top" },
+        React.createElement("span", { className: "cp-glass", "aria-hidden": "true" },
+          React.createElement("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2.4, strokeLinecap: "round" },
+            React.createElement("circle", { cx: 10.5, cy: 10.5, r: 6.5 }), React.createElement("path", { d: "M15.5 15.5L21 21" }))),
+        React.createElement("input", { ref: inputRef, className: "cp-input", placeholder: L3("Caută terenuri, sesizări, pagini, acțiuni…", "Search courts, reports, pages, actions…", "Keress pályát, bejelentést, oldalt…"), value: q,
+          onChange: e => { setQ(e.target.value); setIdx(0); }, onKeyDown: key, "aria-label": t.cmdPlaceholder }),
+        React.createElement("kbd", { className: "cp-esc", onClick: onClose }, "Esc")),
+      React.createElement("div", { className: "cp-cats", role: "tablist" },
+        CATS.map(c => React.createElement("button", { key: c[0], role: "tab", "aria-selected": cat === c[0], className: "cp-cat" + (cat === c[0] ? " on" : ""),
+          onClick: () => { setCat(c[0]); setIdx(0); inputRef.current && inputRef.current.focus(); } },
+          c[2] + " " + c[1], c[0] !== "all" && React.createElement("b", null, counts[c[0]] || 0)))),
+      React.createElement("div", { ref: listRef, className: "cp-list", role: "listbox" },
         list.length === 0
-          ? React.createElement("div", { className: "cp-empty" }, "∅")
-          : list.slice(0, 40).map((i, n) => {
-              const head = i.g !== lastG ? React.createElement("div", { className: "cp-group", key: "g" + n }, i.g) : null;
-              lastG = i.g;
+          ? React.createElement("div", { className: "cp-empty" },
+              React.createElement("div", { className: "cp-empty-ball", "aria-hidden": "true" }, "🏀"),
+              L3("Nimic. Nici măcar o minge pierdută.", "Nothing. Not even a lost ball.", "Semmi. Még egy elveszett labda sem."))
+          : list.slice(0, 50).map((i, n) => {
+              const g = groupName(i);
+              const head = g !== lastG ? React.createElement("div", { className: "cp-group", key: "g" + n }, g) : null;
+              lastG = g;
               return React.createElement(React.Fragment, { key: n }, head,
                 React.createElement("div", {
-                  className: "cp-item" + (n === sel ? " sel" : ""), role: "option", "aria-selected": n === sel,
+                  className: "cp-item" + (n === sel ? " sel" : "") + (i.egg ? " egg" : ""), role: "option", "aria-selected": n === sel,
+                  style: { "--i": Math.min(n, 12) },
                   onMouseEnter: () => setIdx(n), onClick: () => exec(i)
                 },
-                  React.createElement("span", { className: "cp-ic" }, i.ic),
-                  React.createElement("span", { className: "cp-l" }, i.l, i.sub && React.createElement("small", null, " — " + i.sub))));
+                  React.createElement("span", { className: "cp-ic cp-ic-" + i.c }, i.ic, i.dot && React.createElement("i", { style: { background: i.dot } })),
+                  React.createElement("span", { className: "cp-l" },
+                    React.createElement("span", { className: "cp-name" }, mark(i.l)),
+                    i.sub && React.createElement("small", null, mark(i.sub))),
+                  i.chip && React.createElement("span", { className: "badge " + (i.chipCls || ""), style: { fontSize: ".64rem" } }, i.chip),
+                  React.createElement("span", { className: "cp-go", "aria-hidden": "true" }, "↵")));
             })),
-      React.createElement("div", { className: "cp-hint" }, t.cmdHint)));
+      React.createElement("div", { className: "cp-hint" },
+        React.createElement("span", null, React.createElement("kbd", null, "↑↓"), " ", L3("alege", "move", "mozgás")),
+        React.createElement("span", null, React.createElement("kbd", null, "↵"), " ", L3("deschide", "open", "megnyitás")),
+        React.createElement("span", null, React.createElement("kbd", null, "Tab"), " ", L3("categorie", "category", "kategória")),
+        React.createElement("span", { className: "cp-city" }, "📍 " + (CITY_CFG[ACTIVE_CITY] ? CITY_CFG[ACTIVE_CITY][lang === "hu" ? "nameHu" : lang === "en" ? "nameEn" : "nameRo"] : "")))));
 }
 
 /* Admin-picked "court of the week" spotlight on Home (settings/featuredCourtId). */
@@ -6083,13 +6549,10 @@ function Navbar() {
     title: "Ctrl+K",
     "aria-label": "Search (Ctrl+K)",
     onClick: () => setCmd(true)
-  }, "🔍"),
-  /*#__PURE__*/React.createElement("button", {
-    onClick: () => setLang(nextLang(lang))
-  }, t.language),
-  /*#__PURE__*/React.createElement("button", {
-    onClick: e => switchTheme(e, theme, setTheme)
-  }, theme === "dark" ? "\u2600\uFE0F" : "\uD83C\uDF19"),
+  }, React.createElement("svg", { className: "nav-glass", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2.4, strokeLinecap: "round", "aria-hidden": "true" },
+    React.createElement("circle", { cx: 10.5, cy: 10.5, r: 6.5 }), React.createElement("path", { d: "M15.5 15.5L21 21" }), React.createElement("path", { className: "ng-shine", d: "M7.5 9a3.2 3.2 0 0 1 3-2.6" }))),
+  React.createElement(LangFlip, null),
+  React.createElement(ThemeBoard, null),
   React.createElement(CitySwitch, null),
   React.createElement("div", { style: { position: "relative" } },
   /*#__PURE__*/React.createElement("button", {
@@ -6150,13 +6613,7 @@ function Navbar() {
       flexWrap: "wrap",
       alignItems: "center"
     }
-  }, React.createElement(CitySwitch, null), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-sm btn-outline",
-    onClick: () => setLang(nextLang(lang))
-  }, t.language), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-sm btn-outline",
-    onClick: e => switchTheme(e, theme, setTheme)
-  }, theme === "dark" ? "☀️" : "🌙"), React.createElement("button", {
+  }, React.createElement(CitySwitch, null), React.createElement(LangFlip, { big: true }), React.createElement(ThemeBoard, { big: true }), React.createElement("button", {
     className: "btn btn-sm btn-outline",
     onClick: () => { setMob(false); setShowNotif(true); }
   }, "🔔 " + (unreadCount ? unreadCount + " " : "") + t.notifications), firebaseUser && React.createElement("button", {
@@ -7186,9 +7643,12 @@ function StoryScroll() {
       raf = 0;
       const navH = nav ? nav.offsetHeight : 58;
       el.style.setProperty("--navH", navH + "px");
-      const r = el.getBoundingClientRect();
-      const total = Math.max(1, r.height - (window.innerHeight - navH));
-      const p = Math.min(1, Math.max(0, (navH - r.top) / total));
+      // The stage is a card at ~3/4 of the screen, centred: progress runs while it is stuck.
+      const tr = el.querySelector(".story-track"), st = el.querySelector(".story-stage");
+      const r = (tr || el).getBoundingClientRect(), sh = st ? st.offsetHeight : window.innerHeight - navH;
+      const top = navH + (window.innerHeight - navH - sh) / 2;
+      const total = Math.max(1, r.height - sh);
+      const p = Math.min(1, Math.max(0, (top - r.top) / total));
       const pos = p * N, idx = Math.min(N - 1, Math.floor(pos)), local = idx === N - 1 && p >= 1 ? 1 : Math.min(1, pos - idx);
       el.querySelectorAll(".st-scene").forEach((s, i) => s.style.setProperty("--t", i < idx ? "1" : i > idx ? "0" : local.toFixed(3)));
       if (idx !== last) { last = idx; setScene(idx); }
@@ -11509,15 +11969,9 @@ function ProfilePage() {
     className: "mb-1"
   }, "\u2699\uFE0F ", t.settings), /*#__PURE__*/React.createElement("div", {
     className: "flex justify-between items-center mb-1"
-  }, /*#__PURE__*/React.createElement("span", null, theme === "dark" ? "🌙 Dark" : "☀️ Light"), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-sm btn-outline",
-    onClick: e => switchTheme(e, theme, setTheme)
-  }, theme === "dark" ? "☀️" : "🌙")), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", null, theme === "dark" ? "🌙 Dark" : "☀️ Light"), React.createElement(ThemeBoard, { big: true })), /*#__PURE__*/React.createElement("div", {
     className: "flex justify-between items-center mb-1"
-  }, /*#__PURE__*/React.createElement("span", null, "Language"), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-sm btn-outline",
-    onClick: () => setLang(nextLang(lang))
-  }, t.language))), isAdmin && React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--green)" } },
+  }, /*#__PURE__*/React.createElement("span", null, "Language"), React.createElement(LangFlip, { big: true }))), isAdmin && React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--green)" } },
       React.createElement("div", { className: "flex items-center gap-2", style: { marginBottom: ".5rem" } },
         React.createElement("span", { style: { fontSize: "1.4rem" } }, "\uD83D\uDD11"),
         React.createElement("div", null,
@@ -14569,7 +15023,7 @@ function App() {
     }
   }, /*#__PURE__*/React.createElement("div", {
     key: page
-  }, React.createElement(PageBoundary, null, P()))), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(FunEggs, null), React.createElement(SecretKeys, null), React.createElement(Mascot, { page: page }), React.createElement(BigCelebration, null), mayor && React.createElement(MayorMode, {
+  }, React.createElement(PageBoundary, null, P()))), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(FunEggs, null), React.createElement(SecretKeys, null), React.createElement(Mascot, { page: page }), React.createElement(BigCelebration, null), React.createElement(ThemeFx, null), mayor && React.createElement(MayorMode, {
     onClose: () => setMayor(false)
   }), /*#__PURE__*/React.createElement(Footer, null), toastEl, authEl, nudgeEl);
 }
