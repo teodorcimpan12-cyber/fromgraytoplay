@@ -1246,6 +1246,153 @@ button.nav-cmd:hover{background:color-mix(in srgb,var(--green) 14%,transparent);
 .nav-glass{width:17px;height:17px;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
 button.nav-cmd:hover .nav-glass{transform:rotate(-18deg) scale(1.15)}
 .ng-shine{opacity:.55}
+/* === Batch C push 2: sources (¹), About tabs, funding, press, how to help === */
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-ghost:hover{border-color:var(--green);color:var(--green)}
+.srcref{font-size:.58em;line-height:0;margin-left:.08em;vertical-align:super;font-family:'Space Mono',monospace;font-weight:700;white-space:nowrap}
+.srcref-b{all:unset;cursor:pointer;color:var(--green);padding:.1em .22em;border-radius:5px;min-width:1em;text-align:center;transition:background .15s,color .15s}
+.srcref-b:hover,.srcref-b:focus-visible{background:var(--green);color:#fff;outline:none}
+.srcpop{position:fixed;z-index:400;transform:translate(-50%,calc(-100% - 10px));width:290px;max-width:calc(100vw - 24px);background:var(--bgCard);color:var(--text);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 14px 40px rgba(0,0,0,.25);padding:.7rem .8rem;font-size:.82rem;line-height:1.45;pointer-events:none;animation:srcpop .16s ease-out}
+@keyframes srcpop{from{opacity:0;transform:translate(-50%,calc(-100% - 2px))}}
+.srcpop-k{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--textSec);margin-bottom:.3rem;display:flex;gap:.4rem;align-items:center;flex-wrap:wrap}
+.srcpop-hint{margin-top:.4rem;font-size:.72rem;color:var(--green);font-weight:600}
+.src-new{font-family:'Space Mono',monospace;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#fff;background:var(--coral);border-radius:999px;padding:.08rem .45rem}
+.srcsheet-bg{position:fixed;inset:0;z-index:400;background:rgba(10,12,20,.45);display:flex;align-items:flex-end;justify-content:center;animation:fadeIn .18s}
+.srcsheet{width:100%;max-width:560px;background:var(--bgCard);color:var(--text);border-radius:18px 18px 0 0;padding:.6rem 1.1rem calc(1.1rem + env(safe-area-inset-bottom));box-shadow:0 -10px 40px rgba(0,0,0,.3);animation:srcsheet .26s cubic-bezier(.2,.9,.3,1.1);font-size:.92rem;line-height:1.5}
+@keyframes srcsheet{from{transform:translateY(100%)}}
+.srcsheet-grab{width:42px;height:4px;border-radius:4px;background:var(--border);margin:0 auto .7rem}
+.srcsheet-n{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.srcsheet-t{display:block;margin:.2rem 0 .5rem;font-size:1rem}
+.srcsheet-acts{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.9rem}
+.g2chip{border:1px solid var(--border);background:var(--bgCard);color:var(--text);border-radius:999px;padding:.35rem .85rem;font-size:.82rem;font-weight:600;cursor:pointer;min-height:36px;transition:background .15s,border-color .15s,color .15s}
+.g2chip:hover{border-color:var(--green)}
+.g2chip-on{background:var(--green);border-color:var(--green);color:#fff}
+.src-filter{display:flex;gap:.45rem;flex-wrap:wrap;margin:.2rem 0 1rem}
+.src-group{margin-bottom:1.6rem}
+.src-group-h{font-size:1rem;margin:0 0 .7rem}
+.src-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:.8rem}
+.src-card{background:var(--bgCard);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem 1rem;display:flex;flex-direction:column;gap:.45rem;box-shadow:var(--shadow);scroll-margin-top:90px;transition:border-color .3s,box-shadow .3s}
+.src-card.src-focus{border-color:var(--green);box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 30%,transparent),var(--shadow);animation:srcfocus 1.2s ease-out 2}
+@keyframes srcfocus{50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--green) 18%,transparent),var(--shadow)}}
+.src-top{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;font-size:.76rem;color:var(--textSec)}
+.src-num{font-family:'Space Mono',monospace;font-weight:700;color:#fff;background:var(--green);border-radius:6px;min-width:1.5rem;height:1.5rem;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem}
+.src-ic{font-size:1rem}
+.src-pub{font-weight:700;color:var(--text)}
+.src-date{font-family:'Space Mono',monospace}
+.src-title{font-size:.92rem;line-height:1.35}
+.src-proves{margin:0;font-size:.86rem;color:var(--textSec);line-height:1.5;padding-left:.6rem;border-left:3px solid color-mix(in srgb,var(--green) 45%,transparent)}
+.src-used{font-size:.74rem;color:var(--textSec);display:flex;gap:.3rem;flex-wrap:wrap;align-items:center}
+.src-used-b{border:none;background:color-mix(in srgb,var(--teal) 14%,transparent);color:var(--teal);border-radius:999px;padding:.12rem .55rem;font-size:.72rem;font-weight:600;cursor:pointer}
+.src-acts{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:auto;padding-top:.2rem}
+.about-tab-n{margin-left:.35rem;font-size:.68rem;font-family:'Space Mono',monospace;background:color-mix(in srgb,var(--green) 16%,transparent);color:var(--green);border-radius:999px;padding:.05rem .4rem}
+.fund-transp{border-top:4px solid var(--green)}
+.fund-row{display:grid;grid-template-columns:2rem 1fr auto;gap:.7rem;align-items:start;padding:.75rem 0;border-top:1px solid var(--border)}
+.fund-row:first-of-type{border-top:none}
+.fund-ic{font-size:1.3rem;line-height:1.2}
+.fund-k{font-weight:700;font-size:.92rem}
+.fund-note{font-size:.8rem;color:var(--textSec);margin-top:.15rem;line-height:1.45}
+.fund-v{font-family:'Space Mono',monospace;font-weight:700;color:var(--green);white-space:nowrap;text-align:right;font-size:.92rem}
+.fund-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:.6rem}
+.fund-card{display:flex;flex-direction:column;gap:.35rem;align-items:flex-start;background:var(--bgCard);border:1px solid var(--border);border-radius:var(--radius);padding:.8rem .9rem;color:var(--text);text-decoration:none;transition:border-color .2s,transform .2s}
+.fund-card:hover{border-color:var(--teal);transform:translateY(-2px)}
+.fund-amt{font-family:'Space Mono',monospace;font-size:.8rem;color:var(--green);font-weight:700}
+.fund-go{font-size:.75rem;color:var(--textSec);margin-top:auto}
+.partner-h{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.8rem}
+.partner-h h3{margin:0}
+.partner-badge{align-self:flex-start;font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--coral);border:1px dashed var(--coral);border-radius:999px;padding:.15rem .6rem}
+.partner-offers{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.6rem;margin-bottom:1rem}
+.partner-offer{display:flex;flex-direction:column;gap:.3rem;text-align:left;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius);padding:.8rem;cursor:pointer;color:var(--text);font-size:.8rem;line-height:1.45;transition:border-color .2s,transform .2s}
+.partner-offer strong{font-size:.9rem}
+.partner-offer span:last-child{color:var(--textSec)}
+.partner-offer:hover{transform:translateY(-2px);border-color:var(--teal)}
+.partner-offer.on{border-color:var(--green);background:color-mix(in srgb,var(--green) 8%,var(--bgCard))}
+.po-ic{font-size:1.5rem}
+.partner-form{display:flex;flex-direction:column;gap:.55rem}
+.partner-sent{background:color-mix(in srgb,var(--green) 12%,transparent);color:var(--green);font-weight:600;border-radius:var(--radius);padding:.8rem 1rem;margin:0}
+.about-press .press-mini{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.6rem;margin:1rem 0}
+.press-mini div{display:flex;flex-direction:column;gap:.15rem;background:var(--bg);border-radius:10px;padding:.6rem .7rem}
+.press-mini b{font-family:'Space Mono',monospace;font-size:1.15rem;color:var(--green)}
+.press-mini span{font-size:.74rem;color:var(--textSec);line-height:1.35}
+.press-cta{display:flex;gap:.55rem;flex-wrap:wrap;margin-top:1rem}
+.press-hero{background:linear-gradient(135deg,var(--dark),var(--darkCard));color:#fff;padding-top:3rem;padding-bottom:2.6rem}
+.press-kicker{font-family:'Space Mono',monospace;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--green)}
+.press-h1{font-size:clamp(1.6rem,4.5vw,2.6rem);line-height:1.15;margin:.5rem 0 .6rem;max-width:760px;color:#fff}
+.press-sub{color:#C7CCD6;max-width:620px;margin:0}
+.press-hero .btn:not(.btn-green){background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25)}
+.press-nums{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.8rem}
+.press-num{background:var(--bgCard);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.35rem}
+.press-num-n{font-family:'Space Mono',monospace;font-weight:700;font-size:1.7rem;color:var(--green);line-height:1.1}
+.press-num-l{font-size:.86rem;color:var(--text);line-height:1.4}
+.press-live{font-size:.62rem;color:var(--red);margin-left:.5rem;vertical-align:middle;letter-spacing:.05em}
+.press-copy{align-self:flex-start;margin-top:auto;border:none;background:none;color:var(--textSec);font-size:.75rem;cursor:pointer;padding:.25rem 0}
+.press-copy:hover{color:var(--green)}
+.press-rel p{line-height:1.7;font-size:.95rem}
+.press-rel-top{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.6rem}
+.press-lead{font-weight:600}
+.press-photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.7rem;margin-top:1rem}
+.press-photo{margin:0;background:var(--bgCard);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.press-photo img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.press-photo figcaption{font-size:.72rem;color:var(--textSec);padding:.45rem .6rem}
+.press-logo{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.press-logo img{border-radius:16px}
+.press-mail{font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(.95rem,3.6vw,1.2rem);color:var(--green);word-break:break-all}
+.pressqr{position:fixed;inset:0;z-index:500;background:rgba(8,10,18,.92);display:flex;align-items:center;justify-content:center;padding:16px;animation:fadeIn .2s}
+.pressqr-box{background:#fff;color:#1A1A2E;border-radius:22px;padding:1.4rem 1.4rem 1.1rem;text-align:center;width:min(420px,100%);box-shadow:0 30px 80px rgba(0,0,0,.5);animation:pressqr .35s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pressqr{from{transform:scale(.85);opacity:0}}
+.pressqr-k{font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:.12em;color:#0D9488;margin-bottom:.7rem}
+.pressqr-img{width:100%;aspect-ratio:1;display:block;image-rendering:pixelated;border-radius:8px}
+.pressqr-wait{display:flex;align-items:center;justify-content:center;background:#F3F4F6;font-family:'Space Mono',monospace;font-size:.9rem;word-break:break-all;padding:1rem}
+.pressqr-u{display:block;font-family:'Space Mono',monospace;font-size:1rem;margin:.7rem 0 .2rem;word-break:break-all}
+.pressqr-box p{font-size:.85rem;color:#4B5563;margin:.2rem 0 .9rem}
+.pressqr-box .btn{background:#F3F4F6;color:#1A1A2E}
+.help-hero{padding-bottom:1rem}
+.help-h1{font-size:clamp(1.6rem,4.6vw,2.4rem);margin:0 0 .5rem}
+.help-lead{font-size:1.05rem;color:var(--textSec);max-width:640px;line-height:1.55}
+.help-choose{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-top:1.4rem}
+.help-opt{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:.3rem;text-align:left;padding:1.1rem 1rem 1rem;background:var(--bgCard);border:2px solid var(--border);border-radius:16px;color:var(--text);cursor:pointer;box-shadow:var(--shadow);transition:transform .35s cubic-bezier(.2,.9,.3,1.3),border-color .25s,opacity .35s,box-shadow .3s;animation:helpIn .5s cubic-bezier(.2,.9,.3,1.2) both;animation-delay:calc(var(--i) * 90ms)}
+@keyframes helpIn{from{opacity:0;transform:translateY(18px) scale(.96)}}
+.help-opt:hover{transform:translateY(-3px);border-color:var(--teal)}
+.help-opt.on{border-color:var(--green);transform:translateY(-4px) scale(1.03);box-shadow:0 14px 34px color-mix(in srgb,var(--green) 30%,transparent)}
+.help-opt.off{opacity:.55;transform:scale(.97)}
+.help-opt-ic{font-size:2rem;line-height:1;transition:transform .5s}
+.help-opt.on .help-opt-ic{transform:rotate(360deg) scale(1.15)}
+.help-opt strong{font-size:1.05rem;font-family:'Space Mono',monospace}
+.help-opt-s{font-size:.8rem;color:var(--textSec)}
+.help-opt-bar{width:100%;height:6px;border-radius:6px;background:var(--border);overflow:hidden;margin-top:.4rem}
+.help-opt-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--teal));border-radius:6px;transition:width .6s cubic-bezier(.2,.9,.3,1)}
+.help-opt-n{font-size:.72rem;font-family:'Space Mono',monospace;color:var(--textSec)}
+.help-total{margin-top:.9rem;font-size:.85rem;color:var(--green);font-weight:600}
+.help-list-anchor{scroll-margin-top:80px}
+.help-acts-sec{position:relative;overflow:hidden;padding-top:1rem}
+.help-sweep{position:absolute;inset:0;pointer-events:none;z-index:2;background:linear-gradient(100deg,transparent 0%,color-mix(in srgb,var(--green) 22%,transparent) 40%,color-mix(in srgb,var(--teal) 30%,transparent) 55%,transparent 75%);transform:translateX(-100%);animation:helpSweep .75s cubic-bezier(.5,0,.3,1) forwards}
+.help-sweep span{position:absolute;top:40%;left:60%;font-size:3.4rem;animation:helpSpin .75s ease-out forwards}
+@keyframes helpSweep{to{transform:translateX(100%)}}
+@keyframes helpSpin{from{transform:rotate(-180deg) scale(.4);opacity:0}50%{opacity:1}to{transform:rotate(180deg) scale(1.2);opacity:0}}
+.help-acts{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.75rem}
+.help-act{display:grid;grid-template-columns:2.6rem 1fr;grid-template-rows:1fr auto;gap:.3rem .8rem;background:var(--bgCard);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;box-shadow:var(--shadow);animation:helpIn .45s cubic-bezier(.2,.9,.3,1.2) both;animation-delay:calc(180ms + var(--i) * 80ms);transition:border-color .3s}
+.help-act .btn{grid-column:2;justify-self:start}
+.help-act-ic{grid-row:1/3;width:2.6rem;height:2.6rem;border-radius:12px;background:color-mix(in srgb,var(--green) 12%,transparent);display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+.help-act-b strong{font-size:.95rem}
+.help-act-b p{margin:.2rem 0 0;font-size:.84rem;color:var(--textSec);line-height:1.45}
+.help-act.done{border-color:color-mix(in srgb,var(--green) 55%,transparent)}
+.help-act.done .help-act-ic{background:var(--green);color:#fff;font-weight:700}
+.help-vol{max-width:640px}
+@media (max-width:700px){
+  .help-choose{grid-template-columns:1fr;gap:.55rem}
+  .help-opt{display:grid;grid-template-columns:2.6rem 1fr auto;grid-template-areas:"ic q n" "ic s s" "bar bar bar";align-items:center;padding:.85rem .9rem}
+  .help-opt-ic{grid-area:ic;font-size:1.7rem}
+  .help-opt strong{grid-area:q}
+  .help-opt-s{grid-area:s}
+  .help-opt-n{grid-area:n}
+  .help-opt-bar{grid-area:bar}
+  .fund-row{grid-template-columns:1.6rem 1fr;}
+  .fund-v{grid-column:2;text-align:left}
+  .src-grid{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  .help-opt,.help-act,.srcsheet,.srcpop,.pressqr-box{animation:none}
+  .help-sweep{display:none}
+}
 /* === Premium polish v2 === */
 /* 1. Scroll progress bar */
 #g2p-progress{position:fixed;top:0;left:0;right:0;z-index:9999;height:2px;background:linear-gradient(90deg,var(--green),var(--teal) 55%,var(--coral));transform-origin:left;transform:scaleX(0);pointer-events:none;will-change:transform}
@@ -2440,10 +2587,11 @@ function shareCourt(court, t, toast) {
 /* === Hash routing. "#courts" etc. select a page; "#court-{id}" deep-links
    into CourtsPage (used by shareCourt + manifest shortcuts). "#/admin" is
    handled separately in App. === */
-const PAGE_IDS = ["home", "courts", "reports", "petition", "community", "impact", "help", "about", "profile"];
+const PAGE_IDS = ["home", "courts", "reports", "petition", "community", "impact", "help", "about", "profile", "press"];
 function pageFromHash() {
   const h = location.hash.replace(/^#\/?/, "");
   if (h.indexOf("court-") === 0) return "courts";
+  if (!h && /^\/press\/?$/.test(location.pathname)) return "press";
   return PAGE_IDS.indexOf(h) >= 0 ? h : "home";
 }
 
@@ -7948,12 +8096,12 @@ function StoryScroll() {
       vis: React.createElement("div", { className: "st-dots", "aria-hidden": "true" }, sbCourts.map(c => React.createElement("i", { key: c.id, className: checked[c.id] ? "on" : "" }))),
       h: lit + " / " + sbCourts.length,
       p: L3("terenuri verificate de comunitate. Fiecare punct e un teren real și se aprinde când cineva îl verifică.", "courts checked by the community. Each dot is a real court and lights up when someone checks it.", "pályát ellenőrzött a közösség. Minden pont egy valódi pálya, és kigyullad, ha valaki ellenőrzi."),
-      src: L3("Sursă: OpenStreetMap (ODbL) · verificări live", "Source: OpenStreetMap (ODbL) · live checks", "Forrás: OpenStreetMap (ODbL) · élő ellenőrzések")
+      src: React.createElement(React.Fragment, null, L3("Sursă: OpenStreetMap (ODbL) · verificări live", "Source: OpenStreetMap (ODbL) · live checks", "Forrás: OpenStreetMap (ODbL) · élő ellenőrzések"), React.createElement(SrcRef, { id: "osm" }))
     } : {
       vis: React.createElement("div", null, React.createElement("div", { ref: numRef, className: "st-num" }, money(0)), React.createElement("span", { ref: stampRef, className: "st-stamp" }, "0%")),
       h: L3("promiși pentru renovări. Realizat: zero.", "promised for renovations. Delivered: zero.", "ígéret felújításra. Megvalósult: semmi."),
       p: "",
-      src: L3("Surse: SIDU Târgu Mureș · Punctul.ro", "Sources: SIDU Târgu Mureș · Punctul.ro", "Források: SIDU Marosvásárhely · Punctul.ro")
+      src: React.createElement(React.Fragment, null, L3("Surse: SIDU Târgu Mureș · Punctul.ro", "Sources: SIDU Târgu Mureș · Punctul.ro", "Források: SIDU Marosvásárhely · Punctul.ro"), React.createElement(SrcRef, { id: ["sidu", "punctul-5m"] }))
     },
     {
       vis: React.createElement(React.Fragment, null,
@@ -11797,207 +11945,665 @@ function CityHallGuide() {
 }
 
 /* === Help === */
-function HelpPage() {
-  const {
-    t,
-    lang,
-    toast
-  } = useApp();
-  const [tab, setTab] = useState("volunteer");
-  const [vf, setVf] = useState({
-    name: "",
-    email: "",
-    phone: ""
+/* === Sources: one registry behind every sourced number on the site.
+   <SrcRef id="..."/> draws the small number next to a figure: hover card on desktop, bottom panel on
+   phone, and a jump to About -> Sources; each source card links back to where its number appears.
+   TGM-only sources never show on Sibiu and vice versa ("general" shows on both). === */
+const SRC_KIND_IC = { news: "📰", study: "📚", gov: "🏛️", map: "🗺️", data: "🧭", survey: "📋", sat: "🛰️" };
+const SOURCES = [
+  { id: "survey", city: "tgm", kind: "survey", pub: "From Grey to Play", d: null, url: null, essay: true, at: ["about", "press"],
+    t: { ro: "Sondaj informal: 15 rezidenți din Tudor, zona Auchan și Sportcomplex", en: "Informal poll: 15 residents of Tudor, the Auchan area and Sportcomplex", hu: "Informális felmérés: 15 lakos Tudorból, az Auchan környékéről és a Sportcomplexből" }, // TODO: HU review
+    p: { ro: "12 din 15 nu folosesc terenul cel mai apropiat: e prea degradat. Metoda e descrisă în lucrare.", en: "12 of 15 don't use their nearest court: too run-down. The method is described in the essay.", hu: "15-ből 12 nem használja a legközelebbi pályát: túl rossz állapotú. A módszer a dolgozatban olvasható." } }, // TODO: HU review
+  { id: "punctul-5m", city: "tgm", kind: "news", pub: "Punctul.ro", d: "Oct 2025", url: "https://punctul.ro/eroare-tehnica-de-5-milioane-de-lei-baza-sportiva-din-str-insulei-identificata-gresit-in-acte/", at: ["home", "about", "press"],
+    t: { ro: "Eroare tehnică de 5 milioane de lei: baza sportivă din str. Insulei, identificată greșit în acte", en: "A 5-million-lei technical error: the Insulei St. sports base, misidentified in the paperwork", hu: "5 millió lejes technikai hiba: az Insulei utcai sportbázist rosszul azonosították az iratokban" }, // TODO: HU review
+    p: { ro: "5 milioane de lei pentru renovare, blocați de o greșeală în acte.", en: "5 million lei for renovation, frozen by a paperwork mistake.", hu: "5 millió lej felújításra, egy irathiba miatt befagyasztva." } }, // TODO: HU review
+  { id: "sidu", city: "tgm", kind: "gov", pub: "Primăria Târgu Mureș", d: "SIDU 2021–2030", url: "https://www.tirgumures.ro/strategie/SIDU_Targu_Mures.pdf", at: ["home", "about", "press"],
+    t: { ro: "Strategia Integrată de Dezvoltare Urbană (SIDU) Târgu Mureș", en: "Târgu Mureș Integrated Urban Development Strategy (SIDU)", hu: "Marosvásárhely Integrált Városfejlesztési Stratégiája (SIDU)" },
+    p: { ro: "Cartierele periferice, cu cei mai mulți tineri, primesc cele mai puține investiții în infrastructură.", en: "Peripheral districts, with the youngest populations, get the least infrastructure investment.", hu: "A legfiatalabb lakosságú peremkerületek kapják a legkevesebb infrastrukturális beruházást." } }, // TODO: HU review
+  { id: "mymaps", city: "tgm", kind: "map", pub: "Google My Maps", d: "2025–2026", url: "https://www.google.com/maps/d/viewer?mid=19tND_bqOJoFbhTNKN0PenNW7S7yUog8", at: ["about"],
+    t: { ro: "Harta terenurilor documentate de echipă", en: "The team's map of documented courts", hu: "A csapat által dokumentált pályák térképe" },
+    p: { ro: "Poziții, poze și distanțe între terenurile din centru și cele din cartiere.", en: "Positions, photos and distances between central and neighbourhood courts.", hu: "Helyek, fotók és távolságok a központi és a lakótelepi pályák között." } }, // TODO: HU review
+  { id: "punctul-hubs", city: "tgm", kind: "news", pub: "Punctul.ro", d: "Mar 2026", url: "https://punctul.ro/din-centrale-in-restaurante-hub-uri-digitale-si-cartiere-3-exemple-care-sa-inspire-targu-muresul/", at: ["about"],
+    t: { ro: "Din centrale în restaurante, hub-uri digitale și cartiere: 3 exemple care să inspire Târgu Mureșul", en: "From power plants to restaurants, digital hubs and neighbourhoods: 3 examples to inspire Târgu Mureș", hu: "Erőművekből éttermek, digitális központok és negyedek: 3 példa Marosvásárhelynek" }, // TODO: HU review
+    p: { ro: "Alte orașe au transformat spații urbane neglijate. Contrastul cu Târgu Mureș.", en: "Other cities turned neglected urban sites around. The contrast with Târgu Mureș.", hu: "Más városok átalakították az elhanyagolt területeket. A kontraszt Marosvásárhellyel." } }, // TODO: HU review
+  { id: "agerpres-rink", city: "tgm", kind: "news", pub: "Agerpres", d: "12 Mar 2021", isNew: true, url: "https://agerpres.ro/administratie/2021/03/12/mures-situatia-taberelor-de-tineret-si-infrastructura-sportiva-discutata-de-autoritatile-locale-cu-m--677272", at: ["press"],
+    t: { ro: "Mureș: situația taberelor de tineret și infrastructura sportivă, discutate de autoritățile locale", en: "Mureș: youth camps and sports infrastructure discussed by local authorities", hu: "Maros: az ifjúsági táborok és a sportinfrastruktúra helyzete" }, // TODO: HU review
+    p: { ro: "Patinoarul acoperit din Parcul Municipal: început cu 13 ani în urmă, abandonat în 2013 la ~70%, urma să fie terminat de Compania Națională de Investiții.", en: "The covered ice rink in the Municipal Park: started 13 years earlier, abandoned in 2013 at ~70%, to be finished by the National Investment Company.", hu: "A Városi park fedett jégpályája: 13 éve kezdték, 2013-ban ~70%-on abbahagyták; az Országos Beruházási Társaság fejezné be." } }, // TODO: HU review
+  { id: "mdpi", city: "general", kind: "study", pub: "MDPI · Urban Science 8(4):203", d: "2024", url: "https://www.mdpi.com/2413-8851/8/4/203", at: ["about"],
+    t: { ro: "Studiu despre distribuția infrastructurii recreative în orașele europene", en: "Study on how recreational infrastructure is distributed in European cities", hu: "Tanulmány a szabadidős infrastruktúra eloszlásáról az európai városokban" }, // TODO: HU review
+    p: { ro: "Distribuția inegală a infrastructurii recreative tinde să adâncească decalajele sociale.", en: "Uneven distribution of recreational infrastructure tends to widen social gaps.", hu: "A szabadidős infrastruktúra egyenlőtlen eloszlása növeli a társadalmi különbségeket." } }, // TODO: HU review
+  { id: "mediafax-28", city: "general", kind: "news", pub: "Mediafax", d: "31 Jan 2025", isNew: true, url: "https://www.mediafax.ro/?p=22673482", at: ["help", "press"],
+    t: { ro: "Raport OMS despre activitatea fizică a adolescenților din România", en: "WHO report on the physical activity of Romanian adolescents", hu: "WHO-jelentés a romániai serdülők fizikai aktivitásáról" }, // TODO: HU review
+    p: { ro: "Doar 28% dintre adolescenții români de 11–15 ani fac minimul de mișcare recomandat; 23% fac destulă activitate moderată sau intensă.", en: "Only 28% of Romanian adolescents aged 11–15 reach the minimum recommended activity; 23% get enough moderate or vigorous activity.", hu: "A 11–15 éves romániai serdülőknek csak 28%-a éri el a minimális ajánlott mozgást; 23%-uk mozog eleget mérsékelten vagy intenzíven." } }, // TODO: HU review
+  { id: "who-81", city: "general", kind: "study", pub: "WHO · Guthold et al., Lancet Child & Adolescent Health", d: "2019", isNew: true, url: "https://www.who.int/news-room/fact-sheets/detail/physical-activity", at: ["press"],
+    t: { ro: "Organizația Mondială a Sănătății: fișa despre activitatea fizică", en: "World Health Organization: physical activity fact sheet", hu: "Egészségügyi Világszervezet: tájékoztató a fizikai aktivitásról" }, // TODO: HU review
+    p: { ro: "81% dintre adolescenții de 11–17 ani din lume nu fac destulă mișcare.", en: "81% of adolescents aged 11–17 worldwide are not active enough.", hu: "A 11–17 éves serdülők 81%-a világszerte nem mozog eleget." } }, // TODO: HU review
+  { id: "osm", city: "sibiu", kind: "data", pub: "OpenStreetMap (ODbL)", d: "live", url: "https://www.openstreetmap.org/copyright", at: ["home", "about", "press"],
+    t: { ro: "Terenurile publice de cartier din Sibiu, din OpenStreetMap", en: "Sibiu's public neighbourhood courts, from OpenStreetMap", hu: "Szeben lakótelepi közpályái az OpenStreetMapből" }, // TODO: HU review
+    p: { ro: "35 de terenuri publice de cartier pe hartă. Starea lor o verifică acum comunitatea.", en: "35 public neighbourhood courts on the map. The community is checking their condition now.", hu: "35 lakótelepi közpálya a térképen. Az állapotukat most a közösség ellenőrzi." } }, // TODO: HU review
+  { id: "zsn-12m", city: "sibiu", kind: "news", pub: "Zile și Nopți", d: "24 Feb 2024", isNew: true, url: "https://zilesinopti.ro/2024/02/24/finantari-sportul-sibian-2024/", at: ["about", "press"],
+    t: { ro: "Finanțări pentru sportul sibian în 2024", en: "Funding for Sibiu sport in 2024", hu: "A szebeni sport finanszírozása 2024-ben" }, // TODO: HU review
+    p: { ro: "Primăria Sibiu: 12 milioane lei prin Agenda Sportivă 2024, plus 500.000 lei pentru cluburile de drept public.", en: "Sibiu City Hall: 12 million lei through the 2024 Sports Agenda, plus 500,000 lei for public-law clubs.", hu: "Szeben polgármesteri hivatala: 12 millió lej a 2024-es Sportprogramon át, plusz 500 000 lej a közjogi kluboknak." } } // TODO: HU review
+].concat(TIMELINE_SIBIU.map((e, i) => {
+  // Sibiu timeline events already carry a public source each; they become source cards too.
+  const host = String(e.src || "").replace(/^https?:\/\/(www\.)?/, "").split("/")[0];
+  const pre = e.lei ? e.lei + " · " : "";
+  return { id: "sbt" + i, city: "sibiu", kind: /livingatlas/.test(host) ? "sat" : /sibiu\.ro$/.test(host) ? "gov" : "news", pub: host, d: String(e.y), url: e.src, at: ["about"],
+    t: { ro: e.ro, en: e.en, hu: e.hu }, p: { ro: pre + e.ro, en: pre + e.en, hu: pre + (e.hu || e.ro) } };
+}));
+function srcById(id) { return SOURCES.find(s => s.id === id) || null; }
+function srcVisible(s) { return !!s && (s.city === "general" || s.city === ACTIVE_CITY); }
+function srcList() { return SOURCES.filter(srcVisible); }
+function srcNum(id) { return srcList().findIndex(s => s.id === id) + 1; }
+function srcCite(s, lang) {
+  const acc = lang === "en" ? "accessed" : lang === "hu" ? "letöltve" : "accesat";
+  return s.pub + ". „" + eggL(s.t, lang) + "”" + (s.d ? ", " + s.d : "") + "." + (s.url ? " " + s.url + " (" + acc + " " + new Date().toLocaleDateString("ro-RO") + ")" : "");
+}
+function copyText(txt) {
+  try { if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(txt).then(() => true, () => false); } catch (e) {}
+  try {
+    const ta = document.createElement("textarea"); ta.value = txt; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select(); const ok = document.execCommand("copy"); ta.remove(); return Promise.resolve(ok);
+  } catch (e) { return Promise.resolve(false); }
+}
+function canHover() { try { return window.matchMedia("(hover: hover) and (pointer: fine)").matches; } catch (e) { return false; } }
+// Jump to the source card in About, remembering where we came from so the card can link back.
+function srcGo(id, page, setPage) {
+  try {
+    sessionStorage.setItem("g2p_src_from", JSON.stringify({ page: page || "home", y: Math.round(window.scrollY || 0), id: id }));
+    sessionStorage.setItem("g2p_about_tab", "sources");
+    sessionStorage.setItem("g2p_src_focus", id);
+  } catch (e) {}
+  if (page === "about") window.dispatchEvent(new CustomEvent("g2p:srcfocus", { detail: { id: id } }));
+  else setPage("about");
+}
+const SRC_UI = {
+  ro: { src: "Sursa", open: "Deschide sursa ↗", all: "Vezi în Surse", essay: "Citește lucrarea", close: "Închide", isNew: "nou", copy: "Copiază citarea", copied: "Citare copiată ✓", back: "↩ Înapoi la cifră", usedAt: "Apare în:", nowhere: "Doar în lista de surse", filterAll: "Toate", general: "Generale", count: "surse" },
+  en: { src: "Source", open: "Open source ↗", all: "See in Sources", essay: "Read the essay", close: "Close", isNew: "new", copy: "Copy citation", copied: "Citation copied ✓", back: "↩ Back to the number", usedAt: "Used on:", nowhere: "Only in the sources list", filterAll: "All", general: "General", count: "sources" },
+  hu: { src: "Forrás", open: "Forrás megnyitása ↗", all: "Megnézem a Forrásokban", essay: "A dolgozat", close: "Bezár", isNew: "új", copy: "Hivatkozás másolása", copied: "Hivatkozás másolva ✓", back: "↩ Vissza a számhoz", usedAt: "Itt szerepel:", nowhere: "Csak a forráslistában", filterAll: "Mind", general: "Általános", count: "forrás" } // TODO: HU review
+};
+function srcPageName(p, t) { return ({ home: t.home, courts: t.courts, reports: t.reports, petition: t.petition, community: t.community, impact: t.impact, help: t.howToHelp, about: t.about, press: "Press" })[p] || p; }
+function SrcRef({ id }) {
+  const { lang, page, setPage } = useApp();
+  const ui = SRC_UI[lang] || SRC_UI.ro;
+  const ids = [].concat(id).filter(x => srcVisible(srcById(x)));
+  const [hov, setHov] = useState(null);
+  const [sheet, setSheet] = useState(null);
+  if (!ids.length) return null;
+  const go = x => { setSheet(null); setHov(null); srcGo(x, page, setPage); };
+  const card = s => React.createElement(React.Fragment, null,
+    React.createElement("div", { className: "srcpop-k" }, (SRC_KIND_IC[s.kind] || "🔗") + " " + s.pub + (s.d ? " · " + s.d : ""), s.isNew && React.createElement("span", { className: "src-new" }, ui.isNew)),
+    React.createElement("div", { className: "srcpop-p" }, eggL(s.p, lang)));
+  return React.createElement("sup", { className: "srcref" },
+    ids.map((x, i) => {
+      const s = srcById(x);
+      return React.createElement("span", { key: x, className: "srcref-w",
+          onMouseEnter: e => { if (canHover()) { const r = e.currentTarget.getBoundingClientRect(); setHov({ id: x, x: r.left + r.width / 2, y: r.top }); } },
+          onMouseLeave: () => setHov(null) },
+        i > 0 ? "," : null,
+        React.createElement("button", { type: "button", className: "srcref-b", "aria-label": ui.src + " " + srcNum(x) + ": " + s.pub,
+          onClick: e => { e.preventDefault(); e.stopPropagation(); if (canHover()) go(x); else setSheet(x); } }, srcNum(x)));
+    }),
+    hov && ReactDOM.createPortal(React.createElement("div", { className: "srcpop", role: "tooltip",
+      style: { left: Math.max(150, Math.min(window.innerWidth - 150, hov.x)) + "px", top: hov.y + "px" } },
+      card(srcById(hov.id)), React.createElement("div", { className: "srcpop-hint" }, ui.all + " →")), document.body),
+    sheet && ReactDOM.createPortal(React.createElement("div", { className: "srcsheet-bg", onClick: () => setSheet(null) },
+      React.createElement("div", { className: "srcsheet", role: "dialog", "aria-label": ui.src, onClick: e => e.stopPropagation() },
+        React.createElement("div", { className: "srcsheet-grab", "aria-hidden": "true" }),
+        React.createElement("div", { className: "srcsheet-n" }, ui.src + " " + srcNum(sheet)),
+        React.createElement("strong", { className: "srcsheet-t" }, eggL(srcById(sheet).t, lang)),
+        card(srcById(sheet)),
+        React.createElement("div", { className: "srcsheet-acts" },
+          srcById(sheet).url && React.createElement("a", { className: "btn btn-green btn-sm", href: srcById(sheet).url, target: "_blank", rel: "noopener" }, ui.open),
+          React.createElement("button", { className: "btn btn-sm", onClick: () => go(sheet) }, ui.all),
+          React.createElement("button", { className: "btn btn-sm btn-ghost", onClick: () => setSheet(null) }, ui.close)))), document.body));
+}
+
+/* About -> Sources: grouped by city with a filter, type icon + date + what each source proves,
+   copy citation, "new" marks for sources added in Oct 2026, and links both ways with the numbers. */
+function SourcesTab({ onEssay }) {
+  const { t, lang, setPage } = useApp();
+  const ui = SRC_UI[lang] || SRC_UI.ro;
+  const [f, setF] = useState("all");
+  const [focus, setFocus] = useState(() => { try { return sessionStorage.getItem("g2p_src_focus") || null; } catch (e) { return null; } });
+  const [copied, setCopied] = useState(null);
+  const from = (() => { try { return JSON.parse(sessionStorage.getItem("g2p_src_from") || "null"); } catch (e) { return null; } })();
+  useEffect(() => {
+    const h = e => { setF("all"); setFocus(e.detail.id); };
+    window.addEventListener("g2p:srcfocus", h);
+    return () => window.removeEventListener("g2p:srcfocus", h);
+  }, []);
+  useEffect(() => {
+    if (!focus) return;
+    try { sessionStorage.removeItem("g2p_src_focus"); } catch (e) {}
+    const tm = setTimeout(() => { const el = document.getElementById("src-" + focus); if (el) el.scrollIntoView({ behavior: fxReduced() ? "auto" : "smooth", block: "center" }); }, 250);
+    return () => clearTimeout(tm);
+  }, [focus]);
+  const all = srcList();
+  const groups = [[ACTIVE_CITY, cityName(lang)], ["general", ui.general]];
+  const shown = all.filter(s => f === "all" || s.city === f);
+  const goBack = () => { setPage(from.page); const y = from.y; setTimeout(() => window.scrollTo(0, y), 450); };
+  return React.createElement("div", null,
+    React.createElement("div", { className: "src-filter", role: "group" },
+      [["all", ui.filterAll]].concat(groups).map(([k, label]) => React.createElement("button", { key: k, className: "g2chip" + (f === k ? " g2chip-on" : ""), "aria-pressed": f === k, onClick: () => setF(k) },
+        label + " · " + (k === "all" ? all.length : all.filter(s => s.city === k).length)))),
+    groups.filter(([k]) => f === "all" || f === k).map(([k, label]) => {
+      const list = shown.filter(s => s.city === k);
+      if (!list.length) return null;
+      return React.createElement("div", { key: k, className: "src-group" },
+        React.createElement("h3", { className: "src-group-h" }, (k === "general" ? "🌍 " : "📍 ") + label),
+        React.createElement("div", { className: "src-grid" }, list.map(s => React.createElement("article", { key: s.id, id: "src-" + s.id, className: "src-card" + (focus === s.id ? " src-focus" : "") },
+          React.createElement("div", { className: "src-top" },
+            React.createElement("span", { className: "src-num" }, srcNum(s.id)),
+            React.createElement("span", { className: "src-ic", "aria-hidden": "true" }, SRC_KIND_IC[s.kind] || "🔗"),
+            React.createElement("span", { className: "src-pub" }, s.pub),
+            s.d && React.createElement("span", { className: "src-date" }, s.d),
+            s.isNew && React.createElement("span", { className: "src-new" }, ui.isNew)),
+          React.createElement("strong", { className: "src-title" }, eggL(s.t, lang)),
+          React.createElement("p", { className: "src-proves" }, eggL(s.p, lang)),
+          React.createElement("div", { className: "src-used" }, ui.usedAt + " ",
+            s.at && s.at.filter(p => p !== "about").length
+              ? s.at.filter(p => p !== "about").map(p => React.createElement("button", { key: p, className: "src-used-b", onClick: () => { setPage(p); window.scrollTo(0, 0); } }, srcPageName(p, t)))
+              : React.createElement("span", null, ui.nowhere)),
+          React.createElement("div", { className: "src-acts" },
+            s.url ? React.createElement("a", { className: "btn btn-sm btn-green", href: s.url, target: "_blank", rel: "noopener" }, ui.open)
+                  : s.essay && React.createElement("button", { className: "btn btn-sm btn-green", onClick: onEssay }, "📖 " + ui.essay),
+            React.createElement("button", { className: "btn btn-sm", onClick: () => copyText(srcCite(s, lang)).then(ok => { if (ok) { setCopied(s.id); setTimeout(() => setCopied(c => c === s.id ? null : c), 1800); } }) }, copied === s.id ? ui.copied : "📋 " + ui.copy),
+            from && from.id === s.id && from.page !== "about" && React.createElement("button", { className: "btn btn-sm btn-coral", onClick: goBack }, ui.back))))));
+    }));
+}
+
+/* Funding & partnerships: honest numbers first (what the platform costs, why the renovation cost
+   is not on the site yet, where money could come from), then what a partner would get. */
+function FundingTab() {
+  const { t, lang, toast } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const sib = ACTIVE_CITY === "sibiu";
+  const [pf, setPf] = useState({ company: "", email: "", offer: "", message: "" });
+  const [sent, setSent] = useState(false);
+  const offers = [
+    { k: "logo", ic: "🏷️", h: L3("Logo pe site și pe panoul terenului", "Logo on the site and on the court panel", "Logó az oldalon és a pálya tábláján"), p: L3("După renovare, numele vostru stă pe panoul de la teren și pe pagina terenului.", "After the renovation, your name goes on the court panel and on the court's page.", "Felújítás után a nevetek a pálya tábláján és a pálya oldalán.") },
+    { k: "kind", ic: "🏀", h: L3("Echipament în natură", "Equipment in kind", "Felszerelés természetben"), p: L3("Mingi, plase, coșuri, vopsea pentru linii sau pentru mural.", "Balls, nets, hoops, paint for the lines or the mural.", "Labdák, hálók, palánkok, festék a vonalakhoz vagy a falfestményhez.") },
+    { k: "team", ic: "🧹", h: L3("O zi de voluntariat cu echipa voastră", "A volunteering day with your team", "Önkéntes nap a csapatotokkal"), p: L3("Curățăm și vopsim un teren împreună, într-o sâmbătă.", "We clean and paint a court together, on a Saturday.", "Egy szombaton együtt takarítunk és festünk egy pályát.") },
+    { k: "talk", ic: "💬", h: L3("Altă idee? Discutăm", "Another idea? Let's talk", "Más ötlet? Beszéljük meg"), p: L3("Nu avem pachete fixe și nu promitem ce nu putem face. Scrie-ne.", "No fixed packages, and we don't promise what we can't do. Write to us.", "Nincsenek fix csomagok, és nem ígérünk olyat, amit nem tudunk. Írj nekünk.") }
+  ];
+  const send = () => {
+    if (!pf.company || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(pf.email)) { toast(t.error); return; }
+    db.ref("partnerRequests").push({ company: pf.company.slice(0, 120), email: pf.email.slice(0, 120), offer: pf.offer || "talk", message: pf.message.slice(0, 1500), city: ACTIVE_CITY, date: new Date().toISOString() })
+      .then(() => { setSent(true); toast(t.success); }, () => toast(t.error));
+  };
+  const row = (ic, k, v, note) => React.createElement("div", { className: "fund-row" },
+    React.createElement("span", { className: "fund-ic", "aria-hidden": "true" }, ic),
+    React.createElement("div", null, React.createElement("div", { className: "fund-k" }, k), note && React.createElement("div", { className: "fund-note" }, note)),
+    React.createElement("div", { className: "fund-v" }, v));
+  return React.createElement("div", null,
+    React.createElement("div", { className: "card fund-transp" },
+      React.createElement("h3", { className: "mb-1" }, "🔍 " + L3("Transparență: banii, pe față", "Transparency: the money, in the open", "Átláthatóság: a pénz nyíltan")),
+      row("💻", L3("Cât costă platforma", "What the platform costs", "Mennyibe kerül a platform"), "≈ 0 lei",
+        L3("Găzduire gratuită (Netlify), bază de date pe planul gratuit (Firebase), muncă voluntară. Nu strângem bani.", "Free hosting (Netlify), database on the free plan (Firebase), volunteer work. We don't collect money.", "Ingyenes tárhely (Netlify), ingyenes adatbázis (Firebase), önkéntes munka. Nem gyűjtünk pénzt.")),
+      row("🏗️", L3("Cât costă renovarea unui teren", "What renovating a court costs", "Mennyibe kerül egy pálya felújítása"), L3("deviz în lucru", "estimate in progress", "költségvetés készül"),
+        L3("Nu punem o cifră inventată. O publicăm când avem un deviz real, cu sursă.", "We won't put up an invented number. We'll publish it once there is a real estimate, with its source.", "Nem írunk kitalált számot. Akkor tesszük közzé, ha lesz valós költségvetés, forrással.")),
+      row("🏛️", L3("Buget local", "Local budget", "Helyi költségvetés"), sib ? React.createElement(React.Fragment, null, "12 mil. lei", React.createElement(SrcRef, { id: "zsn-12m" })) : "—",
+        sib ? L3("Agenda Sportivă 2024 a Primăriei Sibiu (pentru sport în general, nu doar terenuri).", "Sibiu City Hall's 2024 Sports Agenda (for sport in general, not just courts).", "Szeben 2024-es Sportprogramja (általában a sportra, nem csak pályákra).")
+            : L3("Hotărâri de Consiliu Local pe teren, cu teren. Un pas mic, dar real.", "City Council decisions, court by court. A small step, but a real one.", "Helyi tanácsi döntések, pályánként. Kicsi, de valódi lépés.")),
+      row("🌍", L3("Fonduri UE și naționale", "EU and national funds", "Uniós és nemzeti források"), FUNDING.length + " " + L3("programe", "programmes", "program"), L3("Lista de mai jos: unde se poate aplica.", "The list below: where one can apply.", "Az alábbi lista: hol lehet pályázni.")),
+      row("🤝", L3("Sponsori", "Sponsors", "Szponzorok"), L3("căutăm", "looking", "keresünk"), L3("Încă niciun partener. Vezi mai jos ce ar primi.", "No partners yet. See below what they would get.", "Még nincs partner. Lent látod, mit kapnának."))),
+    React.createElement("h3", { className: "mt-3 mb-1" }, "💶 " + L3("De unde pot veni banii", "Where the money could come from", "Honnan jöhet a pénz")),
+    React.createElement("div", { className: "fund-grid" }, FUNDING.map((x, i) => React.createElement("a", { key: i, className: "fund-card", href: x.url, target: "_blank", rel: "noopener" },
+      React.createElement("span", { className: "badge " + (x.type === "EU" ? "badge-teal" : x.type === "National" ? "badge-coral" : "badge-green") }, x.type),
+      React.createElement("strong", null, x.name),
+      x.amount !== "—" && React.createElement("span", { className: "fund-amt" }, x.amount),
+      React.createElement("span", { className: "fund-go" }, L3("Detalii ↗", "Details ↗", "Részletek ↗"))))),
+    React.createElement("div", { className: "card mt-3 partner-card" },
+      React.createElement("div", { className: "partner-h" },
+        React.createElement("span", { className: "partner-badge" }, L3("Parteneri: căutăm", "Partners: wanted", "Partnereket keresünk")),
+        React.createElement("h3", null, "🤝 " + L3("Ce primește un partener", "What a partner gets", "Mit kap egy partner"))),
+      React.createElement("div", { className: "partner-offers" }, offers.map(o => React.createElement("button", { key: o.k, type: "button", className: "partner-offer" + (pf.offer === o.k ? " on" : ""), "aria-pressed": pf.offer === o.k, onClick: () => setPf(v => ({ ...v, offer: o.k })) },
+        React.createElement("span", { className: "po-ic", "aria-hidden": "true" }, o.ic),
+        React.createElement("strong", null, o.h),
+        React.createElement("span", null, o.p)))),
+      sent ? React.createElement("p", { className: "partner-sent" }, "✓ " + L3("Am primit mesajul. Răspundem pe email.", "Message received. We'll reply by email.", "Megkaptuk az üzenetet. E-mailben válaszolunk."))
+        : React.createElement("div", { className: "partner-form" },
+          React.createElement("input", { placeholder: t.companyName, value: pf.company, onChange: e => setPf({ ...pf, company: e.target.value }) }),
+          React.createElement("input", { placeholder: t.email, type: "email", value: pf.email, onChange: e => setPf({ ...pf, email: e.target.value }) }),
+          React.createElement("textarea", { placeholder: t.message, rows: 3, value: pf.message, onChange: e => setPf({ ...pf, message: e.target.value }) }),
+          React.createElement("button", { className: "btn btn-green btn-block", onClick: send }, "💬 " + L3("Discutăm — trimite", "Let's talk — send", "Beszéljük meg — küldés")),
+          React.createElement("p", { className: "text-xs", style: { color: "var(--textSec)" } }, L3("Sau direct: ", "Or directly: ", "Vagy közvetlenül: "), React.createElement("a", { href: "mailto:" + G2P_EMAIL }, G2P_EMAIL)))));
+}
+
+/* === Press: data, release and PDF. /press (or #press) is hidden from the nav; reached from the
+   footer, from About and by QR. The PDF is built in the browser from live numbers. === */
+const G2P_EMAIL = "teodor.cimpan12@gmail.com";
+const G2P_PRESS_PHONE = "+40 770 115 654"; // only inside the PDF, never in page text (owner's choice)
+const PRESS_URL = SITE + "/press";
+function usePressData() {
+  const votes = useFirebase("votes");
+  const reports = useFirebase("reports");
+  const signups = useFirebase("signupStats");
+  const ids = {}; COURTS.forEach(c => { ids[c.id] = 1; });
+  const rs = reports ? Object.values(reports).filter(r => r && ids[r.courtId]) : [];
+  const checked = {}; rs.forEach(r => { if (r.category === "condition") checked[r.courtId] = 1; });
+  return {
+    ready: !!votes,
+    votes: votes ? (votes.flip || 0) + (votes.mural || 0) + (votes.both || 0) : 0,
+    courts: COURTS.length,
+    reports: rs.filter(r => r.category !== "condition").length,
+    resolved: rs.filter(r => r.status === "resolved").length,
+    checked: Object.keys(checked).length,
+    volunteers: signups ? Object.values(signups).filter(s => s && s.volunteer).length : 0,
+    photos: rs.filter(r => r.photoDataUrl).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).slice(0, 4)
+  };
+}
+// Key numbers: each has a source (or is live data from the site itself).
+function pressNumbers(lang, d) {
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const live = L3("live, din site", "live, from the site", "élő, az oldalról");
+  const city = ACTIVE_CITY === "sibiu" ? [
+    { n: String(d.courts), l: L3("terenuri publice de cartier în Sibiu", "public neighbourhood courts in Sibiu", "lakótelepi közpálya Szebenben"), src: "osm" },
+    { n: d.checked + " / " + d.courts, l: L3("verificate de comunitate", "checked by the community", "ellenőrizte a közösség"), live: live },
+    { n: "34 / 35", l: L3("terenuri cu ultima imagine din satelit din 2021–2022", "courts whose latest satellite image is from 2021–2022", "pálya legfrissebb műholdképe 2021–2022-es"), src: "sbt1" },
+    { n: "12 mil. lei", l: L3("Agenda Sportivă 2024, Primăria Sibiu", "2024 Sports Agenda, Sibiu City Hall", "2024-es Sportprogram, Szeben"), src: "zsn-12m" }
+  ] : [
+    { n: "12 / 15", l: L3("rezidenți nu folosesc terenul cel mai apropiat", "residents don't use their nearest court", "lakos nem használja a legközelebbi pályát"), src: "survey" },
+    { n: "5 mil. lei", l: L3("blocați de o eroare în acte (baza Insulei)", "frozen by a paperwork error (Insulei base)", "befagyasztva egy irathiba miatt (Insulei bázis)"), src: "punctul-5m" },
+    { n: "0%", l: L3("terenuri periferice renovate", "peripheral courts renovated", "felújított peremkerületi pálya"), src: "sidu" },
+    { n: "~70%", l: L3("cât era gata patinoarul abandonat în 2013", "how far the rink got before it was abandoned in 2013", "ennyire készült el a 2013-ban abbahagyott jégpálya"), src: "agerpres-rink" }
+  ];
+  return city.concat([
+    { n: String(d.votes), l: L3("semnături pe petiție", "petition signatures", "aláírás a petíción"), live: live },
+    d.reports > 0 && { n: String(d.reports), l: L3("sesizări trimise de oameni", "reports sent by people", "bejelentés"), live: live },
+    { n: "28%", l: L3("dintre adolescenții români (11–15 ani) fac destulă mișcare", "of Romanian adolescents (11–15) get enough exercise", "a romániai serdülők (11–15) közül mozog eleget"), src: "mediafax-28" },
+    { n: "81%", l: L3("dintre adolescenții lumii (11–17 ani) nu fac destulă mișcare", "of adolescents worldwide (11–17) are not active enough", "a serdülők (11–17) közül világszerte nem mozog eleget"), src: "who-81" }
+  ].filter(Boolean));
+}
+function pressRelease(lang, d) {
+  const date = new Date().toLocaleDateString(lang === "en" ? "en-GB" : "ro-RO", { day: "numeric", month: "long", year: "numeric" });
+  if (ACTIVE_CITY === "sibiu") {
+    if (lang === "en") return [
+      "Sibiu, " + date + " — From Grey to Play, a civic platform built by five young people from Romania, maps the " + d.courts + " public neighbourhood courts in Sibiu (OpenStreetMap). So far the community has checked " + d.checked + " of them on the spot, and " + d.votes + " people have signed the petition for better courts.",
+      "Why it matters: only 28% of Romanian adolescents aged 11–15 get the minimum recommended physical activity (WHO report, Mediafax, Jan 2025). For 34 of Sibiu's 35 neighbourhood courts, the newest satellite image is from 2021–2022, so nobody has a current picture of their condition.",
+      "Sibiu City Hall allocated 12 million lei to sport through its 2024 Sports Agenda (Zile și Nopți, Feb 2024). The platform asks for a share of that effort to reach the neighbourhood courts, and lets anyone check a court from their phone in 20 seconds.",
+      "Every number on the site has a public source: " + SITE + "/#about. The data is live: " + SITE
+    ];
+    return [
+      "Sibiu, " + date + " — From Grey to Play, o platformă civică făcută de cinci tineri din România, cartografiază cele " + d.courts + " de terenuri publice de cartier din Sibiu (OpenStreetMap). Până acum, comunitatea a verificat pe teren " + d.checked + " dintre ele, iar " + d.votes + " de oameni au semnat petiția pentru terenuri mai bune.",
+      "De ce contează: doar 28% dintre adolescenții români de 11–15 ani fac minimul de mișcare recomandat (raport OMS, Mediafax, ian. 2025). Pentru 34 din cele 35 de terenuri de cartier din Sibiu, cea mai nouă imagine din satelit este din 2021–2022, deci nimeni nu are o imagine actuală a stării lor.",
+      "Primăria Sibiu a alocat 12 milioane de lei pentru sport prin Agenda Sportivă 2024 (Zile și Nopți, feb. 2024). Platforma cere ca o parte din acest efort să ajungă și la terenurile din cartiere și îi lasă pe oameni să verifice un teren din telefon în 20 de secunde.",
+      "Fiecare cifră de pe site are o sursă publică: " + SITE + "/#about. Datele sunt live: " + SITE
+    ];
+  }
+  if (lang === "en") return [
+    "Târgu Mureș, " + date + " — From Grey to Play, a civic platform built by five young people from Târgu Mureș, documents the condition of the city's " + d.courts + " public sports courts. So far " + d.votes + " people have signed the petition to renovate the courts in the outer neighbourhoods" + (d.reports > 0 ? ", and residents have sent " + d.reports + " reports." : "."),
+    "Why it matters: only 28% of Romanian adolescents aged 11–15 get the minimum recommended physical activity (WHO report, Mediafax, Jan 2025). In Târgu Mureș, 12 of 15 residents polled by the team say they don't use their nearest court because it is too run-down. A 5-million-lei paperwork error froze the renovation of the Insulei Street sports base (Punctul.ro, Oct 2025).",
+    "The proposals: Flip-the-Court (resurface three of the worst courts and add an equipment cabinet opened from the app) and Street Canvas (ground murals painted by local artists and neighbours).",
+    "Every number on the site has a public source: " + SITE + "/#about. The data is live: " + SITE
+  ];
+  return [
+    "Târgu Mureș, " + date + " — From Grey to Play, o platformă civică făcută de cinci tineri din Târgu Mureș, documentează starea celor " + d.courts + " de terenuri sportive publice din oraș. Până azi, " + d.votes + " de oameni au semnat petiția pentru renovarea terenurilor din cartierele periferice" + (d.reports > 0 ? ", iar locuitorii au trimis " + d.reports + " sesizări." : "."),
+    "De ce contează: doar 28% dintre adolescenții români de 11–15 ani fac minimul de mișcare recomandat (raport OMS, Mediafax, ian. 2025). În Târgu Mureș, 12 din 15 rezidenți întrebați de echipă spun că nu folosesc terenul cel mai apropiat, pentru că e prea degradat. O eroare în acte de 5 milioane de lei a blocat renovarea bazei sportive de pe str. Insulei (Punctul.ro, oct. 2025).",
+    "Propunerile: Flip-the-Court (refacerea a trei dintre cele mai degradate terenuri, cu un dulap de echipament deschis din aplicație) și Street Canvas (murale pe teren, pictate de artiști locali și vecini).",
+    "Fiecare cifră de pe site are o sursă publică: " + SITE + "/#about. Datele sunt live: " + SITE
+  ];
+}
+// jsPDF's built-in fonts only cover Latin-1: drop diacritics and swap typographic punctuation.
+function pdfTxt(s) {
+  return String(s == null ? "" : s).normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/[–—]/g, "-").replace(/[“”„]/g, "\"").replace(/[‘’]/g, "'").replace(/…/g, "...").replace(/≈/g, "~")
+    .replace(/[^\x00-\xFF]/g, "").replace(/\s+$/, "");
+}
+function imgToDataUrl(src) {
+  return fetch(src).then(r => r.ok ? r.blob() : Promise.reject(new Error("img"))).then(b => new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.onerror = rej; fr.readAsDataURL(b); }));
+}
+function qrDataUrl(value, size) {
+  return loadQRious().then(() => new QRious({ value: value, size: size || 600, level: "M", background: "#ffffff", foreground: "#1A1A2E" }).toDataURL("image/png"));
+}
+async function buildPressPdf(lang, d) {
+  const JsPDF = window.jspdf && window.jspdf.jsPDF;
+  if (!JsPDF) throw new Error("jspdf");
+  const doc = new JsPDF({ unit: "mm", format: "a4" });
+  const W = 210, M = 18, maxW = W - M * 2;
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const city = cityName(lang);
+  let y = 0;
+  const need = h => { if (y + h > 282) { doc.addPage(); y = 20; } };
+  const para = (txt, size, style, color) => {
+    doc.setFont("helvetica", style || "normal"); doc.setFontSize(size || 10); doc.setTextColor.apply(doc, color || [30, 30, 40]);
+    doc.splitTextToSize(pdfTxt(txt), maxW).forEach(line => { need(5.2); doc.text(line, M, y); y += (size || 10) * .45; });
+  };
+  const head = txt => { y += 4; need(12); doc.setFillColor(16, 185, 129); doc.rect(M, y - 4.2, 2, 6, "F"); doc.setFont("helvetica", "bold"); doc.setFontSize(12.5); doc.setTextColor(26, 26, 46); doc.text(pdfTxt(txt), M + 4.5, y); y += 7; };
+  // Cover band
+  doc.setFillColor(26, 26, 46); doc.rect(0, 0, W, 46, "F");
+  doc.setFillColor(16, 185, 129); doc.rect(0, 46, W, 1.6, "F");
+  try { const logo = await imgToDataUrl("/icons/icon-192.png"); doc.addImage(logo, "PNG", W - M - 26, 10, 26, 26); } catch (e) {}
+  doc.setTextColor(255, 255, 255); doc.setFont("helvetica", "bold"); doc.setFontSize(22); doc.text("FROM GREY TO PLAY", M, 21);
+  doc.setFontSize(11.5); doc.setFont("helvetica", "normal"); doc.text(pdfTxt(L3("Kit de presă", "Press kit", "Sajtócsomag") + " · " + city), M, 29);
+  doc.setFontSize(8.5); doc.setTextColor(180, 190, 200);
+  doc.text(pdfTxt(L3("Date live la ", "Live data as of ", "Élő adatok: ") + new Date().toLocaleString("ro-RO") + " · " + SITE.replace("https://", "")), M, 37);
+  y = 58;
+  head(L3("Pe scurt", "In short", "Röviden"));
+  para(L3("Platformă civică ce documentează terenurile sportive publice din " + city + ": hartă, stare, sesizări trimise la Primărie, petiție. Fiecare cifră are sursă publică.",
+    "A civic platform documenting public sports courts in " + city + ": map, condition, reports sent to City Hall, petition. Every number has a public source.",
+    "Civil platform, amely " + city + " közpályáit dokumentálja: térkép, állapot, bejelentések, petíció. Minden számnak nyilvános forrása van."), 10.5);
+  head(L3("Cifre cheie", "Key numbers", "Kulcsszámok"));
+  pressNumbers(lang, d).forEach(k => {
+    const s = k.src && srcById(k.src);
+    need(13);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(15); doc.setTextColor(16, 150, 110); doc.text(pdfTxt(k.n), M, y);
+    doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(30, 30, 40);
+    const lw = doc.splitTextToSize(pdfTxt(k.l), maxW - 40); doc.text(lw, M + 40, y);
+    y += Math.max(5.5, lw.length * 4.6);
+    doc.setFontSize(7.8); doc.setTextColor(110, 115, 125);
+    const st = s ? L3("Sursa: ", "Source: ", "Forrás: ") + s.pub + (s.d ? ", " + s.d : "") + (s.url ? " - " + s.url : "") : L3("Sursa: ", "Source: ", "Forrás: ") + k.live + " (" + SITE.replace("https://", "") + ")";
+    doc.splitTextToSize(pdfTxt(st), maxW - 40).forEach(l => { need(4); doc.text(l, M + 40, y); y += 3.4; });
+    y += 2.6;
   });
-  const subVol = () => {
-    if (!vf.name || !vf.email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(vf.email)) {
-      toast(t.error);
-      return;
+  head("Comunicat de presă (RO)");
+  pressRelease("ro", d).forEach(p => { para(p, 10); y += 2; });
+  head("Press release (EN)");
+  pressRelease("en", d).forEach(p => { para(p, 10); y += 2; });
+  if (d.photos && d.photos.length) {
+    head(L3("Fotografii trimise de oameni", "Photos sent by people", "Beküldött fotók"));
+    let x = M;
+    for (const r of d.photos.slice(0, 3)) {
+      try {
+        need(48);
+        doc.addImage(r.photoDataUrl, "JPEG", x, y, 54, 40);
+        const c = COURTS.find(cc => cc.id === r.courtId);
+        doc.setFontSize(7); doc.setTextColor(110, 115, 125);
+        doc.text(pdfTxt((c ? c.name : "") + " - " + L3("sesizare pe site", "report on the site", "bejelentés") + (r.timestamp ? ", " + new Date(r.timestamp).toLocaleDateString("ro-RO") : "")).slice(0, 48), x, y + 44);
+        x += 58;
+      } catch (e) {}
     }
+    y += 50;
+  }
+  head(L3("Imagini", "Images", "Képek"));
+  para(L3("Pe " + PRESS_URL + " găsiți: imaginea din satelit a unui teren în doi ani diferiți (Esri World Imagery Wayback), logo-ul și capturi din site. Sursa e trecută sub fiecare imagine.",
+    "At " + PRESS_URL + ": a satellite image of one court in two different years (Esri World Imagery Wayback), the logo and screenshots of the site. The source is under every image.",
+    "A " + PRESS_URL + " oldalon: egy pálya műholdképe két különböző évben (Esri Wayback), a logó és képernyőképek. A forrás minden kép alatt."), 9.5);
+  head(L3("Contact", "Contact", "Kapcsolat"));
+  need(40);
+  const cy = y;
+  para("From Grey to Play · " + L3("coordonare: ", "coordination: ", "koordináció: ") + "Cîmpan Teodor", 10.5, "bold");
+  para("Email: " + G2P_EMAIL, 10.5);
+  para(L3("Telefon: ", "Phone: ", "Telefon: ") + G2P_PRESS_PHONE, 10.5);
+  para("Web: " + SITE.replace("https://", "") + " · " + L3("presă: ", "press: ", "sajtó: ") + PRESS_URL.replace("https://", ""), 10.5);
+  try { const q = await qrDataUrl(PRESS_URL, 400); doc.addImage(q, "PNG", W - M - 30, cy - 5, 30, 30); doc.setFontSize(7); doc.setTextColor(110, 115, 125); doc.text(pdfTxt(L3("scanează: kit de presă", "scan: press kit", "szkenneld: sajtócsomag")), W - M - 30, cy + 28.5); } catch (e) {}
+  // Sources page
+  doc.addPage(); y = 20;
+  head(L3("Surse", "Sources", "Források"));
+  srcList().forEach((s, i) => { para((i + 1) + ". " + srcCite(s, lang), 8.2, "normal", [60, 64, 72]); y += 1.2; });
+  const pages = doc.getNumberOfPages();
+  for (let i = 1; i <= pages; i++) { doc.setPage(i); doc.setFontSize(7.5); doc.setTextColor(150, 150, 160); doc.text("From Grey to Play · " + PRESS_URL.replace("https://", "") + " · " + i + "/" + pages, W / 2, 292, { align: "center" }); }
+  doc.save("from-grey-to-play_press_" + ACTIVE_CITY + "_" + new Date().toISOString().slice(0, 10) + ".pdf");
+}
+// Full-screen QR to the press page, to hold up in front of a journalist (the surprise of this batch).
+function PressQR({ onClose }) {
+  const { lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const [src, setSrc] = useState(null);
+  const [err, setErr] = useState(false);
+  useEffect(() => {
+    qrDataUrl(PRESS_URL, 720).then(setSrc, () => setErr(true));
+    let wl = null;
+    try { if (navigator.wakeLock) navigator.wakeLock.request("screen").then(l => { wl = l; }, () => {}); } catch (e) {}
+    const k = e => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", k);
+    return () => { window.removeEventListener("keydown", k); try { wl && wl.release(); } catch (e) {} };
+  }, []);
+  return ReactDOM.createPortal(React.createElement("div", { className: "pressqr", role: "dialog", "aria-label": "QR", onClick: onClose },
+    React.createElement("div", { className: "pressqr-box", onClick: e => e.stopPropagation() },
+      React.createElement("div", { className: "pressqr-k" }, "FROM GREY TO PLAY · " + L3("PRESĂ", "PRESS", "SAJTÓ")),
+      src ? React.createElement("img", { src: src, alt: PRESS_URL, className: "pressqr-img" })
+          : React.createElement("div", { className: "pressqr-img pressqr-wait" }, err ? PRESS_URL.replace("https://", "") : "…"),
+      React.createElement("strong", { className: "pressqr-u" }, PRESS_URL.replace("https://", "")),
+      React.createElement("p", null, L3("Scanează cu camera telefonului: cifre cu sursă, comunicat și PDF.", "Scan with your phone camera: sourced numbers, release and PDF.", "Szkenneld a telefonoddal: forrásolt számok, közlemény és PDF.")),
+      React.createElement("button", { className: "btn btn-sm", onClick: onClose }, L3("Închide", "Close", "Bezár") + " ✕"))), document.body);
+}
+function PressPage() {
+  const { lang, toast, setPage } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const d = usePressData();
+  const [rl, setRl] = useState(lang === "en" ? "en" : "ro");
+  const [busy, setBusy] = useState(false);
+  const [qr, setQr] = useState(false);
+  const nums = pressNumbers(lang, d);
+  const rel = pressRelease(rl, d);
+  const pdf = () => {
+    if (busy) return;
+    setBusy(true);
+    buildPressPdf(lang, d).then(() => { setBusy(false); g2pSfx("chime"); }, () => { setBusy(false); toast(L3("PDF-ul nu s-a putut face. Reîncearcă.", "Couldn't build the PDF. Try again.", "Nem sikerült a PDF. Próbáld újra.")); });
+  };
+  const copyNum = k => {
+    const s = k.src && srcById(k.src);
+    copyText(k.n + " " + k.l + " (" + (s ? s.pub + (s.d ? ", " + s.d : "") + (s.url ? ", " + s.url : "") : k.live + ", " + SITE) + ")").then(ok => ok && toast(L3("Copiat ✓", "Copied ✓", "Másolva ✓")));
+  };
+  return React.createElement("div", { className: "animate-in press" },
+    React.createElement("section", { className: "section press-hero" },
+      React.createElement("div", { className: "container" },
+        React.createElement("span", { className: "press-kicker" }, "📰 " + L3("Kit de presă", "Press kit", "Sajtócsomag") + " · " + cityName(lang)),
+        React.createElement("h1", { className: "press-h1" }, L3("Tot ce vă trebuie pentru un articol, cu sursă.", "Everything you need for a story, with sources.", "Minden, ami egy cikkhez kell, forrással.")),
+        React.createElement("p", { className: "press-sub" }, L3("Cifrele sunt live. Fiecare are o sursă publică pe care o puteți verifica.", "The numbers are live. Each has a public source you can check.", "A számok élők. Mindegyiknek ellenőrizhető nyilvános forrása van.")),
+        React.createElement("div", { className: "press-cta" },
+          React.createElement("button", { className: "btn btn-green", onClick: pdf, disabled: busy }, busy ? "⏳ " + L3("Se face PDF-ul…", "Building the PDF…", "PDF készül…") : "📥 " + L3("Descarcă PDF-ul complet", "Download the full PDF", "Teljes PDF letöltése")),
+          React.createElement("button", { className: "btn", onClick: () => setQr(true) }, "📱 " + L3("Arată QR", "Show QR", "QR mutatása")),
+          React.createElement("button", { className: "btn btn-ghost", onClick: () => copyText(PRESS_URL).then(ok => ok && toast(L3("Link copiat ✓", "Link copied ✓", "Link másolva ✓"))) }, "🔗 " + L3("Copiază linkul", "Copy link", "Link másolása"))))),
+    React.createElement("section", { className: "section" },
+      React.createElement("div", { className: "container" },
+        React.createElement("h2", { className: "section-title" }, "📊 " + L3("Cifre cheie", "Key numbers", "Kulcsszámok")),
+        React.createElement("div", { className: "press-nums" }, nums.map((k, i) => React.createElement(Reveal, { key: i, d: i * 50, className: "press-num" },
+          React.createElement("div", { className: "press-num-n" }, k.n, k.src && React.createElement(SrcRef, { id: k.src }), k.live && React.createElement("span", { className: "press-live" }, "● live")),
+          React.createElement("div", { className: "press-num-l" }, k.l),
+          React.createElement("button", { className: "press-copy", onClick: () => copyNum(k), "aria-label": L3("Copiază", "Copy", "Másolás") + ": " + k.n }, "📋 " + L3("Copiază cu sursa", "Copy with source", "Másolás forrással"))))),
+        React.createElement("h2", { className: "section-title mt-3" }, "✍️ " + L3("Comunicat de presă", "Press release", "Sajtóközlemény")),
+        React.createElement("div", { className: "card press-rel" },
+          React.createElement("div", { className: "press-rel-top" },
+            React.createElement("div", { className: "src-filter", role: "group", style: { margin: 0 } },
+              ["ro", "en"].map(x => React.createElement("button", { key: x, className: "g2chip" + (rl === x ? " g2chip-on" : ""), "aria-pressed": rl === x, onClick: () => setRl(x) }, x.toUpperCase()))),
+            React.createElement("button", { className: "btn btn-sm", onClick: () => copyText(rel.join("\n\n")).then(ok => ok && toast(L3("Comunicat copiat ✓", "Release copied ✓", "Közlemény másolva ✓"))) }, "📋 " + L3("Copiază textul", "Copy text", "Szöveg másolása"))),
+          rel.map((p, i) => React.createElement("p", { key: i, className: i === 0 ? "press-lead" : "" }, p)),
+          React.createElement("p", { className: "text-xs", style: { color: "var(--textSec)" } }, L3("Generat acum din datele live ale site-ului.", "Generated just now from the site's live data.", "Most készült az oldal élő adataiból."))),
+        React.createElement("h2", { className: "section-title mt-3" }, "🖼️ " + L3("Imagini", "Images", "Képek")),
+        React.createElement("p", { className: "section-sub" }, L3("Doar imagini reale, cu sursa sub fiecare.", "Only real images, with the source under each one.", "Csak valódi képek, mindegyik alatt a forrással.")),
+        React.createElement(SatSwipe, null),
+        d.photos.length > 0 && React.createElement("div", { className: "press-photos" }, d.photos.map((r, i) => {
+          const c = COURTS.find(cc => cc.id === r.courtId);
+          return React.createElement("figure", { key: i, className: "press-photo" },
+            React.createElement("img", { src: r.photoDataUrl, alt: c ? c.name : "", loading: "lazy" }),
+            React.createElement("figcaption", null, (c ? c.name + " · " : "") + L3("poză trimisă de un vizitator", "photo sent by a visitor", "látogató fotója") + (r.timestamp ? " · " + new Date(r.timestamp).toLocaleDateString("ro-RO") : "")));
+        })),
+        React.createElement("div", { className: "press-logo card mt-2" },
+          React.createElement("img", { src: "/icons/icon-192.png", alt: "From Grey to Play logo", width: 72, height: 72 }),
+          React.createElement("div", null, React.createElement("strong", null, "Logo · PNG 512×512"), React.createElement("p", { className: "text-xs", style: { color: "var(--textSec)", margin: ".2rem 0 .5rem" } }, L3("Liber de folosit în articole despre proiect.", "Free to use in articles about the project.", "Szabadon használható a projektről szóló cikkekben."))),
+          React.createElement("a", { className: "btn btn-sm", href: "/icons/icon-512.png", download: "from-grey-to-play-logo.png" }, "📥 PNG")),
+        React.createElement("h2", { className: "section-title mt-3" }, "✉️ " + L3("Contact", "Contact", "Kapcsolat")),
+        React.createElement("div", { className: "card press-contact" },
+          React.createElement("a", { className: "press-mail", href: "mailto:" + G2P_EMAIL + "?subject=" + encodeURIComponent("From Grey to Play — presă") }, G2P_EMAIL),
+          React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)", margin: ".4rem 0 0" } }, L3("Numărul de telefon este în PDF.", "The phone number is in the PDF.", "A telefonszám a PDF-ben van.")),
+          React.createElement("button", { className: "btn btn-sm mt-1", onClick: () => { sessionStorage.setItem("g2p_about_tab", "sources"); setPage("about"); window.scrollTo(0, 0); } }, "📚 " + L3("Toate sursele", "All sources", "Összes forrás"))))),
+    qr && React.createElement(PressQR, { onClose: () => setQr(false) }));
+}
+
+/* === How to help: one scroll. "5 min / 1 hour / a day?" picks the matching actions; progress and
+   a badge per tier are saved on the device (localStorage g2p_help) and under achievements/{voterKey}
+   (help_{id}), which follows the account when signed in. No donation button. === */
+const HELP_TIERS = [
+  { k: "5m", ic: "⏱️", badge: "⚡" },
+  { k: "1h", ic: "🕐", badge: "🔥" },
+  { k: "1d", ic: "📅", badge: "🏆" }
+];
+function helpDone() { try { return JSON.parse(localStorage.getItem("g2p_help") || "{}") || {}; } catch (e) { return {}; } }
+function helpMark(id) {
+  const f = helpDone();
+  if (f[id]) return false;
+  f[id] = Date.now();
+  try { localStorage.setItem("g2p_help", JSON.stringify(f)); } catch (e) {}
+  try { const vk = getVoterKey(); if (vk) db.ref("achievements/" + vk + "/help_" + id).set(f[id]); } catch (e) {}
+  return true;
+}
+function HelpPage() {
+  const { t, lang, toast, setPage } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const sib = ACTIVE_CITY === "sibiu";
+  const [tier, setTier] = useState(null);
+  const [sweep, setSweep] = useState(0);
+  const [done, setDone] = useState(helpDone);
+  const [report, setReport] = useState(false);
+  const [vf, setVf] = useState({ name: "", email: "", phone: "", when: "" });
+  const [volSent, setVolSent] = useState(false);
+  const listRef = useRef(null);
+  // Pull the account's progress into this device (and this device's into the account).
+  const vk = getVoterKey();
+  const remote = useFirebase(vk ? "achievements/" + vk : null);
+  useEffect(() => {
+    if (!remote) return;
+    const f = helpDone(); let changed = false;
+    Object.keys(remote).forEach(k => { if (k.indexOf("help_") === 0 && !f[k.slice(5)]) { f[k.slice(5)] = remote[k]; changed = true; } });
+    if (changed) { try { localStorage.setItem("g2p_help", JSON.stringify(f)); } catch (e) {} setDone(f); }
+  }, [remote]);
+  const voted = (() => { try { return !!localStorage.getItem("g2p_voted"); } catch (e) { return false; } })();
+  const scrollTo = id => { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: fxReduced() ? "auto" : "smooth", block: "start" }); };
+  const share = () => {
+    const text = L3("Terenurile din " + cityName(lang) + " pot arăta mai bine. Uite ce facem:", "The courts in " + cityName(lang) + " can be better. Here's what we're doing:", "A " + cityName(lang) + "-i pályák lehetnek jobbak. Ezt csináljuk:");
+    if (navigator.share) navigator.share({ title: "From Grey to Play", text: text, url: SITE }).catch(() => {});
+    else copyText(text + " " + SITE).then(ok => ok && toast(L3("Link copiat ✓", "Link copied ✓", "Link másolva ✓")));
+  };
+  const mail = subj => { window.location.href = "mailto:" + G2P_EMAIL + "?subject=" + encodeURIComponent(subj); };
+  const go = p => () => { setPage(p); window.scrollTo(0, 0); };
+  const ACTIONS = {
+    "5m": [
+      { id: "sign", ic: "✍️", h: L3("Semnează petiția", "Sign the petition", "Írd alá a petíciót"), p: L3("Un nume și un email. Fiecare semnătură apare live.", "A name and an email. Every signature shows up live.", "Egy név és egy e-mail. Minden aláírás élőben látszik."), btn: L3("Semnez", "Sign", "Aláírom"), auto: voted, run: go("petition") },
+      { id: "verify", ic: "🔍", h: L3("Verifică un teren", "Check a court", "Ellenőrizz egy pályát"), p: sib ? L3("Alege un teren din Sibiu și spune-ne în ce stare e. 20 de secunde.", "Pick a Sibiu court and tell us its condition. 20 seconds.", "Válassz egy szebeni pályát, és mondd el, milyen állapotban van. 20 mp.") : L3("Deschide un teren pe hartă și confirmă ce vezi.", "Open a court on the map and confirm what you see.", "Nyiss meg egy pályát a térképen, és erősítsd meg, amit látsz."), btn: L3("La hartă", "To the map", "A térképhez"), run: go("courts") },
+      { id: "report", ic: "⚠️", h: L3("Raportează o problemă", "Report a problem", "Jelents egy hibát"), p: L3("Coș rupt, plasă lipsă, gunoi. Trei pași: teren, problemă, poză.", "Broken hoop, missing net, trash. Three steps: court, problem, photo.", "Törött palánk, hiányzó háló, szemét. Három lépés: pálya, hiba, fotó."), btn: L3("Raportez", "Report", "Jelentem"), run: () => setReport(true) },
+      { id: "share", ic: "📣", h: L3("Trimite site-ul unui prieten", "Send the site to a friend", "Küldd el egy barátodnak"), p: L3("Cine joacă pe terenul tău? Lui îi trimiți.", "Who plays on your court? Send it to them.", "Ki játszik a pályádon? Neki küldd."), btn: L3("Trimit", "Send", "Küldöm"), run: share }
+    ],
+    "1h": [
+      { id: "letter", ic: "✉️", h: L3("Scrie scrisoarea către Primărie", "Write the letter to City Hall", "Írd meg a levelet a városházának"), p: L3("Gata scrisă, cu cifrele și sursele. O completezi cu de ce contează pentru tine.", "Ready-written, with the numbers and sources. Add why it matters to you.", "Kész levél számokkal és forrásokkal. Írd hozzá, miért fontos neked."), btn: L3("Scriu", "Write", "Megírom"), run: go("petition") },
+      { id: "visit", ic: "📸", h: L3("Mergi la cel mai apropiat teren", "Walk to your nearest court", "Menj el a legközelebbi pályához"), p: L3("Fă o poză și trimite-o ca sesizare. O poză bate o mie de păreri.", "Take a photo and send it as a report. One photo beats a thousand opinions.", "Fotózd le, és küldd be bejelentésként. Egy fotó ezer véleményt ér."), btn: L3("Trimit poza", "Send the photo", "Fotó küldése"), run: () => setReport(true) },
+      { id: "game", ic: "⚽", h: L3("Propune un meci în cartier", "Propose a game in your area", "Javasolj egy meccset a környéken"), p: L3("Un teren folosit e un teren pe care nu-l mai poate ignora nimeni.", "A court in use is a court nobody can ignore.", "Egy használt pályát senki sem hagyhat figyelmen kívül."), btn: L3("La comunitate", "To the community", "A közösséghez"), run: go("community") },
+      { id: "cityhall", ic: "🏛️", h: L3("Află cum depui o cerere la Primărie", "Learn how to file a request at City Hall", "Tudd meg, hogyan nyújts be kérvényt"), p: L3("Pașii, adresa și un șablon gata făcut, mai jos pe pagină.", "The steps, the address and a ready template, further down this page.", "A lépések, a cím és egy kész sablon lejjebb az oldalon."), btn: L3("Arată-mi", "Show me", "Mutasd"), run: () => scrollTo("help-cityhall") }
+    ],
+    "1d": [
+      { id: "volunteer", ic: "🙋", h: L3("Înscrie-te voluntar", "Sign up as a volunteer", "Jelentkezz önkéntesnek"), p: L3("Te sunăm sau îți scriem când avem nevoie de mâini.", "We'll call or write when we need hands.", "Hívunk vagy írunk, ha kéz kell."), btn: L3("Mă înscriu", "Sign me up", "Jelentkezem"), run: () => scrollTo("help-volunteer") },
+      { id: "cleanup", ic: "🧹", h: L3("Organizează o zi de curățenie", "Organise a clean-up day", "Szervezz takarítónapot"), p: L3("Saci, mănuși, prieteni, o sâmbătă. Noi ajutăm cu anunțul.", "Bags, gloves, friends, a Saturday. We help with the announcement.", "Zsákok, kesztyűk, barátok, egy szombat. A hirdetésben segítünk."), btn: L3("Scrie-ne", "Write to us", "Írj nekünk"), run: () => mail("Zi de curățenie — From Grey to Play") },
+      { id: "canvas", ic: "🎨", h: L3("Ajută la Street Canvas", "Help with Street Canvas", "Segíts a Street Canvasban"), p: L3("Desenezi, vopsești sau aduci vopsea pentru muralul de pe teren.", "Draw, paint or bring paint for the court mural.", "Rajzolj, fess vagy hozz festéket a pálya falfestményéhez."), btn: L3("Scrie-ne", "Write to us", "Írj nekünk"), run: () => mail("Street Canvas — From Grey to Play") },
+      { id: "map", ic: "🗺️", h: L3("Cartografiază cartierul tău", "Map your neighbourhood", "Térképezd fel a környéked"), p: L3("Treci pe la toate terenurile din zonă și verifică-le pe rând.", "Visit every court in your area and check them one by one.", "Járd végig a környék pályáit, és ellenőrizd őket sorban."), btn: L3("La hartă", "To the map", "A térképhez"), run: go("courts") }
+    ]
+  };
+  const isDone = a => !!(done[a.id] || a.auto);
+  const doAction = a => {
+    if (helpMark(a.id)) {
+      const f = helpDone(); setDone(f);
+      g2pSfx("click");
+      const tk = Object.keys(ACTIONS).find(k => ACTIONS[k].some(x => x.id === a.id));
+      if (tk && ACTIONS[tk].every(x => f[x.id] || x.auto) && helpMark("tier_" + tk)) {
+        setDone(helpDone()); g2pSfx("chime");
+        toast(HELP_TIERS.find(x => x.k === tk).badge + " " + L3("Insignă nouă: ", "New badge: ", "Új jelvény: ") + tierName(tk).badge, 4200);
+      }
+    }
+    a.run();
+  };
+  const tierName = k => ({
+    "5m": { q: L3("Am 5 minute", "I have 5 minutes", "Van 5 percem"), s: L3("din autobuz, din pauză", "on the bus, at break", "a buszon, szünetben"), badge: L3("Erou de 5 minute", "5-minute hero", "5 perces hős") },
+    "1h": { q: L3("Am o oră", "I have an hour", "Van egy órám"), s: L3("după școală", "after school", "suli után"), badge: L3("Ora de aur", "Golden hour", "Aranyóra") },
+    "1d": { q: L3("Am o zi", "I have a day", "Van egy napom"), s: L3("un weekend cu prietenii", "a weekend with friends", "egy hétvége a barátokkal"), badge: L3("Ziua cartierului", "Neighbourhood day", "A környék napja") }
+  })[k];
+  const pick = k => {
+    setTier(k); setSweep(s => s + 1);
+    g2pSfx("swish");
+    setTimeout(() => { const el = listRef.current; if (el) el.scrollIntoView({ behavior: fxReduced() ? "auto" : "smooth", block: "start" }); }, fxReduced() ? 0 : 380);
+  };
+  const subVol = () => {
+    if (!vf.name || vf.name.trim().length < 2 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(vf.email)) { toast(t.error); return; }
     const volDate = new Date().toISOString();
     const volRef = db.ref("signups").push();
-    volRef.set({
-      ...vf,
-      volunteer: true,
-      city: ACTIVE_CITY,
-      date: volDate,
-      choice: "both"
-    });
-    db.ref("signupStats/" + volRef.key).set({ volunteer: true, city: ACTIVE_CITY, date: volDate });
-    const k = vf.name.replace(/[.#$/\[\]]/g, '_');
-    db.ref("leaderboard/" + k).transaction(v => ({
-      ...(v || {}),
-      points: (v?.points || 0) + 50,
-      name: vf.name
-    }));
-    toast(t.success + " +50 pts");
-    setVf({
-      name: "",
-      email: "",
-      phone: ""
-    });
+    volRef.set({ name: vf.name.trim().slice(0, 100), email: vf.email.trim().slice(0, 120), phone: vf.phone.slice(0, 30), when: vf.when || "", volunteer: true, city: ACTIVE_CITY, date: volDate, choice: "both" })
+      .then(() => {
+        db.ref("signupStats/" + volRef.key).set({ volunteer: true, city: ACTIVE_CITY, date: volDate });
+        const k = vf.name.replace(/[.#$/\[\]]/g, "_");
+        db.ref("leaderboard/" + k).transaction(v => ({ ...(v || {}), points: (v?.points || 0) + 50, name: vf.name }));
+        logActivity("join", anonName(vf.name), null);
+        helpMark("volunteer"); setDone(helpDone());
+        setVolSent(true); g2pSfx("chime"); toast(t.success + " +50 pts");
+      }, () => toast(t.error));
   };
-  return /*#__PURE__*/React.createElement("div", {
-    className: "animate-in"
-  }, /*#__PURE__*/React.createElement("section", {
-    className: "section"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "container"
-  }, /*#__PURE__*/React.createElement("h2", {
-    className: "section-title"
-  }, "\uD83E\uDD1D ", t.howToHelp), /*#__PURE__*/React.createElement("div", {
-    className: "tabs"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: tab === "volunteer" ? "active" : "",
-    onClick: () => setTab("volunteer")
-  }, "\uD83D\uDE4B ", t.volunteerPath), /*#__PURE__*/React.createElement("button", {
-    className: tab === "donate" ? "active" : "",
-    onClick: () => setTab("donate")
-  }, "\uD83D\uDC9D ", t.donatePath), /*#__PURE__*/React.createElement("button", {
-    className: tab === "share" ? "active" : "",
-    onClick: () => setTab("share")
-  }, "\uD83D\uDCE3 ", t.sharePath), /*#__PURE__*/React.createElement("button", {
-    className: tab === "contact" ? "active" : "",
-    onClick: () => setTab("contact")
-  }, "\uD83C\uDFDB\uFE0F ", t.contactPath)), tab === "volunteer" && /*#__PURE__*/React.createElement("div", {
-    className: "card"
-  }, /*#__PURE__*/React.createElement("h3", {
-    className: "mb-2"
-  }, "\uD83D\uDE4B ", t.volunteerSignup), /*#__PURE__*/React.createElement("input", {
-    placeholder: lang === "ro" ? "Numele tău" : "Your name",
-    value: vf.name,
-    onChange: e => setVf({
-      ...vf,
-      name: e.target.value
-    }),
-    className: "mb-1"
-  }), /*#__PURE__*/React.createElement("input", {
-    placeholder: t.email,
-    type: "email",
-    value: vf.email,
-    onChange: e => setVf({
-      ...vf,
-      email: e.target.value
-    }),
-    className: "mb-1"
-  }), /*#__PURE__*/React.createElement("input", {
-    placeholder: t.phone,
-    value: vf.phone,
-    onChange: e => setVf({
-      ...vf,
-      phone: e.target.value
-    }),
-    className: "mb-1"
-  }), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-green btn-block",
-    onClick: subVol
-  }, t.submit)), tab === "donate" && /*#__PURE__*/React.createElement("div", {
-    className: "card",
-    style: {
-      textAlign: "center",
-      padding: "2rem"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: "2.5rem",
-      marginBottom: ".5rem"
-    }
-  }, "\uD83D\uDC9D"), /*#__PURE__*/React.createElement("p", null, lang === "ro" ? "Modulul de donații va fi activat după înregistrarea ONG-ului." : "Donation module will be activated after NGO registration.")), tab === "share" && /*#__PURE__*/React.createElement("div", {
-    className: "card"
-  }, /*#__PURE__*/React.createElement("h3", {
-    className: "mb-2"
-  }, "\uD83D\uDCE3 ", t.sharePath), /*#__PURE__*/React.createElement("div", {
-    className: "flex gap-1",
-    style: {
-      flexWrap: "wrap"
-    }
-  }, /*#__PURE__*/React.createElement("a", {
-    className: "btn btn-sm",
-    style: {
-      background: "#25D366",
-      color: "#fff"
-    },
-    href: `https://wa.me/?text=${encodeURIComponent("From Grey to Play " + SITE)}`,
-    target: "_blank"
-  }, "\uD83D\uDCAC WhatsApp"), /*#__PURE__*/React.createElement("a", {
-    className: "btn btn-sm",
-    style: {
-      background: "#1877F2",
-      color: "#fff"
-    },
-    href: "https://www.facebook.com/sharer/sharer.php?u=" + SITE,
-    target: "_blank"
-  }, "\uD83D\uDCD8 Facebook"), React.createElement("button", {
-    className: "btn btn-sm",
-    style: { background: "#E4405F", color: "#fff" },
-    onClick: () => {
-      const url = SITE;
-      const text = lang === "ro" ? "Sus\u021Bin renovarea terenurilor sportive din " + cityName(lang) + "! \uD83C\uDFC0" : "I support sports court renovation in " + cityName(lang) + "! \uD83C\uDFC0";
-      if (navigator.share) { navigator.share({ title: "From Grey to Play", text, url }); }
-      else { window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(url), "_blank"); }
-    }
-  }, "\uD83D\uDCF8 Instagram / Share"))), tab === "contact" && /*#__PURE__*/React.createElement("div", null, React.createElement(CityHallGuide, null), /*#__PURE__*/React.createElement("div", {
-    className: "card mb-2"
-  }, /*#__PURE__*/React.createElement("h3", {
-    className: "mb-1"
-  }, "\uD83C\uDFDB\uFE0F ", lang === "ro" ? "Primăria " + cityName(lang) : cityName(lang) + " City Hall"), /*#__PURE__*/React.createElement("p", {
-    className: "text-sm"
-  }, "\uD83D\uDCCD " + CITY_HALL.address),/*#__PURE__*/React.createElement("p", {
-    className: "text-sm"
-  }, "\uD83D\uDCDE " + CITY_HALL.telLabel),/*#__PURE__*/React.createElement("p", {
-    className: "text-sm"
-  }, "\uD83D\uDCE7 " + (ACTIVE_CITY === "tgm" ? "primar@tirgumures.ro" : CITY_HALL.mail)),/*#__PURE__*/React.createElement("p", {
-    className: "text-sm"
-  }, "\uD83C\uDF10 " + (ACTIVE_CITY === "tgm" ? "www.tirgumures.ro" : "www.sibiu.ro"))),/*#__PURE__*/React.createElement("div", {
-    className: "card"
-  }, /*#__PURE__*/React.createElement("h3", {
-    className: "mb-1"
-  }, "\uD83D\uDCC4 ", lang === "ro" ? "Șablon cerere oficială" : "Official Request Template"), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-green mt-1",
-    onClick: () => {
-      const c = `CĂTRE: ${CITY_HALL.registry}\n${CITY_HALL.address}\n\nSubsemnatul/a _____________, domiciliat/ă în _____________,\n\nsolicit:\n1. Informare privind stadiul renovării terenurilor sportive din cartierele periferice\n2. Alocarea de fonduri pentru programul pilot Flip-the-Court\n3. Accesarea fondurilor Erasmus+ Sport KA2\n\nCu stimă,\n_____________\nData: ${new Date().toLocaleDateString("ro-RO")}`;
-      const b = new Blob([c], {
-        type: "text/plain"
-      });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(b);
-      a.download = "cerere_g2p.txt";
-      a.click();
-    }
-  }, "\uD83D\uDCE5 ", t.downloadPDF))))));
+  const totalActs = Object.keys(ACTIONS).reduce((n, k) => n + ACTIONS[k].length, 0);
+  const totalDone = Object.keys(ACTIONS).reduce((n, k) => n + ACTIONS[k].filter(isDone).length, 0);
+  const list = tier ? ACTIONS[tier] : null;
+  return React.createElement("div", { className: "animate-in help" },
+    React.createElement("section", { className: "section help-hero" },
+      React.createElement("div", { className: "container" },
+        React.createElement("h1", { className: "help-h1" }, "🤝 " + t.howToHelp),
+        React.createElement("p", { className: "help-lead" },
+          L3("Doar 28% dintre adolescenții din România fac destulă mișcare", "Only 28% of Romanian teenagers get enough exercise", "A romániai tinédzsereknek csak 28%-a mozog eleget"),
+          React.createElement(SrcRef, { id: "mediafax-28" }),
+          L3(". Un teren bun în cartier schimbă asta. Cât timp ai?", ". A good court nearby changes that. How much time do you have?", ". Egy jó pálya a közelben ezen változtat. Mennyi időd van?")),
+        React.createElement("div", { className: "help-choose", role: "group", "aria-label": L3("Cât timp ai?", "How much time?", "Mennyi időd van?") },
+          HELP_TIERS.map((x, i) => {
+            const n = ACTIONS[x.k].filter(isDone).length, all = ACTIONS[x.k].length, got = !!done["tier_" + x.k];
+            return React.createElement("button", { key: x.k, type: "button", className: "help-opt" + (tier === x.k ? " on" : "") + (tier && tier !== x.k ? " off" : ""), "aria-pressed": tier === x.k, onClick: () => pick(x.k), style: { "--i": i } },
+              React.createElement("span", { className: "help-opt-ic", "aria-hidden": "true" }, x.ic),
+              React.createElement("strong", null, tierName(x.k).q),
+              React.createElement("span", { className: "help-opt-s" }, tierName(x.k).s),
+              React.createElement("span", { className: "help-opt-bar", "aria-hidden": "true" }, React.createElement("i", { style: { width: (n / all * 100) + "%" } })),
+              React.createElement("span", { className: "help-opt-n" }, got ? x.badge + " " + tierName(x.k).badge : n + " / " + all));
+          })),
+        totalDone > 0 && React.createElement("p", { className: "help-total" }, L3("Ai făcut ", "You've done ", "Megcsináltál ") + totalDone + L3(" din ", " of ", " / ") + totalActs + L3(" lucruri. Mulțumim.", " things. Thank you.", " dolgot. Köszönjük.")))),
+    React.createElement("div", { ref: listRef, className: "help-list-anchor" }),
+    tier && React.createElement("section", { className: "section help-acts-sec", key: "s" + sweep },
+      sweep > 0 && funFx() && React.createElement("div", { className: "help-sweep", "aria-hidden": "true" }, React.createElement("span", null, HELP_TIERS.find(x => x.k === tier).ic)),
+      React.createElement("div", { className: "container" },
+        React.createElement("h2", { className: "section-title" }, HELP_TIERS.find(x => x.k === tier).ic + " " + tierName(tier).q),
+        React.createElement("div", { className: "help-acts" }, list.map((a, i) => React.createElement("div", { key: a.id, className: "help-act" + (isDone(a) ? " done" : ""), style: { "--i": i } },
+          React.createElement("span", { className: "help-act-ic", "aria-hidden": "true" }, isDone(a) ? "✓" : a.ic),
+          React.createElement("div", { className: "help-act-b" }, React.createElement("strong", null, a.h), React.createElement("p", null, a.p)),
+          React.createElement("button", { className: "btn btn-sm " + (isDone(a) ? "" : "btn-green"), onClick: () => doAction(a) }, isDone(a) ? L3("Încă o dată", "Again", "Újra") : a.btn)))))),
+    React.createElement("section", { className: "section", id: "help-volunteer" },
+      React.createElement("div", { className: "container" },
+        React.createElement(Reveal, { className: "card help-vol" },
+          React.createElement("h2", { className: "section-title", style: { marginTop: 0 } }, "🙋 " + t.volunteerSignup),
+          volSent ? React.createElement("p", { className: "partner-sent" }, "✓ " + L3("Ești pe listă. Îți scriem când facem prima acțiune în zona ta.", "You're on the list. We'll write when there's an action near you.", "Rajta vagy a listán. Írunk, ha lesz akció a környékeden."))
+            : React.createElement("div", { className: "partner-form" },
+              React.createElement("input", { placeholder: L3("Numele tău", "Your name", "A neved"), value: vf.name, onChange: e => setVf({ ...vf, name: e.target.value }) }),
+              React.createElement("input", { placeholder: t.email, type: "email", value: vf.email, onChange: e => setVf({ ...vf, email: e.target.value }) }),
+              React.createElement("input", { placeholder: t.phone + " (" + L3("opțional", "optional", "opcionális") + ")", value: vf.phone, onChange: e => setVf({ ...vf, phone: e.target.value }) }),
+              React.createElement("div", { className: "src-filter", role: "group" }, HELP_TIERS.map(x => React.createElement("button", { key: x.k, type: "button", className: "g2chip" + (vf.when === x.k ? " g2chip-on" : ""), "aria-pressed": vf.when === x.k, onClick: () => setVf({ ...vf, when: x.k }) }, x.ic + " " + tierName(x.k).q))),
+              React.createElement("button", { className: "btn btn-green btn-block", onClick: subVol }, t.submit)),
+          React.createElement("p", { className: "text-sm mt-1", style: { color: "var(--textSec)" } }, L3("Preferi email? Scrie-ne la ", "Prefer email? Write to ", "Inkább e-mail? Írj ide: "), React.createElement("a", { href: "mailto:" + G2P_EMAIL + "?subject=" + encodeURIComponent("Voluntar — From Grey to Play") }, G2P_EMAIL))))),
+    React.createElement("section", { className: "section", id: "help-cityhall" },
+      React.createElement("div", { className: "container" },
+        React.createElement(Reveal, null, React.createElement(CityHallGuide, null)),
+        React.createElement(Reveal, { className: "card mb-2" },
+          React.createElement("h3", { className: "mb-1" }, "🏛️ " + (lang === "ro" ? "Primăria " + cityName(lang) : cityName(lang) + " City Hall")),
+          React.createElement("p", { className: "text-sm" }, "📍 " + CITY_HALL.address),
+          React.createElement("p", { className: "text-sm" }, "📞 " + CITY_HALL.telLabel),
+          React.createElement("p", { className: "text-sm" }, "📧 " + (ACTIVE_CITY === "tgm" ? "primar@tirgumures.ro" : CITY_HALL.mail)),
+          React.createElement("p", { className: "text-sm" }, "🌐 " + (ACTIVE_CITY === "tgm" ? "www.tirgumures.ro" : "www.sibiu.ro")),
+          React.createElement("button", { className: "btn btn-green mt-1", onClick: () => {
+            const c = `CĂTRE: ${CITY_HALL.registry}\n${CITY_HALL.address}\n\nSubsemnatul/a _____________, domiciliat/ă în _____________,\n\nsolicit:\n1. Informare privind stadiul renovării terenurilor sportive din cartierele periferice\n2. Alocarea de fonduri pentru programul pilot Flip-the-Court\n3. Accesarea fondurilor Erasmus+ Sport KA2\n\nCu stimă,\n_____________\nData: ${new Date().toLocaleDateString("ro-RO")}`;
+            const b = new Blob([c], { type: "text/plain" });
+            const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "cerere_g2p.txt"; a.click();
+          } }, "📥 ", t.downloadPDF)))),
+    report && React.createElement(QuickReportModal, { courtId: "", onClose: () => setReport(false) }));
 }
 
 /* === About === */
 function AboutPage() {
-  const {
-    t,
-    lang,
-    toast
-  } = useApp();
-  const [tab, setTab] = useState("project");
-  const [pf, setPf] = useState({
-    company: "",
-    email: "",
-    message: ""
+  const { t, lang, setPage } = useApp();
+  const [tab, setTab] = useState(() => {
+    try { const s = sessionStorage.getItem("g2p_about_tab"); if (s) { sessionStorage.removeItem("g2p_about_tab"); if (["project", "sources", "funding", "press"].indexOf(s) >= 0) return s; } } catch (e) {}
+    return "project";
   });
   const [essayOpen, setEssayOpen] = useState(false);
-  const subPartner = () => {
-    if (!pf.company || !pf.email) {
-      toast(t.error);
-      return;
-    }
-    db.ref("partnerRequests").push({
-      ...pf,
-      date: new Date().toISOString()
-    });
-    toast(t.success);
-    setPf({
-      company: "",
-      email: "",
-      message: ""
-    });
-  };
+  const [qr, setQr] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const pd = usePressData();
+  useEffect(() => {
+    const h = () => setTab("sources");
+    window.addEventListener("g2p:srcfocus", h);
+    return () => window.removeEventListener("g2p:srcfocus", h);
+  }, []);
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const sib = ACTIVE_CITY === "sibiu";
   const teamMembers = [
     { i: "TM", name: "Trofin Matei", role: L3("Verificare Satelit", "Satellite Review", "Műhold-ellenőrzés"), color: "var(--teal)" },
     { i: "ȚM", name: "Țurcanu Mihai", role: L3("Verificare Satelit", "Satellite Review", "Műhold-ellenőrzés"), color: "var(--teal)" },
@@ -12005,6 +12611,7 @@ function AboutPage() {
     { i: "DI", name: "Drăgan Ilie", role: L3("Verificare Date", "Data Review", "Adatellenőrzés"), color: "var(--coral)" },
     { i: "CT", name: "Cîmpan Teodor", role: L3("Coordonare", "Coordination", "Koordináció"), color: "var(--green)" }
   ];
+  const openEssay = () => { setTab("project"); setEssayOpen(true); setTimeout(() => { const el = document.getElementById("about-essay"); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 120); };
   const heroSection = React.createElement("section", { className: "section about-hero" },
     React.createElement("div", { className: "container" },
       React.createElement("blockquote", { className: "about-quote", style: { marginTop: 0, marginBottom: "1.4rem" } },
@@ -12025,200 +12632,62 @@ function AboutPage() {
       )
     )
   );
-  return /*#__PURE__*/React.createElement("div", {
-    className: "animate-in"
-  }, heroSection, /*#__PURE__*/React.createElement("section", {
-    className: "section"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "container"
-  }, /*#__PURE__*/React.createElement("h2", {
-    className: "section-title"
-  }, "\uD83D\uDCD6 ", t.about), /*#__PURE__*/React.createElement("div", {
-    className: "tabs"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: tab === "project" ? "active" : "",
-    onClick: () => setTab("project")
-  }, "\uD83D\uDCD6 ", t.theProject), /*#__PURE__*/React.createElement("button", {
-    className: tab === "funding" ? "active" : "",
-    onClick: () => setTab("funding")
-  }, "\uD83D\uDCB0 ", t.fundingSources), /*#__PURE__*/React.createElement("button", {
-    className: tab === "partners" ? "active" : "",
-    onClick: () => setTab("partners")
-  }, "\uD83E\uDD1D ", t.partnerships), /*#__PURE__*/React.createElement("button", {
-    className: tab === "press" ? "active" : "",
-    onClick: () => setTab("press")
-  }, "\uD83D\uDCF0 ", t.pressKit)), tab === "project" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    className: "card"
-  },
-  React.createElement("div", { className: "flex justify-between items-center", style: { borderLeft: "6px solid var(--coral)", paddingLeft: "1rem", marginBottom: "1rem" } },
-    React.createElement("div", null,
-      React.createElement("h3", { style: { margin: 0 } }, "🏆 FROM GREY TO PLAY"),
-      React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)", margin: ".25rem 0 0" } },
-        L3("Lucrare câștigătoare · Loc 1 Național · EdVenture ATW 2026", "Winning essay · National #1 · EdVenture ATW 2026", "Nyertes dolgozat · Nemzeti 1. · EdVenture ATW 2026")
-      )
-    ),
-    React.createElement("button", { className: "btn btn-sm", style: { flexShrink: 0 }, onClick: () => setEssayOpen(o => !o) },
-      essayOpen ? L3("Închide ✕", "Close ✕", "Bezár ✕") : "📖 " + L3("Citește lucrarea", "Read essay", "Dolgozat")
-    )
-  ),
-  essayOpen && React.createElement("div", { style: { whiteSpace: "pre-wrap", lineHeight: 1.7, fontSize: ".92rem", paddingTop: ".8rem", borderTop: "1px solid var(--border)" } }, ESSAY[lang] || ESSAY.ro)), /*#__PURE__*/React.createElement("div", {
-    className: "card mt-2"
-  }, /*#__PURE__*/React.createElement("h3", {
-    className: "mb-2"
-  }, "\uD83D\uDCCA ", lang === "ro" ? "Date cheie" : "Key Data"), /*#__PURE__*/React.createElement("div", {
-    className: "grid grid-4"
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      textAlign: "center"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "stat-number"
-  }, "12/15"), /*#__PURE__*/React.createElement("div", {
-    className: "stat-label"
-  }, lang === "ro" ? "rezidenți" : "residents")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      textAlign: "center"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "stat-number",
-    style: {
-      color: "var(--coral)"
-    }
-  }, "5M"), /*#__PURE__*/React.createElement("div", {
-    className: "stat-label"
-  }, lang === "ro" ? "lei înghețați" : "lei frozen")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      textAlign: "center"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "stat-number",
-    style: {
-      color: "var(--red)"
-    }
-  }, "0%"), /*#__PURE__*/React.createElement("div", {
-    className: "stat-label"
-  }, lang === "ro" ? "renovare" : "renovation")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      textAlign: "center"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "stat-number",
-    style: {
-      color: "var(--teal)"
-    }
-  }, "3km"), /*#__PURE__*/React.createElement("div", {
-    className: "stat-label"
-  }, lang === "ro" ? "decalaj" : "gap")))), /*#__PURE__*/React.createElement("div", {
-    className: "card mt-2"
-  }, /*#__PURE__*/React.createElement("h3", {
-    className: "mb-1"
-  }, t.sources), /*#__PURE__*/React.createElement("div", {
-    className: "flex flex-col gap-1"
-  }, /*#__PURE__*/React.createElement("a", {
-    href: "https://www.google.com/maps/d/viewer?mid=19tND_bqOJoFbhTNKN0PenNW7S7yUog8",
-    target: "_blank"
-  }, "\uD83D\uDDFA\uFE0F Google My Maps"), /*#__PURE__*/React.createElement("a", {
-    href: "https://punctul.ro/eroare-tehnica-de-5-milioane-de-lei-baza-sportiva-din-str-insulei-identificata-gresit-in-acte/",
-    target: "_blank"
-  }, "\uD83D\uDCF0 Punctul.ro \u2014 Oct 2025"), /*#__PURE__*/React.createElement("a", {
-    href: "https://punctul.ro/din-centrale-in-restaurante-hub-uri-digitale-si-cartiere-3-exemple-care-sa-inspire-targu-muresul/",
-    target: "_blank"
-  }, "\uD83D\uDCF0 Punctul.ro \u2014 Mar 2026"), /*#__PURE__*/React.createElement("a", {
-    href: "https://www.mdpi.com/2413-8851/8/4/203",
-    target: "_blank"
-  }, "\uD83D\uDCDA MDPI Urban Science"), /*#__PURE__*/React.createElement("a", {
-    href: "https://www.tirgumures.ro/strategie/SIDU_Targu_Mures.pdf",
-    target: "_blank"
-  }, "\uD83D\uDCC4 SIDU T\xE2rgu Mure\u0219"))), /*#__PURE__*/React.createElement("div", {
-    className: "card mt-2"
-  }, /*#__PURE__*/React.createElement("h3", {
-    className: "mb-2"
-  }, "\uD83D\uDDFA\uFE0F " + (lang === "ro" ? "Terenurile pe hart\u0103" : lang === "hu" ? "P\u00E1ly\u00E1k a t\u00E9rk\u00E9pen" : "The courts on the map")), React.createElement("a", { href: "#courts", className: "btn btn-green btn-sm" }, lang === "ro" ? "\uD83C\uDFC0 Harta celor 28 de terenuri" : "\uD83C\uDFC0 Map of all 28 courts"), React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, lang === "ro" ? "Platform\u0103 civic\u0103 online \u2014 f\u0103r\u0103 sediu fizic. Contact: addtru@gmail.com" : "Online civic platform \u2014 no physical office. Contact: addtru@gmail.com")), /*#__PURE__*/React.createElement("span", null)), tab === "funding" && /*#__PURE__*/React.createElement("div", {
-    className: "grid gap-1"
-  }, FUNDING.map((f, i) => /*#__PURE__*/React.createElement("div", {
-    key: i,
-    className: "card card-accent"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "flex justify-between items-center"
-  }, /*#__PURE__*/React.createElement("h4", null, f.name), /*#__PURE__*/React.createElement("span", {
-    className: `badge ${f.type === "EU" ? "badge-teal" : f.type === "National" ? "badge-coral" : "badge-green"}`
-  }, f.type)), f.amount !== "—" && /*#__PURE__*/React.createElement("p", {
-    className: "text-sm font-bold mt-1 text-green"
-  }, f.amount), /*#__PURE__*/React.createElement("a", {
-    href: f.url,
-    target: "_blank",
-    className: "text-sm mt-1",
-    style: {
-      display: "block"
-    }
-  }, "\uD83D\uDD17 ", lang === "ro" ? "Detalii" : "Details")))), tab === "partners" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    className: "card mb-2",
-    style: {
-      textAlign: "center",
-      padding: "2rem"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: "2.5rem",
-      marginBottom: ".4rem"
-    }
-  }, "\uD83E\uDD1D"), /*#__PURE__*/React.createElement("h3", null, t.partnerForm), /*#__PURE__*/React.createElement("p", {
-    className: "text-sm mt-1",
-    style: {
-      color: "var(--textSec)"
-    }
-  }, lang === "ro" ? "Niciun parteneriat confirmat încă. Completați formularul de mai jos." : "No partnerships confirmed yet. Fill in the form below.")), /*#__PURE__*/React.createElement("div", {
-    className: "card"
-  }, /*#__PURE__*/React.createElement("h3", {
-    className: "mb-2"
-  }, "\uD83D\uDCE9 ", t.partnerForm), /*#__PURE__*/React.createElement("input", {
-    placeholder: t.companyName,
-    value: pf.company,
-    onChange: e => setPf({
-      ...pf,
-      company: e.target.value
-    }),
-    className: "mb-1"
-  }), /*#__PURE__*/React.createElement("input", {
-    placeholder: t.email,
-    type: "email",
-    value: pf.email,
-    onChange: e => setPf({
-      ...pf,
-      email: e.target.value
-    }),
-    className: "mb-1"
-  }), /*#__PURE__*/React.createElement("textarea", {
-    placeholder: t.message,
-    value: pf.message,
-    onChange: e => setPf({
-      ...pf,
-      message: e.target.value
-    }),
-    rows: 3,
-    className: "mb-1"
-  }), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-green btn-block",
-    onClick: subPartner
-  }, t.submit))), tab === "press" && /*#__PURE__*/React.createElement("div", {
-    className: "card"
-  }, /*#__PURE__*/React.createElement("h3", {
-    className: "mb-2"
-  }, "\uD83D\uDCF0 ", t.pressKit), /*#__PURE__*/React.createElement("p", {
-    className: "mb-2"
-  }, lang === "ro" ? "Pachet pentru presă" : "Press pack"), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-green",
-    onClick: () => {
-      const c = `FROM GREY TO PLAY — Press Kit\n\nProject: Civic initiative — Târgu Mureș\nOwner: Cîmpan Teodor\nWeb: ${SITE.replace("https://", "")}\n\nKey Stats:\n- 12/15 residents say courts too degraded\n- 5M lei frozen by admin error\n- 0% peripheral courts renovated\n- 3km gap\n\nProposals:\n1. Flip-the-Court\n2. Street Canvas\n\nContact: fromgreytoplay@gmail.com`;
-      const b = new Blob([c], {
-        type: "text/plain"
-      });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(b);
-      a.download = "press_kit_g2p.txt";
-      a.click();
-    }
-  }, "\uD83D\uDCE5 ", lang === "ro" ? "Descarcă" : "Download")))));
+  // Key data: only facts of the city on screen (TGM facts never show on Sibiu).
+  const keyData = sib ? [
+    { n: String(COURTS.length), l: L3("terenuri de cartier", "neighbourhood courts", "lakótelepi pálya"), c: "var(--green)", src: "osm" },
+    { n: "34/35", l: L3("cu satelit din 2021–22", "satellite from 2021–22", "2021–22-es műholdkép"), c: "var(--coral)", src: "sbt1" },
+    { n: "12M", l: L3("lei pentru sport, 2024", "lei for sport, 2024", "lej sportra, 2024"), c: "var(--teal)", src: "zsn-12m" },
+    { n: "28%", l: L3("adolescenți activi", "active teens", "aktív serdülő"), c: "var(--red)", src: "mediafax-28" }
+  ] : [
+    { n: "12/15", l: L3("rezidenți", "residents", "lakos"), c: "var(--green)", src: "survey" },
+    { n: "5M", l: L3("lei înghețați", "lei frozen", "lej befagyasztva"), c: "var(--coral)", src: "punctul-5m" },
+    { n: "0%", l: L3("renovare", "renovation", "felújítás"), c: "var(--red)", src: "sidu" },
+    { n: "3km", l: L3("decalaj", "gap", "távolság"), c: "var(--teal)", src: "mymaps" }
+  ];
+  const tabs = [
+    ["project", "📖", t.theProject],
+    ["sources", "📚", L3("Surse", "Sources", "Források")],
+    ["funding", "💰", L3("Finanțare & parteneriate", "Funding & partnerships", "Finanszírozás & partnerségek")],
+    ["press", "📰", L3("Presă", "Press", "Sajtó")]
+  ];
+  const pressPdf = () => { if (busy) return; setBusy(true); buildPressPdf(lang, pd).then(() => setBusy(false), () => setBusy(false)); };
+  return React.createElement("div", { className: "animate-in" }, heroSection,
+    React.createElement("section", { className: "section" },
+      React.createElement("div", { className: "container" },
+        React.createElement("h2", { className: "section-title" }, "📖 ", t.about),
+        React.createElement("div", { className: "tabs about-tabs", role: "tablist" }, tabs.map(([k, ic, label]) => React.createElement("button", { key: k, role: "tab", "aria-selected": tab === k, className: tab === k ? "active" : "", onClick: () => setTab(k) }, ic + " " + label,
+          k === "sources" && React.createElement("span", { className: "about-tab-n" }, srcList().length)))),
+        tab === "project" && React.createElement("div", null,
+          React.createElement("div", { className: "card", id: "about-essay" },
+            React.createElement("div", { className: "flex justify-between items-center", style: { borderLeft: "6px solid var(--coral)", paddingLeft: "1rem", marginBottom: "1rem" } },
+              React.createElement("div", null,
+                React.createElement("h3", { style: { margin: 0 } }, "🏆 FROM GREY TO PLAY"),
+                React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)", margin: ".25rem 0 0" } },
+                  L3("Lucrare câștigătoare · Loc 1 Național · EdVenture ATW 2026", "Winning essay · National #1 · EdVenture ATW 2026", "Nyertes dolgozat · Nemzeti 1. · EdVenture ATW 2026"))),
+              React.createElement("button", { className: "btn btn-sm", style: { flexShrink: 0 }, onClick: () => setEssayOpen(o => !o) },
+                essayOpen ? L3("Închide ✕", "Close ✕", "Bezár ✕") : "📖 " + L3("Citește lucrarea", "Read essay", "Dolgozat"))),
+            essayOpen && React.createElement("div", { style: { whiteSpace: "pre-wrap", lineHeight: 1.7, fontSize: ".92rem", paddingTop: ".8rem", borderTop: "1px solid var(--border)" } }, ESSAY[lang] || ESSAY.ro)),
+          React.createElement("div", { className: "card mt-2" },
+            React.createElement("h3", { className: "mb-2" }, "📊 " + L3("Date cheie", "Key Data", "Kulcsadatok")),
+            React.createElement("div", { className: "grid grid-4" }, keyData.map((k, i) => React.createElement("div", { key: i, style: { textAlign: "center" } },
+              React.createElement("div", { className: "stat-number", style: { color: k.c } }, k.n, React.createElement(SrcRef, { id: k.src })),
+              React.createElement("div", { className: "stat-label" }, k.l)))),
+            React.createElement("button", { className: "btn btn-sm btn-ghost mt-2", onClick: () => setTab("sources") }, "📚 " + L3("De unde știm? Toate sursele →", "How do we know? All sources →", "Honnan tudjuk? Összes forrás →"))),
+          React.createElement("div", { className: "card mt-2" },
+            React.createElement("h3", { className: "mb-2" }, "🗺️ " + L3("Terenurile pe hartă", "The courts on the map", "Pályák a térképen")),
+            React.createElement("a", { href: "#courts", className: "btn btn-green btn-sm" }, "🏀 " + L3("Harta celor " + COURTS.length + " de terenuri", "Map of all " + COURTS.length + " courts", "Mind a " + COURTS.length + " pálya térképen")),
+            React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, L3("Platformă civică online — fără sediu fizic. Contact: ", "Online civic platform — no physical office. Contact: ", "Online civil platform — fizikai iroda nélkül. Kapcsolat: "), React.createElement("a", { href: "mailto:" + G2P_EMAIL }, G2P_EMAIL)))),
+        tab === "sources" && React.createElement(SourcesTab, { onEssay: openEssay }),
+        tab === "funding" && React.createElement(FundingTab, null),
+        tab === "press" && React.createElement("div", { className: "card about-press" },
+          React.createElement("h3", { className: "mb-1" }, "📰 " + L3("Ești jurnalist?", "Are you a journalist?", "Újságíró vagy?")),
+          React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } }, L3("Cifre cheie cu sursă, un comunicat RO/EN făcut din datele live, imagini și contact — într-un singur PDF.", "Sourced key numbers, a RO/EN release built from live data, images and contact — in one PDF.", "Forrásolt kulcsszámok, élő adatokból készült RO/EN közlemény, képek és kapcsolat — egyetlen PDF-ben.")),
+          React.createElement("div", { className: "press-mini" }, pressNumbers(lang, pd).slice(0, 4).map((k, i) => React.createElement("div", { key: i }, React.createElement("b", null, k.n, k.src && React.createElement(SrcRef, { id: k.src })), React.createElement("span", null, k.l)))),
+          React.createElement("div", { className: "press-cta" },
+            React.createElement("button", { className: "btn btn-green", onClick: () => { setPage("press"); window.scrollTo(0, 0); } }, "📰 " + L3("Pagina de presă", "Press page", "Sajtóoldal")),
+            React.createElement("button", { className: "btn", onClick: pressPdf, disabled: busy }, busy ? "⏳ …" : "📥 PDF"),
+            React.createElement("button", { className: "btn btn-ghost", onClick: () => setQr(true) }, "📱 QR"))))),
+    qr && React.createElement(PressQR, { onClose: () => setQr(false) }));
 }
 
 /* === Profile === */
@@ -14567,8 +15036,8 @@ function PrivacyPolicyModal({ onClose }) {
         React.createElement("h4", { className: "mb-1 mt-1" }, lang === "ro" ? "1. Cine prelucrează datele" : "1. Data controller"),
         React.createElement("p", { className: "mb-1", style: { color: "var(--textSec)" } },
           lang === "ro"
-            ? "Operatorul de date este Cîmpan Teodor, coordonatorul platformei civice \"From Grey to Play\" (fromgreytoplay.netlify.app). Contact: addtru@gmail.com"
-            : "Data controller: Cîmpan Teodor, coordinator of the civic platform \"From Grey to Play\" (fromgreytoplay.netlify.app). Contact: addtru@gmail.com"
+            ? "Operatorul de date este Cîmpan Teodor, coordonatorul platformei civice \"From Grey to Play\" (fromgreytoplay.netlify.app). Contact: teodor.cimpan12@gmail.com"
+            : "Data controller: Cîmpan Teodor, coordinator of the civic platform \"From Grey to Play\" (fromgreytoplay.netlify.app). Contact: teodor.cimpan12@gmail.com"
         ),
         React.createElement("h4", { className: "mb-1 mt-2" }, lang === "ro" ? "2. Ce date colectăm" : "2. Data collected"),
         React.createElement("p", { className: "mb-1", style: { color: "var(--textSec)" } },
@@ -14595,8 +15064,8 @@ function PrivacyPolicyModal({ onClose }) {
         React.createElement("h4", { className: "mb-1 mt-2" }, lang === "ro" ? "6. Drepturile tale" : "6. Your rights"),
         React.createElement("p", { className: "mb-1", style: { color: "var(--textSec)" } },
           lang === "ro"
-            ? "Ai dreptul la: acces, rectificare, ștergere, portabilitate, opoziție. Contactează-ne la addtru@gmail.com. Ai dreptul să depui plângere la ANSPDCP (www.dataprotection.ro, 0318.059.211)."
-            : "You have the right to: access, rectification, erasure, portability, objection. Contact: addtru@gmail.com. You may lodge a complaint with ANSPDCP (www.dataprotection.ro)."
+            ? "Ai dreptul la: acces, rectificare, ștergere, portabilitate, opoziție. Contactează-ne la teodor.cimpan12@gmail.com. Ai dreptul să depui plângere la ANSPDCP (www.dataprotection.ro, 0318.059.211)."
+            : "You have the right to: access, rectification, erasure, portability, objection. Contact: teodor.cimpan12@gmail.com. You may lodge a complaint with ANSPDCP (www.dataprotection.ro)."
         ),
         React.createElement("h4", { className: "mb-1 mt-2" }, lang === "ro" ? "7. Securitate" : "7. Security"),
         React.createElement("p", { className: "mb-1", style: { color: "var(--textSec)" } },
@@ -14617,7 +15086,7 @@ function PrivacyPolicyModal({ onClose }) {
 
 /* === Footer === */
 function Footer() {
-  const { t } = useApp();
+  const { t, lang, setPage } = useApp();
   const [showPrivacy, setShowPrivacy] = useState(false);
   return React.createElement(React.Fragment, null,
     /*#__PURE__*/React.createElement("footer", {
@@ -14639,7 +15108,10 @@ function Footer() {
       href: "#",
       onClick: function(e) { e.preventDefault(); setShowPrivacy(true); },
       style: { color: "var(--green)" }
-    }, "🔒 ", t.privacyPolicy || "Politică de Confidențialitate")), /*#__PURE__*/React.createElement("p", {
+    }, "🔒 ", t.privacyPolicy || "Politică de Confidențialitate"), " · ", React.createElement("a", {
+      href: "/press",
+      onClick: function(e) { e.preventDefault(); setPage("press"); window.scrollTo(0, 0); }
+    }, "📰 ", lang === "en" ? "Press" : lang === "hu" ? "Sajtó" : "Presă")), /*#__PURE__*/React.createElement("p", {
       className: "mt-1"
     }, t.copyright), React.createElement("p", { className: "text-xs", style: { color: "var(--textSec)", marginTop: ".3rem" } },
       "Sursă hărți și terenuri Sibiu: © ", React.createElement("a", { href: "https://www.openstreetmap.org/copyright", target: "_blank", rel: "noopener", style: { color: "var(--green)" } }, "OpenStreetMap contributors"), " (ODbL)"), /*#__PURE__*/React.createElement("div", {
@@ -14791,10 +15263,18 @@ function Mascot({ page }) {
       scene.add(model.root);
       // Party days: a little cone hat. All secrets found: the ball turns gold.
       if (isPartyDay()) {
-        const hat = new THREE.Mesh(new THREE.ConeGeometry(.34, .62, 20), new THREE.MeshStandardMaterial({ color: 0xEC4899, roughness: .5 }));
+        // Christmas: red Santa hat with a white brim; Easter: pastel; other days: pink party cone.
+        const pk = partyKind();
+        const hatCol = pk === "xmas" ? 0xDC2626 : pk === "easter" ? 0xA78BFA : 0xEC4899;
+        const pomCol = pk === "xmas" ? 0xFFFFFF : pk === "easter" ? 0xFDE68A : 0xFACC15;
+        const hat = new THREE.Mesh(new THREE.ConeGeometry(.34, .62, 20), new THREE.MeshStandardMaterial({ color: hatCol, roughness: .5 }));
         hat.position.set(.2, 1.08, .1); hat.rotation.z = -.32; model.body.add(hat);
-        const pom = new THREE.Mesh(new THREE.SphereGeometry(.1, 10, 8), new THREE.MeshStandardMaterial({ color: 0xFACC15 }));
+        const pom = new THREE.Mesh(new THREE.SphereGeometry(.1, 10, 8), new THREE.MeshStandardMaterial({ color: pomCol }));
         pom.position.y = .33; hat.add(pom);
+        if (pk === "xmas") {
+          const brim = new THREE.Mesh(new THREE.TorusGeometry(.32, .07, 8, 24), new THREE.MeshStandardMaterial({ color: 0xFFFFFF, roughness: .9 }));
+          brim.rotation.x = Math.PI / 2; brim.position.y = -.3; hat.add(brim);
+        }
       }
       const gild = () => { if (eggCount() >= EGGS.length) model.gild(); };
       gild();
@@ -15122,8 +15602,10 @@ const EGGS = [
   { id: "midnight", ic: "🌙", d: 3, n: { ro: "Tura de noapte", en: "Night shift", hu: "Éjszakai műszak" }, h: { ro: "Vino pe site în prima jumătate de oră după miezul nopții.", en: "Visit in the first half hour after midnight.", hu: "Gyere el éjfél után az első fél órában." } },
   { id: "party", ic: "🎉", d: 3, n: { ro: "La mulți ani", en: "Party day", hu: "Ünnepnap" }, h: { ro: "Copiii au o zi a lor. Atunci, mingea poartă pălărie.", en: "Kids have a day of their own. On that day the ball wears a hat.", hu: "A gyerekeknek saját napjuk van. Akkor a labda kalapot hord." } }
 ];
-// Month-day keys for the party egg. 1 June = Children's Day in Romania. Add the petition launch day here once it is fixed.
-const PARTY_DAYS = ["06-01"];
+// Month-day keys for the party egg: 1 June = Children's Day in Romania, 12 Nov = a team birthday,
+// 24-26 Dec = Christmas. Easter moves every year, so its Sundays + Mondays (Orthodox and Catholic) are listed by full date.
+const PARTY_DAYS = { "06-01": "kids", "11-12": "bday", "12-24": "xmas", "12-25": "xmas", "12-26": "xmas" };
+const EASTER_DAYS = ["2026-04-05", "2026-04-06", "2026-04-12", "2026-04-13", "2027-03-28", "2027-03-29", "2027-05-02", "2027-05-03", "2028-04-16", "2028-04-17", "2029-04-01", "2029-04-02", "2029-04-08", "2029-04-09", "2030-04-21", "2030-04-22", "2030-04-28", "2030-04-29"];
 function g2pEgg(id) { try { window.dispatchEvent(new CustomEvent("g2p:egg", { detail: { id: id } })); } catch (e) {} }
 function eggsFound() { try { return JSON.parse(localStorage.getItem("g2p_eggs") || "{}") || {}; } catch (e) { return {}; } }
 function eggCount() { const f = eggsFound(); return EGGS.filter(x => f[x.id]).length; }
@@ -15140,7 +15622,12 @@ function funFx() { return !fxReduced() && !animOff(); }
 // iOS asks for motion permission (button in FunPanel); elsewhere motion is on unless switched off.
 function motionNeedsPerm() { return typeof DeviceMotionEvent !== "undefined" && typeof DeviceMotionEvent.requestPermission === "function"; }
 function motionOn() { let v = null; try { v = localStorage.getItem("g2p_motion"); } catch (e) {} return motionNeedsPerm() ? v === "1" : v !== "0"; }
-function isPartyDay() { const d = new Date(); return PARTY_DAYS.indexOf(String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0")) >= 0; }
+function partyKind() {
+  const d = new Date(), md = String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  if (EASTER_DAYS.indexOf(d.getFullYear() + "-" + md) >= 0) return "easter";
+  return PARTY_DAYS[md] || null;
+}
+function isPartyDay() { return !!partyKind(); }
 function eggL(o, lang) { return o[lang] || o.ro; }
 
 // Something small crosses the screen every 30-60 s. Tap it and it reacts.
@@ -15313,7 +15800,12 @@ function EggHub({ page }) {
     }, 3500));
     if (isPartyDay()) T.push(setTimeout(() => {
       effectRef.current("party", 7500);
-      ref.current.toast(ref.current.L3("🎉 1 Iunie! La mulți ani, copii. Și terenurilor voastre.", "🎉 1 June! Happy Children's Day. And to your courts.", "🎉 Június 1! Boldog gyereknapot. És a pályáitoknak is."), 5000);
+      const pk = partyKind(), L3 = ref.current.L3;
+      const msg = pk === "xmas" ? L3("🎄 Crăciun fericit! Moșul aduce mingi. Coșuri drepte, încă nu.", "🎄 Merry Christmas! Santa brings balls. Straight hoops, not yet.", "🎄 Boldog karácsonyt! A Télapó labdát hoz. Egyenes gyűrűt még nem.") // TODO: HU review
+        : pk === "easter" ? L3("🐣 Paște fericit! Căutăm ouă azi. Și terenuri bune, tot anul.", "🐣 Happy Easter! Egg hunt today. Good courts, all year.", "🐣 Boldog húsvétot! Ma tojást keresünk. Jó pályát egész évben.") // TODO: HU review
+        : pk === "bday" ? L3("🎂 Azi e ziua unuia dintre noi. Tort n-avem, terenuri de renovat avem.", "🎂 It's one of our team's birthday today. No cake, but plenty of courts to fix.", "🎂 Ma az egyikünk születésnapja. Torta nincs, felújítandó pálya van.") // TODO: HU review
+        : L3("🎉 1 Iunie! La mulți ani, copii. Și terenurilor voastre.", "🎉 1 June! Happy Children's Day. And to your courts.", "🎉 Június 1! Boldog gyereknapot. És a pályáitoknak is.");
+      ref.current.toast(msg, 5000);
       g2pEgg("party");
     }, 4000));
     return () => T.forEach(clearTimeout);
@@ -15636,7 +16128,9 @@ function App() {
     setPageRaw(p);
     setWipe(w => w + 1);
     const h = p === "home" ? "" : "#" + p;
-    if (location.hash !== h) history.pushState(null, "", h || location.pathname + location.search);
+    // Leaving /press (the QR address) for another page goes back to the root path.
+    const onPress = /^\/press\/?$/.test(location.pathname);
+    if (location.hash !== h || (onPress && p !== "press")) history.pushState(null, "", h ? (onPress ? "/" + location.search + h : h) : (onPress ? "/" : location.pathname) + location.search);
   }, []);
   const [toastMsg, setToastMsg] = useState("");
   const [toastMs, setToastMs] = useState(3000);
@@ -15949,6 +16443,8 @@ function App() {
         return /*#__PURE__*/React.createElement(HelpPage, null);
       case "about":
         return /*#__PURE__*/React.createElement(AboutPage, null);
+      case "press":
+        return React.createElement(PressPage, null);
       case "profile":
         return /*#__PURE__*/React.createElement(ProfilePage, null);
       default:

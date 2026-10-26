@@ -59,3 +59,9 @@
   for = "/sw.js"
   [headers.values]
     Cache-Control = "no-cache"
+
+# /press is the QR address for journalists: serve the app, which opens the press page.
+[[redirects]]
+  from = "/press"
+  to = "/index.html"
+  status = 200
