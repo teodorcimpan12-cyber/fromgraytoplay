@@ -56,7 +56,7 @@
 <noscript><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/></noscript>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--dark:#1A1A2E;--darkCard:#16213E;--green:#10B981;--coral:#F97316;--teal:#0D9488;--grey:#6B7280;--darkGrey:#374151;--light:#F8FAFC;--lightGrey:#D1D5DB;--white:#FFFFFF;--red:#DC2626;--bg:var(--light);--bgCard:var(--white);--text:var(--darkGrey);--textSec:var(--grey);--border:var(--lightGrey);--navBg:var(--white);--shadow:0 2px 12px rgba(0,0,0,.08);--radius:12px;--monitor:#04130E;--monitorEdge:#123528;--monitorGrid:rgba(16,185,129,.09);--monitorText:#D1FAE5;--flagBlue1:#002B7F;--flagYellow1:#FCD116;--flagRed1:#CE1126;--flagBlue2:#012169;--flagRed2:#C8102E;--flagRed3:#CD2A3E;--flagGreen3:#436F4D;--flagWhite:#FFFFFF}
+:root{--dark:#1A1A2E;--darkCard:#16213E;--green:#10B981;--coral:#F97316;--teal:#0D9488;--grey:#6B7280;--darkGrey:#374151;--light:#F8FAFC;--lightGrey:#D1D5DB;--white:#FFFFFF;--red:#DC2626;--bg:var(--light);--bgCard:var(--white);--text:var(--darkGrey);--textSec:var(--grey);--border:var(--lightGrey);--navBg:var(--white);--shadow:0 2px 12px rgba(0,0,0,.08);--radius:12px;--monitor:#04130E;--monitorEdge:#123528;--monitorGrid:rgba(16,185,129,.09);--monitorText:#D1FAE5;--flagBlue1:#002B7F;--flagYellow1:#FCD116;--flagRed1:#CE1126;--flagBlue2:#012169;--flagRed2:#C8102E;--flagRed3:#CD2A3E;--flagGreen3:#436F4D;--flagWhite:#FFFFFF;--ballA:#F58A2E;--ballB:#D9621A;--ballLine:#1B1209;--gold:#F5B700}
 [data-theme="dark"]{--bg:var(--dark);--bgCard:var(--darkCard);--text:#E5E7EB;--textSec:#9CA3AF;--border:#374151;--navBg:#0F172A;--shadow:0 2px 12px rgba(0,0,0,.4)}
 html{scroll-behavior:smooth}
 body{font-family:'Libre Franklin',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background .3s,color .3s}
@@ -897,6 +897,100 @@ body.godmode-fx{box-shadow:inset 0 0 0 4px #F59E0B,inset 0 0 70px rgba(245,158,1
 @keyframes celebOut{to{opacity:0;visibility:hidden}}
 .no-fx .celeb,.no-fx .mascot{display:none}
 @media(prefers-reduced-motion:reduce){.celeb,.mascot{display:none}}
+/* === Package 2: screen crossers, secrets, phone extras === */
+.mascot-btn{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+.cr{position:absolute;left:100vw;pointer-events:auto;cursor:pointer;font-size:2rem;line-height:1;will-change:transform;-webkit-tap-highlight-color:transparent;user-select:none}
+.cr i{display:inline-block;font-style:normal}
+.cr-walk{animation:crX var(--d,8s) linear forwards}
+.cr-ball i{animation:eggBounce .55s cubic-bezier(.35,0,.65,1) infinite alternate}
+.cr-pigeon i{animation:crBob .42s steps(2) infinite;font-size:1.6rem}
+.cr-cat{animation:crCat 9s linear forwards}.cr-cat i{font-size:1.9rem}
+.cr-dog i{letter-spacing:.9rem;font-size:1.7rem}.cr-dog i b{display:inline-block;font-weight:400;animation:eggBounce .4s infinite alternate}
+.cr-kid i{animation:crBob .3s infinite alternate;font-size:1.7rem}
+.cr-skate i{animation:crSkate 4.2s ease-in-out forwards;font-size:1.8rem}
+.cr-plane{animation:crX 7s linear forwards}.cr-plane i{animation:crWave 2.3s ease-in-out infinite}
+.cr-plane svg{width:46px;height:30px;display:block;color:var(--text)}
+.cr-drone{animation:crDrone 9s ease-in-out forwards}.cr-drone i{animation:crHover 1.1s ease-in-out infinite alternate}
+.cr-drone svg{width:58px;height:30px;display:block;color:var(--text)}
+.cr-drone small{position:absolute;left:50%;top:100%;transform:translateX(-50%);white-space:nowrap;font:600 .64rem 'Space Mono',monospace;background:var(--bgCard);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:.15rem .45rem;margin-top:.25rem;box-shadow:var(--shadow)}
+.cr-leaf{left:auto;animation:crLeaf var(--d,7s) linear forwards;font-size:1.5rem}.cr-leaf i{animation:crSway 1.6s ease-in-out infinite alternate}
+.cr-up{left:auto;top:100vh;animation:crUp var(--d,8s) linear forwards;font-size:1.9rem}.cr-up i{animation:crSway 2s ease-in-out infinite alternate}
+.cr-fly{animation:crX 8s linear forwards}.cr-fly i{animation:crFlutter 1.4s ease-in-out infinite;font-size:1.5rem}
+.cr-mb{animation:crX 6s linear forwards}
+.cr-mb i{width:42px;height:42px;border-radius:50%;position:relative;background:radial-gradient(circle at 35% 30%,var(--ballA),var(--ballB) 72%);box-shadow:inset 0 -4px 0 rgba(0,0,0,.15);animation:eggBounce .5s cubic-bezier(.35,0,.65,1) infinite alternate}
+.cr-mb i::before,.cr-mb i::after{content:"";position:absolute;top:13px;width:10px;height:12px;border-radius:50%;background:var(--white);box-shadow:inset -2px 0 0 3px var(--ballLine)}
+.cr-mb i::before{left:9px}.cr-mb i::after{right:9px}
+.cr.cr-hit i{animation:crHop .55s cubic-bezier(.2,1.4,.4,1)}
+.cr-pigeon.cr-hit,.cr-fly.cr-hit{animation-play-state:paused}.cr-pigeon.cr-hit i,.cr-fly.cr-hit i{animation:crFlyOff .9s ease-in forwards}
+@keyframes crX{from{transform:translateX(0)}to{transform:translateX(calc(-100vw - 140px))}}
+@keyframes crCat{0%{transform:translateX(0)}45%,62%{transform:translateX(-55vw)}100%{transform:translateX(calc(-100vw - 140px))}}
+@keyframes crDrone{0%{transform:translate(0,0)}35%,62%{transform:translate(-52vw,2vh)}100%{transform:translate(calc(-100vw - 160px),-14vh)}}
+@keyframes crLeaf{from{transform:translate(0,0) rotate(0)}to{transform:translate(-60vw,108vh) rotate(540deg)}}
+@keyframes crUp{from{transform:translateY(0)}to{transform:translateY(-118vh)}}
+@keyframes crBob{from{transform:translateY(0)}to{transform:translateY(-3px) rotate(-4deg)}}
+@keyframes crWave{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-34px) rotate(6deg)}}
+@keyframes crHover{from{transform:translateY(0)}to{transform:translateY(-6px)}}
+@keyframes crSway{from{transform:translateX(-10px) rotate(-14deg)}to{transform:translateX(10px) rotate(14deg)}}
+@keyframes crFlutter{0%,100%{transform:translateY(0) scaleX(1)}25%{transform:translateY(-18px) scaleX(.55)}50%{transform:translateY(-6px) scaleX(1)}75%{transform:translateY(-24px) scaleX(.6)}}
+@keyframes crSkate{0%,40%,60%,100%{transform:translateY(0) rotate(0)}48%{transform:translateY(-34px) rotate(-18deg)}}
+@keyframes crHop{0%{transform:translateY(0) scale(1)}40%{transform:translateY(-34px) scale(1.25)}100%{transform:translateY(0) scale(1)}}
+@keyframes crFlyOff{to{transform:translate(-30px,-80vh) rotate(-25deg);opacity:0}}
+.egg-pop{position:fixed;left:50%;top:calc(70px + env(safe-area-inset-top));z-index:3200;transform:translateX(-50%);display:flex;align-items:center;gap:.7rem;background:var(--bgCard);color:var(--text);border:1px solid var(--border);border-radius:16px;padding:.6rem 1rem .6rem .7rem;box-shadow:0 14px 40px rgba(0,0,0,.28);max-width:calc(100vw - 32px);animation:eggPop 3.6s cubic-bezier(.2,1.3,.4,1) forwards;cursor:pointer}
+.egg-pop .ep-ic{font-size:1.8rem;width:44px;height:44px;display:grid;place-items:center;border-radius:12px;background:var(--bg);flex-shrink:0}
+.egg-pop b{display:block;font:700 .7rem 'Space Mono',monospace;letter-spacing:.08em;color:var(--green);text-transform:uppercase}
+.egg-pop span{font-size:.9rem;font-weight:600}
+.egg-pop.gold{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold),0 14px 40px rgba(0,0,0,.28)}
+@keyframes eggPop{0%{opacity:0;transform:translate(-50%,-20px) scale(.8)}10%{opacity:1;transform:translate(-50%,0) scale(1)}88%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-14px)}}
+.fun-panel{display:flex;flex-wrap:wrap;gap:.45rem;justify-content:center;margin-top:.7rem}
+.fun-panel .mascot-toggle{margin-top:0}
+.fun-panel .mascot-toggle[aria-pressed="false"]{opacity:.6;text-decoration:line-through}
+.fun-panel.menu{justify-content:flex-start;padding:0 1rem}
+.mobile-menu .fun-panel button{display:inline-flex;width:auto;padding:.45rem .85rem;border-radius:999px;font-size:.85rem}
+.fun-panel.menu .mascot-toggle{border-color:var(--border);color:var(--text);background:var(--bgCard)}
+.footer-tell{display:block;margin:.8rem auto 0;width:max-content;color:var(--textSec);font-size:.7rem;letter-spacing:.5em;opacity:.45;transition:opacity .3s}
+.footer-tell:hover{opacity:1}
+.nav-logo{position:relative}
+.nav-logo::after{content:"✨";position:absolute;right:-1.05em;top:-.45em;font-size:.62em;opacity:0;transform:scale(.4) rotate(-20deg);transition:opacity .3s,transform .3s;pointer-events:none}
+.nav-logo:hover::after{opacity:.75;transform:none}
+.egg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.6rem}
+.egg-slot{border:1px solid var(--border);border-radius:12px;padding:.65rem .7rem;background:var(--bg);display:flex;flex-direction:column;gap:.25rem;min-height:118px}
+.egg-slot .es-ic{font-size:1.7rem;line-height:1}
+.egg-slot.locked .es-ic{filter:grayscale(1) brightness(0);opacity:.28}
+[data-theme="dark"] .egg-slot.locked .es-ic{filter:grayscale(1) brightness(0) invert(1);opacity:.3}
+.egg-slot .es-n{font-weight:700;font-size:.82rem}
+.egg-slot .es-h{font-size:.74rem;color:var(--textSec);line-height:1.35}
+.egg-slot .es-d{font-size:.62rem;letter-spacing:.15em;color:var(--coral)}
+.egg-slot.found{border-color:var(--green);background:var(--bgCard)}
+.egg-bar{height:8px;border-radius:99px;background:var(--border);overflow:hidden;margin:.4rem 0 .9rem}
+.egg-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--teal));border-radius:99px;transition:width .6s}
+.egg-fx{position:fixed;inset:0;z-index:3100;pointer-events:none;overflow:hidden}
+.egg-fx .fx-ball{position:absolute;font-size:2.4rem;animation:fxDrop 2.4s cubic-bezier(.3,0,.7,1) forwards}
+@keyframes fxDrop{0%{transform:translate(0,0) rotate(0)}38%{transform:translate(calc(var(--dx) * .4),var(--dy)) rotate(260deg)}52%{transform:translate(calc(var(--dx) * .55),calc(var(--dy) - 90px)) rotate(380deg)}66%{transform:translate(calc(var(--dx) * .7),var(--dy)) rotate(470deg)}76%{transform:translate(calc(var(--dx) * .8),calc(var(--dy) - 26px)) rotate(540deg)}84%,100%{transform:translate(var(--dx),var(--dy)) rotate(720deg)}}
+.egg-fx .fx-rival{position:absolute;top:0;bottom:0;width:50.5%;display:grid;place-items:center;font:700 clamp(2rem,9vw,5rem) 'Space Mono',monospace;color:var(--white);letter-spacing:.05em}
+.egg-fx .fx-rival.l{left:0;background:var(--coral);animation:rivL 2.6s cubic-bezier(.2,1,.3,1) forwards}
+.egg-fx .fx-rival.r{right:0;background:var(--green);animation:rivR 2.6s cubic-bezier(.2,1,.3,1) forwards}
+.egg-fx .fx-vs{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:700 clamp(2.4rem,10vw,5.5rem) 'Space Mono',monospace;color:var(--dark);background:var(--white);border-radius:50%;width:1.9em;height:1.9em;display:grid;place-items:center;animation:rivVs 2.6s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes rivL{0%{transform:translateX(-100%)}18%,78%{transform:none}100%{transform:translateX(-100%)}}
+@keyframes rivR{0%{transform:translateX(100%)}18%,78%{transform:none}100%{transform:translateX(100%)}}
+@keyframes rivVs{0%,14%{transform:translate(-50%,-50%) scale(0)}24%,76%{transform:translate(-50%,-50%) scale(1) rotate(-8deg)}100%{transform:translate(-50%,-50%) scale(0)}}
+.egg-fx svg.fx-crack{position:absolute;inset:0;width:100%;height:100%;color:var(--text)}
+.egg-fx svg.fx-crack path{fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-dasharray:900;stroke-dashoffset:900;animation:crackIn .35s ease-out forwards,crackOut .9s ease-in 1.5s forwards}
+@keyframes crackIn{to{stroke-dashoffset:0}}
+@keyframes crackOut{to{stroke-dashoffset:-900;opacity:0}}
+html.g2p-shake .card,html.g2p-shake .stat-tile{animation:cardShake .5s 3}
+@keyframes cardShake{0%,100%{transform:none}20%{transform:translate(-5px,2px) rotate(-.8deg)}40%{transform:translate(5px,-2px) rotate(.8deg)}60%{transform:translate(-3px,1px)}80%{transform:translate(3px,-1px)}}
+.egg-fx .fx-balloon{position:absolute;bottom:-70px;font-size:2.6rem;animation:crUp var(--d,6s) ease-in forwards}
+.catch{position:fixed;inset:0;z-index:3150;background:rgba(8,12,28,.72);overflow:hidden;touch-action:none;animation:fadeIn .2s}
+.catch-hud{position:absolute;top:calc(14px + env(safe-area-inset-top));left:0;right:0;display:flex;justify-content:center;gap:.8rem;font:700 1rem 'Space Mono',monospace;color:var(--white);pointer-events:none}
+.catch-hud span{background:rgba(0,0,0,.45);border-radius:999px;padding:.35rem .9rem}
+.catch-ball{position:absolute;top:-70px;font-size:2.7rem;line-height:1;padding:10px;cursor:pointer;animation:catchFall var(--d,2s) linear forwards;-webkit-tap-highlight-color:transparent;user-select:none}
+.catch-ball.got{animation:none;transform:translateY(var(--y)) scale(1.6);opacity:0;transition:transform .25s,opacity .25s}
+@keyframes catchFall{to{transform:translateY(calc(100vh + 80px)) rotate(360deg)}}
+.catch-end{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--bgCard);color:var(--text);border-radius:18px;padding:1.4rem 1.6rem;text-align:center;width:min(340px,calc(100vw - 32px));box-shadow:0 20px 60px rgba(0,0,0,.4);animation:bubIn .3s}
+.catch-end b{display:block;font:700 2.6rem 'Space Mono',monospace;color:var(--green)}
+.catch-end .flex{justify-content:center;margin-top:1rem}
+.no-fx .egg-fx,.no-fx .egg-layer .cr{display:none}
+@media(prefers-reduced-motion:reduce){.egg-fx,.cr{display:none}html.g2p-shake .card,html.g2p-shake .stat-tile{animation:none}}
 /* === Theme scoreboard + language flags + theme effects === */
 button.theme-board.theme-board{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 8px 0 7px;background:linear-gradient(#141a2b,#090c16);border:1px solid rgba(255,255,255,.16);border-radius:7px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 2px 8px rgba(0,0,0,.28);transition:transform .18s,box-shadow .18s;color:inherit}
 button.theme-board.theme-board:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 4px 14px rgba(0,0,0,.35),0 0 0 2px color-mix(in srgb,var(--tbc) 35%,transparent)}
@@ -2317,6 +2411,10 @@ function g2pSfx(name) {
     else if (name === "squeak") { tone("triangle", 1300, 2300, .09, .25); tone("triangle", 1900, 1400, .08, .2, .1); }
     else if (name === "chime") { tone("sine", 660, 0, .7, .3); tone("sine", 990, 0, .7, .2, .09); }
     else if (name === "birds") { tone("sine", 3000, 4600, .07, .12); tone("sine", 3200, 4900, .07, .1, .12); tone("sine", 2900, 4300, .06, .09, .5); }
+    else if (name === "pfff") { noise(.9, "bandpass", 1300, .8, .55); tone("sine", 380, 90, .8, .07); }
+    else if (name === "crack") { noise(.08, "highpass", 1800, 1, .9); noise(.3, "lowpass", 280, 1, .7, .02); }
+    else if (name === "pop") { tone("sine", 900, 260, .09, .45); noise(.02, "highpass", 3000, 1, .4); }
+    else if (name === "fire") { noise(.9, "lowpass", 900, .7, .55); noise(.5, "bandpass", 2600, 2, .16, .25); }
     else if (name === "whistle") {
       [2850, 3050].forEach(f => {
         const o = tone("square", f, 0, .5, .07);
@@ -2747,7 +2845,7 @@ function BadgesGrid(props) {
   var vk = getVoterKey();
   var raw = useFirebase(vk ? "achievements/" + vk : null);
   var earned = raw || {};
-  var earnedCount = Object.keys(earned).length;
+  var earnedCount = BADGES.filter(function(b) { return earned[b.id]; }).length;
   return React.createElement("div", null,
     React.createElement("div", { className:"flex justify-between items-center mb-2" },
       React.createElement("h4", { style:{fontSize:".88rem",fontWeight:700} },
@@ -6311,6 +6409,7 @@ function CommandPalette({ onClose }) {
     try { if (mascotIsOff) localStorage.removeItem("g2p_mascot_off"); else localStorage.setItem("g2p_mascot_off", "1"); } catch (e) {}
     window.dispatchEvent(new CustomEvent("g2p:mascot"));
   });
+  A("🥚", L3("Secrete găsite", "Secrets found", "Megtalált titkok") + " " + eggCount() + "/" + EGGS.length, "easter egg secret secrete ou", () => window.dispatchEvent(new CustomEvent("g2p:eggs-open")));
   let soundOff = false; try { soundOff = localStorage.getItem("g2p_sound") === "0"; } catch (e) {}
   A(soundOff ? "🔈" : "🔇", soundOff ? L3("Pornește sunetele", "Turn sounds on", "Hangok be") : L3("Oprește sunetele", "Mute sounds", "Hangok ki"), "sunet sound audio", () => {
     try { localStorage.setItem("g2p_sound", soundOff ? "1" : "0"); } catch (e) {}
@@ -6325,6 +6424,10 @@ function CommandPalette({ onClose }) {
       return words.every(w => hay.indexOf(w) >= 0) ? { i: i, s: (nl.indexOf(words[0]) === 0 ? 0 : nl.indexOf(words[0]) > 0 ? 1 : 2) } : null; })
       .filter(Boolean).sort((a, b) => a.s - b.s).map(x => x.i);
   }
+  // A typed secret word gets one extra row on top (phones have no keyboard shortcuts).
+  const secretW = norm(q).trim();
+  if (["dunk", "disco", "rain", "tgm", "fixit", "1v1", "sibiu", "mures"].indexOf(secretW) >= 0)
+    list = [{ c: "actions", ic: "🤫", l: L3("Ceva se mișcă… apasă aici", "Something is moving… press here", "Valami mozog… nyomd meg"), sub: "", run: () => window.dispatchEvent(new CustomEvent("g2p:secret", { detail: { w: secretW } })) }].concat(list);
   // Empty box: recent picks, the most-reported courts, and one button you should not press.
   let recent = [];
   try { recent = JSON.parse(localStorage.getItem("g2p_cp_recent") || "[]"); } catch (e) {}
@@ -6628,7 +6731,7 @@ function Navbar() {
   }, firebaseUser ? (lang === "ro" ? "Deconectare" : lang === "hu" ? "Kijelentkezés" : "Sign out") : (lang === "ro" ? "Cont (Google / email / SMS)" : lang === "hu" ? "Fiók" : "Account (Google / email / SMS)")), React.createElement("button", {
     className: "btn btn-sm btn-outline",
     onClick: () => { setMob(false); location.hash = "#/admin"; }
-  }, "🛡️ Admin"))));
+  }, "🛡️ Admin")), React.createElement(FunPanel, { menu: true })));
 }
 
 /* === Map === */
@@ -7222,12 +7325,44 @@ function mountHero3D(host, opts) {
   var hint = opts.hintEl || null, el = renderer.domElement;
   var ray = new THREE.Raycaster(), ndc = new THREE.Vector2(), gplane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), gpt = new THREE.Vector3(), wtmp = new THREE.Vector3();
   var grabbed = null, gvx = 0, gvz = 0;
+  // Secret: tap a hoop 5 times quickly and its rim catches fire for a few seconds.
+  var hoopObjs = endUnits.map(function (u) { return u.hoop; }), hoopTaps = [], fireT = 0, flames = [], fireGeo = new THREE.SphereGeometry(0.034, 6, 4), fpos = new THREE.Vector3();
+  function updFire(dt) {
+    fireT -= dt;
+    for (var i = 0; i < endUnits.length; i++) {
+      var eu = endUnits[i];
+      eu.rimMat.emissive.setRGB(1, 0.3 + Math.random() * 0.25, 0);
+      eu.rimMat.emissiveIntensity = fireT > 0 ? 0.6 + Math.random() * 0.7 : 0;
+      if (fireT > 0.6 && Math.random() < 0.75) {
+        eu.rim.getWorldPosition(fpos); group.worldToLocal(fpos);
+        var f = new THREE.Mesh(fireGeo, new THREE.MeshBasicMaterial({ color: Math.random() < 0.5 ? 0xFF7A1A : 0xFFD24A, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+        f.position.set(fpos.x + (Math.random() - 0.5) * 0.2, fpos.y, fpos.z + (Math.random() - 0.5) * 0.2);
+        f.userData = { v: 0.3 + Math.random() * 0.35, life: 1 };
+        group.add(f); flames.push(f);
+      }
+    }
+    for (var j = flames.length - 1; j >= 0; j--) {
+      var fl = flames[j]; fl.userData.life -= dt * 1.5;
+      fl.position.y += fl.userData.v * dt; fl.position.x += (Math.random() - 0.5) * 0.006;
+      fl.scale.setScalar(Math.max(0.01, fl.userData.life * 1.4)); fl.material.opacity = Math.max(0, fl.userData.life);
+      if (fl.userData.life <= 0) { group.remove(fl); fl.material.dispose(); flames.splice(j, 1); }
+    }
+  }
   function setNDC(e) { var r = el.getBoundingClientRect(); ndc.x = (e.clientX - r.left) / r.width * 2 - 1; ndc.y = -((e.clientY - r.top) / r.height * 2 - 1); }
   el.addEventListener("pointerdown", function (e) {
     if (hint) hint.style.opacity = "0"; setNDC(e); ray.setFromCamera(ndc, camera);
     if (renovated) {
       var ih = ray.intersectObjects(interactives, true);
       if (ih.length) { var o = ih[0].object; while (o && !(o.userData && o.userData.brief)) o = o.parent; if (o) { if (opts.onBrief) opts.onBrief(o.userData.brief); return; } }
+    }
+    if (ray.intersectObjects(hoopObjs, true).length) {
+      var tn = performance.now();
+      hoopTaps = hoopTaps.filter(function (x) { return tn - x < 4000; }); hoopTaps.push(tn);
+      if (hoopTaps.length >= 5) {
+        hoopTaps = []; fireT = 5;
+        if (typeof g2pSfx === "function") g2pSfx("fire");
+        try { window.dispatchEvent(new CustomEvent("g2p:egg", { detail: { id: "hoopfire" } })); } catch (x) {}
+      }
     }
     var hit = ray.intersectObjects([balls[0].mesh, balls[1].mesh], false);
     if (hit.length) {
@@ -7290,6 +7425,7 @@ function mountHero3D(host, opts) {
   function animate(now) {
     var t = (now - t0) / 1000, dt = Math.min(0.05, (now - prevN) / 1000); prevN = now;
     if (scoreCD > 0) scoreCD -= dt;
+    if (fireT > 0 || flames.length) updFire(dt);
     for (var i = 0; i < balls.length; i++) {
       var bl = balls[i];
       if (bl.physics) {
@@ -11984,7 +12120,7 @@ function ProfilePage() {
       }, "\u2192 Deschide Admin Panel")
     ), React.createElement(StreakCard, null), React.createElement(Reveal, { as:"div", className:"card mt-2" },
     React.createElement(BadgesGrid, { lang:lang })
-  ), /*#__PURE__*/React.createElement("button", {
+  ), React.createElement(Reveal, { as:"div", className:"card mt-2" }, React.createElement(EggCollection, { inline: true })), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline btn-block mt-2",
     style: {
       color: "var(--red)",
@@ -14162,7 +14298,7 @@ function Footer() {
       className: "footer"
     }, /*#__PURE__*/React.createElement("div", {
       className: "container"
-    }, /*#__PURE__*/React.createElement("p", { className: "footer-credit" }, t.madeBy, " ", t.owner, " · ", t.city), React.createElement(MascotToggle, null), /*#__PURE__*/React.createElement("p", {
+    }, /*#__PURE__*/React.createElement("p", { className: "footer-credit" }, t.madeBy, " ", t.owner, " · ", t.city), React.createElement(FunPanel, null), /*#__PURE__*/React.createElement("p", {
       className: "mt-1"
     }, /*#__PURE__*/React.createElement("a", {
       href: "https://www.google.com/maps/d/viewer?mid=19tND_bqOJoFbhTNKN0PenNW7S7yUog8",
@@ -14186,7 +14322,7 @@ function Footer() {
     }, /*#__PURE__*/React.createElement("a", {
       href: "#courts",
       style: { fontSize: ".78rem", color: "var(--textSec)", display: "flex", alignItems: "center", gap: ".3rem" }
-    }, /*#__PURE__*/React.createElement("span", null, "🏀"), /*#__PURE__*/React.createElement("span", null, "Cele " + COURTS.length + " de terenuri pe hartă"))))),
+    }, /*#__PURE__*/React.createElement("span", null, "🏀"), /*#__PURE__*/React.createElement("span", null, "Cele " + COURTS.length + " de terenuri pe hartă"))), React.createElement("span", { className: "footer-tell", "aria-hidden": "true" }, "· · ·"))),
     showPrivacy && React.createElement(PrivacyPolicyModal, { onClose: function() { setShowPrivacy(false); } })
   );
 }
@@ -14215,7 +14351,12 @@ const MASCOT_LINES = {
     curious: "Nimeni n-a verificat terenul ăsta. Tu ești primul? 👀",
     petition: "Psst. Butonul verde. Știi tu care.",
     hide: "Ascunde mingea",
-    label: "Mascota G2P — apasă-mă"
+    label: "Mascota G2P — apasă-mă",
+    sleepy: "Zzz… 🔦 E trecut de miezul nopții. Terenurile dorm. Tu de ce nu?",
+    dizzy: "Văd trei coșuri. Toate îndoite. 😵‍💫",
+    pfff: "Pfffff… Gata, acum sunt minge de plajă. 🫠",
+    hint: "🤫 Indiciu: ",
+    gold: "De aur, ca un teren renovat. Rar și frumos. 👑"
   },
   en: {
     tap: ["Easy, I'm a ball, not a like button 😤", "One more time and I'm calling the ref.", "Dribbling level: grandma. Try again.", "I bounce. The hoops round here, not so much.", "Stop poking me, I'm emotionally deflating.", "One dream: a hoop that isn't bent.", "Fun fact: I have no hands. You do. Use them on the petition.", "I spin more than city hall's projects."],
@@ -14224,7 +14365,12 @@ const MASCOT_LINES = {
     curious: "Nobody has checked this court yet. You first? 👀",
     petition: "Psst. The green button. You know the one.",
     hide: "Hide the ball",
-    label: "G2P mascot — tap me"
+    label: "G2P mascot — tap me",
+    sleepy: "Zzz… 🔦 It is past midnight. The courts are asleep. Why aren't you?",
+    dizzy: "I see three hoops. All of them bent. 😵‍💫",
+    pfff: "Pfffff… Great, now I'm a beach ball. 🫠",
+    hint: "🤫 Hint: ",
+    gold: "Gold, like a renovated court. Rare and beautiful. 👑"
   },
   hu: { // TODO: HU review
     tap: ["Lassan, labda vagyok, nem lájkgomb 😤", "Még egyszer, és hívom a bírót.", "Cselezés szint: nagymama. Próbáld újra.", "Én pattogok. A palánkok itt nem nagyon.", "Ne bökdöss, érzelmileg leeresztek.", "Egy álmom van: egy nem görbe gyűrű."],
@@ -14233,7 +14379,12 @@ const MASCOT_LINES = {
     curious: "Ezt a pályát még senki sem ellenőrizte. Te leszel az első? 👀",
     petition: "Pszt. A zöld gomb. Tudod, melyik.",
     hide: "Labda elrejtése",
-    label: "G2P kabala — koppints rám"
+    label: "G2P kabala — koppints rám",
+    sleepy: "Zzz… 🔦 Elmúlt éjfél. A pályák alszanak. Te miért nem?",
+    dizzy: "Három kosarat látok. Mind görbe. 😵‍💫",
+    pfff: "Pfffff… Na tessék, most strandlabda vagyok. 🫠",
+    hint: "🤫 Tipp: ",
+    gold: "Arany, mint egy felújított pálya. Ritka és szép. 👑"
   }
 };
 
@@ -14241,15 +14392,20 @@ const MASCOT_LINES = {
 function makeMascotBall(THREE, r) {
   const cv = document.createElement("canvas"); cv.width = 512; cv.height = 256;
   const g = cv.getContext("2d");
-  const grd = g.createLinearGradient(0, 0, 0, 256); grd.addColorStop(0, "#F58A2E"); grd.addColorStop(1, "#D9621A");
-  g.fillStyle = grd; g.fillRect(0, 0, 512, 256);
-  g.fillStyle = "rgba(120,40,0,.18)";
-  for (let i = 0; i < 2600; i++) g.fillRect(Math.random() * 512, Math.random() * 256, 1.4, 1.4);
-  g.strokeStyle = "#1b1209"; g.lineWidth = 6; g.lineCap = "round";
-  const line = (pts) => { g.beginPath(); pts.forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])); g.stroke(); };
-  line([[0, 128], [512, 128]]);
-  line([[128, 0], [128, 256]]); line([[384, 0], [384, 256]]);
-  [0, 256, 512].forEach(s => [1, -1].forEach(k => { const p = []; for (let y = 0; y <= 256; y += 8) p.push([s + k * 70 * Math.sin(Math.PI * y / 256), y]); line(p); }));
+  // gold = the reward for finding every secret.
+  const paint = gold => {
+    const grd = g.createLinearGradient(0, 0, 0, 256);
+    grd.addColorStop(0, gold ? "#FFE58A" : "#F58A2E"); grd.addColorStop(1, gold ? "#D9A400" : "#D9621A");
+    g.fillStyle = grd; g.fillRect(0, 0, 512, 256);
+    g.fillStyle = gold ? "rgba(255,255,255,.22)" : "rgba(120,40,0,.18)";
+    for (let i = 0; i < 2600; i++) g.fillRect(Math.random() * 512, Math.random() * 256, 1.4, 1.4);
+    g.strokeStyle = gold ? "#6B4A00" : "#1b1209"; g.lineWidth = 6; g.lineCap = "round";
+    const line = (pts) => { g.beginPath(); pts.forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])); g.stroke(); };
+    line([[0, 128], [512, 128]]);
+    line([[128, 0], [128, 256]]); line([[384, 0], [384, 256]]);
+    [0, 256, 512].forEach(s => [1, -1].forEach(k => { const p = []; for (let y = 0; y <= 256; y += 8) p.push([s + k * 70 * Math.sin(Math.PI * y / 256), y]); line(p); }));
+  };
+  paint(false);
   const tex = new THREE.CanvasTexture(cv);
   const root = new THREE.Group(), body = new THREE.Group();
   root.add(body);
@@ -14272,7 +14428,8 @@ function makeMascotBall(THREE, r) {
   const mouth = new THREE.Mesh(new THREE.TorusGeometry(r * .2, r * .035, 8, 24, Math.PI), black);
   mouth.position.set(0, -r * .12, r * .97); mouth.rotation.z = Math.PI;
   face.add(mouth);
-  return { root, body, ball, eyes, pupils, mouth, dispose() { root.traverse(o => { o.geometry && o.geometry.dispose(); }); tex.dispose(); } };
+  const gild = () => { paint(true); tex.needsUpdate = true; ball.material.metalness = .45; ball.material.roughness = .28; };
+  return { root, body, ball, eyes, pupils, mouth, gild, dispose() { root.traverse(o => { o.geometry && o.geometry.dispose(); }); tex.dispose(); } };
 }
 
 function Mascot({ page }) {
@@ -14283,6 +14440,7 @@ function Mascot({ page }) {
   const [bubble, setBubble] = useState(null);
   const [away, setAway] = useState(false);
   const wrapRef = useRef(null), cvRef = useRef(null), api = useRef({}), bubbleT = useRef(0), said = useRef({});
+  const tapsRef = useRef([]), holdRef = useRef({ timer: 0, fired: false });
   const L = MASCOT_LINES[lang] || MASCOT_LINES.ro;
   const Lref = useRef(L); Lref.current = L;
   const say = (text, ms) => { clearTimeout(bubbleT.current); setBubble(text); bubbleT.current = setTimeout(() => setBubble(null), ms || 3400); };
@@ -14305,9 +14463,22 @@ function Mascot({ page }) {
       const sun = new THREE.DirectionalLight(0xffffff, .85); sun.position.set(2, 3, 4); scene.add(sun);
       model = makeMascotBall(THREE, 1);
       scene.add(model.root);
-      const st = { mood: window.__g2pMood || null, hop: -1, spin: 0, blink: 0, nextBlink: 2, lx: 0, ly: 0, tx: 0, ty: 0, look: 0, born: performance.now() };
-      api.current.hop = () => { st.hop = 0; };
+      // Party days: a little cone hat. All secrets found: the ball turns gold.
+      if (isPartyDay()) {
+        const hat = new THREE.Mesh(new THREE.ConeGeometry(.34, .62, 20), new THREE.MeshStandardMaterial({ color: 0xEC4899, roughness: .5 }));
+        hat.position.set(.2, 1.08, .1); hat.rotation.z = -.32; model.body.add(hat);
+        const pom = new THREE.Mesh(new THREE.SphereGeometry(.1, 10, 8), new THREE.MeshStandardMaterial({ color: 0xFACC15 }));
+        pom.position.y = .33; hat.add(pom);
+      }
+      const gild = () => { if (eggCount() >= EGGS.length) model.gild(); };
+      gild();
+      window.addEventListener("g2p:eggs", gild);
+      const st = { mood: window.__g2pMood || null, hop: -1, spin: 0, blink: 0, nextBlink: 2, lx: 0, ly: 0, tx: 0, ty: 0, look: 0, born: performance.now(), dizzy: 0, inf: 0, holding: false, pf: 0, tl: 0 };
+      api.current.hop = () => { if (st.hop < 0) st.hop = 0; };
       api.current.mood = m => { st.mood = m; };
+      api.current.dizzy = () => { st.dizzy = 3; };
+      api.current.hold = v => { st.holding = v; };
+      api.current.pfff = () => { st.holding = false; st.pf = 1; };
       const onMove = e => {
         const r = cvRef.current && cvRef.current.getBoundingClientRect(); if (!r) return;
         const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2), d = Math.hypot(dx, dy) || 1;
@@ -14315,7 +14486,7 @@ function Mascot({ page }) {
         st.tx = dx / d * k; st.ty = dy / d * k; st.look = performance.now();
       };
       window.addEventListener("pointermove", onMove, { passive: true });
-      api.current.cleanup = () => window.removeEventListener("pointermove", onMove);
+      api.current.cleanup = () => { window.removeEventListener("pointermove", onMove); window.removeEventListener("g2p:eggs", gild); };
       let last = performance.now();
       const tick = now => {
         if (!alive) return;
@@ -14329,7 +14500,8 @@ function Mascot({ page }) {
         let sx = 1, sy = 1;
         if (age >= .7 && age < 1) { const k = Math.sin((age - .7) / .3 * Math.PI); sy = 1 - .22 * k; sx = 1 + .14 * k; }
         // Idle bob; sad = slower and flatter, happy = little hops every few seconds.
-        y += (m === "sad" ? .03 : .07) * Math.sin(t * (m === "sad" ? 1.2 : 2.2));
+        const slow = m === "sad" || m === "sleepy";
+        y += (slow ? .03 : .07) * Math.sin(t * (slow ? 1.2 : 2.2));
         if (m === "happy" && st.hop < 0 && Math.sin(t * .9) > .995) st.hop = 0;
         if (st.hop >= 0) {
           st.hop += dt / .62;
@@ -14340,7 +14512,23 @@ function Mascot({ page }) {
           else { st.hop = -1; st.spin = 0; }
         }
         if (m === "sad") { sy *= .86; sx *= 1.07; }
-        b.position.y = y; b.scale.set(sx, sy, sx);
+        // Held down: slowly inflates; after 3 s it lets the air out (pfff) and wobbles back.
+        let mul = 1, jx = 0, jr = 0;
+        if (st.pf > 0) {
+          st.pf = Math.max(0, st.pf - dt / 1.2);
+          const k = 1 - st.pf;
+          if (k < .35) { mul = 1.42 - .72 * (k / .35); jx = (Math.random() - .5) * .3; jr = (Math.random() - .5) * .6; }
+          else mul = 1 - .3 * Math.exp(-(k - .35) * 6) * Math.cos((k - .35) * 18);
+          st.inf = 0;
+        } else {
+          st.inf = st.holding ? Math.min(1, st.inf + dt / 3) : Math.max(0, st.inf - dt * 3);
+          mul = 1 + .42 * st.inf * st.inf;
+          if (st.inf > .6) jx = (Math.random() - .5) * .04 * st.inf;
+        }
+        if (st.dizzy > 0) st.dizzy -= dt;
+        // Phone tilt rolls the ball a little to that side.
+        st.tl += ((window.__g2pTilt || 0) - st.tl) * .08;
+        b.position.y = y; b.position.x = st.tl * .38 + jx; b.scale.set(sx * mul, sy * mul, sx * mul);
         model.ball.rotation.x = st.spin;
         // Look at the pointer (eases back to the camera after 2 s of no movement).
         const idle = now - st.look > 2000;
@@ -14348,18 +14536,19 @@ function Mascot({ page }) {
         st.lx += (gx - st.lx) * .12; st.ly += (gy - st.ly) * .12;
         b.rotation.y = st.lx * .45;
         b.rotation.x = st.ly * .35 + (m === "sad" ? .22 : 0);
-        b.rotation.z = m === "curious" ? .26 * Math.sin(t * 1.4) : 0;
-        model.pupils.forEach(p => { p.position.x = st.lx * .07; p.position.y = -st.ly * .07; });
+        b.rotation.z = (m === "curious" ? .26 * Math.sin(t * 1.4) : 0) + (st.dizzy > 0 ? .4 * Math.sin(t * 13) : 0) - st.tl * .6 + jr;
+        if (st.dizzy > 0) model.pupils.forEach((p, i) => { const a = t * 12 * (i ? -1 : 1); p.position.x = Math.cos(a) * .08; p.position.y = Math.sin(a) * .08; });
+        else model.pupils.forEach(p => { p.position.x = st.lx * .07; p.position.y = -st.ly * .07; });
         // Blink.
         st.nextBlink -= dt;
         if (st.nextBlink <= 0) { st.blink = 1; st.nextBlink = 2.5 + Math.random() * 4; }
         if (st.blink > 0) st.blink = Math.max(0, st.blink - dt * 7);
         const lid = st.blink > 0 ? Math.abs(Math.cos(st.blink * Math.PI)) : 1;
-        model.eyes.forEach(e => { e.scale.y = Math.max(.08, lid * (m === "sad" ? .6 : 1)); });
+        model.eyes.forEach(e => { e.scale.y = Math.max(.08, lid * (m === "sleepy" ? .2 : m === "sad" ? .6 : 1)); });
         // Mouth: smile, frown when sad, small "o" when curious.
         model.mouth.rotation.z = m === "sad" ? 0 : Math.PI;
         model.mouth.position.y = m === "sad" ? -.32 : -.12;
-        const ms = m === "happy" ? 1.3 : m === "curious" ? .6 : 1;
+        const ms = m === "happy" ? 1.3 : m === "curious" || m === "sleepy" ? .6 : 1;
         model.mouth.scale.set(ms, ms, 1);
         renderer.render(scene, cam);
       };
@@ -14400,14 +14589,45 @@ function Mascot({ page }) {
     window.addEventListener("g2p:celebrate", h);
     return () => { window.removeEventListener("g2p:celebrate", h); clearTimeout(id); };
   }, []);
-  useEffect(() => () => clearTimeout(bubbleT.current), []);
+  // Phone shake (EggHub) makes it hop.
+  useEffect(() => {
+    const h = () => api.current.hop && api.current.hop();
+    window.addEventListener("g2p:mascot-hop", h);
+    return () => window.removeEventListener("g2p:mascot-hop", h);
+  }, []);
+  useEffect(() => () => { clearTimeout(bubbleT.current); clearTimeout(holdRef.current.timer); }, []);
   if (off || fxOff) return null;
   const onTap = () => {
+    if (holdRef.current.fired) { holdRef.current.fired = false; return; }
     api.current.hop && api.current.hop();
+    g2pSfx("bounce");
     try { navigator.vibrate && navigator.vibrate(12); } catch (e) {}
+    const now = Date.now();
+    tapsRef.current = tapsRef.current.filter(x => now - x < 5000); tapsRef.current.push(now);
+    if (tapsRef.current.length >= 10) {
+      tapsRef.current = [];
+      api.current.dizzy && api.current.dizzy();
+      g2pSfx("whistle"); say(Lref.current.dizzy); g2pEgg("dizzy");
+      return;
+    }
+    // Now and then it gives away a secret that is still hidden.
+    const found = eggsFound(), left = EGGS.filter(x => !found[x.id]);
+    if (!left.length && Math.random() < .25) { say(Lref.current.gold); return; }
+    if (left.length && Math.random() < .3) { const x = left[Math.floor(Math.random() * left.length)]; say(Lref.current.hint + eggL(x.h, lang), 5600); return; }
     const lines = Lref.current.tap;
     say(lines[Math.floor(Math.random() * lines.length)]);
   };
+  const holdStart = () => {
+    const h = holdRef.current;
+    clearTimeout(h.timer); h.fired = false;
+    api.current.hold && api.current.hold(true);
+    h.timer = setTimeout(() => {
+      h.fired = true;
+      api.current.pfff && api.current.pfff();
+      g2pSfx("pfff"); say(Lref.current.pfff); g2pEgg("inflate");
+    }, 3000);
+  };
+  const holdEnd = () => { clearTimeout(holdRef.current.timer); api.current.hold && api.current.hold(false); };
   const hide = e => {
     e.stopPropagation();
     try { localStorage.setItem("g2p_mascot_off", "1"); } catch (err) {}
@@ -14417,7 +14637,7 @@ function Mascot({ page }) {
     bubble && React.createElement("div", { className: "mascot-bubble", role: "status" },
       bubble,
       React.createElement("button", { className: "mascot-hide", onClick: hide }, L.hide)),
-    React.createElement("button", { className: "mascot-btn", "aria-label": L.label, onClick: onTap },
+    React.createElement("button", { className: "mascot-btn", "aria-label": L.label, onClick: onTap, onPointerDown: holdStart, onPointerUp: holdEnd, onPointerLeave: holdEnd, onPointerCancel: holdEnd, onContextMenu: ev => ev.preventDefault() },
       React.createElement("canvas", { ref: cvRef, width: 176, height: 176 }),
       React.createElement("span", { className: "mascot-shadow", "aria-hidden": "true" })));
 }
@@ -14552,42 +14772,438 @@ function BigCelebration() {
       React.createElement("span", null, sub)));
 }
 
+/* === Package 2: the secrets collection, screen crossers, phone extras ===
+   Every secret fires g2pEgg(id) when found. EggHub records it (localStorage g2p_eggs +
+   achievements/{voterKey}/egg_{id}, the same node the badges use), shows a small card,
+   and the collection lists what is left with a hint for each. */
+const EGGS = [
+  { id: "dontpress", ic: "🙈", d: 1, n: { ro: "Butonul interzis", en: "The forbidden button", hu: "A tiltott gomb" }, h: { ro: "În căutare (🔍) e un buton care te roagă să nu-l apeși.", en: "Search (🔍) has a button that begs you not to press it.", hu: "A keresőben (🔍) van egy gomb, ami arra kér, ne nyomd meg." } },
+  { id: "logo", ic: "🏷️", d: 1, n: { ro: "Logo-minge", en: "Logo ball", hu: "Logó-labda" }, h: { ro: "Logo-ul de sus ascunde ceva. Apasă-l de 7 ori, repede.", en: "The logo at the top hides something. Tap it 7 times, fast.", hu: "A fenti logó rejt valamit. Nyomd meg 7-szer, gyorsan." } },
+  { id: "dizzy", ic: "😵‍💫", d: 1, n: { ro: "Amețeala", en: "Dizzy", hu: "Szédülés" }, h: { ro: "Mingea din colț nu rezistă la 10 atingeri la rând.", en: "The corner ball can't handle 10 taps in a row.", hu: "A sarokban lévő labda nem bír ki 10 koppintást egymás után." } },
+  { id: "overtime", ic: "⏱️", d: 2, n: { ro: "Prelungiri", en: "Overtime", hu: "Hosszabbítás" }, h: { ro: "Tabela ZI/NOAPTE se enervează dacă o schimbi de 5 ori, repede.", en: "The DAY/NIGHT scoreboard gets upset if you flip it 5 times, fast.", hu: "A NAPPAL/ÉJSZAKA tábla mérges lesz, ha 5-ször gyorsan átkapcsolod." } },
+  { id: "inflate", ic: "🎈", d: 2, n: { ro: "Pfff", en: "Pfff", hu: "Pfff" }, h: { ro: "Mingii nu-i place să fie ținută prea mult. Ține apăsat pe ea și numără până la 3.", en: "The ball hates being held too long. Press and hold it, count to 3.", hu: "A labda utálja, ha sokáig fogják. Tartsd lenyomva, számolj háromig." } },
+  { id: "bottom", ic: "⬇️", d: 2, n: { ro: "La fund", en: "Rock bottom", hu: "A legalján" }, h: { ro: "Unele lucruri apar doar dacă ajungi la capătul paginii. De trei ori.", en: "Some things only show up when you reach the end of the page. Three times.", hu: "Néhány dolog csak akkor jelenik meg, ha az oldal aljára érsz. Háromszor." } },
+  { id: "rivalry", ic: "⚔️", d: 2, n: { ro: "Derby", en: "Derby", hu: "Derbi" }, h: { ro: "Scrie numele orașului rival: „sibiu” sau „mures” (pe tastatură sau în 🔍).", en: "Type the rival city: \"sibiu\" or \"mures\" (keyboard, or in 🔍).", hu: "Írd be a rivális várost: „sibiu” vagy „mures” (billentyűzet vagy 🔍)." } },
+  { id: "catch", ic: "🧤", d: 2, n: { ro: "Unu la unu", en: "One on one", hu: "Egy az egy ellen" }, h: { ro: "Un meci între doi se scrie cu trei caractere: cifră, literă, cifră.", en: "A game between two is written in three characters: digit, letter, digit.", hu: "Egy kétszemélyes meccs három karakter: szám, betű, szám." } },
+  { id: "dunk", ic: "🏀", d: 2, n: { ro: "Dunk", en: "Dunk", hu: "Zsákolás" }, h: { ro: "Scrie, în engleză, mișcarea preferată a oricărui pivot.", en: "Type every centre's favourite move.", hu: "Írd be angolul minden center kedvenc mozdulatát." } },
+  { id: "rain", ic: "🌧️", d: 2, n: { ro: "Ploaie de mingi", en: "Ball rain", hu: "Labdaeső" }, h: { ro: "Scrie, în engleză, ce cade din cer când se anulează meciul.", en: "Type what falls from the sky when the game gets cancelled.", hu: "Írd be angolul, mi esik az égből, amikor elmarad a meccs." } },
+  { id: "disco", ic: "🪩", d: 2, n: { ro: "Disco", en: "Disco", hu: "Diszkó" }, h: { ro: "Scrie stilul de muzică al bunicilor tăi la 20 de ani.", en: "Type the music your grandparents danced to at twenty.", hu: "Írd be, mire táncoltak a nagyszüleid húszévesen." } },
+  { id: "tgm", ic: "💚", d: 2, n: { ro: "TGM", en: "TGM", hu: "TGM" }, h: { ro: "Scrie prescurtarea orașului nostru, din trei litere.", en: "Type our city's three-letter nickname.", hu: "Írd be városunk hárombetűs becenevét." } },
+  { id: "fixit", ic: "🏛️", d: 2, n: { ro: "Modul Primar", en: "Mayor Mode", hu: "Polgármester mód" }, h: { ro: "Ce i-ai spune primarului, în engleză, din 5 litere?", en: "What would you tell the mayor, in five letters?", hu: "Mit mondanál a polgármesternek angolul, öt betűben?" } },
+  { id: "konami", ic: "🎮", d: 3, n: { ro: "Codul Konami", en: "Konami code", hu: "Konami-kód" }, h: { ro: "Un cod vechi de 40 de ani, doar din săgeți și două litere.", en: "A 40-year-old cheat code: only arrows and two letters.", hu: "Egy 40 éves csalókód: csak nyilak és két betű." } },
+  { id: "hoopfire", ic: "🔥", d: 3, n: { ro: "Coș în flăcări", en: "Hoop on fire", hu: "Lángoló kosár" }, h: { ro: "În scena 3D de pe prima pagină, coșul strâmb vrea atenție. 5 atingeri.", en: "In the 3D scene on the home page, the bent hoop wants attention. 5 taps.", hu: "A kezdőlap 3D jelenetében a görbe kosár figyelmet akar. 5 koppintás." } },
+  { id: "shake", ic: "📱", d: 3, n: { ro: "Cutremur", en: "Earthquake", hu: "Földrengés" }, h: { ro: "Doar pe telefon: scutură-l bine de 3 ori (pornește „📱 Mișcare” din subsol).", en: "Phone only: shake it hard 3 times (turn on \"📱 Motion\" in the footer).", hu: "Csak telefonon: rázd meg erősen 3-szor (kapcsold be a „📱 Mozgás” gombot lent)." } },
+  { id: "midnight", ic: "🌙", d: 3, n: { ro: "Tura de noapte", en: "Night shift", hu: "Éjszakai műszak" }, h: { ro: "Vino pe site în prima jumătate de oră după miezul nopții.", en: "Visit in the first half hour after midnight.", hu: "Gyere el éjfél után az első fél órában." } },
+  { id: "party", ic: "🎉", d: 3, n: { ro: "La mulți ani", en: "Party day", hu: "Ünnepnap" }, h: { ro: "Copiii au o zi a lor. Atunci, mingea poartă pălărie.", en: "Kids have a day of their own. On that day the ball wears a hat.", hu: "A gyerekeknek saját napjuk van. Akkor a labda kalapot hord." } }
+];
+// Month-day keys for the party egg. 1 June = Children's Day in Romania. Add the petition launch day here once it is fixed.
+const PARTY_DAYS = ["06-01"];
+function g2pEgg(id) { try { window.dispatchEvent(new CustomEvent("g2p:egg", { detail: { id: id } })); } catch (e) {} }
+function eggsFound() { try { return JSON.parse(localStorage.getItem("g2p_eggs") || "{}") || {}; } catch (e) { return {}; } }
+function eggCount() { const f = eggsFound(); return EGGS.filter(x => f[x.id]).length; }
+function eggSave(id) {
+  const f = eggsFound();
+  if (f[id]) return false;
+  f[id] = Date.now();
+  try { localStorage.setItem("g2p_eggs", JSON.stringify(f)); } catch (e) {}
+  try { const vk = getVoterKey(); if (vk) db.ref("achievements/" + vk + "/egg_" + id).set(f[id]); } catch (e) {}
+  return true;
+}
+function animOff() { try { return localStorage.getItem("g2p_anim_off") === "1"; } catch (e) { return false; } }
+function funFx() { return !fxReduced() && !animOff(); }
+// iOS asks for motion permission (button in FunPanel); elsewhere motion is on unless switched off.
+function motionNeedsPerm() { return typeof DeviceMotionEvent !== "undefined" && typeof DeviceMotionEvent.requestPermission === "function"; }
+function motionOn() { let v = null; try { v = localStorage.getItem("g2p_motion"); } catch (e) {} return motionNeedsPerm() ? v === "1" : v !== "0"; }
+function isPartyDay() { const d = new Date(); return PARTY_DAYS.indexOf(String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0")) >= 0; }
+function eggL(o, lang) { return o[lang] || o.ro; }
+
+// Something small crosses the screen every 30-60 s. Tap it and it reacts.
 function FunEggs() {
-  var settings = useApp().settings;
-  var fxOff = !!(settings && settings.flags && settings.flags.effects === false);
-  var layerRef = useRef(null);
-  useEffect(function () {
+  const { lang, settings, toast } = useApp();
+  const fxOff = !!(settings && settings.flags && settings.flags.effects === false);
+  const layerRef = useRef(null), langRef = useRef(lang), toastRef = useRef(toast);
+  langRef.current = lang; toastRef.current = toast;
+  useEffect(() => {
     if (fxOff) return;
-    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches) return;
-    var alive = true, tid = null;
-    var KINDS = [
-      { cls: "egg egg-ball", html: "<i>🏀</i>", ttl: 4000 },
-      { cls: "egg egg-runner", html: "🏃", ttl: 1500 },
-      { cls: "egg egg-runner", html: "🧒", ttl: 1500 },
-      { cls: "egg egg-dog", html: "🐕", ttl: 1900 },
-      { cls: "egg egg-ball", html: "<i>⚽</i>", ttl: 4000 }
+    let alive = true, tid = 0;
+    const L3 = (ro, en, hu) => { const l = langRef.current; return l === "en" ? en : l === "hu" ? hu : ro; }; // TODO: HU review
+    const PLANE = '<i><svg viewBox="0 0 46 30" aria-hidden="true"><path d="M2 15 44 2 30 28 22 18Z" fill="var(--bgCard)" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M44 2 22 18 24 26" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></i>';
+    const DRONE = () => '<i><svg viewBox="0 0 58 30" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5h16M37 5h16M13 5v7M45 5v7M13 12h32"/><rect x="21" y="9" width="16" height="9" rx="3" fill="var(--bgCard)"/><path d="M25 18l-3 6M33 18l3 6"/></g><circle cx="29" cy="13.5" r="2" fill="var(--red)"/></svg></i><small>' + L3("Primăria inspectează…", "City Hall inspecting…", "A Városháza ellenőriz…") + "</small>";
+    const KINDS = [
+      { c: "cr-walk cr-ball", h: "<i>🏀</i>", b: [3, 12], d: 5, s: "bounce" },
+      { c: "cr-walk cr-ball", h: "<i>⚽</i>", b: [3, 12], d: 5, s: "bounce" },
+      { c: "cr-walk cr-ball", h: "<i>🏐</i>", b: [3, 12], d: 5.5, s: "bounce" },
+      { c: "cr-mb", h: "<i></i>", b: [3, 10], d: 6, s: "squeak", tap: () => toastRef.current(L3("Hei! Eu sunt fratele mai mic al mascotei. 🏀", "Hey! I'm the mascot's little brother. 🏀", "Hé! Én vagyok a kabala öccse. 🏀")) },
+      { c: "cr-walk cr-pigeon", h: "<i>🐦</i>", b: [2, 6], d: 11, s: "birds", keep: 1 },
+      { c: "cr-cat", h: "<i>🐈</i>", b: [2, 6], d: 9, s: "squeak" },
+      { c: "cr-walk cr-dog", h: "<i><b>⚽</b>🐕</i>", b: [2, 7], d: 3.6, s: "bounce" },
+      { c: "cr-walk cr-kid", h: "<i>🛴</i>", b: [2, 8], d: 3.4, s: "squeak" },
+      { c: "cr-walk cr-skate", h: "<i>🛹</i>", b: [2, 8], d: 4.2, s: "click" },
+      { c: "cr-walk", h: "<i>🏃</i>", b: [2, 9], d: 2.6, s: "squeak" },
+      { c: "cr-walk", h: "<i>🚲</i>", b: [2, 8], d: 3.8, s: "click" },
+      { c: "cr-plane", h: PLANE, top: [18, 55], d: 7, s: "swish" },
+      { c: "cr-drone", h: DRONE, top: [14, 30], d: 9, s: "whistle", tap: () => toastRef.current(L3("Inspecție amânată. Din nou. 🚁", "Inspection postponed. Again. 🚁", "Ellenőrzés elhalasztva. Megint. 🚁")) },
+      { c: "cr-leaf", h: "<i>🍂</i>", x: [40, 100], d: 7, s: "swish", n: 3 },
+      { c: "cr-up", h: "<i>🎈</i>", x: [10, 85], d: 9, s: "pop", keep: 1 },
+      { c: "cr-fly", h: "<i>🦋</i>", top: [25, 60], d: 8, s: "chime", keep: 1 }
     ];
-    var spawn = function () {
-      if (!alive || !layerRef.current) return;
-      var k = KINDS[Math.floor(Math.random() * KINDS.length)];
-      var el = document.createElement("span");
-      el.className = k.cls;
-      el.innerHTML = k.html;
-      el.style.bottom = (4 + Math.random() * 12) + "vh";
+    const one = (k, delay) => {
+      const el = document.createElement("span");
+      el.className = "cr " + k.c;
+      el.innerHTML = typeof k.h === "function" ? k.h() : k.h;
+      el.setAttribute("aria-hidden", "true");
+      const rnd = r => r[0] + Math.random() * (r[1] - r[0]);
+      if (k.top) el.style.top = rnd(k.top) + "vh";
+      else if (k.x) { el.style.left = rnd(k.x) + "vw"; if (k.c.indexOf("cr-leaf") >= 0) el.style.top = "-40px"; }
+      else el.style.bottom = rnd(k.b) + "vh";
+      el.style.setProperty("--d", (k.d * (k.n ? .8 + Math.random() * .4 : 1)) + "s");
+      if (delay) el.style.animationDelay = delay + "s";
+      el.addEventListener("pointerdown", ev => {
+        ev.stopPropagation();
+        if (el.classList.contains("cr-hit")) return;
+        el.classList.add("cr-hit");
+        g2pSfx(k.s);
+        try { navigator.vibrate && navigator.vibrate(10); } catch (e) {}
+        if (k.tap) k.tap();
+        if (k.keep) setTimeout(() => el.remove(), 900);
+        else setTimeout(() => el.classList.remove("cr-hit"), 600);
+      });
       layerRef.current.appendChild(el);
-      setTimeout(function () { el.remove(); }, k.ttl);
+      setTimeout(() => el.remove(), (k.d * 1.25 + (delay || 0) + 1) * 1000);
     };
-    var schedule = function () {
-      tid = setTimeout(function () {
-        if (Math.random() < 0.5) spawn();
-        schedule();
-      }, 80000 + Math.random() * 140000);
+    const spawn = () => {
+      if (!alive || !layerRef.current || document.hidden || !funFx()) return;
+      if (document.querySelector(".modal-overlay,.mobile-menu,.celeb,.catch,.mayor-overlay,.egg-fx")) return;
+      const k = KINDS[Math.floor(Math.random() * KINDS.length)];
+      for (let i = 0; i < (k.n || 1); i++) one(k, i * .9);
     };
-    schedule();
-    return function () { alive = false; clearTimeout(tid); };
+    const schedule = first => {
+      tid = setTimeout(() => { spawn(); schedule(); }, first ? 20000 + Math.random() * 15000 : 30000 + Math.random() * 30000);
+    };
+    schedule(true);
+    return () => { alive = false; clearTimeout(tid); };
   }, [fxOff]);
   if (fxOff) return null;
   return React.createElement("div", { className: "egg-layer", ref: layerRef, "aria-hidden": "true" });
+}
+
+// Records secrets, runs the effects that are not tied to one component, and owns the
+// collection modal and the 1v1 catch game.
+function EggHub({ page }) {
+  const { lang, toast, theme, setTheme, settings } = useApp();
+  const fxOff = !!(settings && settings.flags && settings.flags.effects === false);
+  const [pop, setPop] = useState(null);
+  const [fx, setFx] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [game, setGame] = useState(false);
+  const [motionTick, setMotionTick] = useState(0);
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const ref = useRef({}); ref.current = { L3: L3, toast: toast, theme: theme, setTheme: setTheme };
+  const effect = (k, ms, extra) => { if (!funFx() || fxOff) return false; setFx(Object.assign({ k: k, id: Date.now() }, extra || {})); setTimeout(() => setFx(f => (f && f.k === k ? null : f)), ms); return true; };
+  const effectRef = useRef(effect); effectRef.current = effect;
+  useEffect(() => {
+    const h = e => {
+      const id = e.detail && e.detail.id, egg = EGGS.find(x => x.id === id);
+      if (!egg || !eggSave(id)) return;
+      const n = eggCount(), all = n >= EGGS.length;
+      window.dispatchEvent(new CustomEvent("g2p:eggs"));
+      // Let the secret's own effect play first, then say what was found.
+      setTimeout(() => { g2pSfx("chime"); setPop({ egg: egg, n: n, all: all, id: Date.now() }); }, 1100);
+    };
+    const op = () => setOpen(true);
+    const g = () => { setGame(true); g2pEgg("catch"); };
+    const rival = e => {
+      const w = (e.detail && e.detail.w) || "sibiu";
+      effectRef.current("rival", 2700);
+      g2pSfx("whistle");
+      setTimeout(() => ref.current.toast(w === "sibiu"
+        ? ref.current.L3("Sibiu vs Mureș: cine repară primul un coș câștigă derby-ul. ⚔️", "Sibiu vs Mureș: whoever fixes a hoop first wins the derby. ⚔️", "Szeben vs Maros: aki előbb megjavít egy kosarat, nyeri a derbit. ⚔️")
+        : ref.current.L3("Mureș vs Sibiu: rivalitate sănătoasă. Premiul: un teren fără gropi. ⚔️", "Mureș vs Sibiu: a healthy rivalry. The prize: a court without potholes. ⚔️", "Maros vs Szeben: egészséges rivalizálás. A díj: egy kátyúmentes pálya. ⚔️"), 4200), 2300);
+      g2pEgg("rivalry");
+    };
+    window.addEventListener("g2p:egg", h);
+    window.addEventListener("g2p:eggs-open", op);
+    window.addEventListener("g2p:1v1", g);
+    window.addEventListener("g2p:rival", rival);
+    return () => {
+      window.removeEventListener("g2p:egg", h);
+      window.removeEventListener("g2p:eggs-open", op);
+      window.removeEventListener("g2p:1v1", g);
+      window.removeEventListener("g2p:rival", rival);
+    };
+  }, []);
+  useEffect(() => { if (!pop) return; const id = setTimeout(() => setPop(null), 3600); return () => clearTimeout(id); }, [pop && pop.id]);
+  // Logo tapped 7 times in a row: a ball drops out of it and rolls away.
+  useEffect(() => {
+    let taps = [];
+    const h = e => {
+      const a = e.target.closest && e.target.closest(".nav-logo");
+      if (!a) return;
+      const now = Date.now();
+      taps = taps.filter(x => now - x < 3500); taps.push(now);
+      if (taps.length < 7) return;
+      taps = [];
+      const r = a.getBoundingClientRect();
+      g2pSfx("bounce");
+      effectRef.current("logo", 2600, { x: r.left + r.width / 2, y: r.top });
+      g2pEgg("logo");
+    };
+    document.addEventListener("click", h, true);
+    return () => document.removeEventListener("click", h, true);
+  }, []);
+  // Reach the bottom of a long page three times.
+  useEffect(() => {
+    let hits = 0, at = false, raf = 0;
+    const check = () => {
+      raf = 0;
+      const doc = document.documentElement;
+      if (doc.scrollHeight < window.innerHeight * 1.6) return;
+      const bottom = window.innerHeight + window.scrollY >= doc.scrollHeight - 6;
+      if (bottom && !at) {
+        hits++;
+        if (hits >= 3) {
+          hits = 0;
+          g2pSfx("bounce"); setTimeout(() => g2pSfx("bounce"), 900);
+          effectRef.current("fall", 2600);
+          setTimeout(() => ref.current.toast(ref.current.L3("Ai ajuns la fund. Terenul a ajuns de mult. 🕳️", "You hit rock bottom. The court got there years ago. 🕳️", "Elérted a mélypontot. A pálya már rég ott van. 🕳️"), 4200), 1500);
+          g2pEgg("bottom");
+        }
+      }
+      at = bottom;
+    };
+    const h = () => { if (!raf) raf = requestAnimationFrame(check); };
+    window.addEventListener("scroll", h, { passive: true });
+    return () => { window.removeEventListener("scroll", h); cancelAnimationFrame(raf); };
+  }, [page]);
+  // Time-based secrets: the night shift (00:00-00:30) and party days.
+  useEffect(() => {
+    const T = [];
+    const d = new Date();
+    if (d.getHours() === 0 && d.getMinutes() < 30) T.push(setTimeout(() => {
+      g2pMood("sleepy");
+      const r = ref.current;
+      if (r.theme !== "dark" && window.__g2pThemeFx && funFx()) window.dispatchEvent(new CustomEvent("g2p:themefx", { detail: { kind: "flood", next: "dark", apply: () => r.setTheme("dark") } }));
+      g2pEgg("midnight");
+    }, 3500));
+    if (isPartyDay()) T.push(setTimeout(() => {
+      effectRef.current("party", 7500);
+      ref.current.toast(ref.current.L3("🎉 1 Iunie! La mulți ani, copii. Și terenurilor voastre.", "🎉 1 June! Happy Children's Day. And to your courts.", "🎉 Június 1! Boldog gyereknapot. És a pályáitoknak is."), 5000);
+      g2pEgg("party");
+    }, 4000));
+    return () => T.forEach(clearTimeout);
+  }, []);
+  // Phone extras: shake = the mascot hops (3 quick shakes crack the screen, then it heals); tilt = it rolls.
+  useEffect(() => {
+    if (fxOff) return;
+    let shakes = [], last = 0, lastG = 0;
+    const crack = () => {
+      if (effectRef.current("crack", 2500)) {
+        document.documentElement.classList.add("g2p-shake");
+        setTimeout(() => document.documentElement.classList.remove("g2p-shake"), 1600);
+      }
+      g2pSfx("crack");
+      try { navigator.vibrate && navigator.vibrate([30, 40, 60]); } catch (e) {}
+      setTimeout(() => { g2pSfx("chime"); ref.current.toast(ref.current.L3("Reparat. Mai repede decât Primăria. 🛠️", "Fixed. Faster than City Hall. 🛠️", "Megjavítva. Gyorsabban, mint a Városháza. 🛠️")); }, 1700);
+      g2pEgg("shake");
+    };
+    const onMotion = e => {
+      if (!motionOn()) return;
+      const a = e.accelerationIncludingGravity;
+      if (!a) return;
+      const m = Math.hypot(a.x || 0, a.y || 0, a.z || 0), now = Date.now();
+      if (m < 23 || now - last < 380) return;
+      last = now;
+      window.dispatchEvent(new CustomEvent("g2p:mascot-hop"));
+      shakes = shakes.filter(x => now - x < 2600); shakes.push(now);
+      if (shakes.length >= 3) { shakes = []; crack(); }
+    };
+    const onTilt = e => {
+      if (!motionOn() || e.gamma == null) { window.__g2pTilt = 0; return; }
+      const g = Math.max(-1, Math.min(1, e.gamma / 35));
+      if (Math.abs(g - lastG) > .03) { lastG = g; window.__g2pTilt = g; }
+    };
+    const re = () => setMotionTick(x => x + 1);
+    window.addEventListener("devicemotion", onMotion);
+    window.addEventListener("deviceorientation", onTilt);
+    window.addEventListener("g2p:motion", re);
+    return () => {
+      window.removeEventListener("devicemotion", onMotion);
+      window.removeEventListener("deviceorientation", onTilt);
+      window.removeEventListener("g2p:motion", re);
+      window.__g2pTilt = 0;
+    };
+  }, [fxOff, motionTick]);
+  const e = React.createElement;
+  let fxEl = null;
+  if (fx) {
+    const W = window.innerWidth, H = window.innerHeight;
+    if (fx.k === "logo") fxEl = e("span", { className: "fx-ball", style: { left: fx.x - 20, top: fx.y, "--dx": (W - fx.x + 80) + "px", "--dy": (H - fx.y - 64) + "px" } }, "🏀");
+    else if (fx.k === "fall") fxEl = e("span", { className: "fx-ball", style: { left: W * .3, top: -60, "--dx": (W * .7 + 80) + "px", "--dy": (H - 4) + "px" } }, "🏀");
+    else if (fx.k === "rival") fxEl = e(React.Fragment, null, e("div", { className: "fx-rival l" }, "SIBIU"), e("div", { className: "fx-rival r" }, "MUREȘ"), e("div", { className: "fx-vs" }, "VS"));
+    else if (fx.k === "crack") {
+      const cx = W * (.35 + Math.random() * .3), cy = H * (.35 + Math.random() * .3), paths = [];
+      for (let i = 0; i < 9; i++) {
+        let a = i / 9 * Math.PI * 2 + Math.random() * .5, x = cx, y = cy, d = "M" + x.toFixed(0) + " " + y.toFixed(0);
+        const steps = 5 + Math.floor(Math.random() * 4);
+        for (let s = 0; s < steps; s++) { a += (Math.random() - .5) * .7; const L = 30 + Math.random() * 70; x += Math.cos(a) * L; y += Math.sin(a) * L; d += " L" + x.toFixed(0) + " " + y.toFixed(0); }
+        paths.push(e("path", { key: i, d: d }));
+      }
+      fxEl = e("svg", { className: "fx-crack", viewBox: "0 0 " + W + " " + H, "aria-hidden": "true" }, paths);
+    } else if (fx.k === "party") fxEl = Array.from({ length: 14 }, (_, i) => e("span", { key: i, className: "fx-balloon", style: { left: (3 + Math.random() * 90) + "vw", "--d": (4.5 + Math.random() * 2.5) + "s", animationDelay: (Math.random() * 1.8) + "s" } }, i % 4 === 0 ? "🎊" : "🎈"));
+  }
+  return e(React.Fragment, null,
+    fxEl && e("div", { className: "egg-fx", key: fx.id, "aria-hidden": "true" }, fxEl),
+    pop && e("div", { className: "egg-pop" + (pop.all ? " gold" : ""), key: pop.id, role: "status", onClick: () => { setPop(null); setOpen(true); } },
+      e("span", { className: "ep-ic" }, pop.all ? "👑" : pop.egg.ic),
+      e("div", null,
+        e("b", null, (pop.all ? L3("Toate secretele!", "Every secret!", "Minden titok!") : L3("Secret găsit", "Secret found", "Titok megtalálva")) + " · " + pop.n + "/" + EGGS.length),
+        e("span", null, pop.all ? L3("Mingea e acum de aur. 👑", "The ball is gold now. 👑", "A labda most arany. 👑") : eggL(pop.egg.n, lang)))),
+    open && e(EggCollection, { onClose: () => setOpen(false) }),
+    game && e(CatchGame, { onClose: () => setGame(false) }));
+}
+
+// "Secrets found n/N": silhouettes with a hint for what is left.
+function EggCollection({ inline, onClose }) {
+  const { lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const [, force] = useState(0);
+  useEffect(() => { const h = () => force(x => x + 1); window.addEventListener("g2p:eggs", h); return () => window.removeEventListener("g2p:eggs", h); }, []);
+  useEffect(() => {
+    if (inline) return;
+    const k = ev => { if (ev.key === "Escape") onClose(); };
+    window.addEventListener("keydown", k);
+    return () => window.removeEventListener("keydown", k);
+  }, [inline]);
+  const f = eggsFound(), n = eggCount(), all = n >= EGGS.length;
+  const e = React.createElement;
+  const date = ts => new Date(ts).toLocaleDateString(lang === "en" ? "en-GB" : lang === "hu" ? "hu-HU" : "ro-RO", { day: "numeric", month: "short" });
+  const body = e("div", null,
+    e("div", { className: "flex justify-between items-center" },
+      e("h4", { style: { fontSize: inline ? ".88rem" : "1.05rem", fontWeight: 700, margin: 0 } }, "🥚 " + L3("Secrete găsite", "Secrets found", "Megtalált titkok")),
+      e("span", { className: "badge badge-green", style: { fontSize: ".72rem" } }, n + "/" + EGGS.length)),
+    e("div", { className: "egg-bar" }, e("i", { style: { width: (n / EGGS.length * 100) + "%" } })),
+    e("div", { className: "egg-grid" }, EGGS.map(x => {
+      const got = !!f[x.id];
+      return e("div", { key: x.id, className: "egg-slot " + (got ? "found" : "locked") },
+        e("span", { className: "es-ic", "aria-hidden": "true" }, x.ic),
+        e("span", { className: "es-n" }, got ? eggL(x.n, lang) : "???"),
+        e("span", { className: "es-h" }, got ? "✓ " + date(f[x.id]) : eggL(x.h, lang)),
+        !got && e("span", { className: "es-d", "aria-label": L3("dificultate", "difficulty", "nehézség") + " " + x.d + "/3" }, "●".repeat(x.d) + "○".repeat(3 - x.d)));
+    })),
+    e("p", { className: "text-xs", style: { color: "var(--textSec)", marginTop: ".8rem" } }, all
+      ? L3("👑 Le-ai găsit pe toate. Mingea-mascotă e acum de aur.", "👑 You found them all. The mascot ball is gold now.", "👑 Mindet megtaláltad. A kabalalabda most arany.")
+      : L3("Găsește-le pe toate. La final te așteaptă o surpriză. Mingea din colț mai scapă câte un indiciu.", "Find them all, there's a surprise at the end. The corner ball drops a hint now and then.", "Találd meg mindet, a végén meglepetés vár. A sarokban lévő labda néha elárul egy tippet.")));
+  if (inline) return body;
+  return e("div", { className: "modal-overlay", onClick: onClose },
+    e("div", { className: "modal modal-lg", onClick: ev => ev.stopPropagation(), role: "dialog", "aria-modal": "true" },
+      e("div", { className: "flex justify-between items-center mb-1" },
+        e("span", null),
+        e("button", { className: "btn btn-sm btn-outline", onClick: onClose, "aria-label": L3("Închide", "Close", "Bezárás") }, "✕")),
+      body));
+}
+
+// Typing "1v1": catch as many falling balls as you can in 10 seconds.
+function CatchGame({ onClose }) {
+  const { lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const [score, setScore] = useState(0);
+  const [left, setLeft] = useState(10);
+  const [over, setOver] = useState(false);
+  const [round, setRound] = useState(0);
+  const boxRef = useRef(null), scoreRef = useRef(0);
+  let best = 0; try { best = +(localStorage.getItem("g2p_1v1_best") || 0); } catch (e) {}
+  useEffect(() => {
+    scoreRef.current = 0; setScore(0); setLeft(10); setOver(false);
+    let alive = true, secs = 10;
+    const T = [];
+    g2pSfx("whistle");
+    const spawn = () => {
+      if (!alive || !boxRef.current) return;
+      const b = document.createElement("span");
+      b.className = "catch-ball";
+      b.textContent = Math.random() < .18 ? "⚽" : "🏀";
+      b.style.left = (3 + Math.random() * 82) + "vw";
+      const d = Math.max(.9, 1.6 + Math.random() * 1.1 - scoreRef.current * .03);
+      b.style.setProperty("--d", d + "s");
+      b.addEventListener("pointerdown", ev => {
+        ev.preventDefault();
+        if (!alive || b.classList.contains("got")) return;
+        const r = b.getBoundingClientRect();
+        b.style.setProperty("--y", (r.top + 70) + "px");
+        b.classList.add("got");
+        scoreRef.current++; setScore(scoreRef.current);
+        g2pSfx(scoreRef.current % 5 === 0 ? "swish" : "bounce");
+        try { navigator.vibrate && navigator.vibrate(8); } catch (e) {}
+        setTimeout(() => b.remove(), 300);
+      });
+      boxRef.current.appendChild(b);
+      T.push(setTimeout(() => b.remove(), d * 1000 + 200));
+    };
+    const sp = setInterval(spawn, 420);
+    const clock = setInterval(() => {
+      secs--; setLeft(secs);
+      if (secs > 0) return;
+      alive = false; clearInterval(sp); clearInterval(clock);
+      if (boxRef.current) boxRef.current.querySelectorAll(".catch-ball").forEach(x => x.remove());
+      g2pSfx("whistle");
+      try { if (scoreRef.current > +(localStorage.getItem("g2p_1v1_best") || 0)) localStorage.setItem("g2p_1v1_best", String(scoreRef.current)); } catch (e) {}
+      setOver(true);
+    }, 1000);
+    spawn();
+    return () => { alive = false; clearInterval(sp); clearInterval(clock); T.forEach(clearTimeout); };
+  }, [round]);
+  useEffect(() => {
+    const k = ev => { if (ev.key === "Escape") onClose(); };
+    window.addEventListener("keydown", k);
+    return () => window.removeEventListener("keydown", k);
+  }, []);
+  const e = React.createElement;
+  const verdict = score < 6 ? L3("Încălzire. Mai încearcă.", "Warm-up. Go again.", "Bemelegítés. Még egyszer.")
+    : score < 14 ? L3("Bun! Nici coșul îndoit nu te-ar opri.", "Nice! Not even a bent hoop could stop you.", "Szép! Még egy görbe kosár sem állítana meg.")
+    : L3("Legendă de cartier. 🔥", "Neighbourhood legend. 🔥", "A környék legendája. 🔥");
+  return e("div", { className: "catch", ref: boxRef, role: "dialog", "aria-modal": "true", "aria-label": "1v1" },
+    e("div", { className: "catch-hud" }, e("span", null, "🏀 " + score), e("span", null, "⏱ " + left + "s")),
+    over && e("div", { className: "catch-end" },
+      e("div", { className: "text-xs", style: { color: "var(--textSec)", letterSpacing: ".1em" } }, "1V1 · " + L3("AI PRINS", "YOU CAUGHT", "ELKAPTÁL")),
+      e("b", null, score),
+      e("p", null, verdict),
+      e("p", { className: "text-xs", style: { color: "var(--textSec)" } }, L3("Recordul tău: ", "Your best: ", "Legjobb: ") + Math.max(best, score)),
+      e("div", { className: "flex gap-1" },
+        e("button", { className: "btn btn-green btn-sm", onClick: () => setRound(r => r + 1) }, L3("Încă o dată", "Again", "Még egyszer")),
+        e("button", { className: "btn btn-outline btn-sm", onClick: onClose }, L3("Închide", "Close", "Bezárás")))));
+}
+
+// Footer (and phone menu) switches: mascot, animations, sounds, phone motion, secrets.
+function FunPanel({ menu }) {
+  const { lang, toast } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const [, force] = useState(0);
+  useEffect(() => {
+    const h = () => force(x => x + 1), ev = ["g2p:eggs", "g2p:anim", "g2p:motion"];
+    ev.forEach(n => window.addEventListener(n, h));
+    return () => ev.forEach(n => window.removeEventListener(n, h));
+  }, []);
+  let snd = true; try { snd = localStorage.getItem("g2p_sound") !== "0"; } catch (e) {}
+  const anim = !animOff(), mot = motionOn();
+  const touch = typeof DeviceMotionEvent !== "undefined" && !!(window.matchMedia && window.matchMedia("(hover: none)").matches);
+  const store = (k, v, evn) => { try { localStorage.setItem(k, v); } catch (e) {} window.dispatchEvent(new CustomEvent(evn)); force(x => x + 1); };
+  const motion = () => {
+    if (mot) { store("g2p_motion", "0", "g2p:motion"); return; }
+    if (!motionNeedsPerm()) { store("g2p_motion", "1", "g2p:motion"); g2pSfx("bounce"); return; }
+    const ask = [DeviceMotionEvent.requestPermission()];
+    if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") ask.push(DeviceOrientationEvent.requestPermission());
+    Promise.all(ask).then(r => {
+      if (r[0] === "granted") { store("g2p_motion", "1", "g2p:motion"); g2pSfx("bounce"); toast(L3("📱 Scutură telefonul. Înclină-l. Vezi ce face mingea.", "📱 Shake your phone. Tilt it. Watch the ball.", "📱 Rázd meg a telefont. Döntsd meg. Figyeld a labdát.")); }
+      else toast(L3("Fără permisiune, fără mișcare. 🤷", "No permission, no motion. 🤷", "Engedély nélkül nincs mozgás. 🤷"));
+    }).catch(() => {});
+  };
+  const B = (on, ic, label, click) => React.createElement("button", { className: "mascot-toggle", "aria-pressed": on, onClick: click }, ic + " " + label);
+  return React.createElement("div", { className: "fun-panel" + (menu ? " menu" : "") },
+    React.createElement(MascotToggle, null),
+    B(anim, "✨", L3("Animații", "Animations", "Animációk"), () => store("g2p_anim_off", anim ? "1" : "0", "g2p:anim")),
+    B(snd, snd ? "🔊" : "🔈", L3("Sunete", "Sounds", "Hangok"), () => { store("g2p_sound", snd ? "0" : "1", "g2p:anim"); if (!snd) g2pSfx("bounce"); }),
+    touch && B(mot, "📱", L3("Mișcare", "Motion", "Mozgás"), motion),
+    React.createElement("button", { className: "mascot-toggle", onClick: () => window.dispatchEvent(new CustomEvent("g2p:eggs-open")) }, "🥚 " + L3("Secrete", "Secrets", "Titkok") + " " + eggCount() + "/" + EGGS.length));
 }
 
 function SecretKeys() {
@@ -14595,9 +15211,9 @@ function SecretKeys() {
   useEffect(function () {
     var buf = "", seq = [];
     var KONAMI = "ArrowUp,ArrowUp,ArrowDown,ArrowDown,ArrowLeft,ArrowRight,ArrowLeft,ArrowRight,b,a";
-    var rm = window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+    var rm = function () { return !funFx(); };
     var rain = function (emoji, n) {
-      if (rm) return;
+      if (rm()) return;
       for (var i = 0; i < n; i++) (function (i) {
         setTimeout(function () {
           var s = document.createElement("span");
@@ -14610,16 +15226,31 @@ function SecretKeys() {
       })(i);
     };
     var disco = function () {
-      toast("🩩 DISCO MODE");
-      if (rm) return;
+      toast("🪩 DISCO MODE");
+      if (rm()) return;
       document.documentElement.classList.add("disco-fx");
       setTimeout(function () { document.documentElement.classList.remove("disco-fx"); }, 8000);
     };
     var god = function () {
       toast("🏆 GOD MODE — ai găsit codul Konami!");
       document.body.classList.add("godmode-fx");
-      if (!rm && typeof confetti === "function") confetti({ particleCount: 240, spread: 110, origin: { y: 0.6 } });
+      if (!rm() && typeof confetti === "function") confetti({ particleCount: 240, spread: 110, origin: { y: 0.6 } });
       setTimeout(function () { document.body.classList.remove("godmode-fx"); }, 12000);
+      g2pEgg("konami");
+    };
+    // One place for every typed secret (keyboard, or the search box on phones).
+    var fire = function (w) {
+      if (w === "dunk") { toast("🏀 DUNK!"); rain("🏀", 26); g2pSfx("swish"); g2pEgg("dunk"); }
+      else if (w === "disco") { disco(); g2pEgg("disco"); }
+      else if (w === "tgm") {
+        toast("💚 Târgu Mureș — From Grey to Play");
+        if (!rm() && typeof confetti === "function") confetti({ particleCount: 90, spread: 75, colors: ["#10B981", "#0D9488", "#F97316"], origin: { y: 0.7 } });
+        g2pEgg("tgm");
+      }
+      else if (w === "rain") { rain("⚽", 20); g2pEgg("rain"); }
+      else if (w === "1v1") { window.dispatchEvent(new CustomEvent("g2p:1v1")); }
+      else if (w === "sibiu" || w === "mures") { window.dispatchEvent(new CustomEvent("g2p:rival", { detail: { w: w } })); }
+      else if (w === "fixit") { window.dispatchEvent(new Event("g2p-mayor")); }
     };
     var h = function (e) {
       var el = e.target;
@@ -14631,17 +15262,14 @@ function SecretKeys() {
       }
       if (!e.key || e.key.length !== 1 || e.ctrlKey || e.metaKey || e.altKey) return;
       buf = (buf + e.key.toLowerCase()).slice(-6);
-      if (buf.slice(-4) === "dunk") { buf = ""; toast("🏀 DUNK!"); rain("🏀", 26); }
-      else if (buf.slice(-5) === "disco") { buf = ""; disco(); }
-      else if (buf.slice(-3) === "tgm") {
-        buf = "";
-        toast("💚 Târgu Mureș — From Grey to Play");
-        if (!rm && typeof confetti === "function") confetti({ particleCount: 90, spread: 75, colors: ["#10B981", "#0D9488", "#F97316"], origin: { y: 0.7 } });
-      }
-      else if (buf.slice(-4) === "rain") { buf = ""; rain("⚽", 20); }
+      // "fixit" is handled by App's own listener.
+      var W = ["dunk", "disco", "tgm", "rain", "1v1", "sibiu", "mures"];
+      for (var i = 0; i < W.length; i++) if (buf.slice(-W[i].length) === W[i]) { buf = ""; fire(W[i]); return; }
     };
+    var fromSearch = function (e) { fire(e.detail && e.detail.w); };
     window.addEventListener("keydown", h);
-    return function () { window.removeEventListener("keydown", h); };
+    window.addEventListener("g2p:secret", fromSearch);
+    return function () { window.removeEventListener("keydown", h); window.removeEventListener("g2p:secret", fromSearch); };
   }, []);
   return null;
 }
@@ -14654,6 +15282,7 @@ function App() {
   const [wipe, setWipe] = useState(0);
   const [cmd, setCmd] = useState(false);
   const [mayor, setMayor] = useState(false);
+  useEffect(() => { if (mayor) g2pEgg("fixit"); }, [mayor]);
   // Season 3 easter egg: type "fixit" anywhere (outside form fields) → Mayor Mode.
   useEffect(() => {
     let buf = "";
@@ -15023,7 +15652,7 @@ function App() {
     }
   }, /*#__PURE__*/React.createElement("div", {
     key: page
-  }, React.createElement(PageBoundary, null, P()))), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(FunEggs, null), React.createElement(SecretKeys, null), React.createElement(Mascot, { page: page }), React.createElement(BigCelebration, null), React.createElement(ThemeFx, null), mayor && React.createElement(MayorMode, {
+  }, React.createElement(PageBoundary, null, P()))), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(FunEggs, null), React.createElement(EggHub, { page: page }), React.createElement(SecretKeys, null), React.createElement(Mascot, { page: page }), React.createElement(BigCelebration, null), React.createElement(ThemeFx, null), mayor && React.createElement(MayorMode, {
     onClose: () => setMayor(false)
   }), /*#__PURE__*/React.createElement(Footer, null), toastEl, authEl, nudgeEl);
 }
