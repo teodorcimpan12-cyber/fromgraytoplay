@@ -101,6 +101,12 @@ export default async (req, context) => {
   } catch (e) {
     const code = e.status === 400 && /credit/i.test(e.message) ? "no_credits" : "upstream";
     // status + Anthropic error type only (never the message, it can echo request data)
-    return json(502, { error: code, status: e.status || 0, type: clean(e.type, 40) }, okOrigin);
+    const out = { error: code, status: e.status || 0, type: clean(e.type, 40) };
+    if (e.status === 401) {
+      // shape of the key only (never the key), to spot paste mistakes in the Netlify env
+      const k = String(process.env.ANTHROPIC_API_KEY);
+      out.key = { len: k.length, prefix: k.startsWith("sk-ant-api"), space: /\s/.test(k), quote: /["']/.test(k) };
+    }
+    return json(502, out, okOrigin);
   }
 };
