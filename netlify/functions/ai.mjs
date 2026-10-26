@@ -39,10 +39,22 @@ const LETTER_PROMPT = (lang, city) => `Write a short, polite, formal letter from
 Use ONLY the facts given. Never invent numbers, dates, budgets, laws or names. Leave "[Nume]" as the signature placeholder.
 Max 170 words. Language: ${LANG[lang] || "Romanian"}. Plain text, no markdown.`;
 
+// Our own key (sk-ant-api…) goes straight to Anthropic. Netlify's AI Gateway also injects
+// ANTHROPIC_API_KEY (a JWT) + ANTHROPIC_BASE_URL, so the user's key lives in ANTHROPIC_API_KEY1;
+// without an own key we fall back to the gateway.
+function endpoint() {
+  const own = [process.env.ANTHROPIC_API_KEY1, process.env.ANTHROPIC_API_KEY].find(k => k && k.trim().startsWith("sk-ant-api"));
+  if (own) return { key: own.trim(), url: "https://api.anthropic.com/v1/messages", via: "own" };
+  if (process.env.ANTHROPIC_API_KEY && process.env.ANTHROPIC_BASE_URL)
+    return { key: process.env.ANTHROPIC_API_KEY, url: process.env.ANTHROPIC_BASE_URL.replace(/\/+$/, "") + "/v1/messages", via: "gateway" };
+  return null;
+}
+
 async function callClaude(content, system, maxTokens) {
-  const r = await fetch("https://api.anthropic.com/v1/messages", {
+  const ep = endpoint();
+  const r = await fetch(ep.url, {
     method: "POST",
-    headers: { "x-api-key": process.env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01", "content-type": "application/json" },
+    headers: { "x-api-key": ep.key, "anthropic-version": "2023-06-01", "content-type": "application/json" },
     body: JSON.stringify({ model: MODEL, max_tokens: maxTokens, system, messages: [{ role: "user", content }] })
   });
   const data = await r.json().catch(() => ({}));
@@ -56,7 +68,7 @@ export default async (req, context) => {
   if (req.method === "OPTIONS") return json(204, {}, okOrigin);
   if (req.method !== "POST") return json(405, { error: "method" }, okOrigin);
   if (!okOrigin) return json(403, { error: "origin" });
-  if (!process.env.ANTHROPIC_API_KEY) return json(503, { error: "not_configured" }, okOrigin);
+  if (!endpoint()) return json(503, { error: "not_configured" }, okOrigin);
 
   const ip = (context && context.ip) || req.headers.get("x-nf-client-connection-ip") || "?";
   const now = Date.now(), h = (hits.get(ip) || []).filter(t => now - t < 3600e3);
@@ -102,13 +114,7 @@ export default async (req, context) => {
     const code = e.status === 400 && /credit/i.test(e.message) ? "no_credits" : "upstream";
     // status + Anthropic error type only (never the message, it can echo request data)
     const out = { error: code, status: e.status || 0, type: clean(e.type, 40) };
-    if (e.status === 401) {
-      // shape of the key only (never the key), to spot paste mistakes in the Netlify env
-      const k = String(process.env.ANTHROPIC_API_KEY);
-      const kind = (k.match(/^sk-ant-([a-z]+)/) || [])[1] || (k.startsWith("eyJ") ? "jwt" : "other");
-      out.key = { len: k.length, kind, space: /\s/.test(k), quote: /["']/.test(k),
-        vars: Object.keys(process.env).filter(n => /anthropic|claude|api_?key/i.test(n)) };
-    }
+    out.via = (endpoint() || {}).via;
     return json(502, out, okOrigin);
   }
 };
