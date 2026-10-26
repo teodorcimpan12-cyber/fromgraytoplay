@@ -1096,7 +1096,8 @@ html.g2p-shake .card,html.g2p-shake .stat-tile{animation:cardShake .5s 3}
 .ai-cond{padding:.1rem .5rem;border-radius:999px;background:var(--border);color:var(--text)}.ai-c-good{background:var(--green);color:var(--white)}.ai-c-degraded{background:var(--coral);color:var(--white)}.ai-c-abandoned{background:var(--red);color:var(--white)}
 .ai-conf{font-family:'Space Mono',monospace;color:var(--textSec)}.ai-acts{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}.ai-card>.ai-btn{margin-top:.5rem}
 .ai-letter-start p{font-size:.88rem;line-height:1.45}.ai-letter-text{width:100%;font-size:.88rem;line-height:1.5;resize:vertical;min-height:220px}
-.ai-letter-acts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.7rem}
+.ai-letter-acts{display:grid;grid-template-columns:1fr 1fr auto;gap:.5rem;margin-top:.7rem}.ai-letter-acts .btn{justify-content:center;white-space:nowrap}
+@media(max-width:520px){.ai-letter-acts .btn-green{grid-column:1/-1;order:-1}}
 @media (prefers-reduced-motion:reduce){.ai-spark{animation:none}}
 .ev-vote{border:1px solid var(--border);background:var(--bgCard);color:var(--text);border-radius:999px;padding:.15rem .55rem;font-size:.72rem;cursor:pointer;font-family:inherit}
 .ev-vote.on{background:var(--green);border-color:var(--green);color:var(--white)}
@@ -9737,11 +9738,13 @@ function CourtDetail({
       c.category !== "gym" && act("poster", "line", () => setShowWanted(true), "\uD83E\uDEA7", lang === "en" ? "Poster" : lang === "hu" ? "Plak\u00E1t" : "Afi\u0219"),
       c.category !== "gym" && c.status !== "renovated" && act("letter", "line", () => setShowLetter(true), "\u2709\uFE0F", lang === "en" ? "AI letter" : lang === "hu" ? "AI-lev\u00E9l" : "Scrisoare AI")); // TODO: HU review
   })()),
-  showPlay && React.createElement(PlayNowModal, { court: c, onClose: () => setShowPlay(false) }),
-  showQR && React.createElement(CourtQRCard, { court: c, onClose: () => setShowQR(false) }),
-  showWanted && React.createElement(WantedPoster, { court: c, onClose: () => setShowWanted(false) }),
-  showLetter && React.createElement(AiLetterModal, { court: c, onClose: () => setShowLetter(false) }),
-  unlockBadge && React.createElement(BadgeUnlockModal, { badge:unlockBadge, lang:lang, onClose:()=>setUnlockBadge(null) })
+  // Portals: inside the court modal (animated transform) a fixed overlay is trapped in the modal's box.
+  // The wrapper stops clicks bubbling (React tree) to the court overlay, which would close the court too.
+  showPlay && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(PlayNowModal, { court: c, onClose: () => setShowPlay(false) })), document.body),
+  showQR && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(CourtQRCard, { court: c, onClose: () => setShowQR(false) })), document.body),
+  showWanted && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(WantedPoster, { court: c, onClose: () => setShowWanted(false) })), document.body),
+  showLetter && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(AiLetterModal, { court: c, onClose: () => setShowLetter(false) })), document.body),
+  unlockBadge && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(BadgeUnlockModal, { badge:unlockBadge, lang:lang, onClose:()=>setUnlockBadge(null) })), document.body)
   );
 }
 
@@ -15127,7 +15130,8 @@ function AiLetterModal({ court: c, onClose }) {
         e("div", { className: "ai-tag mb-1" }, "✨ ", L3("Scris de AI. Citește-l și schimbă ce vrei înainte să-l trimiți.", "Written by AI. Read it and change anything before you send it.", "AI írta. Olvasd el, és változtass rajta küldés előtt.")),
         e("label", { className: "text-sm", style: { display: "block", marginBottom: ".5rem" } }, L3("Numele tău (pentru semnătură)", "Your name (for the signature)", "A neved (az aláíráshoz)"),
           e("input", { value: name, onChange: ev => setName(ev.target.value), maxLength: 80, placeholder: "[Nume]", style: { marginTop: ".25rem" } })),
-        e("textarea", { className: "ai-letter-text", value: text, onChange: ev => setText(ev.target.value), rows: 12, maxLength: 4000, "aria-label": L3("Textul scrisorii", "Letter text", "A levél szövege") }),
+        // Shows the name in place of [Nume] as it is typed; edits are stored back with the placeholder.
+        e("textarea", { className: "ai-letter-text", value: final(), onChange: ev => setText(name.trim() ? ev.target.value.split(name.trim()).join("[Nume]") : ev.target.value), rows: 12, maxLength: 4000, "aria-label": L3("Textul scrisorii", "Letter text", "A levél szövege") }),
         e("div", { className: "ai-letter-acts" },
           e("button", { className: "btn btn-outline", onClick: copy }, "📋 ", L3("Copiază", "Copy", "Másolás")),
           e("button", { className: "btn btn-green", onClick: mail }, "📨 ", L3("Trimite pe email", "Send by email", "Küldés e-mailben")),
