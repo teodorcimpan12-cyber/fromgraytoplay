@@ -9240,11 +9240,11 @@ function HomePage() {
     value: tv, label: t.petitionVotes, color: "var(--coral)"
   }), /*#__PURE__*/React.createElement(StatTile, {
     value: vc, label: t.volunteers, color: "var(--teal)"
-  })))), React.createElement(ActivityTicker, null), React.createElement(FeaturedCourt, null), /*#__PURE__*/React.createElement("section", {
+  })))), React.createElement(ActivityTicker, null), /*#__PURE__*/React.createElement("section", {
     className: "section"
   }, /*#__PURE__*/React.createElement("div", {
     className: "container"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(SibiuProgressBanner, null), /*#__PURE__*/React.createElement("div", {
     className: "grid grid-3"
   }, /*#__PURE__*/React.createElement("button", {
     className: "action-card",
@@ -9255,7 +9255,7 @@ function HomePage() {
   }, React.createElement("div", { className: "ac-icon" }, "\u270A"), /*#__PURE__*/React.createElement("h3", null, t.voteTitle)), /*#__PURE__*/React.createElement("button", {
     className: "action-card",
     onClick: () => setPage("help")
-  }, React.createElement("div", { className: "ac-icon" }, "\uD83E\uDD1D"), /*#__PURE__*/React.createElement("h3", null, t.quickVolunteer))))), React.createElement(StoryScroll, null), React.createElement(Showcase, null), React.createElement(SatSwipe, null), React.createElement(City3D, null), /*#__PURE__*/React.createElement("section", {
+  }, React.createElement("div", { className: "ac-icon" }, "\uD83E\uDD1D"), /*#__PURE__*/React.createElement("h3", null, t.quickVolunteer))))), React.createElement(StoryScroll, null), React.createElement(SatSwipe, null), React.createElement(FeaturedCourt, null), React.createElement(City3D, null), /*#__PURE__*/React.createElement("section", {
     className: "section",
     style: {
       background: "var(--bgCard)"
@@ -9267,7 +9267,7 @@ function HomePage() {
   }, "\uD83D\uDCCD ", t.courtsReported), /*#__PURE__*/React.createElement(MapView, {
     courts: COURTS,
     height: "320px"
-  }))),
+  }))), React.createElement(Showcase, null),
   React.createElement(QuickReportFAB, null));
 }
 
