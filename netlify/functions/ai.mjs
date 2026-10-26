@@ -46,7 +46,7 @@ async function callClaude(content, system, maxTokens) {
     body: JSON.stringify({ model: MODEL, max_tokens: maxTokens, system, messages: [{ role: "user", content }] })
   });
   const data = await r.json().catch(() => ({}));
-  if (!r.ok) throw Object.assign(new Error((data.error && data.error.message) || "upstream " + r.status), { status: r.status });
+  if (!r.ok) throw Object.assign(new Error((data.error && data.error.message) || "upstream " + r.status), { status: r.status, type: data.error && data.error.type });
   return (data.content || []).filter(b => b.type === "text").map(b => b.text).join("").trim();
 }
 
@@ -93,11 +93,14 @@ export default async (req, context) => {
       if (!facts) return json(400, { error: "no_court" }, okOrigin);
       const city = body.court && body.court.city === "sibiu" ? "sibiu" : "tgm";
       const text = await callClaude([{ type: "text", text: facts }], LETTER_PROMPT(lang, city), 600);
-      return json(200, { letter: clean(text, 2000).replace(/ {2,}/g, " "), model: MODEL }, okOrigin);
+      // keep the paragraph breaks, drop other control chars
+      const letter = String(text).replace(/\r/g, "").replace(/[\u0000-\u0009\u000b-\u001f]/g, " ").replace(/\n{3,}/g, "\n\n").replace(/ {2,}/g, " ").slice(0, 2000);
+      return json(200, { letter, model: MODEL }, okOrigin);
     }
     return json(400, { error: "task" }, okOrigin);
   } catch (e) {
     const code = e.status === 400 && /credit/i.test(e.message) ? "no_credits" : "upstream";
-    return json(502, { error: code }, okOrigin);
+    // status + Anthropic error type only (never the message, it can echo request data)
+    return json(502, { error: code, status: e.status || 0, type: clean(e.type, 40) }, okOrigin);
   }
 };
