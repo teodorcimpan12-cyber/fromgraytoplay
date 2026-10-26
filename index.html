@@ -3260,7 +3260,7 @@ var HOOD_COURT_MAP = {
   tudor:      ["c5","c6","c7","c8","c19","c27"],
   auchan:     ["c3","c4"],
   mureseni:   ["c1","c2","c20","c28"],
-  center:     ["c9","c10","c11","c12","c13","c18","c26"],
+  center:     ["c9","c10","c11","c12","c13","c18","c26","c29"],
   pandurilor: ["c14","c15"],
   libertate:  ["c16"],
   unirii:     ["c17","c21"],
@@ -5991,15 +5991,15 @@ const COURTS_BASE = [
     name: "Stadionul Municipal",
     address: "Str. Gheorghe Doja 243",
     lat: 46.5397, lng: 24.5578,
-    status: "inProgress",
+    status: "renovated",
     neighbourhood: "center",
     category: "football",
-    condition: 3,
+    condition: 5,
     occupancy: "active",
-    progress: 60,
+    progress: 100,
     accessibility: { wheelchair: true,  lighting: true,  parking: true,  flatSurface: true  },
     reports: 2,
-    description: "Stadion municipal 11.000 locuri, teren gazon natural. Renovare parțială în curs (tribune vechi)."
+    description: "Stadion municipal 11.000 locuri, teren gazon natural, în stare foarte bună."
   },
   {
     id: "c12",
@@ -6266,6 +6266,21 @@ const COURTS_BASE = [
     accessibility: { wheelchair: false, lighting: false, parking: false, flatSurface: true },
     reports: 2,
     description: "Teren în incintă școlară, acces limitat la programul școlii — singura suprafață sport din zonă pentru mulți copii."
+  },
+  {
+    id: "c29",
+    name: "Stadionul Trans-Sil",
+    address: "Str. Insulei",
+    lat: 46.5496, lng: 24.5458,
+    status: "renovated",
+    neighbourhood: "center",
+    category: "football",
+    condition: 5,
+    occupancy: "active",
+    progress: 100,
+    accessibility: { wheelchair: true, lighting: true, parking: true, flatSurface: true },
+    reports: 0,
+    description: "Stadion de fotbal, 8.200 locuri, gazon natural, în stare foarte bună (Wikipedia: Trans-Sil Stadium)."
   }
 ];
 
