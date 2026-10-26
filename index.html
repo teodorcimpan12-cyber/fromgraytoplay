@@ -1096,6 +1096,7 @@ html.g2p-shake .card,html.g2p-shake .stat-tile{animation:cardShake .5s 3}
 .ai-cond{padding:.1rem .5rem;border-radius:999px;background:var(--border);color:var(--text)}.ai-c-good{background:var(--green);color:var(--white)}.ai-c-degraded{background:var(--coral);color:var(--white)}.ai-c-abandoned{background:var(--red);color:var(--white)}
 .ai-conf{font-family:'Space Mono',monospace;color:var(--textSec)}.ai-acts{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}.ai-card>.ai-btn{margin-top:.5rem}
 .ai-letter-start p{font-size:.88rem;line-height:1.45}.ai-letter-text{width:100%;font-size:.88rem;line-height:1.5;resize:vertical;min-height:220px}
+.ai-card{position:relative;border-radius:var(--radius);padding:.9rem 1rem;margin:0 0 1rem;background:linear-gradient(var(--bgCard),var(--bgCard)) padding-box,linear-gradient(120deg,var(--green),var(--teal),#8B5CF6) border-box;border:2px solid transparent}.ai-card-h{font-weight:700;font-size:.95rem;display:flex;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:.65rem}.ai-card-pill{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.04em;padding:.15rem .5rem;border-radius:999px;background:linear-gradient(120deg,var(--green),#8B5CF6);color:#fff}.ai-card-b{display:flex;flex-wrap:wrap;gap:.5rem}.ai-card-b .btn{flex:1 1 220px;justify-content:center}
 .sat-find{padding:.85rem 1rem;margin-bottom:1rem}.sat-find-h{font-family:'Space Mono',monospace;font-size:.8rem;font-weight:700;margin-bottom:.3rem}.sat-find-t{font-size:.92rem;line-height:1.45;margin:0 0 .4rem}.sat-find-s{font-size:.74rem;color:var(--textSec);margin:0;line-height:1.45}.sat-find-a{background:none;border:0;padding:0;color:var(--teal);font:inherit;font-weight:700;cursor:pointer;text-decoration:underline}
 .ai-letter-acts{display:grid;grid-template-columns:1fr 1fr auto;gap:.5rem;margin-top:.7rem}.ai-letter-acts .btn{justify-content:center;white-space:nowrap}
 @media(max-width:520px){.ai-letter-acts .btn-green{grid-column:1/-1;order:-1}}
@@ -1745,6 +1746,7 @@ const T = {
     multiuse: "Multifuncțional",
     degraded: "Degradat",
     unverified: "Neverificat",
+    satellite: "Din satelit", satGone: "Nu se vede teren din satelit", satWorn: "Uzat, din satelit", satOk: "Întreg, din satelit",
     fieldVerified: "Verificat pe teren",
     verifiedShare: "{n} din {m} terenuri verificate pe teren — restul nu intră în calcul.",
     inProgress: "În lucru",
@@ -1897,6 +1899,7 @@ const T = {
     multiuse: "Multi-use",
     degraded: "Degraded",
     unverified: "Unverified",
+    satellite: "From satellite", satGone: "No court seen from satellite", satWorn: "Worn, from satellite", satOk: "Intact, from satellite",
     fieldVerified: "Field-verified",
     verifiedShare: "{n} of {m} courts field-verified — the rest are not counted.",
     inProgress: "In progress",
@@ -2049,6 +2052,7 @@ const T = {
     multiuse: "Többcélú",
     degraded: "Leromlott",
     unverified: "Nem ellenőrzött",
+    satellite: "Műholdról", satGone: "Műholdról nem látszik pálya", satWorn: "Kopott, műholdról", satOk: "Ép, műholdról", // TODO: HU review
     fieldVerified: "Helyszínen ellenőrizve", // TODO: HU review
     verifiedShare: "{m} pályából {n} helyszínen ellenőrizve — a többi nem számít bele.", // TODO: HU review
     inProgress: "Folyamatban",
@@ -2531,6 +2535,12 @@ function courtStatusView(court, t) {
       admin: tone === "red" ? "a-badge-r" : "a-badge-g", label: (t.fieldVerified || "Verificat pe teren") + " · " + cond + "/5", bad: cond <= 2 };
   }
   if (s === "unverified") return { color: "#6B7280", badge: "badge-gray", admin: "a-badge-t", label: t.unverified || "Neverificat", bad: false };
+  if (s === "satellite") {
+    var sv = (court.sat && court.sat.v) || "ok", yr = court.sat && court.sat.at ? " " + court.sat.at.slice(0, 4) : "";
+    return sv === "gone" ? { color: "#9F1239", badge: "badge-red", admin: "a-badge-r", label: (t.satGone || "Nu se vede teren din satelit") + yr, bad: true }
+      : sv === "worn" ? { color: "#F59E0B", badge: "badge-coral", admin: "a-badge-o", label: (t.satWorn || "Uzat, din satelit") + yr, bad: true }
+      : { color: "#0EA5E9", badge: "badge-teal", admin: "a-badge-t", label: (t.satOk || "Întreg, din satelit") + yr, bad: false };
+  }
   if (s === "degraded") return { color: "#DC2626", badge: "badge-red", admin: "a-badge-r", label: t.degraded || "Degradat", bad: true };
   if (s === "inProgress") return { color: "#F97316", badge: "badge-coral", admin: "a-badge-o", label: t.inProgress || "În lucru", bad: false };
   return { color: "#10B981", badge: "badge-green", admin: "a-badge-g", label: t.renovated || "Renovat", bad: false };
@@ -3618,6 +3628,11 @@ function SatFinding({ court: c }) {
   else if (fd === "unchanged") text = L3("Neschimbat în toate imaginile, până în " + last + ".", "Unchanged in every image up to " + last + ".", "Minden képen változatlan " + last + "-ig.");
   else if (/-between-/.test(fd)) { const m = fd.match(/^(\w+)-between-(\d{4}-\d\d-\d\d)-(\d{4}-\d\d-\d\d)$/); text = m ? (kinds[m[1]] || m[1]) + " " + L3("între " + md(m[2]) + " și " + md(m[3]), "between " + md(m[2]) + " and " + md(m[3]), md(m[2]) + " és " + md(m[3]) + " között") + "." : null; tone = "var(--green)"; }
   else if (/-before-/.test(fd)) { const k = fd.split("-before-"); text = (kinds[k[0]] || k[0]) + (k[1] && k[1] !== "?" ? " " + L3("înainte de ", "before ", "előtt: ") + md(k[1]) : "") + "."; tone = "var(--green)"; }
+  else if (c.sat) {
+    const sv = { ok: L3("pare întreg", "looks intact", "épnek látszik"), worn: L3("pare uzat", "looks worn", "kopottnak látszik"), gone: L3("nu se vede teren", "no court visible", "nem látszik pálya") }[c.sat.v];
+    text = L3("În imaginea din " + md(c.sat.at) + " " + sv + " — părerea a " + c.sat.n + " din " + c.sat.of + " evaluatori; ceilalți au văzut altceva.", "In the " + md(c.sat.at) + " image it " + sv + " — " + c.sat.n + " of " + c.sat.of + " reviewers; the others saw something else.", "A " + md(c.sat.at) + " képen " + sv + " — " + c.sat.of + " értékelőből " + c.sat.n + "; a többiek mást láttak.");
+    tone = c.sat.v === "ok" ? "#0EA5E9" : c.sat.v === "worn" ? "#F59E0B" : "var(--red)";
+  }
   else text = L3("Evaluatorii nu au căzut încă de acord pe imaginile acestui teren.", "The reviewers don't agree yet on this court's images.", "Az értékelők még nem értenek egyet ennél a pályánál.");
   if (!text) return null;
   text = text.charAt(0).toUpperCase() + text.slice(1);
@@ -6316,6 +6331,12 @@ const COURTS_SIBIU = [
   {"id":"sb34","city":"sibiu","name":"Teren baschet — Reșița","address":"Strada Ana Ipătescu, Sibiu","lat":45.803389,"lng":24.165488,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"resita","category":"basketball","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de baschet (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de baschet (OpenStreetMap, neverificat pe teren).","en":"Basketball court (OpenStreetMap, not field-verified).","hu":"Kosárlabdapálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1517626704","img":null},
   {"id":"sb35","city":"sibiu","name":"Teren fotbal — Valea Aurie 2","address":"Aleea Călăreților, Sibiu","lat":45.770167,"lng":24.132835,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"valea_aurie","category":"football","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","en":"Football court (OpenStreetMap, not field-verified).","hu":"Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1517849282","img":null}
 ];
+/* Satellite view of the Sibiu courts: majority of the 4 team reviewers (Esri World Imagery Wayback, latest capture `at`).
+   Per reviewer: no court visible -> gone; overgrown/patchy surface, no markings or "degraded" -> worn; else ok.
+   Ties go to the two most consistent reviewers. It is what the images showed, never today's condition.
+   Regenerate after new exports (see tools/sat_merge.mjs). */
+const SAT_VIEW = {"sb1":{"v":"worn","n":2,"of":4,"at":"2021-02-27"},"sb2":{"v":"worn","n":2,"of":4,"at":"2022-08-06"},"sb3":{"v":"ok","n":3,"of":4,"at":"2022-08-06"},"sb4":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb5":{"v":"ok","n":2,"of":4,"at":"2021-02-27"},"sb6":{"v":"ok","n":4,"of":4,"at":"2021-02-27"},"sb7":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb8":{"v":"gone","n":3,"of":4,"at":"2021-02-27"},"sb9":{"v":"gone","n":2,"of":4,"at":"2022-08-06"},"sb10":{"v":"gone","n":2,"of":4,"at":"2022-08-06"},"sb11":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb12":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb13":{"v":"gone","n":3,"of":4,"at":"2022-08-06"},"sb14":{"v":"gone","n":3,"of":4,"at":"2022-08-06"},"sb15":{"v":"gone","n":3,"of":4,"at":"2022-08-06"},"sb16":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb17":{"v":"gone","n":4,"of":4,"at":"2022-08-06"},"sb18":{"v":"worn","n":2,"of":4,"at":"2022-08-06"},"sb19":{"v":"ok","n":2,"of":4,"at":"2021-02-27"},"sb20":{"v":"gone","n":2,"of":4,"at":"2021-02-27"},"sb21":{"v":"ok","n":3,"of":4,"at":"2022-08-06"},"sb22":{"v":"gone","n":3,"of":4,"at":"2021-02-27"},"sb23":{"v":"gone","n":3,"of":4,"at":"2021-02-27"},"sb24":{"v":"ok","n":3,"of":4,"at":"2025-03-04"},"sb25":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb26":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb27":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb28":{"v":"ok","n":3,"of":4,"at":"2021-02-27"},"sb29":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb30":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb31":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb32":{"v":"ok","n":3,"of":4,"at":"2022-08-06"},"sb33":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb34":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb35":{"v":"gone","n":2,"of":4,"at":"2021-02-27"}};
+COURTS_SIBIU.forEach(c => { const v = SAT_VIEW[c.id]; if (v && c.status === "unverified") { c.status = "satellite"; c.sat = v; } });
 const COURTS_ALL = [...COURTS_TGM, ...COURTS_SIBIU];
 const COURTS = COURTS_ALL.filter(c => c.city === ACTIVE_CITY);
 // Admin position corrections (settings/courtPos), cached so they apply before the first render.
@@ -9285,7 +9306,7 @@ function HomePage() {
     className: "section"
   }, /*#__PURE__*/React.createElement("div", {
     className: "container"
-  }, React.createElement(SibiuProgressBanner, null), /*#__PURE__*/React.createElement("div", {
+  }, React.createElement(SibiuProgressBanner, null), React.createElement(HomeAiCard, null), /*#__PURE__*/React.createElement("div", {
     className: "grid grid-3"
   }, /*#__PURE__*/React.createElement("button", {
     className: "action-card",
@@ -9422,7 +9443,7 @@ function CourtsPage() {
     }
   }, /*#__PURE__*/React.createElement("option", {
     value: "all"
-  }, t.allStatus), ["degraded", "inProgress", "renovated", "verified", "unverified"]
+  }, t.allStatus), ["degraded", "inProgress", "renovated", "verified", "satellite", "unverified"]
     .filter(s => all.some(c => c.status === s))
     .map(s => /*#__PURE__*/React.createElement("option", {
       key: s,
@@ -9713,6 +9734,7 @@ function CourtDetail({
     )
   ),
   React.createElement(CourtPulse, { court: c }),
+  React.createElement(AiCourtCard, { court: c, onLetter: c.category !== "gym" && c.status !== "renovated" ? () => setShowLetter(true) : null }),
   /*#__PURE__*/React.createElement("h4", {
     className: "mb-1"
   }, "Progress"), /*#__PURE__*/React.createElement("div", {
@@ -11415,7 +11437,7 @@ function GalleryTab() {
       setBusy(false);
     });
   };
-  const statusCls = s => s === "unverified" ? "badge-gray" : s === "degraded" ? "badge-red" : s === "inProgress" ? "badge-coral" : "badge-green";
+  const statusCls = s => s === "satellite" ? "badge-teal" : s === "unverified" ? "badge-gray" : s === "degraded" ? "badge-red" : s === "inProgress" ? "badge-coral" : "badge-green";
   return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "card mb-2",
     style: { borderLeftColor: "var(--green)" }
@@ -15100,6 +15122,35 @@ function AiPhotoHint({ photo, onResult, extra }) {
     extra && extra(r));
 }
 
+/* Home: tells visitors the AI helpers exist and opens the photo check (court picked inside). */
+function HomeAiCard() {
+  const { lang, setPage } = useApp();
+  const [open, setOpen] = useState(false);
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const e = React.createElement;
+  return e("div", { className: "ai-card", style: { marginBottom: "1rem" } },
+    e("div", { className: "ai-card-h" }, e("span", { className: "ai-card-pill" }, "✨ ", L3("NOU · AI", "NEW · AI", "ÚJ · AI")), L3("Fă o poză unui teren. AI-ul îți spune în ce stare e.", "Take a photo of a court. The AI tells you its condition.", "Fotózz le egy pályát. Az AI megmondja, milyen állapotban van.")),
+    e("p", { className: "text-sm", style: { color: "var(--textSec)", margin: "0 0 .7rem" } }, L3("Apoi, din pagina terenului, AI-ul scrie scrisoarea către Primărie. Tu doar o citești și o trimiți.", "Then, from the court page, the AI writes the letter to City Hall. You read it and send it.", "Aztán a pálya oldalán az AI megírja a levelet a Városházának. Te csak elolvasod és elküldöd.")),
+    e("div", { className: "ai-card-b" },
+      e("button", { className: "btn btn-green", onClick: () => setOpen(true) }, "📷 ", L3("Încearcă acum", "Try it now", "Próbáld ki")),
+      e("button", { className: "btn btn-outline", onClick: () => setPage("courts") }, "✉️ ", L3("Alege un teren pentru scrisoare", "Pick a court for the letter", "Válassz pályát a levélhez"))),
+    open && ReactDOM.createPortal(e(CourtConditionQuick, { onClose: () => setOpen(false) }), document.body));
+}
+
+/* The two AI helpers, shown high in the court detail so people find them. */
+function AiCourtCard({ court: c, onLetter }) {
+  const { lang } = useApp();
+  const [verify, setVerify] = useState(false);
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const e = React.createElement;
+  return e("div", { className: "ai-card" },
+    e("div", { className: "ai-card-h" }, e("span", { className: "ai-card-pill" }, "✨ ", L3("NOU · AI", "NEW · AI", "ÚJ · AI")), L3("AI-ul te ajută cu terenul ăsta", "The AI helps with this court", "Az AI segít ezzel a pályával")),
+    e("div", { className: "ai-card-b" },
+      e("button", { className: "btn btn-green", onClick: () => setVerify(true) }, "📷 ", L3("Pune o poză — AI-ul îți spune starea", "Add a photo — the AI reads its condition", "Tölts fel fotót — az AI megmondja az állapotát")),
+      onLetter && e("button", { className: "btn btn-outline", onClick: onLetter }, "✉️ ", L3("Scrisoare AI către Primărie", "AI letter to City Hall", "AI-levél a Városházának"))),
+    verify && ReactDOM.createPortal(e("div", { onClick: ev => ev.stopPropagation() }, e(CourtConditionQuick, { courtId: c.id, onClose: () => setVerify(false) })), document.body));
+}
+
 const CITY_HALL_EMAIL = { tgm: "infopublic@tirgumures.ro", sibiu: "pms@sibiu.ro" };
 // "Scrisoare AI": a letter to City Hall written only from what the site knows about this court.
 function AiLetterModal({ court: c, onClose }) {
@@ -16016,6 +16067,7 @@ function moodOfCourt(c) {
   if (c.status === "degraded") return "sad";
   if (c.status === "renovated") return "happy";
   if (c.status === "unverified") return "curious";
+  if (c.status === "satellite") return c.sat && c.sat.v === "ok" ? "happy" : "sad";
   return null;
 }
 const MASCOT_LINES = {
