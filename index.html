@@ -872,6 +872,31 @@ html.disco-fx{animation:discoHue 1.1s linear infinite}
 body.godmode-fx{box-shadow:inset 0 0 0 4px #F59E0B,inset 0 0 70px rgba(245,158,11,.22)}
 @media(prefers-reduced-motion:reduce){.egg-layer,.ball-rain{display:none}html.disco-fx{animation:none}}
 .no-fx .egg-layer,.no-fx .ball-rain{display:none}
+.mascot{--ms:88px;position:fixed;left:max(10px,env(safe-area-inset-left));bottom:calc(10px + env(safe-area-inset-bottom));z-index:310;pointer-events:none;opacity:0;transform:translateY(24px);transition:opacity .45s,transform .45s cubic-bezier(.2,1.3,.4,1)}
+.mascot.on{opacity:1;transform:none}
+.mascot.away{opacity:0;transform:translateY(40px) scale(.5)}
+.mascot-btn{pointer-events:auto;display:block;width:var(--ms);height:var(--ms);padding:0;border:0;background:none;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent;border-radius:50%}
+.mascot-btn canvas{width:var(--ms);height:var(--ms);display:block;position:relative;z-index:1}
+.mascot-btn:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.mascot-shadow{position:absolute;left:28%;right:28%;bottom:7%;height:8%;border-radius:50%;background:radial-gradient(rgba(0,0,0,.38),transparent 70%)}
+.mascot-bubble{pointer-events:auto;position:absolute;left:6px;bottom:calc(var(--ms) + 6px);width:max-content;max-width:min(250px,calc(100vw - 36px));background:var(--bgCard);color:var(--text);border:1px solid var(--border);border-radius:14px 14px 14px 4px;padding:.6rem .8rem;font-size:.86rem;line-height:1.35;box-shadow:0 10px 28px rgba(0,0,0,.22);animation:bubIn .28s cubic-bezier(.2,1.4,.4,1)}
+.mascot-hide{display:block;margin-top:.35rem;background:none;border:0;padding:0;color:var(--textSec);font-size:.74rem;text-decoration:underline;cursor:pointer}
+@keyframes bubIn{from{opacity:0;transform:translateY(8px) scale(.9)}}
+@media(max-width:700px){.mascot{--ms:64px}body:has(.modal-overlay) .mascot.on:not(:has(.mascot-bubble)){transform:translateX(-62%) scale(.8);opacity:.85}}
+.mascot-toggle{background:none;border:1px solid rgba(255,255,255,.28);color:var(--lightGrey);border-radius:999px;padding:.3rem .85rem;font-size:.8rem;cursor:pointer;margin-top:.7rem;font-family:inherit}
+.mascot-toggle:hover{border-color:var(--green);color:#fff}
+.celeb{position:fixed;inset:0;z-index:3000;background:rgba(8,12,28,.42);animation:fadeIn .25s,celebOut .45s ease 3.1s forwards;cursor:pointer}
+.celeb-cv{position:absolute;inset:0;width:100%;height:100%;display:block}
+.celeb-flash{position:absolute;inset:0;background:radial-gradient(circle at 62% 38%,rgba(249,115,22,.45),transparent 60%);opacity:0;pointer-events:none}
+.celeb-flash.go{animation:celebFlash .8s ease-out}
+@keyframes celebFlash{0%{opacity:1}100%{opacity:0}}
+.celeb-text{position:absolute;left:1rem;right:1rem;top:12vh;text-align:center;opacity:0;animation:celebTxt .55s cubic-bezier(.2,1.5,.4,1) 1.85s forwards;pointer-events:none}
+.celeb-text b{display:block;font-family:"Space Mono",monospace;font-size:clamp(3rem,13vw,6.5rem);line-height:1;color:#fff;-webkit-text-stroke:2px var(--coral);text-shadow:0 6px 0 var(--coral),0 14px 34px rgba(0,0,0,.4);letter-spacing:.04em}
+.celeb-text span{display:inline-block;margin-top:.9rem;background:rgba(17,24,39,.85);color:#fff;padding:.5rem 1.1rem;border-radius:999px;font-weight:600;font-size:clamp(.95rem,3.6vw,1.15rem)}
+@keyframes celebTxt{from{opacity:0;transform:scale(.4) rotate(-8deg)}to{opacity:1;transform:none}}
+@keyframes celebOut{to{opacity:0;visibility:hidden}}
+.no-fx .celeb,.no-fx .mascot{display:none}
+@media(prefers-reduced-motion:reduce){.celeb,.mascot{display:none}}
 /* === Premium polish v2 === */
 /* 1. Scroll progress bar */
 #g2p-progress{position:fixed;top:0;left:0;right:0;z-index:9999;height:2px;background:linear-gradient(90deg,var(--green),var(--teal) 55%,var(--coral));transform-origin:left;transform:scaleX(0);pointer-events:none;will-change:transform}
@@ -8063,6 +8088,7 @@ function CourtDetail({
   } = useApp();
   const [ci, setCi] = useState(false);
   const [showPlay, setShowPlay] = useState(false);
+  useEffect(() => { g2pMood(moodOfCourt(c)); return () => g2pMood(null); }, [c && c.id]);
   const [showQR, setShowQR] = useState(false);
   const [showWanted, setShowWanted] = useState(false);
   const [unlockBadge, setUnlockBadge] = useState(null);
@@ -8937,9 +8963,12 @@ function PetitionPage() {
     }));
     setVoted(true);
     localStorage.setItem("g2p_voted", "1");
-    setShowConfetti(true);
-    awardBadge("vocal", function(b) { setUnlockBadge(b); });
-    awardBadge("voter", function(b) { setUnlockBadge(b); });
+    // The big 3D celebration plays first; badges pop after it so they do not stack on top.
+    const celebrating = !fxReduced();
+    if (celebrating) g2pCelebrate("petition"); else setShowConfetti(true);
+    const later = fn => setTimeout(fn, celebrating ? 3300 : 0);
+    awardBadge("vocal", function(b) { later(() => setUnlockBadge(b)); });
+    awardBadge("voter", function(b) { later(() => setUnlockBadge(b)); });
     toast(t.success + " +10 " + t.points);
   };
   useEffect(function() {
@@ -13059,6 +13088,7 @@ function CourtConditionQuick({ onClose, courtId: presetCourt }) {
       toast(t.conditionSubmitted);
       setSubmitting(false);
       onClose();
+      g2pCelebrate("verify");
     }).catch(() => { setSubmitting(false); toast(t.error); });
   };
   return React.createElement("div", { className: "modal-overlay", onClick: onClose },
@@ -13678,7 +13708,7 @@ function Footer() {
       className: "footer"
     }, /*#__PURE__*/React.createElement("div", {
       className: "container"
-    }, /*#__PURE__*/React.createElement("p", { className: "footer-credit" }, t.madeBy, " ", t.owner, " · ", t.city), /*#__PURE__*/React.createElement("p", {
+    }, /*#__PURE__*/React.createElement("p", { className: "footer-credit" }, t.madeBy, " ", t.owner, " · ", t.city), React.createElement(MascotToggle, null), /*#__PURE__*/React.createElement("p", {
       className: "mt-1"
     }, /*#__PURE__*/React.createElement("a", {
       href: "https://www.google.com/maps/d/viewer?mid=19tND_bqOJoFbhTNKN0PenNW7S7yUog8",
@@ -13709,6 +13739,365 @@ function Footer() {
 
 /* === Easter eggs: rare critters crossing the screen + secret key combos.
    Both honor prefers-reduced-motion and the admin "effects" kill-switch. === */
+/* === Mascot: a 3D basketball with a face, plus the big "swish" celebration === */
+// Other components talk to it with window events, so nothing else needs to know it exists:
+//   g2pCelebrate("petition" | "verify")  -> big 3D shot into a hoop
+//   g2pMood("sad" | "happy" | "curious" | null) -> how the ball feels about the court on screen
+function g2pCelebrate(kind) { try { window.dispatchEvent(new CustomEvent("g2p:celebrate", { detail: { kind: kind } })); } catch (e) {} }
+function g2pMood(m) { window.__g2pMood = m; try { window.dispatchEvent(new CustomEvent("g2p:mood", { detail: { mood: m } })); } catch (e) {} }
+function mascotOff() { try { return localStorage.getItem("g2p_mascot_off") === "1"; } catch (e) { return false; } }
+function moodOfCourt(c) {
+  if (!c) return null;
+  if (c.status === "degraded") return "sad";
+  if (c.status === "renovated") return "happy";
+  if (c.status === "unverified") return "curious";
+  return null;
+}
+const MASCOT_LINES = {
+  ro: {
+    tap: ["Ușor, sunt minge, nu buton de like 😤", "Încă o dată și chem arbitrul.", "Dribbling level: bunica. Mai încearcă.", "Eu sar. Coșurile din cartier, nu prea.", "Nu mă mai apăsa, mă dezumfli emoțional.", "Am un singur vis: un coș fără îndoituri.", "Fun fact: n-am mâini. Tu ai. Folosește-le la petiție.", "Mă rotesc mai mult decât proiectele primăriei."],
+    sad: "Terenul ăsta mă dezumflă. Literalmente.",
+    happy: "Teren renovat?! Eu nu plâng, tu plângi. 🥲",
+    curious: "Nimeni n-a verificat terenul ăsta. Tu ești primul? 👀",
+    petition: "Psst. Butonul verde. Știi tu care.",
+    hide: "Ascunde mingea",
+    label: "Mascota G2P — apasă-mă"
+  },
+  en: {
+    tap: ["Easy, I'm a ball, not a like button 😤", "One more time and I'm calling the ref.", "Dribbling level: grandma. Try again.", "I bounce. The hoops round here, not so much.", "Stop poking me, I'm emotionally deflating.", "One dream: a hoop that isn't bent.", "Fun fact: I have no hands. You do. Use them on the petition.", "I spin more than city hall's projects."],
+    sad: "This court deflates me. Literally.",
+    happy: "A renovated court?! I'm not crying, you're crying. 🥲",
+    curious: "Nobody has checked this court yet. You first? 👀",
+    petition: "Psst. The green button. You know the one.",
+    hide: "Hide the ball",
+    label: "G2P mascot — tap me"
+  },
+  hu: { // TODO: HU review
+    tap: ["Lassan, labda vagyok, nem lájkgomb 😤", "Még egyszer, és hívom a bírót.", "Cselezés szint: nagymama. Próbáld újra.", "Én pattogok. A palánkok itt nem nagyon.", "Ne bökdöss, érzelmileg leeresztek.", "Egy álmom van: egy nem görbe gyűrű."],
+    sad: "Ez a pálya leereszt. Szó szerint.",
+    happy: "Felújított pálya?! Nem sírok, te sírsz. 🥲",
+    curious: "Ezt a pályát még senki sem ellenőrizte. Te leszel az első? 👀",
+    petition: "Pszt. A zöld gomb. Tudod, melyik.",
+    hide: "Labda elrejtése",
+    label: "G2P kabala — koppints rám"
+  }
+};
+
+// One textured ball with eyes and a mouth. Shared by the corner mascot and the celebration.
+function makeMascotBall(THREE, r) {
+  const cv = document.createElement("canvas"); cv.width = 512; cv.height = 256;
+  const g = cv.getContext("2d");
+  const grd = g.createLinearGradient(0, 0, 0, 256); grd.addColorStop(0, "#F58A2E"); grd.addColorStop(1, "#D9621A");
+  g.fillStyle = grd; g.fillRect(0, 0, 512, 256);
+  g.fillStyle = "rgba(120,40,0,.18)";
+  for (let i = 0; i < 2600; i++) g.fillRect(Math.random() * 512, Math.random() * 256, 1.4, 1.4);
+  g.strokeStyle = "#1b1209"; g.lineWidth = 6; g.lineCap = "round";
+  const line = (pts) => { g.beginPath(); pts.forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])); g.stroke(); };
+  line([[0, 128], [512, 128]]);
+  line([[128, 0], [128, 256]]); line([[384, 0], [384, 256]]);
+  [0, 256, 512].forEach(s => [1, -1].forEach(k => { const p = []; for (let y = 0; y <= 256; y += 8) p.push([s + k * 70 * Math.sin(Math.PI * y / 256), y]); line(p); }));
+  const tex = new THREE.CanvasTexture(cv);
+  const root = new THREE.Group(), body = new THREE.Group();
+  root.add(body);
+  const ball = new THREE.Mesh(new THREE.SphereGeometry(r, 40, 28), new THREE.MeshStandardMaterial({ map: tex, roughness: .62, metalness: .02 }));
+  ball.rotation.y = -Math.PI / 2;
+  body.add(ball);
+  const face = new THREE.Group(); body.add(face);
+  const white = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: .3 });
+  const black = new THREE.MeshBasicMaterial({ color: 0x111111 });
+  const eyes = [], pupils = [];
+  [-1, 1].forEach(s => {
+    const e = new THREE.Mesh(new THREE.SphereGeometry(r * .21, 20, 14), white);
+    e.position.set(s * r * .34, r * .22, r * .9); e.scale.z = .55;
+    const p = new THREE.Mesh(new THREE.SphereGeometry(r * .1, 14, 10), black);
+    p.position.set(0, 0, r * .16); e.add(p);
+    const shine = new THREE.Mesh(new THREE.SphereGeometry(r * .035, 8, 6), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+    shine.position.set(r * .04, r * .05, r * .09); p.add(shine);
+    face.add(e); eyes.push(e); pupils.push(p);
+  });
+  const mouth = new THREE.Mesh(new THREE.TorusGeometry(r * .2, r * .035, 8, 24, Math.PI), black);
+  mouth.position.set(0, -r * .12, r * .97); mouth.rotation.z = Math.PI;
+  face.add(mouth);
+  return { root, body, ball, eyes, pupils, mouth, dispose() { root.traverse(o => { o.geometry && o.geometry.dispose(); }); tex.dispose(); } };
+}
+
+function Mascot({ page }) {
+  const { lang, settings } = useApp();
+  const fxOff = !!(settings && settings.flags && settings.flags.effects === false);
+  const [off, setOff] = useState(mascotOff);
+  const [ready, setReady] = useState(false);
+  const [bubble, setBubble] = useState(null);
+  const [away, setAway] = useState(false);
+  const wrapRef = useRef(null), cvRef = useRef(null), api = useRef({}), bubbleT = useRef(0), said = useRef({});
+  const L = MASCOT_LINES[lang] || MASCOT_LINES.ro;
+  const Lref = useRef(L); Lref.current = L;
+  const say = (text, ms) => { clearTimeout(bubbleT.current); setBubble(text); bubbleT.current = setTimeout(() => setBubble(null), ms || 3400); };
+  useEffect(() => {
+    const h = () => setOff(mascotOff());
+    window.addEventListener("g2p:mascot", h);
+    return () => window.removeEventListener("g2p:mascot", h);
+  }, []);
+  useEffect(() => {
+    if (off || fxOff || fxReduced()) return;
+    let alive = true, raf = 0, renderer = null, model = null, idleT = 0;
+    const start = () => loadThree().then(() => {
+      if (!alive || !cvRef.current) return;
+      try { renderer = new THREE.WebGLRenderer({ canvas: cvRef.current, alpha: true, antialias: true }); } catch (e) { return; }
+      renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+      renderer.setSize(88, 88, false);
+      const scene = new THREE.Scene();
+      const cam = new THREE.PerspectiveCamera(32, 1, .1, 50); cam.position.set(0, .15, 5.2);
+      scene.add(new THREE.HemisphereLight(0xffffff, 0x553322, .95));
+      const sun = new THREE.DirectionalLight(0xffffff, .85); sun.position.set(2, 3, 4); scene.add(sun);
+      model = makeMascotBall(THREE, 1);
+      scene.add(model.root);
+      const st = { mood: window.__g2pMood || null, hop: -1, spin: 0, blink: 0, nextBlink: 2, lx: 0, ly: 0, tx: 0, ty: 0, look: 0, born: performance.now() };
+      api.current.hop = () => { st.hop = 0; };
+      api.current.mood = m => { st.mood = m; };
+      const onMove = e => {
+        const r = cvRef.current && cvRef.current.getBoundingClientRect(); if (!r) return;
+        const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2), d = Math.hypot(dx, dy) || 1;
+        const k = Math.min(1, d / 400);
+        st.tx = dx / d * k; st.ty = dy / d * k; st.look = performance.now();
+      };
+      window.addEventListener("pointermove", onMove, { passive: true });
+      api.current.cleanup = () => window.removeEventListener("pointermove", onMove);
+      let last = performance.now();
+      const tick = now => {
+        if (!alive) return;
+        raf = requestAnimationFrame(tick);
+        if (document.hidden) return;
+        const dt = Math.min(.05, (now - last) / 1000); last = now;
+        const t = now / 1000, b = model.body, m = st.mood;
+        // Enter: drop in from above with a squash.
+        const age = (now - st.born) / 1000;
+        let y = age < .7 ? 3 * Math.pow(1 - age / .7, 2) : 0;
+        let sx = 1, sy = 1;
+        if (age >= .7 && age < 1) { const k = Math.sin((age - .7) / .3 * Math.PI); sy = 1 - .22 * k; sx = 1 + .14 * k; }
+        // Idle bob; sad = slower and flatter, happy = little hops every few seconds.
+        y += (m === "sad" ? .03 : .07) * Math.sin(t * (m === "sad" ? 1.2 : 2.2));
+        if (m === "happy" && st.hop < 0 && Math.sin(t * .9) > .995) st.hop = 0;
+        if (st.hop >= 0) {
+          st.hop += dt / .62;
+          const h = st.hop;
+          if (h < .15) { const k = h / .15; sy *= 1 - .2 * k; sx *= 1 + .12 * k; }
+          else if (h < .85) { const k = (h - .15) / .7; y += 1.15 * 4 * k * (1 - k); st.spin = k * Math.PI * 2; }
+          else if (h < 1) { const k = Math.sin((h - .85) / .15 * Math.PI); sy *= 1 - .18 * k; sx *= 1 + .1 * k; st.spin = 0; }
+          else { st.hop = -1; st.spin = 0; }
+        }
+        if (m === "sad") { sy *= .86; sx *= 1.07; }
+        b.position.y = y; b.scale.set(sx, sy, sx);
+        model.ball.rotation.x = st.spin;
+        // Look at the pointer (eases back to the camera after 2 s of no movement).
+        const idle = now - st.look > 2000;
+        const gx = idle ? Math.sin(t * .5) * .15 : st.tx, gy = idle ? 0 : st.ty;
+        st.lx += (gx - st.lx) * .12; st.ly += (gy - st.ly) * .12;
+        b.rotation.y = st.lx * .45;
+        b.rotation.x = st.ly * .35 + (m === "sad" ? .22 : 0);
+        b.rotation.z = m === "curious" ? .26 * Math.sin(t * 1.4) : 0;
+        model.pupils.forEach(p => { p.position.x = st.lx * .07; p.position.y = -st.ly * .07; });
+        // Blink.
+        st.nextBlink -= dt;
+        if (st.nextBlink <= 0) { st.blink = 1; st.nextBlink = 2.5 + Math.random() * 4; }
+        if (st.blink > 0) st.blink = Math.max(0, st.blink - dt * 7);
+        const lid = st.blink > 0 ? Math.abs(Math.cos(st.blink * Math.PI)) : 1;
+        model.eyes.forEach(e => { e.scale.y = Math.max(.08, lid * (m === "sad" ? .6 : 1)); });
+        // Mouth: smile, frown when sad, small "o" when curious.
+        model.mouth.rotation.z = m === "sad" ? 0 : Math.PI;
+        model.mouth.position.y = m === "sad" ? -.32 : -.12;
+        const ms = m === "happy" ? 1.3 : m === "curious" ? .6 : 1;
+        model.mouth.scale.set(ms, ms, 1);
+        renderer.render(scene, cam);
+      };
+      raf = requestAnimationFrame(tick);
+      setReady(true);
+    }).catch(() => {});
+    // Wait until the page has settled so the ball never competes with the first paint.
+    idleT = setTimeout(start, 2200);
+    return () => {
+      alive = false; clearTimeout(idleT); cancelAnimationFrame(raf);
+      api.current.cleanup && api.current.cleanup();
+      if (model) model.dispose();
+      if (renderer) { renderer.dispose(); try { renderer.forceContextLoss(); } catch (e) {} }
+      api.current = {};
+      setReady(false);
+    };
+  }, [off, fxOff]);
+  // React to what is on screen: a court's status, or the petition page.
+  useEffect(() => {
+    const h = e => {
+      const m = e.detail && e.detail.mood;
+      api.current.mood && api.current.mood(m);
+      // Each mood speaks once per visit, so 35 unverified courts do not mean 35 speeches.
+      if (m && Lref.current[m] && !said.current[m]) { said.current[m] = 1; say(Lref.current[m], 4200); }
+    };
+    window.addEventListener("g2p:mood", h);
+    return () => window.removeEventListener("g2p:mood", h);
+  }, []);
+  useEffect(() => {
+    if (!ready || page !== "petition") return;
+    const id = setTimeout(() => say(Lref.current.petition, 4000), 6000);
+    return () => clearTimeout(id);
+  }, [ready, page]);
+  // During the big celebration the ball is "on the court", so the corner one steps away.
+  useEffect(() => {
+    let id = 0;
+    const h = () => { setAway(true); clearTimeout(id); id = setTimeout(() => { setAway(false); api.current.hop && api.current.hop(); }, 3200); };
+    window.addEventListener("g2p:celebrate", h);
+    return () => { window.removeEventListener("g2p:celebrate", h); clearTimeout(id); };
+  }, []);
+  useEffect(() => () => clearTimeout(bubbleT.current), []);
+  if (off || fxOff) return null;
+  const onTap = () => {
+    api.current.hop && api.current.hop();
+    try { navigator.vibrate && navigator.vibrate(12); } catch (e) {}
+    const lines = Lref.current.tap;
+    say(lines[Math.floor(Math.random() * lines.length)]);
+  };
+  const hide = e => {
+    e.stopPropagation();
+    try { localStorage.setItem("g2p_mascot_off", "1"); } catch (err) {}
+    window.dispatchEvent(new CustomEvent("g2p:mascot"));
+  };
+  return React.createElement("div", { ref: wrapRef, className: "mascot" + (ready ? " on" : "") + (away ? " away" : "") },
+    bubble && React.createElement("div", { className: "mascot-bubble", role: "status" },
+      bubble,
+      React.createElement("button", { className: "mascot-hide", onClick: hide }, L.hide)),
+    React.createElement("button", { className: "mascot-btn", "aria-label": L.label, onClick: onTap },
+      React.createElement("canvas", { ref: cvRef, width: 176, height: 176 }),
+      React.createElement("span", { className: "mascot-shadow", "aria-hidden": "true" })));
+}
+
+// Footer switch: bring the ball back (or send it away).
+function MascotToggle() {
+  const { lang } = useApp();
+  const [off, setOff] = useState(mascotOff);
+  useEffect(() => { const h = () => setOff(mascotOff()); window.addEventListener("g2p:mascot", h); return () => window.removeEventListener("g2p:mascot", h); }, []);
+  const flip = () => {
+    try { localStorage.setItem("g2p_mascot_off", off ? "0" : "1"); } catch (e) {}
+    window.dispatchEvent(new CustomEvent("g2p:mascot"));
+  };
+  const lbl = lang === "en" ? (off ? "Bring the ball back" : "Hide the ball") : lang === "hu" ? (off ? "Labda vissza" : "Labda elrejtése") : (off ? "Adu mingea înapoi" : "Ascunde mingea");
+  return React.createElement("button", { className: "mascot-toggle", onClick: flip, "aria-pressed": !off }, "🏀 ", lbl);
+}
+
+function BigCelebration() {
+  const { lang } = useApp();
+  const [show, setShow] = useState(null);
+  const cvRef = useRef(null);
+  useEffect(() => {
+    const h = e => { if (!fxReduced()) setShow({ kind: (e.detail && e.detail.kind) || "petition", id: Date.now() }); };
+    window.addEventListener("g2p:celebrate", h);
+    return () => window.removeEventListener("g2p:celebrate", h);
+  }, []);
+  useEffect(() => {
+    if (!show) return;
+    let alive = true, raf = 0, renderer = null, model = null, killT = setTimeout(() => setShow(null), 3600);
+    try { navigator.vibrate && navigator.vibrate([20, 60, 20, 200, 40]); } catch (e) {}
+    loadThree().then(() => {
+      if (!alive || !cvRef.current) return;
+      const W = window.innerWidth, H = window.innerHeight;
+      try { renderer = new THREE.WebGLRenderer({ canvas: cvRef.current, alpha: true, antialias: true }); } catch (e) { return; }
+      renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+      renderer.setSize(W, H, false);
+      const scene = new THREE.Scene();
+      const cam = new THREE.PerspectiveCamera(45, W / H, .1, 100); cam.position.set(0, 2, 9); cam.lookAt(0, 2, 0);
+      scene.add(new THREE.HemisphereLight(0xffffff, 0x334455, 1));
+      const sun = new THREE.DirectionalLight(0xffffff, .9); sun.position.set(-3, 6, 6); scene.add(sun);
+      const halfW = Math.tan(22.5 * Math.PI / 180) * 9 * (W / H);
+      const hx = Math.min(halfW * .5, 3.2), rimY = 3.2, R = .34;
+      const hoop = new THREE.Group(); hoop.position.set(hx, 0, 0); scene.add(hoop);
+      const board = new THREE.Mesh(new THREE.BoxGeometry(1.9, 1.2, .06), new THREE.MeshStandardMaterial({ color: 0xffffff, transparent: true, opacity: .88, roughness: .2 }));
+      board.position.set(0, rimY + .55, -.62); hoop.add(board);
+      const square = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(.7, .5, .07)), new THREE.LineBasicMaterial({ color: 0xF97316 }));
+      square.position.set(0, rimY + .3, -.58); hoop.add(square);
+      const rimMat = new THREE.MeshStandardMaterial({ color: 0xF97316, emissive: 0x000000, metalness: .4, roughness: .4 });
+      const rim = new THREE.Mesh(new THREE.TorusGeometry(.44, .035, 10, 40), rimMat);
+      rim.rotation.x = Math.PI / 2; rim.position.set(0, rimY, -.08); hoop.add(rim);
+      const net = new THREE.Mesh(new THREE.CylinderGeometry(.44, .27, .6, 14, 4, true), new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: .85 }));
+      net.position.set(0, rimY - .3, -.08); hoop.add(net);
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(.06, .06, rimY + .6, 10), new THREE.MeshStandardMaterial({ color: 0x555b66 }));
+      pole.position.set(0, (rimY + .6) / 2 - .2, -.9); hoop.add(pole);
+      model = makeMascotBall(THREE, R);
+      scene.add(model.root);
+      // Confetti: flat paper bits in the brand colours.
+      const COLS = [0x10B981, 0x0D9488, 0xF97316, 0xFACC15, 0xffffff, 0xEC4899];
+      const bits = [], bitGeo = new THREE.PlaneGeometry(.09, .14);
+      const pop = () => {
+        for (let i = 0; i < 140; i++) {
+          const m = new THREE.Mesh(bitGeo, new THREE.MeshBasicMaterial({ color: COLS[i % COLS.length], side: THREE.DoubleSide, transparent: true }));
+          const a = Math.random() * Math.PI * 2, sp = 2 + Math.random() * 4.5;
+          m.position.set(hx, rimY, 0);
+          m.userData = { vx: Math.cos(a) * sp * .7, vy: 3 + Math.random() * 5, vz: Math.sin(a) * sp * .4, rx: Math.random() * 9, ry: Math.random() * 9 };
+          scene.add(m); bits.push(m);
+        }
+      };
+      const sx0 = -halfW - .8, jx = -halfW * .45;
+      let popped = false, last = performance.now(), t0 = last;
+      const tick = now => {
+        if (!alive) return;
+        raf = requestAnimationFrame(tick);
+        const dt = Math.min(.05, (now - last) / 1000); last = now;
+        const t = (now - t0) / 1000, b = model.root, bd = model.body;
+        let sx = 1, sy = 1;
+        if (t < .65) { // roll in
+          const k = t / .65, e = 1 - Math.pow(1 - k, 3);
+          b.position.set(sx0 + (jx - sx0) * e, R, 0); model.ball.rotation.x = 0; bd.rotation.z = -(b.position.x - sx0) / R * .5;
+        } else if (t < .9) { // crouch
+          const k = Math.sin((t - .65) / .25 * Math.PI / 2); sy = 1 - .3 * k; sx = 1 + .18 * k;
+          b.position.set(jx, R * sy, 0); bd.rotation.z *= .8;
+        } else if (t < 1.75) { // the shot
+          const k = (t - .9) / .85, top = rimY + 1.7, y0 = R, y1 = rimY + .25;
+          const x = jx + (hx - jx) * k;
+          const y = (1 - k) * (1 - k) * y0 + 2 * (1 - k) * k * (top + .9) + k * k * y1;
+          b.position.set(x, y, -.08 * k); model.ball.rotation.x -= dt * 9; bd.rotation.z = 0;
+          sy = 1 + .12 * Math.sin(k * Math.PI); sx = 1 / sy;
+        } else if (t < 2.1) { // swish through the net
+          const k = (t - 1.75) / .35;
+          b.position.set(hx, rimY + .25 - 1.1 * k, -.08);
+          net.scale.y = 1 + .45 * Math.sin(k * Math.PI); net.position.y = rimY - .3 - .12 * Math.sin(k * Math.PI);
+          if (!popped && k > .35) {
+            popped = true; pop(); rimMat.emissive.setHex(0xF97316);
+            const fl = document.querySelector(".celeb-flash"); fl && fl.classList.add("go");
+          }
+        } else { // bounce away under the hoop
+          const k = t - 2.1, y = Math.abs(Math.sin(k * 6)) * Math.exp(-k * 2.2) * 1.3;
+          b.position.set(hx - k * 1.1, R + y, -.08);
+          model.ball.rotation.x -= dt * 5;
+        }
+        rimMat.emissive.multiplyScalar(.93);
+        bd.scale.set(sx, sy, sx);
+        model.pupils.forEach(p => { p.position.x = .02; p.position.y = .02; });
+        bits.forEach(m => {
+          const u = m.userData; u.vy -= 9 * dt; u.vx *= .985; u.vz *= .985;
+          m.position.x += u.vx * dt; m.position.y += Math.max(u.vy, -2.2) * dt; m.position.z += u.vz * dt;
+          m.rotation.x += u.rx * dt; m.rotation.y += u.ry * dt;
+          if (t > 2.8) m.material.opacity = Math.max(0, 1 - (t - 2.8) / .7);
+        });
+        renderer.render(scene, cam);
+      };
+      raf = requestAnimationFrame(tick);
+    }).catch(() => {});
+    return () => {
+      alive = false; clearTimeout(killT); cancelAnimationFrame(raf);
+      if (model) model.dispose();
+      if (renderer) { renderer.dispose(); try { renderer.forceContextLoss(); } catch (e) {} }
+    };
+  }, [show && show.id]);
+  if (!show) return null;
+  const petition = show.kind !== "verify";
+  const title = lang === "en" ? "SWISH!" : lang === "hu" ? "KOSÁR!" : "COȘ!";
+  const sub = petition
+    ? (lang === "en" ? "Your signature just went in." : lang === "hu" ? "Az aláírásod bement." : "Semnătura ta a intrat în coș.")
+    : (lang === "en" ? "Court checked. Legend behaviour." : lang === "hu" ? "Pálya ellenőrizve. Legenda." : "Teren verificat. Comportament de legendă.");
+  return React.createElement("div", { className: "celeb", key: show.id, "aria-live": "polite", onClick: () => setShow(null) },
+    React.createElement("canvas", { ref: cvRef, className: "celeb-cv" }),
+    React.createElement("div", { className: "celeb-flash" }),
+    React.createElement("div", { className: "celeb-text" },
+      React.createElement("b", null, title),
+      React.createElement("span", null, sub)));
+}
+
 function FunEggs() {
   var settings = useApp().settings;
   var fxOff = !!(settings && settings.flags && settings.flags.effects === false);
@@ -14180,7 +14569,7 @@ function App() {
     }
   }, /*#__PURE__*/React.createElement("div", {
     key: page
-  }, React.createElement(PageBoundary, null, P()))), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(FunEggs, null), React.createElement(SecretKeys, null), mayor && React.createElement(MayorMode, {
+  }, React.createElement(PageBoundary, null, P()))), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(FunEggs, null), React.createElement(SecretKeys, null), React.createElement(Mascot, { page: page }), React.createElement(BigCelebration, null), mayor && React.createElement(MayorMode, {
     onClose: () => setMayor(false)
   }), /*#__PURE__*/React.createElement(Footer, null), toastEl, authEl, nudgeEl);
 }
