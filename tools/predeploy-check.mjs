@@ -47,6 +47,13 @@ for (const f of ["manifest.json", "database.rules.json"]) {
 for (const f of ["sw.js", "manifest.json", "icons/icon-192.png", "icons/icon-512.png"])
   if (!existsSync(f)) fail.push("missing deploy file: " + f);
 try { new vm.Script(readFileSync("sw.js", "utf8"), { filename: "sw.js" }); ok("sw.js parses"); } catch (e) { fail.push("sw.js syntax error: " + e.message); }
+// Netlify Functions: a file that does not parse fails the whole deploy, so check it here first.
+if (existsSync("netlify/functions")) for (const f of readdirSync("netlify/functions").filter(n => /\.m?js$/.test(n))) {
+  const p = join("netlify/functions", f), src = readFileSync(p, "utf8");
+  try { execFileSync(process.execPath, ["--check", p], { stdio: "pipe" }); ok(p + " parses"); } catch (e) { fail.push("SYNTAX " + p + ": " + String(e.stderr || e.message).split("\n").slice(0, 4).join(" ")); }
+  if (/sk-ant-[A-Za-z0-9_-]{10,}/.test(src)) fail.push(p + " contains an API key — keys belong in Netlify env vars only");
+}
+if (/sk-ant-[A-Za-z0-9_-]{10,}/.test(html)) fail.push("index.html contains an API key — keys belong in Netlify env vars only");
 
 // 5. Test material must never ship.
 const walk = dir => existsSync(dir) ? readdirSync(dir).flatMap(n => { const p = join(dir, n); return statSync(p).isDirectory() ? walk(p) : [p]; }) : [];
