@@ -1096,6 +1096,7 @@ html.g2p-shake .card,html.g2p-shake .stat-tile{animation:cardShake .5s 3}
 .ai-cond{padding:.1rem .5rem;border-radius:999px;background:var(--border);color:var(--text)}.ai-c-good{background:var(--green);color:var(--white)}.ai-c-degraded{background:var(--coral);color:var(--white)}.ai-c-abandoned{background:var(--red);color:var(--white)}
 .ai-conf{font-family:'Space Mono',monospace;color:var(--textSec)}.ai-acts{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}.ai-card>.ai-btn{margin-top:.5rem}
 .ai-letter-start p{font-size:.88rem;line-height:1.45}.ai-letter-text{width:100%;font-size:.88rem;line-height:1.5;resize:vertical;min-height:220px}
+.sat-find{padding:.85rem 1rem;margin-bottom:1rem}.sat-find-h{font-family:'Space Mono',monospace;font-size:.8rem;font-weight:700;margin-bottom:.3rem}.sat-find-t{font-size:.92rem;line-height:1.45;margin:0 0 .4rem}.sat-find-s{font-size:.74rem;color:var(--textSec);margin:0;line-height:1.45}.sat-find-a{background:none;border:0;padding:0;color:var(--teal);font:inherit;font-weight:700;cursor:pointer;text-decoration:underline}
 .ai-letter-acts{display:grid;grid-template-columns:1fr 1fr auto;gap:.5rem;margin-top:.7rem}.ai-letter-acts .btn{justify-content:center;white-space:nowrap}
 @media(max-width:520px){.ai-letter-acts .btn-green{grid-column:1/-1;order:-1}}
 @media (prefers-reduced-motion:reduce){.ai-spark{animation:none}}
@@ -3588,6 +3589,45 @@ function tmSpan(a, b, lang) {
   if (lang === "en") return (y ? y + (y === 1 ? " year" : " years") : "") + (y && m ? " " : "") + (m ? m + (m === 1 ? " month" : " months") : "") || "same month";
   if (lang === "hu") return (y ? y + " év" : "") + (y && m ? " " : "") + (m ? m + " hónap" : "") || "ugyanaz a hónap"; // TODO: HU review
   return (y ? y + (y === 1 ? " an" : " ani") : "") + (y && m ? " și " : "") + (m ? m + (m === 1 ? " lună" : " luni") : "") || "aceeași lună";
+}
+
+/* Team's blind satellite audit (tools/sat_merge.mjs → data/sat_findings.json): what the images showed, never today's state. */
+var satFindCache = null;
+function SatFinding({ court: c }) {
+  const { lang } = useApp();
+  const [d, setD] = useState(null);
+  const [verify, setVerify] = useState(false);
+  useEffect(() => {
+    if (!/^sb\d/.test(c.id)) return;
+    if (!satFindCache) satFindCache = fetch("/data/sat_findings.json").then(r => r.ok ? r.json() : null).catch(() => { satFindCache = null; return null; });
+    let alive = true;
+    satFindCache.then(j => { if (alive) setD(j); });
+    return () => { alive = false; };
+  }, [c.id]);
+  const f = d && d.courts && d.courts[c.id];
+  if (!f) return null;
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const loc = lang === "en" ? "en-GB" : lang === "hu" ? "hu-HU" : "ro-RO";
+  const md = s => s ? new Date(s + "T12:00:00").toLocaleDateString(loc, { month: "short", year: "numeric" }) : "?";
+  const last = md(f.latestCapture);
+  const kinds = { built: L3("apare prima dată", "first appears", "először látható"), resurfaced: L3("refăcut", "resurfaced", "felújítva"), degraded: L3("degradat vizibil", "visibly degraded", "láthatóan leromlott"), construction: L3("șantier", "construction site", "építkezés"), removed: L3("dispare", "disappears", "eltűnik") };
+  let text, tone = "var(--textSec)";
+  const fd = f.finding;
+  if (fd === "no-court-visible") { text = L3("Niciun teren vizibil în nicio imagine, până în " + last + ". Poate a fost construit după, sau e o eroare pe hartă.", "No court visible in any image up to " + last + ". It may have been built later, or the map is wrong.", "Egyik képen sem látszik pálya " + last + "-ig. Lehet, hogy később épült, vagy hibás a térkép."); tone = "var(--red)"; }
+  else if (/^gone-after-/.test(fd)) { text = L3("Văzut ca teren până în " + md(fd.slice(11)) + "; nu mai apare în imaginea din " + last + ".", "Seen as a court until " + md(fd.slice(11)) + "; gone in the " + last + " image.", "Pályaként látható " + md(fd.slice(11)) + "-ig; a " + last + " képen már nincs."); tone = "var(--red)"; }
+  else if (fd === "unchanged") text = L3("Neschimbat în toate imaginile, până în " + last + ".", "Unchanged in every image up to " + last + ".", "Minden képen változatlan " + last + "-ig.");
+  else if (/-between-/.test(fd)) { const m = fd.match(/^(\w+)-between-(\d{4}-\d\d-\d\d)-(\d{4}-\d\d-\d\d)$/); text = m ? (kinds[m[1]] || m[1]) + " " + L3("între " + md(m[2]) + " și " + md(m[3]), "between " + md(m[2]) + " and " + md(m[3]), md(m[2]) + " és " + md(m[3]) + " között") + "." : null; tone = "var(--green)"; }
+  else if (/-before-/.test(fd)) { const k = fd.split("-before-"); text = (kinds[k[0]] || k[0]) + (k[1] && k[1] !== "?" ? " " + L3("înainte de ", "before ", "előtt: ") + md(k[1]) : "") + "."; tone = "var(--green)"; }
+  else text = L3("Evaluatorii nu au căzut încă de acord pe imaginile acestui teren.", "The reviewers don't agree yet on this court's images.", "Az értékelők még nem értenek egyet ennél a pályánál.");
+  if (!text) return null;
+  text = text.charAt(0).toUpperCase() + text.slice(1);
+  return React.createElement("div", { className: "card sat-find", style: { borderLeft: "4px solid " + tone } },
+    React.createElement("div", { className: "sat-find-h" }, "🛰️ ", L3("Ce a văzut satelitul", "What the satellite saw", "Amit a műhold látott")),
+    React.createElement("p", { className: "sat-find-t" }, text),
+    React.createElement("p", { className: "sat-find-s" },
+      L3("Evaluat orb, separat, de " + f.n + " membri ai echipei · imagini Esri World Imagery Wayback · satelitul nu arată starea de azi. ", "Reviewed blind and separately by " + f.n + " team members · Esri World Imagery Wayback · the satellite does not show today's state. ", "Vakon, külön értékelte " + f.n + " csapattag · Esri World Imagery Wayback · a műhold nem a mai állapotot mutatja. "),
+      React.createElement("button", { className: "sat-find-a", onClick: () => setVerify(true) }, L3("Știi cum arată azi? Verifică-l →", "Know how it looks today? Check it →", "Tudod, milyen ma? Ellenőrizd →"))),
+    verify && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(CourtConditionQuick, { courtId: c.id, onClose: () => setVerify(false) })), document.body));
 }
 
 function SatelliteTimeMachine(props) {
@@ -9720,6 +9760,7 @@ function CourtDetail({
   ),
   React.createElement(ActiveGames, { court: c }),
   React.createElement(RatingSection, { court: c }),
+  React.createElement(SatFinding, { court: c }),
   React.createElement(SatelliteTimeMachine, { court: c }),
   (c.status === "degraded" || c.status === "inProgress") && React.createElement(TaskBoard, { court: c }),
   c.category !== "gym" && React.createElement(AdoptCourt, { court: c }),

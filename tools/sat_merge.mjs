@@ -74,7 +74,13 @@ const audit = courts.map(c => {
   if (out.visible.value === "no" && !seen.length && notSeen.length) out.finding = "no-court-visible";            // never seen as a court
   else if (out.visible.value === "no" && seen.length) out.finding = "gone-after-" + out.lastSeen;                // seen before, not in the latest
   else if (out.visible.value === "yes" && out.change.value === "none") out.finding = "unchanged";
-  else if (out.visible.value === "yes" && out.change.value) out.finding = out.change.value + "-before-" + (out.since = consensus(hv.map(v => v.since)).value || "?");
+  else if (out.visible.value === "yes" && out.change.value) {
+    out.since = consensus(hv.map(v => v.since)).value;
+    // No agreed date: the agreed timeline still brackets it (last image without the court → first image with it).
+    const before = out.firstSeen && notSeen.filter(d => d < out.firstSeen).pop();
+    out.finding = out.since ? out.change.value + "-before-" + out.since
+      : before ? out.change.value + "-between-" + before + "-" + out.firstSeen : out.change.value + "-before-?";
+  }
   else out.finding = "needs-review";
   out.ai = ais.map(r => ({ reviewer: r.reviewer, visible: (r.reviews[c.id] || {}).visible || null, change: (r.reviews[c.id] || {}).change || null }));
   out.notes = hv.map(v => v.notes).filter(Boolean);
@@ -84,7 +90,7 @@ const audit = courts.map(c => {
 const count = k => audit.filter(a => a.finding.startsWith(k)).length;
 const summary = {
   courts: audit.length, reviewed_by_two_or_more: audit.filter(a => a.reviewers >= 2).length,
-  unchanged: count("unchanged"), changed: audit.filter(a => /-before-/.test(a.finding)).length,
+  unchanged: count("unchanged"), changed: audit.filter(a => /-(before|between)-/.test(a.finding)).length,
   gone: count("gone-after"), never_visible: count("no-court-visible"), needs_review: count("needs-review")
 };
 writeFileSync(new URL("tools/data/sat_audit.json", root), JSON.stringify({
@@ -94,10 +100,16 @@ writeFileSync(new URL("tools/data/sat_audit.json", root), JSON.stringify({
   summary, agreement, courts: audit
 }, null, 2) + "\n");
 
+// Small public copy for the app (court detail): findings only, no reviewer names.
+writeFileSync(new URL("data/sat_findings.json", root), JSON.stringify({
+  generated_at: new Date().toISOString(), reviewers: humans.length, source: "Esri World Imagery Wayback",
+  courts: Object.fromEntries(audit.map(a => [a.id, { finding: a.finding, latestCapture: a.latestCapture, firstSeen: a.firstSeen, lastSeen: a.lastSeen, n: a.reviewers }]))
+}) + "\n");
+
 const pct = x => x == null ? "—" : Math.round(x * 100) + "%";
 const kap = k => k ? `${k.kappa.toFixed(2)} (${pct(k.agreement)}, n=${k.n})` : "—";
 const FIND = { unchanged: "neschimbat", "no-court-visible": "**niciun teren vizibil**", "needs-review": "de revăzut" };
-const label = f => FIND[f] || (f.startsWith("gone-after-") ? `**dispărut** după ${f.slice(11)}` : f.replace(/-before-/, " înainte de ").replace(/^resurfaced/, "refăcut").replace(/^built/, "construit").replace(/^degraded/, "degradat").replace(/^construction/, "șantier"));
+const label = f => FIND[f] || (f.startsWith("gone-after-") ? `**dispărut** după ${f.slice(11)}` : f.replace(/-between-(\d{4}-\d\d-\d\d)-/, " între $1 și ").replace(/-before-/, " înainte de ").replace(/^resurfaced/, "refăcut").replace(/^built/, "construit").replace(/^degraded/, "degradat").replace(/^construction/, "șantier"));
 const md = [
   "# Sibiu din satelit — audit al celor 35 de terenuri",
   "",

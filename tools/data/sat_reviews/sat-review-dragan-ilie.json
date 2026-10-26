@@ -1,0 +1,665 @@
+{
+  "tool": "sat-review",
+  "version": 2,
+  "reviewer": "Drăgan Ilie",
+  "exportedAt": "2026-10-26T11:09:47.115Z",
+  "source": "Esri World Imagery Wayback; outlines © OpenStreetMap contributors",
+  "reviews": {
+    "sb1": {
+      "visible": "partly",
+      "surface": "overgrown",
+      "markings": "none",
+      "confidence": 3,
+      "since": "2012-07-20",
+      "change": "degraded",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "no",
+        "2012-07-20": "no",
+        "2017-04-26": "yes",
+        "2018-08-08": "yes",
+        "2019-10-09": "yes",
+        "2021-02-27": "unsure"
+      },
+      "savedAt": "2026-10-26T10:46:58.047Z"
+    },
+    "sb2": {
+      "visible": "yes",
+      "surface": "patchy",
+      "markings": "none",
+      "confidence": 3,
+      "since": "2018-08-08",
+      "change": "degraded",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2012-07-20": "yes",
+        "2017-04-26": "yes",
+        "2018-08-08": "yes",
+        "2020-10-22": "yes",
+        "2022-08-06": "yes"
+      },
+      "savedAt": "2026-10-26T10:47:52.618Z"
+    },
+    "sb3": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "clear",
+      "confidence": 3,
+      "since": "2022-08-06",
+      "change": "resurfaced",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "no",
+        "2012-07-20": "no",
+        "2017-04-26": "yes",
+        "2018-08-08": "yes",
+        "2019-10-09": "yes",
+        "2020-10-22": "yes",
+        "2022-08-06": "yes"
+      },
+      "savedAt": "2026-10-26T10:48:44.660Z"
+    },
+    "sb4": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "clear",
+      "confidence": 3,
+      "since": "2022-08-06",
+      "change": "resurfaced",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2012-07-20": "yes",
+        "2017-04-26": "yes",
+        "2018-08-08": "yes",
+        "2019-10-09": "yes",
+        "2021-02-27": "yes",
+        "2022-08-06": "yes"
+      },
+      "savedAt": "2026-10-26T10:49:44.405Z"
+    },
+    "sb5": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "faint",
+      "confidence": 3,
+      "since": "2020-10-22",
+      "change": "none",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2013-07-24": "yes",
+        "2017-04-26": "yes",
+        "2018-08-08": "yes",
+        "2019-10-09": "yes",
+        "2020-10-22": "yes",
+        "2021-02-27": "yes"
+      },
+      "savedAt": "2026-10-26T10:50:28.017Z"
+    },
+    "sb6": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "clear",
+      "confidence": 2,
+      "since": "2021-02-27",
+      "change": "built",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "no",
+        "2012-07-20": "no",
+        "2017-04-26": "no",
+        "2018-08-08": "no",
+        "2019-10-09": "no",
+        "2021-02-27": "yes"
+      },
+      "savedAt": "2026-10-26T10:51:11.863Z"
+    },
+    "sb7": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "clear",
+      "confidence": 3,
+      "since": "2021-02-27",
+      "change": "built",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2012-07-20": "no",
+        "2017-04-26": "no",
+        "2018-08-08": "no",
+        "2019-10-09": "no",
+        "2021-02-27": "yes",
+        "2022-08-06": "yes"
+      },
+      "savedAt": "2026-10-26T10:51:45.309Z"
+    },
+    "sb8": {
+      "visible": "no",
+      "surface": "overgrown",
+      "markings": "none",
+      "confidence": 3,
+      "since": "2019-10-09",
+      "change": "removed",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2012-07-20": "no",
+        "2017-04-26": "no",
+        "2018-08-08": "no",
+        "2019-10-09": "no",
+        "2021-02-27": "no"
+      },
+      "savedAt": "2026-10-26T10:52:41.645Z"
+    },
+    "sb9": {
+      "visible": "no",
+      "surface": "overgrown",
+      "markings": "none",
+      "confidence": 3,
+      "since": "2021-02-27",
+      "change": "degraded",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "unsure",
+        "2012-07-20": "unsure",
+        "2017-04-26": "unsure",
+        "2018-08-08": "unsure",
+        "2019-10-09": "unsure",
+        "2021-02-27": "unsure",
+        "2022-08-06": "unsure"
+      },
+      "savedAt": "2026-10-26T10:53:23.572Z"
+    },
+    "sb10": {
+      "visible": "no",
+      "surface": "overgrown",
+      "markings": "none",
+      "confidence": 3,
+      "since": "2021-02-27",
+      "change": "degraded",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2012-07-20": "no",
+        "2017-04-26": "no",
+        "2018-08-08": "no",
+        "2019-10-09": "no",
+        "2021-02-27": "no",
+        "2022-08-06": "no"
+      },
+      "savedAt": "2026-10-26T10:54:18.513Z"
+    },
+    "sb11": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "clear",
+      "confidence": 3,
+      "since": "2021-02-27",
+      "change": "resurfaced",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2012-07-20": "yes",
+        "2017-04-26": "yes",
+        "2018-08-08": "yes",
+        "2019-10-09": "yes",
+        "2021-02-27": "yes",
+        "2022-08-06": "yes"
+      },
+      "savedAt": "2026-10-26T10:54:59.823Z"
+    },
+    "sb12": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "clear",
+      "confidence": 3,
+      "since": "2020-10-22",
+      "change": "resurfaced",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2013-07-24": "yes",
+        "2017-04-26": "yes",
+        "2018-08-08": "yes",
+        "2019-10-09": "yes",
+        "2020-10-22": "unsure",
+        "2022-08-06": "yes"
+      },
+      "savedAt": "2026-10-26T10:55:39.036Z"
+    },
+    "sb13": {
+      "visible": "no",
+      "surface": "patchy",
+      "markings": "none",
+      "confidence": 3,
+      "since": "2020-10-22",
+      "change": "degraded",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "no",
+        "2013-07-24": "no",
+        "2017-04-26": "no",
+        "2018-08-08": "no",
+        "2020-10-22": "no",
+        "2022-08-06": "no"
+      },
+      "savedAt": "2026-10-26T10:56:12.968Z"
+    },
+    "sb14": {
+      "visible": "no",
+      "surface": "patchy",
+      "markings": "faint",
+      "confidence": 3,
+      "since": "2020-10-22",
+      "change": "degraded",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "unsure",
+        "2013-07-24": "yes",
+        "2017-04-26": "yes",
+        "2018-08-08": "yes",
+        "2019-10-09": "yes",
+        "2020-10-22": "yes",
+        "2022-08-06": "unsure"
+      },
+      "savedAt": "2026-10-26T10:56:50.699Z"
+    },
+    "sb15": {
+      "visible": "no",
+      "surface": "unsure",
+      "markings": "none",
+      "confidence": 3,
+      "since": "2020-10-22",
+      "change": "removed",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2013-07-24": "no",
+        "2017-04-26": "no",
+        "2018-08-08": "no",
+        "2019-10-09": "no",
+        "2020-10-22": "no",
+        "2022-08-06": "no"
+      },
+      "savedAt": "2026-10-26T10:57:35.391Z"
+    },
+    "sb16": {
+      "visible": "partly",
+      "surface": "patchy",
+      "markings": "none",
+      "confidence": 3,
+      "since": "2020-10-22",
+      "change": "degraded",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2012-07-20": "yes",
+        "2017-04-26": "yes",
+        "2018-08-08": "yes",
+        "2019-10-09": "yes",
+        "2020-10-22": "yes",
+        "2022-08-06": "yes"
+      },
+      "savedAt": "2026-10-26T10:58:05.074Z"
+    },
+    "sb17": {
+      "visible": "no",
+      "surface": "unsure",
+      "markings": "none",
+      "confidence": 3,
+      "since": "2022-08-06",
+      "change": "construction",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "no",
+        "2013-07-24": "no",
+        "2017-04-26": "no",
+        "2018-08-08": "no",
+        "2019-10-09": "no",
+        "2020-10-22": "no",
+        "2022-08-06": "no"
+      },
+      "savedAt": "2026-10-26T10:58:36.250Z"
+    },
+    "sb18": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "none",
+      "confidence": 3,
+      "since": "2022-08-06",
+      "change": "none",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2012-07-20": "yes",
+        "2017-04-26": "yes",
+        "2018-08-08": "yes",
+        "2019-10-09": "yes",
+        "2021-02-27": "yes",
+        "2022-08-06": "yes"
+      },
+      "savedAt": "2026-10-26T10:59:04.831Z"
+    },
+    "sb19": {
+      "visible": "partly",
+      "surface": "uniform",
+      "markings": "faint",
+      "confidence": 3,
+      "since": "2021-02-27",
+      "change": "built",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "no",
+        "2012-07-20": "no",
+        "2017-04-26": "yes",
+        "2018-08-08": "yes",
+        "2019-10-09": "yes",
+        "2021-02-27": "yes"
+      },
+      "savedAt": "2026-10-26T10:59:43.063Z"
+    },
+    "sb20": {
+      "visible": "partly",
+      "surface": "uniform",
+      "markings": "none",
+      "confidence": 3,
+      "since": "2021-02-27",
+      "change": "built",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "no",
+        "2012-07-20": "no",
+        "2017-04-26": "yes",
+        "2018-08-08": "yes",
+        "2019-10-09": "yes",
+        "2021-02-27": "unsure"
+      },
+      "savedAt": "2026-10-26T11:00:13.660Z"
+    },
+    "sb21": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "faint",
+      "confidence": 3,
+      "since": "2020-10-22",
+      "change": "resurfaced",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2012-07-20": "yes",
+        "2017-04-26": "yes",
+        "2018-08-08": "yes",
+        "2019-10-09": "unsure",
+        "2020-10-22": "yes",
+        "2022-08-06": "yes"
+      },
+      "savedAt": "2026-10-26T11:00:44.091Z"
+    },
+    "sb22": {
+      "visible": "no",
+      "surface": "overgrown",
+      "markings": "none",
+      "confidence": 3,
+      "since": "2021-02-27",
+      "change": "none",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "unsure",
+        "2013-07-24": "unsure",
+        "2017-04-26": "unsure",
+        "2018-08-08": "unsure",
+        "2019-10-09": "unsure",
+        "2020-10-22": "unsure",
+        "2021-02-27": "unsure"
+      },
+      "savedAt": "2026-10-26T11:01:17.355Z"
+    },
+    "sb23": {
+      "visible": "no",
+      "surface": "patchy",
+      "markings": "none",
+      "confidence": 3,
+      "since": "2021-02-27",
+      "change": "none",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2012-07-20": "yes",
+        "2017-04-26": "yes",
+        "2018-08-08": "yes",
+        "2019-10-09": "yes",
+        "2021-02-27": "yes"
+      },
+      "savedAt": "2026-10-26T11:01:49.016Z"
+    },
+    "sb24": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "clear",
+      "confidence": 3,
+      "since": "2022-08-06",
+      "change": "built",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "no",
+        "2013-07-24": "no",
+        "2017-04-26": "yes",
+        "2018-08-08": "yes",
+        "2020-10-22": "yes",
+        "2022-08-06": "yes",
+        "2025-03-04": "yes"
+      },
+      "savedAt": "2026-10-26T11:02:13.552Z"
+    },
+    "sb25": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "faint",
+      "confidence": 3,
+      "since": "2021-02-27",
+      "change": "none",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2012-07-20": "yes",
+        "2017-04-26": "yes",
+        "2018-08-08": "yes",
+        "2019-10-09": "yes",
+        "2021-02-27": "yes",
+        "2022-08-06": "yes"
+      },
+      "savedAt": "2026-10-26T11:02:41.334Z"
+    },
+    "sb26": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "clear",
+      "confidence": 3,
+      "since": "2022-08-06",
+      "change": "resurfaced",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2012-07-20": "yes",
+        "2017-04-26": "yes",
+        "2018-08-08": "yes",
+        "2019-10-09": "yes",
+        "2021-02-27": "yes",
+        "2022-08-06": "yes"
+      },
+      "savedAt": "2026-10-26T11:03:56.163Z"
+    },
+    "sb27": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "clear",
+      "confidence": 3,
+      "since": "2021-02-27",
+      "change": "none",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2012-07-20": "yes",
+        "2017-04-26": "yes",
+        "2018-08-08": "yes",
+        "2019-10-09": "yes",
+        "2021-02-27": "yes",
+        "2022-08-06": "yes"
+      },
+      "savedAt": "2026-10-26T11:04:21.815Z"
+    },
+    "sb28": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "clear",
+      "confidence": 3,
+      "since": "2021-02-27",
+      "change": "none",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2012-07-20": "yes",
+        "2017-04-26": "yes",
+        "2018-08-08": "yes",
+        "2019-10-09": "yes",
+        "2021-02-27": "yes"
+      },
+      "savedAt": "2026-10-26T11:04:46.392Z"
+    },
+    "sb29": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "clear",
+      "confidence": 3,
+      "since": "2021-02-27",
+      "change": "resurfaced",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2012-07-20": "yes",
+        "2017-04-26": "yes",
+        "2018-08-08": "no",
+        "2019-10-09": "no",
+        "2021-02-27": "yes",
+        "2022-08-06": "yes"
+      },
+      "savedAt": "2026-10-26T11:05:22.339Z"
+    },
+    "sb30": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "clear",
+      "confidence": 3,
+      "since": "2020-10-22",
+      "change": "resurfaced",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2012-07-20": "unsure",
+        "2017-04-26": "unsure",
+        "2018-08-08": "unsure",
+        "2019-10-09": "unsure",
+        "2020-10-22": "yes",
+        "2022-08-06": "yes"
+      },
+      "savedAt": "2026-10-26T11:05:46.852Z"
+    },
+    "sb31": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "clear",
+      "confidence": 3,
+      "since": "2020-10-22",
+      "change": "resurfaced",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "unsure",
+        "2012-07-20": "unsure",
+        "2017-04-26": "unsure",
+        "2018-08-08": "unsure",
+        "2019-10-09": "yes",
+        "2020-10-22": "yes",
+        "2022-08-06": "yes"
+      },
+      "savedAt": "2026-10-26T11:06:14.265Z"
+    },
+    "sb32": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "faint",
+      "confidence": 3,
+      "since": "2020-10-22",
+      "change": "built",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "no",
+        "2013-07-24": "no",
+        "2017-04-26": "no",
+        "2018-08-08": "no",
+        "2019-10-09": "yes",
+        "2020-10-22": "yes",
+        "2022-08-06": "yes"
+      },
+      "savedAt": "2026-10-26T11:06:47.048Z"
+    },
+    "sb33": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "none",
+      "confidence": 3,
+      "since": "2020-10-22",
+      "change": "built",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "no",
+        "2013-07-24": "no",
+        "2017-04-26": "no",
+        "2018-08-08": "no",
+        "2019-10-09": "no",
+        "2020-10-22": "yes",
+        "2022-08-06": "yes"
+      },
+      "savedAt": "2026-10-26T11:07:43.260Z"
+    },
+    "sb34": {
+      "visible": "yes",
+      "surface": "uniform",
+      "markings": "clear",
+      "confidence": 3,
+      "since": "2020-10-22",
+      "change": "resurfaced",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "yes",
+        "2012-07-20": "unsure",
+        "2017-04-26": "unsure",
+        "2018-08-08": "unsure",
+        "2019-10-09": "yes",
+        "2020-10-22": "yes",
+        "2022-08-06": "yes"
+      },
+      "savedAt": "2026-10-26T11:08:12.293Z"
+    },
+    "sb35": {
+      "visible": "yes",
+      "surface": "patchy",
+      "markings": "none",
+      "confidence": 3,
+      "since": "2020-10-22",
+      "change": "none",
+      "notes": "",
+      "timeline": {
+        "2011-04-25": "unsure",
+        "2013-07-24": "unsure",
+        "2017-04-26": "unsure",
+        "2018-08-08": "unsure",
+        "2019-10-09": "unsure",
+        "2020-10-22": "unsure",
+        "2021-02-27": "unsure"
+      },
+      "savedAt": "2026-10-26T11:08:41.439Z"
+    }
+  }
+}

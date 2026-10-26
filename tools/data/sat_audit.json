@@ -1,0 +1,2730 @@
+{
+  "method": "Blind review of Esri World Imagery Wayback captures (2011–2025) by ≥ 2 team members; consensus only where they agree.",
+  "source": "Esri World Imagery Wayback; court outlines © OpenStreetMap contributors (ODbL)",
+  "generated_at": "2026-10-26T18:42:33.486Z",
+  "reviewers": [
+    "Cernescu Ionuț",
+    "Drăgan Ilie",
+    "Trofin Matei",
+    "Țurcanu Mihai"
+  ],
+  "ai_reviewers": [],
+  "summary": {
+    "courts": 35,
+    "reviewed_by_two_or_more": 35,
+    "unchanged": 0,
+    "changed": 1,
+    "gone": 2,
+    "never_visible": 4,
+    "needs_review": 28
+  },
+  "agreement": [
+    {
+      "pair": "Cernescu Ionuț × Drăgan Ilie",
+      "visible": {
+        "n": 25,
+        "agreement": 0.68,
+        "kappa": 0.3865030674846626
+      },
+      "surface": {
+        "n": 23,
+        "agreement": 0.6956521739130435,
+        "kappa": 0.16145833333333334
+      },
+      "markings": {
+        "n": 25,
+        "agreement": 0.44,
+        "kappa": 0.0641711229946523
+      },
+      "change": {
+        "n": 30,
+        "agreement": 0.3,
+        "kappa": 0.16
+      },
+      "timeline": {
+        "n": 92,
+        "agreement": 0.8695652173913043,
+        "kappa": 0.6898876404494382
+      }
+    },
+    {
+      "pair": "Cernescu Ionuț × Trofin Matei",
+      "visible": {
+        "n": 24,
+        "agreement": 0.6666666666666666,
+        "kappa": 0.485254691689008
+      },
+      "surface": {
+        "n": 21,
+        "agreement": 0.6666666666666666,
+        "kappa": 0.4768683274021352
+      },
+      "markings": {
+        "n": 25,
+        "agreement": 0.24,
+        "kappa": -0.004228329809725169
+      },
+      "change": {
+        "n": 30,
+        "agreement": 0.36666666666666664,
+        "kappa": 0.22554347826086954
+      },
+      "timeline": {
+        "n": 81,
+        "agreement": 0.654320987654321,
+        "kappa": 0.36256323777403043
+      }
+    },
+    {
+      "pair": "Cernescu Ionuț × Țurcanu Mihai",
+      "visible": {
+        "n": 23,
+        "agreement": 0.782608695652174,
+        "kappa": 0.5247933884297521
+      },
+      "surface": {
+        "n": 22,
+        "agreement": 0.6818181818181818,
+        "kappa": -0.006535947712418101
+      },
+      "markings": {
+        "n": 24,
+        "agreement": 0.7083333333333334,
+        "kappa": 0.40000000000000013
+      },
+      "change": {
+        "n": 30,
+        "agreement": 0.43333333333333335,
+        "kappa": 0.25979680696661833
+      },
+      "timeline": {
+        "n": 78,
+        "agreement": 0.8974358974358975,
+        "kappa": 0.7331052181351584
+      }
+    },
+    {
+      "pair": "Drăgan Ilie × Trofin Matei",
+      "visible": {
+        "n": 34,
+        "agreement": 0.5882352941176471,
+        "kappa": 0.35061391541609827
+      },
+      "surface": {
+        "n": 28,
+        "agreement": 0.4642857142857143,
+        "kappa": 0.2207792207792208
+      },
+      "markings": {
+        "n": 35,
+        "agreement": 0.4857142857142857,
+        "kappa": 0.19847328244274812
+      },
+      "change": {
+        "n": 35,
+        "agreement": 0.45714285714285713,
+        "kappa": 0.3193449334698055
+      },
+      "timeline": {
+        "n": 170,
+        "agreement": 0.5117647058823529,
+        "kappa": 0.19509412435824294
+      }
+    },
+    {
+      "pair": "Drăgan Ilie × Țurcanu Mihai",
+      "visible": {
+        "n": 33,
+        "agreement": 0.6666666666666666,
+        "kappa": 0.3919597989949748
+      },
+      "surface": {
+        "n": 30,
+        "agreement": 0.8666666666666667,
+        "kappa": 0.6875000000000001
+      },
+      "markings": {
+        "n": 34,
+        "agreement": 0.7058823529411765,
+        "kappa": 0.5526315789473685
+      },
+      "change": {
+        "n": 35,
+        "agreement": 0.5142857142857142,
+        "kappa": 0.37302423603793455
+      },
+      "timeline": {
+        "n": 124,
+        "agreement": 0.9516129032258065,
+        "kappa": 0.8540031397174256
+      }
+    },
+    {
+      "pair": "Trofin Matei × Țurcanu Mihai",
+      "visible": {
+        "n": 32,
+        "agreement": 0.5625,
+        "kappa": 0.35446685878962536
+      },
+      "surface": {
+        "n": 27,
+        "agreement": 0.4074074074074074,
+        "kappa": 0.1462450592885375
+      },
+      "markings": {
+        "n": 34,
+        "agreement": 0.4117647058823529,
+        "kappa": 0.184652278177458
+      },
+      "change": {
+        "n": 35,
+        "agreement": 0.42857142857142855,
+        "kappa": 0.24973204715969985
+      },
+      "timeline": {
+        "n": 122,
+        "agreement": 0.5245901639344263,
+        "kappa": 0.22018955256777614
+      }
+    }
+  ],
+  "courts": [
+    {
+      "id": "sb1",
+      "latestCapture": "2021-02-27",
+      "reviewers": 4,
+      "visible": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "surface": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2012-07-20",
+          "value": "no",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2017-04-26",
+          "value": "yes",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2018-08-08",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2019-10-09",
+          "value": "yes",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2021-02-27",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        }
+      ],
+      "firstSeen": "2017-04-26",
+      "lastSeen": "2019-10-09",
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb2",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "surface": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2012-07-20",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2018-08-08",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2020-10-22",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2022-08-06",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        }
+      ],
+      "firstSeen": null,
+      "lastSeen": null,
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb3",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": "yes",
+        "state": "agreed",
+        "n": 4
+      },
+      "surface": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2012-07-20",
+          "value": "no",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2017-04-26",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2018-08-08",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2019-10-09",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2020-10-22",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2022-08-06",
+          "value": "yes",
+          "state": "agreed",
+          "n": 3
+        }
+      ],
+      "firstSeen": "2017-04-26",
+      "lastSeen": "2022-08-06",
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb4",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": "yes",
+        "state": "agreed",
+        "n": 4
+      },
+      "surface": {
+        "value": "uniform",
+        "state": "agreed",
+        "n": 4
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2012-07-20",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2018-08-08",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2019-10-09",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2021-02-27",
+          "value": "yes",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2022-08-06",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        }
+      ],
+      "firstSeen": "2021-02-27",
+      "lastSeen": "2022-08-06",
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb5",
+      "latestCapture": "2021-02-27",
+      "reviewers": 4,
+      "visible": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "surface": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2013-07-24",
+          "value": "yes",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2017-04-26",
+          "value": "yes",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2018-08-08",
+          "value": "yes",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2019-10-09",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2020-10-22",
+          "value": "yes",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2021-02-27",
+          "value": "yes",
+          "state": "agreed",
+          "n": 3
+        }
+      ],
+      "firstSeen": "2013-07-24",
+      "lastSeen": "2021-02-27",
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb6",
+      "latestCapture": "2021-02-27",
+      "reviewers": 4,
+      "visible": {
+        "value": "yes",
+        "state": "agreed",
+        "n": 4
+      },
+      "surface": {
+        "value": "uniform",
+        "state": "agreed",
+        "n": 4
+      },
+      "markings": {
+        "value": "clear",
+        "state": "agreed",
+        "n": 4
+      },
+      "change": {
+        "value": "built",
+        "state": "agreed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": "no",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2012-07-20",
+          "value": "no",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2017-04-26",
+          "value": "no",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2018-08-08",
+          "value": "no",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2019-10-09",
+          "value": "no",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2021-02-27",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        }
+      ],
+      "firstSeen": "2021-02-27",
+      "lastSeen": "2021-02-27",
+      "since": null,
+      "finding": "built-between-2019-10-09-2021-02-27",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb7",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": "yes",
+        "state": "agreed",
+        "n": 4
+      },
+      "surface": {
+        "value": "uniform",
+        "state": "agreed",
+        "n": 4
+      },
+      "markings": {
+        "value": "clear",
+        "state": "agreed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2012-07-20",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2017-04-26",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2018-08-08",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2019-10-09",
+          "value": "no",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2021-02-27",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2022-08-06",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        }
+      ],
+      "firstSeen": "2021-02-27",
+      "lastSeen": "2022-08-06",
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb8",
+      "latestCapture": "2021-02-27",
+      "reviewers": 4,
+      "visible": {
+        "value": "no",
+        "state": "agreed",
+        "n": 3
+      },
+      "surface": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "markings": {
+        "value": "none",
+        "state": "agreed",
+        "n": 3
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2012-07-20",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2017-04-26",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2018-08-08",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2019-10-09",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2021-02-27",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        }
+      ],
+      "firstSeen": null,
+      "lastSeen": null,
+      "finding": "no-court-visible",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb9",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "surface": {
+        "value": "overgrown",
+        "state": "agreed",
+        "n": 2
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": null,
+          "state": "single",
+          "n": 1
+        },
+        {
+          "date": "2012-07-20",
+          "value": null,
+          "state": "single",
+          "n": 1
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "single",
+          "n": 1
+        },
+        {
+          "date": "2018-08-08",
+          "value": null,
+          "state": "single",
+          "n": 1
+        },
+        {
+          "date": "2019-10-09",
+          "value": null,
+          "state": "single",
+          "n": 1
+        },
+        {
+          "date": "2021-02-27",
+          "value": null,
+          "state": "single",
+          "n": 1
+        },
+        {
+          "date": "2022-08-06",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        }
+      ],
+      "firstSeen": null,
+      "lastSeen": null,
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb10",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "surface": {
+        "value": "overgrown",
+        "state": "agreed",
+        "n": 3
+      },
+      "markings": {
+        "value": "none",
+        "state": "agreed",
+        "n": 3
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": "yes",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2012-07-20",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2017-04-26",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2018-08-08",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2019-10-09",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2021-02-27",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2022-08-06",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        }
+      ],
+      "firstSeen": "2011-04-25",
+      "lastSeen": "2011-04-25",
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb11",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": "yes",
+        "state": "agreed",
+        "n": 4
+      },
+      "surface": {
+        "value": "uniform",
+        "state": "agreed",
+        "n": 4
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": "yes",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2012-07-20",
+          "value": "yes",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2017-04-26",
+          "value": "yes",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2018-08-08",
+          "value": "yes",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2019-10-09",
+          "value": "yes",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2021-02-27",
+          "value": "yes",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2022-08-06",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        }
+      ],
+      "firstSeen": "2011-04-25",
+      "lastSeen": "2022-08-06",
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb12",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": "yes",
+        "state": "agreed",
+        "n": 4
+      },
+      "surface": {
+        "value": "uniform",
+        "state": "agreed",
+        "n": 4
+      },
+      "markings": {
+        "value": "clear",
+        "state": "agreed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": "yes",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2013-07-24",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2018-08-08",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2019-10-09",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2020-10-22",
+          "value": null,
+          "state": "single",
+          "n": 1
+        },
+        {
+          "date": "2022-08-06",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        }
+      ],
+      "firstSeen": "2011-04-25",
+      "lastSeen": "2022-08-06",
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb13",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": "no",
+        "state": "agreed",
+        "n": 3
+      },
+      "surface": {
+        "value": "patchy",
+        "state": "agreed",
+        "n": 2
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2013-07-24",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2017-04-26",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2018-08-08",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2020-10-22",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2022-08-06",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        }
+      ],
+      "firstSeen": null,
+      "lastSeen": null,
+      "finding": "no-court-visible",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb14",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": "no",
+        "state": "agreed",
+        "n": 3
+      },
+      "surface": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": null,
+          "state": "single",
+          "n": 1
+        },
+        {
+          "date": "2013-07-24",
+          "value": "yes",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2017-04-26",
+          "value": "yes",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2018-08-08",
+          "value": "yes",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2019-10-09",
+          "value": "yes",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2020-10-22",
+          "value": "yes",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2022-08-06",
+          "value": null,
+          "state": "single",
+          "n": 1
+        }
+      ],
+      "firstSeen": "2013-07-24",
+      "lastSeen": "2020-10-22",
+      "finding": "gone-after-2020-10-22",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb15",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": "no",
+        "state": "agreed",
+        "n": 3
+      },
+      "surface": {
+        "value": "patchy",
+        "state": "agreed",
+        "n": 2
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": "yes",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2013-07-24",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2018-08-08",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2019-10-09",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2020-10-22",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2022-08-06",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        }
+      ],
+      "firstSeen": "2011-04-25",
+      "lastSeen": "2011-04-25",
+      "finding": "gone-after-2011-04-25",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb16",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "surface": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2012-07-20",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2018-08-08",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2019-10-09",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2020-10-22",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2022-08-06",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        }
+      ],
+      "firstSeen": null,
+      "lastSeen": null,
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb17",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": "no",
+        "state": "agreed",
+        "n": 4
+      },
+      "surface": {
+        "value": "patchy",
+        "state": "agreed",
+        "n": 2
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": "construction",
+        "state": "agreed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2013-07-24",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2017-04-26",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2018-08-08",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2019-10-09",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2020-10-22",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2022-08-06",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        }
+      ],
+      "firstSeen": null,
+      "lastSeen": null,
+      "finding": "no-court-visible",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb18",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "surface": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "markings": {
+        "value": "none",
+        "state": "agreed",
+        "n": 3
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": "yes",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2012-07-20",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2018-08-08",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2019-10-09",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2021-02-27",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2022-08-06",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        }
+      ],
+      "firstSeen": "2011-04-25",
+      "lastSeen": "2011-04-25",
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb19",
+      "latestCapture": "2021-02-27",
+      "reviewers": 4,
+      "visible": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "surface": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2012-07-20",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2018-08-08",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2019-10-09",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2021-02-27",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        }
+      ],
+      "firstSeen": null,
+      "lastSeen": null,
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb20",
+      "latestCapture": "2021-02-27",
+      "reviewers": 4,
+      "visible": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "surface": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2012-07-20",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2018-08-08",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2019-10-09",
+          "value": "yes",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2021-02-27",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        }
+      ],
+      "firstSeen": "2018-08-08",
+      "lastSeen": "2019-10-09",
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb21",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "surface": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": "yes",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2012-07-20",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2018-08-08",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2019-10-09",
+          "value": null,
+          "state": "single",
+          "n": 1
+        },
+        {
+          "date": "2020-10-22",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2022-08-06",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        }
+      ],
+      "firstSeen": "2011-04-25",
+      "lastSeen": "2011-04-25",
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb22",
+      "latestCapture": "2021-02-27",
+      "reviewers": 4,
+      "visible": {
+        "value": "no",
+        "state": "agreed",
+        "n": 3
+      },
+      "surface": {
+        "value": "overgrown",
+        "state": "agreed",
+        "n": 3
+      },
+      "markings": {
+        "value": "none",
+        "state": "agreed",
+        "n": 3
+      },
+      "change": {
+        "value": "none",
+        "state": "agreed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2013-07-24",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2017-04-26",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2018-08-08",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2019-10-09",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2020-10-22",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2021-02-27",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        }
+      ],
+      "firstSeen": null,
+      "lastSeen": null,
+      "finding": "no-court-visible",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb23",
+      "latestCapture": "2021-02-27",
+      "reviewers": 4,
+      "visible": {
+        "value": "no",
+        "state": "agreed",
+        "n": 3
+      },
+      "surface": {
+        "value": null,
+        "state": "single",
+        "n": 1
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "change": {
+        "value": "none",
+        "state": "agreed",
+        "n": 3
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2012-07-20",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2018-08-08",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2019-10-09",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2021-02-27",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        }
+      ],
+      "firstSeen": null,
+      "lastSeen": null,
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb24",
+      "latestCapture": "2025-03-04",
+      "reviewers": 4,
+      "visible": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "surface": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2013-07-24",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2018-08-08",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2020-10-22",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2022-08-06",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2025-03-04",
+          "value": "yes",
+          "state": "agreed",
+          "n": 3
+        }
+      ],
+      "firstSeen": "2022-08-06",
+      "lastSeen": "2025-03-04",
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb25",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "surface": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "markings": {
+        "value": "faint",
+        "state": "agreed",
+        "n": 3
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2012-07-20",
+          "value": "yes",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2018-08-08",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2019-10-09",
+          "value": "yes",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2021-02-27",
+          "value": "yes",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2022-08-06",
+          "value": "yes",
+          "state": "agreed",
+          "n": 3
+        }
+      ],
+      "firstSeen": "2012-07-20",
+      "lastSeen": "2022-08-06",
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb26",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "surface": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2012-07-20",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2018-08-08",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2019-10-09",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2021-02-27",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2022-08-06",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        }
+      ],
+      "firstSeen": "2022-08-06",
+      "lastSeen": "2022-08-06",
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb27",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "surface": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2012-07-20",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2018-08-08",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2019-10-09",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2021-02-27",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2022-08-06",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        }
+      ],
+      "firstSeen": null,
+      "lastSeen": null,
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb28",
+      "latestCapture": "2021-02-27",
+      "reviewers": 4,
+      "visible": {
+        "value": "yes",
+        "state": "agreed",
+        "n": 3
+      },
+      "surface": {
+        "value": "uniform",
+        "state": "agreed",
+        "n": 3
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2012-07-20",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2018-08-08",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2019-10-09",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2021-02-27",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        }
+      ],
+      "firstSeen": null,
+      "lastSeen": null,
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb29",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "surface": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2012-07-20",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2018-08-08",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2019-10-09",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2021-02-27",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2022-08-06",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        }
+      ],
+      "firstSeen": null,
+      "lastSeen": null,
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb30",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": "yes",
+        "state": "agreed",
+        "n": 4
+      },
+      "surface": {
+        "value": "uniform",
+        "state": "agreed",
+        "n": 4
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2012-07-20",
+          "value": null,
+          "state": "single",
+          "n": 1
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "single",
+          "n": 1
+        },
+        {
+          "date": "2018-08-08",
+          "value": null,
+          "state": "single",
+          "n": 1
+        },
+        {
+          "date": "2019-10-09",
+          "value": null,
+          "state": "single",
+          "n": 1
+        },
+        {
+          "date": "2020-10-22",
+          "value": "yes",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2022-08-06",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        }
+      ],
+      "firstSeen": "2020-10-22",
+      "lastSeen": "2022-08-06",
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb31",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": "yes",
+        "state": "agreed",
+        "n": 4
+      },
+      "surface": {
+        "value": "uniform",
+        "state": "agreed",
+        "n": 4
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2012-07-20",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2017-04-26",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2018-08-08",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2019-10-09",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2020-10-22",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2022-08-06",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        }
+      ],
+      "firstSeen": "2020-10-22",
+      "lastSeen": "2022-08-06",
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb32",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "surface": {
+        "value": "uniform",
+        "state": "agreed",
+        "n": 3
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": "no",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2013-07-24",
+          "value": "no",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2017-04-26",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2018-08-08",
+          "value": "no",
+          "state": "agreed",
+          "n": 2
+        },
+        {
+          "date": "2019-10-09",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2020-10-22",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2022-08-06",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        }
+      ],
+      "firstSeen": null,
+      "lastSeen": null,
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb33",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "surface": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2013-07-24",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2017-04-26",
+          "value": "no",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2018-08-08",
+          "value": "no",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2019-10-09",
+          "value": "no",
+          "state": "agreed",
+          "n": 4
+        },
+        {
+          "date": "2020-10-22",
+          "value": null,
+          "state": "disputed",
+          "n": 4
+        },
+        {
+          "date": "2022-08-06",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        }
+      ],
+      "firstSeen": "2022-08-06",
+      "lastSeen": "2022-08-06",
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb34",
+      "latestCapture": "2022-08-06",
+      "reviewers": 4,
+      "visible": {
+        "value": "yes",
+        "state": "agreed",
+        "n": 4
+      },
+      "surface": {
+        "value": "uniform",
+        "state": "agreed",
+        "n": 4
+      },
+      "markings": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "change": {
+        "value": null,
+        "state": "disputed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": null,
+          "state": "disputed",
+          "n": 3
+        },
+        {
+          "date": "2012-07-20",
+          "value": null,
+          "state": "single",
+          "n": 1
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "single",
+          "n": 1
+        },
+        {
+          "date": "2018-08-08",
+          "value": null,
+          "state": "single",
+          "n": 1
+        },
+        {
+          "date": "2019-10-09",
+          "value": "yes",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2020-10-22",
+          "value": "yes",
+          "state": "agreed",
+          "n": 3
+        },
+        {
+          "date": "2022-08-06",
+          "value": "yes",
+          "state": "agreed",
+          "n": 4
+        }
+      ],
+      "firstSeen": "2019-10-09",
+      "lastSeen": "2022-08-06",
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    },
+    {
+      "id": "sb35",
+      "latestCapture": "2021-02-27",
+      "reviewers": 4,
+      "visible": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "surface": {
+        "value": null,
+        "state": "disputed",
+        "n": 3
+      },
+      "markings": {
+        "value": "none",
+        "state": "agreed",
+        "n": 3
+      },
+      "change": {
+        "value": "none",
+        "state": "agreed",
+        "n": 4
+      },
+      "timeline": [
+        {
+          "date": "2011-04-25",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2013-07-24",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2017-04-26",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2018-08-08",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2019-10-09",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2020-10-22",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        },
+        {
+          "date": "2021-02-27",
+          "value": null,
+          "state": "disputed",
+          "n": 2
+        }
+      ],
+      "firstSeen": null,
+      "lastSeen": null,
+      "finding": "needs-review",
+      "ai": [],
+      "notes": []
+    }
+  ]
+}
