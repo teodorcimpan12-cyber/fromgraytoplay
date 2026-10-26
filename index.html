@@ -1084,6 +1084,20 @@ html.g2p-shake .card,html.g2p-shake .stat-tile{animation:cardShake .5s 3}
 .rq-photo{position:relative}.rq-photo img{width:100%;max-height:220px;object-fit:cover;border-radius:12px;display:block}
 .rq-photo button{position:absolute;top:6px;right:6px;width:32px;height:32px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:var(--white);cursor:pointer}
 .rq-acct{font-size:.78rem;color:var(--textSec);margin:.5rem 0 0}
+.ai-hint{display:flex;align-items:center;flex-wrap:wrap;gap:.35rem .6rem;margin:.6rem 0 0}.ai-hint small{color:var(--textSec);font-size:.74rem}
+.ai-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.5rem .85rem;border-radius:999px;border:1.5px solid var(--teal);background:color-mix(in srgb,var(--teal) 10%,transparent);color:var(--text);font-weight:700;font-size:.84rem;cursor:pointer;transition:transform .15s,box-shadow .2s}
+.ai-btn:hover,.ai-btn:focus-visible{transform:translateY(-1px);box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 22%,transparent)}.ai-btn-sm{padding:.32rem .65rem;font-size:.78rem}
+.ai-busy{font-size:.84rem;color:var(--textSec)}.ai-spark{display:inline-block;animation:aiSpark 1s ease-in-out infinite}
+@keyframes aiSpark{50%{transform:scale(1.35) rotate(20deg);opacity:.55}}
+.ai-err{font-size:.8rem;color:var(--textSec)}.ai-err-t{font-size:.84rem;color:var(--red)}
+.ai-card{margin:.6rem 0 0;padding:.65rem .8rem;border-radius:12px;border:1.5px dashed var(--teal);background:color-mix(in srgb,var(--teal) 7%,var(--bgCard));font-size:.84rem}
+.ai-card p{margin:.35rem 0 0;line-height:1.4}.ai-issues{margin:.35rem 0 0;padding-left:1.1rem;color:var(--textSec);font-size:.8rem}
+.ai-tag{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem;font-size:.74rem;font-weight:700;letter-spacing:.02em;color:var(--teal)}
+.ai-cond{padding:.1rem .5rem;border-radius:999px;background:var(--border);color:var(--text)}.ai-c-good{background:var(--green);color:var(--white)}.ai-c-degraded{background:var(--coral);color:var(--white)}.ai-c-abandoned{background:var(--red);color:var(--white)}
+.ai-conf{font-family:'Space Mono',monospace;color:var(--textSec)}.ai-acts{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}.ai-card>.ai-btn{margin-top:.5rem}
+.ai-letter-start p{font-size:.88rem;line-height:1.45}.ai-letter-text{width:100%;font-size:.88rem;line-height:1.5;resize:vertical;min-height:220px}
+.ai-letter-acts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.7rem}
+@media (prefers-reduced-motion:reduce){.ai-spark{animation:none}}
 .ev-vote{border:1px solid var(--border);background:var(--bgCard);color:var(--text);border-radius:999px;padding:.15rem .55rem;font-size:.72rem;cursor:pointer;font-family:inherit}
 .ev-vote.on{background:var(--green);border-color:var(--green);color:var(--white)}
 .ba-wrap{margin-bottom:1rem}.ba-wrap h4{font-size:.9rem;margin-bottom:.5rem}
@@ -9574,6 +9588,7 @@ function CourtDetail({
   useEffect(() => { g2pMood(moodOfCourt(c)); return () => g2pMood(null); }, [c && c.id]);
   const [showQR, setShowQR] = useState(false);
   const [showWanted, setShowWanted] = useState(false);
+  const [showLetter, setShowLetter] = useState(false);
   const [unlockBadge, setUnlockBadge] = useState(null);
   const { awardBadge } = useBadges();
   const { isFollowing, toggle: toggleFollow } = useFollows();
@@ -9719,11 +9734,13 @@ function CourtDetail({
       act("follow", following ? "line" : "teal", () => toggleFollow(c.id), following ? "\uD83D\uDD15" : "\uD83D\uDD14", following ? t.unfollow : t.follow),
       act("share", "line", () => shareCourt(c, t, toast), "\uD83D\uDD17", t.shareCourt),
       act("qr", "line", () => setShowQR(true), "\uD83D\uDCF1", "QR"),
-      c.category !== "gym" && act("poster", "line", () => setShowWanted(true), "\uD83E\uDEA7", lang === "en" ? "Poster" : lang === "hu" ? "Plak\u00E1t" : "Afi\u0219"));
+      c.category !== "gym" && act("poster", "line", () => setShowWanted(true), "\uD83E\uDEA7", lang === "en" ? "Poster" : lang === "hu" ? "Plak\u00E1t" : "Afi\u0219"),
+      c.category !== "gym" && c.status !== "renovated" && act("letter", "line", () => setShowLetter(true), "\u2709\uFE0F", lang === "en" ? "AI letter" : lang === "hu" ? "AI-lev\u00E9l" : "Scrisoare AI")); // TODO: HU review
   })()),
   showPlay && React.createElement(PlayNowModal, { court: c, onClose: () => setShowPlay(false) }),
   showQR && React.createElement(CourtQRCard, { court: c, onClose: () => setShowQR(false) }),
   showWanted && React.createElement(WantedPoster, { court: c, onClose: () => setShowWanted(false) }),
+  showLetter && React.createElement(AiLetterModal, { court: c, onClose: () => setShowLetter(false) }),
   unlockBadge && React.createElement(BadgeUnlockModal, { badge:unlockBadge, lang:lang, onClose:()=>setUnlockBadge(null) })
   );
 }
@@ -14881,6 +14898,7 @@ function QuickReportModal({ onClose, courtId: preset }) {
   const [here, setHere] = useState(null);
   const [locating, setLocating] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [ai, setAi] = useState(null);
   useEffect(() => {
     const onKey = e => { if (e.key === "Escape" && document.querySelectorAll(".modal-overlay").length < 2) { e.preventDefault(); e.stopImmediatePropagation(); onClose(); } };
     window.addEventListener("keydown", onKey, true);
@@ -14907,7 +14925,7 @@ function QuickReportModal({ onClose, courtId: preset }) {
   const pickPhoto = async e => {
     const file = e.target.files[0];
     if (!file) return;
-    try { const data = await compressImage(file, 900, 0.7); setF(o => ({ ...o, photoDataUrl: data })); } catch (err) { toast(t.error); }
+    try { const data = await compressImage(file, 900, 0.7); setF(o => ({ ...o, photoDataUrl: data })); setAi(null); } catch (err) { toast(t.error); }
   };
   const login = () => {
     try { sessionStorage.setItem("g2p_report_draft", JSON.stringify(f)); }
@@ -14927,6 +14945,7 @@ function QuickReportModal({ onClose, courtId: preset }) {
       voterKey: getVoterKey(), uid: firebaseUser.uid, userName: userName
     };
     if (f.photoDataUrl) payload.photoDataUrl = f.photoDataUrl;
+    if (f.photoDataUrl && ai) payload.ai = aiStamp(ai);
     if (f.lat) { payload.lat = f.lat; payload.lng = f.lng; }
     db.ref("reports").push(payload).then(() => {
       db.ref("activity").push({ type: "report", userName: userName, courtId: f.courtId, courtName: payload.courtName, timestamp: now });
@@ -14968,16 +14987,152 @@ function QuickReportModal({ onClose, courtId: preset }) {
         f.photoDataUrl
           ? e("div", { className: "rq-photo" },
               e("img", { src: f.photoDataUrl, alt: L3("Poza ta", "Your photo", "A fotód") }),
-              e("button", { onClick: () => setF(o => ({ ...o, photoDataUrl: null })), "aria-label": L3("Scoate poza", "Remove photo", "Fotó törlése") }, "✕"))
+              e("button", { onClick: () => { setF(o => ({ ...o, photoDataUrl: null })); setAi(null); }, "aria-label": L3("Scoate poza", "Remove photo", "Fotó törlése") }, "✕"))
           : e("label", { className: "rq-drop" },
               e("span", { style: { fontSize: "2rem" } }, "📷"),
               e("b", null, L3("Fă o poză", "Take a photo", "Készíts fotót")),
               e("small", null, L3("Opțional, dar o poză valorează cât 100 de cuvinte la Primărie.", "Optional, but a photo is worth 100 words at City Hall.", "Nem kötelező, de egy fotó 100 szót ér a Városházán.")),
               e("input", { type: "file", accept: "image/*", capture: "environment", style: { display: "none" }, onChange: pickPhoto })),
+        e(AiPhotoHint, { photo: f.photoDataUrl, onResult: setAi, extra: r => e("div", { className: "ai-acts" },
+          r.category !== "none" && r.category !== f.category && e("button", { type: "button", className: "ai-btn ai-btn-sm", onClick: () => setF(o => ({ ...o, category: r.category })) },
+            "↪ ", (REPORT_CATS.find(c => c[0] === r.category) || [0, "📌"])[1], " ", catLabel(r.category)),
+          r.summary && (f.note || "").indexOf(r.summary) < 0 && e("button", { type: "button", className: "ai-btn ai-btn-sm", onClick: () => setF(o => ({ ...o, note: ((o.note || "").trim() ? o.note.trim() + "\n" : "") + r.summary })) },
+            "＋ ", L3("Pune în descriere", "Add to the note", "Hozzáadás a leíráshoz"))) }),
         e("textarea", { value: f.note, onChange: ev => setF(o => ({ ...o, note: ev.target.value })), rows: 2, maxLength: 2000, placeholder: L3("Vrei să adaugi ceva? (opțional)", "Anything to add? (optional)", "Szeretnél még valamit írni? (nem kötelező)"), style: { marginTop: ".6rem", resize: "vertical" } }),
         !firebaseUser && e("p", { className: "rq-acct" }, "🔐 " + L3("Sesizările cer un cont, ca Primăria să le ia în serios. Ce ai completat rămâne aici.", "Reports need an account so City Hall takes them seriously. What you filled in stays here.", "A bejelentéshez fiók kell, hogy a Városháza komolyan vegye. Amit kitöltöttél, megmarad.")),
         e("button", { className: "btn btn-green btn-block mt-1", disabled: submitting || !f.courtId || !f.category, onClick: submit },
           submitting ? "…" : firebaseUser ? "📨 " + t.submit : "🔐 " + L3("Intră în cont și trimite", "Sign in and send", "Belépés és küldés")))
+    ));
+}
+
+/* === AI helpers — POST /.netlify/functions/ai (the key stays on the server) === */
+function g2pAI(body) {
+  return fetch("/.netlify/functions/ai", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) })
+    .then(r => r.json().catch(() => ({ error: "bad_json" })).then(d => {
+      if (!r.ok || d.error) throw Object.assign(new Error(d.error || "http " + r.status), { code: d.error || "http" });
+      return d;
+    }));
+}
+function aiErrMsg(code, L3) { // TODO: HU review
+  if (code === "rate_limited") return L3("Prea multe încercări. Mai încearcă peste câteva minute.", "Too many tries. Try again in a few minutes.", "Túl sok próbálkozás. Próbáld újra pár perc múlva.");
+  if (code === "bad_image") return L3("Poza nu poate fi citită. Încearcă alta.", "This photo can't be read. Try another one.", "A fotó nem olvasható. Próbálj meg egy másikat.");
+  return L3("AI-ul nu răspunde acum. Poți continua și fără el.", "The AI isn't answering right now. You can go on without it.", "Az AI most nem válaszol. Folytathatod nélküle is.");
+}
+// What the AI saw in a photo, saved next to the report and always kept apart from what the person chose.
+function aiStamp(r) {
+  return r ? { condition: r.condition, category: r.category || "none", confidence: r.confidence, summary: String(r.summary || "").slice(0, 300), model: r.model || "", at: new Date().toISOString() } : null;
+}
+// "✨ AI citește poza": one call per photo; it only suggests, the person decides.
+function AiPhotoHint({ photo, onResult, extra }) {
+  const { t, lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const [st, setSt] = useState({ s: "idle" });
+  useEffect(() => { setSt({ s: "idle" }); }, [photo]);
+  if (!photo) return null;
+  const e = React.createElement;
+  const run = () => {
+    setSt({ s: "busy" });
+    g2pAI({ task: "photo", image: photo, lang }).then(r => { setSt({ s: "done", r }); if (onResult) onResult(r); g2pSfx("chime"); })
+      .catch(err => { setSt({ s: "err", code: err.code }); if (onResult) onResult(null); });
+  };
+  const condL = k => ({ good: t.conditionGood, degraded: t.conditionDegraded, abandoned: t.conditionAbandoned }[k] || L3("neclar", "unclear", "nem egyértelmű"));
+  if (st.s === "idle") return e("div", { className: "ai-hint" },
+    e("button", { type: "button", className: "ai-btn", onClick: run }, "✨ ", L3("AI citește poza", "AI reads the photo", "Az AI elolvassa a fotót")),
+    e("small", null, L3("O estimare, nu o verificare. Tu decizi.", "An estimate, not a check. You decide.", "Becslés, nem ellenőrzés. Te döntesz.")));
+  if (st.s === "busy") return e("div", { className: "ai-hint ai-busy", role: "status" }, e("span", { className: "ai-spark", "aria-hidden": "true" }, "✨"), L3("AI-ul se uită la poză…", "The AI is looking at the photo…", "Az AI nézi a fotót…"));
+  if (st.s === "err") return e("div", { className: "ai-hint ai-err", role: "status" },
+    e("span", null, aiErrMsg(st.code, L3)),
+    st.code !== "bad_image" && e("button", { type: "button", className: "ai-btn ai-btn-sm", onClick: run }, "↻ ", L3("Încearcă iar", "Try again", "Újra")));
+  const r = st.r;
+  if (!r.isCourt) return e("div", { className: "ai-card", role: "status" },
+    e("div", { className: "ai-tag" }, "✨ ", L3("Estimare AI din poză", "AI estimate from the photo", "AI-becslés a fotóból")),
+    e("p", null, L3("Nu văd un teren de sport în poza asta. ", "I can't see a sports court in this photo. ", "Nem látok sportpályát ezen a fotón. "), r.summary));
+  return e("div", { className: "ai-card", role: "status" },
+    e("div", { className: "ai-tag" }, "✨ ", L3("Estimare AI din poză", "AI estimate from the photo", "AI-becslés a fotóból"),
+      e("b", { className: "ai-cond ai-c-" + r.condition }, condL(r.condition)),
+      e("span", { className: "ai-conf" }, Math.round(r.confidence * 100) + "%")),
+    r.summary && e("p", null, r.summary),
+    r.issues && r.issues.length > 0 && e("ul", { className: "ai-issues" }, r.issues.map((x, i) => e("li", { key: i }, x))),
+    extra && extra(r));
+}
+
+const CITY_HALL_EMAIL = { tgm: "infopublic@tirgumures.ro", sibiu: "pms@sibiu.ro" };
+// "Scrisoare AI": a letter to City Hall written only from what the site knows about this court.
+function AiLetterModal({ court: c, onClose }) {
+  const { lang, toast, user } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const allReports = useFirebase("reports");
+  const [st, setSt] = useState({ s: "idle" });
+  const [text, setText] = useState("");
+  const [name, setName] = useState(user && user.name ? user.name : "");
+  useEffect(() => {
+    const onKey = ev => { if (ev.key === "Escape") { ev.preventDefault(); ev.stopImmediatePropagation(); onClose(); } };
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, []);
+  const city = c.city || ACTIVE_CITY;
+  const facts = () => {
+    const reps = allReports ? Object.values(allReports).filter(r => r && r.courtId === c.id) : [];
+    const open = reps.filter(r => r.status !== "resolved" && r.category !== "condition");
+    const last = reps.filter(r => r.category === "condition" && r.conditionReport).sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")))[0];
+    const catRo = { surface: "suprafața de joc degradată", hoop: "coș, panou sau poartă stricate", fence: "gard deteriorat", lighting: "iluminat nefuncțional", trash: "gunoi pe teren", safety: "probleme de siguranță", other: "alte probleme" };
+    const typeRo = { basketball: "teren de baschet", football: "teren de fotbal", tennis: "teren de tenis", multiuse: "teren multisport" };
+    const f = { name: c.name + (c.address ? ", " + c.address : ""), city, type: typeRo[c.category] || c.category || "", issues: [...new Set(open.map(r => catRo[r.category]).filter(Boolean))] };
+    const cond = last ? last.conditionReport : c.status === "degraded" ? "degraded" : "";
+    if (cond) f.condition = cond;
+    f.reports = allReports ? open.length : (c.reports || 0);
+    if (allReports) f.health = getCourtHealthScore(c, allReports);
+    return f;
+  };
+  const gen = () => {
+    setSt({ s: "busy" });
+    // Always Romanian: the letter goes to a Romanian City Hall.
+    g2pAI({ task: "letter", court: facts(), lang: "ro" }).then(r => { setText(r.letter || ""); setSt({ s: "done" }); g2pSfx("chime"); })
+      .catch(err => setSt({ s: "err", code: err.code }));
+  };
+  const final = () => text.split("[Nume]").join(name.trim() || "[Nume]");
+  const subject = "Solicitare de verificare și reparare: " + c.name;
+  const copy = () => copyText(final()).then(ok => toast(ok ? L3("Copiat ✓", "Copied ✓", "Másolva ✓") : L3("Nu s-a putut copia", "Could not copy", "Nem sikerült másolni")));
+  const mail = () => { window.location.href = "mailto:" + CITY_HALL_EMAIL[city === "sibiu" ? "sibiu" : "tgm"] + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(final()); };
+  const pdf = () => {
+    const JsPDF = window.jspdf && window.jspdf.jsPDF;
+    if (!JsPDF) { toast(L3("PDF-ul încă se încarcă. Mai încearcă o dată.", "The PDF tool is still loading. Try again.", "A PDF még töltődik. Próbáld újra.")); return; }
+    const doc = new JsPDF({ unit: "mm", format: "a4" });
+    const M = 22, maxW = 210 - M * 2;
+    let y = 24;
+    doc.setFont("helvetica", "normal"); doc.setFontSize(9.5); doc.setTextColor(110, 115, 125);
+    doc.text(pdfTxt(new Date().toLocaleDateString("ro-RO")), 210 - M, y, { align: "right" });
+    y += 10;
+    doc.setFontSize(11.5); doc.setTextColor(30, 30, 40);
+    final().split("\n").forEach(par => {
+      const lines = par.trim() ? doc.splitTextToSize(pdfTxt(par), maxW) : [""];
+      lines.forEach(line => { if (y > 275) { doc.addPage(); y = 24; } doc.text(line, M, y); y += 5.6; });
+    });
+    doc.setFontSize(8); doc.setTextColor(140, 145, 155);
+    doc.text(pdfTxt("From Grey to Play · " + SITE.replace("https://", "") + "/#court-" + c.id), M, 288);
+    doc.save("scrisoare-" + c.id + ".pdf");
+  };
+  const e = React.createElement;
+  return e("div", { className: "modal-overlay", onClick: onClose },
+    e("div", { className: "modal modal-lg ai-letter", onClick: ev => ev.stopPropagation(), role: "dialog", "aria-modal": "true", "aria-label": L3("Scrisoare către Primărie", "Letter to City Hall", "Levél a Városházának") },
+      e("div", { className: "flex justify-between items-center mb-1" },
+        e("h2", { style: { fontSize: "1rem", margin: 0 } }, "✉️ ", L3("Scrisoare către Primărie", "Letter to City Hall", "Levél a Városházának")),
+        e("button", { className: "btn btn-sm btn-outline", onClick: onClose }, L3("Închide", "Close", "Bezár"))),
+      e("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, "📍 ", c.name, " → ", CITY_HALL_EMAIL[city === "sibiu" ? "sibiu" : "tgm"]),
+      st.s !== "done" && e("div", { className: "ai-letter-start" },
+        e("p", null, L3("AI-ul scrie o scrisoare politicoasă în română, doar din ce știe site-ul despre teren: nume, stare, sesizări. Nu inventează cifre.", "The AI writes a polite letter in Romanian, only from what the site knows about this court: name, condition, reports. It invents no numbers.", "Az AI udvarias román nyelvű levelet ír, csak abból, amit az oldal tud a pályáról: név, állapot, bejelentések. Nem talál ki számokat.")),
+        st.s === "err" && e("p", { className: "ai-err-t" }, aiErrMsg(st.code, L3)),
+        e("button", { className: "btn btn-green", onClick: gen, disabled: st.s === "busy" }, st.s === "busy" ? "✨ " + L3("Scrie…", "Writing…", "Írja…") : "✨ " + L3("Scrie scrisoarea", "Write the letter", "Írd meg a levelet"))),
+      st.s === "done" && e(React.Fragment, null,
+        e("div", { className: "ai-tag mb-1" }, "✨ ", L3("Scris de AI. Citește-l și schimbă ce vrei înainte să-l trimiți.", "Written by AI. Read it and change anything before you send it.", "AI írta. Olvasd el, és változtass rajta küldés előtt.")),
+        e("label", { className: "text-sm", style: { display: "block", marginBottom: ".5rem" } }, L3("Numele tău (pentru semnătură)", "Your name (for the signature)", "A neved (az aláíráshoz)"),
+          e("input", { value: name, onChange: ev => setName(ev.target.value), maxLength: 80, placeholder: "[Nume]", style: { marginTop: ".25rem" } })),
+        e("textarea", { className: "ai-letter-text", value: text, onChange: ev => setText(ev.target.value), rows: 12, maxLength: 4000, "aria-label": L3("Textul scrisorii", "Letter text", "A levél szövege") }),
+        e("div", { className: "ai-letter-acts" },
+          e("button", { className: "btn btn-outline", onClick: copy }, "📋 ", L3("Copiază", "Copy", "Másolás")),
+          e("button", { className: "btn btn-green", onClick: mail }, "📨 ", L3("Trimite pe email", "Send by email", "Küldés e-mailben")),
+          e("button", { className: "btn btn-outline", onClick: pdf }, "📄 PDF"),
+          e("button", { className: "btn btn-sm btn-outline", onClick: gen, title: L3("Scrie din nou", "Write again", "Írd újra") }, "↻")))
     ));
 }
 
@@ -14994,6 +15149,7 @@ function CourtConditionQuick({ onClose, courtId: presetCourt }) {
   }, []);
   const [condition, setCondition] = useState("");
   const [photoDataUrl, setPhotoDataUrl] = useState(null);
+  const [ai, setAi] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const allCourts = [...COURTS, ...extraCourts(fbCourts)];
   const selectedCourt = allCourts.find(c => c.id === courtId);
@@ -15006,8 +15162,10 @@ function CourtConditionQuick({ onClose, courtId: presetCourt }) {
     const file = e.target.files[0];
     if (!file) return;
     const data = await compressImage(file, 900, 0.7);
-    setPhotoDataUrl(data);
+    setPhotoDataUrl(data); setAi(null);
   };
+  // The AI only fills an empty choice; a different opinion shows as a button.
+  const onAi = r => { setAi(r); if (r && r.isCourt && r.condition !== "unclear" && !condition) setCondition(r.condition); };
   const submit = () => {
     if (!courtId || !condition) { toast(t.error); return; }
     setSubmitting(true);
@@ -15022,6 +15180,7 @@ function CourtConditionQuick({ onClose, courtId: presetCourt }) {
       voterKey: getVoterKey(), userName
     };
     if (photoDataUrl) payload.photoDataUrl = photoDataUrl;
+    if (photoDataUrl && ai) payload.ai = aiStamp(ai);
     db.ref("reports").push(payload).then(() => {
       logActivity("conditionReport", userName, courtId);
       toast(t.conditionSubmitted);
@@ -15053,12 +15212,14 @@ function CourtConditionQuick({ onClose, courtId: presetCourt }) {
       photoDataUrl
         ? React.createElement("div", { style: { position: "relative", marginBottom: ".5rem" } },
             React.createElement("img", { src: photoDataUrl, alt: "prev", style: { width: "100%", borderRadius: 8, maxHeight: 120, objectFit: "cover" } }),
-            React.createElement("button", { onClick: () => setPhotoDataUrl(null), style: { position: "absolute", top: 4, right: 4, background: "rgba(0,0,0,.5)", color: "#fff", border: "none", borderRadius: "50%", width: 24, height: 24, cursor: "pointer", fontSize: ".8rem" } }, "✕")
+            React.createElement("button", { onClick: () => { setPhotoDataUrl(null); setAi(null); }, style: { position: "absolute", top: 4, right: 4, background: "rgba(0,0,0,.5)", color: "#fff", border: "none", borderRadius: "50%", width: 24, height: 24, cursor: "pointer", fontSize: ".8rem" } }, "✕")
           )
         : React.createElement("label", { style: { display: "block", cursor: "pointer", marginBottom: ".5rem" } },
             React.createElement("div", { className: "card", style: { textAlign: "center", padding: ".6rem", border: "2px dashed var(--border)", boxShadow: "none" } }, "📷 ", t.choosePhoto),
             React.createElement("input", { type: "file", accept: "image/*", capture: "environment", style: { display: "none" }, onChange: pickPhoto })
           ),
+      React.createElement(AiPhotoHint, { photo: photoDataUrl, onResult: onAi, extra: r => r.condition !== "unclear" && condition && r.condition !== condition
+        && React.createElement("button", { type: "button", className: "ai-btn ai-btn-sm", onClick: () => setCondition(r.condition) }, "↪ ", (conds.find(x => x.k === r.condition) || {}).l) }),
       React.createElement("button", { className: "btn btn-green btn-block mt-2", disabled: !courtId || !condition || submitting, onClick: submit }, submitting ? "..." : t.submit)
     )
   );

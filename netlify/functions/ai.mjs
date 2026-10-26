@@ -5,7 +5,7 @@
 const MODEL = "claude-sonnet-5-5";
 const ALLOWED = [/^https:\/\/fromgreytoplay\.netlify\.app$/, /^https:\/\/[a-z0-9-]+--fromgreytoplay\.netlify\.app$/, /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/];
 const MAX_IMAGE = 1_600_000; // base64 chars (~1.2 MB jpeg)
-const PER_IP = 12;            // calls per IP per hour (best effort: resets when the function goes cold)
+const PER_IP = 30;            // calls per IP per hour (best effort: resets when the function goes cold; a venue Wi-Fi shares one IP)
 const hits = new Map();
 
 const json = (status, body, origin) => new Response(JSON.stringify(body), {
@@ -32,7 +32,8 @@ function courtFacts(c) {
 
 const PHOTO_PROMPT = lang => `You look at one photo of an outdoor public sports court sent by a citizen.
 Reply with ONLY a JSON object, no other text:
-{"isCourt": true|false, "condition": "good"|"degraded"|"abandoned"|"unclear", "issues": [up to 5 short strings], "confidence": 0-1, "summary": "one or two sentences"}
+{"isCourt": true|false, "condition": "good"|"degraded"|"abandoned"|"unclear", "category": "surface"|"hoop"|"fence"|"lighting"|"trash"|"safety"|"other"|"none", "issues": [up to 5 short strings], "confidence": 0-1, "summary": "one or two sentences"}
+"category" is the main visible problem: surface (cracks, potholes, worn paint), hoop (backboard, rim, net, goals), fence, lighting, trash, safety (sharp or broken parts), other, or none if nothing is wrong.
 Rules: describe only what is visible in the photo. Do not guess anything you cannot see (location, age, cost, owner). If it is not a sports court, set isCourt false and condition "unclear". Write "issues" and "summary" in ${LANG[lang] || "Romanian"}.`;
 
 const LETTER_PROMPT = (lang, city) => `Write a short, polite, formal letter from a young resident to the City Hall of ${city === "sibiu" ? "Sibiu (Primăria Municipiului Sibiu)" : "Târgu Mureș (Primăria Municipiului Târgu Mureș)"} asking for the court below to be checked and repaired.
@@ -65,7 +66,8 @@ async function callClaude(content, system, maxTokens) {
 export default async (req, context) => {
   const origin = req.headers.get("origin") || "";
   const okOrigin = ALLOWED.some(r => r.test(origin)) ? origin : null;
-  if (req.method === "OPTIONS") return json(204, {}, okOrigin);
+  // A 204 can't carry a body (new Response would throw), so the preflight gets its own reply.
+  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: { "access-control-allow-origin": okOrigin || "https://fromgreytoplay.netlify.app", "access-control-allow-headers": "content-type", "access-control-allow-methods": "POST, OPTIONS", "vary": "origin" } });
   if (req.method !== "POST") return json(405, { error: "method" }, okOrigin);
   if (!okOrigin) return json(403, { error: "origin" });
   if (!endpoint()) return json(503, { error: "not_configured" }, okOrigin);
@@ -96,6 +98,7 @@ export default async (req, context) => {
       return json(200, {
         isCourt: out.isCourt !== false, condition: cond,
         issues: (Array.isArray(out.issues) ? out.issues : []).slice(0, 5).map(x => clean(x, 80)),
+        category: ["surface", "hoop", "fence", "lighting", "trash", "safety", "other", "none"].includes(out.category) ? out.category : "none",
         confidence: Math.max(0, Math.min(1, Number(out.confidence) || 0)),
         summary: clean(out.summary, 300), model: MODEL
       }, okOrigin);
