@@ -109,7 +109,7 @@ export default async (req, context) => {
       const facts = courtFacts(body.court);
       if (!facts) return json(400, { error: "no_court" }, okOrigin);
       const city = body.court && body.court.city === "sibiu" ? "sibiu" : "tgm";
-      const text = await callClaude([{ type: "text", text: facts }], LETTER_PROMPT(lang, city), 600);
+      const text = await callClaude([{ type: "text", text: facts }], LETTER_PROMPT(lang, city), 1200); // Romanian diacritics cost many tokens; 600 cut letters off mid-sentence
       // keep the paragraph breaks, drop other control chars
       const letter = String(text).replace(/\r/g, "").replace(/[\u0000-\u0009\u000b-\u001f]/g, " ").replace(/\n{3,}/g, "\n\n").replace(/ {2,}/g, " ").slice(0, 2000);
       return json(200, { letter, model: MODEL }, okOrigin);
