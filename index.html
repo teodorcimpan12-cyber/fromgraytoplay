@@ -1087,6 +1087,9 @@ html.g2p-shake .card,html.g2p-shake .stat-tile{animation:cardShake .5s 3}
 .ai-hint{display:flex;align-items:center;flex-wrap:wrap;gap:.35rem .6rem;margin:.6rem 0 0}.ai-hint small{color:var(--textSec);font-size:.74rem}
 .ai-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.5rem .85rem;border-radius:999px;border:1.5px solid var(--teal);background:color-mix(in srgb,var(--teal) 10%,transparent);color:var(--text);font-weight:700;font-size:.84rem;cursor:pointer;transition:transform .15s,box-shadow .2s}
 .ai-btn:hover,.ai-btn:focus-visible{transform:translateY(-1px);box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 22%,transparent)}.ai-btn-sm{padding:.32rem .65rem;font-size:.78rem}
+.atlas-links{display:grid;gap:.4rem}
+.atlas-link{display:flex;justify-content:space-between;align-items:center;gap:.6rem;padding:.55rem .8rem;border-radius:var(--radius);border:1px solid var(--border);color:var(--text);text-decoration:none;font-size:.86rem;font-weight:600;transition:border-color .2s,background .2s}
+.atlas-link:hover{border-color:var(--green);background:color-mix(in srgb,var(--green) 8%,transparent)}
 .ai-busy{font-size:.84rem;color:var(--textSec)}.ai-spark{display:inline-block;animation:aiSpark 1s ease-in-out infinite}
 @keyframes aiSpark{50%{transform:scale(1.35) rotate(20deg);opacity:.55}}
 .ai-err{font-size:.8rem;color:var(--textSec)}.ai-err-t{font-size:.84rem;color:var(--red)}
@@ -1747,7 +1750,7 @@ const T = {
     degraded: "Degradat",
     unverified: "Neverificat",
     excellent: "Excelent",
-    satellite: "Din satelit", satGone: "Nu se vede teren din satelit", satWorn: "Uzat, din satelit", satOk: "Întreg, din satelit",
+    satellite: "Estimat din satelit", satGone: "Dispărut", satWorn: "Degradat", satOk: "Bun",
     fieldVerified: "Verificat pe teren",
     verifiedShare: "{n} din {m} terenuri verificate pe teren — restul nu intră în calcul.",
     inProgress: "În lucru",
@@ -1901,7 +1904,7 @@ const T = {
     degraded: "Degraded",
     unverified: "Unverified",
     excellent: "Excellent",
-    satellite: "From satellite", satGone: "No court seen from satellite", satWorn: "Worn, from satellite", satOk: "Intact, from satellite",
+    satellite: "Satellite estimate", satGone: "Gone", satWorn: "Degraded", satOk: "Good",
     fieldVerified: "Field-verified",
     verifiedShare: "{n} of {m} courts field-verified — the rest are not counted.",
     inProgress: "In progress",
@@ -2055,7 +2058,7 @@ const T = {
     degraded: "Leromlott",
     unverified: "Nem ellenőrzött",
     excellent: "Kiváló", // TODO: HU review
-    satellite: "Műholdról", satGone: "Műholdról nem látszik pálya", satWorn: "Kopott, műholdról", satOk: "Ép, műholdról", // TODO: HU review
+    satellite: "Műholdas becslés", satGone: "Eltűnt", satWorn: "Leromlott", satOk: "Jó", // TODO: HU review
     fieldVerified: "Helyszínen ellenőrizve", // TODO: HU review
     verifiedShare: "{m} pályából {n} helyszínen ellenőrizve — a többi nem számít bele.", // TODO: HU review
     inProgress: "Folyamatban",
@@ -2540,10 +2543,11 @@ function courtStatusView(court, t) {
   if (s === "unverified") return { color: "#6B7280", badge: "badge-gray", admin: "a-badge-t", label: t.unverified || "Neverificat", bad: false };
   if (s === "excellent") return { color: "#10B981", badge: "badge-green", admin: "a-badge-g", label: t.excellent || "Excelent", bad: false };
   if (s === "satellite") {
-    var sv = (court.sat && court.sat.v) || "ok", yr = court.sat && court.sat.at ? " " + court.sat.at.slice(0, 4) : "";
-    return sv === "gone" ? { color: "#9F1239", badge: "badge-red", admin: "a-badge-r", label: (t.satGone || "Nu se vede teren din satelit") + yr, bad: true }
-      : sv === "worn" ? { color: "#F59E0B", badge: "badge-coral", admin: "a-badge-o", label: (t.satWorn || "Uzat, din satelit") + yr, bad: true }
-      : { color: "#0EA5E9", badge: "badge-teal", admin: "a-badge-t", label: (t.satOk || "Întreg, din satelit") + yr, bad: false };
+    // Same words and colours as Târgu Mureș; the satellite origin is shown in the court detail (SatFinding).
+    var sv = (court.sat && court.sat.v) || "ok";
+    return sv === "gone" ? { color: "#9F1239", badge: "badge-red", admin: "a-badge-r", label: t.satGone || "Dispărut", bad: true }
+      : sv === "worn" ? { color: "#DC2626", badge: "badge-red", admin: "a-badge-r", label: t.satWorn || "Degradat", bad: true }
+      : { color: "#10B981", badge: "badge-green", admin: "a-badge-g", label: t.satOk || "Bun", bad: false };
   }
   if (s === "degraded") return { color: "#DC2626", badge: "badge-red", admin: "a-badge-r", label: t.degraded || "Degradat", bad: true };
   if (s === "inProgress") return { color: "#F97316", badge: "badge-coral", admin: "a-badge-o", label: t.inProgress || "În lucru", bad: false };
@@ -3205,7 +3209,9 @@ function BadgesGrid(props) {
 function getCourtHealthScore(court, allReports, ratingsData) {
   var score = 0;
   var cond = court.condition || 0;
-  score += (cond / 5) * 40;
+  var rated = ratingsData && Object.keys(ratingsData).length > 0;
+  // Without user ratings the condition carries the whole score (5/5 -> 90), so a perfect court is not stuck at 40.
+  score += (cond / 5) * (rated ? 40 : 90);
   // Condition checks are verification, not open problems.
   var openReps = allReports ? Object.values(allReports).filter(function(r) { return r.courtId === court.id && r.status !== "resolved" && r.category !== "condition"; }).length : (court.reports || 0);
   score -= Math.min(openReps * 6, 24);
@@ -3223,6 +3229,8 @@ function getCourtHealthScore(court, allReports, ratingsData) {
     var recent = Object.values(court.checkins).filter(function(c) { return Date.now() - (c.timestamp||0) < 7*24*3600*1000; }).length;
     score += Math.min(recent * 2, 10);
   }
+  // Stadiums ("excellent") are kept to the top standard; a stray report never makes them look sick.
+  if (court.status === "excellent") score = Math.max(score, 92);
   return Math.max(0, Math.min(100, Math.round(score)));
 }
 
@@ -3618,7 +3626,8 @@ function SatFinding({ court: c }) {
     satFindCache.then(j => { if (alive) setD(j); });
     return () => { alive = false; };
   }, [c.id]);
-  const f = d && d.courts && d.courts[c.id];
+  // Rebuilt stadiums (sb8, sb21) have a dated press source; old satellite captures predate the rebuild.
+  const f = !c.stadium && d && d.courts && d.courts[c.id];
   if (!f) return null;
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
   const loc = lang === "en" ? "en-GB" : lang === "hu" ? "hu-HU" : "ro-RO";
@@ -6355,7 +6364,41 @@ const COURTS_SIBIU = [
    Ties go to the two most consistent reviewers. It is what the images showed, never today's condition.
    Regenerate after new exports (see tools/sat_merge.mjs). */
 const SAT_VIEW = {"sb1":{"v":"worn","n":2,"of":4,"at":"2021-02-27"},"sb2":{"v":"worn","n":2,"of":4,"at":"2022-08-06"},"sb3":{"v":"ok","n":3,"of":4,"at":"2022-08-06"},"sb4":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb5":{"v":"ok","n":2,"of":4,"at":"2021-02-27"},"sb6":{"v":"ok","n":4,"of":4,"at":"2021-02-27"},"sb7":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb8":{"v":"gone","n":3,"of":4,"at":"2021-02-27"},"sb9":{"v":"gone","n":2,"of":4,"at":"2022-08-06"},"sb10":{"v":"gone","n":2,"of":4,"at":"2022-08-06"},"sb11":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb12":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb13":{"v":"gone","n":3,"of":4,"at":"2022-08-06"},"sb14":{"v":"gone","n":3,"of":4,"at":"2022-08-06"},"sb15":{"v":"gone","n":3,"of":4,"at":"2022-08-06"},"sb16":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb17":{"v":"gone","n":4,"of":4,"at":"2022-08-06"},"sb18":{"v":"worn","n":2,"of":4,"at":"2022-08-06"},"sb19":{"v":"ok","n":2,"of":4,"at":"2021-02-27"},"sb20":{"v":"gone","n":2,"of":4,"at":"2021-02-27"},"sb21":{"v":"ok","n":3,"of":4,"at":"2022-08-06"},"sb22":{"v":"gone","n":3,"of":4,"at":"2021-02-27"},"sb23":{"v":"gone","n":3,"of":4,"at":"2021-02-27"},"sb24":{"v":"ok","n":3,"of":4,"at":"2025-03-04"},"sb25":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb26":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb27":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb28":{"v":"ok","n":3,"of":4,"at":"2021-02-27"},"sb29":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb30":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb31":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb32":{"v":"ok","n":3,"of":4,"at":"2022-08-06"},"sb33":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb34":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb35":{"v":"gone","n":2,"of":4,"at":"2021-02-27"}};
-COURTS_SIBIU.forEach(c => { const v = SAT_VIEW[c.id]; if (v && c.status === "unverified") { c.status = "satellite"; c.sat = v; } });
+/* Sibiu stadiums: two OSM pitches sit inside rebuilt stadiums, so they become those stadiums (status "excellent").
+   sb21 = Stadionul Municipal (OSM way 1123069978), sb8 = Baza Voința / Academia Alma (OSM way 177522036). */
+const STADIUMS_SIBIU = {
+  sb21: { name: "Stadionul Municipal Sibiu", address: "Aleea Mihai Eminescu (Parcul Sub Arini), Sibiu", lat: 45.78332, lng: 24.1438, category: "football",
+    src: "https://www.romania-insider.com/sibiu-stadium-opening-dec-2022",
+    desc: { ro: "Stadion de fotbal reconstruit, redeschis pe 10 decembrie 2022: 12.363 locuri, gazon natural, pistă de atletism nouă, nocturnă. Casa FC Hermannstadt.",
+      en: "Rebuilt football stadium, reopened on 10 December 2022: 12,363 seats, natural grass, new athletics track, floodlights. Home of FC Hermannstadt.",
+      hu: "Újjáépített labdarúgó-stadion, 2022. december 10-én nyílt meg: 12 363 ülőhely, természetes gyep, új atlétikapálya, világítás. Az FC Hermannstadt otthona." } }, // TODO: HU review
+  sb8: { name: "Baza Sportivă Voința (Academia Alma)", address: "Strada Poet Vasile Cârlova, Sibiu", lat: 45.79125, lng: 24.13266, category: "football",
+    src: "https://www.oradesibiu.ro/2025/07/11/ai-vazut-noul-stadion-din-sibiu-arena-de-sapte-sute-mii-de-euro-aproape-terminata-si-arata-superb-video-foto/",
+    desc: { ro: "Bază modernizată în 2024–2025 (peste 1 milion de euro): gazon sintetic nou, nocturnă, vestiare, teren omologabil Liga 3. Se poate închiria seara, după ora 21.",
+      en: "Base modernised in 2024–2025 (over 1 million euro): new synthetic turf, floodlights, changing rooms, a pitch fit for Liga 3. Can be rented in the evening, after 9 pm.",
+      hu: "2024–2025-ben korszerűsített bázis (több mint 1 millió euró): új műfű, világítás, öltözők, Liga 3-ra alkalmas pálya. Este 21 óra után bérelhető." } } // TODO: HU review
+};
+/* Every other Sibiu court gets its 1-5 score from the team's satellite verdict (intact 4, worn 2, no court left 1),
+   marked `estimate: "sat"` so the UI can say where the number comes from. */
+const SAT_SCORE = { ok: 4, worn: 2, gone: 1 };
+const SAT_DESC = [[/neverificat pe teren/, "stare estimată din satelit"], [/not field-verified/, "condition estimated from satellite"], [/helyszínen nem ellenőrzött/, "állapot műholdkép alapján becsülve"]]; // TODO: HU review
+COURTS_SIBIU.forEach(c => {
+  const st = STADIUMS_SIBIU[c.id];
+  if (st) {
+    Object.assign(c, { name: st.name, address: st.address, lat: st.lat, lng: st.lng, category: st.category, status: "excellent", condition: 5, occupancy: "active", progress: 100,
+      accessibility: { wheelchair: true, lighting: true, parking: true, flatSurface: true }, description: st.desc.ro, desc: st.desc, src: st.src, stadium: true });
+    return;
+  }
+  const v = SAT_VIEW[c.id];
+  if (!v || c.status !== "unverified") return;
+  c.status = "satellite"; c.sat = v; c.estimate = "sat";
+  c.condition = SAT_SCORE[v.v] || 1;
+  c.occupancy = v.v === "ok" ? "active" : "empty";
+  c.progress = v.v === "ok" ? 80 : v.v === "worn" ? 15 : 5;
+  const fix = s => SAT_DESC.reduce((a, r) => a.replace(r[0], r[1]), String(s || ""));
+  c.description = fix(c.description);
+  if (c.desc) c.desc = { ro: fix(c.desc.ro), en: fix(c.desc.en), hu: fix(c.desc.hu) };
+});
 const COURTS_ALL = [...COURTS_TGM, ...COURTS_SIBIU];
 const COURTS = COURTS_ALL.filter(c => c.city === ACTIVE_CITY);
 // Admin position corrections (settings/courtPos), cached so they apply before the first render.
@@ -6548,7 +6591,7 @@ const TIMELINE_SIBIU = [
   { y: "2023", lei: "> 1 mil. lei", src: "https://www.oradesibiu.ro/2023/05/31/teren-de-sport-la-scoala-8-de-pe-strada-lupeni-primaria-a-lansat-licitatia/", ro: "Licitație pentru terenul de baschet și minifotbal de la Școala nr. 8 (Str. Lupeni)", en: "Tender for the basketball and mini-football court at School no. 8 (Lupeni St.)", hu: "Közbeszerzés a 8-as iskola kosár- és kispályájára (Lupeni utca)" }, // TODO: HU review
   { y: "2024", lei: "12,7 mil. lei", src: "https://bazesportive.sibiu.ro/obor", ro: "Se deschide Baza Sportivă Obor — gratuită cu programare (terenul mare cu plată)", en: "Obor Sports Base opens — free with booking (the main pitch is paid)", hu: "Megnyílik az Obor Sportbázis — foglalással ingyenes (a nagy pálya fizetős)" }, // TODO: HU review
   { y: "2026", src: "https://sibiuindependent.ro/2026/09/30/primaria-sibiu-scoate-la-licitatie-lucrarile-pentru-o-noua-sala-de-sport-si-doua-terenuri-la-scoala-radu-selejan/", ro: "Sept: licitația pentru sala și terenurile de la Școala Radu Selejan", en: "Sept: tender for the hall and courts at Radu Selejan School", hu: "Szept.: közbeszerzés a Radu Selejan Iskola termére és pályáira" }, // TODO: HU review
-  { y: "2026", ro: "Oct: From Grey to Play adaugă Sibiul — 35 de terenuri publice din OpenStreetMap, neverificate; începe auditul din satelit", en: "Oct: From Grey to Play adds Sibiu — 35 public courts from OpenStreetMap, unverified; the satellite audit begins", hu: "Okt.: a From Grey to Play felveszi Nagyszebent — 35 nyilvános pálya az OpenStreetMapből, ellenőrizetlenül; indul a műholdas felmérés" } // TODO: HU review
+  { y: "2026", ro: "Oct: From Grey to Play adaugă Sibiul — 35 de terenuri publice din OpenStreetMap; începe auditul din satelit", en: "Oct: From Grey to Play adds Sibiu — 35 public courts from OpenStreetMap; the satellite audit begins", hu: "Okt.: a From Grey to Play felveszi Nagyszebent — 35 nyilvános pálya az OpenStreetMapből; indul a műholdas felmérés" } // TODO: HU review
 ];
 const ADMIN_EMAIL = "teodor.cimpan12@gmail.com";
 const ADMIN_UID  = "IIdfYqliTrdlYqjS0swd0swlRkV2";
@@ -9039,7 +9082,7 @@ function City3D() {
     const nodes = raw.map((p, i) => {
       const cond = typeof p.c.condition === "number" ? p.c.condition : null;
       const x = p.x / R, z = p.z / R;
-      return { c: p.c, i, x, z, r: Math.hypot(x, z), h: cond == null ? .05 : .14 + cond / 5 * .55, col: courtStatusView(p.c, tRef.current).color, known: cond != null };
+      return { c: p.c, i, x, z, r: Math.hypot(x, z), h: cond == null ? .05 : .14 + cond / 5 * .55 + (p.c.status === "excellent" ? .2 : 0), col: courtStatusView(p.c, tRef.current).color, known: cond != null };
     });
     const links = [];
     nodes.forEach((a, i) => nodes.map((b, j) => ({ j, d: (a.x - b.x) * (a.x - b.x) + (a.z - b.z) * (a.z - b.z) }))
@@ -9257,18 +9300,24 @@ function City3D() {
       cv.removeEventListener("pointerup", up); cv.removeEventListener("pointercancel", cancel); cv.removeEventListener("pointerleave", leave);
     };
   }, []);
-  const statuses = [...new Set(COURTS.map(c => c.status))];
+  // One legend entry per label actually on the map (Sibiu's satellite scores split into Bun / Degradat / Dispărut).
+  const legend = [];
+  COURTS.forEach(c => { const v = courtStatusView(c, t); if (!legend.some(l => l.label === v.label)) legend.push(v); });
+  const anyUnknown = COURTS.some(c => c.condition == null);
   return React.createElement("section", { className: "section" },
     React.createElement("div", { className: "container" },
       React.createElement("h2", { className: "section-title" }, "🌌 ", L3("Orașul, în 3D", "The city, in 3D", "A város 3D-ben")),
-      React.createElement("p", { className: "section-sub" }, L3(
+      React.createElement("p", { className: "section-sub" }, !anyUnknown ? L3(
+        "Fiecare stâlp e un teren real, așezat după coordonatele lui. Înălțimea arată starea (1–5); stadioanele sunt cele mai înalte.",
+        "Each pillar is a real court, placed by its coordinates. Height shows its condition (1–5); the stadiums stand tallest.",
+        "Minden oszlop egy valódi pálya a koordinátái szerint. A magasság az állapotot (1–5) mutatja; a stadionok a legmagasabbak.") : L3( // TODO: HU review
         "Fiecare stâlp e un teren real, așezat după coordonatele lui. Înălțimea arată starea (1–5) acolo unde a fost evaluată; punctele care pulsează nu au fost încă verificate.",
         "Each pillar is a real court, placed by its coordinates. Height shows its condition (1–5) where it has been rated; pulsing dots haven't been checked yet.",
         "Minden oszlop egy valódi pálya a koordinátái szerint. A magasság az állapotot (1–5) mutatja, ahol értékelték; a pulzáló pontokat még nem ellenőrizték.")),
       React.createElement("div", { className: "cc-wrap" },
         React.createElement("canvas", { ref: cvRef, role: "img", "aria-label": L3("Harta 3D a terenurilor", "3D map of the courts", "A pályák 3D térképe") }),
         React.createElement("div", { className: "cc-legend", "aria-hidden": "true" },
-          statuses.map(s => React.createElement("span", { key: s, style: { "--c": courtStatusView({ status: s, condition: 4 }, t).color } }, s === "verified" ? t.fieldVerified : t[s] || s))),
+          legend.map(v => React.createElement("span", { key: v.label, style: { "--c": v.color } }, v.label.replace(/ · \d\/5$/, "")))),
         React.createElement("div", { className: "cc-info" },
           sel
             ? React.createElement(React.Fragment, null,
@@ -9353,6 +9402,34 @@ function HomePage() {
 }
 
 /* === Courts === */
+/* === Atlas Sport: courts they built in each city. Their terms forbid reusing their photos without consent
+   (asked by email 27 Oct 2026), so until they say yes we only link to their own project pages. === */
+const ATLAS_PROJECTS = {
+  tgm: [
+    { ro: "Teren de baschet din dale modulare, Parcul Municipal", en: "Modular-tile basketball court, Municipal Park", hu: "Moduláris lapokból épült kosárlabdapálya, Városi park", url: "https://www.atlassport.ro/project/teren-baschet-din-dale-modulare-parcul-municipal-targu-mures-fotovideo/" }, // TODO: HU review
+    { ro: "Loc de joacă, Parcul Diamant", en: "Playground, Diamant Park", hu: "Játszótér, Diamant park", url: "https://www.atlassport.ro/project/loc-de-joaca-pentru-copii-parcu-diamant-targu-mures/" } // TODO: HU review
+  ],
+  sibiu: [
+    { ro: "Bază sportivă: fotbal, tenis, baschet, tribune", en: "Sports base: football, tennis, basketball, stands", hu: "Sportbázis: foci, tenisz, kosárlabda, lelátók", url: "https://www.atlassport.ro/project/baza-sportiva-sibiu/" }, // TODO: HU review
+    { ro: "Bază sportivă Sibiu, foto și video", en: "Sibiu sports base, photos and video", hu: "Szebeni sportbázis, fotók és videó", url: "https://www.atlassport.ro/project/baza-sportiva-sibiu-sb-fotovideo/" }, // TODO: HU review
+    { ro: "Teren multisport, Păltiniș (jud. Sibiu)", en: "Multi-sport court, Păltiniș (Sibiu county)", hu: "Multisportpálya, Szebenjuharos (Szeben megye)", url: "https://www.atlassport.ro/project/teren-multisport-paltinis-fotovideo/" } // TODO: HU review
+  ]
+};
+function AtlasSportCard() {
+  const { lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const list = ATLAS_PROJECTS[ACTIVE_CITY] || [];
+  if (!list.length) return null;
+  return React.createElement("div", { className: "card mt-2 atlas-card" },
+    React.createElement("strong", { style: { display: "block", marginBottom: ".2rem" } }, "📸 ", L3("Cum arată un teren făcut bine", "What a well-built court looks like", "Így néz ki egy jól megépített pálya")), // TODO: HU review
+    React.createElement("p", { className: "text-xs", style: { color: "var(--textSec)", margin: "0 0 .5rem" } },
+      L3("Poze și video de la Atlas Sport (Târgu Mureș), din " + cityName(lang) + ". Pozele sunt ale lor, le vezi pe site-ul lor.",
+        "Photos and video by Atlas Sport (Târgu Mureș), from " + cityName(lang) + ". The photos are theirs; you see them on their site.",
+        "Fotók és videó az Atlas Sporttól (Marosvásárhely), " + cityName(lang) + ". A fotók az övék, az ő oldalukon láthatók.")), // TODO: HU review
+    React.createElement("div", { className: "atlas-links" }, list.map(p => React.createElement("a", { key: p.url, href: p.url, target: "_blank", rel: "noopener", className: "atlas-link" },
+      React.createElement("span", null, eggL(p, lang)), React.createElement("span", { "aria-hidden": "true" }, "↗"))))
+  );
+}
 function CourtsPage() {
   const {
     t,
@@ -9509,8 +9586,8 @@ function CourtsPage() {
     className: "text-xs mt-1",
     style: { color: "var(--textSec)", textAlign: "center" }
   }, lang === "ro"
-    ? /*#__PURE__*/React.createElement("span", null, ACTIVE_CITY === "sibiu" ? "Surs\u0103: OpenStreetMap \u2014 terenuri neverificate, raporteaz\u0103 starea lor. " : "Surs\u0103: cercetare de teren + date municipale T\xE2rgu Mure\u0219. ", /*#__PURE__*/React.createElement("a", { href: "https://www.google.com/maps/search/terenuri+sport+" + (ACTIVE_CITY === "sibiu" ? "Sibiu" : "Targu+Mures"), target: "_blank", style: { color: "var(--green)" } }, "Caut\u0103 pe Google Maps \u2192"))
-    : /*#__PURE__*/React.createElement("span", null, "Source: field research + T\xE2rgu Mure\u0219 municipal data. ", /*#__PURE__*/React.createElement("a", { href: "https://www.google.com/maps/search/sports+courts+Targu+Mures", target: "_blank", style: { color: "var(--green)" } }, "Search Google Maps \u2192")))), tab === "list" && /*#__PURE__*/React.createElement("div", {
+    ? /*#__PURE__*/React.createElement("span", null, ACTIVE_CITY === "sibiu" ? "Surs\u0103: OpenStreetMap + auditul din satelit al echipei; stadioane din presa local\u0103. " : "Surs\u0103: cercetare de teren + date municipale T\xE2rgu Mure\u0219. ", /*#__PURE__*/React.createElement("a", { href: "https://www.google.com/maps/search/terenuri+sport+" + (ACTIVE_CITY === "sibiu" ? "Sibiu" : "Targu+Mures"), target: "_blank", style: { color: "var(--green)" } }, "Caut\u0103 pe Google Maps \u2192"))
+    : /*#__PURE__*/React.createElement("span", null, ACTIVE_CITY === "sibiu" ? "Source: OpenStreetMap + the team's satellite audit; stadiums from local press. " : "Source: field research + T\xE2rgu Mure\u0219 municipal data. ", /*#__PURE__*/React.createElement("a", { href: "https://www.google.com/maps/search/sports+courts+" + (ACTIVE_CITY === "sibiu" ? "Sibiu" : "Targu+Mures"), target: "_blank", style: { color: "var(--green)" } }, "Search Google Maps \u2192"))), React.createElement(AtlasSportCard, null)), tab === "list" && /*#__PURE__*/React.createElement("div", {
     className: "grid gap-1"
   }, filtered.map(c => /*#__PURE__*/React.createElement(TiltDiv, {
     key: c.id,
@@ -9729,7 +9806,9 @@ function CourtDetail({
     style: { color: "var(--textSec)" }
   }, (c.desc && c.desc[lang]) || c.description, c.osm && React.createElement("a", {
     href: "https://www.openstreetmap.org/" + c.osm, target: "_blank", rel: "noopener", style: { color: "var(--green)", marginLeft: ".4rem" }
-  }, "OSM ↗")), /*#__PURE__*/React.createElement("div", {
+  }, "OSM ↗"), c.src && React.createElement("a", {
+    href: c.src, target: "_blank", rel: "noopener", style: { color: "var(--green)", marginLeft: ".4rem" }
+  }, (lang === "en" ? "Source" : lang === "hu" ? "Forrás" : "Sursă") + " ↗")), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-1 mb-2",
     style: {
       flexWrap: "wrap"
@@ -12610,7 +12689,7 @@ function CityHallGuide() {
   var STEPS = OTHER ? [
     L3("Trimite cererea 544/2001 — buget sport, listă investiții, starea terenurilor (răspuns: 10 zile)", "Send the 544/2001 request — sport budget, investment list, court condition (answer: 10 days)", null),
     L3("Depune petiția formală OG 27/2002 — răspuns obligatoriu în 30 de zile", "File the formal OG 27/2002 petition — mandatory answer in 30 days", null),
-    L3("Verifică pe teren terenurile marcate „Neverificat” și raportează starea în aplicație", "Field-check the courts marked “Unverified” and report their condition in the app", null)
+    L3("Verifică pe teren scorurile estimate din satelit și raportează starea reală în aplicație", "Field-check the satellite-estimated scores and report the real condition in the app", null)
   ] : [
     L3("Trimite cererea 544/2001 — buget sport, listă investiții, HCL-uri terenuri (răspuns: 10 zile)", "Send the 544/2001 request — sport budget, investment list, court decisions (answer: 10 days)", null),
     L3("Depune petiția formală OG 27/2002 — răspuns obligatoriu în 30 de zile", "File the formal OG 27/2002 petition — mandatory answer in 30 days", null),
@@ -12715,7 +12794,7 @@ const SOURCES = [
   // Sibiu timeline events already carry a public source each; they become source cards too.
   const host = String(e.src || "").replace(/^https?:\/\/(www\.)?/, "").split("/")[0];
   const pre = e.lei ? e.lei + " · " : "";
-  return { id: "sbt" + i, city: "sibiu", kind: /livingatlas/.test(host) ? "sat" : /sibiu\.ro$/.test(host) ? "gov" : "news", pub: host, d: String(e.y), url: e.src, at: ["about"],
+  return { id: "sbt" + i, city: "sibiu", kind: /livingatlas/.test(host) ? "sat" : /(^|\.)sibiu\.ro$/.test(host) ? "gov" : "news", pub: host, d: String(e.y), url: e.src, at: ["about"],
     t: { ro: e.ro, en: e.en, hu: e.hu }, p: { ro: pre + e.ro, en: pre + e.en, hu: pre + (e.hu || e.ro) } };
 }));
 function srcById(id) { return SOURCES.find(s => s.id === id) || null; }
@@ -16032,6 +16111,20 @@ function PrivacyPolicyModal({ onClose }) {
 }
 
 /* === Footer === */
+/* Footer source links follow the selected city: one map/data source, the city's own news and city-hall source, one study. */
+function footerSources() {
+  var picked = [], list = srcList().filter(function (s) { return s.url; });
+  [["map", "data"], ["news"], ["gov"], ["study"]].forEach(function (kinds) {
+    var hit = list.find(function (s) { return kinds.indexOf(s.kind) >= 0 && (s.kind === "study" || s.city === ACTIVE_CITY); });
+    if (hit) picked.push(hit);
+  });
+  return picked;
+}
+function footerSrcLabel(s) {
+  if (s.id === "sidu") return "SIDU";
+  if (s.id === "mymaps") return "Maps";
+  return String(s.pub).split(" · ")[0].replace(/ \(ODbL\)$/, "");
+}
 function Footer() {
   const { t, lang, setPage } = useApp();
   const [showPrivacy, setShowPrivacy] = useState(false);
@@ -16040,18 +16133,11 @@ function Footer() {
       className: "footer"
     }, /*#__PURE__*/React.createElement("div", {
       className: "container"
-    }, /*#__PURE__*/React.createElement("p", { className: "footer-credit" }, t.madeBy, " ", t.owner, " · ", t.city), React.createElement(FunPanel, null), /*#__PURE__*/React.createElement("p", {
+    }, /*#__PURE__*/React.createElement("p", { className: "footer-credit" }, t.madeBy, " ", t.owner, " · ", cityName(lang), lang === "en" ? ", Romania" : lang === "hu" ? ", Románia" : ", România"), React.createElement(FunPanel, null), /*#__PURE__*/React.createElement("p", {
       className: "mt-1"
-    }, /*#__PURE__*/React.createElement("a", {
-      href: "https://www.google.com/maps/d/viewer?mid=19tND_bqOJoFbhTNKN0PenNW7S7yUog8",
-      target: "_blank"
-    }, "🗺️ Maps"), " · ", /*#__PURE__*/React.createElement("a", {
-      href: "https://punctul.ro/eroare-tehnica-de-5-milioane-de-lei-baza-sportiva-din-str-insulei-identificata-gresit-in-acte/",
-      target: "_blank"
-    }, "📰 Punctul.ro"), " · ", /*#__PURE__*/React.createElement("a", {
-      href: "https://www.mdpi.com/2413-8851/8/4/203",
-      target: "_blank"
-    }, "📚 MDPI"), " · ", React.createElement("a", {
+    }, footerSources().map(function (s) {
+      return React.createElement(React.Fragment, { key: s.id }, React.createElement("a", { href: s.url, target: "_blank", rel: "noopener" }, (SRC_KIND_IC[s.kind] || "🔗") + " " + footerSrcLabel(s)), " · ");
+    }), React.createElement("a", {
       href: "#",
       onClick: function(e) { e.preventDefault(); setShowPrivacy(true); },
       style: { color: "var(--green)" }

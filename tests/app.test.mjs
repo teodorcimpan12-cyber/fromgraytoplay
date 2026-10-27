@@ -25,7 +25,10 @@ test("tsOf sorts numeric and ISO timestamps together", () => {
 
 test("getCourtHealthScore stays within 0..100", () => {
   const { getCourtHealthScore } = load([extractFunction("getCourtHealthScore")], ["getCourtHealthScore"]);
-  assert.equal(getCourtHealthScore({ id: "x", condition: 5 }, {}, null), 40);
+  // No user ratings: the condition carries the score (5/5 -> 90); stadiums never drop below 92.
+  assert.equal(getCourtHealthScore({ id: "x", condition: 5 }, {}, null), 90);
+  assert.equal(getCourtHealthScore({ id: "x", condition: 4 }, {}, null), 72);
+  assert.equal(getCourtHealthScore({ id: "x", condition: 5, status: "excellent" }, { r: { courtId: "x", status: "received" } }, null), 92);
   const many = Object.fromEntries(Array.from({ length: 10 }, (_, i) => ["r" + i, { courtId: "x", status: "received" }]));
   assert.equal(getCourtHealthScore({ id: "x", condition: 0 }, many, null), 0);
   const perfect = { a: { surface: 5, lighting: 5, equipment: 5, safety: 5 } };
@@ -156,7 +159,7 @@ test("every inline script in index.html parses (no smart quotes as delimiters)",
 test("community condition checks are not counted as open problems", () => {
   const { getCourtHealthScore } = load([extractFunction("getCourtHealthScore")], ["getCourtHealthScore"]);
   const checks = { a: { courtId: "x", status: "received", category: "condition", conditionReport: "good" } };
-  assert.equal(getCourtHealthScore({ id: "x", condition: 5 }, checks, null), 40);
+  assert.equal(getCourtHealthScore({ id: "x", condition: 5 }, checks, null), 90);
 });
 
 test("court pulse: no data means no signal, never an invented rhythm", () => {
@@ -176,4 +179,18 @@ test("no translation key is assigned twice (a later assignment silently override
     const dupes = keys.filter((k, i) => keys.indexOf(k) !== i);
     assert.deepEqual(dupes, [], "duplicate T." + lang + " keys: " + dupes.join(", "));
   }
+});
+
+test("Sibiu after the satellite pass: every court has a score, stadiums are excellent, no 'unverified' left", () => {
+  const start = html.indexOf("const SAT_VIEW = "), end = html.indexOf("const COURTS_ALL = ");
+  const { COURTS_SIBIU } = load([extractConst("COURTS_SIBIU"), html.slice(start, end)], ["COURTS_SIBIU"]);
+  assert.equal(COURTS_SIBIU.length, 35);
+  COURTS_SIBIU.forEach(c => {
+    assert.notEqual(c.status, "unverified", c.id);
+    assert.ok(c.condition >= 1 && c.condition <= 5, c.id);
+    assert.ok(!/neverificat|not field-verified/i.test(c.description + JSON.stringify(c.desc || {})), c.id);
+  });
+  const st = COURTS_SIBIU.filter(c => c.status === "excellent").map(c => c.id).sort();
+  assert.equal(JSON.stringify(st), JSON.stringify(["sb21", "sb8"]));
+  COURTS_SIBIU.filter(c => c.stadium).forEach(c => { assert.equal(c.condition, 5); assert.ok(/^https:\/\//.test(c.src), c.id); });
 });
