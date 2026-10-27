@@ -1117,7 +1117,7 @@ html.g2p-shake .card,html.g2p-shake .stat-tile{animation:cardShake .5s 3}
 .atlas-link:hover{border-color:var(--green);background:color-mix(in srgb,var(--green) 8%,transparent)}
 .ai-busy{font-size:.84rem;color:var(--textSec)}.ai-spark{display:inline-block;animation:aiSpark 1s ease-in-out infinite}
 @keyframes aiSpark{50%{transform:scale(1.35) rotate(20deg);opacity:.55}}
-.ai-err{font-size:.8rem;color:var(--textSec)}.ai-err-t{font-size:.84rem;color:var(--red)}
+.ai-err{font-size:.8rem;color:var(--textSec)}.ai-err-t{font-size:.84rem;color:var(--red)}.ai-tag-ex{color:var(--coral)}
 .ai-card{margin:.6rem 0 0;padding:.65rem .8rem;border-radius:12px;border:1.5px dashed var(--teal);background:color-mix(in srgb,var(--teal) 7%,var(--bgCard));font-size:.84rem}
 .ai-card p{margin:.35rem 0 0;line-height:1.4}.ai-issues{margin:.35rem 0 0;padding-left:1.1rem;color:var(--textSec);font-size:.8rem}
 .ai-tag{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem;font-size:.74rem;font-weight:700;letter-spacing:.02em;color:var(--teal)}
@@ -15275,6 +15275,11 @@ function AiCourtCard({ court: c, onLetter }) {
 }
 
 const CITY_HALL_EMAIL = { tgm: "infopublic@tirgumures.ro", sibiu: "pms@sibiu.ro" };
+// Real letters the AI wrote on 27 Oct 2026 (claude-sonnet-5-5, live endpoint), shown as a labelled example if the AI is down, e.g. on stage.
+const AI_LETTER_EXAMPLES = {
+  sibiu: { id: "sb1", name: "Teren baschet — Ștrand", at: "27.10.2026", letter: "Către Primăria Municipiului Sibiu\n\nStimată doamnă/Stimate domn,\n\nSubsemnatul/Subsemnata, locuitor tânăr al municipiului Sibiu, vă adresez respectuos această solicitare privind terenul de baschet „Teren baschet Ștrand”, situat pe Strada Doljului, în Sibiu.\n\nTerenul este un spațiu important pentru tinerii care doresc să facă mișcare în aer liber și să practice baschetul într-un mod sigur. Vă rog, de aceea, să dispuneți verificarea stării actuale a terenului, a panourilor, a inelelor și a suprafeței de joc.\n\nDacă în urma verificării se constată deficiențe, vă rog să aveți amabilitatea de a dispune efectuarea lucrărilor de reparații necesare, astfel încât terenul să poată fi folosit în condiții de siguranță.\n\nVă mulțumesc anticipat pentru atenția acordată și vă rog să primiți expresia consideraței mele.\n\nCu respect,\n[Nume]" },
+  tgm: { id: "c6", name: "Teren Baschet Tudor Vladimirescu", at: "27.10.2026", letter: "Către Primăria Municipiului Târgu Mureș\n\nStimată doamnă primar / Stimate domnule primar,\n\nSubsemnatul/Subsemnata, tânăr locuitor al municipiului Târgu Mureș, vă adresez respectuos această solicitare privind terenul de baschet „Teren Baschet Tudor Vladimirescu”, situat pe Str. Tudor Vladimirescu nr. 45.\n\nConform ultimei evaluări transmise de comunitate, starea terenului este degradată. Din acest motiv, vă rog să dispuneți verificarea amplasamentului de către specialiștii instituției și, dacă este cazul, efectuarea lucrărilor de reparații necesare.\n\nUn teren de baschet îngrijit ar permite tinerilor din zonă să practice sportul în condiții sigure și ar contribui la un stil de viață activ în comunitate.\n\nVă mulțumesc anticipat pentru atenția acordată și vă rog să primiți expresia întregii mele considerații.\n\nCu respect,\n\n[Nume]" }
+};
 // "Scrisoare AI": a letter to City Hall written only from what the site knows about this court.
 function AiLetterModal({ court: c, onClose }) {
   const { lang, toast, user } = useApp();
@@ -15308,6 +15313,8 @@ function AiLetterModal({ court: c, onClose }) {
     g2pAI({ task: "letter", court: facts(), lang: "ro" }).then(r => { setText(r.letter || ""); setSt({ s: "done" }); g2pSfx("chime"); })
       .catch(err => setSt({ s: "err", code: err.code }));
   };
+  const ex = AI_LETTER_EXAMPLES[city === "sibiu" ? "sibiu" : "tgm"];
+  const showExample = () => { setText(ex.letter); setSt({ s: "done", ex: true }); };
   const final = () => text.split("[Nume]").join(name.trim() || "[Nume]");
   const subject = "Solicitare de verificare și reparare: " + c.name;
   const copy = () => copyText(final()).then(ok => toast(ok ? L3("Copiat ✓", "Copied ✓", "Másolva ✓") : L3("Nu s-a putut copia", "Could not copy", "Nem sikerült másolni")));
@@ -15340,8 +15347,10 @@ function AiLetterModal({ court: c, onClose }) {
       st.s !== "done" && e("div", { className: "ai-letter-start" },
         e("p", null, L3("AI-ul scrie o scrisoare politicoasă în română, doar din ce știe site-ul despre teren: nume, stare, sesizări. Nu inventează cifre.", "The AI writes a polite letter in Romanian, only from what the site knows about this court: name, condition, reports. It invents no numbers.", "Az AI udvarias román nyelvű levelet ír, csak abból, amit az oldal tud a pályáról: név, állapot, bejelentések. Nem talál ki számokat.")),
         st.s === "err" && e("p", { className: "ai-err-t" }, aiErrMsg(st.code, L3)),
+        st.s === "err" && e("button", { className: "btn btn-outline", style: { marginRight: ".5rem" }, onClick: showExample }, "📌 ", L3("Arată un exemplu salvat", "Show a saved example", "Mentett példa")),
         e("button", { className: "btn btn-green", onClick: gen, disabled: st.s === "busy" }, st.s === "busy" ? "✨ " + L3("Scrie…", "Writing…", "Írja…") : "✨ " + L3("Scrie scrisoarea", "Write the letter", "Írd meg a levelet"))),
       st.s === "done" && e(React.Fragment, null,
+        st.ex ? e("div", { className: "ai-tag ai-tag-ex mb-1" }, "📌 ", L3("Exemplu salvat: scris de AI pe " + ex.at + " pentru „" + ex.name + "”", "Saved example: written by AI on " + ex.at + " for “" + ex.name + "”", "Mentett példa: az AI írta " + ex.at + "-án ehhez: „" + ex.name + "”"), ex.id !== c.id ? L3(", nu pentru terenul ăsta.", ", not for this court.", ", nem ehhez a pályához.") : ".") :
         e("div", { className: "ai-tag mb-1" }, "✨ ", L3("Scris de AI. Citește-l și schimbă ce vrei înainte să-l trimiți.", "Written by AI. Read it and change anything before you send it.", "AI írta. Olvasd el, és változtass rajta küldés előtt.")),
         e("label", { className: "text-sm", style: { display: "block", marginBottom: ".5rem" } }, L3("Numele tău (pentru semnătură)", "Your name (for the signature)", "A neved (az aláíráshoz)"),
           e("input", { value: name, onChange: ev => setName(ev.target.value), maxLength: 80, placeholder: "[Nume]", style: { marginTop: ".25rem" } })),
