@@ -779,6 +779,31 @@ html.accent-on .rcat-btn:hover,html.accent-on .rcat-btn.sel,html.accent-on .vol-
 @media(prefers-reduced-motion:reduce){.cpulse-rec,.cpulse-nosig,.cpulse-heart.beat{animation:none}}
 .no-fx .cpulse-rec,.no-fx .cpulse-nosig,.no-fx .cpulse-heart.beat{animation:none}
 .sb-dots{display:flex;flex-wrap:wrap;gap:4px;margin-top:.6rem}
+.demo-bar{position:fixed;left:12px;bottom:12px;z-index:9000;display:flex;align-items:center;gap:.5rem;max-width:calc(100vw - 24px);padding:.3rem .45rem;border-radius:999px;background:color-mix(in srgb,var(--dark) 82%,transparent);color:var(--white);font:600 .74rem 'Space Mono',monospace;backdrop-filter:blur(8px);box-shadow:var(--shadow);opacity:.55;transition:opacity .2s}
+.demo-bar:hover{opacity:1}
+.demo-bar button{width:26px;height:26px;border-radius:50%;border:0;background:color-mix(in srgb,var(--white) 14%,transparent);color:inherit;font-size:1rem;line-height:1;cursor:pointer}
+.demo-bar button:disabled{opacity:.3;cursor:default}
+.demo-n{color:var(--green)}
+.demo-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.demo-c{opacity:.75;white-space:nowrap}
+.demo-c.over,.demo-rm-top .over{color:var(--coral);opacity:1}
+.demo-qr{position:fixed;inset:0;z-index:8900;display:grid;place-items:center;background:color-mix(in srgb,var(--dark) 78%,transparent);backdrop-filter:blur(6px);animation:fadeIn .3s ease}
+.demo-qr-card{background:var(--white);color:var(--dark);border-radius:calc(var(--radius) * 2);padding:1.4rem 1.6rem;text-align:center;box-shadow:var(--shadow)}
+.demo-qr-card img{display:block;width:min(420px,70vh,80vw);height:auto;margin:0 auto}
+.demo-qr-u{margin:.8rem 0 .2rem;font:700 1.15rem 'Space Mono',monospace}
+.demo-qr-a{margin:0;font-size:1.05rem}
+.demo-remote{position:fixed;inset:0;z-index:9500;display:flex;flex-direction:column;gap:.8rem;padding:1.2rem 1rem;background:var(--dark);color:var(--white);overflow:auto}
+.demo-rm-login{margin:auto;text-align:center}
+.demo-rm-top{display:flex;justify-content:space-between;font:700 .9rem 'Space Mono',monospace}
+.demo-remote h2{margin:.4rem 0 0;font-size:1.6rem;color:var(--green)}
+.demo-rm-note{font-size:1.2rem;line-height:1.45;margin:0}
+.demo-rm-next{opacity:.6;margin:0}
+.demo-rm-err{color:var(--coral);margin:0}
+.demo-rm-btns{display:grid;grid-template-columns:1fr 2fr;gap:.7rem;margin-top:auto}
+.demo-rm-btns button{height:34vh;max-height:260px;border:0;border-radius:calc(var(--radius) * 1.5);background:color-mix(in srgb,var(--white) 12%,transparent);color:inherit;font-size:3rem;cursor:pointer}
+.demo-rm-btns button.go{background:var(--green)}
+.demo-rm-btns button:disabled{opacity:.3}
+.demo-rm-reset{background:none;border:1px solid color-mix(in srgb,var(--white) 30%,transparent);color:inherit;border-radius:999px;padding:.55rem;cursor:pointer}
 .sb-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.28);transition:transform .3s,background .3s}
 .sb-dot.on{background:var(--white);box-shadow:0 0 8px rgba(255,255,255,.9);transform:scale(1.15)}
 /* === Neighborhood Race === */
@@ -8878,7 +8903,7 @@ function StoryScroll() {
     }
   ];
   return React.createElement("section", { ref, className: "story" + (still ? " static" : ""), "aria-label": L3("Povestea", "The story", "A történet") },
-    React.createElement("div", { className: "story-track", style: { "--n": N } },
+    React.createElement("div", { className: "story-track", "data-demo": "story", style: { "--n": N } },
       React.createElement("div", { className: "story-stage" },
         scenes.map((s, i) => React.createElement("div", { key: i, className: "st-scene" + (still || i === scene ? " on" : i < scene ? " past" : "") },
           React.createElement("div", { className: "st-vis" }, s.vis),
@@ -9027,7 +9052,7 @@ function SatSwipe() {
   };
   const ringX = (ox - vx) * S, ringY = (oy - vy) * S, ringD = 42 * S;
   const zbtn = (lbl, aria, fn, dis) => React.createElement("button", { className: "sw-zb", "aria-label": aria, disabled: dis, onPointerDown: e => e.stopPropagation(), onClick: fn }, lbl);
-  return React.createElement("section", { className: "section" },
+  return React.createElement("section", { className: "section", "data-demo": "sat" },
     React.createElement("div", { className: "container" },
       React.createElement("h2", { className: "section-title" }, "🛰️ ", L3("Atunci și acum, din satelit", "Then and now, from space", "Akkor és most, műholdról")),
       React.createElement("p", { className: "section-sub" }, L3("Trage de cerc ca să compari. Mărește cu două degete sau cu dublu-tap.", "Drag the circle to compare. Pinch or double-tap to zoom.", "Húzd a kört az összehasonlításhoz. Két ujjal vagy dupla koppintással nagyíts.")),
@@ -15226,7 +15251,7 @@ function HomeAiCard() {
   const [open, setOpen] = useState(false);
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
   const e = React.createElement;
-  return e("div", { className: "ai-card", style: { marginBottom: "1rem" } },
+  return e("div", { className: "ai-card", "data-demo": "ai", style: { marginBottom: "1rem" } },
     e("div", { className: "ai-card-h" }, e("span", { className: "ai-card-pill" }, "✨ ", L3("NOU · AI", "NEW · AI", "ÚJ · AI")), L3("Fă o poză unui teren. AI-ul îți spune în ce stare e.", "Take a photo of a court. The AI tells you its condition.", "Fotózz le egy pályát. Az AI megmondja, milyen állapotban van.")),
     e("p", { className: "text-sm", style: { color: "var(--textSec)", margin: "0 0 .7rem" } }, L3("Apoi, din pagina terenului, AI-ul scrie scrisoarea către Primărie. Tu doar o citești și o trimiți.", "Then, from the court page, the AI writes the letter to City Hall. You read it and send it.", "Aztán a pálya oldalán az AI megírja a levelet a Városházának. Te csak elolvasod és elküldöd.")),
     e("div", { className: "ai-card-b" },
@@ -15432,6 +15457,7 @@ function SibiuProgressBannerInner() {
   const sbCourts = COURTS.filter(c => c.city === "sibiu");
   const lit = sbCourts.filter(c => checked[c.id]).length;
   return React.createElement("div", {
+    "data-demo": "verify",
     style: {
       background: "linear-gradient(135deg, var(--green) 0%, var(--teal) 100%)",
       color: "var(--white)", borderRadius: "var(--radius)", padding: "1rem", marginBottom: "1rem",
@@ -17127,6 +17153,145 @@ function SecretKeys() {
 }
 
 /* === App === */
+/* === Demo mode (Astra Hack pitch). Secret link ?demo=1 (3 min run) or ?demo=5 (5 min run), best with &c=sibiu.
+   Next: → / Space / PageDown (clicker) or › on the bar. Back: ← / PageUp or ‹. H hides the bar.
+   Phone remote: ?demo=remote, signed in with the admin account; it writes demo/{step,at} and every demo screen follows. === */
+const DEMO_Q = new URLSearchParams(location.search).get("demo");
+const DEMO_ON = DEMO_Q === "1" || DEMO_Q === "5";
+const DEMO_REMOTE = DEMO_Q === "remote";
+const DEMO_LEN = DEMO_Q === "5" ? 1 : 0; // index into each step's sec: [3 min, 5 min]
+// the pitch always opens on the grey court, and the first-visit onboarding must not cover it
+if (DEMO_ON) { try { localStorage.setItem("g2p_ob", "1"); localStorage.removeItem("g2p_hero_renov"); } catch (e) {} }
+const DEMO_STEPS = [
+  { id: "hero", sec: [20, 35], ro: "Din gri, în joc", en: "From grey to play", note: "Terenul gri. Apasă „Renovează” și lasă-l să se transforme." },
+  { id: "story", sel: '[data-demo="story"]', sec: [30, 50], ro: "Povestea Anei", en: "Ana's story", note: "Ana, 15 ani. Derulează scenele încet; fiecare cifră are sursa ei." },
+  { id: "sat", sel: '[data-demo="sat"]', sec: [25, 45], ro: "Satelitul: atunci și acum", en: "Satellite: then and now", note: "Trage linia. Satelitul arată ce a văzut la data aceea, nu starea de azi." },
+  { id: "verify", sel: '[data-demo="verify"]', sec: [35, 60], ro: "Verificare live", en: "Live check", note: "Contorul e live. Verifică un teren acum, din sală, și arată cum se aprinde punctul." },
+  { id: "ai", sel: '[data-demo="ai"]', sec: [40, 70], ro: "AI: poza și scrisoarea", en: "AI: photo and letter", note: "Poza: AI-ul doar sugerează starea. Apoi scrisoarea către Primărie, gata de trimis." },
+  { id: "qr", sec: [30, 40], ro: "Scanează + ce cerem", en: "Scan + our ask", note: "Scanați codul. Cerem: primăria să publice starea terenurilor ei. Și 3 luni de mentorat." }
+];
+const demoClock = ms => { const s = Math.max(0, Math.round(ms / 1000)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
+function demoShow(i, setPage) {
+  const s = DEMO_STEPS[i];
+  setPage("home");
+  setTimeout(() => {
+    const el = s.sel && document.querySelector(s.sel);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: s.id === "story" ? "start" : "center" });
+    else if (s.id === "hero") window.scrollTo({ top: 0, behavior: "smooth" });
+  }, 260);
+}
+function DemoLayer() {
+  const { setPage, lang } = useApp();
+  const [step, setStep] = useState(0);
+  const [hidden, setHidden] = useState(false);
+  const [qrX, setQrX] = useState(false);
+  const [t0, setT0] = useState(0); // the run clock starts on the first step change
+  const [stepAt, setStepAt] = useState(0);
+  const [now, setNow] = useState(Date.now());
+  const stepRef = useRef(0);
+  stepRef.current = step;
+  const go = useCallback(i => {
+    const n = Math.max(0, Math.min(DEMO_STEPS.length - 1, i));
+    const at = Date.now();
+    setT0(v => v || at);
+    setStep(n); setStepAt(at); setQrX(false);
+    demoShow(n, setPage);
+  }, [setPage]);
+  useEffect(() => { const id = setInterval(() => setNow(Date.now()), 500); return () => clearInterval(id); }, []);
+  useEffect(() => {
+    const h = e => {
+      const el = e.target;
+      if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.tagName === "SELECT" || el.isContentEditable)) return;
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      let d = 0;
+      if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") d = 1;
+      else if (e.key === "ArrowLeft" || e.key === "PageUp") d = -1;
+      else if (e.key === "h" || e.key === "H") { setHidden(v => !v); return; }
+      else return;
+      e.preventDefault(); e.stopPropagation();
+      go(stepRef.current + d);
+    };
+    window.addEventListener("keydown", h, true);
+    return () => window.removeEventListener("keydown", h, true);
+  }, [go]);
+  // phone remote: skip the snapshot that is already there, follow every new one
+  useEffect(() => {
+    let first = true;
+    const ref = db.ref("demo");
+    const cb = s => {
+      const v = s.val();
+      if (first) { first = false; return; }
+      if (v && typeof v.step === "number") go(v.step);
+    };
+    ref.on("value", cb, () => {});
+    return () => ref.off("value", cb);
+  }, [go]);
+  const s = DEMO_STEPS[step];
+  const total = DEMO_STEPS.reduce((a, x) => a + x.sec[DEMO_LEN], 0) * 1000;
+  const runMs = t0 ? now - t0 : 0, stepMs = t0 ? now - stepAt : 0;
+  const over = stepMs > s.sec[DEMO_LEN] * 1000;
+  const e = React.createElement;
+  return e(React.Fragment, null,
+    !hidden && e("div", { className: "demo-bar", role: "toolbar", "aria-label": "Demo" },
+      e("button", { onClick: () => go(step - 1), disabled: step === 0, "aria-label": "Înapoi" }, "‹"),
+      e("span", { className: "demo-n" }, step + 1, "/", DEMO_STEPS.length),
+      e("span", { className: "demo-t" }, lang === "en" ? s.en : s.ro),
+      e("span", { className: "demo-c" + (over ? " over" : "") }, demoClock(stepMs), " · ", demoClock(runMs), "/", demoClock(total)),
+      e("button", { onClick: () => go(step + 1), disabled: step === DEMO_STEPS.length - 1, "aria-label": "Înainte" }, "›")),
+    s.id === "qr" && !qrX && ReactDOM.createPortal(e("div", { className: "demo-qr", onClick: () => setQrX(true) },
+      e("div", { className: "demo-qr-card", onClick: ev => ev.stopPropagation() },
+        e("img", { src: "/icons/qr-" + ACTIVE_CITY + ".svg", alt: SITE + "/?c=" + ACTIVE_CITY, width: 420, height: 420 }),
+        e("p", { className: "demo-qr-u" }, SITE.replace("https://", "") + "/?c=" + ACTIVE_CITY),
+        e("p", { className: "demo-qr-a" }, lang === "en" ? "Check a court near you." : "Verifică un teren de lângă tine."))), document.body));
+}
+function DemoRemote() {
+  const { isAdmin, authReady, openAuth } = useApp();
+  const live = useFirebase("demo");
+  const [t0, setT0] = useState(0);
+  const [stepAt, setStepAt] = useState(0);
+  const [now, setNow] = useState(Date.now());
+  const [err, setErr] = useState("");
+  const step = live && typeof live.step === "number" ? live.step : 0;
+  useEffect(() => { const id = setInterval(() => setNow(Date.now()), 500); return () => clearInterval(id); }, []);
+  // keep the phone screen on while it is the remote
+  useEffect(() => {
+    let wl = null;
+    try { navigator.wakeLock && navigator.wakeLock.request("screen").then(l => { wl = l; }).catch(() => {}); } catch (e) {}
+    return () => { try { wl && wl.release(); } catch (e) {} };
+  }, []);
+  const send = i => {
+    const n = Math.max(0, Math.min(DEMO_STEPS.length - 1, i));
+    const at = Date.now();
+    setT0(v => v || at); setStepAt(at);
+    db.ref("demo").set({ step: n, at: firebase.database.ServerValue.TIMESTAMP })
+      .then(() => setErr(""))
+      .catch(() => setErr("Nu pot scrie demo/ — regulile bazei de date nu sunt publicate încă."));
+    try { navigator.vibrate && navigator.vibrate(30); } catch (e) {}
+  };
+  const s = DEMO_STEPS[step], nx = DEMO_STEPS[step + 1];
+  const total = DEMO_STEPS.reduce((a, x) => a + x.sec[DEMO_LEN], 0) * 1000;
+  const stepMs = t0 ? now - stepAt : 0, over = stepMs > s.sec[DEMO_LEN] * 1000;
+  const e = React.createElement;
+  return ReactDOM.createPortal(e("div", { className: "demo-remote" },
+    !authReady ? e("p", null, "…") :
+    !isAdmin ? e("div", { className: "demo-rm-login" },
+      e("p", null, "Telecomanda merge doar cu contul de admin."),
+      e("button", { className: "btn btn-green", onClick: () => openAuth() }, "Conectează-te")) :
+    e(React.Fragment, null,
+      e("div", { className: "demo-rm-top" },
+        e("span", null, step + 1, "/", DEMO_STEPS.length),
+        e("span", { className: over ? "over" : "" }, demoClock(stepMs), " / ", demoClock(s.sec[DEMO_LEN] * 1000)),
+        e("span", null, demoClock(t0 ? now - t0 : 0), " / ", demoClock(total))),
+      e("h2", null, s.ro),
+      e("p", { className: "demo-rm-note" }, s.note),
+      nx && e("p", { className: "demo-rm-next" }, "Urmează: ", nx.ro),
+      err && e("p", { className: "demo-rm-err" }, err),
+      e("div", { className: "demo-rm-btns" },
+        e("button", { onClick: () => send(step - 1), disabled: step === 0 }, "‹"),
+        e("button", { className: "go", onClick: () => send(step + 1), disabled: !nx }, "›")),
+      e("button", { className: "demo-rm-reset", onClick: () => { setT0(0); send(0); } }, "↺ De la început"))), document.body);
+}
+
 function App() {
   const [lang, setLang] = useState(() => localStorage.getItem("g2p_lang") || "ro");
   const [theme, setTheme] = useState(() => localStorage.getItem("g2p_theme") || (window.matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light"));
@@ -17510,7 +17675,7 @@ function App() {
     key: page
   }, React.createElement(PageBoundary, null, P()))), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(FunEggs, null), React.createElement(EggHub, { page: page }), React.createElement(SecretKeys, null), React.createElement(Mascot, { page: page }), React.createElement(BigCelebration, null), React.createElement(ThemeFx, null), mayor && React.createElement(MayorMode, {
     onClose: () => setMayor(false)
-  }), /*#__PURE__*/React.createElement(Footer, null), toastEl, authEl, nudgeEl);
+  }), /*#__PURE__*/React.createElement(Footer, null), toastEl, authEl, nudgeEl, DEMO_ON && React.createElement(DemoLayer, null), DEMO_REMOTE && React.createElement(DemoRemote, null));
 }
 try {
   ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));

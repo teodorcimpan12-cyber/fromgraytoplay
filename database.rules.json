@@ -2,6 +2,10 @@
   "rules": {
     ".read": "auth != null && auth.uid === 'IIdfYqliTrdlYqjS0swd0swlRkV2'",
     ".write": "auth != null && auth.uid === 'IIdfYqliTrdlYqjS0swd0swlRkV2'",
+    "demo": {
+      ".read": true,
+      ".validate": "newData.hasChildren(['step','at']) && newData.child('step').isNumber() && newData.child('step').val() >= 0 && newData.child('step').val() <= 9"
+    },
     "settings": {
       ".read": true,
       "$key": {
