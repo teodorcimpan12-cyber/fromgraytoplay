@@ -6,7 +6,8 @@ const MODEL = "claude-sonnet-5-5";
 const ALLOWED = [/^https:\/\/fromgreytoplay\.netlify\.app$/, /^https:\/\/[a-z0-9-]+--fromgreytoplay\.netlify\.app$/, /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/];
 const MAX_IMAGE = 1_600_000; // base64 chars (~1.2 MB jpeg)
 const PER_IP = 30;            // calls per IP per hour (best effort: resets when the function goes cold; a venue Wi-Fi shares one IP)
-const hits = new Map();
+const PHOTO_PER_KEY = 3;      // Court Doctor diagnoses per voterKey per hour (spec: docs/SPEC_6NOV.md §1)
+const hits = new Map(), keyHits = new Map();
 
 const json = (status, body, origin) => new Response(JSON.stringify(body), {
   status,
@@ -30,11 +31,15 @@ function courtFacts(c) {
   return f.join("\n");
 }
 
-const PHOTO_PROMPT = lang => `You look at one photo of an outdoor public sports court sent by a citizen.
+const PHOTO_PROMPT = lang => `You look at one photo of an outdoor public sports court or stadium sent by a citizen.
 Reply with ONLY a JSON object, no other text:
-{"isCourt": true|false, "condition": "good"|"degraded"|"abandoned"|"unclear", "category": "surface"|"hoop"|"fence"|"lighting"|"trash"|"safety"|"other"|"none", "issues": [up to 5 short strings], "confidence": 0-1, "summary": "one or two sentences"}
+{"isCourt": true|false, "condition": "good"|"degraded"|"abandoned"|"unclear", "score": 1-5, "category": "surface"|"hoop"|"fence"|"lighting"|"trash"|"safety"|"other"|"none", "issues": [up to 6 objects {"type": "cracks"|"rim"|"net"|"lines"|"lighting"|"drainage"|"graffiti"|"fence"|"trash"|"other", "severity": 1-3, "note": "short phrase"}], "fix": {"items": [up to 4 short repair steps], "cost": "<10k"|"10-50k"|"50-200k"|">200k"}, "confidence": 0-1, "summary": "one or two sentences"}
+"score": 5 = like new, 4 = good, 3 = playable with wear, 2 = degraded, 1 = unusable or abandoned.
 "category" is the main visible problem: surface (cracks, potholes, worn paint), hoop (backboard, rim, net, goals), fence, lighting, trash, safety (sharp or broken parts), other, or none if nothing is wrong.
-Rules: describe only what is visible in the photo. Do not guess anything you cannot see (location, age, cost, owner). If it is not a sports court, set isCourt false and condition "unclear". Write "issues" and "summary" in ${LANG[lang] || "Romanian"}.`;
+"fix.cost" is a rough band in Romanian lei for the visible repairs only.
+Rules: describe only what is visible in the photo. Do not guess anything you cannot see (location, age, owner). If it is not a sports court, set isCourt false, condition "unclear", score 0, no issues. Write "note", "fix.items" and "summary" in ${LANG[lang] || "Romanian"}.`;
+const ISSUE_TYPES = ["cracks", "rim", "net", "lines", "lighting", "drainage", "graffiti", "fence", "trash", "other"];
+const COST_BANDS = ["<10k", "10-50k", "50-200k", ">200k"];
 
 const LETTER_PROMPT = (lang, city) => `Write a short, polite, formal letter from a young resident to the City Hall of ${city === "sibiu" ? "Sibiu (Primăria Municipiului Sibiu)" : "Târgu Mureș (Primăria Municipiului Târgu Mureș)"} asking for the court below to be checked and repaired.
 Use ONLY the facts given. Never invent numbers, dates, budgets, laws or names. Leave "[Nume]" as the signature placeholder.
@@ -85,6 +90,13 @@ export default async (req, context) => {
 
   try {
     if (body.task === "photo") {
+      // per-device limit on top of the per-IP one (a venue Wi-Fi shares one IP; the pitch demo is exempt)
+      const vk = clean(body.vk, 40);
+      if (vk && body.demo !== 1) {
+        const kh = (keyHits.get(vk) || []).filter(t => now - t < 3600e3);
+        if (kh.length >= PHOTO_PER_KEY) return json(429, { error: "rate_limited" }, okOrigin);
+        kh.push(now); keyHits.set(vk, kh);
+      }
       const img = String(body.image || "").replace(/^data:image\/\w+;base64,/, "");
       if (!img || img.length > MAX_IMAGE || !/^[A-Za-z0-9+/=]+$/.test(img)) return json(400, { error: "bad_image" }, okOrigin);
       const media = /^\/9j\//.test(img) ? "image/jpeg" : /^iVBOR/.test(img) ? "image/png" : /^UklGR/.test(img) ? "image/webp" : null;
@@ -92,14 +104,22 @@ export default async (req, context) => {
       const text = await callClaude([
         { type: "image", source: { type: "base64", media_type: media, data: img } },
         { type: "text", text: "Analyse this court photo." }
-      ], PHOTO_PROMPT(lang), 400);
+      ], PHOTO_PROMPT(lang), 900);
       const m = text.match(/\{[\s\S]*\}/);
       let out;
       try { out = JSON.parse(m ? m[0] : text); } catch { return json(502, { error: "bad_model_output" }, okOrigin); }
       const cond = ["good", "degraded", "abandoned", "unclear"].includes(out.condition) ? out.condition : "unclear";
+      const isCourt = out.isCourt !== false;
+      // structured issues; plain strings from an older reply still work
+      const diagIssues = (Array.isArray(out.issues) ? out.issues : []).slice(0, 6).map(x => typeof x === "string"
+        ? { type: "other", severity: 2, note: clean(x, 120) }
+        : { type: ISSUE_TYPES.includes(x && x.type) ? x.type : "other", severity: Math.max(1, Math.min(3, Math.round(Number(x && x.severity) || 2))), note: clean(x && x.note, 120) }).filter(x => x.note);
+      const score = isCourt ? Math.max(1, Math.min(5, Math.round(Number(out.score) || ({ good: 4, degraded: 2, abandoned: 1 }[cond] || 3)))) : 0;
+      const fix = out.fix && typeof out.fix === "object" ? { items: (Array.isArray(out.fix.items) ? out.fix.items : []).slice(0, 4).map(x => clean(x, 100)).filter(Boolean), cost: COST_BANDS.includes(out.fix.cost) ? out.fix.cost : "" } : { items: [], cost: "" };
       return json(200, {
-        isCourt: out.isCourt !== false, condition: cond,
-        issues: (Array.isArray(out.issues) ? out.issues : []).slice(0, 5).map(x => clean(x, 80)),
+        isCourt, condition: cond, score: isCourt ? score : 0,
+        diag: isCourt ? { score, issues: diagIssues, fix } : null,
+        issues: diagIssues.slice(0, 5).map(x => x.note),
         category: ["surface", "hoop", "fence", "lighting", "trash", "safety", "other", "none"].includes(out.category) ? out.category : "none",
         confidence: Math.max(0, Math.min(1, Number(out.confidence) || 0)),
         summary: clean(out.summary, 300), model: MODEL

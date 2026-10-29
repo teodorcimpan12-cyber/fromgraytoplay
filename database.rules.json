@@ -55,7 +55,14 @@
       ".read": true,
       "$id": {
         ".write": "!data.exists() || (auth != null && root.child('settings/sherifs/' + auth.uid).exists())",
-        ".validate": "newData.hasChildren(['courtId','description']) && newData.child('description').isString() && newData.child('description').val().length <= 2000"
+        ".validate": "newData.hasChildren(['courtId','description']) && newData.child('description').isString() && newData.child('description').val().length <= 2000",
+        "ai": {
+          "score": { ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5" },
+          "confidence": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1" },
+          "issues": {
+            "$i": { ".validate": "$i.matches(/^[0-9]$/) && newData.hasChildren(['type','severity','note']) && newData.child('severity').isNumber() && newData.child('severity').val() >= 1 && newData.child('severity').val() <= 3 && newData.child('note').isString() && newData.child('note').val().length <= 120" }
+          }
+        }
       }
     },
     "pledges": {

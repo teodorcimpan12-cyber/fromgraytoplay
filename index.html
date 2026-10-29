@@ -1120,6 +1120,12 @@ html.g2p-shake .card,html.g2p-shake .stat-tile{animation:cardShake .5s 3}
 @keyframes aiSpark{50%{transform:scale(1.35) rotate(20deg);opacity:.55}}
 .ai-err{font-size:.8rem;color:var(--textSec)}.ai-err-t{font-size:.84rem;color:var(--red)}.ai-tag-ex{color:var(--coral)}
 .ai-card{margin:.6rem 0 0;padding:.65rem .8rem;border-radius:12px;border:1.5px dashed var(--teal);background:color-mix(in srgb,var(--teal) 7%,var(--bgCard));font-size:.84rem}
+.ai-diag{display:grid;gap:.45rem;margin-top:.5rem}.ai-score{font:700 1.5rem 'Space Mono',monospace;line-height:1}.ai-score small{font-size:.75rem;color:var(--textSec);font-weight:400}
+.ai-iss{display:flex;align-items:baseline;gap:.4rem;font-size:.8rem;line-height:1.35}.ai-sev{flex:none;letter-spacing:-.1em;color:var(--coral)}.ai-sev.s3{color:var(--red)}.ai-sev.s1{color:var(--teal)}
+.ai-fix{font-size:.8rem;color:var(--textSec)}.ai-fix b{color:var(--text)}.ai-off{font-size:.72rem;color:var(--textSec);font-style:italic}
+.ai-consent{display:flex;gap:.5rem;align-items:flex-start;font-size:.78rem;line-height:1.4;color:var(--textSec);margin:.3rem 0 .1rem}.ai-consent input{width:auto;margin-top:.15rem;flex:none}
+.ai-priv{font-size:.74rem;color:var(--textSec);margin:.2rem 0 .3rem 1.4rem;padding-left:1rem}.ai-priv li{margin:.15rem 0}
+.ai-block{font-size:.8rem;color:var(--red);margin:.4rem 0 0}.ai-est{display:inline-flex;align-items:center;gap:.3rem;font-size:.72rem;font-weight:700;padding:.15rem .55rem;border-radius:999px;border:1.5px dashed #8B5CF6;color:#8B5CF6;background:color-mix(in srgb,#8B5CF6 8%,transparent)}
 .ai-card p{margin:.35rem 0 0;line-height:1.4}.ai-issues{margin:.35rem 0 0;padding-left:1.1rem;color:var(--textSec);font-size:.8rem}
 .ai-tag{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem;font-size:.74rem;font-weight:700;letter-spacing:.02em;color:var(--teal)}
 .ai-cond{padding:.1rem .5rem;border-radius:999px;background:var(--border);color:var(--text)}.ai-c-good{background:var(--green);color:var(--white)}.ai-c-degraded{background:var(--coral);color:var(--white)}.ai-c-abandoned{background:var(--red);color:var(--white)}
@@ -10010,7 +10016,7 @@ function CourtDetail({
     className: `badge ${courtStatusView(c, t).badge}`
   }, courtStatusView(c, t).label), /*#__PURE__*/React.createElement("span", {
     className: `badge ${occ === "empty" ? "badge-green" : occ === "active" ? "badge-coral" : "badge-red"}`
-  }, occ === "empty" ? "🟢 " + t.empty + " (0)" : occ === "active" ? "🟡 " + t.active + " (" + cnt + ")" : "🔴 " + t.full + " (" + cnt + ")")),
+  }, occ === "empty" ? "🟢 " + t.empty + " (0)" : occ === "active" ? "🟡 " + t.active + " (" + cnt + ")" : "🔴 " + t.full + " (" + cnt + ")"), React.createElement(AiEstimateBadge, { court: c })),
   React.createElement("div", { style:{marginTop:"1rem",display:"flex",alignItems:"center",gap:"1.5rem",flexWrap:"wrap",marginBottom:"1rem"} },
     React.createElement(CourtHealthRing, { court:c }),
     React.createElement("div", null,
@@ -12287,9 +12293,11 @@ function OpenDataCard() {
   const votes = useFirebase("votes");
   const fbCourts = useFirebase("courts");
   const ratings = useFirebase("ratings");
-  const buildCourts = () => {
-    return [...COURTS_ALL, ...extraCourts(fbCourts, true)];
-  };
+  // condition_source: field (team visit / city data), satellite (team audit), press (stadiums), none
+  const buildCourts = () => [...COURTS_ALL, ...extraCourts(fbCourts, true)].map(c => Object.assign({}, c, {
+    condition_source: c.condition == null ? null : c.estimate === "sat" ? "satellite" : c.stadium && c.city === "sibiu" ? "press" : "field",
+    ai_estimate: reports ? (aiEstimateOf(reports, c.id) || {}).score || null : null
+  }));
   const buildReports = () => reports ? Object.entries(reports).map(([id, r]) => ({
     id,
     courtId: r.courtId || "",
@@ -12300,7 +12308,9 @@ function OpenDataCard() {
     status: r.status || "",
     lat: r.lat || null,
     lng: r.lng || null,
-    createdAt: r.createdAt || null
+    createdAt: r.createdAt || null,
+    condition_source: r.ai && r.ai.score ? "ai_estimate" : r.conditionReport ? "community" : null,
+    ai_score: r.ai && r.ai.score || null
   })) : [];
   const buildRatings = () => {
     const out = {};
@@ -12328,7 +12338,7 @@ function OpenDataCard() {
   };
   const exportCsv = () => {
     const esc = v => '"' + String(v == null ? "" : v).replace(/"/g, '""') + '"';
-    const head = ["id", "courtId", "courtName", "neighbourhood", "category", "status", "lat", "lng", "createdAt", "description"];
+    const head = ["id", "courtId", "courtName", "neighbourhood", "category", "status", "lat", "lng", "createdAt", "condition_source", "ai_score", "description"];
     const rows = buildReports().map(r => head.map(k => esc(r[k])).join(","));
     downloadFile("g2p_sesizari.csv", [head.join(",")].concat(rows).join("\n"), "text/csv;charset=utf-8");
     toast(t.openDataReady);
@@ -15354,27 +15364,42 @@ function QuickReportModal({ onClose, courtId: preset }) {
             "＋ ", L3("Pune în descriere", "Add to the note", "Hozzáadás a leíráshoz"))) }),
         e("textarea", { value: f.note, onChange: ev => setF(o => ({ ...o, note: ev.target.value })), rows: 2, maxLength: 2000, placeholder: L3("Vrei să adaugi ceva? (opțional)", "Anything to add? (optional)", "Szeretnél még valamit írni? (nem kötelező)"), style: { marginTop: ".6rem", resize: "vertical" } }),
         !firebaseUser && e("p", { className: "rq-acct" }, "🔐 " + L3("Sesizările cer un cont, ca Primăria să le ia în serios. Ce ai completat rămâne aici.", "Reports need an account so City Hall takes them seriously. What you filled in stays here.", "A bejelentéshez fiók kell, hogy a Városháza komolyan vegye. Amit kitöltöttél, megmarad.")),
-        e("button", { className: "btn btn-green btn-block mt-1", disabled: submitting || !f.courtId || !f.category, onClick: submit },
+        f.photoDataUrl && ai && ai.isCourt === false && e("p", { className: "ai-block" }, "⛔ ", L3("Poza nu arată un teren, așa că nu o putem trimite. Scoate-o sau fă alta.", "The photo doesn't show a court, so it can't be sent. Remove it or take another.", "A fotón nincs pálya, ezért nem küldhető el. Töröld vagy készíts másikat.")),
+        e("button", { className: "btn btn-green btn-block mt-1", disabled: submitting || !f.courtId || !f.category || !!(f.photoDataUrl && ai && ai.isCourt === false), onClick: submit },
           submitting ? "…" : firebaseUser ? "📨 " + t.submit : "🔐 " + L3("Intră în cont și trimite", "Sign in and send", "Belépés és küldés")))
     ));
 }
 
 /* === AI helpers — POST /.netlify/functions/ai (the key stays on the server) === */
 function g2pAI(body) {
-  return fetch("/.netlify/functions/ai", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) })
+  // offline: say so at once instead of hanging; a call that takes over 40 s is given up
+  if (typeof navigator !== "undefined" && navigator.onLine === false) return Promise.reject(Object.assign(new Error("offline"), { code: "offline" }));
+  const ctl = typeof AbortController !== "undefined" ? new AbortController() : null, tm = ctl && setTimeout(() => ctl.abort(), 40000);
+  return fetch("/.netlify/functions/ai", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body), signal: ctl ? ctl.signal : undefined })
+    .catch(err => { throw Object.assign(new Error("network"), { code: err && err.name === "AbortError" ? "timeout" : navigator.onLine === false ? "offline" : "network" }); })
     .then(r => r.json().catch(() => ({ error: "bad_json" })).then(d => {
       if (!r.ok || d.error) throw Object.assign(new Error(d.error || "http " + r.status), { code: d.error || "http" });
       return d;
-    }));
+    }))
+    .finally(() => { if (tm) clearTimeout(tm); });
 }
 function aiErrMsg(code, L3) { // TODO: HU review
   if (code === "rate_limited") return L3("Prea multe încercări. Mai încearcă peste câteva minute.", "Too many tries. Try again in a few minutes.", "Túl sok próbálkozás. Próbáld újra pár perc múlva.");
   if (code === "bad_image") return L3("Poza nu poate fi citită. Încearcă alta.", "This photo can't be read. Try another one.", "A fotó nem olvasható. Próbálj meg egy másikat.");
+  if (code === "offline") return L3("Ai nevoie de internet pentru AI. Raportul îl poți trimite și fără.", "The AI needs a connection. You can still send the report without it.", "Az AI-hoz internet kell. A bejelentést nélküle is elküldheted.");
+  if (code === "timeout") return L3("AI-ul răspunde prea greu. Mai încearcă o dată.", "The AI is taking too long. Try once more.", "Az AI túl lassan válaszol. Próbáld újra.");
   return L3("AI-ul nu răspunde acum. Poți continua și fără el.", "The AI isn't answering right now. You can go on without it.", "Az AI most nem válaszol. Folytathatod nélküle is.");
 }
 // What the AI saw in a photo, saved next to the report and always kept apart from what the person chose.
 function aiStamp(r) {
-  return r ? { condition: r.condition, category: r.category || "none", confidence: r.confidence, summary: String(r.summary || "").slice(0, 300), model: r.model || "", at: new Date().toISOString() } : null;
+  if (!r) return null;
+  const o = { condition: r.condition, category: r.category || "none", confidence: r.confidence, summary: String(r.summary || "").slice(0, 300), model: r.model || "", at: new Date().toISOString() };
+  if (r.diag && r.diag.score) {
+    o.score = r.diag.score;
+    o.issues = (r.diag.issues || []).slice(0, 10).map(x => ({ type: x.type, severity: x.severity, note: String(x.note || "").slice(0, 120) }));
+    if (r.diag.fix && (r.diag.fix.items || []).length) o.fix = { items: r.diag.fix.items.slice(0, 4), cost: r.diag.fix.cost || "" };
+  }
+  return o;
 }
 // "✨ AI citește poza": one call per photo; it only suggests, the person decides.
 function AiPhotoHint({ photo, onResult, extra }) {
@@ -15382,17 +15407,34 @@ function AiPhotoHint({ photo, onResult, extra }) {
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
   const [st, setSt] = useState({ s: "idle" });
   useEffect(() => { setSt({ s: "idle" }); }, [photo]);
+  const [ok, setOk] = useState(() => { try { return localStorage.getItem("g2p_ai_ok") === "1"; } catch (x) { return false; } });
+  const [priv, setPriv] = useState(false);
   if (!photo) return null;
   const e = React.createElement;
+  const agree = v => { setOk(v); try { if (v) localStorage.setItem("g2p_ai_ok", "1"); else localStorage.removeItem("g2p_ai_ok"); } catch (x) {} };
   const run = () => {
+    if (!ok) return;
     setSt({ s: "busy" });
-    g2pAI({ task: "photo", image: photo, lang }).then(r => { setSt({ s: "done", r }); if (onResult) onResult(r); g2pSfx("chime"); })
+    g2pAI({ task: "photo", image: photo, lang, vk: getVoterKey(), demo: DEMO_ON ? 1 : undefined }).then(r => { setSt({ s: "done", r }); if (onResult) onResult(r); g2pSfx("chime"); })
       .catch(err => { setSt({ s: "err", code: err.code }); if (onResult) onResult(null); });
   };
   const condL = k => ({ good: t.conditionGood, degraded: t.conditionDegraded, abandoned: t.conditionAbandoned }[k] || L3("neclar", "unclear", "nem egyértelmű"));
-  if (st.s === "idle") return e("div", { className: "ai-hint" },
-    e("button", { type: "button", className: "ai-btn", onClick: run }, "✨ ", L3("AI citește poza", "AI reads the photo", "Az AI elolvassa a fotót")),
-    e("small", null, L3("O estimare, nu o verificare. Tu decizi.", "An estimate, not a check. You decide.", "Becslés, nem ellenőrzés. Te döntesz.")));
+  if (st.s === "idle") return e("div", null,
+    // consent line + privacy note (docs/SPEC_6NOV.md §4); ticked once per device
+    e("label", { className: "ai-consent" },
+      e("input", { type: "checkbox", checked: ok, onChange: ev => agree(ev.target.checked) }),
+      e("span", null, L3("Trimit această poză pentru o estimare automată a stării terenului. Poza e procesată de un model AI extern (Anthropic) printr-o funcție a acestui site, fără datele de localizare din fișier. Nu fotografiez persoane.",
+        "I'm sending this photo for an automatic estimate of the court's condition. It is processed by an external AI model (Anthropic) through this site's server function, without the file's location data. I'm not photographing people.",
+        "Ezt a fotót a pálya állapotának automatikus becsléséhez küldöm. Egy külső AI-modell (Anthropic) dolgozza fel az oldal szerverfunkcióján keresztül, a fájl helyadatai nélkül. Nem fényképezek embereket."), " ", // TODO: HU review
+        e("a", { href: "#", onClick: ev => { ev.preventDefault(); setPriv(v => !v); } }, priv ? L3("ascunde", "hide", "elrejt") : L3("ce trimitem?", "what is sent?", "mit küldünk?")))),
+    priv && e("ol", { className: "ai-priv" },
+      e("li", null, L3("Ce trimitem: poza (micșorată, fără EXIF/GPS), sportul și orașul terenului. Nimic despre tine.", "What we send: the photo (resized, no EXIF/GPS), the court's sport and city. Nothing about you.", "Amit küldünk: a fotó (kicsinyítve, EXIF/GPS nélkül), a pálya sportága és városa. Rólad semmit.")),
+      e("li", null, L3("Cui: funcției Netlify a site-ului, care o trimite la API-ul Anthropic.", "To whom: the site's Netlify function, which sends it to the Anthropic API.", "Kinek: az oldal Netlify-funkciójának, amely az Anthropic API-nak továbbítja.")),
+      e("li", null, L3("Ce păstrăm: doar dacă trimiți sesizarea — poza comprimată și diagnosticul, ca orice sesizare. Altfel, nimic.", "What we keep: only if you send the report — the compressed photo and the diagnosis, like any report. Otherwise nothing.", "Amit megőrzünk: csak ha elküldöd a bejelentést — a tömörített fotót és a diagnózist. Különben semmit.")),
+      e("li", null, L3("Ștergere: scrie-ne din pagina Despre.", "Deletion: write to us from the About page.", "Törlés: írj nekünk a Rólunk oldalról."))),
+    e("div", { className: "ai-hint" },
+      e("button", { type: "button", className: "ai-btn", onClick: run, disabled: !ok, title: ok ? "" : L3("Bifează mai întâi", "Tick the box first", "Előbb jelöld be") }, "🩺 ", L3("AI Court Doctor: citește poza", "AI Court Doctor: read the photo", "AI Court Doctor: fotó elemzése")),
+      e("small", null, L3("Estimare AI — nu e o inspecție oficială. Tu decizi.", "AI estimate — not an official inspection. You decide.", "AI-becslés — nem hivatalos szemle. Te döntesz."))));
   if (st.s === "busy") return e("div", { className: "ai-hint ai-busy", role: "status" }, e("span", { className: "ai-spark", "aria-hidden": "true" }, "✨"), L3("AI-ul se uită la poză…", "The AI is looking at the photo…", "Az AI nézi a fotót…"));
   if (st.s === "err") return e("div", { className: "ai-hint ai-err", role: "status" },
     e("span", null, aiErrMsg(st.code, L3)),
@@ -15401,13 +15443,42 @@ function AiPhotoHint({ photo, onResult, extra }) {
   if (!r.isCourt) return e("div", { className: "ai-card", role: "status" },
     e("div", { className: "ai-tag" }, "✨ ", L3("Estimare AI din poză", "AI estimate from the photo", "AI-becslés a fotóból")),
     e("p", null, L3("Nu văd un teren de sport în poza asta. ", "I can't see a sports court in this photo. ", "Nem látok sportpályát ezen a fotón. "), r.summary));
+  const d = r.diag;
+  const costL = { "<10k": L3("sub 10.000 lei", "under 10,000 lei", "10 000 lej alatt"), "10-50k": "10.000–50.000 lei", "50-200k": "50.000–200.000 lei", ">200k": L3("peste 200.000 lei", "over 200,000 lei", "200 000 lej felett") };
   return e("div", { className: "ai-card", role: "status" },
-    e("div", { className: "ai-tag" }, "✨ ", L3("Estimare AI din poză", "AI estimate from the photo", "AI-becslés a fotóból"),
+    e("div", { className: "ai-tag" }, "🩺 ", L3("AI Court Doctor", "AI Court Doctor", "AI Court Doctor"),
       e("b", { className: "ai-cond ai-c-" + r.condition }, condL(r.condition)),
       e("span", { className: "ai-conf" }, Math.round(r.confidence * 100) + "%")),
-    r.summary && e("p", null, r.summary),
-    r.issues && r.issues.length > 0 && e("ul", { className: "ai-issues" }, r.issues.map((x, i) => e("li", { key: i }, x))),
+    d ? e("div", { className: "ai-diag" },
+      e("div", { className: "ai-score" }, d.score, e("small", null, " / 5 · ", L3("estimare din poză", "estimate from the photo", "becslés a fotóból"))),
+      r.summary && e("p", { style: { margin: 0 } }, r.summary),
+      d.issues.length > 0 && e("div", null, d.issues.map((x, i) => e("div", { key: i, className: "ai-iss" },
+        e("span", { className: "ai-sev s" + x.severity, title: L3("gravitate ", "severity ", "súlyosság ") + x.severity + "/3" }, "●".repeat(x.severity) + "○".repeat(3 - x.severity)), x.note))),
+      d.fix && d.fix.items.length > 0 && e("div", { className: "ai-fix" }, e("b", null, "🔧 ", L3("Ce ar trebui reparat: ", "What needs fixing: ", "Mit kell javítani: ")), d.fix.items.join(" · "),
+        d.fix.cost && e("span", null, " — ", L3("cost estimat ", "rough cost ", "becsült költség "), costL[d.fix.cost] || d.fix.cost))) // TODO: HU review
+      : e(React.Fragment, null,
+        r.summary && e("p", null, r.summary),
+        r.issues && r.issues.length > 0 && e("ul", { className: "ai-issues" }, r.issues.map((x, i) => e("li", { key: i }, x)))),
+    e("div", { className: "ai-off" }, L3("Estimare AI — nu e o inspecție oficială și nu schimbă starea terenului de pe hartă.", "AI estimate — not an official inspection; it never changes the court's status on the map.", "AI-becslés — nem hivatalos szemle, és nem módosítja a pálya állapotát a térképen.")),
     extra && extra(r));
+}
+
+/* Court detail: the AI photo estimates, always apart from the court's status (never written to `condition`). */
+function aiEstimateOf(reports, courtId) {
+  const list = reports ? Object.values(reports).filter(r => r && r.courtId === courtId && r.ai && r.ai.score >= 1 && r.ai.score <= 5) : [];
+  if (!list.length) return null;
+  const recent = list.sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || ""))).slice(0, 5);
+  const sc = recent.map(r => r.ai.score).sort((a, b) => a - b);
+  return { score: sc[Math.floor(sc.length / 2)], n: list.length, at: recent[0].createdAt || "" };   // median of the latest 5 photos
+}
+function AiEstimateBadge({ court: c }) {
+  const { lang } = useApp();
+  const est = aiEstimateOf(useFirebase("reports"), c.id);
+  if (!est) return null;
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const d = est.at ? new Date(est.at).toLocaleDateString(lang === "en" ? "en-GB" : lang === "hu" ? "hu-HU" : "ro-RO") : "";
+  return React.createElement("span", { className: "ai-est", title: L3("Estimare AI din pozele trimise — nu e o inspecție oficială și nu schimbă starea terenului.", "AI estimate from the photos sent — not an official inspection, it does not change the court's status.", "AI-becslés a beküldött fotókból — nem hivatalos szemle, nem módosítja a pálya állapotát.") },
+    "🩺 ", L3("Estimare AI: ", "AI estimate: ", "AI-becslés: "), est.score, "/5 · ", est.n, " ", est.n === 1 ? L3("poză", "photo", "fotó") : L3("poze", "photos", "fotó"), d && " · " + d);
 }
 
 /* Home: tells visitors the AI helpers exist and opens the photo check (court picked inside). */
@@ -15531,7 +15602,7 @@ function AiLetterModal({ court: c, onClose }) {
 
 /* === Court Condition Quick — Sibiu hackathon feature === */
 function CourtConditionQuick({ onClose, courtId: presetCourt }) {
-  const { t, user, toast } = useApp();
+  const { t, user, toast, lang } = useApp();
   const fbCourts = useFirebase("courts");
   const [courtId, setCourtId] = useState(presetCourt || "");
   useEffect(() => {
@@ -15613,7 +15684,8 @@ function CourtConditionQuick({ onClose, courtId: presetCourt }) {
           ),
       React.createElement(AiPhotoHint, { photo: photoDataUrl, onResult: onAi, extra: r => r.condition !== "unclear" && condition && r.condition !== condition
         && React.createElement("button", { type: "button", className: "ai-btn ai-btn-sm", onClick: () => setCondition(r.condition) }, "↪ ", (conds.find(x => x.k === r.condition) || {}).l) }),
-      React.createElement("button", { className: "btn btn-green btn-block mt-2", disabled: !courtId || !condition || submitting, onClick: submit }, submitting ? "..." : t.submit)
+      photoDataUrl && ai && ai.isCourt === false && React.createElement("p", { className: "ai-block" }, "⛔ ", lang === "en" ? "The photo doesn't show a court, so it can't be sent. Remove it or take another." : lang === "hu" ? "A fotón nincs pálya, ezért nem küldhető el. Töröld vagy készíts másikat." : "Poza nu arată un teren, așa că nu o putem trimite. Scoate-o sau fă alta."),
+      React.createElement("button", { className: "btn btn-green btn-block mt-2", disabled: !courtId || !condition || submitting || !!(photoDataUrl && ai && ai.isCourt === false), onClick: submit }, submitting ? "..." : t.submit)
     )
   );
 }
