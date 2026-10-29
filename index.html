@@ -7472,81 +7472,113 @@ function buildBloc(base, win) {
   for (var d = 0; d < 4; d++) { cx.fillStyle = "rgba(150,150,150,.18)"; cx.fillRect(12 + d * 29, 256 - fh + 8, 20, fh - 16); }
   return c;
 }
-/* Basketball, PBR: one seam layout drawn into three maps — albedo, a pebbled-leather height field
-   (turned into a tangent-space normal map) and a roughness map (grooves rougher than the pebble tops). */
-function bballSeams(cx, col, lw) {
-  cx.strokeStyle = col; cx.lineCap = "round"; cx.lineWidth = lw;
-  cx.beginPath(); cx.moveTo(0, 256); cx.lineTo(1024, 256); cx.stroke();   // equator
-  cx.beginPath(); cx.moveTo(256, 0); cx.lineTo(256, 512); cx.stroke();    // meridian
-  cx.beginPath(); cx.moveTo(768, 0); cx.lineTo(768, 512); cx.stroke();    // meridian (same great circle)
-  cx.beginPath(); cx.moveTo(512, 0); cx.bezierCurveTo(624, 150, 624, 362, 512, 512); cx.stroke();
-  cx.beginPath(); cx.moveTo(0, 0); cx.bezierCurveTo(112, 150, 112, 362, 0, 512); cx.stroke();
-  cx.beginPath(); cx.moveTo(1024, 0); cx.bezierCurveTo(912, 150, 912, 362, 1024, 512); cx.stroke();
-}
-// Equirectangular canvas: a pebble near the poles must be drawn wider so it stays round on the sphere.
-function bballPebbles(cx, n, r0, fill) {
-  cx.fillStyle = fill;
-  for (var i = 0; i < n; i++) {
-    var y = Math.random() * 512, x = Math.random() * 1024, r = r0 * (0.8 + Math.random() * 0.45);
-    var sx = Math.min(8, 1 / Math.max(0.12, Math.sin(y / 512 * Math.PI)));
-    cx.beginPath(); cx.ellipse(x, y, r * sx, r, 0, 0, 6.2832); cx.fill();
-  }
-}
-function buildBasketball() {
-  var c = document.createElement("canvas"); c.width = 1024; c.height = 512; var cx = c.getContext("2d");
-  cx.fillStyle = "#C9581B"; cx.fillRect(0, 0, 1024, 512);
-  // large soft mottling (worn composite leather), then pebble highlights and pore shadows
-  for (var m = 0; m < 60; m++) { var mx = Math.random() * 1024, my = Math.random() * 512, mr = 40 + Math.random() * 90, g = cx.createRadialGradient(mx, my, 0, mx, my, mr); g.addColorStop(0, Math.random() < 0.5 ? "rgba(120,45,10,.10)" : "rgba(235,120,50,.10)"); g.addColorStop(1, "rgba(0,0,0,0)"); cx.fillStyle = g; cx.fillRect(mx - mr, my - mr, mr * 2, mr * 2); }
-  bballPebbles(cx, 26000, 1.5, "rgba(236,124,54,.32)");
-  bballPebbles(cx, 9000, 0.9, "rgba(80,28,6,.28)");
-  bballSeams(cx, "rgba(40,16,4,.55)", 17);   // seam shoulders darken slightly
-  bballSeams(cx, "#121010", 10);            // the black rubber seam itself
-  return c;
-}
-function buildBasketballHeight() {
-  var c = document.createElement("canvas"); c.width = 1024; c.height = 512; var cx = c.getContext("2d");
-  cx.fillStyle = "rgb(120,120,120)"; cx.fillRect(0, 0, 1024, 512);
-  bballPebbles(cx, 30000, 1.7, "rgba(210,210,210,.55)");
-  bballPebbles(cx, 14000, 1.1, "rgba(250,250,250,.5)");
-  bballSeams(cx, "rgb(70,70,70)", 19);      // the leather rolls down into the seam
-  bballSeams(cx, "rgb(18,18,18)", 10);      // groove
-  return c;
+/* Balls, PBR, drawn per pixel on the sphere's own UV layout (three.js SphereGeometry: u -> phi, v -> theta),
+   so every seam is a real curve on the ball, not a guess on a flat map. Each ball gets an albedo, a height
+   field (turned into a normal map) and a roughness map.
+   Basketball: equator + one meridian (planes y=0, x=0) and two curved end seams around the ±X axis,
+   like an official 8-panel ball. Football: a true truncated icosahedron, 12 black pentagons and 20 white
+   hexagons, puffed panels with stitched grooves. */
+function ballDir(W, H, px, py) {
+  var phi = (px + 0.5) / W * Math.PI * 2, th = (py + 0.5) / H * Math.PI;
+  return [-Math.cos(phi) * Math.sin(th), Math.cos(th), Math.sin(phi) * Math.sin(th)];
 }
 function heightToNormal(src, strength) {
   var W = src.width, H = src.height, hd = src.getContext("2d").getImageData(0, 0, W, H).data;
   var c = document.createElement("canvas"); c.width = W; c.height = H; var cx = c.getContext("2d"), out = cx.createImageData(W, H), o = out.data;
   function h(x, y) { x = (x + W) % W; y = y < 0 ? 0 : y >= H ? H - 1 : y; return hd[(y * W + x) * 4] / 255; }
-  for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) {
-    var dx = (h(x + 1, y - 1) + 2 * h(x + 1, y) + h(x + 1, y + 1) - h(x - 1, y - 1) - 2 * h(x - 1, y) - h(x - 1, y + 1)) * strength;
-    var dy = (h(x - 1, y + 1) + 2 * h(x, y + 1) + h(x + 1, y + 1) - h(x - 1, y - 1) - 2 * h(x, y - 1) - h(x + 1, y - 1)) * strength;
-    var len = Math.sqrt(dx * dx + dy * dy + 1), k = (y * W + x) * 4;
-    o[k] = (-dx / len * 0.5 + 0.5) * 255; o[k + 1] = (dy / len * 0.5 + 0.5) * 255; o[k + 2] = (1 / len * 0.5 + 0.5) * 255; o[k + 3] = 255;
+  for (var y = 0; y < H; y++) {
+    // near the poles a pixel column is narrow on the sphere: scale the horizontal slope so bumps stay round
+    var sx = strength / Math.max(0.15, Math.sin((y + 0.5) / H * Math.PI));
+    for (var x = 0; x < W; x++) {
+      var dx = (h(x + 1, y - 1) + 2 * h(x + 1, y) + h(x + 1, y + 1) - h(x - 1, y - 1) - 2 * h(x - 1, y) - h(x - 1, y + 1)) * sx;
+      var dy = (h(x - 1, y + 1) + 2 * h(x, y + 1) + h(x + 1, y + 1) - h(x - 1, y - 1) - 2 * h(x, y - 1) - h(x + 1, y - 1)) * strength;
+      var len = Math.sqrt(dx * dx + dy * dy + 1), k = (y * W + x) * 4;
+      o[k] = (-dx / len * 0.5 + 0.5) * 255; o[k + 1] = (dy / len * 0.5 + 0.5) * 255; o[k + 2] = (1 / len * 0.5 + 0.5) * 255; o[k + 3] = 255;
+    }
   }
   cx.putImageData(out, 0, 0); return c;
 }
-function buildBasketballRough() {
-  var c = document.createElement("canvas"); c.width = 1024; c.height = 512; var cx = c.getContext("2d");
-  cx.fillStyle = "rgb(184,184,184)"; cx.fillRect(0, 0, 1024, 512);          // ~0.72 matte composite leather
-  bballPebbles(cx, 20000, 1.4, "rgba(150,150,150,.6)");                       // polished pebble tops ~0.6
-  bballSeams(cx, "rgb(235,235,235)", 11);                                     // rubber seams ~0.92
-  return c;
+// fine pebbles (basketball) drawn into a height canvas; wider near the poles so they stay round on the ball
+function ballPebbles(cx, W, H, n, r0, fill) {
+  cx.fillStyle = fill;
+  for (var i = 0; i < n; i++) {
+    var y = Math.random() * H, x = Math.random() * W, r = r0 * (0.75 + Math.random() * 0.5);
+    var sx = Math.min(8, 1 / Math.max(0.12, Math.sin(y / H * Math.PI)));
+    cx.beginPath(); cx.ellipse(x, y, r * sx, r, 0, 0, 6.2832); cx.fill();
+  }
 }
-function basketballMaterial() {
+// angular distance (radians) from direction d to the nearest basketball seam
+function bballSeamDist(d) {
+  var ax = Math.abs(d[0]), ay = Math.abs(d[1]);
+  var eq = Math.asin(Math.min(1, ay)), mer = Math.asin(Math.min(1, ax));
+  var alpha = (73 - 68 * ay * ay) * Math.PI / 180;       // the end seams bow toward the centre at the equator, smoothly
+  var end = Math.abs(Math.acos(Math.min(1, ax)) - alpha);
+  return Math.min(eq, mer, end);
+}
+var SOCCER_CELLS = null;
+function soccerCells() {
+  if (SOCCER_CELLS) return SOCCER_CELLS;
+  var p = (1 + Math.sqrt(5)) / 2, v = [], f = [];
+  [[0, 1, p], [0, -1, p], [0, 1, -p], [0, -1, -p]].forEach(function (a) { v.push(a, [a[1], a[2], a[0]], [a[2], a[0], a[1]]); });
+  function d2(a, b) { return (a[0] - b[0]) * (a[0] - b[0]) + (a[1] - b[1]) * (a[1] - b[1]) + (a[2] - b[2]) * (a[2] - b[2]); }
+  for (var i = 0; i < 12; i++) for (var j = i + 1; j < 12; j++) for (var k = j + 1; k < 12; k++)
+    if (Math.abs(d2(v[i], v[j]) - 4) < 1e-6 && Math.abs(d2(v[j], v[k]) - 4) < 1e-6 && Math.abs(d2(v[i], v[k]) - 4) < 1e-6) f.push([v[i][0] + v[j][0] + v[k][0], v[i][1] + v[j][1] + v[k][1], v[i][2] + v[j][2] + v[k][2]]);
+  function n(a) { var l = Math.hypot(a[0], a[1], a[2]); return [a[0] / l, a[1] / l, a[2] / l]; }
+  // pentagon cells (icosahedron vertices) reach 16.5° from their centre, hexagons 20.9°: bias pentagons by 4.38°
+  SOCCER_CELLS = v.map(function (a) { return { c: n(a), pent: true }; }).concat(f.map(function (a) { return { c: n(a), pent: false }; }));
+  return SOCCER_CELLS;
+}
+function buildBallMaps(kind) {
+  // basketball pebbles need the finer map; the football is flat panels, half the size is enough (~150 ms total)
+  var W = kind === "soccer" ? 512 : 1024, H = W / 2, cells = kind === "soccer" ? soccerCells() : null, BIAS = 4.38 * Math.PI / 180;
+  var hc = document.createElement("canvas"); hc.width = W; hc.height = H; var hx = hc.getContext("2d", { willReadFrequently: true });
+  hx.fillStyle = "rgb(150,150,150)"; hx.fillRect(0, 0, W, H);
+  if (kind !== "soccer") { ballPebbles(hx, W, H, 42000, 0.95, "rgba(225,225,225,.5)"); ballPebbles(hx, W, H, 14000, 0.6, "rgba(95,95,95,.3)"); }
+  var hImg = hx.getImageData(0, 0, W, H), hd = hImg.data;
+  var ac = document.createElement("canvas"); ac.width = W; ac.height = H; var ax = ac.getContext("2d"), aImg = ax.createImageData(W, H), ad = aImg.data;
+  var rc = document.createElement("canvas"); rc.width = W; rc.height = H; var rx = rc.getContext("2d"), rImg = rx.createImageData(W, H), rd = rImg.data;
+  for (var py = 0; py < H; py++) for (var px = 0; px < W; px++) {
+    var d = ballDir(W, H, px, py), k = (py * W + px) * 4, col, h = hd[k] / 255, rough, sd;
+    if (kind === "soccer") {
+      // nearest pentagon, nearest two hexagons by dot product (pentagons never touch), acos only for those three
+      var bp = -2, bh = -2, bh2 = -2;
+      for (var i = 0; i < cells.length; i++) {
+        var cc = cells[i].c, dt = d[0] * cc[0] + d[1] * cc[1] + d[2] * cc[2];
+        if (cells[i].pent) { if (dt > bp) bp = dt; } else if (dt > bh) { bh2 = bh; bh = dt; } else if (dt > bh2) bh2 = dt;
+      }
+      var aP = Math.acos(Math.min(1, bp)) + BIAS, aH = Math.acos(Math.min(1, bh)), aH2 = Math.acos(Math.min(1, bh2));
+      var pentWins = aP < aH, a1 = pentWins ? aP : aH, a2 = pentWins ? aH : Math.min(aP, aH2), best = { pent: pentWins };
+      sd = (a2 - a1) / 2;                                   // angular distance to the panel edge
+      var puff = Math.min(1, sd / 0.11);                    // panels bulge, the stitched edge sinks
+      h = 0.25 + 0.75 * Math.sqrt(puff);
+      var base = best.pent ? [24, 24, 26] : [244, 244, 240];
+      var edge = sd < 0.011 ? 0.5 : sd < 0.024 ? 0.86 : 1;   // dark stitch line, soft shadow beside it
+      col = [base[0] * edge, base[1] * edge, base[2] * edge];
+      rough = sd < 0.015 ? 0.75 : best.pent ? 0.32 : 0.26;  // glossy synthetic leather, matte stitches
+    } else {
+      sd = bballSeamDist(d);
+      var seam = sd < 0.014, shoulder = sd < 0.03;
+      if (seam) { h = 0.05; col = [22, 18, 16]; rough = 0.9; }
+      else {
+        h = h * (shoulder ? 0.55 + 0.45 * (sd - 0.014) / 0.016 : 1);
+        var g = 0.93 + 0.12 * h;                              // pebble tops catch a little more light
+        col = [226 * g, 104 * g, 42 * g]; rough = 0.62 + (1 - h) * 0.18;
+      }
+    }
+    hd[k] = hd[k + 1] = hd[k + 2] = Math.max(0, Math.min(255, h * 255));
+    ad[k] = col[0]; ad[k + 1] = col[1]; ad[k + 2] = col[2]; ad[k + 3] = 255;
+    rd[k] = rd[k + 1] = rd[k + 2] = rough * 255; rd[k + 3] = 255;
+  }
+  hx.putImageData(hImg, 0, 0); ax.putImageData(aImg, 0, 0); rx.putImageData(rImg, 0, 0);
+  return { map: ac, normal: heightToNormal(hc, kind === "soccer" ? 3.2 : 2.0), rough: rc };
+}
+function ballMaterial(kind) {
   function lin(cv) { var t = new THREE.CanvasTexture(cv); t.anisotropy = 8; t.generateMipmaps = true; t.minFilter = THREE.LinearMipmapLinearFilter; return t; }
+  var m = buildBallMaps(kind);
   return new THREE.MeshStandardMaterial({
-    map: lin(buildBasketball()), normalMap: lin(heightToNormal(buildBasketballHeight(), 2.2)), normalScale: new THREE.Vector2(0.5, 0.5),
-    roughnessMap: lin(buildBasketballRough()), roughness: 1, metalness: 0, emissive: new THREE.Color(0xff9a3c), emissiveIntensity: 0
+    map: lin(m.map), normalMap: lin(m.normal), normalScale: new THREE.Vector2(kind === "soccer" ? 0.7 : 0.45, kind === "soccer" ? 0.7 : 0.45),
+    roughnessMap: lin(m.rough), roughness: 1, metalness: 0, emissive: new THREE.Color(0xff9a3c), emissiveIntensity: 0
   });
-}
-function buildSoccer() {
-  var c = document.createElement("canvas"); c.width = 1024; c.height = 512; var cx = c.getContext("2d");
-  cx.fillStyle = "#f2f2ef"; cx.fillRect(0, 0, 1024, 512);
-  for (var i = 0; i < 3600; i++) { var v = (Math.random() * 14 - 7) | 0; cx.fillStyle = "rgba(" + (232 + v) + "," + (232 + v) + "," + (230 + v) + ",.4)"; cx.fillRect(Math.random() * 1024, Math.random() * 512, 3, 3); }
-  function poly(x, y, r, n, rot, fill) { cx.beginPath(); for (var k = 0; k < n; k++) { var a = rot + k / n * Math.PI * 2 - Math.PI / 2; var px = x + Math.cos(a) * r, py = y + Math.sin(a) * r; k ? cx.lineTo(px, py) : cx.moveTo(px, py); } cx.closePath(); if (fill) { cx.fillStyle = "#15171b"; cx.fill(); } else { cx.strokeStyle = "rgba(70,70,74,.45)"; cx.lineWidth = 3; cx.stroke(); } }
-  var pts = [[110, 96], [320, 72], [520, 96], [726, 72], [930, 96], [200, 256], [420, 232], [620, 256], [824, 232], [110, 410], [330, 432], [540, 410], [760, 432], [950, 410]];
-  for (var h = 0; h < pts.length; h++) poly(pts[h][0], pts[h][1], 56, 6, 0.5, false);
-  for (var p = 0; p < pts.length; p++) poly(pts[p][0], pts[p][1], 30, 5, Math.random() * 1.2, true);
-  return c;
 }
 function buildNet() {
   var c = document.createElement("canvas"); c.width = 128; c.height = 128; var cx = c.getContext("2d");
@@ -8156,8 +8188,8 @@ function mountHero3D(host, opts) {
     var halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: haloTex, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false, opacity: 0 })); halo.visible = !touched; group.add(halo);
     return { mesh: b, hit: hit, halo: halo, rad: rad, x: 0, y: rad, z: 0, vx: 0, vy: 0, vz: 0, physics: false, grabbed: false, carried: null, claim: null, fromPass: false, rest: 0, ph: 0, fr: 2, hgt: 0.4 };
   }
-  var basket = makeBall(basketballMaterial(), BALL_R); basket.x = -0.6; basket.z = 0.2; basket.vx = 0.009; basket.vz = 0.006; basket.fr = 2.4; basket.hgt = 0.5;
-  var soccer = makeBall(new THREE.MeshStandardMaterial({ map: texFrom(buildSoccer()), roughness: 0.42, metalness: 0.03, emissive: new THREE.Color(0xff9a3c), emissiveIntensity: 0 }), 0.118); soccer.x = 0.5; soccer.z = -0.25; soccer.vx = -0.008; soccer.vz = 0.01; soccer.ph = 1.4; soccer.fr = 2.0; soccer.hgt = 0.42;
+  var basket = makeBall(ballMaterial("basket"), BALL_R); basket.x = -0.6; basket.z = 0.2; basket.vx = 0.009; basket.vz = 0.006; basket.fr = 2.4; basket.hgt = 0.5;
+  var soccer = makeBall(ballMaterial("soccer"), 0.118); soccer.x = 0.5; soccer.z = -0.25; soccer.vx = -0.008; soccer.vz = 0.01; soccer.ph = 1.4; soccer.fr = 2.0; soccer.hgt = 0.42;
   var balls = [basket, soccer], ballHits = [basket.hit, soccer.hit];
   function markTouched() { if (touched) return; touched = true; try { localStorage.setItem("g2p_hero_ball", "1"); } catch (e) {} }
 
