@@ -94,6 +94,11 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .cd-teal{background:var(--teal);border-color:var(--teal);color:var(--white)}
 .cd-red{background:var(--red);border-color:var(--red);color:var(--white)}
 .cd-line{color:var(--text)}
+/* Booking sits beside the health score: close to the top of the court, quiet until hovered */
+.cd-book{margin-left:auto;display:inline-flex;align-items:center;gap:.4rem;min-height:44px;padding:.45rem 1rem;border-radius:999px;border:1.5px solid var(--green);background:rgba(16,185,129,.08);color:var(--green);font-weight:700;font-size:.85rem;cursor:pointer;transition:background .2s,color .2s,transform .15s}
+.cd-book:hover,.cd-book:focus-visible{background:var(--green);color:var(--white)}
+.cd-book:active{transform:scale(.96)}
+@media (max-width:480px){.cd-book{margin-left:0}}
 .btn{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1.1rem;border-radius:8px;font-weight:600;font-size:.88rem;border:none;transition:background .2s,transform .15s,box-shadow .2s;min-height:44px;user-select:none;-webkit-user-select:none}
 .btn:active{transform:scale(.97)}
 .btn-green{background:var(--green);color:#fff}.btn-green:hover{background:#0ea472;box-shadow:0 6px 20px rgba(16,185,129,.4);transform:translateY(-1px)}
@@ -10064,7 +10069,9 @@ function CourtDetail({
       React.createElement("p", { className:"text-xs", style:{color:"var(--textSec)",maxWidth:180} },
         lang==="ro"?"Calculat din stare, rapoarte și evaluări":lang==="hu"?"Állapot, jelentések és értékelések alapján":"Based on condition, reports and ratings"
       )
-    )
+    ),
+    (useApp().settings?.flags?.booking) !== false && React.createElement("button", { type: "button", className: "cd-book", onClick: onBook },
+      React.createElement("span", { "aria-hidden": "true" }, "\uD83D\uDCC5"), t.bookCourt)
   ),
   React.createElement(CourtPulse, { court: c }),
   React.createElement(CourtSourcesCard, { court: c }),
@@ -10126,7 +10133,6 @@ function CourtDetail({
       React.createElement("span", { className: "cd-ic", "aria-hidden": "true" }, ic),
       React.createElement("span", { className: "cd-l" }, label));
     return React.createElement("div", { className: "cd-actions" },
-      (useApp().settings?.flags?.booking) !== false && act("book", "green", onBook, "\uD83D\uDCC5", t.bookCourt),
       act("play", "coral", () => setShowPlay(true), "\u26BD", t.playNow),
       !ci ? act("ci", "line", doCI, "\uD83D\uDCCD", t.checkIn) : act("co", "red", doCO, "\uD83D\uDCCD", t.checkOut),
       act("follow", following ? "line" : "teal", () => toggleFollow(c.id), following ? "\uD83D\uDD15" : "\uD83D\uDD14", following ? t.unfollow : t.follow),
