@@ -103,7 +103,7 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .btn-block{width:100%;justify-content:center}
 .card{background:var(--bgCard);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.2rem;transition:transform .2s,box-shadow .2s,border-color .2s;border-left:4px solid transparent;overflow:hidden}
 .card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.13)}.card-accent{border-left-color:var(--green)}
-.action-card{background:rgba(255,255,255,0.07);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);border-radius:16px;color:#fff;padding:1.4rem 1.2rem;text-align:left;transition:transform .2s,box-shadow .2s;cursor:pointer;width:100%}
+.action-card{background:color-mix(in srgb,var(--bgCard) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:16px;color:var(--text);padding:1.4rem 1.2rem;text-align:left;transition:transform .2s,box-shadow .2s;cursor:pointer;width:100%}
 .action-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.25)}
 .ac-icon{font-size:1.8rem;margin-bottom:.4rem}
 .card-link{cursor:pointer}.card-link:hover{border-left-color:var(--green)}
@@ -781,6 +781,7 @@ html.accent-on .rcat-btn:hover,html.accent-on .rcat-btn.sel,html.accent-on .vol-
 .sb-dots{display:flex;flex-wrap:wrap;gap:4px;margin-top:.6rem}
 .demo-bar{position:fixed;left:12px;bottom:12px;z-index:9000;display:flex;align-items:center;gap:.5rem;max-width:calc(100vw - 24px);padding:.3rem .45rem;border-radius:999px;background:color-mix(in srgb,var(--dark) 82%,transparent);color:var(--white);font:600 .74rem 'Space Mono',monospace;backdrop-filter:blur(8px);box-shadow:var(--shadow);opacity:.55;transition:opacity .2s}
 .demo-bar:hover{opacity:1}
+body:has(.demo-bar) .mascot{bottom:calc(58px + env(safe-area-inset-bottom))}
 .demo-bar button{width:26px;height:26px;border-radius:50%;border:0;background:color-mix(in srgb,var(--white) 14%,transparent);color:inherit;font-size:1rem;line-height:1;cursor:pointer}
 .demo-bar button:disabled{opacity:.3;cursor:default}
 .demo-n{color:var(--green)}
@@ -1119,6 +1120,20 @@ html.g2p-shake .card,html.g2p-shake .stat-tile{animation:cardShake .5s 3}
 @keyframes aiSpark{50%{transform:scale(1.35) rotate(20deg);opacity:.55}}
 .ai-err{font-size:.8rem;color:var(--textSec)}.ai-err-t{font-size:.84rem;color:var(--red)}.ai-tag-ex{color:var(--coral)}
 .ai-card{margin:.6rem 0 0;padding:.65rem .8rem;border-radius:12px;border:1.5px dashed var(--teal);background:color-mix(in srgb,var(--teal) 7%,var(--bgCard));font-size:.84rem}
+.ai-diag{display:grid;gap:.45rem;margin-top:.5rem}.ai-score{font:700 1.5rem 'Space Mono',monospace;line-height:1}.ai-score small{font-size:.75rem;color:var(--textSec);font-weight:400}
+.ai-iss{display:flex;align-items:baseline;gap:.4rem;font-size:.8rem;line-height:1.35}.ai-sev{flex:none;letter-spacing:-.1em;color:var(--coral)}.ai-sev.s3{color:var(--red)}.ai-sev.s1{color:var(--teal)}
+.ai-fix{font-size:.8rem;color:var(--textSec)}.ai-fix b{color:var(--text)}.ai-off{font-size:.72rem;color:var(--textSec);font-style:italic}
+.ai-consent{display:flex;gap:.5rem;align-items:flex-start;font-size:.78rem;line-height:1.4;color:var(--textSec);margin:.3rem 0 .1rem}.ai-consent input{width:auto;margin-top:.15rem;flex:none}
+.ai-priv{font-size:.74rem;color:var(--textSec);margin:.2rem 0 .3rem 1.4rem;padding-left:1rem}.ai-priv li{margin:.15rem 0}
+.ai-block{font-size:.8rem;color:var(--red);margin:.4rem 0 0}.ai-est{display:inline-flex;align-items:center;gap:.3rem;font-size:.72rem;font-weight:700;padding:.15rem .55rem;border-radius:999px;border:1.5px dashed #8B5CF6;color:#8B5CF6;background:color-mix(in srgb,#8B5CF6 8%,transparent)}
+.vf-q{font-weight:700;font-size:.88rem;margin:.75rem 0 .35rem}.vf-chips{display:flex;flex-wrap:wrap;gap:.35rem}.vf-chip{border:1.5px solid var(--border);background:var(--bgCard);color:var(--text);border-radius:999px;padding:.3rem .7rem;font:inherit;font-size:.8rem;cursor:pointer}.vf-chip.on{border-color:var(--coral);background:color-mix(in srgb,var(--coral) 12%,var(--bgCard))}
+.vf-photos{display:flex;gap:.45rem;flex-wrap:wrap}.vf-ph{position:relative;width:76px;height:76px}.vf-ph img{width:100%;height:100%;object-fit:cover;border-radius:10px}.vf-ph button{position:absolute;top:2px;right:2px;width:22px;height:22px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;cursor:pointer;font-size:.7rem}
+.vf-add{width:76px;height:76px;border:2px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:var(--textSec);cursor:pointer}
+.vf-src{margin:0 0 1rem;padding:.75rem .9rem;border-radius:var(--radius);border:1px solid var(--border);background:var(--bgCard);font-size:.84rem}.vf-src.mission{border:1.5px solid var(--coral)}.vf-src-l{display:flex;flex-direction:column;gap:.25rem}.vf-src-l a{color:var(--green)}.vf-mis{font-weight:700;color:var(--coral);margin-bottom:.4rem}
+.sb-dot.half{background:rgba(255,255,255,.62)}.sb-mis{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;margin-top:.7rem}.sb-mis-h{width:100%;font-size:.78rem;font-weight:700;opacity:.95}.sb-mis-b{border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.14);color:#fff;border-radius:999px;padding:.25rem .65rem;font:inherit;font-size:.76rem;cursor:pointer}.sb-mis-b:hover{background:rgba(255,255,255,.28)}
+.lt-basis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.5rem;margin:.2rem 0 .8rem}.lt-b{text-align:left;display:flex;flex-direction:column;gap:.2rem;padding:.6rem .75rem;border-radius:12px;border:1.5px solid var(--border);background:var(--bgCard);color:var(--text);cursor:pointer;font:inherit}.lt-b b{font-size:.86rem}.lt-b small{font-size:.72rem;color:var(--textSec)}.lt-b.on{border-color:var(--green);background:color-mix(in srgb,var(--green) 9%,var(--bgCard))}
+.lt-ev{margin:.6rem 0;padding:.6rem .75rem;border-radius:12px;background:color-mix(in srgb,var(--teal) 7%,var(--bgCard));border:1px solid var(--border);font-size:.8rem}.lt-ev ul{margin:.3rem 0;padding-left:1.1rem}.lt-ev li{margin:.1rem 0}.lt-ev small{color:var(--textSec);font-size:.72rem}
+.lt-row{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .7rem;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.85rem}.lt-row .lt-n{flex:1 1 12rem;font-weight:600}.lt-due{font-family:'Space Mono',monospace;font-size:.75rem;padding:.1rem .5rem;border-radius:999px;background:var(--border)}.lt-due.late{background:var(--red);color:#fff}.lt-due.ok{background:var(--green);color:#fff}
 .ai-card p{margin:.35rem 0 0;line-height:1.4}.ai-issues{margin:.35rem 0 0;padding-left:1.1rem;color:var(--textSec);font-size:.8rem}
 .ai-tag{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem;font-size:.74rem;font-weight:700;letter-spacing:.02em;color:var(--teal)}
 .ai-cond{padding:.1rem .5rem;border-radius:999px;background:var(--border);color:var(--text)}.ai-c-good{background:var(--green);color:var(--white)}.ai-c-degraded{background:var(--coral);color:var(--white)}.ai-c-abandoned{background:var(--red);color:var(--white)}
@@ -3297,7 +3312,7 @@ var HOOD_COURT_MAP = {
   tudor:      ["c5","c6","c7","c8","c19","c27"],
   auchan:     ["c3","c4"],
   mureseni:   ["c1","c2","c20","c28"],
-  center:     ["c9","c10","c11","c12","c13","c18","c26","c29"],
+  center:     ["c9","c10","c11","c12","c13","c18","c26","c29","c30"],
   pandurilor: ["c14","c15"],
   libertate:  ["c16"],
   unirii:     ["c17","c21"],
@@ -6037,6 +6052,7 @@ const COURTS_BASE = [
     progress: 100,
     accessibility: { wheelchair: true,  lighting: true,  parking: true,  flatSurface: true  },
     reports: 2,
+    stadium: true,
     description: "Stadion municipal 11.000 locuri, teren gazon natural, în stare foarte bună."
   },
   {
@@ -6318,7 +6334,32 @@ const COURTS_BASE = [
     progress: 100,
     accessibility: { wheelchair: true, lighting: true, parking: true, flatSurface: true },
     reports: 0,
+    stadium: true,
+    src: "https://en.wikipedia.org/wiki/Trans-Sil_Stadium",
     description: "Stadion de fotbal, 8.200 locuri, gazon natural, în stare foarte bună (Wikipedia: Trans-Sil Stadium)."
+  },
+  // Old ASA stadium right next to Trans-Sil: closed since the early 2010s (Wikipedia, Jurnalul).
+  {
+    id: "c30",
+    name: "Stadionul Ladislau Bölöni (fostul stadion ASA)",
+    address: "Str. Insulei",
+    lat: 46.5493, lng: 24.5487,
+    status: "degraded",
+    neighbourhood: "center",
+    category: "football",
+    condition: 1,
+    occupancy: "empty",
+    progress: 0,
+    accessibility: { wheelchair: false, lighting: false, parking: true, flatSurface: false },
+    reports: 0,
+    stadium: true,
+    src: "https://en.wikipedia.org/wiki/Ladislau_B%C3%B6l%C3%B6ni_Stadium_(T%C3%A2rgu_Mure%C8%99)",
+    description: "Stadionul istoric al ASA Târgu Mureș (1962–2004), 15.000 de locuri, închis de la începutul anilor 2010 și lăsat să se degradeze — la câțiva metri de Trans-Sil.",
+    desc: {
+      ro: "Stadionul istoric al ASA Târgu Mureș (1962–2004), 15.000 de locuri, închis de la începutul anilor 2010 și lăsat să se degradeze — la câțiva metri de Trans-Sil.",
+      en: "The historic ASA Târgu Mureș stadium (1962–2004), 15,000 seats, closed since the early 2010s and left to decay — a few metres from Trans-Sil.",
+      hu: "Az ASA Marosvásárhely történelmi stadionja (1962–2004), 15 000 férőhely, a 2010-es évek eleje óta zárva és az enyészetnek hagyva — néhány méterre a Trans-Siltől." // TODO: HU review
+    }
   }
 ];
 
@@ -6394,9 +6435,9 @@ const SAT_VIEW = {"sb1":{"v":"worn","n":2,"of":4,"at":"2021-02-27"},"sb2":{"v":"
 const STADIUMS_SIBIU = {
   sb21: { name: "Stadionul Municipal Sibiu", address: "Aleea Mihai Eminescu (Parcul Sub Arini), Sibiu", lat: 45.78332, lng: 24.1438, category: "football",
     src: "https://www.romania-insider.com/sibiu-stadium-opening-dec-2022",
-    desc: { ro: "Stadion de fotbal reconstruit, redeschis pe 10 decembrie 2022: 12.363 locuri, gazon natural, pistă de atletism nouă, nocturnă. Casa FC Hermannstadt.",
-      en: "Rebuilt football stadium, reopened on 10 December 2022: 12,363 seats, natural grass, new athletics track, floodlights. Home of FC Hermannstadt.",
-      hu: "Újjáépített labdarúgó-stadion, 2022. december 10-én nyílt meg: 12 363 ülőhely, természetes gyep, új atlétikapálya, világítás. Az FC Hermannstadt otthona." } }, // TODO: HU review
+    desc: { ro: "Stadion de fotbal reconstruit, redeschis pe 10 decembrie 2022: 12.363 locuri, gazon natural, pistă de atletism nouă, nocturnă. Din august 2026, după retragerea FC Hermannstadt, aici joacă Inter Sibiu (Liga 3).",
+      en: "Rebuilt football stadium, reopened on 10 December 2022: 12,363 seats, natural grass, new athletics track, floodlights. Since August 2026, after FC Hermannstadt withdrew, Inter Sibiu (Liga 3) plays here.",
+      hu: "Újjáépített labdarúgó-stadion, 2022. december 10-én nyílt meg: 12 363 ülőhely, természetes gyep, új atlétikapálya, világítás. 2026 augusztusától, az FC Hermannstadt visszalépése után itt játszik az Inter Sibiu (Liga 3)." } }, // TODO: HU review
   sb8: { name: "Baza Sportivă Voința (Academia Alma)", address: "Strada Poet Vasile Cârlova, Sibiu", lat: 45.79125, lng: 24.13266, category: "football",
     src: "https://www.oradesibiu.ro/2025/07/11/ai-vazut-noul-stadion-din-sibiu-arena-de-sapte-sute-mii-de-euro-aproape-terminata-si-arata-superb-video-foto/",
     desc: { ro: "Bază modernizată în 2024–2025 (peste 1 milion de euro): gazon sintetic nou, nocturnă, vestiare, teren omologabil Liga 3. Se poate închiria seara, după ora 21.",
@@ -6426,6 +6467,19 @@ COURTS_SIBIU.forEach(c => {
 });
 const COURTS_ALL = [...COURTS_TGM, ...COURTS_SIBIU];
 const COURTS = COURTS_ALL.filter(c => c.city === ACTIVE_CITY);
+/* Court counts for prose: never hard-code them. Stadiums are counted with the courts and named separately. */
+const STADIUM_N = COURTS.filter(c => c.stadium).length;
+const NBH_N = COURTS.length - STADIUM_N;
+const SAT_N = COURTS.filter(c => SAT_VIEW[c.id]).length;
+const SAT_RECENT = COURTS.filter(c => SAT_VIEW[c.id] && /^202[12]/.test(SAT_VIEW[c.id].at)).length;
+// Romanian puts "de" between a number and its noun from 20 up ("29 de terenuri", "2 stadioane").
+const roDe = n => (n % 100 >= 20 || (n >= 100 && n % 100 === 0)) ? n + " de " : n + " ";
+function courtsPhrase(lang) {
+  const n = COURTS.length, k = STADIUM_N;
+  if (lang === "en") return n + " public courts" + (k ? " (" + k + " of them " + (k === 1 ? "a stadium" : "stadiums") + ")" : "");
+  if (lang === "hu") return n + " közpálya" + (k ? " (ebből " + k + " stadion)" : ""); // TODO: HU review
+  return roDe(n) + "terenuri publice" + (k ? " (dintre care " + (k === 1 ? "un stadion" : roDe(k) + "stadioane") + ")" : "");
+}
 // Admin position corrections (settings/courtPos), cached so they apply before the first render.
 function applyCourtPos(map) {
   if (!map) return;
@@ -6611,7 +6665,7 @@ const TIMELINE = [
 // Sibiu: only events with a public source (docs/INVESTITII_SIBIU.md). `lei` marks a public investment.
 const TIMELINE_SIBIU = [
   { y: "2020", lei: "565.000 lei", src: "https://www.turnulsfatului.ro/2020/10/15/primaria-sibiu-teren-modern-pentru-handbal-si-baschet-la-liceul-onisifor-ghibu-177144", ro: "Teren multifuncțional nou la Liceul Onisifor Ghibu (Ștrand) — curte de școală", en: "New multi-sport court at Onisifor Ghibu High School (Ștrand) — a school yard", hu: "Új többfunkciós pálya az Onisifor Ghibu Líceumnál (Ștrand) — iskolaudvar" }, // TODO: HU review
-  { y: "2022", src: "https://livingatlas.arcgis.com/wayback/", ro: "Ultimele imagini din satelit (Esri) pentru 34 din cele 35 de terenuri de cartier sunt din 2021–2022", en: "The latest satellite images (Esri) of 34 of the 35 neighbourhood courts date from 2021–2022", hu: "A 35 lakótelepi pályából 34-ről a legfrissebb műholdkép (Esri) 2021–2022-es" }, // TODO: HU review
+  { y: "2022", src: "https://livingatlas.arcgis.com/wayback/", ro: "Ultimele imagini din satelit (Esri) pentru 34 din cele 35 de terenuri din OpenStreetMap sunt din 2021–2022", en: "The latest satellite images (Esri) of 34 of the 35 OpenStreetMap courts date from 2021–2022", hu: "A 35 OpenStreetMap-pályából 34-ről a legfrissebb műholdkép (Esri) 2021–2022-es" }, // TODO: HU review
   { y: "2023", lei: "12,5 mil. lei", src: "https://sibiuindependent.ro/2023/04/21/scoala-radu-selejan-va-avea-o-sala-de-sport-si-terenuri-exterioare-pentru-handbal-baschet-si-minifotbal/", ro: "Anunț: sală de sport și 2 terenuri exterioare la Școala Radu Selejan (Vasile Aaron)", en: "Announced: sports hall and 2 outdoor courts at Radu Selejan School (Vasile Aaron)", hu: "Bejelentés: tornaterem és 2 kültéri pálya a Radu Selejan Iskolánál (Vasile Aaron)" }, // TODO: HU review
   { y: "2023", lei: "> 1 mil. lei", src: "https://www.oradesibiu.ro/2023/05/31/teren-de-sport-la-scoala-8-de-pe-strada-lupeni-primaria-a-lansat-licitatia/", ro: "Licitație pentru terenul de baschet și minifotbal de la Școala nr. 8 (Str. Lupeni)", en: "Tender for the basketball and mini-football court at School no. 8 (Lupeni St.)", hu: "Közbeszerzés a 8-as iskola kosár- és kispályájára (Lupeni utca)" }, // TODO: HU review
   { y: "2024", lei: "12,7 mil. lei", src: "https://bazesportive.sibiu.ro/obor", ro: "Se deschide Baza Sportivă Obor — gratuită cu programare (terenul mare cu plată)", en: "Obor Sports Base opens — free with booking (the main pitch is paid)", hu: "Megnyílik az Obor Sportbázis — foglalással ingyenes (a nagy pálya fizetős)" }, // TODO: HU review
@@ -7418,30 +7472,113 @@ function buildBloc(base, win) {
   for (var d = 0; d < 4; d++) { cx.fillStyle = "rgba(150,150,150,.18)"; cx.fillRect(12 + d * 29, 256 - fh + 8, 20, fh - 16); }
   return c;
 }
-function buildBasketball() {
-  var c = document.createElement("canvas"); c.width = 1024; c.height = 512; var cx = c.getContext("2d");
-  cx.fillStyle = "#D9681C"; cx.fillRect(0, 0, 1024, 512);
-  for (var i = 0; i < 14000; i++) { var v = (Math.random() * 30 - 15) | 0; cx.fillStyle = "rgba(" + (200 + v) + "," + (98 + v) + "," + (28 + v) + ",.45)"; cx.fillRect(Math.random() * 1024, Math.random() * 512, 3, 3); }
-  cx.strokeStyle = "#120c05"; cx.lineCap = "round";
-  cx.lineWidth = 12;
-  cx.beginPath(); cx.moveTo(0, 256); cx.lineTo(1024, 256); cx.stroke();   // equator
-  cx.beginPath(); cx.moveTo(256, 0); cx.lineTo(256, 512); cx.stroke();    // meridian
-  cx.beginPath(); cx.moveTo(768, 0); cx.lineTo(768, 512); cx.stroke();    // meridian (same great circle)
-  cx.lineWidth = 11;
-  cx.beginPath(); cx.moveTo(512, 0); cx.bezierCurveTo(624, 150, 624, 362, 512, 512); cx.stroke();
-  cx.beginPath(); cx.moveTo(0, 0); cx.bezierCurveTo(112, 150, 112, 362, 0, 512); cx.stroke();
-  cx.beginPath(); cx.moveTo(1024, 0); cx.bezierCurveTo(912, 150, 912, 362, 1024, 512); cx.stroke();
-  return c;
+/* Balls, PBR, drawn per pixel on the sphere's own UV layout (three.js SphereGeometry: u -> phi, v -> theta),
+   so every seam is a real curve on the ball, not a guess on a flat map. Each ball gets an albedo, a height
+   field (turned into a normal map) and a roughness map.
+   Basketball: equator + one meridian (planes y=0, x=0) and two curved end seams around the ±X axis,
+   like an official 8-panel ball. Football: a true truncated icosahedron, 12 black pentagons and 20 white
+   hexagons, puffed panels with stitched grooves. */
+function ballDir(W, H, px, py) {
+  var phi = (px + 0.5) / W * Math.PI * 2, th = (py + 0.5) / H * Math.PI;
+  return [-Math.cos(phi) * Math.sin(th), Math.cos(th), Math.sin(phi) * Math.sin(th)];
 }
-function buildSoccer() {
-  var c = document.createElement("canvas"); c.width = 1024; c.height = 512; var cx = c.getContext("2d");
-  cx.fillStyle = "#f2f2ef"; cx.fillRect(0, 0, 1024, 512);
-  for (var i = 0; i < 3600; i++) { var v = (Math.random() * 14 - 7) | 0; cx.fillStyle = "rgba(" + (232 + v) + "," + (232 + v) + "," + (230 + v) + ",.4)"; cx.fillRect(Math.random() * 1024, Math.random() * 512, 3, 3); }
-  function poly(x, y, r, n, rot, fill) { cx.beginPath(); for (var k = 0; k < n; k++) { var a = rot + k / n * Math.PI * 2 - Math.PI / 2; var px = x + Math.cos(a) * r, py = y + Math.sin(a) * r; k ? cx.lineTo(px, py) : cx.moveTo(px, py); } cx.closePath(); if (fill) { cx.fillStyle = "#15171b"; cx.fill(); } else { cx.strokeStyle = "rgba(70,70,74,.45)"; cx.lineWidth = 3; cx.stroke(); } }
-  var pts = [[110, 96], [320, 72], [520, 96], [726, 72], [930, 96], [200, 256], [420, 232], [620, 256], [824, 232], [110, 410], [330, 432], [540, 410], [760, 432], [950, 410]];
-  for (var h = 0; h < pts.length; h++) poly(pts[h][0], pts[h][1], 56, 6, 0.5, false);
-  for (var p = 0; p < pts.length; p++) poly(pts[p][0], pts[p][1], 30, 5, Math.random() * 1.2, true);
-  return c;
+function heightToNormal(src, strength) {
+  var W = src.width, H = src.height, hd = src.getContext("2d").getImageData(0, 0, W, H).data;
+  var c = document.createElement("canvas"); c.width = W; c.height = H; var cx = c.getContext("2d"), out = cx.createImageData(W, H), o = out.data;
+  function h(x, y) { x = (x + W) % W; y = y < 0 ? 0 : y >= H ? H - 1 : y; return hd[(y * W + x) * 4] / 255; }
+  for (var y = 0; y < H; y++) {
+    // near the poles a pixel column is narrow on the sphere: scale the horizontal slope so bumps stay round
+    var sx = strength / Math.max(0.15, Math.sin((y + 0.5) / H * Math.PI));
+    for (var x = 0; x < W; x++) {
+      var dx = (h(x + 1, y - 1) + 2 * h(x + 1, y) + h(x + 1, y + 1) - h(x - 1, y - 1) - 2 * h(x - 1, y) - h(x - 1, y + 1)) * sx;
+      var dy = (h(x - 1, y + 1) + 2 * h(x, y + 1) + h(x + 1, y + 1) - h(x - 1, y - 1) - 2 * h(x, y - 1) - h(x + 1, y - 1)) * strength;
+      var len = Math.sqrt(dx * dx + dy * dy + 1), k = (y * W + x) * 4;
+      o[k] = (-dx / len * 0.5 + 0.5) * 255; o[k + 1] = (dy / len * 0.5 + 0.5) * 255; o[k + 2] = (1 / len * 0.5 + 0.5) * 255; o[k + 3] = 255;
+    }
+  }
+  cx.putImageData(out, 0, 0); return c;
+}
+// fine pebbles (basketball) drawn into a height canvas; wider near the poles so they stay round on the ball
+function ballPebbles(cx, W, H, n, r0, fill) {
+  cx.fillStyle = fill;
+  for (var i = 0; i < n; i++) {
+    var y = Math.random() * H, x = Math.random() * W, r = r0 * (0.75 + Math.random() * 0.5);
+    var sx = Math.min(8, 1 / Math.max(0.12, Math.sin(y / H * Math.PI)));
+    cx.beginPath(); cx.ellipse(x, y, r * sx, r, 0, 0, 6.2832); cx.fill();
+  }
+}
+// angular distance (radians) from direction d to the nearest basketball seam
+function bballSeamDist(d) {
+  var ax = Math.abs(d[0]), ay = Math.abs(d[1]);
+  var eq = Math.asin(Math.min(1, ay)), mer = Math.asin(Math.min(1, ax));
+  var alpha = (73 - 68 * ay * ay) * Math.PI / 180;       // the end seams bow toward the centre at the equator, smoothly
+  var end = Math.abs(Math.acos(Math.min(1, ax)) - alpha);
+  return Math.min(eq, mer, end);
+}
+var SOCCER_CELLS = null;
+function soccerCells() {
+  if (SOCCER_CELLS) return SOCCER_CELLS;
+  var p = (1 + Math.sqrt(5)) / 2, v = [], f = [];
+  [[0, 1, p], [0, -1, p], [0, 1, -p], [0, -1, -p]].forEach(function (a) { v.push(a, [a[1], a[2], a[0]], [a[2], a[0], a[1]]); });
+  function d2(a, b) { return (a[0] - b[0]) * (a[0] - b[0]) + (a[1] - b[1]) * (a[1] - b[1]) + (a[2] - b[2]) * (a[2] - b[2]); }
+  for (var i = 0; i < 12; i++) for (var j = i + 1; j < 12; j++) for (var k = j + 1; k < 12; k++)
+    if (Math.abs(d2(v[i], v[j]) - 4) < 1e-6 && Math.abs(d2(v[j], v[k]) - 4) < 1e-6 && Math.abs(d2(v[i], v[k]) - 4) < 1e-6) f.push([v[i][0] + v[j][0] + v[k][0], v[i][1] + v[j][1] + v[k][1], v[i][2] + v[j][2] + v[k][2]]);
+  function n(a) { var l = Math.hypot(a[0], a[1], a[2]); return [a[0] / l, a[1] / l, a[2] / l]; }
+  // pentagon cells (icosahedron vertices) reach 16.5° from their centre, hexagons 20.9°: bias pentagons by 4.38°
+  SOCCER_CELLS = v.map(function (a) { return { c: n(a), pent: true }; }).concat(f.map(function (a) { return { c: n(a), pent: false }; }));
+  return SOCCER_CELLS;
+}
+function buildBallMaps(kind) {
+  // basketball pebbles need the finer map; the football is flat panels, half the size is enough (~150 ms total)
+  var W = kind === "soccer" ? 512 : 1024, H = W / 2, cells = kind === "soccer" ? soccerCells() : null, BIAS = 4.38 * Math.PI / 180;
+  var hc = document.createElement("canvas"); hc.width = W; hc.height = H; var hx = hc.getContext("2d", { willReadFrequently: true });
+  hx.fillStyle = "rgb(150,150,150)"; hx.fillRect(0, 0, W, H);
+  if (kind !== "soccer") { ballPebbles(hx, W, H, 42000, 0.95, "rgba(225,225,225,.5)"); ballPebbles(hx, W, H, 14000, 0.6, "rgba(95,95,95,.3)"); }
+  var hImg = hx.getImageData(0, 0, W, H), hd = hImg.data;
+  var ac = document.createElement("canvas"); ac.width = W; ac.height = H; var ax = ac.getContext("2d"), aImg = ax.createImageData(W, H), ad = aImg.data;
+  var rc = document.createElement("canvas"); rc.width = W; rc.height = H; var rx = rc.getContext("2d"), rImg = rx.createImageData(W, H), rd = rImg.data;
+  for (var py = 0; py < H; py++) for (var px = 0; px < W; px++) {
+    var d = ballDir(W, H, px, py), k = (py * W + px) * 4, col, h = hd[k] / 255, rough, sd;
+    if (kind === "soccer") {
+      // nearest pentagon, nearest two hexagons by dot product (pentagons never touch), acos only for those three
+      var bp = -2, bh = -2, bh2 = -2;
+      for (var i = 0; i < cells.length; i++) {
+        var cc = cells[i].c, dt = d[0] * cc[0] + d[1] * cc[1] + d[2] * cc[2];
+        if (cells[i].pent) { if (dt > bp) bp = dt; } else if (dt > bh) { bh2 = bh; bh = dt; } else if (dt > bh2) bh2 = dt;
+      }
+      var aP = Math.acos(Math.min(1, bp)) + BIAS, aH = Math.acos(Math.min(1, bh)), aH2 = Math.acos(Math.min(1, bh2));
+      var pentWins = aP < aH, a1 = pentWins ? aP : aH, a2 = pentWins ? aH : Math.min(aP, aH2), best = { pent: pentWins };
+      sd = (a2 - a1) / 2;                                   // angular distance to the panel edge
+      var puff = Math.min(1, sd / 0.11);                    // panels bulge, the stitched edge sinks
+      h = 0.25 + 0.75 * Math.sqrt(puff);
+      var base = best.pent ? [24, 24, 26] : [244, 244, 240];
+      var edge = sd < 0.011 ? 0.5 : sd < 0.024 ? 0.86 : 1;   // dark stitch line, soft shadow beside it
+      col = [base[0] * edge, base[1] * edge, base[2] * edge];
+      rough = sd < 0.015 ? 0.75 : best.pent ? 0.32 : 0.26;  // glossy synthetic leather, matte stitches
+    } else {
+      sd = bballSeamDist(d);
+      var seam = sd < 0.014, shoulder = sd < 0.03;
+      if (seam) { h = 0.05; col = [22, 18, 16]; rough = 0.9; }
+      else {
+        h = h * (shoulder ? 0.55 + 0.45 * (sd - 0.014) / 0.016 : 1);
+        var g = 0.93 + 0.12 * h;                              // pebble tops catch a little more light
+        col = [226 * g, 104 * g, 42 * g]; rough = 0.62 + (1 - h) * 0.18;
+      }
+    }
+    hd[k] = hd[k + 1] = hd[k + 2] = Math.max(0, Math.min(255, h * 255));
+    ad[k] = col[0]; ad[k + 1] = col[1]; ad[k + 2] = col[2]; ad[k + 3] = 255;
+    rd[k] = rd[k + 1] = rd[k + 2] = rough * 255; rd[k + 3] = 255;
+  }
+  hx.putImageData(hImg, 0, 0); ax.putImageData(aImg, 0, 0); rx.putImageData(rImg, 0, 0);
+  return { map: ac, normal: heightToNormal(hc, kind === "soccer" ? 3.2 : 2.0), rough: rc };
+}
+function ballMaterial(kind) {
+  function lin(cv) { var t = new THREE.CanvasTexture(cv); t.anisotropy = 8; t.generateMipmaps = true; t.minFilter = THREE.LinearMipmapLinearFilter; return t; }
+  var m = buildBallMaps(kind);
+  return new THREE.MeshStandardMaterial({
+    map: lin(m.map), normalMap: lin(m.normal), normalScale: new THREE.Vector2(kind === "soccer" ? 0.7 : 0.45, kind === "soccer" ? 0.7 : 0.45),
+    roughnessMap: lin(m.rough), roughness: 1, metalness: 0, emissive: new THREE.Color(0xff9a3c), emissiveIntensity: 0
+  });
 }
 function buildNet() {
   var c = document.createElement("canvas"); c.width = 128; c.height = 128; var cx = c.getContext("2d");
@@ -7628,6 +7765,10 @@ function mountHero3D(host, opts) {
 
   var netTex = texFrom(buildNet(), 1, 1), boardTex = texFrom(buildBackboard());
   var nets = [], hoops = [], lockerScreen = null, renovOnly = [], interactives = [];
+  // Ball vs hoop sizing (court units). The basketball is 20% smaller than before (0.125 -> 0.10) and the
+  // rim 15% bigger, so the ball clears the ring: 2 * BALL_R = 0.200 < inner diameter 2 * (RIM_R - RIM_T) = 0.223.
+  var HOOP_S = 1.15, RIM_R = 0.11 * HOOP_S, RIM_T = 0.013 * HOOP_S, RIM_OFF = 0.015 + RIM_R + RIM_T + 0.012, BALL_R = 0.1;
+  if (2 * BALL_R >= 2 * (RIM_R - RIM_T) && window.console) console.warn("hero3d: the basketball no longer fits through the rim");
   var steel = new THREE.MeshStandardMaterial({ color: 0xe8eaec, roughness: 0.4, metalness: 0.5 });
   function steelMesh(geo, x, y, z) { var m = new THREE.Mesh(geo, steel); m.position.set(x, y, z); m.castShadow = true; return m; }
 
@@ -7672,9 +7813,12 @@ function mountHero3D(host, opts) {
     var boardMat = new THREE.MeshStandardMaterial({ map: boardTex, transparent: true, side: THREE.DoubleSide });
     var board = new THREE.Mesh(new THREE.PlaneGeometry(0.52, 0.32), boardMat); board.position.set(-sign * 0.015, 0, 0); board.rotation.y = -sign * Math.PI / 2; board.castShadow = true; hoop.add(board);
     var rimMat = new THREE.MeshStandardMaterial({ color: 0xE2552B, roughness: 0.45 });
-    var rim = new THREE.Mesh(new THREE.TorusGeometry(0.11, 0.013, 16, 32), rimMat); rim.position.set(-sign * 0.14, -0.07, 0); rim.rotation.x = Math.PI / 2; rim.castShadow = true; hoop.add(rim);
-    var bnet = new THREE.Mesh(new THREE.CylinderGeometry(0.105, 0.05, 0.17, 14, 1, true), new THREE.MeshBasicMaterial({ map: netTex.clone(), transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false })); bnet.position.set(-sign * 0.14, -0.07 - 0.095, 0); hoop.add(bnet); nets.push(bnet);
-    hoops.push({ x: baseX - sign * 0.14, y: boardY - 0.07, z: 0, r: 0.11 });
+    var rim = new THREE.Mesh(new THREE.TorusGeometry(RIM_R, RIM_T, 16, 40), rimMat); rim.position.set(-sign * RIM_OFF, -0.07, 0); rim.rotation.x = Math.PI / 2; rim.castShadow = true; hoop.add(rim);
+    var brW = RIM_OFF - RIM_R - 0.015;   // short bracket: the bigger ring sits clear of the board
+    hoop.add(steelMesh(new THREE.BoxGeometry(brW, 0.012, 0.05), -sign * (0.015 + brW / 2), -0.07, 0));
+    var bnet = new THREE.Mesh(new THREE.CylinderGeometry(RIM_R - RIM_T * 0.5, 0.06 * HOOP_S, 0.17 * HOOP_S, 16, 1, true), new THREE.MeshBasicMaterial({ map: netTex.clone(), transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false })); bnet.position.set(-sign * RIM_OFF, -0.07 - 0.085 * HOOP_S, 0); hoop.add(bnet); nets.push(bnet);
+    // collider data (court-local): ring centre, centre-line radius, tube radius, backboard plane
+    hoops.push({ x: baseX - sign * RIM_OFF, y: boardY - 0.07, z: 0, r: RIM_R, t: RIM_T, sign: sign, boardX: baseX - sign * 0.015, boardY: boardY, net: bnet, pulse: 0 });
     endUnits.push({ frame: frame, hoop: hoop, rim: rim, rimMat: rimMat, boardMat: boardMat, sign: sign, lean: sign > 0 ? -0.1 : 0.08 });
   }
   endUnit(-1); endUnit(1);
@@ -8037,14 +8181,15 @@ function mountHero3D(host, opts) {
   // two balls — big, with an invisible larger grab target, and a soft glow until the visitor first grabs one
   var touched = false; try { touched = localStorage.getItem("g2p_hero_ball") === "1"; } catch (e) {}
   var haloTex = (function () { var c = document.createElement("canvas"); c.width = c.height = 64; var x = c.getContext("2d"); var g = x.createRadialGradient(32, 32, 4, 32, 32, 32); g.addColorStop(0, "rgba(255,206,130,.95)"); g.addColorStop(1, "rgba(255,150,50,0)"); x.fillStyle = g; x.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
-  function makeBall(tex, rad, rough) {
-    var b = new THREE.Mesh(new THREE.SphereGeometry(rad, 40, 26), new THREE.MeshStandardMaterial({ map: tex, roughness: rough, metalness: 0.03, emissive: new THREE.Color(0xff9a3c), emissiveIntensity: 0 })); b.castShadow = true; b.position.y = rad; group.add(b);
-    var hit = new THREE.Mesh(new THREE.SphereGeometry(rad * 1.9, 10, 8), new THREE.MeshBasicMaterial({ visible: false })); b.add(hit);
+  var HIT_MIN = 0.24, HIT_PX = 30;   // grab radius: never under the old 0.24 court units, never under 30 CSS px on screen
+  function makeBall(mat, rad) {
+    var b = new THREE.Mesh(new THREE.SphereGeometry(rad, 48, 32), mat); b.castShadow = true; b.position.y = rad; group.add(b);
+    var hit = new THREE.Mesh(new THREE.SphereGeometry(1, 12, 8), new THREE.MeshBasicMaterial({ visible: false })); hit.scale.setScalar(Math.max(rad * 1.9, HIT_MIN)); b.add(hit);
     var halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: haloTex, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false, opacity: 0 })); halo.visible = !touched; group.add(halo);
     return { mesh: b, hit: hit, halo: halo, rad: rad, x: 0, y: rad, z: 0, vx: 0, vy: 0, vz: 0, physics: false, grabbed: false, carried: null, claim: null, fromPass: false, rest: 0, ph: 0, fr: 2, hgt: 0.4 };
   }
-  var basket = makeBall(texFrom(buildBasketball()), 0.125, 0.82); basket.x = -0.6; basket.z = 0.2; basket.vx = 0.009; basket.vz = 0.006; basket.fr = 2.4; basket.hgt = 0.5;
-  var soccer = makeBall(texFrom(buildSoccer()), 0.118, 0.42); soccer.x = 0.5; soccer.z = -0.25; soccer.vx = -0.008; soccer.vz = 0.01; soccer.ph = 1.4; soccer.fr = 2.0; soccer.hgt = 0.42;
+  var basket = makeBall(ballMaterial("basket"), BALL_R); basket.x = -0.6; basket.z = 0.2; basket.vx = 0.009; basket.vz = 0.006; basket.fr = 2.4; basket.hgt = 0.5;
+  var soccer = makeBall(ballMaterial("soccer"), 0.118); soccer.x = 0.5; soccer.z = -0.25; soccer.vx = -0.008; soccer.vz = 0.01; soccer.ph = 1.4; soccer.fr = 2.0; soccer.hgt = 0.42;
   var balls = [basket, soccer], ballHits = [basket.hit, soccer.hit];
   function markTouched() { if (touched) return; touched = true; try { localStorage.setItem("g2p_hero_ball", "1"); } catch (e) {} }
 
@@ -8370,6 +8515,67 @@ function mountHero3D(host, opts) {
     onResize();
   }
   var scoreCD = 0, windT = 18;
+  /* Renovated hoop collider. The ring is a torus (centre-line radius r, tube t): the ball collides with the
+     nearest point of the ring's centre circle at distance BALL + t. The step is swept in sub-steps no longer
+     than the tube radius, so a fast throw cannot tunnel through the 3 cm rim. One positional push-out per
+     contact plus a velocity reflection (restitution 0.45, 10% tangential loss) = no jitter; a ball that comes
+     to rest on the ring is rolled off it. The backboard is a plane on the court side of the board. */
+  function hoopPhysics(bl, Hp, px0, py0, pz0, dt) {
+    var R = Hp.r, T = Hp.t, minD = bl.rad + T, inner = R - T;
+    // gentle funnel: a descending ball just above the ring drifts toward its centre (the throw is flicked on a phone)
+    var fx = Hp.x - bl.x, fz = Hp.z - bl.z, fh = Math.hypot(fx, fz), above = bl.y - Hp.y;
+    if (bl.vy < 0 && above > 0 && above < 0.35 && fh < R + bl.rad * 1.4 && fh > 1e-4 && bl.rad < inner) { var pull = 1.6 * dt; bl.vx += fx / fh * pull; bl.vz += fz / fh * pull; }
+    var sx = bl.x - px0, sy = bl.y - py0, sz = bl.z - pz0, steps = Math.min(10, Math.max(1, Math.ceil(Math.hypot(sx, sy, sz) / T)));
+    for (var k = 1; k <= steps; k++) {
+      var f = k / steps, x = px0 + sx * f, y = py0 + sy * f, z = pz0 + sz * f;
+      var dx = x - Hp.x, dz = z - Hp.z, h = Math.hypot(dx, dz);
+      if (h < 1e-5) { dx = 1; dz = 0; h = 1; }
+      var cxp = Hp.x + dx / h * R, czp = Hp.z + dz / h * R, nx = x - cxp, ny = y - Hp.y, nz = z - czp, d = Math.hypot(nx, ny, nz);
+      if (d < minD && d > 1e-6) {
+        nx /= d; ny /= d; nz /= d;
+        bl.x = cxp + nx * minD; bl.y = Hp.y + ny * minD; bl.z = czp + nz * minD;
+        var vn = bl.vx * nx + bl.vy * ny + bl.vz * nz;
+        if (vn < 0) {
+          bl.vx -= 1.45 * vn * nx; bl.vy -= 1.45 * vn * ny; bl.vz -= 1.45 * vn * nz;
+          bl.vx *= 0.9; bl.vz *= 0.9;
+          if (vn < -0.4 && typeof g2pSfx === "function") g2pSfx("clack");
+        }
+        // resting on top of the ring: roll it off (inward if its centre is inside the ring, else outward)
+        if (ny > 0.6 && Math.hypot(bl.vx, bl.vy, bl.vz) < 0.25) { var out = h < R ? -1 : 1; bl.vx += dx / h * out * 0.35; bl.vz += dz / h * out * 0.35; }
+        break;
+      }
+    }
+    // backboard: a plane facing the court, 0.52 x 0.32, on the court side of the board
+    var by = bl.y - Hp.boardY, bz = bl.z - Hp.z;
+    if (Math.abs(by) < 0.16 + bl.rad * 0.5 && Math.abs(bz) < 0.26 + bl.rad * 0.5) {
+      var face = Hp.boardX - Hp.sign * bl.rad;
+      if (Hp.sign * (bl.x - face) > 0 && Hp.sign * (px0 - Hp.boardX) < 0) { bl.x = face; if (Hp.sign * bl.vx > 0) { bl.vx = -bl.vx * 0.55; if (typeof g2pSfx === "function") g2pSfx("clack"); } }
+    }
+    // a basket = the ball's centre crosses the ring plane downward inside the clear opening
+    if (py0 > Hp.y && bl.y <= Hp.y) {
+      var f2 = (py0 - Hp.y) / Math.max(1e-6, py0 - bl.y), cx2 = px0 + (bl.x - px0) * f2 - Hp.x, cz2 = pz0 + (bl.z - pz0) * f2 - Hp.z;
+      if (Math.hypot(cx2, cz2) < inner) { Hp.pulse = 1; score("basket"); }
+    }
+  }
+  // Keep the invisible grab sphere comfortably big on screen while the visible ball is small.
+  var hitW = new THREE.Vector3(), hitS = new THREE.Vector3();
+  function fitHits() {
+    var hpx = el.clientHeight || 1, tanF = Math.tan(camera.fov * Math.PI / 360);
+    for (var i = 0; i < balls.length; i++) {
+      var b = balls[i]; b.mesh.getWorldPosition(hitW); b.mesh.getWorldScale(hitS);
+      var ppu = hpx / 2 / (camera.position.distanceTo(hitW) * tanF);   // CSS px per world unit at the ball
+      b.hit.scale.setScalar(Math.max(b.rad * 1.9, HIT_MIN, HIT_PX / ppu / (hitS.x || 1)));
+    }
+  }
+  function updNets(dt) {
+    for (var i = 0; i < hoops.length; i++) {
+      var Hp = hoops[i]; if (Hp.pulse <= 0 && Hp.net.scale.y === 1) continue;
+      Hp.pulse = Math.max(0, Hp.pulse - dt * 2.2);
+      var w = Math.sin(Hp.pulse * Math.PI);   // the net stretches round the ball, then settles
+      Hp.net.scale.set(1 + w * 0.45, 1 + w * 0.2, 1 + w * 0.45);
+      if (Hp.pulse === 0) Hp.net.scale.set(1, 1, 1);
+    }
+  }
   function score(kind) {
     if (scoreCD > 0) return; scoreCD = 1.2;
     if (opts.onScore) opts.onScore(kind);
@@ -8400,6 +8606,7 @@ function mountHero3D(host, opts) {
     // the one lamp that still has a bulb stutters at night (grey state only)
     if (deadBulb) { var nf = (1 - lookP) * (1 - th); deadBulb.emissiveIntensity = nf > 0.01 && Math.sin(t * 23) * Math.sin(t * 2.7) > 0.5 ? nf * 1.2 : 0; }
     if (parOn) { parX += (parTX - parX) * 0.05; parY += (parTY - parY) * 0.05; camera.position.set(parX * 0.38, CAM.y - parY * 0.22, CAM.z); camera.lookAt(0, CAM.ly, 0); }
+    fitHits(); updNets(dt);
     var hasPlayers = renovated && !renov.active;
     for (var i = 0; i < balls.length; i++) {
       var bl = balls[i];
@@ -8407,6 +8614,7 @@ function mountHero3D(host, opts) {
       else if (bl.physics) {
         if (bl.grabbed) { bl.y = bl.rad + 0.03; }
         else {
+          var px0 = bl.x, py0 = bl.y, pz0 = bl.z;
           bl.vy -= 3.2 * dt; bl.x += bl.vx * dt; bl.z += bl.vz * dt; bl.y += bl.vy * dt;
           if (bl.y <= bl.rad) { bl.y = bl.rad; if (bl.vy < 0) { bl.vy = -bl.vy * 0.6; bl.vx *= 0.84; bl.vz *= 0.84; if (Math.abs(bl.vy) < 0.3) bl.vy = 0; } }
           var bxx = CX / 2 - bl.rad, bzz = CZ / 2 - bl.rad;
@@ -8416,10 +8624,11 @@ function mountHero3D(host, opts) {
           else if (bl.x < -bxx) { if (inMouth) { if (bl.x < -(CX / 2 + 0.14)) { bl.x = -(CX / 2 + 0.14); bl.vx = 0; bl.vz *= 0.4; score("goal"); } } else { bl.x = -bxx; bl.vx = -bl.vx * 0.6; } }
           bl.vx *= 0.995; bl.vz *= 0.995;
           for (var hh = 0; hh < hoops.length; hh++) {
-            var Hp = hoops[hh], ddx = bl.x - Hp.x, ddz = bl.z - Hp.z;
+            var Hp = hoops[hh];
+            if (prog > 0.5) { hoopPhysics(bl, Hp, px0, py0, pz0, dt); continue; }
+            var ddx = bl.x - Hp.x, ddz = bl.z - Hp.z;
             if (ddx * ddx + ddz * ddz < Hp.r * Hp.r * 0.9 && bl.vy < 0 && bl.y < Hp.y + 0.05 && bl.y > Hp.y - 0.14) {
-              if (prog > 0.5) score("basket");
-              else { bl.vy = Math.abs(bl.vy) * 0.55 + 0.5; bl.vx = -bl.vx * 0.5 + (Math.random() - 0.5) * 0.8; bl.vz += (Math.random() - 0.5) * 0.8; if (typeof g2pSfx === "function") g2pSfx("clack"); }   // the bent grey rim spits it out
+              bl.vy = Math.abs(bl.vy) * 0.55 + 0.5; bl.vx = -bl.vx * 0.5 + (Math.random() - 0.5) * 0.8; bl.vz += (Math.random() - 0.5) * 0.8; if (typeof g2pSfx === "function") g2pSfx("clack");   // the bent grey rim spits it out
             }
           }
           var onGround = bl.y <= bl.rad + 0.001 && bl.vy === 0, slow = Math.abs(bl.vx) + Math.abs(bl.vz);
@@ -8507,6 +8716,7 @@ function mountHero3D(host, opts) {
     // probes: throw a ball / shake the wall from the console
     _throw: function (i, vx, vy, vz) { var b = balls[i || 0]; markTouched(); b.physics = true; b.grabbed = false; b.claim = null; b.fromPass = false; b.y = b.rad + 0.05; b.vx = vx; b.vy = vy; b.vz = vz; },
     _shake: shakeWall,
+    _ball: function (i) { return balls[i || 0]; }, _hoops: hoops, _hitR: function (i) { return balls[i || 0].hit.scale.x; },
     _screen: function (i) { var b = balls[i || 0], v = new THREE.Vector3(); b.mesh.getWorldPosition(v); v.project(camera); var r = el.getBoundingClientRect(); return { x: r.left + (v.x + 1) / 2 * r.width, y: r.top + (1 - v.y) / 2 * r.height, air: b.y > b.rad + 0.08, fromPass: b.fromPass }; },
     pause: function () { paused = true; if (rafId) cancelAnimationFrame(rafId); rafId = null; },
     resume: function () { if (paused) { paused = false; prevN = performance.now(); rafId = requestAnimationFrame(animate); } },
@@ -8877,7 +9087,7 @@ function StoryScroll() {
       vis: court,
       h: sib ? L3("Cum arată terenul de lângă tine?", "What does the court near you look like?", "Milyen a hozzád legközelebbi pálya?")
              : L3("Cel mai apropiat teren arată așa.", "The nearest court looks like this.", "A legközelebbi pálya így néz ki."),
-      p: sib ? L3("Pe hartă sunt 35 de terenuri publice. Starea lor nu a verificat-o încă nimeni.", "There are 35 public courts on the map. Nobody has checked their condition yet.", "35 közpálya van a térképen. Az állapotukat még senki sem ellenőrizte.")
+      p: sib ? L3("Pe hartă sunt " + courtsPhrase("ro") + ". Starea lor nu a verificat-o încă nimeni.", "There are " + courtsPhrase("en") + " on the map. Nobody has checked their condition yet.", courtsPhrase("hu") + " van a térképen. Az állapotukat még senki sem ellenőrizte.")
              : L3("Coș îndoit, asfalt crăpat, linii șterse. Și nu e singurul.", "Bent hoop, cracked asphalt, faded lines. And it isn't the only one.", "Görbe kosár, repedezett aszfalt, kopott vonalak. És nem ez az egyetlen.")
     },
     sib ? {
@@ -9846,7 +10056,7 @@ function CourtDetail({
     className: `badge ${courtStatusView(c, t).badge}`
   }, courtStatusView(c, t).label), /*#__PURE__*/React.createElement("span", {
     className: `badge ${occ === "empty" ? "badge-green" : occ === "active" ? "badge-coral" : "badge-red"}`
-  }, occ === "empty" ? "🟢 " + t.empty + " (0)" : occ === "active" ? "🟡 " + t.active + " (" + cnt + ")" : "🔴 " + t.full + " (" + cnt + ")")),
+  }, occ === "empty" ? "🟢 " + t.empty + " (0)" : occ === "active" ? "🟡 " + t.active + " (" + cnt + ")" : "🔴 " + t.full + " (" + cnt + ")"), React.createElement(AiEstimateBadge, { court: c })),
   React.createElement("div", { style:{marginTop:"1rem",display:"flex",alignItems:"center",gap:"1.5rem",flexWrap:"wrap",marginBottom:"1rem"} },
     React.createElement(CourtHealthRing, { court:c }),
     React.createElement("div", null,
@@ -9857,7 +10067,8 @@ function CourtDetail({
     )
   ),
   React.createElement(CourtPulse, { court: c }),
-  React.createElement(AiCourtCard, { court: c, onLetter: c.category !== "gym" && c.status !== "renovated" && c.status !== "excellent" ? () => setShowLetter(true) : null }),
+  React.createElement(CourtSourcesCard, { court: c }),
+  React.createElement(AiCourtCard, { court: c, onLetter: c.category !== "gym" ? () => setShowLetter(true) : null }),
   /*#__PURE__*/React.createElement("h4", {
     className: "mb-1"
   }, "Progress"), /*#__PURE__*/React.createElement("div", {
@@ -9922,7 +10133,7 @@ function CourtDetail({
       act("share", "line", () => shareCourt(c, t, toast), "\uD83D\uDD17", t.shareCourt),
       act("qr", "line", () => setShowQR(true), "\uD83D\uDCF1", "QR"),
       c.category !== "gym" && act("poster", "line", () => setShowWanted(true), "\uD83E\uDEA7", lang === "en" ? "Poster" : lang === "hu" ? "Plak\u00E1t" : "Afi\u0219"),
-      c.category !== "gym" && c.status !== "renovated" && c.status !== "excellent" && act("letter", "line", () => setShowLetter(true), "\u2709\uFE0F", lang === "en" ? "AI letter" : lang === "hu" ? "AI-lev\u00E9l" : "Scrisoare AI")); // TODO: HU review
+      c.category !== "gym" && act("letter", "line", () => setShowLetter(true), "\u2709\uFE0F", lang === "en" ? "AI letter" : lang === "hu" ? "AI-lev\u00E9l" : "Scrisoare AI")); // TODO: HU review
   })()),
   // Portals: inside the court modal (animated transform) a fixed overlay is trapped in the modal's box.
   // The wrapper stops clicks bubbling (React tree) to the court overlay, which would close the court too.
@@ -12123,9 +12334,11 @@ function OpenDataCard() {
   const votes = useFirebase("votes");
   const fbCourts = useFirebase("courts");
   const ratings = useFirebase("ratings");
-  const buildCourts = () => {
-    return [...COURTS_ALL, ...extraCourts(fbCourts, true)];
-  };
+  // condition_source: field (team visit / city data), satellite (team audit), press (stadiums), none
+  const buildCourts = () => [...COURTS_ALL, ...extraCourts(fbCourts, true)].map(c => Object.assign({}, c, {
+    condition_source: c.condition == null ? null : c.estimate === "sat" ? "satellite" : c.stadium && c.city === "sibiu" ? "press" : "field",
+    ai_estimate: reports ? (aiEstimateOf(reports, c.id) || {}).score || null : null
+  }));
   const buildReports = () => reports ? Object.entries(reports).map(([id, r]) => ({
     id,
     courtId: r.courtId || "",
@@ -12136,7 +12349,9 @@ function OpenDataCard() {
     status: r.status || "",
     lat: r.lat || null,
     lng: r.lng || null,
-    createdAt: r.createdAt || null
+    createdAt: r.createdAt || null,
+    condition_source: r.ai && r.ai.score ? "ai_estimate" : r.conditionReport ? "community" : null,
+    ai_score: r.ai && r.ai.score || null
   })) : [];
   const buildRatings = () => {
     const out = {};
@@ -12164,7 +12379,7 @@ function OpenDataCard() {
   };
   const exportCsv = () => {
     const esc = v => '"' + String(v == null ? "" : v).replace(/"/g, '""') + '"';
-    const head = ["id", "courtId", "courtName", "neighbourhood", "category", "status", "lat", "lng", "createdAt", "description"];
+    const head = ["id", "courtId", "courtName", "neighbourhood", "category", "status", "lat", "lng", "createdAt", "condition_source", "ai_score", "description"];
     const rows = buildReports().map(r => head.map(k => esc(r[k])).join(","));
     downloadFile("g2p_sesizari.csv", [head.join(",")].concat(rows).join("\n"), "text/csv;charset=utf-8");
     toast(t.openDataReady);
@@ -12305,12 +12520,54 @@ function ImpactPage() {
     className: tab === "tl" ? "active" : "",
     onClick: () => setTab("tl")
   }, "\uD83D\uDCC5"), React.createElement("button", { className: tab === "hood" ? "active" : "", onClick: function() { setTab("hood"); }, title: "Neighbourhoods" }, "\uD83C\uDFD8"),
-  React.createElement("button", { className: tab === "race" ? "active" : "", onClick: function() { setTab("race"); }, title: t.neighborhoodRace||"Cursa cartierelor" }, "\uD83C\uDFC1")),
+  React.createElement("button", { className: tab === "race" ? "active" : "", onClick: function() { setTab("race"); }, title: t.neighborhoodRace||"Cursa cartierelor" }, "\uD83C\uDFC1"),
+  React.createElement("button", { className: tab === "letters" ? "active" : "", onClick: function() { setTab("letters"); }, title: lang === "en" ? "Letters to City Hall" : lang === "hu" ? "Levelek a Városházának" : "Scrisori către Primărie" }, "\u2709\uFE0F")),
+  tab === "letters" && React.createElement(LettersTracker, null),
   tab === "proiecte" && React.createElement(ProiecteTab, null), tab === "calc" && React.createElement(React.Fragment, null, React.createElement(ImpactCalc, null), React.createElement(InequalityReceipt, null)), tab === "city" && (ACTIVE_CITY === "tgm" ? /*#__PURE__*/React.createElement(CityComp, null) : React.createElement(SatAuditCard, null)), tab === "budget" && (ACTIVE_CITY === "tgm" ? React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(BudgetViz, null), React.createElement(BudgetWatchdog, null)) : React.createElement(SibiuInvest, null)), tab === "carbon" && /*#__PURE__*/React.createElement(CarbonCalc, null), tab === "health" && /*#__PURE__*/React.createElement(HealthCalc, null), tab === "mental" && /*#__PURE__*/React.createElement(MentalSec, null), tab === "tl" && /*#__PURE__*/React.createElement(TimelineSec, null), tab === "hood" && React.createElement(HoodChart, null),
   tab === "race" && React.createElement(React.Fragment, null,
     React.createElement(CouncilCountdown, null),
     React.createElement(NeighborhoodRace, null)
   ))), pulse && React.createElement(CityPulse, { onClose: () => setPulse(false) }));
+}
+/* Impact → ✉️: letters sent from the site (letters/: city, court, legal basis, date — no personal data),
+   with the legal answer deadline counting down, and "City Hall replied" logging. */
+function LettersTracker() {
+  const { lang, toast } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const letters = useFirebase("letters");
+  const [replying, setReplying] = useState(null);
+  const [regNo, setRegNo] = useState("");
+  const e = React.createElement;
+  const list = letters ? Object.entries(letters).map(([id, x]) => Object.assign({ id }, x)).filter(x => x && x.city === ACTIVE_CITY && x.sentAt).sort((a, b) => String(b.sentAt).localeCompare(String(a.sentAt))) : [];
+  const byCourt = {}; list.forEach(x => { byCourt[x.courtId] = (byCourt[x.courtId] || 0) + 1; });
+  const top = Object.entries(byCourt).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const nameOf = id => (COURTS_ALL.find(c => c.id === id) || { name: id }).name;
+  const daysLeft = x => { const b = LETTER_BASIS[x.basis] || LETTER_BASIS.og27; return Math.ceil((Date.parse(x.sentAt) + b.days * 864e5 - Date.now()) / 864e5); };
+  const save = x => {
+    const r = { at: new Date().toISOString() }; if (regNo.trim()) r.regNo = regNo.trim().slice(0, 40);
+    db.ref("letters/" + x.id + "/reply").set(r).then(() => { logActivity("cityReply", "", x.courtId); toast(L3("Mulțumim! Răspunsul e notat.", "Thanks! The reply is logged.", "Köszönjük! A válasz rögzítve.")); setReplying(null); setRegNo(""); })
+      .catch(() => toast(L3("Nu s-a putut salva.", "Could not save.", "Nem sikerült menteni.")));
+  };
+  return e("div", { className: "card" },
+    e("h3", { className: "mb-1" }, "✉️ ", L3("Scrisori trimise către Primărie", "Letters sent to City Hall", "A Városházának küldött levelek")),
+    e("p", { className: "text-sm mb-2", style: { color: "var(--textSec)" } }, L3("Fiecare scrisoare trimisă din pagina unui teren apare aici, cu termenul legal de răspuns: 30 de zile pentru o petiție (OG 27/2002), 10 zile pentru o cerere de informații (Legea 544/2001). Nu păstrăm nume sau adrese.",
+      "Every letter sent from a court page shows up here with its legal answer deadline: 30 days for a petition (OG 27/2002), 10 days for an information request (Law 544/2001). We keep no names or addresses.",
+      "Minden pályaoldalról küldött levél itt jelenik meg a törvényes válaszhatáridővel: petíciónál 30 nap (OG 27/2002), információkérésnél 10 nap (544/2001-es törvény). Neveket és címeket nem tárolunk.")),
+    !list.length && e("p", { className: "text-sm" }, L3("Încă nicio scrisoare. Deschide un teren → ✉️ Scrisoare AI.", "No letters yet. Open a court → ✉️ AI letter.", "Még nincs levél. Nyiss meg egy pályát → ✉️ AI-levél.")),
+    top.length > 0 && e("div", { className: "flex gap-1 mb-2", style: { flexWrap: "wrap" } }, top.map(([id, n]) => e("span", { key: id, className: "badge badge-green" }, nameOf(id), " · ", n))),
+    list.slice(0, 40).map(x => {
+      const d = daysLeft(x), b = LETTER_BASIS[x.basis] || LETTER_BASIS.og27;
+      return e("div", { key: x.id, className: "lt-row" },
+        e("a", { className: "lt-n", href: "#court-" + x.courtId }, nameOf(x.courtId)),
+        e("span", { className: "badge" }, b.law),
+        e("span", { className: "text-xs", style: { color: "var(--textSec)" } }, new Date(x.sentAt).toLocaleDateString(lang === "en" ? "en-GB" : lang === "hu" ? "hu-HU" : "ro-RO")),
+        x.reply ? e("span", { className: "lt-due ok" }, "✓ ", L3("a răspuns", "replied", "válaszolt"), x.reply.regNo ? " · nr. " + x.reply.regNo : "")
+          : e("span", { className: "lt-due" + (d < 0 ? " late" : "") }, d >= 0 ? L3("mai are ", "", "még ") + d + L3(" zile", " days left", " nap") : L3("termen depășit cu ", "overdue by ", "lejárt ") + (-d) + L3(" zile", " days", " napja")),
+        !x.reply && (replying === x.id
+          ? e("span", { className: "flex gap-1" }, e("input", { value: regNo, onChange: ev => setRegNo(ev.target.value), maxLength: 40, placeholder: L3("nr. de înregistrare (opțional)", "registration no. (optional)", "iktatószám (nem kötelező)"), style: { width: "12rem", padding: ".3rem .5rem" } }),
+              e("button", { className: "btn btn-sm btn-green", onClick: () => save(x) }, "✓"))
+          : e("button", { className: "btn btn-sm btn-outline", onClick: () => { setReplying(x.id); setRegNo(""); } }, L3("Primăria a răspuns", "City Hall replied", "A Városháza válaszolt"))));
+    }));
 }
 function ImpactCalc() {
   const {
@@ -12674,9 +12931,9 @@ function SibiuInvest() {
         React.createElement("a", { href: ev.src, target: "_blank", rel: "noopener", style: { fontSize: ".75rem", color: "var(--textSec)" } }, "🔗")),
       React.createElement("div", { className: "font-bold", style: { color: "var(--green)", whiteSpace: "nowrap" } }, ev.lei))),
     React.createElement("p", { className: "mt-2", style: { fontSize: ".85rem", color: "var(--textSec)" } },
-      L3("Toate investițiile găsite sunt baze mari sau curți de școală. Niciunul dintre cele 35 de terenuri de cartier de pe hartă nu apare încă într-o investiție cu sursă — de confirmat cu Primăria (cerere conform Legii 544/2001).",
-         "Every investment found is a large base or a school yard. None of the 35 neighbourhood courts on the map appears yet in a sourced investment — to be confirmed with City Hall (Law 544/2001 request).",
-         "Minden talált beruházás nagy sportbázis vagy iskolaudvar. A térkép 35 lakótelepi pályája közül egyik sem szerepel még forrással igazolt beruházásban — a Polgármesteri Hivatallal kell megerősíteni (544/2001-es kérelem).")) // TODO: HU review
+      L3("Toate investițiile găsite sunt baze mari sau curți de școală. Niciunul dintre cele " + roDe(NBH_N) + "terenuri de cartier de pe hartă nu apare încă într-o investiție cu sursă — de confirmat cu Primăria (cerere conform Legii 544/2001).",
+         "Every investment found is a large base or a school yard. None of the " + NBH_N + " neighbourhood courts on the map appears yet in a sourced investment — to be confirmed with City Hall (Law 544/2001 request).",
+         "Minden talált beruházás nagy sportbázis vagy iskolaudvar. A térkép " + NBH_N + " lakótelepi pályája közül egyik sem szerepel még forrással igazolt beruházásban — a Polgármesteri Hivatallal kell megerősíteni (544/2001-es kérelem).")) // TODO: HU review
   );
 }
 
@@ -12811,7 +13068,7 @@ const SOURCES = [
     p: { ro: "81% dintre adolescenții de 11–17 ani din lume nu fac destulă mișcare.", en: "81% of adolescents aged 11–17 worldwide are not active enough.", hu: "A 11–17 éves serdülők 81%-a világszerte nem mozog eleget." } }, // TODO: HU review
   { id: "osm", city: "sibiu", kind: "data", pub: "OpenStreetMap (ODbL)", d: "live", url: "https://www.openstreetmap.org/copyright", at: ["home", "about", "press"],
     t: { ro: "Terenurile publice de cartier din Sibiu, din OpenStreetMap", en: "Sibiu's public neighbourhood courts, from OpenStreetMap", hu: "Szeben lakótelepi közpályái az OpenStreetMapből" }, // TODO: HU review
-    p: { ro: "35 de terenuri publice de cartier pe hartă. Starea lor o verifică acum comunitatea.", en: "35 public neighbourhood courts on the map. The community is checking their condition now.", hu: "35 lakótelepi közpálya a térképen. Az állapotukat most a közösség ellenőrzi." } }, // TODO: HU review
+    p: { ro: roDe(NBH_N) + "terenuri publice de cartier pe hartă. Starea lor o verifică acum comunitatea.", en: NBH_N + " public neighbourhood courts on the map. The community is checking their condition now.", hu: NBH_N + " lakótelepi közpálya a térképen. Az állapotukat most a közösség ellenőrzi." } }, // TODO: HU review
   { id: "zsn-12m", city: "sibiu", kind: "news", pub: "Zile și Nopți", d: "24 Feb 2024", isNew: true, url: "https://zilesinopti.ro/2024/02/24/finantari-sportul-sibian-2024/", at: ["about", "press"],
     t: { ro: "Finanțări pentru sportul sibian în 2024", en: "Funding for Sibiu sport in 2024", hu: "A szebeni sport finanszírozása 2024-ben" }, // TODO: HU review
     p: { ro: "Primăria Sibiu: 12 milioane lei prin Agenda Sportivă 2024, plus 500.000 lei pentru cluburile de drept public.", en: "Sibiu City Hall: 12 million lei through the 2024 Sports Agenda, plus 500,000 lei for public-law clubs.", hu: "Szeben polgármesteri hivatala: 12 millió lej a 2024-es Sportprogramon át, plusz 500 000 lej a közjogi kluboknak." } } // TODO: HU review
@@ -13031,9 +13288,9 @@ function pressNumbers(lang, d) {
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
   const live = L3("live, din site", "live, from the site", "élő, az oldalról");
   const city = ACTIVE_CITY === "sibiu" ? [
-    { n: String(d.courts), l: L3("terenuri publice de cartier în Sibiu", "public neighbourhood courts in Sibiu", "lakótelepi közpálya Szebenben"), src: "osm" },
+    { n: String(d.courts), l: L3("terenuri publice în Sibiu", "public courts in Sibiu", "közpálya Szebenben") + (STADIUM_N ? " (" + L3("dintre care ", "incl. ", "ebből ") + STADIUM_N + " " + L3("stadioane", "stadiums", "stadion") + ")" : ""), src: "osm" },
     { n: d.checked + " / " + d.courts, l: L3("verificate de comunitate", "checked by the community", "ellenőrizte a közösség"), live: live },
-    { n: "34 / 35", l: L3("terenuri cu ultima imagine din satelit din 2021–2022", "courts whose latest satellite image is from 2021–2022", "pálya legfrissebb műholdképe 2021–2022-es"), src: "sbt1" },
+    { n: SAT_RECENT + " / " + SAT_N, l: L3("terenuri cu ultima imagine din satelit din 2021–2022", "courts whose latest satellite image is from 2021–2022", "pálya legfrissebb műholdképe 2021–2022-es"), src: "sbt1" },
     { n: "12 mil. lei", l: L3("Agenda Sportivă 2024, Primăria Sibiu", "2024 Sports Agenda, Sibiu City Hall", "2024-es Sportprogram, Szeben"), src: "zsn-12m" }
   ] : [
     { n: "12 / 15", l: L3("rezidenți nu folosesc terenul cel mai apropiat", "residents don't use their nearest court", "lakos nem használja a legközelebbi pályát"), src: "survey" },
@@ -13466,8 +13723,8 @@ function AboutPage() {
   );
   // Key data: only facts of the city on screen (TGM facts never show on Sibiu).
   const keyData = sib ? [
-    { n: String(COURTS.length), l: L3("terenuri de cartier", "neighbourhood courts", "lakótelepi pálya"), c: "var(--green)", src: "osm" },
-    { n: "34/35", l: L3("cu satelit din 2021–22", "satellite from 2021–22", "2021–22-es műholdkép"), c: "var(--coral)", src: "sbt1" },
+    { n: String(COURTS.length), l: L3("terenuri", "courts", "pálya") + (STADIUM_N ? " · " + STADIUM_N + " " + L3("stadioane", "stadiums", "stadion") : ""), c: "var(--green)", src: "osm" },
+    { n: SAT_RECENT + "/" + SAT_N, l: L3("cu satelit din 2021–22", "satellite from 2021–22", "2021–22-es műholdkép"), c: "var(--coral)", src: "sbt1" },
     { n: "12M", l: L3("lei pentru sport, 2024", "lei for sport, 2024", "lej sportra, 2024"), c: "var(--teal)", src: "zsn-12m" },
     { n: "28%", l: L3("adolescenți activi", "active teens", "aktív serdülő"), c: "var(--red)", src: "mediafax-28" }
   ] : [
@@ -13701,6 +13958,7 @@ function SignupNudge({ onSignup }) {
   const [show, setShow] = useState(false);
   const shownRef = useRef(false);
   useEffect(() => {
+    if (DEMO_ON || DEMO_REMOTE) return;   // never pops up over a live pitch
     let last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
     if (Date.now() - last < 14 * 864e5) return;
     // Needs 25 s on the site AND one real interaction (scroll or page change), and waits while the install banner is up.
@@ -15189,27 +15447,42 @@ function QuickReportModal({ onClose, courtId: preset }) {
             "＋ ", L3("Pune în descriere", "Add to the note", "Hozzáadás a leíráshoz"))) }),
         e("textarea", { value: f.note, onChange: ev => setF(o => ({ ...o, note: ev.target.value })), rows: 2, maxLength: 2000, placeholder: L3("Vrei să adaugi ceva? (opțional)", "Anything to add? (optional)", "Szeretnél még valamit írni? (nem kötelező)"), style: { marginTop: ".6rem", resize: "vertical" } }),
         !firebaseUser && e("p", { className: "rq-acct" }, "🔐 " + L3("Sesizările cer un cont, ca Primăria să le ia în serios. Ce ai completat rămâne aici.", "Reports need an account so City Hall takes them seriously. What you filled in stays here.", "A bejelentéshez fiók kell, hogy a Városháza komolyan vegye. Amit kitöltöttél, megmarad.")),
-        e("button", { className: "btn btn-green btn-block mt-1", disabled: submitting || !f.courtId || !f.category, onClick: submit },
+        f.photoDataUrl && ai && ai.isCourt === false && e("p", { className: "ai-block" }, "⛔ ", L3("Poza nu arată un teren, așa că nu o putem trimite. Scoate-o sau fă alta.", "The photo doesn't show a court, so it can't be sent. Remove it or take another.", "A fotón nincs pálya, ezért nem küldhető el. Töröld vagy készíts másikat.")),
+        e("button", { className: "btn btn-green btn-block mt-1", disabled: submitting || !f.courtId || !f.category || !!(f.photoDataUrl && ai && ai.isCourt === false), onClick: submit },
           submitting ? "…" : firebaseUser ? "📨 " + t.submit : "🔐 " + L3("Intră în cont și trimite", "Sign in and send", "Belépés és küldés")))
     ));
 }
 
 /* === AI helpers — POST /.netlify/functions/ai (the key stays on the server) === */
 function g2pAI(body) {
-  return fetch("/.netlify/functions/ai", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) })
+  // offline: say so at once instead of hanging; a call that takes over 40 s is given up
+  if (typeof navigator !== "undefined" && navigator.onLine === false) return Promise.reject(Object.assign(new Error("offline"), { code: "offline" }));
+  const ctl = typeof AbortController !== "undefined" ? new AbortController() : null, tm = ctl && setTimeout(() => ctl.abort(), 40000);
+  return fetch("/.netlify/functions/ai", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body), signal: ctl ? ctl.signal : undefined })
+    .catch(err => { throw Object.assign(new Error("network"), { code: err && err.name === "AbortError" ? "timeout" : navigator.onLine === false ? "offline" : "network" }); })
     .then(r => r.json().catch(() => ({ error: "bad_json" })).then(d => {
       if (!r.ok || d.error) throw Object.assign(new Error(d.error || "http " + r.status), { code: d.error || "http" });
       return d;
-    }));
+    }))
+    .finally(() => { if (tm) clearTimeout(tm); });
 }
 function aiErrMsg(code, L3) { // TODO: HU review
   if (code === "rate_limited") return L3("Prea multe încercări. Mai încearcă peste câteva minute.", "Too many tries. Try again in a few minutes.", "Túl sok próbálkozás. Próbáld újra pár perc múlva.");
   if (code === "bad_image") return L3("Poza nu poate fi citită. Încearcă alta.", "This photo can't be read. Try another one.", "A fotó nem olvasható. Próbálj meg egy másikat.");
+  if (code === "offline") return L3("Ai nevoie de internet pentru AI. Raportul îl poți trimite și fără.", "The AI needs a connection. You can still send the report without it.", "Az AI-hoz internet kell. A bejelentést nélküle is elküldheted.");
+  if (code === "timeout") return L3("AI-ul răspunde prea greu. Mai încearcă o dată.", "The AI is taking too long. Try once more.", "Az AI túl lassan válaszol. Próbáld újra.");
   return L3("AI-ul nu răspunde acum. Poți continua și fără el.", "The AI isn't answering right now. You can go on without it.", "Az AI most nem válaszol. Folytathatod nélküle is.");
 }
 // What the AI saw in a photo, saved next to the report and always kept apart from what the person chose.
 function aiStamp(r) {
-  return r ? { condition: r.condition, category: r.category || "none", confidence: r.confidence, summary: String(r.summary || "").slice(0, 300), model: r.model || "", at: new Date().toISOString() } : null;
+  if (!r) return null;
+  const o = { condition: r.condition, category: r.category || "none", confidence: r.confidence, summary: String(r.summary || "").slice(0, 300), model: r.model || "", at: new Date().toISOString() };
+  if (r.diag && r.diag.score) {
+    o.score = r.diag.score;
+    o.issues = (r.diag.issues || []).slice(0, 10).map(x => ({ type: x.type, severity: x.severity, note: String(x.note || "").slice(0, 120) }));
+    if (r.diag.fix && (r.diag.fix.items || []).length) o.fix = { items: r.diag.fix.items.slice(0, 4), cost: r.diag.fix.cost || "" };
+  }
+  return o;
 }
 // "✨ AI citește poza": one call per photo; it only suggests, the person decides.
 function AiPhotoHint({ photo, onResult, extra }) {
@@ -15217,17 +15490,34 @@ function AiPhotoHint({ photo, onResult, extra }) {
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
   const [st, setSt] = useState({ s: "idle" });
   useEffect(() => { setSt({ s: "idle" }); }, [photo]);
+  const [ok, setOk] = useState(() => { try { return localStorage.getItem("g2p_ai_ok") === "1"; } catch (x) { return false; } });
+  const [priv, setPriv] = useState(false);
   if (!photo) return null;
   const e = React.createElement;
+  const agree = v => { setOk(v); try { if (v) localStorage.setItem("g2p_ai_ok", "1"); else localStorage.removeItem("g2p_ai_ok"); } catch (x) {} };
   const run = () => {
+    if (!ok) return;
     setSt({ s: "busy" });
-    g2pAI({ task: "photo", image: photo, lang }).then(r => { setSt({ s: "done", r }); if (onResult) onResult(r); g2pSfx("chime"); })
+    g2pAI({ task: "photo", image: photo, lang, vk: getVoterKey(), demo: DEMO_ON ? 1 : undefined }).then(r => { setSt({ s: "done", r }); if (onResult) onResult(r); g2pSfx("chime"); })
       .catch(err => { setSt({ s: "err", code: err.code }); if (onResult) onResult(null); });
   };
   const condL = k => ({ good: t.conditionGood, degraded: t.conditionDegraded, abandoned: t.conditionAbandoned }[k] || L3("neclar", "unclear", "nem egyértelmű"));
-  if (st.s === "idle") return e("div", { className: "ai-hint" },
-    e("button", { type: "button", className: "ai-btn", onClick: run }, "✨ ", L3("AI citește poza", "AI reads the photo", "Az AI elolvassa a fotót")),
-    e("small", null, L3("O estimare, nu o verificare. Tu decizi.", "An estimate, not a check. You decide.", "Becslés, nem ellenőrzés. Te döntesz.")));
+  if (st.s === "idle") return e("div", null,
+    // consent line + privacy note (docs/SPEC_6NOV.md §4); ticked once per device
+    e("label", { className: "ai-consent" },
+      e("input", { type: "checkbox", checked: ok, onChange: ev => agree(ev.target.checked) }),
+      e("span", null, L3("Trimit această poză pentru o estimare automată a stării terenului. Poza e procesată de un model AI extern (Anthropic) printr-o funcție a acestui site, fără datele de localizare din fișier. Nu fotografiez persoane.",
+        "I'm sending this photo for an automatic estimate of the court's condition. It is processed by an external AI model (Anthropic) through this site's server function, without the file's location data. I'm not photographing people.",
+        "Ezt a fotót a pálya állapotának automatikus becsléséhez küldöm. Egy külső AI-modell (Anthropic) dolgozza fel az oldal szerverfunkcióján keresztül, a fájl helyadatai nélkül. Nem fényképezek embereket."), " ", // TODO: HU review
+        e("a", { href: "#", onClick: ev => { ev.preventDefault(); setPriv(v => !v); } }, priv ? L3("ascunde", "hide", "elrejt") : L3("ce trimitem?", "what is sent?", "mit küldünk?")))),
+    priv && e("ol", { className: "ai-priv" },
+      e("li", null, L3("Ce trimitem: poza (micșorată, fără EXIF/GPS), sportul și orașul terenului. Nimic despre tine.", "What we send: the photo (resized, no EXIF/GPS), the court's sport and city. Nothing about you.", "Amit küldünk: a fotó (kicsinyítve, EXIF/GPS nélkül), a pálya sportága és városa. Rólad semmit.")),
+      e("li", null, L3("Cui: funcției Netlify a site-ului, care o trimite la API-ul Anthropic.", "To whom: the site's Netlify function, which sends it to the Anthropic API.", "Kinek: az oldal Netlify-funkciójának, amely az Anthropic API-nak továbbítja.")),
+      e("li", null, L3("Ce păstrăm: doar dacă trimiți sesizarea — poza comprimată și diagnosticul, ca orice sesizare. Altfel, nimic.", "What we keep: only if you send the report — the compressed photo and the diagnosis, like any report. Otherwise nothing.", "Amit megőrzünk: csak ha elküldöd a bejelentést — a tömörített fotót és a diagnózist. Különben semmit.")),
+      e("li", null, L3("Ștergere: scrie-ne din pagina Despre.", "Deletion: write to us from the About page.", "Törlés: írj nekünk a Rólunk oldalról."))),
+    e("div", { className: "ai-hint" },
+      e("button", { type: "button", className: "ai-btn", onClick: run, disabled: !ok, title: ok ? "" : L3("Bifează mai întâi", "Tick the box first", "Előbb jelöld be") }, "🩺 ", L3("AI Court Doctor: citește poza", "AI Court Doctor: read the photo", "AI Court Doctor: fotó elemzése")),
+      e("small", null, L3("Estimare AI — nu e o inspecție oficială. Tu decizi.", "AI estimate — not an official inspection. You decide.", "AI-becslés — nem hivatalos szemle. Te döntesz."))));
   if (st.s === "busy") return e("div", { className: "ai-hint ai-busy", role: "status" }, e("span", { className: "ai-spark", "aria-hidden": "true" }, "✨"), L3("AI-ul se uită la poză…", "The AI is looking at the photo…", "Az AI nézi a fotót…"));
   if (st.s === "err") return e("div", { className: "ai-hint ai-err", role: "status" },
     e("span", null, aiErrMsg(st.code, L3)),
@@ -15236,13 +15526,42 @@ function AiPhotoHint({ photo, onResult, extra }) {
   if (!r.isCourt) return e("div", { className: "ai-card", role: "status" },
     e("div", { className: "ai-tag" }, "✨ ", L3("Estimare AI din poză", "AI estimate from the photo", "AI-becslés a fotóból")),
     e("p", null, L3("Nu văd un teren de sport în poza asta. ", "I can't see a sports court in this photo. ", "Nem látok sportpályát ezen a fotón. "), r.summary));
+  const d = r.diag;
+  const costL = { "<10k": L3("sub 10.000 lei", "under 10,000 lei", "10 000 lej alatt"), "10-50k": "10.000–50.000 lei", "50-200k": "50.000–200.000 lei", ">200k": L3("peste 200.000 lei", "over 200,000 lei", "200 000 lej felett") };
   return e("div", { className: "ai-card", role: "status" },
-    e("div", { className: "ai-tag" }, "✨ ", L3("Estimare AI din poză", "AI estimate from the photo", "AI-becslés a fotóból"),
+    e("div", { className: "ai-tag" }, "🩺 ", L3("AI Court Doctor", "AI Court Doctor", "AI Court Doctor"),
       e("b", { className: "ai-cond ai-c-" + r.condition }, condL(r.condition)),
       e("span", { className: "ai-conf" }, Math.round(r.confidence * 100) + "%")),
-    r.summary && e("p", null, r.summary),
-    r.issues && r.issues.length > 0 && e("ul", { className: "ai-issues" }, r.issues.map((x, i) => e("li", { key: i }, x))),
+    d ? e("div", { className: "ai-diag" },
+      e("div", { className: "ai-score" }, d.score, e("small", null, " / 5 · ", L3("estimare din poză", "estimate from the photo", "becslés a fotóból"))),
+      r.summary && e("p", { style: { margin: 0 } }, r.summary),
+      d.issues.length > 0 && e("div", null, d.issues.map((x, i) => e("div", { key: i, className: "ai-iss" },
+        e("span", { className: "ai-sev s" + x.severity, title: L3("gravitate ", "severity ", "súlyosság ") + x.severity + "/3" }, "●".repeat(x.severity) + "○".repeat(3 - x.severity)), x.note))),
+      d.fix && d.fix.items.length > 0 && e("div", { className: "ai-fix" }, e("b", null, "🔧 ", L3("Ce ar trebui reparat: ", "What needs fixing: ", "Mit kell javítani: ")), d.fix.items.join(" · "),
+        d.fix.cost && e("span", null, " — ", L3("cost estimat ", "rough cost ", "becsült költség "), costL[d.fix.cost] || d.fix.cost))) // TODO: HU review
+      : e(React.Fragment, null,
+        r.summary && e("p", null, r.summary),
+        r.issues && r.issues.length > 0 && e("ul", { className: "ai-issues" }, r.issues.map((x, i) => e("li", { key: i }, x)))),
+    e("div", { className: "ai-off" }, L3("Estimare AI — nu e o inspecție oficială și nu schimbă starea terenului de pe hartă.", "AI estimate — not an official inspection; it never changes the court's status on the map.", "AI-becslés — nem hivatalos szemle, és nem módosítja a pálya állapotát a térképen.")),
     extra && extra(r));
+}
+
+/* Court detail: the AI photo estimates, always apart from the court's status (never written to `condition`). */
+function aiEstimateOf(reports, courtId) {
+  const list = reports ? Object.values(reports).filter(r => r && r.courtId === courtId && r.ai && r.ai.score >= 1 && r.ai.score <= 5) : [];
+  if (!list.length) return null;
+  const recent = list.sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || ""))).slice(0, 5);
+  const sc = recent.map(r => r.ai.score).sort((a, b) => a - b);
+  return { score: sc[Math.floor(sc.length / 2)], n: list.length, at: recent[0].createdAt || "" };   // median of the latest 5 photos
+}
+function AiEstimateBadge({ court: c }) {
+  const { lang } = useApp();
+  const est = aiEstimateOf(useFirebase("reports"), c.id);
+  if (!est) return null;
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const d = est.at ? new Date(est.at).toLocaleDateString(lang === "en" ? "en-GB" : lang === "hu" ? "hu-HU" : "ro-RO") : "";
+  return React.createElement("span", { className: "ai-est", title: L3("Estimare AI din pozele trimise — nu e o inspecție oficială și nu schimbă starea terenului.", "AI estimate from the photos sent — not an official inspection, it does not change the court's status.", "AI-becslés a beküldött fotókból — nem hivatalos szemle, nem módosítja a pálya állapotát.") },
+    "🩺 ", L3("Estimare AI: ", "AI estimate: ", "AI-becslés: "), est.score, "/5 · ", est.n, " ", est.n === 1 ? L3("poză", "photo", "fotó") : L3("poze", "photos", "fotó"), d && " · " + d);
 }
 
 /* Home: tells visitors the AI helpers exist and opens the photo check (court picked inside). */
@@ -15280,13 +15599,50 @@ const AI_LETTER_EXAMPLES = {
   sibiu: { id: "sb1", name: "Teren baschet — Ștrand", at: "27.10.2026", letter: "Către Primăria Municipiului Sibiu\n\nStimată doamnă/Stimate domn,\n\nSubsemnatul/Subsemnata, locuitor tânăr al municipiului Sibiu, vă adresez respectuos această solicitare privind terenul de baschet „Teren baschet Ștrand”, situat pe Strada Doljului, în Sibiu.\n\nTerenul este un spațiu important pentru tinerii care doresc să facă mișcare în aer liber și să practice baschetul într-un mod sigur. Vă rog, de aceea, să dispuneți verificarea stării actuale a terenului, a panourilor, a inelelor și a suprafeței de joc.\n\nDacă în urma verificării se constată deficiențe, vă rog să aveți amabilitatea de a dispune efectuarea lucrărilor de reparații necesare, astfel încât terenul să poată fi folosit în condiții de siguranță.\n\nVă mulțumesc anticipat pentru atenția acordată și vă rog să primiți expresia consideraței mele.\n\nCu respect,\n[Nume]" },
   tgm: { id: "c6", name: "Teren Baschet Tudor Vladimirescu", at: "27.10.2026", letter: "Către Primăria Municipiului Târgu Mureș\n\nStimată doamnă primar / Stimate domnule primar,\n\nSubsemnatul/Subsemnata, tânăr locuitor al municipiului Târgu Mureș, vă adresez respectuos această solicitare privind terenul de baschet „Teren Baschet Tudor Vladimirescu”, situat pe Str. Tudor Vladimirescu nr. 45.\n\nConform ultimei evaluări transmise de comunitate, starea terenului este degradată. Din acest motiv, vă rog să dispuneți verificarea amplasamentului de către specialiștii instituției și, dacă este cazul, efectuarea lucrărilor de reparații necesare.\n\nUn teren de baschet îngrijit ar permite tinerilor din zonă să practice sportul în condiții sigure și ar contribui la un stil de viață activ în comunitate.\n\nVă mulțumesc anticipat pentru atenția acordată și vă rog să primiți expresia întregii mele considerații.\n\nCu respect,\n\n[Nume]" }
 };
+/* Letter v2 (docs/SPEC_6NOV.md §2). Legal basis the citizen picks: OG 27/2002 petition (30 days) or
+   Law 544/2001 information request (10 days). Romanian only: the letter goes to a Romanian City Hall. */
+const LETTER_BASIS = {
+  og27: { days: 30, law: "OG nr. 27/2002", ro: "Petiție: cer verificarea și repararea", en: "Petition: ask for a check and repair", hu: "Petíció: ellenőrzést és javítást kérek",
+    subj: "Petiție (OG nr. 27/2002) privind terenul: " },
+  l544: { days: 10, law: "Legea nr. 544/2001", ro: "Cerere de informații: cine îl întreține și cu ce bani", en: "Information request: who maintains it and with what money", hu: "Információkérés: ki tartja karban és miből",
+    subj: "Cerere de informații de interes public (Legea nr. 544/2001) privind: " }
+}; // TODO: HU review
+const CITY_RO = { tgm: "Târgu Mureș", sibiu: "Sibiu" };
+// The evidence block under the letter: only facts the site shows for this court, never another city's numbers.
+function letterEvidence(c, reports, sigCount, city) {
+  const reps = reports ? Object.values(reports).filter(r => r && r.courtId === c.id) : [];
+  const open = reps.filter(r => r.status !== "resolved" && r.category !== "condition");
+  const last = reps.map(r => r.createdAt).filter(Boolean).sort().pop();
+  const day = iso => new Date(iso).toLocaleDateString("ro-RO");
+  const L = [];
+  L.push("Sesizări deschise pe site pentru acest teren: " + open.length + (last ? " (ultima activitate: " + day(last) + ")" : ""));
+  if (c.stadium && c.status === "excellent") L.push("Stare: stadion în stare foarte bună, conform surselor publice");
+  else if (c.condition == null) L.push("Stare: neverificată încă pe teren");
+  else if (c.estimate === "sat") L.push("Stare estimată din imagini satelit: " + c.condition + "/5" + (c.sat && c.sat.at ? " (imagine din " + c.sat.at.slice(0, 7) + ")" : ""));
+  else L.push("Stare pe site: " + c.condition + "/5" + (reports ? " · scor de sănătate " + getCourtHealthScore(c, reports) + "/100" : ""));
+  const est = typeof aiEstimateOf === "function" ? aiEstimateOf(reports, c.id) : null;
+  if (est) L.push("Estimare AI din " + est.n + " " + (est.n === 1 ? "poză trimisă" : "poze trimise") + " de cetățeni (nu e o inspecție): " + est.score + "/5");
+  if (sigCount != null) L.push("Semnături pe petiția From Grey to Play din " + (CITY_RO[city] || city) + ": " + sigCount);
+  L.push("Detalii și poze: " + SITE + "/#court-" + c.id);
+  return L;
+}
+// The court's photos for the PDF: gallery first, then report photos; at most 3.
+function letterPhotos(c, gallery, reports) {
+  const g = gallery ? Object.values(gallery).filter(x => x && x.courtId === c.id && x.img).map(x => x.img) : [];
+  const r = reports ? Object.values(reports).filter(x => x && x.courtId === c.id && x.photoDataUrl).map(x => x.photoDataUrl) : [];
+  return g.concat(r).filter(u => /^data:image\/(jpeg|png)/.test(u)).slice(0, 3);
+}
 // "Scrisoare AI": a letter to City Hall written only from what the site knows about this court.
 function AiLetterModal({ court: c, onClose }) {
   const { lang, toast, user } = useApp();
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
   const allReports = useFirebase("reports");
+  const gallery = useFirebase("gallery");
+  const sigStats = useFirebase("signupStats");
   const [st, setSt] = useState({ s: "idle" });
   const [text, setText] = useState("");
+  const [basis, setBasis] = useState(c.status === "renovated" || c.status === "excellent" ? "l544" : "og27");
+  const sentRef = useRef(false);
   const [name, setName] = useState(user && user.name ? user.name : "");
   useEffect(() => {
     const onKey = ev => { if (ev.key === "Escape") { ev.preventDefault(); ev.stopImmediatePropagation(); onClose(); } };
@@ -15300,7 +15656,10 @@ function AiLetterModal({ court: c, onClose }) {
     const last = reps.filter(r => r.category === "condition" && r.conditionReport).sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")))[0];
     const catRo = { surface: "suprafața de joc degradată", hoop: "coș, panou sau poartă stricate", fence: "gard deteriorat", lighting: "iluminat nefuncțional", trash: "gunoi pe teren", safety: "probleme de siguranță", other: "alte probleme" };
     const typeRo = { basketball: "teren de baschet", football: "teren de fotbal", tennis: "teren de tenis", multiuse: "teren multisport" };
-    const f = { name: c.name + (c.address ? ", " + c.address : ""), city, type: typeRo[c.category] || c.category || "", issues: [...new Set(open.map(r => catRo[r.category]).filter(Boolean))] };
+    const f = { name: c.name + (c.address ? ", " + c.address : ""), city, type: c.stadium ? "stadion" : typeRo[c.category] || c.category || "", issues: [...new Set(open.map(r => catRo[r.category]).filter(Boolean))] };
+    if (c.stadium) f.stadium = true;
+    if (c.status) f.status = c.status;
+    const est = aiEstimateOf(allReports, c.id); if (est) f.aiScore = est.score;
     const cond = last ? last.conditionReport : c.status === "degraded" ? "degraded" : "";
     if (cond) f.condition = cond;
     f.reports = allReports ? open.length : (c.reports || 0);
@@ -15310,16 +15669,28 @@ function AiLetterModal({ court: c, onClose }) {
   const gen = () => {
     setSt({ s: "busy" });
     // Always Romanian: the letter goes to a Romanian City Hall.
-    g2pAI({ task: "letter", court: facts(), lang: "ro" }).then(r => { setText(r.letter || ""); setSt({ s: "done" }); g2pSfx("chime"); })
+    g2pAI({ task: "letter", court: facts(), lang: "ro", basis }).then(r => { setText(r.letter || ""); setSt({ s: "done" }); g2pSfx("chime"); })
       .catch(err => setSt({ s: "err", code: err.code }));
   };
   const ex = AI_LETTER_EXAMPLES[city === "sibiu" ? "sibiu" : "tgm"];
   const showExample = () => { setText(ex.letter); setSt({ s: "done", ex: true }); };
   const final = () => text.split("[Nume]").join(name.trim() || "[Nume]");
-  const subject = "Solicitare de verificare și reparare: " + c.name;
-  const copy = () => copyText(final()).then(ok => toast(ok ? L3("Copiat ✓", "Copied ✓", "Másolva ✓") : L3("Nu s-a putut copia", "Could not copy", "Nem sikerült másolni")));
-  const mail = () => { window.location.href = "mailto:" + CITY_HALL_EMAIL[city === "sibiu" ? "sibiu" : "tgm"] + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(final()); };
-  const pdf = () => {
+  const sigs = sigStats ? Object.values(sigStats).filter(x => x && (x.city || "tgm") === city).length : null;
+  const evidence = letterEvidence(c, allReports, sigs, city);
+  const evTitle = "Dovezi (From Grey to Play, " + new Date().toLocaleDateString("ro-RO") + "):";
+  const full = () => final() + "\n\n" + evTitle + "\n" + evidence.map(x => "- " + x).join("\n");
+  const subject = LETTER_BASIS[basis].subj + c.name;
+  // One record per letter, no personal data: city, court, legal basis, when (Impact shows the reply countdown).
+  const track = via => {
+    if (sentRef.current) return; sentRef.current = true;
+    db.ref("letters").push({ city, courtId: c.id, basis, sentAt: new Date().toISOString(), via }).catch(() => {});
+    db.ref("letterCount/total").transaction(v => (v || 0) + 1);
+    logActivity("letter", "", c.id);
+  };
+  const copy = () => copyText(full()).then(ok => { toast(ok ? L3("Copiat ✓", "Copied ✓", "Másolva ✓") : L3("Nu s-a putut copia", "Could not copy", "Nem sikerült másolni")); if (ok) track("copy"); });
+  const mail = () => { track("email"); window.location.href = "mailto:" + CITY_HALL_EMAIL[city === "sibiu" ? "sibiu" : "tgm"] + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(full()); };
+  const imgSize = src => new Promise(res => { const im = new Image(); im.onload = () => res({ w: im.naturalWidth, h: im.naturalHeight }); im.onerror = () => res(null); im.src = src; });
+  const pdf = async () => {
     const JsPDF = window.jspdf && window.jspdf.jsPDF;
     if (!JsPDF) { toast(L3("PDF-ul încă se încarcă. Mai încearcă o dată.", "The PDF tool is still loading. Try again.", "A PDF még töltődik. Próbáld újra.")); return; }
     const doc = new JsPDF({ unit: "mm", format: "a4" });
@@ -15329,13 +15700,29 @@ function AiLetterModal({ court: c, onClose }) {
     doc.text(pdfTxt(new Date().toLocaleDateString("ro-RO")), 210 - M, y, { align: "right" });
     y += 10;
     doc.setFontSize(11.5); doc.setTextColor(30, 30, 40);
-    final().split("\n").forEach(par => {
-      const lines = par.trim() ? doc.splitTextToSize(pdfTxt(par), maxW) : [""];
-      lines.forEach(line => { if (y > 275) { doc.addPage(); y = 24; } doc.text(line, M, y); y += 5.6; });
-    });
+    const para = (par, lh) => { const lines = par.trim() ? doc.splitTextToSize(pdfTxt(par), maxW) : [""]; lines.forEach(line => { if (y > 275) { doc.addPage(); y = 24; } doc.text(line, M, y); y += lh; }); };
+    final().split("\n").forEach(par => para(par, 5.6));
+    // evidence block, then up to 3 photos of the court as annexes
+    y += 4; if (y > 260) { doc.addPage(); y = 24; }
+    doc.setFont("helvetica", "bold"); doc.setFontSize(10); para(evTitle, 5.2); doc.setFont("helvetica", "normal"); doc.setFontSize(9.5); doc.setTextColor(60, 64, 72);
+    evidence.forEach(x => para("- " + x, 4.9));
+    const photos = letterPhotos(c, gallery, allReports);
+    if (photos.length) {
+      y += 4; if (y > 230) { doc.addPage(); y = 24; }
+      doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(30, 30, 40); para("Anexe: " + photos.length + (photos.length === 1 ? " fotografie" : " fotografii") + " ale terenului", 6);
+      let x = M; const W = (maxW - 8) / 3;
+      for (const src of photos) {
+        const sz = await imgSize(src); if (!sz) continue;
+        const h = Math.min(60, W * sz.h / sz.w);
+        if (y + h > 280) { doc.addPage(); y = 24; x = M; }
+        try { doc.addImage(src, /^data:image\/png/.test(src) ? "PNG" : "JPEG", x, y, W, h); } catch (e) {}
+        x += W + 4;
+      }
+    }
     doc.setFontSize(8); doc.setTextColor(140, 145, 155);
     doc.text(pdfTxt("From Grey to Play · " + SITE.replace("https://", "") + "/#court-" + c.id), M, 288);
     doc.save("scrisoare-" + c.id + ".pdf");
+    track("pdf");
   };
   const e = React.createElement;
   return e("div", { className: "modal-overlay", onClick: onClose },
@@ -15344,6 +15731,10 @@ function AiLetterModal({ court: c, onClose }) {
         e("h2", { style: { fontSize: "1rem", margin: 0 } }, "✉️ ", L3("Scrisoare către Primărie", "Letter to City Hall", "Levél a Városházának")),
         e("button", { className: "btn btn-sm btn-outline", onClick: onClose }, L3("Închide", "Close", "Bezár"))),
       e("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, "📍 ", c.name, " → ", CITY_HALL_EMAIL[city === "sibiu" ? "sibiu" : "tgm"]),
+      st.s !== "done" && e("div", { className: "lt-basis", role: "radiogroup", "aria-label": L3("Tipul scrisorii", "Letter type", "Levél típusa") },
+        ["og27", "l544"].map(k => e("button", { key: k, type: "button", role: "radio", "aria-checked": basis === k, className: "lt-b" + (basis === k ? " on" : ""), onClick: () => setBasis(k) },
+          e("b", null, LETTER_BASIS[k][lang] || LETTER_BASIS[k].ro),
+          e("small", null, LETTER_BASIS[k].law + " · " + L3("răspuns în ", "answer within ", "válasz ") + LETTER_BASIS[k].days + L3(" de zile", " days", " napon belül"))))),
       st.s !== "done" && e("div", { className: "ai-letter-start" },
         e("p", null, L3("AI-ul scrie o scrisoare politicoasă în română, doar din ce știe site-ul despre teren: nume, stare, sesizări. Nu inventează cifre.", "The AI writes a polite letter in Romanian, only from what the site knows about this court: name, condition, reports. It invents no numbers.", "Az AI udvarias román nyelvű levelet ír, csak abból, amit az oldal tud a pályáról: név, állapot, bejelentések. Nem talál ki számokat.")),
         st.s === "err" && e("p", { className: "ai-err-t" }, aiErrMsg(st.code, L3)),
@@ -15356,6 +15747,8 @@ function AiLetterModal({ court: c, onClose }) {
           e("input", { value: name, onChange: ev => setName(ev.target.value), maxLength: 80, placeholder: "[Nume]", style: { marginTop: ".25rem" } })),
         // Shows the name in place of [Nume] as it is typed; edits are stored back with the placeholder.
         e("textarea", { className: "ai-letter-text", value: final(), onChange: ev => setText(name.trim() ? ev.target.value.split(name.trim()).join("[Nume]") : ev.target.value), rows: 12, maxLength: 4000, "aria-label": L3("Textul scrisorii", "Letter text", "A levél szövege") }),
+        e("div", { className: "lt-ev" }, e("b", null, "📎 ", evTitle), e("ul", null, evidence.map((x, i) => e("li", { key: i }, x))),
+          e("small", null, L3("Se adaugă singur la email și în PDF (cu până la 3 poze ale terenului).", "Added automatically to the email and the PDF (with up to 3 photos of the court).", "Automatikusan bekerül az e-mailbe és a PDF-be (legfeljebb 3 fotóval)."))),
         e("div", { className: "ai-letter-acts" },
           e("button", { className: "btn btn-outline", onClick: copy }, "📋 ", L3("Copiază", "Copy", "Másolás")),
           e("button", { className: "btn btn-green", onClick: mail }, "📨 ", L3("Trimite pe email", "Send by email", "Küldés e-mailben")),
@@ -15366,7 +15759,7 @@ function AiLetterModal({ court: c, onClose }) {
 
 /* === Court Condition Quick — Sibiu hackathon feature === */
 function CourtConditionQuick({ onClose, courtId: presetCourt }) {
-  const { t, user, toast } = useApp();
+  const { t, user, toast, lang } = useApp();
   const fbCourts = useFirebase("courts");
   const [courtId, setCourtId] = useState(presetCourt || "");
   useEffect(() => {
@@ -15448,9 +15841,134 @@ function CourtConditionQuick({ onClose, courtId: presetCourt }) {
           ),
       React.createElement(AiPhotoHint, { photo: photoDataUrl, onResult: onAi, extra: r => r.condition !== "unclear" && condition && r.condition !== condition
         && React.createElement("button", { type: "button", className: "ai-btn ai-btn-sm", onClick: () => setCondition(r.condition) }, "↪ ", (conds.find(x => x.k === r.condition) || {}).l) }),
-      React.createElement("button", { className: "btn btn-green btn-block mt-2", disabled: !courtId || !condition || submitting, onClick: submit }, submitting ? "..." : t.submit)
+      photoDataUrl && ai && ai.isCourt === false && React.createElement("p", { className: "ai-block" }, "⛔ ", lang === "en" ? "The photo doesn't show a court, so it can't be sent. Remove it or take another." : lang === "hu" ? "A fotón nincs pálya, ezért nem küldhető el. Töröld vagy készíts másikat." : "Poza nu arată un teren, așa că nu o putem trimite. Scoate-o sau fă alta."),
+      React.createElement("button", { className: "btn btn-green btn-block mt-2", disabled: !courtId || !condition || submitting || !!(photoDataUrl && ai && ai.isCourt === false), onClick: submit }, submitting ? "..." : t.submit)
     )
   );
+}
+
+/* === "Sibiul se verifică singur" (docs/SPEC_6NOV.md §5) ===
+   Residents answer 3 questions (+ up to 3 photos without people) for a court -> verifications/{id}.
+   A court is "verified by the community" only when 2 different devices agree; one answer stays "reported by 1 person".
+   Never "field-verified by the team"; never written to the court's condition. */
+const VERIFY_MISSING = [["hoop", "🏀", "coș / panou", "hoop / backboard", "kosár / palánk"], ["goal", "🥅", "poartă / plasă", "goal / net", "kapu / háló"], ["surface", "🕳️", "suprafață bună", "a good surface", "jó burkolat"],
+  ["fence", "🚧", "gard", "fence", "kerítés"], ["lighting", "💡", "iluminat", "lighting", "világítás"], ["clean", "🧹", "curățenie", "cleanliness", "tisztaság"]]; // TODO: HU review
+// A short, non-reversible tag of the device key: enough to count two answers from one phone once, nothing more.
+function devTag(vk) { let h = 2166136261; for (let i = 0; i < vk.length; i++) { h ^= vk.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0).toString(36); }
+function verifyByCourt(all) {
+  const out = {};
+  if (all) Object.values(all).forEach(v => { if (v && v.courtId && v.exists) (out[v.courtId] = out[v.courtId] || []).push(v); });
+  return out;
+}
+// latest answer per device; consensus = at least 2 devices with the same (exists, playable)
+function verifyConsensus(list) {
+  if (!list || !list.length) return null;
+  const byDev = {};
+  list.forEach(v => { const k = v.dev || Math.random().toString(36); if (!byDev[k] || String(v.at) > String(byDev[k].at)) byDev[k] = v; });
+  const ans = Object.values(byDev), groups = {};
+  ans.forEach(v => { const k = v.exists + "|" + (v.exists === "yes" ? v.playable : "-"); (groups[k] = groups[k] || []).push(v); });
+  const best = Object.values(groups).sort((a, b) => b.length - a.length)[0];
+  const at = ans.map(v => v.at).sort().pop();
+  if (best.length >= 2) return { state: "verified", n: best.length, total: ans.length, exists: best[0].exists, playable: best[0].playable, at };
+  return { state: ans.length === 1 ? "single" : "split", n: 1, total: ans.length, exists: ans[0].exists, playable: ans[0].playable, at };
+}
+// Courts the satellite audit could not settle: gone first, then worn, then the oldest capture; community-verified ones drop off.
+function sibiuMissions(byCourt) {
+  const rank = { gone: 0, worn: 1, ok: 2 };
+  return COURTS.filter(c => c.city === "sibiu" && !c.stadium && c.sat && !((verifyConsensus(byCourt[c.id]) || {}).state === "verified"))
+    .sort((a, b) => (rank[a.sat.v] - rank[b.sat.v]) || String(a.sat.at).localeCompare(String(b.sat.at)));
+}
+function verifyLabel(cs, L3) {
+  if (!cs) return null;
+  const d = cs.at ? new Date(cs.at).toLocaleDateString("ro-RO") : "";
+  const what = cs.exists === "no" ? L3("terenul nu mai există", "the court is gone", "a pálya már nincs meg") : cs.exists === "unsure" ? L3("nu e clar", "unclear", "nem egyértelmű")
+    : cs.playable === "yes" ? L3("se poate juca", "playable", "játszható") : cs.playable === "partly" ? L3("se poate juca parțial", "partly playable", "részben játszható") : L3("nu se poate juca", "not playable", "nem játszható");
+  if (cs.state === "verified") return "🙋 " + L3("Verificat de comunitate", "Verified by the community", "A közösség ellenőrizte") + " (" + cs.n + " " + L3("persoane", "people", "fő") + ", " + d + "): " + what;
+  if (cs.state === "single") return "🙋 " + L3("Raportat de 1 persoană", "Reported by 1 person", "1 ember jelentette") + " (" + d + "): " + what + " · " + L3("mai trebuie o confirmare", "needs one more confirmation", "még egy megerősítés kell");
+  return "🙋 " + cs.total + " " + L3("păreri diferite — mai trebuie o verificare", "different answers — one more check needed", "eltérő válasz — még egy ellenőrzés kell");
+}
+function VerifyFlow({ court: c, onClose }) {
+  const { lang, toast } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const [exists, setExists] = useState("");
+  const [playable, setPlayable] = useState("");
+  const [missing, setMissing] = useState({});
+  const [photos, setPhotos] = useState([]);
+  const [ok, setOk] = useState(() => { try { return localStorage.getItem("g2p_ai_ok") === "1"; } catch (x) { return false; } });
+  const [busy, setBusy] = useState(false);
+  const [ai, setAi] = useState(null);
+  useEffect(() => {
+    const onKey = ev => { if (ev.key === "Escape") { ev.preventDefault(); ev.stopImmediatePropagation(); onClose(); } };
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, []);
+  const e = React.createElement;
+  const opt = (val, cur, set, label) => e("button", { type: "button", className: "rcat-btn" + (cur === val ? " sel" : ""), onClick: () => set(val), style: { fontSize: ".86rem", padding: ".5rem .3rem" } }, label);
+  const addPhoto = async ev => {
+    const files = Array.from(ev.target.files || []).slice(0, 3 - photos.length);
+    for (const f of files) { try { const d = await compressImage(f, 720, 0.62); setPhotos(p => p.concat(d).slice(0, 3)); } catch (x) {} }
+    ev.target.value = "";
+  };
+  const done = exists && (exists !== "yes" || playable) && (!photos.length || ok) && !(ai && ai.isCourt === false);
+  const submit = () => {
+    if (!done || busy) return;
+    setBusy(true);
+    const m = {}; Object.keys(missing).forEach(k => { if (missing[k]) m[k] = true; });
+    const rec = { courtId: c.id, city: c.city || ACTIVE_CITY, exists, playable: exists === "yes" ? playable : "na", at: new Date().toISOString(), dev: devTag(getVoterKey()) };
+    if (Object.keys(m).length) rec.missing = m;
+    if (photos.length) rec.photos = photos;
+    if (ai && ai.diag) rec.ai = aiStamp(ai);
+    db.ref("verifications").push(rec).then(() => {
+      logActivity("verification", "", c.id);
+      g2pCelebrate("verify"); toast(L3("Mulțumim! Răspunsul tău contează.", "Thank you! Your answer counts.", "Köszönjük! A válaszod számít."));
+      onClose();
+    }).catch(() => { setBusy(false); toast(L3("Nu s-a putut trimite. Mai încearcă.", "Could not send. Try again.", "Nem sikerült elküldeni.")); });
+  };
+  return e("div", { className: "modal-overlay", onClick: onClose },
+    e("div", { className: "modal vf", onClick: ev => ev.stopPropagation(), role: "dialog", "aria-modal": "true", "aria-label": L3("Verifică terenul", "Check the court", "Pálya ellenőrzése") },
+      e("div", { className: "flex justify-between items-center mb-1" },
+        e("h2", { style: { fontSize: "1rem", margin: 0 } }, "🙋 ", L3("Verifică în 60 de secunde", "Check in 60 seconds", "Ellenőrzés 60 másodperc alatt")),
+        e("button", { className: "btn btn-sm btn-outline", onClick: onClose }, L3("Închide", "Close", "Bezár"))),
+      e("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, "📍 ", c.name),
+      e("p", { className: "vf-q" }, "1. ", L3("Există terenul?", "Is the court there?", "Megvan a pálya?")),
+      e("div", { className: "rcat-grid" }, opt("yes", exists, setExists, "✅ " + L3("Da", "Yes", "Igen")), opt("no", exists, setExists, "❌ " + L3("Nu mai e", "It's gone", "Már nincs")), opt("unsure", exists, setExists, "🤷 " + L3("Nu sunt sigur", "Not sure", "Nem tudom"))),
+      exists === "yes" && e(React.Fragment, null,
+        e("p", { className: "vf-q" }, "2. ", L3("Se poate juca pe el?", "Can you play on it?", "Lehet rajta játszani?")),
+        e("div", { className: "rcat-grid" }, opt("yes", playable, setPlayable, "🏀 " + L3("Da", "Yes", "Igen")), opt("partly", playable, setPlayable, "⚠️ " + L3("Parțial", "Partly", "Részben")), opt("no", playable, setPlayable, "🚫 " + L3("Nu", "No", "Nem"))),
+        e("p", { className: "vf-q" }, "3. ", L3("Ce lipsește? (oricâte)", "What is missing? (any)", "Mi hiányzik? (bármennyi)")),
+        e("div", { className: "vf-chips" }, VERIFY_MISSING.map(m => e("button", { key: m[0], type: "button", className: "vf-chip" + (missing[m[0]] ? " on" : ""), onClick: () => setMissing(o => Object.assign({}, o, { [m[0]]: !o[m[0]] })) }, m[1], " ", lang === "en" ? m[3] : lang === "hu" ? m[4] : m[2])))),
+      e("p", { className: "vf-q" }, "📷 ", L3("Poze (opțional, 1–3, fără oameni în ele)", "Photos (optional, 1–3, no people in them)", "Fotók (nem kötelező, 1–3, emberek nélkül)")),
+      e("div", { className: "vf-photos" },
+        photos.map((p, i) => e("div", { key: i, className: "vf-ph" }, e("img", { src: p, alt: "" }), e("button", { type: "button", onClick: () => { setPhotos(ps => ps.filter((_, j) => j !== i)); if (i === 0) setAi(null); }, "aria-label": L3("Scoate", "Remove", "Törlés") }, "✕"))),
+        photos.length < 3 && e("label", { className: "vf-add" }, "＋", e("input", { type: "file", accept: "image/*", capture: "environment", multiple: true, style: { display: "none" }, onChange: addPhoto }))),
+      photos.length > 0 && e("label", { className: "ai-consent" }, e("input", { type: "checkbox", checked: ok, onChange: ev => { setOk(ev.target.checked); try { if (ev.target.checked) localStorage.setItem("g2p_ai_ok", "1"); } catch (x) {} } }),
+        e("span", null, L3("Pozele nu au oameni în ele. Le trimit fără datele de localizare din fișier; prima poate fi citită de AI (Anthropic) ca ajutor, nu ca verdict.", "The photos have no people in them. I send them without the file's location data; the first one may be read by the AI (Anthropic) as a help, not a verdict.", "A fotókon nincsenek emberek. Helyadatok nélkül küldöm; az elsőt az AI (Anthropic) segítségként elolvashatja, nem ítéletként."))),
+      photos.length > 0 && ok && e(AiPhotoHint, { photo: photos[0], onResult: setAi }),
+      ai && ai.isCourt === false && e("p", { className: "ai-block" }, "⛔ ", L3("Prima poză nu arată un teren. Scoate-o sau fă alta.", "The first photo doesn't show a court. Remove it or take another.", "Az első fotón nincs pálya. Töröld vagy készíts másikat.")),
+      e("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, L3("Fără nume, fără email. Un teren devine „verificat de comunitate” doar când 2 persoane diferite spun același lucru.", "No name, no email. A court becomes “verified by the community” only when 2 different people say the same thing.", "Név és e-mail nélkül. Egy pálya akkor lesz „a közösség által ellenőrzött”, ha 2 különböző ember ugyanazt mondja.")),
+      e("button", { className: "btn btn-green btn-block mt-1", disabled: !done || busy, onClick: submit }, busy ? "…" : "📨 " + L3("Trimite verificarea", "Send the check", "Ellenőrzés küldése"))));
+}
+// Court detail: where the court's condition comes from, side by side, each with its date.
+function CourtSourcesCard({ court: c }) {
+  const { lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const all = useFirebase("verifications");
+  const [open, setOpen] = useState(false);
+  const cs = verifyConsensus(verifyByCourt(all)[c.id]);
+  const e = React.createElement;
+  const satL = c.sat ? "🛰️ " + L3("Satelit", "Satellite", "Műhold") + " (" + c.sat.at.slice(0, 7) + "): " + ({ ok: L3("pare întreg", "looks intact", "épnek látszik"), worn: L3("pare uzat", "looks worn", "kopottnak látszik"), gone: L3("nu se vede teren", "no court visible", "nem látszik pálya") }[c.sat.v] || "") : null;
+  const pressL = c.stadium && c.src ? "📰 " + L3("Presă / surse publice", "Press / public sources", "Sajtó / nyilvános források") : null;
+  const isMission = c.city === "sibiu" && !c.stadium && c.sat && (!cs || cs.state !== "verified");
+  const share = () => { const u = SITE + "/?c=" + (c.city || ACTIVE_CITY) + "#court-" + c.id; copyText(u); };
+  return e("div", { className: "vf-src" + (isMission ? " mission" : "") },
+    isMission && e("div", { className: "vf-mis" }, "🎯 ", L3("Misiune: satelitul nu poate spune cum arată azi. Ajută-ne să verificăm.", "Mission: the satellite can't tell what it looks like today. Help us check.", "Küldetés: a műhold nem tudja megmondani, milyen ma. Segíts ellenőrizni.")),
+    e("div", { className: "vf-src-l" },
+      satL && e("span", null, satL), pressL && e("a", { href: c.src, target: "_blank", rel: "noopener" }, pressL),
+      e("span", null, verifyLabel(cs, L3) || "🙋 " + L3("Comunitate: încă nicio verificare", "Community: no checks yet", "Közösség: még nincs ellenőrzés"))),
+    e("div", { className: "flex gap-1", style: { flexWrap: "wrap", marginTop: ".5rem" } },
+      e("button", { className: "btn btn-sm btn-green", onClick: () => setOpen(true) }, "🙋 ", L3("Ajută-ne să verificăm (60 s)", "Help us check (60 s)", "Segíts ellenőrizni (60 mp)")),
+      e("button", { className: "btn btn-sm btn-outline", onClick: share }, "🔗 ", L3("Link pentru postare", "Link to post", "Link megosztáshoz"))),
+    open && ReactDOM.createPortal(e(VerifyFlow, { court: c, onClose: () => setOpen(false) }), document.body));
 }
 
 /* === Sibiu Progress Banner: one dot per Sibiu court, lit once the community has checked it === */
@@ -15460,11 +15978,17 @@ function SibiuProgressBanner() {
 function SibiuProgressBannerInner() {
   const { t } = useApp();
   const [open, setOpen] = useState(false);
+  const { lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
   const allReports = useFirebase("reports");
+  const byCourt = verifyByCourt(useFirebase("verifications"));
+  const [mission, setMission] = useState(null);
   const checked = {};
   if (allReports) Object.values(allReports).forEach(r => { if (r && r.category === "condition" && r.courtId) checked[r.courtId] = 1; });
+  Object.keys(byCourt).forEach(id => { checked[id] = (verifyConsensus(byCourt[id]) || {}).state === "verified" ? 2 : Math.max(checked[id] || 0, 1); });
   const sbCourts = COURTS.filter(c => c.city === "sibiu");
-  const lit = sbCourts.filter(c => checked[c.id]).length;
+  const lit = sbCourts.filter(c => checked[c.id]).length, confirmed = sbCourts.filter(c => checked[c.id] === 2).length;
+  const missions = sibiuMissions(byCourt).slice(0, 6);
   return React.createElement("div", {
     "data-demo": "verify",
     style: {
@@ -15476,7 +16000,7 @@ function SibiuProgressBannerInner() {
     React.createElement("div", { className: "flex justify-between items-center", style: { gap: ".6rem" } },
       React.createElement("div", { style: { minWidth: 0 } },
         React.createElement("strong", { style: { fontSize: ".93rem", display: "block", marginBottom: ".2rem" } }, t.sibiuVerifyTitle),
-        React.createElement("span", { style: { fontSize: ".8rem", opacity: .9, fontFamily: "'Space Mono',monospace" } }, "🩺 ", lit, " / ", sbCourts.length, " ", t.sibiuCourtsChecked)
+        React.createElement("span", { style: { fontSize: ".8rem", opacity: .9, fontFamily: "'Space Mono',monospace" } }, "🩺 ", lit, " / ", sbCourts.length, " ", t.sibiuCourtsChecked, confirmed ? " · ✔ " + confirmed + " " + L3("confirmate de 2 persoane", "confirmed by 2 people", "2 ember megerősítette") : "")
       ),
       React.createElement("button", {
         className: "btn btn-sm",
@@ -15485,9 +16009,13 @@ function SibiuProgressBannerInner() {
       }, "＋ ", t.verifyCourtCTA)
     ),
     React.createElement("div", { className: "sb-dots", "aria-hidden": "true" },
-      sbCourts.map(c => React.createElement("span", { key: c.id, className: "sb-dot" + (checked[c.id] ? " on" : ""), title: c.name }))
+      sbCourts.map(c => React.createElement("span", { key: c.id, className: "sb-dot" + (checked[c.id] === 2 ? " on" : checked[c.id] ? " half" : ""), title: c.name }))
     ),
-    open && ReactDOM.createPortal(React.createElement(CourtConditionQuick, { onClose: () => setOpen(false) }), document.body)
+    missions.length > 0 && React.createElement("div", { className: "sb-mis" },
+      React.createElement("span", { className: "sb-mis-h" }, "🎯 ", L3("Misiuni: satelitul nu poate spune cum arată azi", "Missions: the satellite can't tell how these look today", "Küldetések: a műhold nem tudja, milyenek ma")),
+      missions.map(c => React.createElement("button", { key: c.id, className: "sb-mis-b", onClick: () => setMission(c) }, c.sat.v === "gone" ? "❓ " : c.sat.v === "worn" ? "⚠️ " : "🛰️ ", c.name))),
+    open && ReactDOM.createPortal(React.createElement(CourtConditionQuick, { onClose: () => setOpen(false) }), document.body),
+    mission && ReactDOM.createPortal(React.createElement(VerifyFlow, { court: mission, onClose: () => setMission(null) }), document.body)
   );
 }
 

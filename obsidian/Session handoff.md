@@ -1,9 +1,27 @@
 ---
 tags: [handoff, session, index]
-updated: 2026-05-22
+updated: 2026-10-29
 ---
 
 # Session Handoff — From Grey to Play
+
+> **Stare la 29 oct. 2026 (citește întâi asta; secțiunile de mai jos sunt istoric din mai).**
+>
+> - Branch de lucru: `claude/cool-babbage-lacz7g`. PR draft:
+>   https://github.com/teodorcimpan12-cyber/fromgraytoplay/pull/19 — **NU se face merge până nu zice
+>   Teodor „live”.** Push-ul merge direct (`git push origin claude/cool-babbage-lacz7g`), nu mai e nevoie de PAT.
+> - Hero 3D e de mult integrat în `index.html` (`mountHero3D` / `Hero3D`); `hero/` și `demos/` sunt copii vechi.
+> - Făcut în sesiunea asta (detalii în `Session Log.md`):
+>   1. Stadioane: + Stadionul Ladislau Bölöni (TGM, închis, degradat); `stadium: true` pe toate; Inter Sibiu pe Municipal.
+>   2. Numărul de terenuri nu mai e scris de mână nicăieri (`courtsPhrase`, `NBH_N`, `STADIUM_N`, `SAT_RECENT/SAT_N`).
+>   3. Hero 3D: minge PBR (normal map piele granulată), minge −20 %, inel +15 %, coliziune torus cu sub-pași, hitbox ≥ 30 px.
+>   4. Demo: fără popup de cont în pitch, mascota nu mai acoperă bara demo, carduri lizibile în tema deschisă.
+>   5. SPEC_6NOV §1 AI Court Doctor, §2 Scrisoarea v2, §5 „Sibiul se verifică singur” — **construite înainte de
+>      hackathon, la cererea lui Teodor** (în `docs/PROGRESS.md` trebuie spus cinstit că există de dinainte).
+> - De făcut de Teodor: deploy `database.rules.json` în Firebase (căi noi `letters/`, `verifications/`,
+>   validare `reports/*/ai`); întrebare deschisă despre „Stadionul Municipal” TGM (Gh. Doja 243, 11.000 locuri) — vezi PR.
+> - Teste: `node tools/predeploy-check.mjs`, `node tools/smoke.mjs` (găsește Chromium-ul preinstalat). În testele
+>   headless blochează Firebase (`--host-resolver-rules=MAP *.firebaseio.com 127.0.0.1`) ca să nu scrii date reale.
 
 Everything a fresh Claude Code session needs to continue this project. Read
 this first.
@@ -37,7 +55,7 @@ strings to **all three**. HU is draft — flag new HU prose with
 
 ## 2. Git / branch / how to push  ⚠️ IMPORTANT
 
-- **Work branch (push here only):** `claude/start-building-BQQ1q`
+- **Work branch (push here only):** `claude/start-building-BQQ1q` (vechi — vezi starea de sus)
 - Repo: `teodorcimpan12-cyber/fromgraytoplay` (public). Default branch is the
   work branch.
 - **The environment's git proxy and the GitHub MCP server are READ-ONLY**
