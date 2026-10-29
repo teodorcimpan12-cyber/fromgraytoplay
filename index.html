@@ -7457,20 +7457,71 @@ function buildBloc(base, win) {
   for (var d = 0; d < 4; d++) { cx.fillStyle = "rgba(150,150,150,.18)"; cx.fillRect(12 + d * 29, 256 - fh + 8, 20, fh - 16); }
   return c;
 }
-function buildBasketball() {
-  var c = document.createElement("canvas"); c.width = 1024; c.height = 512; var cx = c.getContext("2d");
-  cx.fillStyle = "#D9681C"; cx.fillRect(0, 0, 1024, 512);
-  for (var i = 0; i < 14000; i++) { var v = (Math.random() * 30 - 15) | 0; cx.fillStyle = "rgba(" + (200 + v) + "," + (98 + v) + "," + (28 + v) + ",.45)"; cx.fillRect(Math.random() * 1024, Math.random() * 512, 3, 3); }
-  cx.strokeStyle = "#120c05"; cx.lineCap = "round";
-  cx.lineWidth = 12;
+/* Basketball, PBR: one seam layout drawn into three maps — albedo, a pebbled-leather height field
+   (turned into a tangent-space normal map) and a roughness map (grooves rougher than the pebble tops). */
+function bballSeams(cx, col, lw) {
+  cx.strokeStyle = col; cx.lineCap = "round"; cx.lineWidth = lw;
   cx.beginPath(); cx.moveTo(0, 256); cx.lineTo(1024, 256); cx.stroke();   // equator
   cx.beginPath(); cx.moveTo(256, 0); cx.lineTo(256, 512); cx.stroke();    // meridian
   cx.beginPath(); cx.moveTo(768, 0); cx.lineTo(768, 512); cx.stroke();    // meridian (same great circle)
-  cx.lineWidth = 11;
   cx.beginPath(); cx.moveTo(512, 0); cx.bezierCurveTo(624, 150, 624, 362, 512, 512); cx.stroke();
   cx.beginPath(); cx.moveTo(0, 0); cx.bezierCurveTo(112, 150, 112, 362, 0, 512); cx.stroke();
   cx.beginPath(); cx.moveTo(1024, 0); cx.bezierCurveTo(912, 150, 912, 362, 1024, 512); cx.stroke();
+}
+// Equirectangular canvas: a pebble near the poles must be drawn wider so it stays round on the sphere.
+function bballPebbles(cx, n, r0, fill) {
+  cx.fillStyle = fill;
+  for (var i = 0; i < n; i++) {
+    var y = Math.random() * 512, x = Math.random() * 1024, r = r0 * (0.8 + Math.random() * 0.45);
+    var sx = Math.min(8, 1 / Math.max(0.12, Math.sin(y / 512 * Math.PI)));
+    cx.beginPath(); cx.ellipse(x, y, r * sx, r, 0, 0, 6.2832); cx.fill();
+  }
+}
+function buildBasketball() {
+  var c = document.createElement("canvas"); c.width = 1024; c.height = 512; var cx = c.getContext("2d");
+  cx.fillStyle = "#C9581B"; cx.fillRect(0, 0, 1024, 512);
+  // large soft mottling (worn composite leather), then pebble highlights and pore shadows
+  for (var m = 0; m < 60; m++) { var mx = Math.random() * 1024, my = Math.random() * 512, mr = 40 + Math.random() * 90, g = cx.createRadialGradient(mx, my, 0, mx, my, mr); g.addColorStop(0, Math.random() < 0.5 ? "rgba(120,45,10,.10)" : "rgba(235,120,50,.10)"); g.addColorStop(1, "rgba(0,0,0,0)"); cx.fillStyle = g; cx.fillRect(mx - mr, my - mr, mr * 2, mr * 2); }
+  bballPebbles(cx, 26000, 1.5, "rgba(236,124,54,.32)");
+  bballPebbles(cx, 9000, 0.9, "rgba(80,28,6,.28)");
+  bballSeams(cx, "rgba(40,16,4,.55)", 17);   // seam shoulders darken slightly
+  bballSeams(cx, "#121010", 10);            // the black rubber seam itself
   return c;
+}
+function buildBasketballHeight() {
+  var c = document.createElement("canvas"); c.width = 1024; c.height = 512; var cx = c.getContext("2d");
+  cx.fillStyle = "rgb(120,120,120)"; cx.fillRect(0, 0, 1024, 512);
+  bballPebbles(cx, 30000, 1.7, "rgba(210,210,210,.55)");
+  bballPebbles(cx, 14000, 1.1, "rgba(250,250,250,.5)");
+  bballSeams(cx, "rgb(70,70,70)", 19);      // the leather rolls down into the seam
+  bballSeams(cx, "rgb(18,18,18)", 10);      // groove
+  return c;
+}
+function heightToNormal(src, strength) {
+  var W = src.width, H = src.height, hd = src.getContext("2d").getImageData(0, 0, W, H).data;
+  var c = document.createElement("canvas"); c.width = W; c.height = H; var cx = c.getContext("2d"), out = cx.createImageData(W, H), o = out.data;
+  function h(x, y) { x = (x + W) % W; y = y < 0 ? 0 : y >= H ? H - 1 : y; return hd[(y * W + x) * 4] / 255; }
+  for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) {
+    var dx = (h(x + 1, y - 1) + 2 * h(x + 1, y) + h(x + 1, y + 1) - h(x - 1, y - 1) - 2 * h(x - 1, y) - h(x - 1, y + 1)) * strength;
+    var dy = (h(x - 1, y + 1) + 2 * h(x, y + 1) + h(x + 1, y + 1) - h(x - 1, y - 1) - 2 * h(x, y - 1) - h(x + 1, y - 1)) * strength;
+    var len = Math.sqrt(dx * dx + dy * dy + 1), k = (y * W + x) * 4;
+    o[k] = (-dx / len * 0.5 + 0.5) * 255; o[k + 1] = (dy / len * 0.5 + 0.5) * 255; o[k + 2] = (1 / len * 0.5 + 0.5) * 255; o[k + 3] = 255;
+  }
+  cx.putImageData(out, 0, 0); return c;
+}
+function buildBasketballRough() {
+  var c = document.createElement("canvas"); c.width = 1024; c.height = 512; var cx = c.getContext("2d");
+  cx.fillStyle = "rgb(184,184,184)"; cx.fillRect(0, 0, 1024, 512);          // ~0.72 matte composite leather
+  bballPebbles(cx, 20000, 1.4, "rgba(150,150,150,.6)");                       // polished pebble tops ~0.6
+  bballSeams(cx, "rgb(235,235,235)", 11);                                     // rubber seams ~0.92
+  return c;
+}
+function basketballMaterial() {
+  function lin(cv) { var t = new THREE.CanvasTexture(cv); t.anisotropy = 8; t.generateMipmaps = true; t.minFilter = THREE.LinearMipmapLinearFilter; return t; }
+  return new THREE.MeshStandardMaterial({
+    map: lin(buildBasketball()), normalMap: lin(heightToNormal(buildBasketballHeight(), 2.2)), normalScale: new THREE.Vector2(0.5, 0.5),
+    roughnessMap: lin(buildBasketballRough()), roughness: 1, metalness: 0, emissive: new THREE.Color(0xff9a3c), emissiveIntensity: 0
+  });
 }
 function buildSoccer() {
   var c = document.createElement("canvas"); c.width = 1024; c.height = 512; var cx = c.getContext("2d");
@@ -7667,6 +7718,10 @@ function mountHero3D(host, opts) {
 
   var netTex = texFrom(buildNet(), 1, 1), boardTex = texFrom(buildBackboard());
   var nets = [], hoops = [], lockerScreen = null, renovOnly = [], interactives = [];
+  // Ball vs hoop sizing (court units). The basketball is 20% smaller than before (0.125 -> 0.10) and the
+  // rim 15% bigger, so the ball clears the ring: 2 * BALL_R = 0.200 < inner diameter 2 * (RIM_R - RIM_T) = 0.223.
+  var HOOP_S = 1.15, RIM_R = 0.11 * HOOP_S, RIM_T = 0.013 * HOOP_S, RIM_OFF = 0.015 + RIM_R + RIM_T + 0.012, BALL_R = 0.1;
+  if (2 * BALL_R >= 2 * (RIM_R - RIM_T) && window.console) console.warn("hero3d: the basketball no longer fits through the rim");
   var steel = new THREE.MeshStandardMaterial({ color: 0xe8eaec, roughness: 0.4, metalness: 0.5 });
   function steelMesh(geo, x, y, z) { var m = new THREE.Mesh(geo, steel); m.position.set(x, y, z); m.castShadow = true; return m; }
 
@@ -7711,9 +7766,12 @@ function mountHero3D(host, opts) {
     var boardMat = new THREE.MeshStandardMaterial({ map: boardTex, transparent: true, side: THREE.DoubleSide });
     var board = new THREE.Mesh(new THREE.PlaneGeometry(0.52, 0.32), boardMat); board.position.set(-sign * 0.015, 0, 0); board.rotation.y = -sign * Math.PI / 2; board.castShadow = true; hoop.add(board);
     var rimMat = new THREE.MeshStandardMaterial({ color: 0xE2552B, roughness: 0.45 });
-    var rim = new THREE.Mesh(new THREE.TorusGeometry(0.11, 0.013, 16, 32), rimMat); rim.position.set(-sign * 0.14, -0.07, 0); rim.rotation.x = Math.PI / 2; rim.castShadow = true; hoop.add(rim);
-    var bnet = new THREE.Mesh(new THREE.CylinderGeometry(0.105, 0.05, 0.17, 14, 1, true), new THREE.MeshBasicMaterial({ map: netTex.clone(), transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false })); bnet.position.set(-sign * 0.14, -0.07 - 0.095, 0); hoop.add(bnet); nets.push(bnet);
-    hoops.push({ x: baseX - sign * 0.14, y: boardY - 0.07, z: 0, r: 0.11 });
+    var rim = new THREE.Mesh(new THREE.TorusGeometry(RIM_R, RIM_T, 16, 40), rimMat); rim.position.set(-sign * RIM_OFF, -0.07, 0); rim.rotation.x = Math.PI / 2; rim.castShadow = true; hoop.add(rim);
+    var brW = RIM_OFF - RIM_R - 0.015;   // short bracket: the bigger ring sits clear of the board
+    hoop.add(steelMesh(new THREE.BoxGeometry(brW, 0.012, 0.05), -sign * (0.015 + brW / 2), -0.07, 0));
+    var bnet = new THREE.Mesh(new THREE.CylinderGeometry(RIM_R - RIM_T * 0.5, 0.06 * HOOP_S, 0.17 * HOOP_S, 16, 1, true), new THREE.MeshBasicMaterial({ map: netTex.clone(), transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false })); bnet.position.set(-sign * RIM_OFF, -0.07 - 0.085 * HOOP_S, 0); hoop.add(bnet); nets.push(bnet);
+    // collider data (court-local): ring centre, centre-line radius, tube radius, backboard plane
+    hoops.push({ x: baseX - sign * RIM_OFF, y: boardY - 0.07, z: 0, r: RIM_R, t: RIM_T, sign: sign, boardX: baseX - sign * 0.015, boardY: boardY, net: bnet, pulse: 0 });
     endUnits.push({ frame: frame, hoop: hoop, rim: rim, rimMat: rimMat, boardMat: boardMat, sign: sign, lean: sign > 0 ? -0.1 : 0.08 });
   }
   endUnit(-1); endUnit(1);
@@ -8076,14 +8134,15 @@ function mountHero3D(host, opts) {
   // two balls — big, with an invisible larger grab target, and a soft glow until the visitor first grabs one
   var touched = false; try { touched = localStorage.getItem("g2p_hero_ball") === "1"; } catch (e) {}
   var haloTex = (function () { var c = document.createElement("canvas"); c.width = c.height = 64; var x = c.getContext("2d"); var g = x.createRadialGradient(32, 32, 4, 32, 32, 32); g.addColorStop(0, "rgba(255,206,130,.95)"); g.addColorStop(1, "rgba(255,150,50,0)"); x.fillStyle = g; x.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
-  function makeBall(tex, rad, rough) {
-    var b = new THREE.Mesh(new THREE.SphereGeometry(rad, 40, 26), new THREE.MeshStandardMaterial({ map: tex, roughness: rough, metalness: 0.03, emissive: new THREE.Color(0xff9a3c), emissiveIntensity: 0 })); b.castShadow = true; b.position.y = rad; group.add(b);
-    var hit = new THREE.Mesh(new THREE.SphereGeometry(rad * 1.9, 10, 8), new THREE.MeshBasicMaterial({ visible: false })); b.add(hit);
+  var HIT_MIN = 0.24, HIT_PX = 30;   // grab radius: never under the old 0.24 court units, never under 30 CSS px on screen
+  function makeBall(mat, rad) {
+    var b = new THREE.Mesh(new THREE.SphereGeometry(rad, 48, 32), mat); b.castShadow = true; b.position.y = rad; group.add(b);
+    var hit = new THREE.Mesh(new THREE.SphereGeometry(1, 12, 8), new THREE.MeshBasicMaterial({ visible: false })); hit.scale.setScalar(Math.max(rad * 1.9, HIT_MIN)); b.add(hit);
     var halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: haloTex, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false, opacity: 0 })); halo.visible = !touched; group.add(halo);
     return { mesh: b, hit: hit, halo: halo, rad: rad, x: 0, y: rad, z: 0, vx: 0, vy: 0, vz: 0, physics: false, grabbed: false, carried: null, claim: null, fromPass: false, rest: 0, ph: 0, fr: 2, hgt: 0.4 };
   }
-  var basket = makeBall(texFrom(buildBasketball()), 0.125, 0.82); basket.x = -0.6; basket.z = 0.2; basket.vx = 0.009; basket.vz = 0.006; basket.fr = 2.4; basket.hgt = 0.5;
-  var soccer = makeBall(texFrom(buildSoccer()), 0.118, 0.42); soccer.x = 0.5; soccer.z = -0.25; soccer.vx = -0.008; soccer.vz = 0.01; soccer.ph = 1.4; soccer.fr = 2.0; soccer.hgt = 0.42;
+  var basket = makeBall(basketballMaterial(), BALL_R); basket.x = -0.6; basket.z = 0.2; basket.vx = 0.009; basket.vz = 0.006; basket.fr = 2.4; basket.hgt = 0.5;
+  var soccer = makeBall(new THREE.MeshStandardMaterial({ map: texFrom(buildSoccer()), roughness: 0.42, metalness: 0.03, emissive: new THREE.Color(0xff9a3c), emissiveIntensity: 0 }), 0.118); soccer.x = 0.5; soccer.z = -0.25; soccer.vx = -0.008; soccer.vz = 0.01; soccer.ph = 1.4; soccer.fr = 2.0; soccer.hgt = 0.42;
   var balls = [basket, soccer], ballHits = [basket.hit, soccer.hit];
   function markTouched() { if (touched) return; touched = true; try { localStorage.setItem("g2p_hero_ball", "1"); } catch (e) {} }
 
@@ -8409,6 +8468,67 @@ function mountHero3D(host, opts) {
     onResize();
   }
   var scoreCD = 0, windT = 18;
+  /* Renovated hoop collider. The ring is a torus (centre-line radius r, tube t): the ball collides with the
+     nearest point of the ring's centre circle at distance BALL + t. The step is swept in sub-steps no longer
+     than the tube radius, so a fast throw cannot tunnel through the 3 cm rim. One positional push-out per
+     contact plus a velocity reflection (restitution 0.45, 10% tangential loss) = no jitter; a ball that comes
+     to rest on the ring is rolled off it. The backboard is a plane on the court side of the board. */
+  function hoopPhysics(bl, Hp, px0, py0, pz0, dt) {
+    var R = Hp.r, T = Hp.t, minD = bl.rad + T, inner = R - T;
+    // gentle funnel: a descending ball just above the ring drifts toward its centre (the throw is flicked on a phone)
+    var fx = Hp.x - bl.x, fz = Hp.z - bl.z, fh = Math.hypot(fx, fz), above = bl.y - Hp.y;
+    if (bl.vy < 0 && above > 0 && above < 0.35 && fh < R + bl.rad * 1.4 && fh > 1e-4 && bl.rad < inner) { var pull = 1.6 * dt; bl.vx += fx / fh * pull; bl.vz += fz / fh * pull; }
+    var sx = bl.x - px0, sy = bl.y - py0, sz = bl.z - pz0, steps = Math.min(10, Math.max(1, Math.ceil(Math.hypot(sx, sy, sz) / T)));
+    for (var k = 1; k <= steps; k++) {
+      var f = k / steps, x = px0 + sx * f, y = py0 + sy * f, z = pz0 + sz * f;
+      var dx = x - Hp.x, dz = z - Hp.z, h = Math.hypot(dx, dz);
+      if (h < 1e-5) { dx = 1; dz = 0; h = 1; }
+      var cxp = Hp.x + dx / h * R, czp = Hp.z + dz / h * R, nx = x - cxp, ny = y - Hp.y, nz = z - czp, d = Math.hypot(nx, ny, nz);
+      if (d < minD && d > 1e-6) {
+        nx /= d; ny /= d; nz /= d;
+        bl.x = cxp + nx * minD; bl.y = Hp.y + ny * minD; bl.z = czp + nz * minD;
+        var vn = bl.vx * nx + bl.vy * ny + bl.vz * nz;
+        if (vn < 0) {
+          bl.vx -= 1.45 * vn * nx; bl.vy -= 1.45 * vn * ny; bl.vz -= 1.45 * vn * nz;
+          bl.vx *= 0.9; bl.vz *= 0.9;
+          if (vn < -0.4 && typeof g2pSfx === "function") g2pSfx("clack");
+        }
+        // resting on top of the ring: roll it off (inward if its centre is inside the ring, else outward)
+        if (ny > 0.6 && Math.hypot(bl.vx, bl.vy, bl.vz) < 0.25) { var out = h < R ? -1 : 1; bl.vx += dx / h * out * 0.35; bl.vz += dz / h * out * 0.35; }
+        break;
+      }
+    }
+    // backboard: a plane facing the court, 0.52 x 0.32, on the court side of the board
+    var by = bl.y - Hp.boardY, bz = bl.z - Hp.z;
+    if (Math.abs(by) < 0.16 + bl.rad * 0.5 && Math.abs(bz) < 0.26 + bl.rad * 0.5) {
+      var face = Hp.boardX - Hp.sign * bl.rad;
+      if (Hp.sign * (bl.x - face) > 0 && Hp.sign * (px0 - Hp.boardX) < 0) { bl.x = face; if (Hp.sign * bl.vx > 0) { bl.vx = -bl.vx * 0.55; if (typeof g2pSfx === "function") g2pSfx("clack"); } }
+    }
+    // a basket = the ball's centre crosses the ring plane downward inside the clear opening
+    if (py0 > Hp.y && bl.y <= Hp.y) {
+      var f2 = (py0 - Hp.y) / Math.max(1e-6, py0 - bl.y), cx2 = px0 + (bl.x - px0) * f2 - Hp.x, cz2 = pz0 + (bl.z - pz0) * f2 - Hp.z;
+      if (Math.hypot(cx2, cz2) < inner) { Hp.pulse = 1; score("basket"); }
+    }
+  }
+  // Keep the invisible grab sphere comfortably big on screen while the visible ball is small.
+  var hitW = new THREE.Vector3(), hitS = new THREE.Vector3();
+  function fitHits() {
+    var hpx = el.clientHeight || 1, tanF = Math.tan(camera.fov * Math.PI / 360);
+    for (var i = 0; i < balls.length; i++) {
+      var b = balls[i]; b.mesh.getWorldPosition(hitW); b.mesh.getWorldScale(hitS);
+      var ppu = hpx / 2 / (camera.position.distanceTo(hitW) * tanF);   // CSS px per world unit at the ball
+      b.hit.scale.setScalar(Math.max(b.rad * 1.9, HIT_MIN, HIT_PX / ppu / (hitS.x || 1)));
+    }
+  }
+  function updNets(dt) {
+    for (var i = 0; i < hoops.length; i++) {
+      var Hp = hoops[i]; if (Hp.pulse <= 0 && Hp.net.scale.y === 1) continue;
+      Hp.pulse = Math.max(0, Hp.pulse - dt * 2.2);
+      var w = Math.sin(Hp.pulse * Math.PI);   // the net stretches round the ball, then settles
+      Hp.net.scale.set(1 + w * 0.45, 1 + w * 0.2, 1 + w * 0.45);
+      if (Hp.pulse === 0) Hp.net.scale.set(1, 1, 1);
+    }
+  }
   function score(kind) {
     if (scoreCD > 0) return; scoreCD = 1.2;
     if (opts.onScore) opts.onScore(kind);
@@ -8439,6 +8559,7 @@ function mountHero3D(host, opts) {
     // the one lamp that still has a bulb stutters at night (grey state only)
     if (deadBulb) { var nf = (1 - lookP) * (1 - th); deadBulb.emissiveIntensity = nf > 0.01 && Math.sin(t * 23) * Math.sin(t * 2.7) > 0.5 ? nf * 1.2 : 0; }
     if (parOn) { parX += (parTX - parX) * 0.05; parY += (parTY - parY) * 0.05; camera.position.set(parX * 0.38, CAM.y - parY * 0.22, CAM.z); camera.lookAt(0, CAM.ly, 0); }
+    fitHits(); updNets(dt);
     var hasPlayers = renovated && !renov.active;
     for (var i = 0; i < balls.length; i++) {
       var bl = balls[i];
@@ -8446,6 +8567,7 @@ function mountHero3D(host, opts) {
       else if (bl.physics) {
         if (bl.grabbed) { bl.y = bl.rad + 0.03; }
         else {
+          var px0 = bl.x, py0 = bl.y, pz0 = bl.z;
           bl.vy -= 3.2 * dt; bl.x += bl.vx * dt; bl.z += bl.vz * dt; bl.y += bl.vy * dt;
           if (bl.y <= bl.rad) { bl.y = bl.rad; if (bl.vy < 0) { bl.vy = -bl.vy * 0.6; bl.vx *= 0.84; bl.vz *= 0.84; if (Math.abs(bl.vy) < 0.3) bl.vy = 0; } }
           var bxx = CX / 2 - bl.rad, bzz = CZ / 2 - bl.rad;
@@ -8455,10 +8577,11 @@ function mountHero3D(host, opts) {
           else if (bl.x < -bxx) { if (inMouth) { if (bl.x < -(CX / 2 + 0.14)) { bl.x = -(CX / 2 + 0.14); bl.vx = 0; bl.vz *= 0.4; score("goal"); } } else { bl.x = -bxx; bl.vx = -bl.vx * 0.6; } }
           bl.vx *= 0.995; bl.vz *= 0.995;
           for (var hh = 0; hh < hoops.length; hh++) {
-            var Hp = hoops[hh], ddx = bl.x - Hp.x, ddz = bl.z - Hp.z;
+            var Hp = hoops[hh];
+            if (prog > 0.5) { hoopPhysics(bl, Hp, px0, py0, pz0, dt); continue; }
+            var ddx = bl.x - Hp.x, ddz = bl.z - Hp.z;
             if (ddx * ddx + ddz * ddz < Hp.r * Hp.r * 0.9 && bl.vy < 0 && bl.y < Hp.y + 0.05 && bl.y > Hp.y - 0.14) {
-              if (prog > 0.5) score("basket");
-              else { bl.vy = Math.abs(bl.vy) * 0.55 + 0.5; bl.vx = -bl.vx * 0.5 + (Math.random() - 0.5) * 0.8; bl.vz += (Math.random() - 0.5) * 0.8; if (typeof g2pSfx === "function") g2pSfx("clack"); }   // the bent grey rim spits it out
+              bl.vy = Math.abs(bl.vy) * 0.55 + 0.5; bl.vx = -bl.vx * 0.5 + (Math.random() - 0.5) * 0.8; bl.vz += (Math.random() - 0.5) * 0.8; if (typeof g2pSfx === "function") g2pSfx("clack");   // the bent grey rim spits it out
             }
           }
           var onGround = bl.y <= bl.rad + 0.001 && bl.vy === 0, slow = Math.abs(bl.vx) + Math.abs(bl.vz);
@@ -8546,6 +8669,7 @@ function mountHero3D(host, opts) {
     // probes: throw a ball / shake the wall from the console
     _throw: function (i, vx, vy, vz) { var b = balls[i || 0]; markTouched(); b.physics = true; b.grabbed = false; b.claim = null; b.fromPass = false; b.y = b.rad + 0.05; b.vx = vx; b.vy = vy; b.vz = vz; },
     _shake: shakeWall,
+    _ball: function (i) { return balls[i || 0]; }, _hoops: hoops, _hitR: function (i) { return balls[i || 0].hit.scale.x; },
     _screen: function (i) { var b = balls[i || 0], v = new THREE.Vector3(); b.mesh.getWorldPosition(v); v.project(camera); var r = el.getBoundingClientRect(); return { x: r.left + (v.x + 1) / 2 * r.width, y: r.top + (1 - v.y) / 2 * r.height, air: b.y > b.rad + 0.08, fromPass: b.fromPass }; },
     pause: function () { paused = true; if (rafId) cancelAnimationFrame(rafId); rafId = null; },
     resume: function () { if (paused) { paused = false; prevN = performance.now(); rafId = requestAnimationFrame(animate); } },
