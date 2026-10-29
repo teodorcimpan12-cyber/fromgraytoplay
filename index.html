@@ -103,7 +103,7 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .btn-block{width:100%;justify-content:center}
 .card{background:var(--bgCard);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.2rem;transition:transform .2s,box-shadow .2s,border-color .2s;border-left:4px solid transparent;overflow:hidden}
 .card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.13)}.card-accent{border-left-color:var(--green)}
-.action-card{background:rgba(255,255,255,0.07);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);border-radius:16px;color:#fff;padding:1.4rem 1.2rem;text-align:left;transition:transform .2s,box-shadow .2s;cursor:pointer;width:100%}
+.action-card{background:color-mix(in srgb,var(--bgCard) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:16px;color:var(--text);padding:1.4rem 1.2rem;text-align:left;transition:transform .2s,box-shadow .2s;cursor:pointer;width:100%}
 .action-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.25)}
 .ac-icon{font-size:1.8rem;margin-bottom:.4rem}
 .card-link{cursor:pointer}.card-link:hover{border-left-color:var(--green)}
@@ -781,6 +781,7 @@ html.accent-on .rcat-btn:hover,html.accent-on .rcat-btn.sel,html.accent-on .vol-
 .sb-dots{display:flex;flex-wrap:wrap;gap:4px;margin-top:.6rem}
 .demo-bar{position:fixed;left:12px;bottom:12px;z-index:9000;display:flex;align-items:center;gap:.5rem;max-width:calc(100vw - 24px);padding:.3rem .45rem;border-radius:999px;background:color-mix(in srgb,var(--dark) 82%,transparent);color:var(--white);font:600 .74rem 'Space Mono',monospace;backdrop-filter:blur(8px);box-shadow:var(--shadow);opacity:.55;transition:opacity .2s}
 .demo-bar:hover{opacity:1}
+body:has(.demo-bar) .mascot{bottom:calc(58px + env(safe-area-inset-bottom))}
 .demo-bar button{width:26px;height:26px;border-radius:50%;border:0;background:color-mix(in srgb,var(--white) 14%,transparent);color:inherit;font-size:1rem;line-height:1;cursor:pointer}
 .demo-bar button:disabled{opacity:.3;cursor:default}
 .demo-n{color:var(--green)}
@@ -13864,6 +13865,7 @@ function SignupNudge({ onSignup }) {
   const [show, setShow] = useState(false);
   const shownRef = useRef(false);
   useEffect(() => {
+    if (DEMO_ON || DEMO_REMOTE) return;   // never pops up over a live pitch
     let last = 0; try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
     if (Date.now() - last < 14 * 864e5) return;
     // Needs 25 s on the site AND one real interaction (scroll or page change), and waits while the install banner is up.
