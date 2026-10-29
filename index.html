@@ -7440,12 +7440,12 @@ function grain(x, y, z, k) { var h = Math.sin(Math.floor(x * k) * 127.1 + Math.f
 /* Basketball: 8 panels = two perpendicular great circles + two near-circular seams ("parentheses" seen
    from the front) around the y axis that cross one great circle and flare slightly as they leave it. */
 function buildBasketball() {
-  return paintSphere(512, 256, function (x, y, z, o) {
-    var w = 0.02, ay = Math.abs(y);
+  return paintSphere(1024, 512, function (x, y, z, o) {
+    var w = 0.011, ay = Math.abs(y);
     var d = Math.min(Math.abs(y), Math.abs(x), Math.abs(ay - (0.64 + 0.24 * x * x)) / Math.sqrt(1 + 0.23 * x * x));
-    var m = seamMix(d, w), peb = grain(x, y, z, 110), n = 0.5 + 0.5 * peb;
-    var g = 0.95 + 0.06 * n; o[3] = 255 * m * (0.85 + 0.15 * n);
-    o[0] = (22 + (222 - 22) * m) * g; o[1] = (16 + (98 - 16) * m) * g; o[2] = (12 + (38 - 12) * m) * g;
+    var m = seamMix(d, w), peb = grain(x, y, z, 260), n = 0.5 + 0.5 * peb;
+    var g = 0.97 + 0.05 * n; o[3] = 255 * m * (0.9 + 0.1 * n);
+    o[0] = (42 + (204 - 42) * m) * g; o[1] = (24 + (100 - 24) * m) * g; o[2] = (18 + (54 - 18) * m) * g;
   });
 }
 /* Soccer ball: truncated icosahedron. Each point belongs to the face whose plane it reaches first
@@ -8098,7 +8098,7 @@ function mountHero3D(host, opts) {
     var halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: haloTex, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false, opacity: 0 })); halo.visible = !touched; group.add(halo);
     return { mesh: b, hit: hit, halo: halo, rad: rad, x: 0, y: rad, z: 0, vx: 0, vy: 0, vz: 0, physics: false, grabbed: false, carried: null, claim: null, fromPass: false, rest: 0, ph: 0, fr: 2, hgt: 0.4 };
   }
-  var basket = makeBall(buildBasketball(), 0.125, 0.78); basket.x = -0.6; basket.z = 0.2; basket.vx = 0.009; basket.vz = 0.006; basket.fr = 2.4; basket.hgt = 0.5;
+  var basket = makeBall(buildBasketball(), 0.125, 0.6); basket.x = -0.6; basket.z = 0.2; basket.vx = 0.009; basket.vz = 0.006; basket.fr = 2.4; basket.hgt = 0.5;
   var soccer = makeBall(buildSoccer(), 0.118, 0.3); soccer.x = 0.5; soccer.z = -0.25; soccer.vx = -0.008; soccer.vz = 0.01; soccer.ph = 1.4; soccer.fr = 2.0; soccer.hgt = 0.42;
   var balls = [basket, soccer], ballHits = [basket.hit, soccer.hit];
   function markTouched() { if (touched) return; touched = true; try { localStorage.setItem("g2p_hero_ball", "1"); } catch (e) {} }
