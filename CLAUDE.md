@@ -239,3 +239,10 @@ Highest civic-value next steps:
   redirect fallback, password reset, SMS fix; `user` is derived from
   Firebase Auth + `users/{uid}` (legacy password-less `g2p_user` removed);
   owner gets 👑 account menu; exiting admin no longer signs out.
+- Session 29 Oct 2026 (branch `claude/cool-babbage-lacz7g`, PR #19, NOT live until the owner says so):
+  stadium c30 Ladislau Bölöni + `stadium: true`; court counts computed (`courtsPhrase`, `NBH_N`,
+  `STADIUM_N`); hero PBR basketball + torus hoop collider; AI Court Doctor (structured diagnosis,
+  consent, `reports/*/ai.score`, `AiEstimateBadge`); Letter v2 (OG 27/2002 vs Law 544/2001,
+  evidence, photos in PDF, `letters/` + Impact ✉️ tab); residents' verification (`verifications/`,
+  consensus of 2 devices, missions from the satellite audit). Firebase schema adds `letters/` and
+  `verifications/` — `database.rules.json` must be deployed to Firebase separately.

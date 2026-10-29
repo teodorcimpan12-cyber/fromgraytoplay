@@ -6,7 +6,22 @@ tags: [topic, log, sessions]
 
 A running ledger of what each Claude session shipped. Newest first.
 
-## Session 3 — Vault generation (current)
+## Session — 29 oct. 2026: stadioane, numere live, minge PBR, spec-ul Astra construit
+
+> Branch `claude/cool-babbage-lacz7g`, PR #19 (draft, nu e live).
+
+- Stadionul Ladislau Bölöni (c30, Str. Insulei): închis din anii 2010, „Degradat”, cu sursă. `stadium: true` pe c11/c29/c30 + sb8/sb21.
+- Toate cifrele „35” / „34 din 35” calculate din date (`courtsPhrase`, `NBH_N`, `STADIUM_N`, `SAT_RECENT`).
+- Hero 3D: `basketballMaterial()` (albedo + normal map din câmp de înălțime + roughness map), minge 0.10, inel ×1.15,
+  `hoopPhysics()` (torus + panou, sub-pași, fără tunelare), `fitHits()` (zonă de prindere ≥ 30 px), plasă care se întinde.
+- Demo: `SignupNudge` oprit în `?demo=`, mascota ridicată deasupra barei, `.action-card` lizibil în tema deschisă.
+- [[Components/AiPhotoHint]] = AI Court Doctor: consimțământ, scor 1–5, probleme cu gravitate, reparații + cost; poze fără teren blochează trimiterea; 3/oră/dispozitiv.
+- Scrisoarea v2 (`AiLetterModal`): OG 27/2002 sau Legea 544/2001, dovezi, poze în PDF, `letters/` + `LettersTracker` pe Impact.
+- `VerifyFlow`, `verifyConsensus`, `sibiuMissions`, `CourtSourcesCard`: verificare în 60 s, consens din 2 dispozitive, misiuni din satelit.
+- Open data: `condition_source` + `ai_score`.
+- TODO: deploy reguli Firebase; eticheta comunității pe hartă (pop-up) încă nu; cifrele de registru per teren nu există încă.
+
+## Session 3 — Vault generation
 
 - Created this Obsidian vault under `obsidian/`.
 - Documented every page, component, helper, and file in

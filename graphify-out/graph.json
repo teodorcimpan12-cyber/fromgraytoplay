@@ -3,7 +3,8 @@
     "project": "From Gray to Play",
     "file": "index.html",
     "generated": "2026-06-11",
-    "description": "Knowledge graph al proiectului — componente, pagini, Firebase paths, utilitare. Citit automat de Claude la fiecare sesiune."
+    "description": "Knowledge graph al proiectului — componente, pagini, Firebase paths, utilitare. Citit automat de Claude la fiecare sesiune.",
+    "updated": "2026-10-29"
   },
   "nodes": [
     {
@@ -727,6 +728,84 @@
       "id": "firebase:settings/banner/color",
       "type": "firebase_path",
       "desc": "Optional banner background hex, independent of accent"
+    },
+    {
+      "id": "AiPhotoHint",
+      "type": "component",
+      "line": 15456,
+      "desc": "AI Court Doctor: bifă de consimțământ + notă de confidențialitate, apoi diagnostic structurat (scor 1–5, probleme cu gravitate 1–3, reparații, bandă de cost). Etichetă: estimare AI, nu inspecție oficială."
+    },
+    {
+      "id": "AiEstimateBadge",
+      "type": "component",
+      "line": 15525,
+      "desc": "Insignă „Estimare AI: N/5” în CourtDetail (mediana ultimelor 5 poze cu ai.score). Nu scrie niciodată în condition."
+    },
+    {
+      "id": "aiEstimateOf",
+      "type": "util",
+      "line": 15518,
+      "desc": "Estimarea AI per teren din reports/*/ai.score (mediană, n, dată). Folosit de AiEstimateBadge, OpenDataCard, letterEvidence."
+    },
+    {
+      "id": "AiLetterModal",
+      "type": "component",
+      "line": 15604,
+      "desc": "Scrisoare v2: temei legal OG 27/2002 (30 zile) sau Legea 544/2001 (10 zile), bloc de dovezi, până la 3 poze în PDF, înregistrare în letters/. Disponibilă pentru toate terenurile, inclusiv stadioane."
+    },
+    {
+      "id": "letterEvidence",
+      "type": "util",
+      "line": 15580,
+      "desc": "Dovezile din scrisoare: doar fapte ale terenului și orașului (sesizări, sursa stării, estimare AI, semnături pe oraș, link). Test unitar: fără fapte TGM în Sibiu."
+    },
+    {
+      "id": "LettersTracker",
+      "type": "component",
+      "line": 12502,
+      "desc": "Impact → ✉️: scrisorile trimise per oraș, termen legal cu numărătoare, „Primăria a răspuns” + nr. înregistrare."
+    },
+    {
+      "id": "VerifyFlow",
+      "type": "component",
+      "line": 15858,
+      "desc": "Verificare în 60 s: există? se poate juca? ce lipsește? + 1–3 poze fără oameni; scrie verifications/."
+    },
+    {
+      "id": "verifyConsensus",
+      "type": "util",
+      "line": 15832,
+      "desc": "Consens: ultimul răspuns per dispozitiv; „verificat de comunitate” doar la 2 dispozitive care se potrivesc."
+    },
+    {
+      "id": "sibiuMissions",
+      "type": "util",
+      "line": 15844,
+      "desc": "Misiuni: terenurile Sibiu pe care satelitul nu le poate lămuri (gone, worn, captură veche), fără cele deja confirmate."
+    },
+    {
+      "id": "CourtSourcesCard",
+      "type": "component",
+      "line": 15920,
+      "desc": "CourtDetail: sursele stării cu date (satelit / presă / comunitate), steag de misiune, buton de verificare, link de postat."
+    },
+    {
+      "id": "courtsPhrase",
+      "type": "util",
+      "line": 6477,
+      "desc": "Număr de terenuri pentru texte: N terenuri (dintre care S stadioane). Plus NBH_N, STADIUM_N, SAT_RECENT/SAT_N; nimic hard-codat."
+    },
+    {
+      "id": "fb/letters",
+      "type": "firebase",
+      "line": 0,
+      "desc": "letters/{id}: {city, courtId, basis: og27|l544, sentAt, via, reply?: {at, regNo}} — fără date personale."
+    },
+    {
+      "id": "fb/verifications",
+      "type": "firebase",
+      "line": 0,
+      "desc": "verifications/{id}: {courtId, city, exists, playable, missing{}, photos[≤3], dev (hash dispozitiv), ai?}."
     }
   ],
   "edges": [
@@ -1499,6 +1578,81 @@
       "from": "App",
       "to": "AuthModal",
       "rel": "renders"
+    },
+    {
+      "from": "AiLetterModal",
+      "to": "fb/letters",
+      "rel": "writes"
+    },
+    {
+      "from": "LettersTracker",
+      "to": "fb/letters",
+      "rel": "reads"
+    },
+    {
+      "from": "LettersTracker",
+      "to": "fb/letters",
+      "rel": "writes"
+    },
+    {
+      "from": "ImpactPage",
+      "to": "LettersTracker",
+      "rel": "renders"
+    },
+    {
+      "from": "VerifyFlow",
+      "to": "fb/verifications",
+      "rel": "writes"
+    },
+    {
+      "from": "CourtSourcesCard",
+      "to": "fb/verifications",
+      "rel": "reads"
+    },
+    {
+      "from": "SibiuProgressBanner",
+      "to": "fb/verifications",
+      "rel": "reads"
+    },
+    {
+      "from": "CourtDetail",
+      "to": "CourtSourcesCard",
+      "rel": "renders"
+    },
+    {
+      "from": "CourtSourcesCard",
+      "to": "VerifyFlow",
+      "rel": "renders"
+    },
+    {
+      "from": "SibiuProgressBanner",
+      "to": "VerifyFlow",
+      "rel": "renders"
+    },
+    {
+      "from": "VerifyFlow",
+      "to": "AiPhotoHint",
+      "rel": "renders"
+    },
+    {
+      "from": "CourtDetail",
+      "to": "AiEstimateBadge",
+      "rel": "renders"
+    },
+    {
+      "from": "AiLetterModal",
+      "to": "letterEvidence",
+      "rel": "uses"
+    },
+    {
+      "from": "AiEstimateBadge",
+      "to": "aiEstimateOf",
+      "rel": "uses"
+    },
+    {
+      "from": "AiPhotoHint",
+      "to": "fb/reports",
+      "rel": "writes"
     }
   ],
   "routes": {
