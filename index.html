@@ -3297,7 +3297,7 @@ var HOOD_COURT_MAP = {
   tudor:      ["c5","c6","c7","c8","c19","c27"],
   auchan:     ["c3","c4"],
   mureseni:   ["c1","c2","c20","c28"],
-  center:     ["c9","c10","c11","c12","c13","c18","c26","c29"],
+  center:     ["c9","c10","c11","c12","c13","c18","c26","c29","c30"],
   pandurilor: ["c14","c15"],
   libertate:  ["c16"],
   unirii:     ["c17","c21"],
@@ -6037,6 +6037,7 @@ const COURTS_BASE = [
     progress: 100,
     accessibility: { wheelchair: true,  lighting: true,  parking: true,  flatSurface: true  },
     reports: 2,
+    stadium: true,
     description: "Stadion municipal 11.000 locuri, teren gazon natural, în stare foarte bună."
   },
   {
@@ -6318,7 +6319,32 @@ const COURTS_BASE = [
     progress: 100,
     accessibility: { wheelchair: true, lighting: true, parking: true, flatSurface: true },
     reports: 0,
+    stadium: true,
+    src: "https://en.wikipedia.org/wiki/Trans-Sil_Stadium",
     description: "Stadion de fotbal, 8.200 locuri, gazon natural, în stare foarte bună (Wikipedia: Trans-Sil Stadium)."
+  },
+  // Old ASA stadium right next to Trans-Sil: closed since the early 2010s (Wikipedia, Jurnalul).
+  {
+    id: "c30",
+    name: "Stadionul Ladislau Bölöni (fostul stadion ASA)",
+    address: "Str. Insulei",
+    lat: 46.5493, lng: 24.5487,
+    status: "degraded",
+    neighbourhood: "center",
+    category: "football",
+    condition: 1,
+    occupancy: "empty",
+    progress: 0,
+    accessibility: { wheelchair: false, lighting: false, parking: true, flatSurface: false },
+    reports: 0,
+    stadium: true,
+    src: "https://en.wikipedia.org/wiki/Ladislau_B%C3%B6l%C3%B6ni_Stadium_(T%C3%A2rgu_Mure%C8%99)",
+    description: "Stadionul istoric al ASA Târgu Mureș (1962–2004), 15.000 de locuri, închis de la începutul anilor 2010 și lăsat să se degradeze — la câțiva metri de Trans-Sil.",
+    desc: {
+      ro: "Stadionul istoric al ASA Târgu Mureș (1962–2004), 15.000 de locuri, închis de la începutul anilor 2010 și lăsat să se degradeze — la câțiva metri de Trans-Sil.",
+      en: "The historic ASA Târgu Mureș stadium (1962–2004), 15,000 seats, closed since the early 2010s and left to decay — a few metres from Trans-Sil.",
+      hu: "Az ASA Marosvásárhely történelmi stadionja (1962–2004), 15 000 férőhely, a 2010-es évek eleje óta zárva és az enyészetnek hagyva — néhány méterre a Trans-Siltől." // TODO: HU review
+    }
   }
 ];
 
@@ -6394,9 +6420,9 @@ const SAT_VIEW = {"sb1":{"v":"worn","n":2,"of":4,"at":"2021-02-27"},"sb2":{"v":"
 const STADIUMS_SIBIU = {
   sb21: { name: "Stadionul Municipal Sibiu", address: "Aleea Mihai Eminescu (Parcul Sub Arini), Sibiu", lat: 45.78332, lng: 24.1438, category: "football",
     src: "https://www.romania-insider.com/sibiu-stadium-opening-dec-2022",
-    desc: { ro: "Stadion de fotbal reconstruit, redeschis pe 10 decembrie 2022: 12.363 locuri, gazon natural, pistă de atletism nouă, nocturnă. Casa FC Hermannstadt.",
-      en: "Rebuilt football stadium, reopened on 10 December 2022: 12,363 seats, natural grass, new athletics track, floodlights. Home of FC Hermannstadt.",
-      hu: "Újjáépített labdarúgó-stadion, 2022. december 10-én nyílt meg: 12 363 ülőhely, természetes gyep, új atlétikapálya, világítás. Az FC Hermannstadt otthona." } }, // TODO: HU review
+    desc: { ro: "Stadion de fotbal reconstruit, redeschis pe 10 decembrie 2022: 12.363 locuri, gazon natural, pistă de atletism nouă, nocturnă. Din august 2026, după retragerea FC Hermannstadt, aici joacă Inter Sibiu (Liga 3).",
+      en: "Rebuilt football stadium, reopened on 10 December 2022: 12,363 seats, natural grass, new athletics track, floodlights. Since August 2026, after FC Hermannstadt withdrew, Inter Sibiu (Liga 3) plays here.",
+      hu: "Újjáépített labdarúgó-stadion, 2022. december 10-én nyílt meg: 12 363 ülőhely, természetes gyep, új atlétikapálya, világítás. 2026 augusztusától, az FC Hermannstadt visszalépése után itt játszik az Inter Sibiu (Liga 3)." } }, // TODO: HU review
   sb8: { name: "Baza Sportivă Voința (Academia Alma)", address: "Strada Poet Vasile Cârlova, Sibiu", lat: 45.79125, lng: 24.13266, category: "football",
     src: "https://www.oradesibiu.ro/2025/07/11/ai-vazut-noul-stadion-din-sibiu-arena-de-sapte-sute-mii-de-euro-aproape-terminata-si-arata-superb-video-foto/",
     desc: { ro: "Bază modernizată în 2024–2025 (peste 1 milion de euro): gazon sintetic nou, nocturnă, vestiare, teren omologabil Liga 3. Se poate închiria seara, după ora 21.",
@@ -6426,6 +6452,19 @@ COURTS_SIBIU.forEach(c => {
 });
 const COURTS_ALL = [...COURTS_TGM, ...COURTS_SIBIU];
 const COURTS = COURTS_ALL.filter(c => c.city === ACTIVE_CITY);
+/* Court counts for prose: never hard-code them. Stadiums are counted with the courts and named separately. */
+const STADIUM_N = COURTS.filter(c => c.stadium).length;
+const NBH_N = COURTS.length - STADIUM_N;
+const SAT_N = COURTS.filter(c => SAT_VIEW[c.id]).length;
+const SAT_RECENT = COURTS.filter(c => SAT_VIEW[c.id] && /^202[12]/.test(SAT_VIEW[c.id].at)).length;
+// Romanian puts "de" between a number and its noun from 20 up ("29 de terenuri", "2 stadioane").
+const roDe = n => (n % 100 >= 20 || (n >= 100 && n % 100 === 0)) ? n + " de " : n + " ";
+function courtsPhrase(lang) {
+  const n = COURTS.length, k = STADIUM_N;
+  if (lang === "en") return n + " public courts" + (k ? " (" + k + " of them " + (k === 1 ? "a stadium" : "stadiums") + ")" : "");
+  if (lang === "hu") return n + " közpálya" + (k ? " (ebből " + k + " stadion)" : ""); // TODO: HU review
+  return roDe(n) + "terenuri publice" + (k ? " (dintre care " + (k === 1 ? "un stadion" : roDe(k) + "stadioane") + ")" : "");
+}
 // Admin position corrections (settings/courtPos), cached so they apply before the first render.
 function applyCourtPos(map) {
   if (!map) return;
@@ -6611,7 +6650,7 @@ const TIMELINE = [
 // Sibiu: only events with a public source (docs/INVESTITII_SIBIU.md). `lei` marks a public investment.
 const TIMELINE_SIBIU = [
   { y: "2020", lei: "565.000 lei", src: "https://www.turnulsfatului.ro/2020/10/15/primaria-sibiu-teren-modern-pentru-handbal-si-baschet-la-liceul-onisifor-ghibu-177144", ro: "Teren multifuncțional nou la Liceul Onisifor Ghibu (Ștrand) — curte de școală", en: "New multi-sport court at Onisifor Ghibu High School (Ștrand) — a school yard", hu: "Új többfunkciós pálya az Onisifor Ghibu Líceumnál (Ștrand) — iskolaudvar" }, // TODO: HU review
-  { y: "2022", src: "https://livingatlas.arcgis.com/wayback/", ro: "Ultimele imagini din satelit (Esri) pentru 34 din cele 35 de terenuri de cartier sunt din 2021–2022", en: "The latest satellite images (Esri) of 34 of the 35 neighbourhood courts date from 2021–2022", hu: "A 35 lakótelepi pályából 34-ről a legfrissebb műholdkép (Esri) 2021–2022-es" }, // TODO: HU review
+  { y: "2022", src: "https://livingatlas.arcgis.com/wayback/", ro: "Ultimele imagini din satelit (Esri) pentru 34 din cele 35 de terenuri din OpenStreetMap sunt din 2021–2022", en: "The latest satellite images (Esri) of 34 of the 35 OpenStreetMap courts date from 2021–2022", hu: "A 35 OpenStreetMap-pályából 34-ről a legfrissebb műholdkép (Esri) 2021–2022-es" }, // TODO: HU review
   { y: "2023", lei: "12,5 mil. lei", src: "https://sibiuindependent.ro/2023/04/21/scoala-radu-selejan-va-avea-o-sala-de-sport-si-terenuri-exterioare-pentru-handbal-baschet-si-minifotbal/", ro: "Anunț: sală de sport și 2 terenuri exterioare la Școala Radu Selejan (Vasile Aaron)", en: "Announced: sports hall and 2 outdoor courts at Radu Selejan School (Vasile Aaron)", hu: "Bejelentés: tornaterem és 2 kültéri pálya a Radu Selejan Iskolánál (Vasile Aaron)" }, // TODO: HU review
   { y: "2023", lei: "> 1 mil. lei", src: "https://www.oradesibiu.ro/2023/05/31/teren-de-sport-la-scoala-8-de-pe-strada-lupeni-primaria-a-lansat-licitatia/", ro: "Licitație pentru terenul de baschet și minifotbal de la Școala nr. 8 (Str. Lupeni)", en: "Tender for the basketball and mini-football court at School no. 8 (Lupeni St.)", hu: "Közbeszerzés a 8-as iskola kosár- és kispályájára (Lupeni utca)" }, // TODO: HU review
   { y: "2024", lei: "12,7 mil. lei", src: "https://bazesportive.sibiu.ro/obor", ro: "Se deschide Baza Sportivă Obor — gratuită cu programare (terenul mare cu plată)", en: "Obor Sports Base opens — free with booking (the main pitch is paid)", hu: "Megnyílik az Obor Sportbázis — foglalással ingyenes (a nagy pálya fizetős)" }, // TODO: HU review
@@ -8877,7 +8916,7 @@ function StoryScroll() {
       vis: court,
       h: sib ? L3("Cum arată terenul de lângă tine?", "What does the court near you look like?", "Milyen a hozzád legközelebbi pálya?")
              : L3("Cel mai apropiat teren arată așa.", "The nearest court looks like this.", "A legközelebbi pálya így néz ki."),
-      p: sib ? L3("Pe hartă sunt 35 de terenuri publice. Starea lor nu a verificat-o încă nimeni.", "There are 35 public courts on the map. Nobody has checked their condition yet.", "35 közpálya van a térképen. Az állapotukat még senki sem ellenőrizte.")
+      p: sib ? L3("Pe hartă sunt " + courtsPhrase("ro") + ". Starea lor nu a verificat-o încă nimeni.", "There are " + courtsPhrase("en") + " on the map. Nobody has checked their condition yet.", courtsPhrase("hu") + " van a térképen. Az állapotukat még senki sem ellenőrizte.")
              : L3("Coș îndoit, asfalt crăpat, linii șterse. Și nu e singurul.", "Bent hoop, cracked asphalt, faded lines. And it isn't the only one.", "Görbe kosár, repedezett aszfalt, kopott vonalak. És nem ez az egyetlen.")
     },
     sib ? {
@@ -12674,9 +12713,9 @@ function SibiuInvest() {
         React.createElement("a", { href: ev.src, target: "_blank", rel: "noopener", style: { fontSize: ".75rem", color: "var(--textSec)" } }, "🔗")),
       React.createElement("div", { className: "font-bold", style: { color: "var(--green)", whiteSpace: "nowrap" } }, ev.lei))),
     React.createElement("p", { className: "mt-2", style: { fontSize: ".85rem", color: "var(--textSec)" } },
-      L3("Toate investițiile găsite sunt baze mari sau curți de școală. Niciunul dintre cele 35 de terenuri de cartier de pe hartă nu apare încă într-o investiție cu sursă — de confirmat cu Primăria (cerere conform Legii 544/2001).",
-         "Every investment found is a large base or a school yard. None of the 35 neighbourhood courts on the map appears yet in a sourced investment — to be confirmed with City Hall (Law 544/2001 request).",
-         "Minden talált beruházás nagy sportbázis vagy iskolaudvar. A térkép 35 lakótelepi pályája közül egyik sem szerepel még forrással igazolt beruházásban — a Polgármesteri Hivatallal kell megerősíteni (544/2001-es kérelem).")) // TODO: HU review
+      L3("Toate investițiile găsite sunt baze mari sau curți de școală. Niciunul dintre cele " + roDe(NBH_N) + "terenuri de cartier de pe hartă nu apare încă într-o investiție cu sursă — de confirmat cu Primăria (cerere conform Legii 544/2001).",
+         "Every investment found is a large base or a school yard. None of the " + NBH_N + " neighbourhood courts on the map appears yet in a sourced investment — to be confirmed with City Hall (Law 544/2001 request).",
+         "Minden talált beruházás nagy sportbázis vagy iskolaudvar. A térkép " + NBH_N + " lakótelepi pályája közül egyik sem szerepel még forrással igazolt beruházásban — a Polgármesteri Hivatallal kell megerősíteni (544/2001-es kérelem).")) // TODO: HU review
   );
 }
 
@@ -12811,7 +12850,7 @@ const SOURCES = [
     p: { ro: "81% dintre adolescenții de 11–17 ani din lume nu fac destulă mișcare.", en: "81% of adolescents aged 11–17 worldwide are not active enough.", hu: "A 11–17 éves serdülők 81%-a világszerte nem mozog eleget." } }, // TODO: HU review
   { id: "osm", city: "sibiu", kind: "data", pub: "OpenStreetMap (ODbL)", d: "live", url: "https://www.openstreetmap.org/copyright", at: ["home", "about", "press"],
     t: { ro: "Terenurile publice de cartier din Sibiu, din OpenStreetMap", en: "Sibiu's public neighbourhood courts, from OpenStreetMap", hu: "Szeben lakótelepi közpályái az OpenStreetMapből" }, // TODO: HU review
-    p: { ro: "35 de terenuri publice de cartier pe hartă. Starea lor o verifică acum comunitatea.", en: "35 public neighbourhood courts on the map. The community is checking their condition now.", hu: "35 lakótelepi közpálya a térképen. Az állapotukat most a közösség ellenőrzi." } }, // TODO: HU review
+    p: { ro: roDe(NBH_N) + "terenuri publice de cartier pe hartă. Starea lor o verifică acum comunitatea.", en: NBH_N + " public neighbourhood courts on the map. The community is checking their condition now.", hu: NBH_N + " lakótelepi közpálya a térképen. Az állapotukat most a közösség ellenőrzi." } }, // TODO: HU review
   { id: "zsn-12m", city: "sibiu", kind: "news", pub: "Zile și Nopți", d: "24 Feb 2024", isNew: true, url: "https://zilesinopti.ro/2024/02/24/finantari-sportul-sibian-2024/", at: ["about", "press"],
     t: { ro: "Finanțări pentru sportul sibian în 2024", en: "Funding for Sibiu sport in 2024", hu: "A szebeni sport finanszírozása 2024-ben" }, // TODO: HU review
     p: { ro: "Primăria Sibiu: 12 milioane lei prin Agenda Sportivă 2024, plus 500.000 lei pentru cluburile de drept public.", en: "Sibiu City Hall: 12 million lei through the 2024 Sports Agenda, plus 500,000 lei for public-law clubs.", hu: "Szeben polgármesteri hivatala: 12 millió lej a 2024-es Sportprogramon át, plusz 500 000 lej a közjogi kluboknak." } } // TODO: HU review
@@ -13031,9 +13070,9 @@ function pressNumbers(lang, d) {
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
   const live = L3("live, din site", "live, from the site", "élő, az oldalról");
   const city = ACTIVE_CITY === "sibiu" ? [
-    { n: String(d.courts), l: L3("terenuri publice de cartier în Sibiu", "public neighbourhood courts in Sibiu", "lakótelepi közpálya Szebenben"), src: "osm" },
+    { n: String(d.courts), l: L3("terenuri publice în Sibiu", "public courts in Sibiu", "közpálya Szebenben") + (STADIUM_N ? " (" + L3("dintre care ", "incl. ", "ebből ") + STADIUM_N + " " + L3("stadioane", "stadiums", "stadion") + ")" : ""), src: "osm" },
     { n: d.checked + " / " + d.courts, l: L3("verificate de comunitate", "checked by the community", "ellenőrizte a közösség"), live: live },
-    { n: "34 / 35", l: L3("terenuri cu ultima imagine din satelit din 2021–2022", "courts whose latest satellite image is from 2021–2022", "pálya legfrissebb műholdképe 2021–2022-es"), src: "sbt1" },
+    { n: SAT_RECENT + " / " + SAT_N, l: L3("terenuri cu ultima imagine din satelit din 2021–2022", "courts whose latest satellite image is from 2021–2022", "pálya legfrissebb műholdképe 2021–2022-es"), src: "sbt1" },
     { n: "12 mil. lei", l: L3("Agenda Sportivă 2024, Primăria Sibiu", "2024 Sports Agenda, Sibiu City Hall", "2024-es Sportprogram, Szeben"), src: "zsn-12m" }
   ] : [
     { n: "12 / 15", l: L3("rezidenți nu folosesc terenul cel mai apropiat", "residents don't use their nearest court", "lakos nem használja a legközelebbi pályát"), src: "survey" },
@@ -13466,8 +13505,8 @@ function AboutPage() {
   );
   // Key data: only facts of the city on screen (TGM facts never show on Sibiu).
   const keyData = sib ? [
-    { n: String(COURTS.length), l: L3("terenuri de cartier", "neighbourhood courts", "lakótelepi pálya"), c: "var(--green)", src: "osm" },
-    { n: "34/35", l: L3("cu satelit din 2021–22", "satellite from 2021–22", "2021–22-es műholdkép"), c: "var(--coral)", src: "sbt1" },
+    { n: String(COURTS.length), l: L3("terenuri", "courts", "pálya") + (STADIUM_N ? " · " + STADIUM_N + " " + L3("stadioane", "stadiums", "stadion") : ""), c: "var(--green)", src: "osm" },
+    { n: SAT_RECENT + "/" + SAT_N, l: L3("cu satelit din 2021–22", "satellite from 2021–22", "2021–22-es műholdkép"), c: "var(--coral)", src: "sbt1" },
     { n: "12M", l: L3("lei pentru sport, 2024", "lei for sport, 2024", "lej sportra, 2024"), c: "var(--teal)", src: "zsn-12m" },
     { n: "28%", l: L3("adolescenți activi", "active teens", "aktív serdülő"), c: "var(--red)", src: "mediafax-28" }
   ] : [

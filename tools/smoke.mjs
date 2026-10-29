@@ -14,7 +14,7 @@ const CHROME = [
   "C:/Program Files/Google/Chrome/Application/chrome.exe",
   "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-  "/usr/bin/google-chrome", "/usr/bin/chromium", "/usr/bin/chromium-browser"
+  "/usr/bin/google-chrome", "/usr/bin/chromium", "/usr/bin/chromium-browser", "/opt/pw-browsers/chromium"
 ].find(p => p && existsSync(p));
 if (!CHROME) { console.log("⚠ smoke: Chrome not found — skipped (the Netlify gate still runs)."); process.exit(0); }
 
@@ -37,7 +37,7 @@ const base = "http://127.0.0.1:" + server.address().port + "/";
 
 const port = 9400 + Math.floor(Math.random() * 400);
 const profile = await mkdtemp(join(tmpdir(), "g2p-smoke-"));
-const chrome = spawn(CHROME, ["--headless=new", "--disable-quic", "--remote-debugging-port=" + port, "--user-data-dir=" + profile, "--no-first-run", "--window-size=390,844", "about:blank"], { stdio: "ignore" });
+const chrome = spawn(CHROME, ["--headless=new", "--disable-quic", "--remote-debugging-port=" + port, "--user-data-dir=" + profile, "--no-first-run", "--window-size=390,844", ...(process.getuid && process.getuid() === 0 ? ["--no-sandbox"] : []), "about:blank"], { stdio: "ignore" });
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const problems = [];
 let ws;
