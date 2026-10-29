@@ -1,12 +1,43 @@
 ---
 tags: [handoff, session, index]
-updated: 2026-05-22
+updated: 2026-10-29
 ---
 
 # Session Handoff — From Grey to Play
 
 Everything a fresh Claude Code session needs to continue this project. Read
 this first.
+
+## 0. Latest update — 29 Oct 2026 (read this before section 7)
+
+Branch `ccr-e0d1d717-sdwdwc`, draft PR #18 into `claude/start-building-BQQ1q`. All checks green, no review threads,
+mergeable. A safety-net check-in is scheduled (every ~4 h, silent unless something changes).
+
+**Done in this session**
+- 3D hero balls (`index.html`, `paintSphere` / `buildBasketball(gold, W, H, seamW)` / `buildSoccer`): painted per pixel on
+  the sphere. Basketball seams follow product photos (two great circles + two curved seams that cross the equator at
+  |x| = .29 and swing out to |x| = .73). Soccer ball is a real truncated icosahedron. The user compared against
+  photos several times: they want it *as in the photos* (thin dark-brown ribs, brown-orange leather, fine pebble).
+- Stadiums in the hero skyline (`stadium()` in `buildSkyline`): TGM Stadionul Municipal + Trans-Sil, Sibiu Stadionul
+  Municipal. They had to be big and tall to rise above the foreground blocks.
+- Corner mascot (`makeMascotBall`) now uses the same basketball skin. `MASCOT_TILT = [0, .6, 0]` puts the equator seam
+  between the eyes and the mouth; `MASCOT_SEAM = .026` keeps ribs visible at 64-88 px. The animations spin the outer
+  `ball` group (rotation.x); the tilt is on the inner `skinMesh`. Gold reward skin still works.
+- `demos/basketball.html` (standalone SVG ball) and `demos/basketball3d.html` (standalone Three.js hero: seams cut into
+  the mesh, PBR roughness .56, key/point/fill/rim lights, cast shadow, float + cursor tilt + drag inertia). Neither is
+  wired into the site yet.
+
+**Not done / open**
+- Astra Hack (6-7 Nov) features from `docs/SPEC_6NOV.md` are intentionally unbuilt until the event: missions
+  ("Ajută-ne să verificăm"), `verifications/`, 2-person consensus. Pitch mode `?demo=1` / `?demo=5` already exists.
+- Optional: swap the Home hero for `demos/basketball3d.html`-style ball; update `graphify-out/graph.json` (not touched).
+- Cloud environment setup script fails (`npm install` in `/home/user`, no root package.json). The fix is in the
+  environment settings (remove or `cd fromgraytoplay` first); the project needs no install.
+
+**How to verify (all green at handoff)**
+`node tools/predeploy-check.mjs` and `node tools/smoke.mjs`. In the cloud container smoke needs a Chrome wrapper:
+`CHROME_PATH=<script that execs /opt/pw-browsers/chromium-*/chrome-linux64/chrome --no-sandbox "$@">`.
+Headless WebGL screenshots work with Playwright `--use-gl=swiftshader`; set `localStorage.g2p_ob = "1"` to skip onboarding.
 
 ## 1. What the project is
 
