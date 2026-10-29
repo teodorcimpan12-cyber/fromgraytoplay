@@ -65,3 +65,7 @@ When you finish a session, append a new heading at the top:
 - Link to [[Pages/...]] / [[Components/...]] notes for anything new.
 - Note any TODOs you punted on.
 ```
+
+## 2026-10-29 (seara) — buton Rezervă mai aproape
+
+- `CourtDetail`: butonul 📅 Rezervă a urcat lângă scorul de sănătate (clasa `.cd-book`, contur verde discret, se umple la hover); a fost scos din grila de acțiuni de jos, deci ecranul nu primește un element în plus. Tot sub flag-ul `settings/flags/booking`.
