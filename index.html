@@ -7440,13 +7440,14 @@ function grain(x, y, z, k) { var h = Math.sin(Math.floor(x * k) * 127.1 + Math.f
 /* Basketball: 8 panels = two perpendicular great circles (x = 0, y = 0) + two curved seams, one per side of
    x = 0. Each curve crosses y = 0 close to the x = 0 seam (|x| = .29) and swings out to |x| = .73 halfway
    round, which reads as the "parentheses" from the front and the long swoops from the side. */
-function buildBasketball() {
-  return paintSphere(1024, 512, function (x, y, z, o) {
-    var w = 0.011;
+function buildBasketball(gold, W, H, seamW) {   // gold = the mascot's reward skin; W/H = texture size (hero 1024x512, mascot 512x256); seamW = rib half-width (thicker on the 64-88 px mascot)
+  var lo = gold ? [96, 66, 8] : [42, 24, 18], hi = gold ? [252, 208, 84] : [204, 100, 54];
+  return paintSphere(W || 1024, H || 512, function (x, y, z, o) {
+    var w = seamW || 0.011;
     var yz = y * y + z * z + 1e-6, d = Math.min(Math.abs(y), Math.abs(x), Math.abs(Math.abs(x) - (0.51 - 0.22 * (z * z - y * y) / yz)));
     var m = seamMix(d, w), peb = grain(x, y, z, 260), n = 0.5 + 0.5 * peb;
     var g = 0.97 + 0.05 * n; o[3] = 255 * m * (0.9 + 0.1 * n);
-    o[0] = (42 + (204 - 42) * m) * g; o[1] = (24 + (100 - 24) * m) * g; o[2] = (18 + (54 - 18) * m) * g;
+    o[0] = (lo[0] + (hi[0] - lo[0]) * m) * g; o[1] = (lo[1] + (hi[1] - lo[1]) * m) * g; o[2] = (lo[2] + (hi[2] - lo[2]) * m) * g;
   });
 }
 /* Soccer ball: truncated icosahedron. Each point belongs to the face whose plane it reaches first
@@ -16312,28 +16313,17 @@ const MASCOT_LINES = {
 };
 
 // One textured ball with eyes and a mouth. Shared by the corner mascot and the celebration.
+// The skin is the same real basketball as the 3D hero (8 panels, curved seams, pebble bump); gold = the reward skin.
+const MASCOT_TILT = [0, 0.6, 0], MASCOT_SEAM = 0.026;
 function makeMascotBall(THREE, r) {
-  const cv = document.createElement("canvas"); cv.width = 512; cv.height = 256;
-  const g = cv.getContext("2d");
-  // gold = the reward for finding every secret.
-  const paint = gold => {
-    const grd = g.createLinearGradient(0, 0, 0, 256);
-    grd.addColorStop(0, gold ? "#FFE58A" : "#F58A2E"); grd.addColorStop(1, gold ? "#D9A400" : "#D9621A");
-    g.fillStyle = grd; g.fillRect(0, 0, 512, 256);
-    g.fillStyle = gold ? "rgba(255,255,255,.22)" : "rgba(120,40,0,.18)";
-    for (let i = 0; i < 2600; i++) g.fillRect(Math.random() * 512, Math.random() * 256, 1.4, 1.4);
-    g.strokeStyle = gold ? "#6B4A00" : "#1b1209"; g.lineWidth = 6; g.lineCap = "round";
-    const line = (pts) => { g.beginPath(); pts.forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])); g.stroke(); };
-    line([[0, 128], [512, 128]]);
-    line([[128, 0], [128, 256]]); line([[384, 0], [384, 256]]);
-    [0, 256, 512].forEach(s => [1, -1].forEach(k => { const p = []; for (let y = 0; y <= 256; y += 8) p.push([s + k * 70 * Math.sin(Math.PI * y / 256), y]); line(p); }));
-  };
-  paint(false);
-  const tex = new THREE.CanvasTexture(cv);
+  const skin = buildBasketball(false, 512, 256, MASCOT_SEAM);
+  const tex = new THREE.CanvasTexture(skin.map), bump = new THREE.CanvasTexture(skin.bump);
+  tex.anisotropy = bump.anisotropy = 4;
   const root = new THREE.Group(), body = new THREE.Group();
   root.add(body);
-  const ball = new THREE.Mesh(new THREE.SphereGeometry(r, 40, 28), new THREE.MeshStandardMaterial({ map: tex, roughness: .62, metalness: .02 }));
-  ball.rotation.y = -Math.PI / 2;
+  const skinMesh = new THREE.Mesh(new THREE.SphereGeometry(r, 48, 32), new THREE.MeshStandardMaterial({ map: tex, bumpMap: bump, bumpScale: .01, roughness: .58, metalness: .02 }));
+  skinMesh.rotation.set(MASCOT_TILT[0], MASCOT_TILT[1], MASCOT_TILT[2]);   // which part of the ball faces the viewer: seams run between the eyes and the mouth
+  const ball = new THREE.Group(); ball.add(skinMesh);                      // the animations spin this group (rotation.x), the tilt stays inside
   body.add(ball);
   const face = new THREE.Group(); body.add(face);
   const white = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: .3 });
@@ -16351,8 +16341,8 @@ function makeMascotBall(THREE, r) {
   const mouth = new THREE.Mesh(new THREE.TorusGeometry(r * .2, r * .035, 8, 24, Math.PI), black);
   mouth.position.set(0, -r * .12, r * .97); mouth.rotation.z = Math.PI;
   face.add(mouth);
-  const gild = () => { paint(true); tex.needsUpdate = true; ball.material.metalness = .45; ball.material.roughness = .28; };
-  return { root, body, ball, eyes, pupils, mouth, gild, dispose() { root.traverse(o => { o.geometry && o.geometry.dispose(); }); tex.dispose(); } };
+  const gild = () => { const s = buildBasketball(true, 512, 256, MASCOT_SEAM); tex.image = s.map; bump.image = s.bump; tex.needsUpdate = bump.needsUpdate = true; skinMesh.material.metalness = .45; skinMesh.material.roughness = .28; };
+  return { root, body, ball, eyes, pupils, mouth, gild, dispose() { root.traverse(o => { o.geometry && o.geometry.dispose(); }); tex.dispose(); bump.dispose(); } };
 }
 
 function Mascot({ page }) {
