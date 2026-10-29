@@ -7437,12 +7437,13 @@ function paintSphere(W, H, shade) {   // one pass -> { map, bump } canvases; sha
 }
 function seamMix(d, w) { var t = Math.min(1, Math.max(0, (d - w) / (w * 0.7))); return t * t * (3 - 2 * t); }
 function grain(x, y, z, k) { var h = Math.sin(Math.floor(x * k) * 127.1 + Math.floor(y * k) * 311.7 + Math.floor(z * k) * 74.7) * 43758.5453; return (h - Math.floor(h)) * 2 - 1; }
-/* Basketball: 8 panels = two perpendicular great circles + two near-circular seams ("parentheses" seen
-   from the front) around the y axis that cross one great circle and flare slightly as they leave it. */
+/* Basketball: 8 panels = two perpendicular great circles (x = 0, y = 0) + two curved seams, one per side of
+   x = 0. Each curve crosses y = 0 close to the x = 0 seam (|x| = .29) and swings out to |x| = .73 halfway
+   round, which reads as the "parentheses" from the front and the long swoops from the side. */
 function buildBasketball() {
   return paintSphere(1024, 512, function (x, y, z, o) {
-    var w = 0.011, ay = Math.abs(y);
-    var d = Math.min(Math.abs(y), Math.abs(x), Math.abs(ay - (0.64 + 0.24 * x * x)) / Math.sqrt(1 + 0.23 * x * x));
+    var w = 0.011;
+    var yz = y * y + z * z + 1e-6, d = Math.min(Math.abs(y), Math.abs(x), Math.abs(Math.abs(x) - (0.51 - 0.22 * (z * z - y * y) / yz)));
     var m = seamMix(d, w), peb = grain(x, y, z, 260), n = 0.5 + 0.5 * peb;
     var g = 0.97 + 0.05 * n; o[3] = 255 * m * (0.9 + 0.1 * n);
     o[0] = (42 + (204 - 42) * m) * g; o[1] = (24 + (100 - 24) * m) * g; o[2] = (18 + (54 - 18) * m) * g;
