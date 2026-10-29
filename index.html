@@ -1126,6 +1126,11 @@ html.g2p-shake .card,html.g2p-shake .stat-tile{animation:cardShake .5s 3}
 .ai-consent{display:flex;gap:.5rem;align-items:flex-start;font-size:.78rem;line-height:1.4;color:var(--textSec);margin:.3rem 0 .1rem}.ai-consent input{width:auto;margin-top:.15rem;flex:none}
 .ai-priv{font-size:.74rem;color:var(--textSec);margin:.2rem 0 .3rem 1.4rem;padding-left:1rem}.ai-priv li{margin:.15rem 0}
 .ai-block{font-size:.8rem;color:var(--red);margin:.4rem 0 0}.ai-est{display:inline-flex;align-items:center;gap:.3rem;font-size:.72rem;font-weight:700;padding:.15rem .55rem;border-radius:999px;border:1.5px dashed #8B5CF6;color:#8B5CF6;background:color-mix(in srgb,#8B5CF6 8%,transparent)}
+.vf-q{font-weight:700;font-size:.88rem;margin:.75rem 0 .35rem}.vf-chips{display:flex;flex-wrap:wrap;gap:.35rem}.vf-chip{border:1.5px solid var(--border);background:var(--bgCard);color:var(--text);border-radius:999px;padding:.3rem .7rem;font:inherit;font-size:.8rem;cursor:pointer}.vf-chip.on{border-color:var(--coral);background:color-mix(in srgb,var(--coral) 12%,var(--bgCard))}
+.vf-photos{display:flex;gap:.45rem;flex-wrap:wrap}.vf-ph{position:relative;width:76px;height:76px}.vf-ph img{width:100%;height:100%;object-fit:cover;border-radius:10px}.vf-ph button{position:absolute;top:2px;right:2px;width:22px;height:22px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;cursor:pointer;font-size:.7rem}
+.vf-add{width:76px;height:76px;border:2px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:var(--textSec);cursor:pointer}
+.vf-src{margin:0 0 1rem;padding:.75rem .9rem;border-radius:var(--radius);border:1px solid var(--border);background:var(--bgCard);font-size:.84rem}.vf-src.mission{border:1.5px solid var(--coral)}.vf-src-l{display:flex;flex-direction:column;gap:.25rem}.vf-src-l a{color:var(--green)}.vf-mis{font-weight:700;color:var(--coral);margin-bottom:.4rem}
+.sb-dot.half{background:rgba(255,255,255,.62)}.sb-mis{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;margin-top:.7rem}.sb-mis-h{width:100%;font-size:.78rem;font-weight:700;opacity:.95}.sb-mis-b{border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.14);color:#fff;border-radius:999px;padding:.25rem .65rem;font:inherit;font-size:.76rem;cursor:pointer}.sb-mis-b:hover{background:rgba(255,255,255,.28)}
 .lt-basis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.5rem;margin:.2rem 0 .8rem}.lt-b{text-align:left;display:flex;flex-direction:column;gap:.2rem;padding:.6rem .75rem;border-radius:12px;border:1.5px solid var(--border);background:var(--bgCard);color:var(--text);cursor:pointer;font:inherit}.lt-b b{font-size:.86rem}.lt-b small{font-size:.72rem;color:var(--textSec)}.lt-b.on{border-color:var(--green);background:color-mix(in srgb,var(--green) 9%,var(--bgCard))}
 .lt-ev{margin:.6rem 0;padding:.6rem .75rem;border-radius:12px;background:color-mix(in srgb,var(--teal) 7%,var(--bgCard));border:1px solid var(--border);font-size:.8rem}.lt-ev ul{margin:.3rem 0;padding-left:1.1rem}.lt-ev li{margin:.1rem 0}.lt-ev small{color:var(--textSec);font-size:.72rem}
 .lt-row{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .7rem;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.85rem}.lt-row .lt-n{flex:1 1 12rem;font-weight:600}.lt-due{font-family:'Space Mono',monospace;font-size:.75rem;padding:.1rem .5rem;border-radius:999px;background:var(--border)}.lt-due.late{background:var(--red);color:#fff}.lt-due.ok{background:var(--green);color:#fff}
@@ -10030,6 +10035,7 @@ function CourtDetail({
     )
   ),
   React.createElement(CourtPulse, { court: c }),
+  React.createElement(CourtSourcesCard, { court: c }),
   React.createElement(AiCourtCard, { court: c, onLetter: c.category !== "gym" ? () => setShowLetter(true) : null }),
   /*#__PURE__*/React.createElement("h4", {
     className: "mb-1"
@@ -15809,6 +15815,130 @@ function CourtConditionQuick({ onClose, courtId: presetCourt }) {
   );
 }
 
+/* === "Sibiul se verifică singur" (docs/SPEC_6NOV.md §5) ===
+   Residents answer 3 questions (+ up to 3 photos without people) for a court -> verifications/{id}.
+   A court is "verified by the community" only when 2 different devices agree; one answer stays "reported by 1 person".
+   Never "field-verified by the team"; never written to the court's condition. */
+const VERIFY_MISSING = [["hoop", "🏀", "coș / panou", "hoop / backboard", "kosár / palánk"], ["goal", "🥅", "poartă / plasă", "goal / net", "kapu / háló"], ["surface", "🕳️", "suprafață bună", "a good surface", "jó burkolat"],
+  ["fence", "🚧", "gard", "fence", "kerítés"], ["lighting", "💡", "iluminat", "lighting", "világítás"], ["clean", "🧹", "curățenie", "cleanliness", "tisztaság"]]; // TODO: HU review
+// A short, non-reversible tag of the device key: enough to count two answers from one phone once, nothing more.
+function devTag(vk) { let h = 2166136261; for (let i = 0; i < vk.length; i++) { h ^= vk.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0).toString(36); }
+function verifyByCourt(all) {
+  const out = {};
+  if (all) Object.values(all).forEach(v => { if (v && v.courtId && v.exists) (out[v.courtId] = out[v.courtId] || []).push(v); });
+  return out;
+}
+// latest answer per device; consensus = at least 2 devices with the same (exists, playable)
+function verifyConsensus(list) {
+  if (!list || !list.length) return null;
+  const byDev = {};
+  list.forEach(v => { const k = v.dev || Math.random().toString(36); if (!byDev[k] || String(v.at) > String(byDev[k].at)) byDev[k] = v; });
+  const ans = Object.values(byDev), groups = {};
+  ans.forEach(v => { const k = v.exists + "|" + (v.exists === "yes" ? v.playable : "-"); (groups[k] = groups[k] || []).push(v); });
+  const best = Object.values(groups).sort((a, b) => b.length - a.length)[0];
+  const at = ans.map(v => v.at).sort().pop();
+  if (best.length >= 2) return { state: "verified", n: best.length, total: ans.length, exists: best[0].exists, playable: best[0].playable, at };
+  return { state: ans.length === 1 ? "single" : "split", n: 1, total: ans.length, exists: ans[0].exists, playable: ans[0].playable, at };
+}
+// Courts the satellite audit could not settle: gone first, then worn, then the oldest capture; community-verified ones drop off.
+function sibiuMissions(byCourt) {
+  const rank = { gone: 0, worn: 1, ok: 2 };
+  return COURTS.filter(c => c.city === "sibiu" && !c.stadium && c.sat && !((verifyConsensus(byCourt[c.id]) || {}).state === "verified"))
+    .sort((a, b) => (rank[a.sat.v] - rank[b.sat.v]) || String(a.sat.at).localeCompare(String(b.sat.at)));
+}
+function verifyLabel(cs, L3) {
+  if (!cs) return null;
+  const d = cs.at ? new Date(cs.at).toLocaleDateString("ro-RO") : "";
+  const what = cs.exists === "no" ? L3("terenul nu mai există", "the court is gone", "a pálya már nincs meg") : cs.exists === "unsure" ? L3("nu e clar", "unclear", "nem egyértelmű")
+    : cs.playable === "yes" ? L3("se poate juca", "playable", "játszható") : cs.playable === "partly" ? L3("se poate juca parțial", "partly playable", "részben játszható") : L3("nu se poate juca", "not playable", "nem játszható");
+  if (cs.state === "verified") return "🙋 " + L3("Verificat de comunitate", "Verified by the community", "A közösség ellenőrizte") + " (" + cs.n + " " + L3("persoane", "people", "fő") + ", " + d + "): " + what;
+  if (cs.state === "single") return "🙋 " + L3("Raportat de 1 persoană", "Reported by 1 person", "1 ember jelentette") + " (" + d + "): " + what + " · " + L3("mai trebuie o confirmare", "needs one more confirmation", "még egy megerősítés kell");
+  return "🙋 " + cs.total + " " + L3("păreri diferite — mai trebuie o verificare", "different answers — one more check needed", "eltérő válasz — még egy ellenőrzés kell");
+}
+function VerifyFlow({ court: c, onClose }) {
+  const { lang, toast } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const [exists, setExists] = useState("");
+  const [playable, setPlayable] = useState("");
+  const [missing, setMissing] = useState({});
+  const [photos, setPhotos] = useState([]);
+  const [ok, setOk] = useState(() => { try { return localStorage.getItem("g2p_ai_ok") === "1"; } catch (x) { return false; } });
+  const [busy, setBusy] = useState(false);
+  const [ai, setAi] = useState(null);
+  useEffect(() => {
+    const onKey = ev => { if (ev.key === "Escape") { ev.preventDefault(); ev.stopImmediatePropagation(); onClose(); } };
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, []);
+  const e = React.createElement;
+  const opt = (val, cur, set, label) => e("button", { type: "button", className: "rcat-btn" + (cur === val ? " sel" : ""), onClick: () => set(val), style: { fontSize: ".86rem", padding: ".5rem .3rem" } }, label);
+  const addPhoto = async ev => {
+    const files = Array.from(ev.target.files || []).slice(0, 3 - photos.length);
+    for (const f of files) { try { const d = await compressImage(f, 720, 0.62); setPhotos(p => p.concat(d).slice(0, 3)); } catch (x) {} }
+    ev.target.value = "";
+  };
+  const done = exists && (exists !== "yes" || playable) && (!photos.length || ok) && !(ai && ai.isCourt === false);
+  const submit = () => {
+    if (!done || busy) return;
+    setBusy(true);
+    const m = {}; Object.keys(missing).forEach(k => { if (missing[k]) m[k] = true; });
+    const rec = { courtId: c.id, city: c.city || ACTIVE_CITY, exists, playable: exists === "yes" ? playable : "na", at: new Date().toISOString(), dev: devTag(getVoterKey()) };
+    if (Object.keys(m).length) rec.missing = m;
+    if (photos.length) rec.photos = photos;
+    if (ai && ai.diag) rec.ai = aiStamp(ai);
+    db.ref("verifications").push(rec).then(() => {
+      logActivity("verification", "", c.id);
+      g2pCelebrate("verify"); toast(L3("Mulțumim! Răspunsul tău contează.", "Thank you! Your answer counts.", "Köszönjük! A válaszod számít."));
+      onClose();
+    }).catch(() => { setBusy(false); toast(L3("Nu s-a putut trimite. Mai încearcă.", "Could not send. Try again.", "Nem sikerült elküldeni.")); });
+  };
+  return e("div", { className: "modal-overlay", onClick: onClose },
+    e("div", { className: "modal vf", onClick: ev => ev.stopPropagation(), role: "dialog", "aria-modal": "true", "aria-label": L3("Verifică terenul", "Check the court", "Pálya ellenőrzése") },
+      e("div", { className: "flex justify-between items-center mb-1" },
+        e("h2", { style: { fontSize: "1rem", margin: 0 } }, "🙋 ", L3("Verifică în 60 de secunde", "Check in 60 seconds", "Ellenőrzés 60 másodperc alatt")),
+        e("button", { className: "btn btn-sm btn-outline", onClick: onClose }, L3("Închide", "Close", "Bezár"))),
+      e("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, "📍 ", c.name),
+      e("p", { className: "vf-q" }, "1. ", L3("Există terenul?", "Is the court there?", "Megvan a pálya?")),
+      e("div", { className: "rcat-grid" }, opt("yes", exists, setExists, "✅ " + L3("Da", "Yes", "Igen")), opt("no", exists, setExists, "❌ " + L3("Nu mai e", "It's gone", "Már nincs")), opt("unsure", exists, setExists, "🤷 " + L3("Nu sunt sigur", "Not sure", "Nem tudom"))),
+      exists === "yes" && e(React.Fragment, null,
+        e("p", { className: "vf-q" }, "2. ", L3("Se poate juca pe el?", "Can you play on it?", "Lehet rajta játszani?")),
+        e("div", { className: "rcat-grid" }, opt("yes", playable, setPlayable, "🏀 " + L3("Da", "Yes", "Igen")), opt("partly", playable, setPlayable, "⚠️ " + L3("Parțial", "Partly", "Részben")), opt("no", playable, setPlayable, "🚫 " + L3("Nu", "No", "Nem"))),
+        e("p", { className: "vf-q" }, "3. ", L3("Ce lipsește? (oricâte)", "What is missing? (any)", "Mi hiányzik? (bármennyi)")),
+        e("div", { className: "vf-chips" }, VERIFY_MISSING.map(m => e("button", { key: m[0], type: "button", className: "vf-chip" + (missing[m[0]] ? " on" : ""), onClick: () => setMissing(o => Object.assign({}, o, { [m[0]]: !o[m[0]] })) }, m[1], " ", lang === "en" ? m[3] : lang === "hu" ? m[4] : m[2])))),
+      e("p", { className: "vf-q" }, "📷 ", L3("Poze (opțional, 1–3, fără oameni în ele)", "Photos (optional, 1–3, no people in them)", "Fotók (nem kötelező, 1–3, emberek nélkül)")),
+      e("div", { className: "vf-photos" },
+        photos.map((p, i) => e("div", { key: i, className: "vf-ph" }, e("img", { src: p, alt: "" }), e("button", { type: "button", onClick: () => { setPhotos(ps => ps.filter((_, j) => j !== i)); if (i === 0) setAi(null); }, "aria-label": L3("Scoate", "Remove", "Törlés") }, "✕"))),
+        photos.length < 3 && e("label", { className: "vf-add" }, "＋", e("input", { type: "file", accept: "image/*", capture: "environment", multiple: true, style: { display: "none" }, onChange: addPhoto }))),
+      photos.length > 0 && e("label", { className: "ai-consent" }, e("input", { type: "checkbox", checked: ok, onChange: ev => { setOk(ev.target.checked); try { if (ev.target.checked) localStorage.setItem("g2p_ai_ok", "1"); } catch (x) {} } }),
+        e("span", null, L3("Pozele nu au oameni în ele. Le trimit fără datele de localizare din fișier; prima poate fi citită de AI (Anthropic) ca ajutor, nu ca verdict.", "The photos have no people in them. I send them without the file's location data; the first one may be read by the AI (Anthropic) as a help, not a verdict.", "A fotókon nincsenek emberek. Helyadatok nélkül küldöm; az elsőt az AI (Anthropic) segítségként elolvashatja, nem ítéletként."))),
+      photos.length > 0 && ok && e(AiPhotoHint, { photo: photos[0], onResult: setAi }),
+      ai && ai.isCourt === false && e("p", { className: "ai-block" }, "⛔ ", L3("Prima poză nu arată un teren. Scoate-o sau fă alta.", "The first photo doesn't show a court. Remove it or take another.", "Az első fotón nincs pálya. Töröld vagy készíts másikat.")),
+      e("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, L3("Fără nume, fără email. Un teren devine „verificat de comunitate” doar când 2 persoane diferite spun același lucru.", "No name, no email. A court becomes “verified by the community” only when 2 different people say the same thing.", "Név és e-mail nélkül. Egy pálya akkor lesz „a közösség által ellenőrzött”, ha 2 különböző ember ugyanazt mondja.")),
+      e("button", { className: "btn btn-green btn-block mt-1", disabled: !done || busy, onClick: submit }, busy ? "…" : "📨 " + L3("Trimite verificarea", "Send the check", "Ellenőrzés küldése"))));
+}
+// Court detail: where the court's condition comes from, side by side, each with its date.
+function CourtSourcesCard({ court: c }) {
+  const { lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const all = useFirebase("verifications");
+  const [open, setOpen] = useState(false);
+  const cs = verifyConsensus(verifyByCourt(all)[c.id]);
+  const e = React.createElement;
+  const satL = c.sat ? "🛰️ " + L3("Satelit", "Satellite", "Műhold") + " (" + c.sat.at.slice(0, 7) + "): " + ({ ok: L3("pare întreg", "looks intact", "épnek látszik"), worn: L3("pare uzat", "looks worn", "kopottnak látszik"), gone: L3("nu se vede teren", "no court visible", "nem látszik pálya") }[c.sat.v] || "") : null;
+  const pressL = c.stadium && c.src ? "📰 " + L3("Presă / surse publice", "Press / public sources", "Sajtó / nyilvános források") : null;
+  const isMission = c.city === "sibiu" && !c.stadium && c.sat && (!cs || cs.state !== "verified");
+  const share = () => { const u = SITE + "/?c=" + (c.city || ACTIVE_CITY) + "#court-" + c.id; copyText(u); };
+  return e("div", { className: "vf-src" + (isMission ? " mission" : "") },
+    isMission && e("div", { className: "vf-mis" }, "🎯 ", L3("Misiune: satelitul nu poate spune cum arată azi. Ajută-ne să verificăm.", "Mission: the satellite can't tell what it looks like today. Help us check.", "Küldetés: a műhold nem tudja megmondani, milyen ma. Segíts ellenőrizni.")),
+    e("div", { className: "vf-src-l" },
+      satL && e("span", null, satL), pressL && e("a", { href: c.src, target: "_blank", rel: "noopener" }, pressL),
+      e("span", null, verifyLabel(cs, L3) || "🙋 " + L3("Comunitate: încă nicio verificare", "Community: no checks yet", "Közösség: még nincs ellenőrzés"))),
+    e("div", { className: "flex gap-1", style: { flexWrap: "wrap", marginTop: ".5rem" } },
+      e("button", { className: "btn btn-sm btn-green", onClick: () => setOpen(true) }, "🙋 ", L3("Ajută-ne să verificăm (60 s)", "Help us check (60 s)", "Segíts ellenőrizni (60 mp)")),
+      e("button", { className: "btn btn-sm btn-outline", onClick: share }, "🔗 ", L3("Link pentru postare", "Link to post", "Link megosztáshoz"))),
+    open && ReactDOM.createPortal(e(VerifyFlow, { court: c, onClose: () => setOpen(false) }), document.body));
+}
+
 /* === Sibiu Progress Banner: one dot per Sibiu court, lit once the community has checked it === */
 function SibiuProgressBanner() {
   return ACTIVE_CITY === "sibiu" ? React.createElement(SibiuProgressBannerInner, null) : null;
@@ -15816,11 +15946,17 @@ function SibiuProgressBanner() {
 function SibiuProgressBannerInner() {
   const { t } = useApp();
   const [open, setOpen] = useState(false);
+  const { lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
   const allReports = useFirebase("reports");
+  const byCourt = verifyByCourt(useFirebase("verifications"));
+  const [mission, setMission] = useState(null);
   const checked = {};
   if (allReports) Object.values(allReports).forEach(r => { if (r && r.category === "condition" && r.courtId) checked[r.courtId] = 1; });
+  Object.keys(byCourt).forEach(id => { checked[id] = (verifyConsensus(byCourt[id]) || {}).state === "verified" ? 2 : Math.max(checked[id] || 0, 1); });
   const sbCourts = COURTS.filter(c => c.city === "sibiu");
-  const lit = sbCourts.filter(c => checked[c.id]).length;
+  const lit = sbCourts.filter(c => checked[c.id]).length, confirmed = sbCourts.filter(c => checked[c.id] === 2).length;
+  const missions = sibiuMissions(byCourt).slice(0, 6);
   return React.createElement("div", {
     "data-demo": "verify",
     style: {
@@ -15832,7 +15968,7 @@ function SibiuProgressBannerInner() {
     React.createElement("div", { className: "flex justify-between items-center", style: { gap: ".6rem" } },
       React.createElement("div", { style: { minWidth: 0 } },
         React.createElement("strong", { style: { fontSize: ".93rem", display: "block", marginBottom: ".2rem" } }, t.sibiuVerifyTitle),
-        React.createElement("span", { style: { fontSize: ".8rem", opacity: .9, fontFamily: "'Space Mono',monospace" } }, "🩺 ", lit, " / ", sbCourts.length, " ", t.sibiuCourtsChecked)
+        React.createElement("span", { style: { fontSize: ".8rem", opacity: .9, fontFamily: "'Space Mono',monospace" } }, "🩺 ", lit, " / ", sbCourts.length, " ", t.sibiuCourtsChecked, confirmed ? " · ✔ " + confirmed + " " + L3("confirmate de 2 persoane", "confirmed by 2 people", "2 ember megerősítette") : "")
       ),
       React.createElement("button", {
         className: "btn btn-sm",
@@ -15841,9 +15977,13 @@ function SibiuProgressBannerInner() {
       }, "＋ ", t.verifyCourtCTA)
     ),
     React.createElement("div", { className: "sb-dots", "aria-hidden": "true" },
-      sbCourts.map(c => React.createElement("span", { key: c.id, className: "sb-dot" + (checked[c.id] ? " on" : ""), title: c.name }))
+      sbCourts.map(c => React.createElement("span", { key: c.id, className: "sb-dot" + (checked[c.id] === 2 ? " on" : checked[c.id] ? " half" : ""), title: c.name }))
     ),
-    open && ReactDOM.createPortal(React.createElement(CourtConditionQuick, { onClose: () => setOpen(false) }), document.body)
+    missions.length > 0 && React.createElement("div", { className: "sb-mis" },
+      React.createElement("span", { className: "sb-mis-h" }, "🎯 ", L3("Misiuni: satelitul nu poate spune cum arată azi", "Missions: the satellite can't tell how these look today", "Küldetések: a műhold nem tudja, milyenek ma")),
+      missions.map(c => React.createElement("button", { key: c.id, className: "sb-mis-b", onClick: () => setMission(c) }, c.sat.v === "gone" ? "❓ " : c.sat.v === "worn" ? "⚠️ " : "🛰️ ", c.name))),
+    open && ReactDOM.createPortal(React.createElement(CourtConditionQuick, { onClose: () => setOpen(false) }), document.body),
+    mission && ReactDOM.createPortal(React.createElement(VerifyFlow, { court: mission, onClose: () => setMission(null) }), document.body)
   );
 }
 

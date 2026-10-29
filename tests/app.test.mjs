@@ -211,3 +211,18 @@ test("letterEvidence never carries another city's facts and labels the source of
   const unseen = letterEvidence({ id: "sb5", condition: null }, {}, 0, "sibiu").join("\n");
   assert.match(unseen, /neverificată încă pe teren/);
 });
+
+test("verifyConsensus: one phone never verifies alone, two matching phones do", () => {
+  const { verifyConsensus } = load([extractFunction("verifyConsensus")], ["verifyConsensus"]);
+  const a = { dev: "a", exists: "yes", playable: "partly", at: "2026-11-01T10:00:00Z" };
+  assert.equal(verifyConsensus([]), null);
+  assert.equal(verifyConsensus([a]).state, "single");
+  // the same device twice is still one person
+  assert.equal(verifyConsensus([a, Object.assign({}, a, { at: "2026-11-02T10:00:00Z" })]).state, "single");
+  const b = { dev: "b", exists: "yes", playable: "partly", at: "2026-11-03T10:00:00Z" };
+  const v = verifyConsensus([a, b]);
+  assert.equal(v.state, "verified"); assert.equal(v.n, 2); assert.equal(v.at, "2026-11-03T10:00:00Z");
+  assert.equal(verifyConsensus([a, { dev: "c", exists: "no", playable: "na", at: "x" }]).state, "split");
+  // a device's latest answer replaces its earlier one
+  assert.equal(verifyConsensus([{ dev: "a", exists: "no", playable: "na", at: "2026-10-01" }, a, b]).state, "verified");
+});

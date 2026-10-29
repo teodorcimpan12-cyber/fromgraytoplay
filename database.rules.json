@@ -119,6 +119,16 @@
         }
       }
     },
+    "verifications": {
+      ".read": true,
+      "$id": {
+        ".write": "!data.exists() || (auth != null && root.child('settings/sherifs/' + auth.uid).exists())",
+        ".validate": "newData.hasChildren(['courtId','city','exists','playable','at','dev']) && newData.child('courtId').isString() && newData.child('courtId').val().length <= 40 && (newData.child('city').val() === 'tgm' || newData.child('city').val() === 'sibiu') && newData.child('exists').val().matches(/^(yes|no|unsure)$/) && newData.child('playable').val().matches(/^(yes|partly|no|na)$/) && newData.child('at').isString() && newData.child('at').val().length <= 30 && newData.child('dev').isString() && newData.child('dev').val().length <= 16",
+        "missing": { "$k": { ".validate": "$k.matches(/^(hoop|goal|surface|fence|lighting|clean)$/) && newData.val() === true" } },
+        "photos": { "$i": { ".validate": "$i.matches(/^[0-2]$/) && newData.isString() && newData.val().beginsWith('data:image/') && newData.val().length <= 250000" } },
+        "ai": { "score": { ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5" } }
+      }
+    },
     "letters": {
       ".read": true,
       "$id": {
@@ -128,8 +138,7 @@
         "reply": {
           ".write": "!data.exists() || (auth != null && root.child('settings/sherifs/' + auth.uid).exists())",
           ".validate": "newData.hasChildren(['at']) && newData.child('at').isString() && (!newData.child('regNo').exists() || (newData.child('regNo').isString() && newData.child('regNo').val().length <= 40))"
-        },
-        "$other": { ".validate": false }
+        }
       }
     },
     "letterCount": {
