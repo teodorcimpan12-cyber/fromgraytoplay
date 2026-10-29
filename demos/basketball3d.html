@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Basketball 3D Hero</title>
+<style>
+  :root { --dark: #1A1A2E; --green: #10B981; --text: #f4f1ec; --muted: #a9adc1; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; background: var(--dark); color: var(--text);
+    font-family: "Libre Franklin", system-ui, sans-serif; }
+  .hero { position: relative; min-height: 100vh; display: grid; align-items: center; gap: 1rem; overflow: hidden;
+    padding: clamp(1.5rem, 5vw, 4rem); grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    background: radial-gradient(60% 70% at 72% 52%, #2b2f55 0%, rgba(26,26,46,0) 70%), linear-gradient(160deg, #1A1A2E, #0f1022); }
+  .copy { position: relative; z-index: 2; max-width: 34rem; }
+  .eyebrow { font: 700 .78rem/1 "Space Mono", ui-monospace, monospace; letter-spacing: .18em; color: var(--green); text-transform: uppercase; }
+  h1 { font: 700 clamp(2.4rem, 6vw, 4.6rem)/1 "Space Mono", ui-monospace, monospace; margin: .9rem 0 1rem; letter-spacing: -.02em; }
+  h1 em { font-style: normal; color: var(--green); }
+  p { color: var(--muted); font-size: 1.05rem; line-height: 1.55; margin: 0 0 1.6rem; }
+  .cta { display: inline-block; background: var(--green); color: #04261b; font: 700 .95rem "Space Mono", ui-monospace, monospace;
+    padding: .85rem 1.4rem; border-radius: 12px; text-decoration: none; }
+  .stage { position: relative; height: min(78vh, 640px); min-height: 340px; }
+  #ball3d { position: absolute; inset: 0; cursor: grab; touch-action: pan-y; opacity: 0; transition: opacity .8s ease; }
+  #ball3d.ready { opacity: 1; }
+  #ball3d:active { cursor: grabbing; }
+  #ball3d canvas { width: 100% !important; height: 100% !important; display: block; outline: none; }
+  .hint { position: absolute; left: 0; right: 0; bottom: .2rem; text-align: center; font-size: .8rem; color: var(--muted); pointer-events: none; }
+  .fallback { display: none; position: absolute; inset: 0; place-items: center; color: var(--muted); text-align: center; padding: 1rem; }
+  @media (max-width: 820px) {
+    .hero { grid-template-columns: 1fr; padding-top: 2rem; }
+    .stage { height: 60vh; }
+  }
+</style>
+</head>
+<body>
+<!--
+  Basketball 3D hero - plain Three.js r128 (no build step).
+  - Mesh: UV sphere whose vertices are pushed inwards along the real seam curves, so the grooves are geometry,
+    not paint (silhouette and shadow terminator both show them). Seams: 1 vertical loop, 1 horizontal loop, 2 side arcs.
+  - Material: MeshStandardMaterial (PBR), roughness .56, base #E25822 -> #D84315, pebble grain from a bump map
+    generated per pixel on the sphere (jittered 3D cell pattern, so the dimples keep their size at the poles).
+  - Light: warm key from the top left (casts the shadow) + a point light for the specular glint, cool fill, rim, ambient.
+  - Motion: slow autorotation, cursor parallax tilt, drag to spin with inertia, idle float; pauses when off screen.
+-->
+<section class="hero">
+  <div class="copy">
+    <div class="eyebrow">Târgu Mureș · Sibiu</div>
+    <h1>From Grey <em>to Play</em></h1>
+    <p>Documentăm inegalitatea infrastructurii sportive din oraș. Mută cursorul ca să înclini mingea sau trage de ea ca s-o învârți.</p>
+    <a class="cta" href="#petitie">Semnează petiția</a>
+  </div>
+  <div class="stage">
+    <div id="ball3d" aria-label="Minge de baschet 3D" role="img"></div>
+    <div class="fallback" id="fallback">WebGL nu e disponibil pe acest dispozitiv.</div>
+    <div class="hint">trage ca să o învârți</div>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  var host = document.getElementById("ball3d");
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var coarse = window.matchMedia && matchMedia("(pointer: coarse)").matches;
+
+  /* ---------- seam field (unit-sphere direction -> distance to the nearest seam) ---------- */
+  // Great circles x = 0 and y = 0, plus two curved seams |x| = .51 - .22 cos(2a), where a is the angle around
+  // the x axis. They cross y = 0 close to the x = 0 seam (|x| = .29) and swing out to |x| = .73 halfway round.
+  function seamD(x, y, z) {
+    var yz = y * y + z * z + 1e-6;
+    return Math.min(Math.abs(y), Math.abs(x), Math.abs(Math.abs(x) - (0.51 - 0.22 * (z * z - y * y) / yz)));
+  }
+  function smooth(t) { t = t < 0 ? 0 : t > 1 ? 1 : t; return t * t * (3 - 2 * t); }
+
+  /* ---------- pebble grain: nearest jittered point in a 3D cell grid -> dome height 0..1 ---------- */
+  function hash(i, j, k, s) {
+    var n = Math.imul(i, 374761393) + Math.imul(j, 668265263) + Math.imul(k, 1274126177) + Math.imul(s, 362437);
+    n = Math.imul(n ^ (n >>> 13), 1274126177); n ^= n >>> 16;
+    return (n >>> 0) / 4294967296;
+  }
+  function pebble(x, y, z, K) {
+    var px = x * K, py = y * K, pz = z * K, ix = Math.floor(px), iy = Math.floor(py), iz = Math.floor(pz), best = 9;
+    for (var a = -1; a <= 1; a++) for (var b = -1; b <= 1; b++) for (var c = -1; c <= 1; c++) {
+      var cx = ix + a, cy = iy + b, cz = iz + c;
+      var dx = px - (cx + 0.15 + 0.7 * hash(cx, cy, cz, 1)), dy = py - (cy + 0.15 + 0.7 * hash(cx, cy, cz, 2)), dz = pz - (cz + 0.15 + 0.7 * hash(cx, cy, cz, 3));
+      var d = dx * dx + dy * dy + dz * dz; if (d < best) best = d;
+    }
+    var t = 1 - best / 0.34; return t > 0 ? t : 0;     // round dome, flat valley between the pebbles
+  }
+
+  /* ---------- textures: colour + bump painted pixel by pixel on the sphere (same u,v mapping as SphereGeometry) ---------- */
+  function paintBall(W, H) {
+    function cv() { var c = document.createElement("canvas"); c.width = W; c.height = H; return c; }
+    var cMap = cv(), cBump = cv(), xm = cMap.getContext("2d"), xb = cBump.getContext("2d");
+    var im = xm.createImageData(W, H), ib = xb.createImageData(W, H), pm = im.data, pb = ib.data;
+    for (var j = 0; j < H; j++) {
+      var th = (j + 0.5) / H * Math.PI, st = Math.sin(th), y = Math.cos(th);
+      for (var i = 0; i < W; i++) {
+        var ph = (i + 0.5) / W * Math.PI * 2, x = -Math.cos(ph) * st, z = Math.sin(ph) * st;
+        var d = seamD(x, y, z);
+        var m = smooth((d - 0.0105) / 0.0075);            // 0 inside the black rib, 1 on leather
+        var pb1 = pebble(x, y, z, 46) * m;                 // no pebbles on the rubber rib
+        var lum = 0.9 + 0.16 * pb1 - 0.06 * (1 - pb1) * m; // pebble tops lighter, valleys a bit darker
+        // leather: #E25822 with slow warm/cool drift, a touch darker in the valleys; rib: charcoal
+        var drift = 0.5 + 0.5 * Math.sin(x * 3.1 + y * 2.3 + z * 1.7);
+        var r = 226 - 10 * drift, g = 88 - 21 * drift, b = 34 - 13 * drift;
+        var o = (j * W + i) * 4;
+        pm[o]     = (30 + (r - 30) * m) * lum;
+        pm[o + 1] = (26 + (g - 26) * m) * lum;
+        pm[o + 2] = (24 + (b - 24) * m) * lum;
+        pm[o + 3] = 255;
+        var h = 255 * (0.18 + 0.82 * m * (0.28 + 0.72 * pb1));   // seams sink, pebbles rise
+        pb[o] = pb[o + 1] = pb[o + 2] = h; pb[o + 3] = 255;
+      }
+    }
+    xm.putImageData(im, 0, 0); xb.putImageData(ib, 0, 0);
+    return { map: cMap, bump: cBump };
+  }
+
+  /* ---------- geometry: sphere with the seams cut in ---------- */
+  function ballGeometry(wSeg, hSeg) {
+    var g = new THREE.SphereGeometry(1, wSeg, hSeg), p = g.attributes.position, v = new THREE.Vector3();
+    for (var i = 0; i < p.count; i++) {
+      v.fromBufferAttribute(p, i).normalize();
+      var groove = 1 - smooth((seamD(v.x, v.y, v.z) - 0.008) / 0.02);   // 1 in the channel, 0 on the leather
+      v.multiplyScalar(1 - 0.016 * groove);
+      p.setXYZ(i, v.x, v.y, v.z);
+    }
+    g.computeVertexNormals();
+    return g;
+  }
+
+  /* ---------- scene ---------- */
+  var renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+  } catch (e) { document.getElementById("fallback").style.display = "grid"; return; }
+  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  host.appendChild(renderer.domElement);
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 60);
+  camera.position.set(0, 0.5, 6.3); camera.lookAt(0, -0.12, 0);
+
+  // lights: key (top left, warm, casts the shadow), point glint, cool fill, rim, ambient
+  scene.add(new THREE.AmbientLight(0xffffff, 0.22));
+  scene.add(new THREE.HemisphereLight(0xbcd0ff, 0x3a2418, 0.42));
+  var key = new THREE.DirectionalLight(0xfff0dc, 1.25); key.position.set(-2.4, 7, 2.4);
+  key.castShadow = true; key.shadow.mapSize.set(2048, 2048);
+  key.shadow.camera.left = -3.2; key.shadow.camera.right = 3.2; key.shadow.camera.top = 3.2; key.shadow.camera.bottom = -3.2;
+  key.shadow.camera.near = 2; key.shadow.camera.far = 16; key.shadow.bias = -0.0004; key.shadow.normalBias = 0.03; key.shadow.radius = 6;
+  scene.add(key);
+  var glint = new THREE.PointLight(0xffe2c0, 1.1, 20, 2); glint.position.set(-2.6, 2.4, 3.4); scene.add(glint);
+  var fill = new THREE.DirectionalLight(0x7da2ff, 0.32); fill.position.set(4, 0.8, 2.5); scene.add(fill);
+  var rim = new THREE.DirectionalLight(0x9fb8ff, 0.55); rim.position.set(3, 2.4, -4); scene.add(rim);
+
+  // floor: invisible plane that only shows the cast shadow, plus a soft contact blob that follows the float
+  var FLOOR_Y = -1.22;
+  var floor = new THREE.Mesh(new THREE.PlaneGeometry(16, 16), new THREE.ShadowMaterial({ opacity: 0.4 }));
+  floor.rotation.x = -Math.PI / 2; floor.position.y = FLOOR_Y; floor.receiveShadow = true; scene.add(floor);
+  var blobTex = (function () {
+    var c = document.createElement("canvas"); c.width = c.height = 128; var x = c.getContext("2d");
+    var gr = x.createRadialGradient(64, 64, 4, 64, 64, 64); gr.addColorStop(0, "rgba(0,0,0,.55)"); gr.addColorStop(1, "rgba(0,0,0,0)");
+    x.fillStyle = gr; x.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c);
+  })();
+  var blob = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 2.6), new THREE.MeshBasicMaterial({ map: blobTex, transparent: true, depthWrite: false }));
+  blob.rotation.x = -Math.PI / 2; blob.position.y = FLOOR_Y + 0.003; scene.add(blob);
+
+  // ball: float (bob + cursor tilt) > axis (fixed lean) > spin (autorotation / drag) > mesh
+  var skin = paintBall(1024, 512);
+  var mapTex = new THREE.CanvasTexture(skin.map), bumpTex = new THREE.CanvasTexture(skin.bump);
+  mapTex.encoding = THREE.sRGBEncoding; mapTex.anisotropy = bumpTex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  var mat = new THREE.MeshStandardMaterial({ map: mapTex, bumpMap: bumpTex, bumpScale: 1.3, roughness: 0.56, metalness: 0.0 });
+  var mesh = new THREE.Mesh(ballGeometry(coarse ? 420 : 640, coarse ? 210 : 320), mat);
+  mesh.castShadow = true;
+  var spin = new THREE.Group(); spin.add(mesh);
+  var axis = new THREE.Group(); axis.rotation.z = 0.28; axis.add(spin);
+  var float = new THREE.Group(); float.add(axis); scene.add(float);
+  spin.rotation.y = -0.5;                      // opens on the front view: the cross and the two parentheses
+
+  /* ---------- interaction ---------- */
+  var mx = 0, my = 0, tx = 0, ty = 0;           // cursor in -1..1 and its smoothed value
+  var dragging = false, lastX = 0, vel = 0, AUTO = reduce ? 0 : 0.32;
+  window.addEventListener("pointermove", function (e) {
+    var r = host.getBoundingClientRect();
+    mx = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / (window.innerWidth * 0.5)));
+    my = Math.max(-1, Math.min(1, (e.clientY - (r.top + r.height / 2)) / (window.innerHeight * 0.5)));
+    if (dragging) { vel = (e.clientX - lastX) * 0.012; spin.rotation.y += vel; lastX = e.clientX; }
+  }, { passive: true });
+  host.addEventListener("pointerdown", function (e) { dragging = true; lastX = e.clientX; vel = 0; try { host.setPointerCapture(e.pointerId); } catch (x) {} });
+  function release() { dragging = false; }
+  host.addEventListener("pointerup", release); host.addEventListener("pointercancel", release);
+
+  var visible = true, t0 = performance.now(), last = t0;
+  function size() {
+    var w = host.clientWidth || 1, h = host.clientHeight || 1;
+    renderer.setSize(w, h, false); camera.aspect = w / h;
+    camera.fov = w / h < 0.9 ? 36 : 30; camera.updateProjectionMatrix();
+  }
+  if (window.ResizeObserver) new ResizeObserver(size).observe(host); else window.addEventListener("resize", size);
+  size();
+
+  function frame(now) {
+    requestAnimationFrame(frame);
+    if (!visible || document.hidden) { last = now; return; }
+    var dt = Math.min(0.05, (now - last) / 1000); last = now;
+    if (!dragging) {
+      spin.rotation.y += vel + AUTO * dt;
+      vel *= Math.pow(0.04, dt);                                    // inertia dies out in about a second
+    }
+    tx += (mx - tx) * Math.min(1, dt * 5); ty += (my - ty) * Math.min(1, dt * 5);
+    float.rotation.y = tx * 0.35; float.rotation.x = ty * 0.28;      // parallax tilt towards the cursor
+    var bob = reduce ? 0 : Math.sin((now - t0) / 1000 * 1.5) * 0.05;
+    float.position.y = bob;
+    var lift = (bob + 0.05) / 0.1;                                  // 0..1 -> the shadow tightens as the ball rises
+    blob.scale.setScalar(1.05 - 0.12 * lift); blob.material.opacity = 0.9 - 0.25 * lift;
+    renderer.render(scene, camera);
+  }
+  requestAnimationFrame(function (now) { last = now; t0 = now; host.classList.add("ready"); frame(now); });
+
+  if (window.IntersectionObserver) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }, { threshold: 0.01 }).observe(host);
+})();
+</script>
+</body>
+</html>

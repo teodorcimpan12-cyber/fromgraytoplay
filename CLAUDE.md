@@ -239,3 +239,14 @@ Highest civic-value next steps:
   redirect fallback, password reset, SMS fix; `user` is derived from
   Firebase Auth + `users/{uid}` (legacy password-less `g2p_user` removed);
   owner gets 👑 account menu; exiting admin no longer signs out.
+
+- 3D hero realism: balls are painted per pixel on the sphere (`paintSphere`) — classic 8-panel
+  basketball (two great circles + two "parenthesis" seams, pebble bump) and a true truncated-icosahedron
+  soccer ball (12 pentagons / 20 hexagons, stitched seams); no more pole stretching. Skyline now has
+  stadiums (`stadium()` in `buildSkyline`): TGM Stadionul Municipal + Trans-Sil, Sibiu Stadionul Municipal.
+
+- Mascot face: the corner/celebration ball (`makeMascotBall`) now wears the same real basketball skin as the
+  hero (`buildBasketball(gold, W, H, seamW)`, 512x256, thicker ribs for 64-88 px, gold reward skin kept).
+  `MASCOT_TILT` turns the ball so the equator runs between the eyes and the mouth; the animations spin the outer
+  `ball` group (rotation.x), the tilt lives on the inner `skinMesh`. Standalone Three.js hero with real inset seam
+  geometry + PBR: `demos/basketball3d.html` (not wired into the site).

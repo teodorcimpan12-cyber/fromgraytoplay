@@ -7418,30 +7418,61 @@ function buildBloc(base, win) {
   for (var d = 0; d < 4; d++) { cx.fillStyle = "rgba(150,150,150,.18)"; cx.fillRect(12 + d * 29, 256 - fh + 8, 20, fh - 16); }
   return c;
 }
-function buildBasketball() {
-  var c = document.createElement("canvas"); c.width = 1024; c.height = 512; var cx = c.getContext("2d");
-  cx.fillStyle = "#D9681C"; cx.fillRect(0, 0, 1024, 512);
-  for (var i = 0; i < 14000; i++) { var v = (Math.random() * 30 - 15) | 0; cx.fillStyle = "rgba(" + (200 + v) + "," + (98 + v) + "," + (28 + v) + ",.45)"; cx.fillRect(Math.random() * 1024, Math.random() * 512, 3, 3); }
-  cx.strokeStyle = "#120c05"; cx.lineCap = "round";
-  cx.lineWidth = 12;
-  cx.beginPath(); cx.moveTo(0, 256); cx.lineTo(1024, 256); cx.stroke();   // equator
-  cx.beginPath(); cx.moveTo(256, 0); cx.lineTo(256, 512); cx.stroke();    // meridian
-  cx.beginPath(); cx.moveTo(768, 0); cx.lineTo(768, 512); cx.stroke();    // meridian (same great circle)
-  cx.lineWidth = 11;
-  cx.beginPath(); cx.moveTo(512, 0); cx.bezierCurveTo(624, 150, 624, 362, 512, 512); cx.stroke();
-  cx.beginPath(); cx.moveTo(0, 0); cx.bezierCurveTo(112, 150, 112, 362, 0, 512); cx.stroke();
-  cx.beginPath(); cx.moveTo(1024, 0); cx.bezierCurveTo(912, 150, 912, 362, 1024, 512); cx.stroke();
-  return c;
+/* Balls are painted per pixel straight on the sphere (equirectangular u,v -> direction, same mapping as
+   THREE.SphereGeometry), so seams and panels keep their true shape instead of stretching at the poles. */
+function paintSphere(W, H, shade) {   // one pass -> { map, bump } canvases; shade() fills o = [r, g, b, bump]
+  function cv() { var c = document.createElement("canvas"); c.width = W; c.height = H; return c; }
+  var c = cv(), c2 = cv(), cx = c.getContext("2d"), cx2 = c2.getContext("2d");
+  var img = cx.createImageData(W, H), img2 = cx2.createImageData(W, H), px = img.data, px2 = img2.data, col = [0, 0, 0, 0];
+  for (var j = 0; j < H; j++) {
+    var th = (j + 0.5) / H * Math.PI, st = Math.sin(th), y = Math.cos(th);
+    for (var i = 0; i < W; i++) {
+      var ph = (i + 0.5) / W * Math.PI * 2;
+      shade(-Math.cos(ph) * st, y, Math.sin(ph) * st, col);
+      var o = (j * W + i) * 4; px[o] = col[0]; px[o + 1] = col[1]; px[o + 2] = col[2]; px[o + 3] = 255;
+      px2[o] = px2[o + 1] = px2[o + 2] = col[3]; px2[o + 3] = 255;
+    }
+  }
+  cx.putImageData(img, 0, 0); cx2.putImageData(img2, 0, 0); return { map: c, bump: c2 };
 }
+function seamMix(d, w) { var t = Math.min(1, Math.max(0, (d - w) / (w * 0.7))); return t * t * (3 - 2 * t); }
+function grain(x, y, z, k) { var h = Math.sin(Math.floor(x * k) * 127.1 + Math.floor(y * k) * 311.7 + Math.floor(z * k) * 74.7) * 43758.5453; return (h - Math.floor(h)) * 2 - 1; }
+/* Basketball: 8 panels = two perpendicular great circles (x = 0, y = 0) + two curved seams, one per side of
+   x = 0. Each curve crosses y = 0 close to the x = 0 seam (|x| = .29) and swings out to |x| = .73 halfway
+   round, which reads as the "parentheses" from the front and the long swoops from the side. */
+function buildBasketball(gold, W, H, seamW) {   // gold = the mascot's reward skin; W/H = texture size (hero 1024x512, mascot 512x256); seamW = rib half-width (thicker on the 64-88 px mascot)
+  var lo = gold ? [96, 66, 8] : [42, 24, 18], hi = gold ? [252, 208, 84] : [204, 100, 54];
+  return paintSphere(W || 1024, H || 512, function (x, y, z, o) {
+    var w = seamW || 0.011;
+    var yz = y * y + z * z + 1e-6, d = Math.min(Math.abs(y), Math.abs(x), Math.abs(Math.abs(x) - (0.51 - 0.22 * (z * z - y * y) / yz)));
+    var m = seamMix(d, w), peb = grain(x, y, z, 260), n = 0.5 + 0.5 * peb;
+    var g = 0.97 + 0.05 * n; o[3] = 255 * m * (0.9 + 0.1 * n);
+    o[0] = (lo[0] + (hi[0] - lo[0]) * m) * g; o[1] = (lo[1] + (hi[1] - lo[1]) * m) * g; o[2] = (lo[2] + (hi[2] - lo[2]) * m) * g;
+  });
+}
+/* Soccer ball: truncated icosahedron. Each point belongs to the face whose plane it reaches first
+   (12 black pentagons, 20 white hexagons); stitched seams where two faces meet. */
 function buildSoccer() {
-  var c = document.createElement("canvas"); c.width = 1024; c.height = 512; var cx = c.getContext("2d");
-  cx.fillStyle = "#f2f2ef"; cx.fillRect(0, 0, 1024, 512);
-  for (var i = 0; i < 3600; i++) { var v = (Math.random() * 14 - 7) | 0; cx.fillStyle = "rgba(" + (232 + v) + "," + (232 + v) + "," + (230 + v) + ",.4)"; cx.fillRect(Math.random() * 1024, Math.random() * 512, 3, 3); }
-  function poly(x, y, r, n, rot, fill) { cx.beginPath(); for (var k = 0; k < n; k++) { var a = rot + k / n * Math.PI * 2 - Math.PI / 2; var px = x + Math.cos(a) * r, py = y + Math.sin(a) * r; k ? cx.lineTo(px, py) : cx.moveTo(px, py); } cx.closePath(); if (fill) { cx.fillStyle = "#15171b"; cx.fill(); } else { cx.strokeStyle = "rgba(70,70,74,.45)"; cx.lineWidth = 3; cx.stroke(); } }
-  var pts = [[110, 96], [320, 72], [520, 96], [726, 72], [930, 96], [200, 256], [420, 232], [620, 256], [824, 232], [110, 410], [330, 432], [540, 410], [760, 432], [950, 410]];
-  for (var h = 0; h < pts.length; h++) poly(pts[h][0], pts[h][1], 56, 6, 0.5, false);
-  for (var p = 0; p < pts.length; p++) poly(pts[p][0], pts[p][1], 30, 5, Math.random() * 1.2, true);
-  return c;
+  var P = 1.618034, f = [];
+  [[0, 1, P], [1, P, 0], [P, 0, 1]].forEach(function (v) { [-1, 1].forEach(function (s1) { [-1, 1].forEach(function (s2) {
+    var a = [v[0], v[1], v[2]], k = 0; for (var t = 0; t < 3; t++) if (a[t]) { a[t] *= k ? s2 : s1; k++; }
+    var l = Math.hypot(a[0], a[1], a[2]); f.push([a[0] / l, a[1] / l, a[2] / l, 1 / 2.32744, 1]);
+  }); }); });
+  // hexagons sit on the icosahedron's 20 faces: every triple of mutually adjacent vertices (edge = 2)
+  for (var i = 0; i < 12; i++) for (var j = i + 1; j < 12; j++) for (var k = j + 1; k < 12; k++) {
+    var A = f[i], B = f[j], C = f[k], e = 1.06;   // unit-vector edge length of the icosahedron ~1.0515
+    if (Math.hypot(A[0] - B[0], A[1] - B[1], A[2] - B[2]) > e || Math.hypot(A[0] - C[0], A[1] - C[1], A[2] - C[2]) > e || Math.hypot(B[0] - C[0], B[1] - C[1], B[2] - C[2]) > e) continue;
+    var sx = A[0] + B[0] + C[0], sy = A[1] + B[1] + C[1], sz = A[2] + B[2] + C[2], l = Math.hypot(sx, sy, sz);
+    f.push([sx / l, sy / l, sz / l, 1 / 2.26728, 0]);
+  }
+  return paintSphere(512, 256, function (x, y, z, o) {
+    var b1 = -9, b2 = -9, pent = 0;
+    for (var i = 0; i < f.length; i++) { var F = f[i], t = (F[0] * x + F[1] * y + F[2] * z) * F[3]; if (t > b1) { b2 = b1; b1 = t; pent = F[4]; } else if (t > b2) b2 = t; }
+    var m = seamMix((b1 - b2) / b1, 0.008), n = 0.5 + 0.5 * grain(x, y, z, 90);
+    o[3] = 255 * m * (0.92 + 0.08 * n);
+    var base = pent ? [26, 28, 33] : [240, 240, 236], sm = pent ? [12, 13, 16] : [150, 152, 156], g = 0.97 + 0.04 * n;
+    o[0] = (sm[0] + (base[0] - sm[0]) * m) * g; o[1] = (sm[1] + (base[1] - sm[1]) * m) * g; o[2] = (sm[2] + (base[2] - sm[2]) * m) * g;
+  });
 }
 function buildNet() {
   var c = document.createElement("canvas"); c.width = 128; c.height = 128; var cx = c.getContext("2d");
@@ -7800,11 +7831,32 @@ function mountHero3D(host, opts) {
       var r = new THREE.Mesh(g, m); r.rotation.y = Math.PI / 2; r.position.set(x, GY + y, z); return sk(r);
     }
     function pyr(wd, h, m, x, y, z) { var p = new THREE.Mesh(new THREE.ConeGeometry(wd * 0.74, h, 4), m); p.rotation.y = Math.PI / 4; p.position.set(x, GY + y + h / 2, z); return sk(p); }
+    // stadium: oval bowl (outer wall + raked stands + pitch), optional roof ring over the stands and floodlight masts
+    function stadium(x, z, rx, rz, o) {
+      var h = o.h || 0.75;
+      function oval(geo, m, y) { var s2 = new THREE.Mesh(geo, m); s2.scale.set(rx, 1, rz); s2.position.set(x, GY + y, z); skyline.add(s2); return s2; }
+      var wallM = mat(o.wall || 0xb9bcbf); wallM.side = THREE.DoubleSide;
+      sk(oval(new THREE.CylinderGeometry(1, 1, h, 40, 1, true), wallM, h / 2));
+      var standM = mat(o.seats); standM.side = THREE.DoubleSide;
+      oval(new THREE.CylinderGeometry(0.98, 0.7, h - 0.06, 40, 1, true), standM, h / 2 + 0.02);
+      var pitch = oval(new THREE.CircleGeometry(0.7, 40), mat(0x3e8a3a), 0.03); pitch.rotation.x = -Math.PI / 2;
+      var lines = oval(new THREE.RingGeometry(0.2, 0.225, 32), mat(0xe8efe6), 0.035); lines.rotation.x = -Math.PI / 2; lines.scale.set(rx * 0.55, rz * 0.55, 1);
+      if (o.roof) { var roofM = mat(o.roof); roofM.side = THREE.DoubleSide; var rf = oval(new THREE.RingGeometry(0.74, 1.04, 40), roofM, h + 0.12); rf.rotation.x = -Math.PI / 2; rf.scale.set(rx, rz, 1); sk(rf); }
+      if (o.masts) {
+        var steel = mat(0x8d9399), lamp = new THREE.MeshStandardMaterial({ color: 0xf4f1e2, emissive: 0xfff3c4, emissiveIntensity: 0.35, roughness: 0.6 });
+        [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(function (q) {
+          var mx = x + q[0] * rx * 0.93, mz = z + q[1] * rz * 0.93;
+          box(0.06, o.masts, 0.06, steel, mx, 0, mz);
+          var pn = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.22, 0.05), lamp); pn.position.set(mx, GY + o.masts + 0.08, mz);
+          pn.lookAt(x, GY + 0.3, z); sk(pn);
+        });
+      }
+    }
     var Z = -9.6;
     if (cityK === "sibiu") {
       var eyeTex = texFrom(buildRoofEyes(), 1, 1), roofM = mat(0xffffff, eyeTex);
       var walls = [0xe7cf9b, 0xd98b6a, 0xc9d6c0, 0xefe1c4, 0xb7c9d8, 0xe2b48e];
-      [-4.6, -3.7, -2.8, -1.9, 1.0, 1.9, 2.8, 3.7, 4.6].forEach(function (hx, i) {
+      [-4.6, -3.7, -2.8, -1.9, 1.0, 1.9].forEach(function (hx, i) {
         var hw = 0.8 + Math.random() * 0.12, hh = 0.85 + Math.random() * 0.3, hz = Z + 0.9 + (i % 2) * 0.35;
         box(hw, hh, 0.75, mat(walls[i % walls.length]), hx, 0, hz);
         gable(hw + 0.06, 1.0 + Math.random() * 0.25, 0.85, roofM, hx, hh, hz);
@@ -7817,9 +7869,14 @@ function mountHero3D(host, opts) {
       pyr(tw, 1.05, dark, -0.45, th2, Z);
       [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(function (q) { pyr(0.12, 0.34, dark, -0.45 + q[0] * tw / 2, th2, Z + q[1] * tw / 2); });
       pyr(0.06, 0.5, dark, -0.45, th2 + 1.0, Z);
+      // Stadionul Municipal Sibiu (rebuilt 2022): covered stands, floodlights on the roof edge
+      stadium(3.9, Z - 0.4, 1.75, 1.05, { h: 1.75, seats: 0xb3262e, wall: 0xd7dadd, roof: 0xeef0f2, masts: 2.15 });
     } else {
       var blocM = mat(0xffffff, (function () { var t3 = texFrom(buildBloc("#9a9c98", "#3d434a")); t3.wrapS = t3.wrapT = THREE.RepeatWrapping; t3.repeat.set(2, 4); return t3; })());
-      [[-4.7, 2.4], [-3.6, 1.9], [3.5, 2.2], [4.6, 2.6], [-2.5, 1.6], [2.6, 1.7]].forEach(function (b) { box(0.9, b[1], 0.6, blocM, b[0], 0, Z + 0.6); });
+      [[-3.6, 1.9], [-2.5, 1.6], [2.6, 1.7]].forEach(function (b) { box(0.9, b[1], 0.6, blocM, b[0], 0, Z + 0.6); });
+      // Stadionul Municipal (right, classic floodlight towers) and Stadionul Trans-Sil (left, smaller)
+      stadium(4.25, Z - 0.4, 1.7, 1.0, { h: 1.65, seats: 0x2f5ea8, masts: 3.4 });
+      stadium(-4.95, Z - 0.2, 1.3, 0.8, { h: 1.4, seats: 0xc23a2e, masts: 2.8 });
       // Palatul Culturii: secession palace, glazed tile roofs, tall central tower
       var facade = texFrom(buildFacade("#d9c8a0", 3, 9)), cream = mat(0xffffff, facade), glazed = mat(0xffffff, texFrom(buildGlazedRoof(), 3, 3));
       box(2.7, 1.25, 0.9, cream, 0.3, 0, Z);
@@ -8037,14 +8094,14 @@ function mountHero3D(host, opts) {
   // two balls — big, with an invisible larger grab target, and a soft glow until the visitor first grabs one
   var touched = false; try { touched = localStorage.getItem("g2p_hero_ball") === "1"; } catch (e) {}
   var haloTex = (function () { var c = document.createElement("canvas"); c.width = c.height = 64; var x = c.getContext("2d"); var g = x.createRadialGradient(32, 32, 4, 32, 32, 32); g.addColorStop(0, "rgba(255,206,130,.95)"); g.addColorStop(1, "rgba(255,150,50,0)"); x.fillStyle = g; x.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
-  function makeBall(tex, rad, rough) {
-    var b = new THREE.Mesh(new THREE.SphereGeometry(rad, 40, 26), new THREE.MeshStandardMaterial({ map: tex, roughness: rough, metalness: 0.03, emissive: new THREE.Color(0xff9a3c), emissiveIntensity: 0 })); b.castShadow = true; b.position.y = rad; group.add(b);
+  function makeBall(skin, rad, rough) {
+    var b = new THREE.Mesh(new THREE.SphereGeometry(rad, 48, 32), new THREE.MeshStandardMaterial({ map: texFrom(skin.map), bumpMap: texFrom(skin.bump), bumpScale: 0.004, roughness: rough, metalness: 0.03, emissive: new THREE.Color(0xff9a3c), emissiveIntensity: 0 })); b.castShadow = true; b.position.y = rad; group.add(b);
     var hit = new THREE.Mesh(new THREE.SphereGeometry(rad * 1.9, 10, 8), new THREE.MeshBasicMaterial({ visible: false })); b.add(hit);
     var halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: haloTex, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false, opacity: 0 })); halo.visible = !touched; group.add(halo);
     return { mesh: b, hit: hit, halo: halo, rad: rad, x: 0, y: rad, z: 0, vx: 0, vy: 0, vz: 0, physics: false, grabbed: false, carried: null, claim: null, fromPass: false, rest: 0, ph: 0, fr: 2, hgt: 0.4 };
   }
-  var basket = makeBall(texFrom(buildBasketball()), 0.125, 0.82); basket.x = -0.6; basket.z = 0.2; basket.vx = 0.009; basket.vz = 0.006; basket.fr = 2.4; basket.hgt = 0.5;
-  var soccer = makeBall(texFrom(buildSoccer()), 0.118, 0.42); soccer.x = 0.5; soccer.z = -0.25; soccer.vx = -0.008; soccer.vz = 0.01; soccer.ph = 1.4; soccer.fr = 2.0; soccer.hgt = 0.42;
+  var basket = makeBall(buildBasketball(), 0.125, 0.6); basket.x = -0.6; basket.z = 0.2; basket.vx = 0.009; basket.vz = 0.006; basket.fr = 2.4; basket.hgt = 0.5;
+  var soccer = makeBall(buildSoccer(), 0.118, 0.3); soccer.x = 0.5; soccer.z = -0.25; soccer.vx = -0.008; soccer.vz = 0.01; soccer.ph = 1.4; soccer.fr = 2.0; soccer.hgt = 0.42;
   var balls = [basket, soccer], ballHits = [basket.hit, soccer.hit];
   function markTouched() { if (touched) return; touched = true; try { localStorage.setItem("g2p_hero_ball", "1"); } catch (e) {} }
 
@@ -16256,28 +16313,17 @@ const MASCOT_LINES = {
 };
 
 // One textured ball with eyes and a mouth. Shared by the corner mascot and the celebration.
+// The skin is the same real basketball as the 3D hero (8 panels, curved seams, pebble bump); gold = the reward skin.
+const MASCOT_TILT = [0, 0.6, 0], MASCOT_SEAM = 0.026;
 function makeMascotBall(THREE, r) {
-  const cv = document.createElement("canvas"); cv.width = 512; cv.height = 256;
-  const g = cv.getContext("2d");
-  // gold = the reward for finding every secret.
-  const paint = gold => {
-    const grd = g.createLinearGradient(0, 0, 0, 256);
-    grd.addColorStop(0, gold ? "#FFE58A" : "#F58A2E"); grd.addColorStop(1, gold ? "#D9A400" : "#D9621A");
-    g.fillStyle = grd; g.fillRect(0, 0, 512, 256);
-    g.fillStyle = gold ? "rgba(255,255,255,.22)" : "rgba(120,40,0,.18)";
-    for (let i = 0; i < 2600; i++) g.fillRect(Math.random() * 512, Math.random() * 256, 1.4, 1.4);
-    g.strokeStyle = gold ? "#6B4A00" : "#1b1209"; g.lineWidth = 6; g.lineCap = "round";
-    const line = (pts) => { g.beginPath(); pts.forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])); g.stroke(); };
-    line([[0, 128], [512, 128]]);
-    line([[128, 0], [128, 256]]); line([[384, 0], [384, 256]]);
-    [0, 256, 512].forEach(s => [1, -1].forEach(k => { const p = []; for (let y = 0; y <= 256; y += 8) p.push([s + k * 70 * Math.sin(Math.PI * y / 256), y]); line(p); }));
-  };
-  paint(false);
-  const tex = new THREE.CanvasTexture(cv);
+  const skin = buildBasketball(false, 512, 256, MASCOT_SEAM);
+  const tex = new THREE.CanvasTexture(skin.map), bump = new THREE.CanvasTexture(skin.bump);
+  tex.anisotropy = bump.anisotropy = 4;
   const root = new THREE.Group(), body = new THREE.Group();
   root.add(body);
-  const ball = new THREE.Mesh(new THREE.SphereGeometry(r, 40, 28), new THREE.MeshStandardMaterial({ map: tex, roughness: .62, metalness: .02 }));
-  ball.rotation.y = -Math.PI / 2;
+  const skinMesh = new THREE.Mesh(new THREE.SphereGeometry(r, 48, 32), new THREE.MeshStandardMaterial({ map: tex, bumpMap: bump, bumpScale: .01, roughness: .58, metalness: .02 }));
+  skinMesh.rotation.set(MASCOT_TILT[0], MASCOT_TILT[1], MASCOT_TILT[2]);   // which part of the ball faces the viewer: seams run between the eyes and the mouth
+  const ball = new THREE.Group(); ball.add(skinMesh);                      // the animations spin this group (rotation.x), the tilt stays inside
   body.add(ball);
   const face = new THREE.Group(); body.add(face);
   const white = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: .3 });
@@ -16295,8 +16341,8 @@ function makeMascotBall(THREE, r) {
   const mouth = new THREE.Mesh(new THREE.TorusGeometry(r * .2, r * .035, 8, 24, Math.PI), black);
   mouth.position.set(0, -r * .12, r * .97); mouth.rotation.z = Math.PI;
   face.add(mouth);
-  const gild = () => { paint(true); tex.needsUpdate = true; ball.material.metalness = .45; ball.material.roughness = .28; };
-  return { root, body, ball, eyes, pupils, mouth, gild, dispose() { root.traverse(o => { o.geometry && o.geometry.dispose(); }); tex.dispose(); } };
+  const gild = () => { const s = buildBasketball(true, 512, 256, MASCOT_SEAM); tex.image = s.map; bump.image = s.bump; tex.needsUpdate = bump.needsUpdate = true; skinMesh.material.metalness = .45; skinMesh.material.roughness = .28; };
+  return { root, body, ball, eyes, pupils, mouth, gild, dispose() { root.traverse(o => { o.geometry && o.geometry.dispose(); }); tex.dispose(); bump.dispose(); } };
 }
 
 function Mascot({ page }) {
