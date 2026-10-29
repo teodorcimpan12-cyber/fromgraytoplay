@@ -194,3 +194,20 @@ test("Sibiu after the satellite pass: every court has a score, stadiums are exce
   assert.equal(JSON.stringify(st), JSON.stringify(["sb21", "sb8"]));
   COURTS_SIBIU.filter(c => c.stadium).forEach(c => { assert.equal(c.condition, 5); assert.ok(/^https:\/\//.test(c.src), c.id); });
 });
+
+test("letterEvidence never carries another city's facts and labels the source of each condition", () => {
+  const { letterEvidence } = load([extractConst("CITY_RO", "{"), extractFunction("aiEstimateOf"), extractFunction("letterEvidence")], ["letterEvidence"],
+    { SITE: "https://example.org", getCourtHealthScore: () => 50 });
+  const reports = { a: { courtId: "sb13", category: "surface", status: "received", createdAt: "2026-10-28T10:00:00Z", ai: { score: 2 } }, b: { courtId: "c6", category: "hoop", status: "received" } };
+  const sat = letterEvidence({ id: "sb13", condition: 2, estimate: "sat", sat: { at: "2022-08-06" } }, reports, 7, "sibiu").join("\n");
+  assert.match(sat, /Sesizări deschise pe site pentru acest teren: 1/);
+  assert.match(sat, /imagini satelit: 2\/5 \(imagine din 2022-08\)/);
+  assert.match(sat, /Estimare AI din 1 poză trimisă de cetățeni \(nu e o inspecție\): 2\/5/);
+  assert.match(sat, /petiția From Grey to Play din Sibiu: 7/);
+  assert.doesNotMatch(sat, /Târgu|Mureș|SIDU|12\/15|5 mil/);
+  const stadium = letterEvidence({ id: "c11", condition: 5, status: "excellent", stadium: true }, null, null, "tgm").join("\n");
+  assert.match(stadium, /stadion în stare foarte bună, conform surselor publice/);
+  assert.doesNotMatch(stadium, /Semnături/);
+  const unseen = letterEvidence({ id: "sb5", condition: null }, {}, 0, "sibiu").join("\n");
+  assert.match(unseen, /neverificată încă pe teren/);
+});

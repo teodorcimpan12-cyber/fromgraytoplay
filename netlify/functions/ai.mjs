@@ -24,7 +24,10 @@ function courtFacts(c) {
   if (c.name) f.push("Court: " + clean(c.name, 80));
   if (c.city) f.push("City: " + clean(c.city, 30));
   if (c.type) f.push("Type: " + clean(c.type, 40));
+  if (c.stadium) f.push("This is a stadium.");
+  if (c.status) f.push("Status on the site: " + clean(c.status, 20));
   if (c.condition) f.push("Latest community condition report: " + clean(c.condition, 20));
+  if (Number.isFinite(c.aiScore)) f.push("AI estimate from citizens' photos (not an inspection): " + c.aiScore + "/5");
   if (Number.isFinite(c.reports)) f.push("Community reports so far: " + c.reports);
   if (Number.isFinite(c.health)) f.push("Site health score (0-100): " + c.health);
   if (Array.isArray(c.issues) && c.issues.length) f.push("Reported issues: " + c.issues.slice(0, 8).map(x => clean(x, 60)).join("; "));
@@ -41,9 +44,13 @@ Rules: describe only what is visible in the photo. Do not guess anything you can
 const ISSUE_TYPES = ["cracks", "rim", "net", "lines", "lighting", "drainage", "graffiti", "fence", "trash", "other"];
 const COST_BANDS = ["<10k", "10-50k", "50-200k", ">200k"];
 
-const LETTER_PROMPT = (lang, city) => `Write a short, polite, formal letter from a young resident to the City Hall of ${city === "sibiu" ? "Sibiu (Primăria Municipiului Sibiu)" : "Târgu Mureș (Primăria Municipiului Târgu Mureș)"} asking for the court below to be checked and repaired.
-Use ONLY the facts given. Never invent numbers, dates, budgets, laws or names. Leave "[Nume]" as the signature placeholder.
-Max 170 words. Language: ${LANG[lang] || "Romanian"}. Plain text, no markdown.`;
+// basis: "og27" = petition under OG 27/2002 (answer within 30 days); "l544" = information request under Law 544/2001 (10 days)
+const LETTER_PROMPT = (lang, city, basis) => `Write a short, polite, formal letter from a young resident to the City Hall of ${city === "sibiu" ? "Sibiu (Primăria Municipiului Sibiu)" : "Târgu Mureș (Primăria Municipiului Târgu Mureș)"} about the court or stadium below.
+${basis === "l544"
+    ? "It is a request for public information under Law 544/2001 (Legea nr. 544/2001 privind liberul acces la informațiile de interes public), which must be answered within 10 days. Ask, as numbered points: who administers this facility; how much was spent on its maintenance or repairs in the last 3 years; whether any works are planned, with dates and budget; and whether it is open to the public, on what schedule. Do not ask for repairs."
+    : "It is a petition under OG 27/2002 (Ordonanța Guvernului nr. 27/2002 privind reglementarea activității de soluționare a petițiilor), which must be answered within 30 days. Ask for the court to be checked and repaired, based on the facts given."}
+Use ONLY the facts given. You may name only the law above, exactly as written; never invent numbers, dates, budgets, other laws or names. Leave "[Nume]" as the signature placeholder.
+Max 190 words. Language: ${LANG[lang] || "Romanian"}. Plain text, no markdown.`;
 
 // Our own key (sk-ant-api…) goes straight to Anthropic. Netlify's AI Gateway also injects
 // ANTHROPIC_API_KEY (a JWT) + ANTHROPIC_BASE_URL, so the user's key lives in ANTHROPIC_API_KEY1;
@@ -129,10 +136,11 @@ export default async (req, context) => {
       const facts = courtFacts(body.court);
       if (!facts) return json(400, { error: "no_court" }, okOrigin);
       const city = body.court && body.court.city === "sibiu" ? "sibiu" : "tgm";
-      const text = await callClaude([{ type: "text", text: facts }], LETTER_PROMPT(lang, city), 1200); // Romanian diacritics cost many tokens; 600 cut letters off mid-sentence
+      const basis = body.basis === "l544" ? "l544" : "og27";
+      const text = await callClaude([{ type: "text", text: facts }], LETTER_PROMPT(lang, city, basis), 1400); // Romanian diacritics cost many tokens; 600 cut letters off mid-sentence
       // keep the paragraph breaks, drop other control chars
       const letter = String(text).replace(/\r/g, "").replace(/[\u0000-\u0009\u000b-\u001f]/g, " ").replace(/\n{3,}/g, "\n\n").replace(/ {2,}/g, " ").slice(0, 2000);
-      return json(200, { letter, model: MODEL }, okOrigin);
+      return json(200, { letter, basis, model: MODEL }, okOrigin);
     }
     return json(400, { error: "task" }, okOrigin);
   } catch (e) {

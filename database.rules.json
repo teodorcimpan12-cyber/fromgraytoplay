@@ -119,6 +119,19 @@
         }
       }
     },
+    "letters": {
+      ".read": true,
+      "$id": {
+        ".write": "!data.exists()",
+        ".validate": "newData.hasChildren(['city','courtId','basis','sentAt']) && (newData.child('city').val() === 'tgm' || newData.child('city').val() === 'sibiu') && newData.child('courtId').isString() && newData.child('courtId').val().length <= 40 && (newData.child('basis').val() === 'og27' || newData.child('basis').val() === 'l544') && newData.child('sentAt').isString() && newData.child('sentAt').val().length <= 30",
+        "via": { ".validate": "newData.isString() && newData.val().length <= 10" },
+        "reply": {
+          ".write": "!data.exists() || (auth != null && root.child('settings/sherifs/' + auth.uid).exists())",
+          ".validate": "newData.hasChildren(['at']) && newData.child('at').isString() && (!newData.child('regNo').exists() || (newData.child('regNo').isString() && newData.child('regNo').val().length <= 40))"
+        },
+        "$other": { ".validate": false }
+      }
+    },
     "letterCount": {
       ".read": true,
       "total": {
