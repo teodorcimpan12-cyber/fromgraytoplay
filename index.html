@@ -106,6 +106,13 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .action-card{background:color-mix(in srgb,var(--bgCard) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:16px;color:var(--text);padding:1.4rem 1.2rem;text-align:left;transition:transform .2s,box-shadow .2s;cursor:pointer;width:100%}
 .action-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.25)}
 .ac-icon{font-size:1.8rem;margin-bottom:.4rem}
+.home-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+.ha-card{display:flex;align-items:center;gap:.75rem;padding:.8rem 1rem}
+.ha-card .ac-icon{font-size:1.35rem;margin:0;line-height:1}
+.ha-label{flex:1;font-family:'Space Mono',monospace;font-weight:700;font-size:.92rem}
+.ha-arrow{color:var(--green);opacity:.7;transition:transform .2s}
+.ha-card:hover .ha-arrow{transform:translateX(3px);opacity:1}
+@media(max-width:860px){.home-actions{grid-template-columns:1fr;gap:.55rem}}
 .card-link{cursor:pointer}.card-link:hover{border-left-color:var(--green)}
 .badge{display:inline-block;padding:.15rem .5rem;border-radius:20px;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
 .badge-green{background:rgba(16,185,129,.15);color:var(--green)}.badge-coral{background:rgba(249,115,22,.15);color:var(--coral)}.badge-red{background:rgba(220,38,38,.15);color:var(--red)}.badge-teal{background:rgba(13,148,136,.15);color:var(--teal)}.badge-gray{background:rgba(107,114,128,.15);color:#9CA3AF}
@@ -9609,30 +9616,12 @@ function HomePage() {
     className: "section"
   }, /*#__PURE__*/React.createElement("div", {
     className: "container"
-  }, React.createElement(SibiuProgressBanner, null), React.createElement(HomeAiCard, null), /*#__PURE__*/React.createElement("div", {
-    className: "grid grid-3"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "action-card",
-    onClick: () => setPage("courts")
-  }, React.createElement("div", { className: "ac-icon" }, "\uD83D\uDCCD"), /*#__PURE__*/React.createElement("h3", null, t.reportCourt)), /*#__PURE__*/React.createElement("button", {
-    className: "action-card",
-    onClick: () => setPage("petition")
-  }, React.createElement("div", { className: "ac-icon" }, "\u270A"), /*#__PURE__*/React.createElement("h3", null, t.voteTitle)), /*#__PURE__*/React.createElement("button", {
-    className: "action-card",
-    onClick: () => setPage("help")
-  }, React.createElement("div", { className: "ac-icon" }, "\uD83E\uDD1D"), /*#__PURE__*/React.createElement("h3", null, t.quickVolunteer))))), React.createElement(StoryScroll, null), React.createElement(SatSwipe, null), React.createElement(FeaturedCourt, null), React.createElement(City3D, null), /*#__PURE__*/React.createElement("section", {
-    className: "section",
-    style: {
-      background: "var(--bgCard)"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "container"
-  }, /*#__PURE__*/React.createElement("h2", {
-    className: "section-title"
-  }, "\uD83D\uDCCD ", t.courtsReported), /*#__PURE__*/React.createElement(MapView, {
-    courts: COURTS,
-    height: "320px"
-  }))), React.createElement(Showcase, null),
+  }, React.createElement(SibiuProgressBanner, null), React.createElement(HomeAiCard, null), React.createElement("div", { className: "home-actions" },
+    [["courts", "\uD83D\uDCCD", t.reportCourt], ["petition", "\u270A", t.voteTitle], ["help", "\uD83E\uDD1D", t.quickVolunteer]].map(([pg, ic, lbl]) =>
+      React.createElement("button", { key: pg, className: "action-card ha-card", onClick: () => setPage(pg) },
+        React.createElement("span", { className: "ac-icon", "aria-hidden": "true" }, ic),
+        React.createElement("span", { className: "ha-label" }, lbl),
+        React.createElement("span", { className: "ha-arrow", "aria-hidden": "true" }, "\u2192")))))), React.createElement(FeaturedCourt, null), React.createElement(City3D, null), React.createElement(Showcase, null),
   React.createElement(QuickReportFAB, null));
 }
 
@@ -9867,7 +9856,7 @@ function CourtsPage() {
     style: {
       width: c.progress + "%"
     }
-  }))))))), sel && /*#__PURE__*/React.createElement(CourtDetail, {
+  }))))))), React.createElement(SatSwipe, null), sel && /*#__PURE__*/React.createElement(CourtDetail, {
     court: sel,
     onClose: closeCourt,
     onBook: () => setShowBook(true)
@@ -15982,13 +15971,11 @@ function SibiuProgressBannerInner() {
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
   const allReports = useFirebase("reports");
   const byCourt = verifyByCourt(useFirebase("verifications"));
-  const [mission, setMission] = useState(null);
   const checked = {};
   if (allReports) Object.values(allReports).forEach(r => { if (r && r.category === "condition" && r.courtId) checked[r.courtId] = 1; });
   Object.keys(byCourt).forEach(id => { checked[id] = (verifyConsensus(byCourt[id]) || {}).state === "verified" ? 2 : Math.max(checked[id] || 0, 1); });
   const sbCourts = COURTS.filter(c => c.city === "sibiu");
   const lit = sbCourts.filter(c => checked[c.id]).length, confirmed = sbCourts.filter(c => checked[c.id] === 2).length;
-  const missions = sibiuMissions(byCourt).slice(0, 6);
   return React.createElement("div", {
     "data-demo": "verify",
     style: {
@@ -16011,11 +15998,7 @@ function SibiuProgressBannerInner() {
     React.createElement("div", { className: "sb-dots", "aria-hidden": "true" },
       sbCourts.map(c => React.createElement("span", { key: c.id, className: "sb-dot" + (checked[c.id] === 2 ? " on" : checked[c.id] ? " half" : ""), title: c.name }))
     ),
-    missions.length > 0 && React.createElement("div", { className: "sb-mis" },
-      React.createElement("span", { className: "sb-mis-h" }, "🎯 ", L3("Misiuni: satelitul nu poate spune cum arată azi", "Missions: the satellite can't tell how these look today", "Küldetések: a műhold nem tudja, milyenek ma")),
-      missions.map(c => React.createElement("button", { key: c.id, className: "sb-mis-b", onClick: () => setMission(c) }, c.sat.v === "gone" ? "❓ " : c.sat.v === "worn" ? "⚠️ " : "🛰️ ", c.name))),
-    open && ReactDOM.createPortal(React.createElement(CourtConditionQuick, { onClose: () => setOpen(false) }), document.body),
-    mission && ReactDOM.createPortal(React.createElement(VerifyFlow, { court: mission, onClose: () => setMission(null) }), document.body)
+    open && ReactDOM.createPortal(React.createElement(CourtConditionQuick, { onClose: () => setOpen(false) }), document.body)
   );
 }
 
@@ -17701,8 +17684,7 @@ const DEMO_LEN = DEMO_Q === "5" ? 1 : 0; // index into each step's sec: [3 min, 
 if (DEMO_ON) { try { localStorage.setItem("g2p_ob", "1"); localStorage.removeItem("g2p_hero_renov"); } catch (e) {} }
 const DEMO_STEPS = [
   { id: "hero", sec: [20, 35], ro: "Din gri, în joc", en: "From grey to play", note: "Terenul gri. Apasă „Renovează” și lasă-l să se transforme." },
-  { id: "story", sel: '[data-demo="story"]', sec: [30, 50], ro: "Povestea Anei", en: "Ana's story", note: "Ana, 15 ani. Derulează scenele încet; fiecare cifră are sursa ei." },
-  { id: "sat", sel: '[data-demo="sat"]', sec: [25, 45], ro: "Satelitul: atunci și acum", en: "Satellite: then and now", note: "Trage linia. Satelitul arată ce a văzut la data aceea, nu starea de azi." },
+  { id: "sat", page: "courts", sel: '[data-demo="sat"]', sec: [25, 45], ro: "Satelitul: atunci și acum", en: "Satellite: then and now", note: "Trage linia. Satelitul arată ce a văzut la data aceea, nu starea de azi." },
   { id: "verify", sel: '[data-demo="verify"]', sec: [35, 60], ro: "Verificare live", en: "Live check", note: "Contorul e live. Verifică un teren acum, din sală, și arată cum se aprinde punctul." },
   { id: "ai", sel: '[data-demo="ai"]', sec: [40, 70], ro: "AI: poza și scrisoarea", en: "AI: photo and letter", note: "Poza: AI-ul doar sugerează starea. Apoi scrisoarea către Primărie, gata de trimis." },
   { id: "qr", sec: [30, 40], ro: "Scanează + ce cerem", en: "Scan + our ask", note: "Scanați codul. Cerem: primăria să publice starea terenurilor ei. Și 3 luni de mentorat." }
@@ -17710,10 +17692,10 @@ const DEMO_STEPS = [
 const demoClock = ms => { const s = Math.max(0, Math.round(ms / 1000)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
 function demoShow(i, setPage) {
   const s = DEMO_STEPS[i];
-  setPage("home");
+  setPage(s.page || "home");
   setTimeout(() => {
     const el = s.sel && document.querySelector(s.sel);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: s.id === "story" ? "start" : "center" });
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
     else if (s.id === "hero") window.scrollTo({ top: 0, behavior: "smooth" });
   }, 260);
 }
