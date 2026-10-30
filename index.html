@@ -6928,6 +6928,7 @@ function CommandPalette({ onClose }) {
   A("🌐", t.cmdLang + " → " + LANG_NAMES[nextLang(lang)], "limba language nyelv", () => setLang(nextLang(lang)));
   if (flags.impact !== false) A("🧬", t.pulseTitle, "pulse", () => { sessionStorage.setItem("g2p_open_pulse", "1"); setPage("impact"); });
   A("🏛️", "Mayor Mode", "fixit primar", () => { window.dispatchEvent(new Event("g2p-mayor")); });
+  A("🎬", L3("Promo de 32 de secunde", "32-second promo", "32 másodperces promó"), "promo video film reel", () => { location.href = "/promo"; });
   const mascotIsOff = mascotOff();
   A("🏀", mascotIsOff ? L3("Adu mingea înapoi", "Bring the ball back", "Hozd vissza a labdát") : L3("Ascunde mingea", "Hide the ball", "Labda elrejtése"), "mascota mascot", () => {
     try { if (mascotIsOff) localStorage.removeItem("g2p_mascot_off"); else localStorage.setItem("g2p_mascot_off", "1"); } catch (e) {}
@@ -16690,7 +16691,9 @@ function Footer() {
     }, "🔒 ", t.privacyPolicy || "Politică de Confidențialitate"), " · ", React.createElement("a", {
       href: "/press",
       onClick: function(e) { e.preventDefault(); setPage("press"); window.scrollTo(0, 0); }
-    }, "📰 ", lang === "en" ? "Press" : lang === "hu" ? "Sajtó" : "Presă")), /*#__PURE__*/React.createElement("p", {
+    }, "📰 ", lang === "en" ? "Press" : lang === "hu" ? "Sajtó" : "Presă"), " · ", React.createElement("a", {
+      href: "/promo"
+    }, "🎬 Promo")), /*#__PURE__*/React.createElement("p", {
       className: "mt-1"
     }, t.copyright), React.createElement("p", { className: "text-xs", style: { color: "var(--textSec)", marginTop: ".3rem" } },
       "Sursă hărți și terenuri Sibiu: © ", React.createElement("a", { href: "https://www.openstreetmap.org/copyright", target: "_blank", rel: "noopener", style: { color: "var(--green)" } }, "OpenStreetMap contributors"), " (ODbL)"), /*#__PURE__*/React.createElement("div", {
