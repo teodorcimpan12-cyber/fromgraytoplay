@@ -73,7 +73,8 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
 .nav-links a,.nav-links button{padding:.35rem .6rem;border-radius:8px;font-size:.8rem;font-weight:500;color:var(--text);background:none;border:none;white-space:nowrap;transition:background .15s;user-select:none;-webkit-user-select:none;cursor:pointer}
 .nav-links a:hover,.nav-links button:hover,.nav-links a.active{background:var(--green);color:#fff}
 .hamburger{display:none;background:none;border:none;color:var(--text);font-size:1.5rem;padding:.3rem}
-@media(max-width:1240px){.nav-links.desktop{display:none}.hamburger{display:block}}
+.nav-mob-right{display:flex;align-items:center;gap:.35rem}.nav-cmd-mob{display:none!important}
+@media(max-width:1240px){.nav-links.desktop{display:none}.hamburger{display:block}.nav-cmd-mob{display:inline-grid!important;width:40px!important;height:40px!important;background:none;border:none;cursor:pointer;padding:0}.nav-cmd-mob .nav-glass{width:22px;height:22px}}
 .mobile-menu{position:fixed;inset:0;z-index:200;background:var(--bg);padding:3.5rem 1rem 1rem;overflow-y:auto;animation:slideR .2s}
 .mobile-menu a,.mobile-menu button{display:block;padding:.7rem 1rem;border-radius:8px;font-size:1rem;color:var(--text);background:none;border:none;text-align:left;width:100%}
 .mobile-menu a:hover,.mobile-menu a.active{background:var(--green);color:#fff}
@@ -1326,6 +1327,26 @@ button.lang-flip.big{height:36px;padding:0 12px 0 9px;font-size:.8rem}
 .cp2 .cp-hint{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
 .cp-city{margin-left:auto}
 @media(max-width:600px){.cp-overlay{padding-top:8vh}.cp2 .cp-hint span:not(.cp-city){display:none}.cp-city{margin-left:0}}
+.cp-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;padding:.2rem .15rem .5rem}
+.cp-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35rem;min-height:84px;padding:.7rem .4rem;border-radius:14px;border:1px solid var(--border);background:color-mix(in srgb,var(--green) 6%,transparent);color:var(--text);font:600 .8rem/1.2 inherit;text-align:center;cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
+.cp-tile.sel,.cp-tile:hover{background:color-mix(in srgb,var(--green) 15%,transparent);border-color:color-mix(in srgb,var(--green) 55%,transparent)}
+.cp-tile:active{transform:scale(.96)}
+.cp-tile-ic{font-size:1.6rem;line-height:1}
+.cp-x{flex-shrink:0;width:40px;height:40px;border:0;border-radius:50%;background:color-mix(in srgb,var(--text) 8%,transparent);color:var(--text);font-size:1rem;cursor:pointer}
+@media(max-width:600px){
+.cp-overlay{align-items:flex-end;padding:0}
+.cp.cp2{width:100%;border-radius:22px 22px 0 0;border-bottom:0;max-height:88vh;max-height:88dvh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom);animation:cpSheet .3s cubic-bezier(.22,1,.36,1)}
+.cp.cp2::before{content:"";display:block;width:40px;height:4px;border-radius:2px;background:color-mix(in srgb,var(--text) 22%,transparent);margin:.55rem auto .1rem}
+.cp2 .cp-cats{display:none}
+.cp2 .cp-list{max-height:none;flex:1;min-height:0;padding:.5rem .75rem 1rem}
+.cp2 .cp-input{font-size:16px}
+.cp2 .cp-item{min-height:52px;padding:.6rem .7rem;font-size:.95rem}
+.cp2 .cp-go{display:none}
+.cp-tiles{grid-template-columns:1fr 1fr;gap:.6rem}
+.cp-tile{min-height:92px;font-size:.88rem}
+}
+@keyframes cpSheet{from{transform:translateY(100%)}to{transform:none}}
+@media(prefers-reduced-motion:reduce){.cp.cp2{animation:none}}
 button.nav-cmd{display:inline-grid;place-items:center;width:30px;height:28px;border-radius:8px;color:var(--text);transition:background .18s,color .18s}
 button.nav-cmd:hover{background:color-mix(in srgb,var(--green) 14%,transparent);color:var(--green)}
 .nav-glass{width:17px;height:17px;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
@@ -6885,20 +6906,18 @@ function CommandPalette({ onClose }) {
   const [cat, setCat] = useState("all");
   const [shake, setShake] = useState(0);
   const inputRef = useRef(null), listRef = useRef(null);
-  const reports = useFirebase("reports");
-  useEffect(() => { if (inputRef.current) inputRef.current.focus(); }, []);
+  // On phones the keyboard would cover the action tiles, so the box waits for a tap.
+  useEffect(() => { if (inputRef.current && !(typeof matchMedia === "function" && matchMedia("(hover: none)").matches)) inputRef.current.focus(); }, []);
   const norm = s => (s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
   const flags = (settings && settings.flags) || {};
-  const courtById = {};
-  COURTS.forEach(c => { courtById[c.id] = c; });
   const go = pg => () => { setPage(pg); scrollTo(0, 0); };
+  // Actions first; courts and reports only show up when typed for, never as a list of their own.
   const CATS = [
     ["all", L3("Tot", "All", "Minden"), "✨"],
-    ["courts", L3("Terenuri", "Courts", "Pályák"), "📍"],
-    ["reports", L3("Sesizări", "Reports", "Bejelentések"), "⚠️"],
-    ["pages", L3("Pagini", "Pages", "Oldalak"), "🧭"],
-    ["actions", L3("Acțiuni", "Actions", "Műveletek"), "⚡"]
+    ["actions", L3("Acțiuni", "Actions", "Műveletek"), "⚡"],
+    ["pages", L3("Pagini", "Pages", "Oldalak"), "🧭"]
   ];
+  const touch = typeof matchMedia === "function" && matchMedia("(hover: none)").matches;
   const items = [];
   [["home", t.home, "🏠", L3("acasa start", "start", "")], ["courts", t.courts, "🏟️", L3("harta terenuri", "map", "térkép")],
    ["reports", t.reportPageTitle, "⚠️", L3("probleme sesizari", "issues", "")], ["petition", t.petition, "✊", L3("semnatura vot", "sign vote", "")],
@@ -6911,18 +6930,11 @@ function CommandPalette({ onClose }) {
     const v = courtStatusView(c, t);
     items.push({ c: "courts", ic: "📍", l: c.name, sub: c.address, kw: (c.neighbourhood || "") + " " + (c.category || ""), dot: v.color, chip: v.label, chipCls: v.badge, pop: (c.reports || 0), run: () => { location.hash = "#court-" + c.id; } });
   });
-  const catEmoji = { surface: "🏗️", hoop: "🏀", fence: "🚧", lighting: "💡", trash: "🗑️", safety: "⚠️", other: "📌", condition: "🩺" };
-  const ago = ts => { const m = Math.max(1, Math.round((Date.now() - ts) / 60000)); return m < 60 ? m + " min" : m < 1440 ? Math.round(m / 60) + " h" : Math.round(m / 1440) + (lang === "en" ? " d" : lang === "hu" ? " n" : " z"); };
-  if (reports) Object.keys(reports).map(k => Object.assign({ id: k }, reports[k]))
-    .filter(r => r && courtById[r.courtId])
-    .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).slice(0, 60)
-    .forEach(r => items.push({ c: "reports", ic: catEmoji[r.category] || "📌", l: String(r.issue || r.note || L3("Sesizare", "Report", "Bejelentés")).slice(0, 80),
-      sub: courtById[r.courtId].name + (r.timestamp ? " · " + ago(r.timestamp) : ""), kw: r.category || "",
-      chip: r.status === "resolved" ? L3("rezolvat", "resolved", "megoldva") : null, chipCls: "badge-green", run: () => { location.hash = "#court-" + r.courtId; } }));
-  const A = (ic, l, kw, run) => items.push({ c: "actions", ic: ic, l: l, kw: kw, run: run });
-  if (flags.petition !== false) A("✍️", L3("Semnează petiția", "Sign the petition", "Írd alá a petíciót"), "vot", go("petition"));
-  A("📸", L3("Raportează o problemă", "Report a problem", "Probléma bejelentése"), "sesizare poza photo", go("reports"));
-  A("🩺", L3("Verifică un teren", "Check a court", "Ellenőrizz egy pályát"), "stare condition", go("courts"));
+  const A = (ic, l, kw, run, tile) => items.push({ c: "actions", ic: ic, l: l, kw: kw, run: run, tile: tile });
+  if (flags.petition !== false) A("✍️", L3("Semnează petiția", "Sign the petition", "Írd alá a petíciót"), "vot", go("petition"), true);
+  A("📸", L3("Raportează o problemă", "Report a problem", "Probléma bejelentése"), "sesizare poza photo", go("reports"), true);
+  A("🩺", L3("Verifică un teren", "Check a court", "Ellenőrizz egy pályát"), "stare condition", go("courts"), true);
+  A("🤝", t.quickVolunteer, "voluntar volunteer ajuta help", go("help"), true);
   A("📚", L3("Sursele datelor", "Data sources", "Adatforrások"), "surse sources dovezi", go("about"));
   A(theme === "dark" ? "☀️" : "🌙", t.cmdTheme, "dark light tema zi noapte", () => switchTheme(null, theme, setTheme));
   A("🌐", t.cmdLang + " → " + LANG_NAMES[nextLang(lang)], "limba language nyelv", () => setLang(nextLang(lang)));
@@ -6942,26 +6954,33 @@ function CommandPalette({ onClose }) {
 
   // Search: every word must appear; names that start with the query come first.
   const words = norm(q).split(/\s+/).filter(Boolean);
-  let list = items.filter(i => cat === "all" || i.c === cat);
+  let list = items.filter(i => cat === "all" ? (words.length || i.c === "actions" || i.c === "pages") : i.c === cat);
   if (words.length) {
     list = list.map(i => { const hay = norm(i.l + " " + (i.sub || "") + " " + (i.kw || "")); const nl = norm(i.l);
       return words.every(w => hay.indexOf(w) >= 0) ? { i: i, s: (nl.indexOf(words[0]) === 0 ? 0 : nl.indexOf(words[0]) > 0 ? 1 : 2) } : null; })
-      .filter(Boolean).sort((a, b) => a.s - b.s).map(x => x.i);
+      .filter(Boolean).sort((a, b) => ((a.i.c === "actions" ? 0 : 1) - (b.i.c === "actions" ? 0 : 1)) || (a.s - b.s)).map(x => x.i);
+    // Matching courts collapse into one row that opens the courts page; no court list in here.
+    const nCourts = list.filter(i => i.c === "courts").length;
+    list = list.filter(i => i.c === "actions" || i.c === "pages");
+    if (nCourts) list.push({ c: "pages", ic: "🏟️", l: L3("Vezi pe harta terenurilor", "See it on the courts map", "Nézd meg a pályák térképén"), // TODO: HU review
+      sub: nCourts + " " + L3(nCourts === 1 ? "teren găsit" : "terenuri găsite", nCourts === 1 ? "court found" : "courts found", "pálya"), run: go("courts") });
   }
   // A typed secret word gets one extra row on top (phones have no keyboard shortcuts).
   const secretW = norm(q).trim();
   if (["dunk", "disco", "rain", "tgm", "fixit", "1v1", "sibiu", "mures"].indexOf(secretW) >= 0)
     list = [{ c: "actions", ic: "🤫", l: L3("Ceva se mișcă… apasă aici", "Something is moving… press here", "Valami mozog… nyomd meg"), sub: "", run: () => window.dispatchEvent(new CustomEvent("g2p:secret", { detail: { w: secretW } })) }].concat(list);
-  // Empty box: recent picks, the most-reported courts, and one button you should not press.
+  // Empty box: the main actions as big tiles, then the rest, the pages, and one button you should not press.
   let recent = [];
   try { recent = JSON.parse(localStorage.getItem("g2p_cp_recent") || "[]"); } catch (e) {}
   const suggest = !words.length && cat === "all";
   if (suggest) {
-    const rec = recent.map(l => items.find(i => i.l === l)).filter(Boolean).slice(0, 4).map(i => Object.assign({}, i, { g: L3("Recente", "Recent", "Legutóbbi"), ic2: "🕘" }));
-    const pop = items.filter(i => i.c === "courts").sort((a, b) => b.pop - a.pop).slice(0, 4).map(i => Object.assign({}, i, { g: L3("Cele mai raportate", "Most reported", "Legtöbbet jelentett") }));
+    const acts = items.filter(i => i.c === "actions");
     const egg = { c: "actions", g: L3("Altceva", "Something else", "Más"), ic: "🙈", l: L3("Nu apăsa aici", "Don't press this", "Ne nyomd meg"), sub: "", egg: true, run: null };
-    list = rec.concat(pop, items.filter(i => i.c === "actions").slice(0, 4).map(i => Object.assign({}, i, { g: L3("Acțiuni rapide", "Quick actions", "Gyors műveletek") })), [egg]);
+    list = acts.filter(i => i.tile).concat(
+      acts.filter(i => !i.tile).map(i => Object.assign({}, i, { g: L3("Mai mult", "More", "Továbbiak") })),
+      items.filter(i => i.c === "pages"), [egg]);
   }
+  const nTiles = suggest ? list.filter(i => i.tile).length : 0;
   const sel = Math.max(0, Math.min(idx, list.length - 1));
   useEffect(() => {
     const el = listRef.current && listRef.current.querySelector(".cp-item.sel");
@@ -6996,14 +7015,16 @@ function CommandPalette({ onClose }) {
   const groupName = i => i.g || (CATS.find(c => c[0] === i.c) || [0, ""])[1];
   let lastG = null;
   return React.createElement("div", { className: "cp-overlay", onClick: onClose },
-    React.createElement("div", { key: shake, className: "cp cp2" + (shake ? " shake" : ""), onClick: e => e.stopPropagation(), role: "dialog", "aria-modal": "true", "aria-label": t.cmdPlaceholder },
+    React.createElement("div", { key: shake, className: "cp cp2" + (shake ? " shake" : "") + (touch ? " cp-touch" : ""), onClick: e => e.stopPropagation(), role: "dialog", "aria-modal": "true", "aria-label": t.cmdPlaceholder },
       React.createElement("div", { className: "cp-top" },
         React.createElement("span", { className: "cp-glass", "aria-hidden": "true" },
           React.createElement("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2.4, strokeLinecap: "round" },
             React.createElement("circle", { cx: 10.5, cy: 10.5, r: 6.5 }), React.createElement("path", { d: "M15.5 15.5L21 21" }))),
-        React.createElement("input", { ref: inputRef, className: "cp-input", placeholder: L3("Caută terenuri, sesizări, pagini, acțiuni…", "Search courts, reports, pages, actions…", "Keress pályát, bejelentést, oldalt…"), value: q,
+        React.createElement("input", { ref: inputRef, className: "cp-input", placeholder: L3("Ce vrei să faci?", "What do you want to do?", "Mit szeretnél csinálni?"), value: q, // TODO: HU review
           onChange: e => { setQ(e.target.value); setIdx(0); }, onKeyDown: key, "aria-label": t.cmdPlaceholder }),
-        React.createElement("kbd", { className: "cp-esc", onClick: onClose }, "Esc")),
+        touch
+          ? React.createElement("button", { type: "button", className: "cp-x", onClick: onClose, "aria-label": L3("Închide", "Close", "Bezárás") }, "✕")
+          : React.createElement("kbd", { className: "cp-esc", onClick: onClose }, "Esc")),
       React.createElement("div", { className: "cp-cats", role: "tablist" },
         CATS.map(c => React.createElement("button", { key: c[0], role: "tab", "aria-selected": cat === c[0], className: "cp-cat" + (cat === c[0] ? " on" : ""),
           onClick: () => { setCat(c[0]); setIdx(0); inputRef.current && inputRef.current.focus(); } },
@@ -7013,7 +7034,13 @@ function CommandPalette({ onClose }) {
           ? React.createElement("div", { className: "cp-empty" },
               React.createElement("div", { className: "cp-empty-ball", "aria-hidden": "true" }, "🏀"),
               L3("Nimic. Nici măcar o minge pierdută.", "Nothing. Not even a lost ball.", "Semmi. Még egy elveszett labda sem."))
-          : list.slice(0, 50).map((i, n) => {
+          : [nTiles > 0 && React.createElement("div", { className: "cp-tiles", key: "tiles" },
+              list.slice(0, nTiles).map((i, n) => React.createElement("button", {
+                key: n, type: "button", className: "cp-tile" + (n === sel ? " sel" : ""), role: "option", "aria-selected": n === sel,
+                onMouseEnter: () => setIdx(n), onClick: () => exec(i)
+              }, React.createElement("span", { className: "cp-tile-ic", "aria-hidden": "true" }, i.ic), React.createElement("span", null, i.l))))]
+            .concat(list.slice(nTiles, 50).map((i, m) => {
+              const n = m + nTiles;
               const g = groupName(i);
               const head = g !== lastG ? React.createElement("div", { className: "cp-group", key: "g" + n }, g) : null;
               lastG = g;
@@ -7029,8 +7056,8 @@ function CommandPalette({ onClose }) {
                     i.sub && React.createElement("small", null, mark(i.sub))),
                   i.chip && React.createElement("span", { className: "badge " + (i.chipCls || ""), style: { fontSize: ".64rem" } }, i.chip),
                   React.createElement("span", { className: "cp-go", "aria-hidden": "true" }, "↵")));
-            })),
-      React.createElement("div", { className: "cp-hint" },
+            }))),
+      !touch && React.createElement("div", { className: "cp-hint" },
         React.createElement("span", null, React.createElement("kbd", null, "↑↓"), " ", L3("alege", "move", "mozgás")),
         React.createElement("span", null, React.createElement("kbd", null, "↵"), " ", L3("deschide", "open", "megnyitás")),
         React.createElement("span", null, React.createElement("kbd", null, "Tab"), " ", L3("categorie", "category", "kategória")),
@@ -7216,10 +7243,17 @@ function Navbar() {
     React.createElement("svg",{width:14,height:14,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"},
       React.createElement("path",{d:"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"})
     )
-  )), /*#__PURE__*/React.createElement("button", {
+  )), React.createElement("div", { className: "nav-mob-right" },
+  React.createElement("button", {
+    className: "nav-cmd nav-cmd-mob",
+    "aria-label": L3("Caută", "Search", "Keresés"),
+    onClick: () => setCmd(true)
+  }, React.createElement("svg", { className: "nav-glass", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2.4, strokeLinecap: "round", "aria-hidden": "true" },
+    React.createElement("circle", { cx: 10.5, cy: 10.5, r: 6.5 }), React.createElement("path", { d: "M15.5 15.5L21 21" }))),
+  /*#__PURE__*/React.createElement("button", {
     className: "hamburger",
     onClick: () => setMob(true)
-  }, "\u2630"))),
+  }, "\u2630")))),
   showNotif && /*#__PURE__*/React.createElement(NotifPanel, { notif: notif, onClose: () => setShowNotif(false) }),
   mob && /*#__PURE__*/React.createElement("div", {
     className: "mobile-menu"
