@@ -1,0 +1,892 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>From Grey to Play — Promo</title>
+<meta name="description" content="32 de secunde despre terenurile de sport din cartierele Târgu Mureșului: de la gri la joc."/>
+<meta property="og:title" content="From Grey to Play — Promo"/>
+<meta property="og:description" content="13 din 30 de terenuri sunt degradate. 12 dintre ele sunt în cartiere."/>
+<meta property="og:image" content="https://fromgreytoplay.netlify.app/promo/poster-16x9.jpg"/>
+<meta property="og:url" content="https://fromgreytoplay.netlify.app/promo"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="theme-color" content="#1A1A2E"/>
+<link rel="icon" href="/icons/icon-192.png"/>
+<link rel="canonical" href="https://fromgreytoplay.netlify.app/promo"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Libre+Franklin:wght@500;600;900&family=Barlow+Condensed:wght@800&display=swap" rel="stylesheet"/>
+<script>
+/* Theme before paint, same key as the main site. */
+try { var th = localStorage.getItem("g2p_theme"); if (th) document.documentElement.setAttribute("data-theme", th); } catch (e) {}
+</script>
+<style>
+/* Design tokens: copied from index.html :root, don't drift. */
+:root{--dark:#1A1A2E;--darkCard:#16213E;--green:#10B981;--coral:#F97316;--teal:#0D9488;--red:#DC2626;--grey:#6B7280;--darkGrey:#374151;--light:#F8FAFC;--lightGrey:#D1D5DB;--white:#FFFFFF;--bg:var(--light);--bgCard:var(--white);--text:var(--darkGrey);--textSec:var(--grey);--border:var(--lightGrey);--shadow:0 2px 12px rgba(0,0,0,.08);--radius:12px}
+[data-theme="dark"]{--bg:var(--dark);--bgCard:var(--darkCard);--text:#E5E7EB;--textSec:#9CA3AF;--border:#374151;--shadow:0 2px 12px rgba(0,0,0,.4)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:var(--dark);--bgCard:var(--darkCard);--text:#E5E7EB;--textSec:#9CA3AF;--border:#374151;--shadow:0 2px 12px rgba(0,0,0,.4)}}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--text);font-family:'Libre Franklin',sans-serif;-webkit-font-smoothing:antialiased}
+body{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+a{color:var(--green)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.85rem 16px;max-width:1200px;width:100%;margin:0 auto}
+.logo{font-family:'Space Mono',monospace;font-weight:700;font-size:1rem;color:var(--green);text-decoration:none;white-space:nowrap}
+.back{font-family:'Space Mono',monospace;font-size:.8rem;color:var(--textSec);text-decoration:none}
+.back:hover{color:var(--green)}
+main{flex:1;display:flex;flex-direction:column;align-items:center;gap:14px;padding:0 16px 24px;width:100%;max-width:1200px;margin:0 auto}
+.stage{position:relative;width:100%;border-radius:var(--radius);overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.28);background:#07070C;border:1px solid var(--border)}
+.stage canvas{display:block;width:100%;height:100%}
+.stage .big{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(7,7,12,.35);border:0;cursor:pointer;transition:opacity .25s}
+.stage .big span{width:84px;height:84px;border-radius:50%;background:var(--green);color:var(--dark);display:flex;align-items:center;justify-content:center;font-size:2rem;box-shadow:0 0 0 10px rgba(16,185,129,.25)}
+.stage.playing .big{opacity:0;pointer-events:none}
+.bar{width:100%;display:flex;align-items:center;gap:10px;background:var(--bgCard);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;box-shadow:var(--shadow);flex-wrap:wrap}
+.btn{font-family:'Space Mono',monospace;font-weight:700;font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--border);background:transparent;color:var(--text);border-radius:var(--radius);padding:.5rem .7rem;cursor:pointer;min-height:40px;min-width:40px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:.35rem}
+.btn:hover{border-color:var(--green);color:var(--green)}
+.btn.primary{background:var(--green);border-color:var(--green);color:var(--dark)}
+.btn.primary:hover{filter:brightness(1.08);color:var(--dark)}
+.btn{transition:transform .16s cubic-bezier(.23,1,.32,1),border-color .15s ease,color .15s ease;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.97);transition-duration:.1s}
+.stage .big span{transition:transform .16s cubic-bezier(.23,1,.32,1)}
+.stage .big:active span{transform:scale(.94)}
+@media(hover:none){.btn:not(.primary):hover{border-color:var(--border);color:var(--text)}.btn.primary:hover{filter:none}}
+@media(prefers-reduced-motion:reduce){.btn:active,.stage .big:active span{transform:none}}
+.btn[aria-pressed="true"]{border-color:var(--green);color:var(--green)}
+.tc{font-family:'Space Mono',monospace;font-size:.78rem;color:var(--textSec);min-width:9.5ch;text-align:center}
+.scrub{flex:1;min-width:120px;accent-color:var(--green);height:40px}
+.grow{flex:1}
+.note{font-size:.82rem;color:var(--textSec);text-align:center;max-width:62ch;line-height:1.5}
+.dl{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+@media (max-width:860px){.bar .wide{display:none}}
+/* Render mode: bare canvas at exact pixel size, no chrome. */
+body.render{background:#000}
+body.render .top,body.render .bar,body.render .note,body.render .dl,body.render .big{display:none!important}
+body.render main{padding:0;max-width:none}
+body.render .stage{border:0;border-radius:0;box-shadow:none}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="/">FROM GREY TO PLAY</a>
+  <a class="back" id="back" href="/">← site</a>
+</header>
+<main>
+  <div class="stage" id="stage">
+    <canvas id="cv" aria-label="Promo animat From Grey to Play" role="img"></canvas>
+    <button class="big" id="big" aria-label="Play"><span>▶</span></button>
+  </div>
+  <div class="bar" role="group" aria-label="Player">
+    <button class="btn primary" id="play" aria-label="Play">▶</button>
+    <span class="tc" id="tc">00:00:00</span>
+    <input class="scrub" id="scrub" type="range" min="0" max="1" step="0.001" value="0" aria-label="Timeline"/>
+    <button class="btn" id="snd" aria-pressed="false" title="Sunet">🔇</button>
+    <button class="btn" id="lang" title="Limba">RO</button>
+    <button class="btn" id="ar" title="Format">9:16</button>
+    <button class="btn wide" id="fs" title="Ecran complet">⛶</button>
+  </div>
+  <div class="dl">
+    <a class="btn" id="dl916" href="/promo/promo-9x16.mp4" download>⬇ MP4 9:16</a>
+    <a class="btn" id="dl169" href="/promo/promo-16x9.mp4" download>⬇ MP4 16:9</a>
+    <a class="btn primary" id="cta" href="/#petition">✍️ <span id="ctaT">Semnează petiția</span></a>
+  </div>
+  <p class="note" id="note"></p>
+</main>
+<script>
+"use strict";
+/* ─── From Grey to Play · motion promo ───────────────────────────────────────
+   One deterministic draw(t): every frame is a pure function of time, so the same
+   code plays live in the browser and renders frame-exact MP4s (tools/render_promo.mjs).
+   120 BPM: one beat = 0.5 s, every cut lands on a beat. Total 32 s = 64 beats.
+   Numbers come from COURTS_BASE in index.html (Târgu Mureș, 30 courts). */
+
+var T_TOTAL = 32, BEAT = 0.5;
+var SCENES = [
+  { id: "cold",    a: 0,    b: 3 },
+  { id: "logo",    a: 3,    b: 5.5 },
+  { id: "prompt",  a: 5.5,  b: 10 },
+  { id: "court",   a: 10,   b: 14.5 },
+  { id: "data",    a: 14.5, b: 19 },
+  { id: "stack",   a: 19,   b: 24 },
+  { id: "count",   a: 24,   b: 28 },
+  { id: "end",     a: 28,   b: 32 }
+];
+var BALL_CUTS = [14.5, 19, 24, 28];
+/* Audio cues (tools/render_promo.mjs exports them; the soundtrack is mixed from CC0 SFX). */
+var CUES = [
+  { t: 0,     s: "boom" }, { t: 1, s: "boom" }, { t: 1.02, s: "glitch" }, { t: 1.5, s: "ui_blip" },
+  { t: 2.0,   s: "crack" }, { t: 2.45, s: "glitch" }, { t: 2.92, s: "flash" },
+  { t: 3.0,   s: "longwhoosh" }, { t: 4.0, s: "hit" }, { t: 4.0, s: "boom" }, { t: 5.1, s: "riser" },
+  { t: 5.5,   s: "whoosh" }, { t: 8.7, s: "ui_blip" }, { t: 8.9, s: "riser" }, { t: 9.4, s: "boom" }, { t: 9.4, s: "whoosh" },
+  { t: 10.3,  s: "dataswish" }, { t: 11.8, s: "dataswish" }, { t: 12.5, s: "scan" },
+  { t: 14.5,  s: "bounce" }, { t: 14.5, s: "boom" }, { t: 14.75, s: "hit" }, { t: 15.0, s: "hit" },
+  { t: 16.0,  s: "boom" }, { t: 16.25, s: "hit" }, { t: 16.5, s: "hit" }, { t: 17.5, s: "scan" },
+  { t: 19.0,  s: "bounce" }, { t: 19.0, s: "whoosh" }, { t: 20.0, s: "whoosh" }, { t: 21.0, s: "whoosh" },
+  { t: 22.0,  s: "boom" }, { t: 22.25, s: "hit" }, { t: 22.5, s: "hit" }, { t: 23.5, s: "glitch" },
+  { t: 24.0,  s: "bounce" }, { t: 24.3, s: "ui_blip" }, { t: 24.6, s: "ui_blip" }, { t: 24.9, s: "ui_blip" }, { t: 25.2, s: "ui_blip" },
+  { t: 28.0,  s: "bounce" }, { t: 28.0, s: "poweron" }, { t: 29.0, s: "bounce" }, { t: 30.0, s: "bounce" }, { t: 31.0, s: "boom" }
+];
+/* Typing clicks during the prompt card. */
+(function () { for (var k = 0; k < 26; k++) CUES.push({ t: 6.05 + k * 0.1, s: "type" }); })();
+/* Camera-shake hits: (time, strength). */
+var HITS = [[0, 1], [1, .7], [1.5, .25], [2.45, .5], [4, .8], [9.4, .6], [14.5, .5], [14.75, .35], [15, .35],
+            [16, .6], [16.25, .3], [16.5, .3], [19, .3], [20, .3], [21, .3], [22, .8], [22.25, .4], [22.5, .4], [24, .3], [28, .3], [31, .4]];
+
+var COPY = {
+  ro: {
+    s1: ["NU MAI E", "GRI"], s1c: "Târgu Mureș · terenurile de cartier",
+    tag: "terenuri publice · date deschise · comunitate",
+    head: "fromgreytoplay — cerere", prompt: "Transformă terenul de baschet din cartier într-un loc de joacă pentru toți.", send: "TRIMITE ↵",
+    today: "AZI", could: "POATE FI", court: "Teren Baschet Tudor Vladimirescu · Tudor",
+    bad: "DEGRADAT", ok: "RENOVAT",
+    d1: [["13 DIN 30", 0], ["DE TERENURI", 0], ["SUNT DEGRADATE.", 1]],
+    d2: [["12 DINTRE ELE", 0], ["SUNT ÎN", 0], ["CARTIERE.", 1]],
+    bars: ["CENTRU", "CARTIERE"], barsT: "terenuri degradate", src: "sursa: harta From Grey to Play · 30 de terenuri cartografiate",
+    stack: [["UN ", "TEREN."], ["O ", "COMUNITATE."], ["JOC PENTRU ", "TOȚI."]],
+    countT: "DATE DESCHISE · LIVE PE SITE",
+    tiles: [[30, "terenuri cartografiate"], [9, "cartiere"], [61, "sesizări pe hartă"], [3, "limbi · RO EN HU"]],
+    city: "Târgu Mureș", cta: "SEMNEAZĂ PETIȚIA", cta2: "Raportează un teren · Fii voluntar · Implică-te",
+    note: "Promo de 32 s generat din cod (canvas, 120 BPM). Cifrele vin din harta site-ului. Sunet: efecte CC0."
+  },
+  en: {
+    s1: ["NO MORE", "GREY"], s1c: "Târgu Mureș · neighbourhood courts",
+    tag: "public courts · open data · community",
+    head: "fromgreytoplay — request", prompt: "Turn the neighbourhood basketball court into a place to play for everyone.", send: "SEND ↵",
+    today: "TODAY", could: "COULD BE", court: "Tudor Vladimirescu Basketball Court · Tudor",
+    bad: "DEGRADED", ok: "RENOVATED",
+    d1: [["13 OF 30", 0], ["COURTS ARE", 0], ["DEGRADED.", 1]],
+    d2: [["12 OF THEM", 0], ["ARE IN THE", 0], ["NEIGHBOURHOODS.", 1]],
+    bars: ["CENTRE", "NEIGHBOURHOODS"], barsT: "degraded courts", src: "source: From Grey to Play map · 30 courts mapped",
+    stack: [["ONE ", "COURT."], ["ONE ", "COMMUNITY."], ["PLAY FOR ", "EVERYONE."]],
+    countT: "OPEN DATA · LIVE ON THE SITE",
+    tiles: [[30, "courts mapped"], [9, "neighbourhoods"], [61, "reports on the map"], [3, "languages · RO EN HU"]],
+    city: "Târgu Mureș, Romania", cta: "SIGN THE PETITION", cta2: "Report a court · Volunteer · Get involved",
+    note: "A 32 s promo generated from code (canvas, 120 BPM). Numbers come from the site's map. Sound: CC0 effects."
+  },
+  /* TODO: HU review — draft translation */
+  hu: {
+    s1: ["MÁR NEM", "SZÜRKE"], s1c: "Marosvásárhely · lakótelepi pályák",
+    tag: "közpályák · nyílt adatok · közösség",
+    head: "fromgreytoplay — kérés", prompt: "Változtasd a lakótelepi kosárpályát mindenki játszóterévé.", send: "KÜLDÉS ↵",
+    today: "MA", could: "LEHETNE", court: "Tudor Vladimirescu kosárpálya · Tudor",
+    bad: "LEROMLOTT", ok: "FELÚJÍTOTT",
+    d1: [["30-BÓL 13", 0], ["PÁLYA", 0], ["LEROMLOTT.", 1]],
+    d2: [["EBBŐL 12", 0], ["A LAKÓTELEPEKEN", 1], ["VAN.", 0]],
+    bars: ["KÖZPONT", "LAKÓTELEPEK"], barsT: "leromlott pályák", src: "forrás: a From Grey to Play térképe · 30 feltérképezett pálya",
+    stack: [["EGY ", "PÁLYA."], ["EGY ", "KÖZÖSSÉG."], ["JÁTÉK ", "MINDENKINEK."]],
+    countT: "NYÍLT ADATOK · ÉLŐBEN AZ OLDALON",
+    tiles: [[30, "feltérképezett pálya"], [9, "negyed"], [61, "bejelentés a térképen"], [3, "nyelv · RO EN HU"]],
+    city: "Marosvásárhely", cta: "ÍRD ALÁ A PETÍCIÓT", cta2: "Jelents be egy pályát · Légy önkéntes · Csatlakozz",
+    note: "32 mp-es promó, kódból generálva (canvas, 120 BPM). A számok az oldal térképéről valók. Hang: CC0 effektek."
+  }
+};
+/* Film strip: real courts from the map (status from COURTS_BASE). */
+var STRIP = [
+  ["c6", "Tudor", "Baschet Tudor Vladimirescu", 0], ["c11", "Centru", "Stadionul Municipal", 1], ["c15", "Pandurilor", "Baschet Bd. 1 Decembrie", 0],
+  ["c10", "Centru", "City Arena", 1], ["c16", "Libertății", "Teren Multifuncțional", 0], ["c22", "Dâmbu Pietros", "Teren Sport", 0],
+  ["c13", "Centru", "Enjoy Sports Club", 1], ["c24", "Cornești", "Teren Sport Cartier", 0], ["c17", "Unirii", "Fotbal Micro 14-15", 0],
+  ["c27", "Tudor", "Baschet Aleea Carpați", 0], ["c12", "Centru", "Academica Transilvania", 1], ["c20", "Mureșeni", "Fotbal Mureșeni", 0]
+];
+
+var C = { dark: "#1A1A2E", darkCard: "#16213E", green: "#10B981", coral: "#F97316", teal: "#0D9488", red: "#DC2626",
+          gold: "#F5B700", light: "#F8FAFC", ballA: "#F58A2E", ballB: "#D9621A", ballLine: "#1B1209", ink: "#111114" };
+var F_SLAM = '"Barlow Condensed", "Arial Narrow", sans-serif';
+var F_MONO = '"Space Mono", ui-monospace, monospace';
+var F_BODY = '"Libre Franklin", system-ui, sans-serif';
+
+/* ─── state ─── */
+var qs = new URLSearchParams(location.search);
+var RENDER = qs.get("render") === "1";
+var REDUCED = !RENDER && matchMedia("(prefers-reduced-motion: reduce)").matches;
+var lang = (function () { var q = qs.get("lang"); if (COPY[q]) return q; try { var l = localStorage.getItem("g2p_lang"); if (COPY[l]) return l; } catch (e) {} return "ro"; })();
+var ar = qs.get("ar") || (innerWidth < innerHeight || innerWidth < 860 ? "9x16" : "16x9");
+var cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+var W = 1080, H = 1920, S = 1, PORT = true;
+var tex = {}, qrImg = null;
+
+/* ─── math ─── */
+function clamp(x, a, b) { return x < a ? a : x > b ? b : x; }
+function prog(t, a, b) { return clamp((t - a) / (b - a), 0, 1); }
+function lerp(a, b, p) { return a + (b - a) * p; }
+function oCubic(p) { return 1 - Math.pow(1 - p, 3); }
+function ioCubic(p) { return p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; }
+function oExpo(p) { return p >= 1 ? 1 : 1 - Math.pow(2, -10 * p); }
+function iCubic(p) { return p * p * p; }
+function oBack(p) { var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(p - 1, 3) + c1 * Math.pow(p - 1, 2); }
+function hash(n) { var x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+function mulberry(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+/* ─── canvas helpers ─── */
+function font(w, px, fam) { return w + " " + Math.round(px) + "px " + fam; }
+function fit(text, w, fam, maxW, maxPx) { ctx.font = font(w, 100, fam); var m = ctx.measureText(text).width || 1; return Math.min(maxPx || 1e9, 100 * maxW / m); }
+function rr(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+function bg(col) { ctx.fillStyle = col; ctx.fillRect(-W, -H, W * 3, H * 3); }
+/* Text slam: scale-in with a motion smear (ghost copies along the travel direction). */
+function slam(text, x, y, px, fam, col, p, opt) {
+  opt = opt || {};
+  if (p <= 0) return;
+  var e = oExpo(p), sc = lerp(opt.from || 1.6, 1, e), dx = (opt.dx || 0) * (1 - e) * W, dy = (opt.dy || 0) * (1 - e) * H;
+  ctx.save();
+  ctx.font = font(opt.w || "800", px, fam); ctx.textAlign = opt.align || "center"; ctx.textBaseline = "alphabetic";
+  var ghosts = p < 1 ? 5 : 0;
+  for (var g = ghosts; g >= 0; g--) {
+    var k = g / 5;
+    ctx.globalAlpha = (g ? .16 * (1 - k) : 1) * clamp(p * 6, 0, 1);
+    ctx.save();
+    ctx.translate(x + dx * (1 + k * 1.6), y + dy * (1 + k * 1.6));
+    ctx.scale(sc * (1 + k * .08), sc * (1 + k * .08));
+    ctx.fillStyle = col; ctx.fillText(text, 0, 0);
+    ctx.restore();
+  }
+  ctx.restore();
+}
+/* RGB-split + slice glitch over a text block (rendered to an offscreen buffer). */
+var gbuf = document.createElement("canvas"), gctx = gbuf.getContext("2d");
+function glitchText(text, x, y, px, fam, col, amt, seed) {
+  gctx.font = font("800", px, fam);
+  var tw = Math.ceil(gctx.measureText(text).width + px * .2), th = Math.ceil(px * 1.15);
+  if (gbuf.width !== tw || gbuf.height !== th) { gbuf.width = tw; gbuf.height = th; }
+  gctx.clearRect(0, 0, tw, th);
+  gctx.font = font("800", px, fam); gctx.textBaseline = "alphabetic"; gctx.textAlign = "left";
+  gctx.fillStyle = col; gctx.fillText(text, px * .1, px * .9);
+  var ox = x - tw / 2, oy = y - px * .9;
+  if (amt > 0) {
+    ctx.save(); ctx.globalAlpha = .8 * amt; ctx.globalCompositeOperation = "multiply";
+    ctx.filter = "none";
+    ctx.drawImage(tintBuf(C.red), ox - px * .05 * amt, oy);
+    ctx.drawImage(tintBuf("#00A3A3"), ox + px * .04 * amt, oy + px * .01 * amt);
+    ctx.restore();
+  }
+  var slices = amt > 0 ? 9 : 1, r = mulberry(seed);
+  for (var i = 0; i < slices; i++) {
+    var sy = Math.floor(th * i / slices), sh = Math.ceil(th / slices) + 1;
+    var off = amt > 0 && r() < .55 ? (r() - .5) * px * .5 * amt : 0;
+    ctx.drawImage(gbuf, 0, sy, tw, sh, ox + off, oy + sy, tw, sh);
+  }
+}
+var tbuf = document.createElement("canvas"), tctx = tbuf.getContext("2d");
+function tintBuf(col) {
+  tbuf.width = gbuf.width; tbuf.height = gbuf.height;
+  tctx.drawImage(gbuf, 0, 0); tctx.globalCompositeOperation = "source-in"; tctx.fillStyle = col; tctx.fillRect(0, 0, tbuf.width, tbuf.height); tctx.globalCompositeOperation = "source-over";
+  return tbuf;
+}
+
+/* ─── pre-rendered textures (per size) ─── */
+function buildTextures() {
+  var r = mulberry(7);
+  /* concrete */
+  var c = document.createElement("canvas"); c.width = W; c.height = H; var x = c.getContext("2d");
+  var g = x.createLinearGradient(0, 0, W, H); g.addColorStop(0, "#B9BAB6"); g.addColorStop(1, "#9C9D99");
+  x.fillStyle = g; x.fillRect(0, 0, W, H);
+  for (var i = 0; i < 70; i++) { x.fillStyle = "rgba(60,60,58," + (r() * .07) + ")"; x.beginPath(); x.arc(r() * W, r() * H, (40 + r() * 260) * S, 0, 7); x.fill(); }
+  var img = x.getImageData(0, 0, W, H), d = img.data;
+  for (var p = 0; p < d.length; p += 4) { var n = (r() - .5) * 38; d[p] += n; d[p + 1] += n; d[p + 2] += n; }
+  x.putImageData(img, 0, 0);
+  for (i = 0; i < 900; i++) { x.fillStyle = r() < .5 ? "rgba(40,40,40,.35)" : "rgba(255,255,255,.25)"; var s = (1 + r() * 3) * S; x.fillRect(r() * W, r() * H, s, s); }
+  tex.concrete = c;
+  /* cracks (paths, drawn progressively) */
+  tex.cracks = [];
+  for (i = 0; i < 7; i++) {
+    var pts = [[r() * W, r() < .5 ? -10 : H + 10]], ang = r() * Math.PI * 2;
+    for (var k = 0; k < 26; k++) { ang += (r() - .5) * 1.1; var L = (30 + r() * 70) * S; var l = pts[pts.length - 1]; pts.push([l[0] + Math.cos(ang) * L, l[1] + Math.sin(ang) * L]); }
+    tex.cracks.push(pts);
+  }
+  /* film grain tiles */
+  tex.grain = [];
+  for (i = 0; i < 4; i++) {
+    var gc = document.createElement("canvas"); gc.width = gc.height = 256; var gx = gc.getContext("2d"), gi = gx.createImageData(256, 256);
+    for (p = 0; p < gi.data.length; p += 4) { var v = r() * 255; gi.data[p] = gi.data[p + 1] = gi.data[p + 2] = v; gi.data[p + 3] = 255; }
+    gx.putImageData(gi, 0, 0); tex.grain.push(ctx.createPattern(gc, "repeat"));
+  }
+}
+function drawCracks(p, col, w) {
+  ctx.save(); ctx.strokeStyle = col; ctx.lineWidth = w * S; ctx.lineCap = "round"; ctx.lineJoin = "round";
+  tex.cracks.forEach(function (pts, ci) {
+    var n = Math.floor((pts.length - 1) * clamp(p * 1.4 - ci * .06, 0, 1));
+    if (n < 1) return;
+    ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]);
+    for (var i = 1; i <= n; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+    ctx.stroke();
+  });
+  ctx.restore();
+}
+
+/* ─── basketball (site mascot palette) ─── */
+function ball(x, y, r, rot, squash) {
+  squash = squash || 0;
+  ctx.save(); ctx.translate(x, y); ctx.scale(1 + squash, 1 - squash); ctx.rotate(rot);
+  var g = ctx.createRadialGradient(-r * .35, -r * .4, r * .1, 0, 0, r);
+  g.addColorStop(0, "#FFB066"); g.addColorStop(.45, C.ballA); g.addColorStop(1, C.ballB);
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, r, 0, 7); ctx.fill();
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, r, 0, 7); ctx.clip();
+  ctx.strokeStyle = C.ballLine; ctx.lineWidth = Math.max(1.5, r * .055);
+  ctx.beginPath(); ctx.moveTo(-r, 0); ctx.lineTo(r, 0); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, -r); ctx.lineTo(0, r); ctx.stroke();
+  ctx.beginPath(); ctx.arc(-r * 1.25, 0, r * .95, -1.1, 1.1); ctx.stroke();
+  ctx.beginPath(); ctx.arc(r * 1.25, 0, r * .95, Math.PI - 1.1, Math.PI + 1.1); ctx.stroke();
+  ctx.restore();
+  ctx.restore();
+}
+/* Ball wipe: a ball bounces in, grows to fill the frame exactly on the cut, flies out. */
+function ballWipe(t) {
+  for (var i = 0; i < BALL_CUTS.length; i++) {
+    var c = BALL_CUTS[i], q = (t - c) / .42;
+    if (q < -1 || q > 1) continue;
+    var a = Math.abs(q), cover = Math.hypot(W, H) * .75, small = 70 * S;
+    var r = small + (cover - small) * Math.pow(clamp(1 - a / .9, 0, 1), 2.4);
+    var x = lerp(W * .12, W * .88, (q + 1) / 2), y = H * .78 - Math.abs(Math.sin(Math.PI * (q + 1))) * H * .32;
+    ball(x, y, r, q * 5, 0);
+  }
+}
+
+/* ─── court (top-down, 28 × 15 m) ─── */
+function court(x, y, w, h, painted, rotate) {
+  ctx.save(); ctx.translate(x + w / 2, y + h / 2);
+  if (rotate) { ctx.rotate(Math.PI / 2); var tmp = w; w = h; h = tmp; }
+  var sx = w / 28, cw = w, ch = h;
+  ctx.translate(-cw / 2, -ch / 2);
+  if (painted) {
+    ctx.fillStyle = C.teal; ctx.fillRect(-sx, -sx, cw + 2 * sx, ch + 2 * sx);
+    ctx.fillStyle = C.coral; ctx.fillRect(0, 0, cw, ch);
+    /* mural stripes */
+    ctx.save(); ctx.beginPath(); ctx.rect(0, 0, cw, ch); ctx.clip();
+    ctx.globalAlpha = .9; ctx.fillStyle = C.gold;
+    for (var i = -2; i < 8; i++) { ctx.beginPath(); ctx.moveTo(i * cw / 6, ch); ctx.lineTo(i * cw / 6 + ch * .5, 0); ctx.lineTo(i * cw / 6 + ch * .5 + sx * 1.2, 0); ctx.lineTo(i * cw / 6 + sx * 1.2, ch); ctx.fill(); }
+    ctx.restore();
+    ctx.fillStyle = C.green; ctx.fillRect(0, ch / 2 - 2.45 * sx, 5.8 * sx, 4.9 * sx); ctx.fillRect(cw - 5.8 * sx, ch / 2 - 2.45 * sx, 5.8 * sx, 4.9 * sx);
+    ctx.fillStyle = C.dark; ctx.beginPath(); ctx.arc(cw / 2, ch / 2, 1.8 * sx, 0, 7); ctx.fill();
+    ctx.strokeStyle = "#FFFFFF"; ctx.globalAlpha = 1;
+  } else {
+    ctx.drawImage(tex.concrete, 0, 0, W * .5, H * .5, -sx, -sx, cw + 2 * sx, ch + 2 * sx);
+    ctx.fillStyle = "rgba(70,72,74,.35)"; ctx.fillRect(0, 0, cw, ch);
+    ctx.strokeStyle = "rgba(235,235,230,.38)";
+  }
+  ctx.lineWidth = Math.max(2, sx * .12);
+  ctx.strokeRect(0, 0, cw, ch);
+  ctx.beginPath(); ctx.moveTo(cw / 2, 0); ctx.lineTo(cw / 2, ch); ctx.stroke();
+  ctx.beginPath(); ctx.arc(cw / 2, ch / 2, 1.8 * sx, 0, 7); ctx.stroke();
+  [0, 1].forEach(function (side) {
+    ctx.save(); if (side) { ctx.translate(cw, ch); ctx.rotate(Math.PI); }
+    ctx.strokeRect(0, ch / 2 - 2.45 * sx, 5.8 * sx, 4.9 * sx);
+    ctx.beginPath(); ctx.arc(5.8 * sx, ch / 2, 1.8 * sx, -Math.PI / 2, Math.PI / 2); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, .9 * sx); ctx.lineTo(1.575 * sx + Math.sqrt(6.75 * 6.75 - 6.6 * 6.6) * sx, .9 * sx);
+    ctx.arc(1.575 * sx, ch / 2, 6.75 * sx, -Math.asin(6.6 / 6.75), Math.asin(6.6 / 6.75)); ctx.lineTo(0, ch - .9 * sx); ctx.stroke();
+    /* hoop */
+    ctx.save(); ctx.lineWidth = Math.max(2, sx * .16);
+    ctx.strokeStyle = painted ? "#FFFFFF" : "#6E5A48";
+    ctx.beginPath(); ctx.moveTo(1.2 * sx, ch / 2 - .9 * sx); ctx.lineTo(1.2 * sx, ch / 2 + .9 * sx); ctx.stroke();
+    ctx.strokeStyle = painted ? C.red : "#7B4A2A";
+    ctx.beginPath();
+    if (painted) ctx.arc(1.575 * sx, ch / 2, .3 * sx, 0, 7);
+    else ctx.ellipse(1.75 * sx, ch / 2 + .25 * sx, .36 * sx, .18 * sx, .7, 0, 7); /* bent since 2019 */
+    ctx.stroke(); ctx.restore();
+    ctx.restore();
+  });
+  if (!painted) {
+    ctx.save(); ctx.beginPath(); ctx.rect(-sx, -sx, cw + 2 * sx, ch + 2 * sx); ctx.clip();
+    ctx.strokeStyle = "rgba(25,25,25,.55)"; ctx.lineWidth = Math.max(1.5, sx * .07);
+    var rr2 = mulberry(19);
+    for (var k = 0; k < 9; k++) { var px = rr2() * cw, py = rr2() * ch; ctx.beginPath(); ctx.moveTo(px, py); for (var j = 0; j < 7; j++) { px += (rr2() - .5) * sx * 3; py += (rr2() - .5) * sx * 3; ctx.lineTo(px, py); } ctx.stroke(); }
+    ctx.restore();
+  }
+  ctx.restore();
+}
+
+/* ─── scenes ─── */
+function sCold(lt) {
+  var L = COPY[lang];
+  ctx.drawImage(tex.concrete, 0, 0);
+  drawCracks(prog(lt, 2.0, 2.9), "rgba(20,20,20,.55)", 3);
+  var maxW = W * (PORT ? .86 : .62);
+  var p1 = fit(L.s1[0], "800", F_SLAM, maxW, H * .16), p2 = fit(L.s1[1], "800", F_SLAM, maxW * .86, H * (PORT ? .3 : .5));
+  var blockH = p1 * .9 + p2 * .86, y1 = H / 2 - blockH / 2 + p1 * .78, y2 = y1 + p2 * .86;
+  slam(L.s1[0], W / 2, y1, p1, F_SLAM, C.ink, prog(lt, 0, .22), { from: 1.9 });
+  if (lt >= 1) {
+    var gl = (lt < 1.45 ? 1 - prog(lt, 1, 1.45) * .7 : 0) + (lt > 2.42 && lt < 2.62 ? .9 : 0) + (lt > 2.82 ? .6 : 0);
+    var sc = lerp(2.4, 1, oExpo(prog(lt, 1, 1.2)));
+    ctx.save(); ctx.translate(W / 2, y2); ctx.scale(sc, sc); ctx.translate(-W / 2, -y2);
+    glitchText(L.s1[1], W / 2, y2, p2, F_SLAM, C.ink, gl, Math.floor(lt * 24));
+    ctx.restore();
+    /* hard red accent dot (the full stop) */
+    ctx.font = font("800", p2, F_SLAM);
+    var tw = ctx.measureText(L.s1[1]).width, dp = oBack(prog(lt, 1.5, 1.75));
+    if (dp > 0) { ctx.fillStyle = C.red; ctx.beginPath(); ctx.arc(W / 2 + tw / 2 + p2 * .16, y2 - p2 * .08, p2 * .1 * dp, 0, 7); ctx.fill(); }
+  }
+  var cp = prog(lt, 2.15, 2.45);
+  if (cp > 0) {
+    ctx.save(); ctx.globalAlpha = cp; ctx.font = font("700", 30 * S, F_MONO); ctx.textAlign = "center"; ctx.fillStyle = C.ink;
+    ctx.fillText(L.s1c.toUpperCase(), W / 2, y2 + p2 * .32); ctx.restore();
+  }
+}
+function sLogo(lt) {
+  bg("#07070C");
+  var L = COPY[lang];
+  /* light streak */
+  var sp = prog(lt, 0, .6), sxp = lerp(-W * .6, W * 1.6, ioCubic(sp));
+  ctx.save(); ctx.globalCompositeOperation = "lighter";
+  var g = ctx.createRadialGradient(sxp, H / 2, 0, sxp, H / 2, W * .7);
+  g.addColorStop(0, "rgba(255,255,255," + (.55 * (1 - sp * .6)) + ")"); g.addColorStop(.25, "rgba(160,170,190,.12)"); g.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = g; ctx.fillRect(0, H / 2 - 6 * S, W, 12 * S); ctx.fillRect(sxp - W * .7, H / 2 - H * .25, W * 1.4, H * .5);
+  ctx.restore();
+  var zoomOut = lerp(1.25, 1, oCubic(prog(lt, 0, .9))), zoomIn = 1 + iCubic(prog(lt, 2.05, 2.5)) * 7;
+  ctx.save(); ctx.translate(W / 2, H / 2); ctx.scale(zoomOut * zoomIn, zoomOut * zoomIn); ctx.translate(-W / 2, -H / 2);
+  var line1 = "FROM GREY TO", p1 = fit(line1, "700", F_MONO, W * (PORT ? .82 : .6)), p2 = fit("PLAY", "700", F_MONO, W * (PORT ? .82 : .6));
+  var y1 = H / 2 - p2 * .32, y2 = y1 + p2 * .82;
+  ctx.font = font("700", p1, F_MONO); ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
+  var w1 = ctx.measureText(line1).width, x = W / 2 - w1 / 2;
+  var chrome = ctx.createLinearGradient(0, y1 - p1, 0, y1 + p1 * .2);
+  chrome.addColorStop(0, "#FFFFFF"); chrome.addColorStop(.42, "#A3A9B1"); chrome.addColorStop(.5, "#3B3F45"); chrome.addColorStop(.62, "#E5E7EB"); chrome.addColorStop(1, "#6B7280");
+  for (var i = 0; i < line1.length; i++) {
+    var ch = line1[i], cw = ctx.measureText(ch).width, lp = oCubic(prog(lt, .08 + i * .04, .38 + i * .04));
+    ctx.save(); ctx.globalAlpha = lp; ctx.fillStyle = chrome; ctx.fillText(ch, x, y1 + (1 - lp) * p1 * .5); ctx.restore();
+    x += cw;
+  }
+  /* PLAY: slams in green with a flare */
+  var pp = prog(lt, 1, 1.18);
+  if (pp > 0) {
+    ctx.save(); ctx.globalCompositeOperation = "lighter";
+    var fl = Math.max(0, 1 - prog(lt, 1, 1.9));
+    var fg = ctx.createRadialGradient(W / 2, y2 - p2 * .35, 0, W / 2, y2 - p2 * .35, W * .7);
+    fg.addColorStop(0, "rgba(16,185,129," + (.75 * fl + .18) + ")"); fg.addColorStop(1, "rgba(16,185,129,0)");
+    ctx.fillStyle = fg; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = "rgba(200,255,230," + (.8 * fl) + ")"; ctx.fillRect(0, y2 - p2 * .36 - 2 * S, W, 4 * S);
+    ctx.restore();
+    slam("PLAY", W / 2, y2, p2, F_MONO, C.green, pp, { w: "700", from: 2.2 });
+  }
+  var tp = prog(lt, 1.5, 1.8);
+  if (tp > 0) { ctx.save(); ctx.globalAlpha = tp; ctx.font = font("400", 26 * S, F_MONO); ctx.textAlign = "center"; ctx.fillStyle = "#9CA3AF"; ctx.fillText(L.tag.toUpperCase(), W / 2, y2 + p2 * .45); ctx.restore(); }
+  ctx.restore();
+  if (lt > 2.2) { ctx.fillStyle = "rgba(26,26,46," + prog(lt, 2.2, 2.5) + ")"; ctx.fillRect(0, 0, W, H); }
+}
+function sPrompt(lt) {
+  bg(C.dark);
+  var L = COPY[lang];
+  /* soft red bokeh */
+  var r = mulberry(3);
+  for (var i = 0; i < 14; i++) {
+    var bx = r() * W + Math.sin(lt * .6 + i) * 30 * S, by = r() * H + Math.cos(lt * .5 + i * 2) * 30 * S, br = (60 + r() * 180) * S;
+    var col = i % 4 === 0 ? "107,114,128" : "220,38,38", a = (.1 + r() * .16);
+    var g = ctx.createRadialGradient(bx, by, 0, bx, by, br); g.addColorStop(0, "rgba(" + col + "," + a + ")"); g.addColorStop(1, "rgba(" + col + ",0)");
+    ctx.fillStyle = g; ctx.fillRect(bx - br, by - br, br * 2, br * 2);
+  }
+  var cwid = PORT ? W * .86 : W * .54, pad = 44 * S, fpx = (PORT ? 66 : 50) * S;
+  ctx.font = font("600", fpx, F_BODY);
+  var lines = wrap(L.prompt, cwid - pad * 2), lh = fpx * 1.32;
+  var cht = pad * 2 + 64 * S + lines.length * lh + 110 * S, cx = W / 2 - cwid / 2, cy = H / 2 - cht / 2;
+  var ap = oBack(prog(lt, 0, .45));
+  ctx.save(); ctx.translate(W / 2, H / 2); ctx.scale(lerp(.86, 1, ap), lerp(.86, 1, ap)); ctx.translate(-W / 2, -H / 2); ctx.globalAlpha = clamp(ap, 0, 1);
+  ctx.shadowColor = "rgba(0,0,0,.5)"; ctx.shadowBlur = 60 * S; ctx.shadowOffsetY = 20 * S;
+  ctx.fillStyle = C.darkCard; rr(ctx, cx, cy, cwid, cht, 24 * S); ctx.fill();
+  ctx.shadowColor = "transparent"; ctx.strokeStyle = "#374151"; ctx.lineWidth = 2 * S; ctx.stroke();
+  [C.red, C.coral, C.green].forEach(function (c, k) { ctx.fillStyle = c; ctx.beginPath(); ctx.arc(cx + pad + k * 30 * S, cy + pad, 9 * S, 0, 7); ctx.fill(); });
+  ctx.font = font("400", 24 * S, F_MONO); ctx.fillStyle = "#9CA3AF"; ctx.textAlign = "left"; ctx.fillText(L.head, cx + pad + 110 * S, cy + pad + 8 * S);
+  /* typed text */
+  var total = L.prompt.length, n = Math.floor(total * prog(lt, .55, 3.15)), shown = 0, ty = cy + pad + 64 * S + fpx;
+  ctx.font = font("600", fpx, F_BODY); ctx.fillStyle = "#E5E7EB";
+  var curX = cx + pad, curY = ty;
+  for (i = 0; i < lines.length; i++) {
+    var take = Math.max(0, Math.min(lines[i].length, n - shown)), part = lines[i].slice(0, take);
+    ctx.fillText(part, cx + pad, ty + i * lh);
+    if (take > 0 || i === 0) { curX = cx + pad + ctx.measureText(part).width; curY = ty + i * lh; }
+    shown += lines[i].length + 1;
+  }
+  if (Math.floor(lt * 2.2) % 2 === 0 || (lt > .55 && lt < 3.15)) { ctx.fillStyle = C.green; ctx.fillRect(curX + 4 * S, curY - fpx * .85, 5 * S, fpx * 1.0); }
+  /* send button */
+  ctx.font = font("700", 28 * S, F_MONO);
+  var bw = ctx.measureText(L.send).width + 56 * S, bh = 66 * S, bx2 = cx + cwid - pad - bw, by2 = cy + cht - pad - bh;
+  var press = lt > 3.2 && lt < 3.36 ? .92 : 1, ready = prog(lt, 3.0, 3.2);
+  ctx.save(); ctx.translate(bx2 + bw / 2, by2 + bh / 2); ctx.scale(press, press);
+  ctx.fillStyle = ready > 0 ? C.green : "#374151"; rr(ctx, -bw / 2, -bh / 2, bw, bh, 12 * S); ctx.fill();
+  ctx.fillStyle = ready > 0 ? C.dark : "#9CA3AF"; ctx.textAlign = "center"; ctx.fillText(L.send, 0, 10 * S);
+  ctx.restore();
+  ctx.restore();
+  /* paint splash wipe from the button: grey turns to play */
+  var sp0 = 3.38;
+  if (lt > sp0) {
+    var ox = bx2 + bw / 2, oy = by2 + bh / 2, cols = [C.coral, C.gold, C.green, C.teal, C.coral], maxR = Math.hypot(W, H) * 1.05;
+    cols.forEach(function (c, k) {
+      var p = oExpo(prog(lt, sp0 + k * .14, sp0 + k * .14 + .7));
+      if (p <= 0) return;
+      ctx.fillStyle = c; ctx.beginPath();
+      var rad = maxR * p, rr3 = mulberry(40 + k);
+      for (var a = 0; a <= 48; a++) {
+        var ang = a / 48 * Math.PI * 2, wob = 1 + (rr3() - .5) * .22 * (1 - p * .7);
+        var px = ox + Math.cos(ang) * rad * wob, py = oy + Math.sin(ang) * rad * wob;
+        a ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+      }
+      ctx.fill();
+      /* droplets */
+      for (var dI = 0; dI < 10; dI++) {
+        var da = rr3() * 7, dd = rad * (1.05 + rr3() * .35), ds = (8 + rr3() * 26) * S * (1 - p * .5);
+        ctx.beginPath(); ctx.arc(ox + Math.cos(da) * dd, oy + Math.sin(da) * dd, ds, 0, 7); ctx.fill();
+      }
+    });
+  }
+}
+function wrap(text, maxW) {
+  var words = text.split(" "), out = [], cur = "";
+  words.forEach(function (w) { var t = cur ? cur + " " + w : w; if (ctx.measureText(t).width > maxW && cur) { out.push(cur); cur = w; } else cur = t; });
+  if (cur) out.push(cur);
+  return out;
+}
+function sCourt(lt) {
+  bg(C.teal);
+  var L = COPY[lang];
+  /* court shrinks up when the film strip arrives */
+  var sh = ioCubic(prog(lt, 2.4, 3.0));
+  var areaH = lerp(H * (PORT ? .74 : .78), H * (PORT ? .5 : .52), sh), areaY = lerp(H * (PORT ? .1 : .1), H * (PORT ? .07 : .06), sh);
+  var cw, chh;
+  if (PORT) { chh = areaH; cw = chh * 15 / 28; if (cw > W * .86) { cw = W * .86; chh = cw * 28 / 15; } }
+  else { cw = Math.min(W * .86, areaH * 28 / 15); chh = cw * 15 / 28; }
+  var cx = W / 2 - cw / 2, cy = areaY + (areaH - chh) / 2;
+  var ent = oExpo(prog(lt, 0, .5));
+  ctx.save(); ctx.translate(W / 2, cy + chh / 2); ctx.scale(lerp(1.15, 1, ent), lerp(1.15, 1, ent)); ctx.translate(-W / 2, -(cy + chh / 2));
+  ctx.shadowColor = "rgba(0,0,0,.35)"; ctx.shadowBlur = 50 * S; ctx.fillStyle = "#000"; ctx.fillRect(cx, cy, cw, chh); ctx.shadowColor = "transparent";
+  court(cx, cy, cw, chh, true, PORT);
+  /* divider: grey on the left of it */
+  var dv = lt < .3 ? 1 : lt < 1.4 ? 1 - ioCubic(prog(lt, .3, 1.4)) : lt < 1.6 ? 0 : ioCubic(prog(lt, 1.6, 2.2)) * .5;
+  var dx = cx + cw * dv;
+  ctx.save(); ctx.beginPath(); ctx.rect(cx - 40 * S, cy - 40 * S, dx - cx + 40 * S, chh + 80 * S); ctx.clip();
+  court(cx, cy, cw, chh, false, PORT);
+  ctx.restore();
+  ctx.fillStyle = "#FFFFFF"; ctx.fillRect(dx - 3 * S, cy - 20 * S, 6 * S, chh + 40 * S);
+  ctx.beginPath(); ctx.arc(dx, cy + chh / 2, 30 * S, 0, 7); ctx.fill();
+  ctx.fillStyle = C.dark; ctx.font = font("700", 26 * S, F_MONO); ctx.textAlign = "center"; ctx.fillText("‹›", dx, cy + chh / 2 + 9 * S);
+  ctx.restore();
+  /* labels */
+  var lp = prog(lt, .4, .7);
+  pill(L.today, cx + 20 * S, cy + 20 * S, C.red, "#FFFFFF", lp, "left");
+  pill(L.could, cx + cw - 20 * S, cy + 20 * S, C.green, C.dark, prog(lt, 1.2, 1.5), "right");
+  var capP = prog(lt, .6, .9);
+  if (capP > 0) { ctx.save(); ctx.globalAlpha = capP * (1 - sh * .0); ctx.font = font("700", 26 * S, F_MONO); ctx.fillStyle = "#FFFFFF"; ctx.textAlign = "center"; ctx.fillText(L.court.toUpperCase(), W / 2, cy + chh + 50 * S); ctx.restore(); }
+  /* film strip + playback bar */
+  var fp = oCubic(prog(lt, 2.5, 3.0));
+  if (fp > 0) filmStrip(lt, fp, cy + chh + 90 * S);
+}
+function pill(text, x, y, bgc, fg, p, align) {
+  if (p <= 0) return;
+  ctx.save(); ctx.globalAlpha = p; ctx.font = font("700", 28 * S, F_MONO);
+  var w = ctx.measureText(text).width + 36 * S, h = 54 * S, px = align === "right" ? x - w : x;
+  ctx.translate(0, (1 - oBack(p)) * -20 * S);
+  ctx.fillStyle = bgc; rr(ctx, px, y, w, h, 12 * S); ctx.fill();
+  ctx.fillStyle = fg; ctx.textAlign = "left"; ctx.fillText(text, px + 18 * S, y + 37 * S);
+  ctx.restore();
+}
+function filmStrip(lt, fp, top) {
+  var L = COPY[lang];
+  var fh = PORT ? 300 * S : 250 * S, fw = fh * 1.25, gap = 22 * S, stripH = fh + 70 * S;
+  var y = lerp(H + 20 * S, top, fp);
+  ctx.fillStyle = "#0B0B10"; ctx.fillRect(0, y, W, stripH);
+  /* sprockets */
+  ctx.fillStyle = "#2A2A33";
+  var off = (lt * 160 * S) % (44 * S);
+  for (var sx = -off; sx < W; sx += 44 * S) { rr(ctx, sx, y + 10 * S, 24 * S, 16 * S, 4 * S); ctx.fill(); rr(ctx, sx, y + stripH - 26 * S, 24 * S, 16 * S, 4 * S); ctx.fill(); }
+  var scroll = (lt - 2.5) * 260 * S, fy = y + 35 * S, startX = W * .5 - fw * 1.5 - scroll + 200 * S;
+  for (var i = 0; i < STRIP.length; i++) {
+    var fx = startX + i * (fw + gap);
+    if (fx > W || fx + fw < 0) continue;
+    var s = STRIP[i], bad = !s[3];
+    ctx.save(); rr(ctx, fx, fy, fw, fh, 10 * S); ctx.clip();
+    ctx.fillStyle = bad ? "#5B5D61" : C.darkCard; ctx.fillRect(fx, fy, fw, fh);
+    if (bad) { ctx.globalAlpha = .55; ctx.drawImage(tex.concrete, i * 50, i * 70, fw, fh, fx, fy, fw, fh); ctx.globalAlpha = 1; }
+    else { var g = ctx.createLinearGradient(fx, fy, fx + fw, fy + fh); g.addColorStop(0, C.green); g.addColorStop(1, C.teal); ctx.fillStyle = g; ctx.globalAlpha = .9; ctx.fillRect(fx, fy, fw, fh); ctx.globalAlpha = 1; }
+    ctx.fillStyle = bad ? "#F8FAFC" : C.dark; ctx.textAlign = "left";
+    ctx.font = font("700", 20 * S, F_MONO); ctx.fillText(s[1].toUpperCase(), fx + 18 * S, fy + 38 * S);
+    ctx.font = font("600", 26 * S, F_BODY); var nm = s[2]; ctx.fillText(nm.length > 22 ? nm.slice(0, 21) + "…" : nm, fx + 18 * S, fy + fh - 54 * S);
+    ctx.font = font("700", 18 * S, F_MONO); ctx.fillStyle = bad ? "#FCA5A5" : C.dark; ctx.fillText(bad ? L.bad : L.ok, fx + 18 * S, fy + fh - 22 * S);
+    ctx.restore();
+    if (bad) {
+      /* red circle marker; on the focus frame a red square rotates inside it */
+      var mx = fx + fw - 52 * S, my = fy + 60 * S;
+      ctx.strokeStyle = C.red; ctx.lineWidth = 6 * S; ctx.beginPath(); ctx.arc(mx, my, 30 * S, 0, 7); ctx.stroke();
+      if (Math.abs(fx + fw / 2 - W / 2) < fw * .6) {
+        ctx.save(); ctx.translate(fx + fw / 2, fy + fh / 2); ctx.rotate(lt * 3); ctx.fillStyle = C.red; ctx.globalAlpha = .9; ctx.fillRect(-26 * S, -26 * S, 52 * S, 52 * S); ctx.restore();
+      }
+    } else { ctx.fillStyle = C.dark; ctx.beginPath(); ctx.arc(fx + fw - 52 * S, fy + 60 * S, 24 * S, 0, 7); ctx.fill(); ctx.strokeStyle = C.green; ctx.lineWidth = 6 * S; ctx.beginPath(); ctx.moveTo(fx + fw - 64 * S, fy + 60 * S); ctx.lineTo(fx + fw - 55 * S, fy + 70 * S); ctx.lineTo(fx + fw - 38 * S, fy + 50 * S); ctx.stroke(); }
+  }
+  /* playback bar with timecode */
+  var by = y + stripH + 30 * S, bx = W * .08, bw = W * .84, gp = (10 + lt) / T_TOTAL;
+  ctx.fillStyle = "rgba(255,255,255,.25)"; rr(ctx, bx, by, bw, 8 * S, 4 * S); ctx.fill();
+  ctx.fillStyle = C.red; rr(ctx, bx, by, bw * gp, 8 * S, 4 * S); ctx.fill();
+  ctx.beginPath(); ctx.arc(bx + bw * gp, by + 4 * S, 14 * S, 0, 7); ctx.fill();
+  ctx.font = font("700", 22 * S, F_MONO); ctx.fillStyle = "#FFFFFF"; ctx.textAlign = "left"; ctx.fillText("▶ " + tcode(10 + lt), bx, by + 50 * S);
+  ctx.textAlign = "right"; ctx.fillText(tcode(T_TOTAL), bx + bw, by + 50 * S);
+}
+function tcode(t) { var f = Math.floor((t % 1) * 30), s = Math.floor(t); return pad2(Math.floor(s / 60)) + ":" + pad2(s % 60) + ":" + pad2(f); }
+function pad2(n) { return (n < 10 ? "0" : "") + n; }
+function stackLines(lines, lt, beats, bgc, ink, key, maxW) {
+  /* stacked full-width slams; each line fit to the same width */
+  var sizes = lines.map(function (l) { return fit(l[0], "800", F_SLAM, maxW, H * (PORT ? .14 : .25)); });
+  var total = sizes.reduce(function (a, b) { return a + b * .9; }, 0), y = H / 2 - total / 2;
+  lines.forEach(function (l, i) {
+    y += sizes[i] * .9;
+    slam(l[0], W / 2, y - sizes[i] * .12, sizes[i], F_SLAM, l[1] ? key : ink, prog(lt, beats[i], beats[i] + .2), { from: 1.5, dx: i % 2 ? .25 : -.25 });
+  });
+}
+function sData(lt) {
+  var L = COPY[lang], maxW = W * (PORT ? .86 : .78);
+  if (lt < 1.5) { bg(C.red); stackLines(L.d1, lt, [0, .25, .5], C.red, "#FFFFFF", C.dark, maxW); return; }
+  if (lt < 3) { bg(C.light); stackLines(L.d2, lt - 1.5, [0, .25, .5], C.light, C.dark, C.red, maxW); return; }
+  bg(C.dark);
+  var lt2 = lt - 3, rowsY = [H * .4, H * .58], bx = W * .1, bw = W * .8, vals = [[1, 9], [12, 21]], cols = [C.green, C.red];
+  ctx.save(); ctx.globalAlpha = prog(lt2, 0, .2); ctx.font = font("700", 30 * S, F_MONO); ctx.fillStyle = "#9CA3AF"; ctx.textAlign = "left";
+  ctx.fillText("% " + L.barsT.toUpperCase(), bx, H * .3); ctx.restore();
+  for (var i = 0; i < 2; i++) {
+    var p = oCubic(prog(lt2, .1 + i * .2, .9 + i * .2)), pct = vals[i][0] / vals[i][1], y = rowsY[i];
+    ctx.font = font("800", 64 * S, F_SLAM); ctx.fillStyle = "#FFFFFF"; ctx.textAlign = "left"; ctx.globalAlpha = prog(lt2, i * .2, .2 + i * .2);
+    ctx.fillText(L.bars[i], bx, y - 24 * S);
+    ctx.textAlign = "right"; ctx.fillStyle = cols[i]; ctx.fillText(Math.round(pct * 100 * p) + "%", bx + bw, y - 24 * S);
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = "rgba(255,255,255,.08)"; rr(ctx, bx, y, bw, 56 * S, 12 * S); ctx.fill();
+    ctx.fillStyle = cols[i]; rr(ctx, bx, y, Math.max(24 * S, bw * pct * p), 56 * S, 12 * S); ctx.fill();
+    ctx.font = font("700", 24 * S, F_MONO); ctx.fillStyle = "#9CA3AF"; ctx.textAlign = "left"; ctx.globalAlpha = p;
+    ctx.fillText(vals[i][0] + " / " + vals[i][1], bx, y + 96 * S); ctx.globalAlpha = 1;
+  }
+  ctx.save(); ctx.globalAlpha = prog(lt2, .9, 1.2); ctx.font = font("400", 22 * S, F_MONO); ctx.fillStyle = "#6B7280"; ctx.textAlign = "center";
+  ctx.fillText(L.src, W / 2, H * .82); ctx.restore();
+}
+function sStack(lt) {
+  var L = COPY[lang], maxW = W * (PORT ? .88 : .72);
+  var cards = [[C.green, C.dark, "#FFFFFF", -.4, 0], [C.teal, C.dark, "#FFFFFF", .4, 0], [C.coral, C.dark, "#FFFFFF", 0, .4]];
+  if (lt < 3) {
+    var k = Math.min(2, Math.floor(lt)), c = cards[k], l = L.stack[k], li = lt - k;
+    bg(c[0]);
+    var e = oExpo(prog(li, 0, .22));
+    if (PORT) {
+      /* portrait: the phrase and its keyword each get a full-width line */
+      var pa = fit(l[0].trim(), "800", F_SLAM, maxW, H * .2), pb = fit(l[1], "800", F_SLAM, maxW, H * .3), yb = H / 2 + (pb * .8 - pa * .8) / 2;
+      slam(l[0].trim(), W / 2 - li * 14 * S, yb - pb * .86, pa, F_SLAM, c[1], prog(li, 0, .22), { from: 1.5, dx: c[3], dy: c[4] });
+      slam(l[1], W / 2 + li * 14 * S, yb, pb, F_SLAM, c[2], prog(li, .06, .3), { from: 1.7, dx: -c[3], dy: c[4] });
+      return;
+    }
+    var txt = l[0] + l[1], px = fit(txt, "800", F_SLAM, maxW, H * (PORT ? .16 : .3));
+    ctx.save(); ctx.font = font("800", px, F_SLAM); ctx.textBaseline = "middle";
+    var w0 = ctx.measureText(l[0]).width, w1 = ctx.measureText(l[1]).width, x0 = W / 2 - (w0 + w1) / 2;
+    var dx = c[3] * (1 - e) * W, dy = c[4] * (1 - e) * H, drift = li * 14 * S;
+    for (var g = (li < .22 ? 4 : 0); g >= 0; g--) {
+      ctx.globalAlpha = g ? .18 * (1 - g / 5) : 1;
+      var gx = dx * (1 + g * .35) - drift, gy = H / 2 + dy * (1 + g * .35);
+      ctx.textAlign = "left"; ctx.fillStyle = c[1]; ctx.fillText(l[0], x0 + gx, gy);
+      ctx.fillStyle = c[2]; ctx.fillText(l[1], x0 + w0 + gx, gy);
+    }
+    ctx.restore();
+    return;
+  }
+  bg(C.dark);
+  var li2 = lt - 3, keys = [C.green, C.teal, C.coral];
+  var sizes = L.stack.map(function (l) { return fit(l[0] + l[1], "800", F_SLAM, maxW, H * (PORT ? .13 : .22)); });
+  var total = sizes.reduce(function (a, b) { return a + b * .92; }, 0), y = H / 2 - total / 2, breathe = 1 + li2 * .015;
+  ctx.save(); ctx.translate(W / 2, H / 2); ctx.scale(breathe, breathe); ctx.translate(-W / 2, -H / 2);
+  L.stack.forEach(function (l, i) {
+    y += sizes[i] * .92;
+    var p = prog(li2, i * .25, i * .25 + .2);
+    if (p <= 0) return;
+    var e = oExpo(p);
+    ctx.save(); ctx.font = font("800", sizes[i], F_SLAM); ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
+    var w0 = ctx.measureText(l[0]).width, w1 = ctx.measureText(l[1]).width, x0 = W / 2 - (w0 + w1) / 2 + (i % 2 ? 1 : -1) * (1 - e) * W * .3;
+    ctx.globalAlpha = clamp(p * 5, 0, 1);
+    ctx.fillStyle = "#F8FAFC"; ctx.fillText(l[0], x0, y - sizes[i] * .12);
+    ctx.fillStyle = keys[i]; ctx.fillText(l[1], x0 + w0, y - sizes[i] * .12);
+    ctx.restore();
+  });
+  ctx.restore();
+}
+function sCount(lt) {
+  var L = COPY[lang];
+  bg("#04130E");
+  /* monitor grid */
+  ctx.strokeStyle = "rgba(16,185,129,.09)"; ctx.lineWidth = 1.5 * S;
+  var gs = 60 * S, go = (lt * 20 * S) % gs;
+  for (var x = -go; x < W; x += gs) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+  for (var y = -go; y < H; y += gs) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+  ctx.save(); ctx.globalAlpha = prog(lt, 0, .3); ctx.font = font("700", (PORT ? 34 : 30) * S, F_MONO); ctx.fillStyle = C.green; ctx.textAlign = "center";
+  var cols = PORT ? 2 : 4, rows = PORT ? 2 : 1, tw = PORT ? W * .4 : W * .2, th = PORT ? H * .2 : H * .36, gap = PORT ? W * .04 : W * .025;
+  var gw = cols * tw + (cols - 1) * gap, gh = rows * th + (rows - 1) * gap, gx = W / 2 - gw / 2, gy = H / 2 - gh / 2 + 30 * S;
+  ctx.fillText("● " + L.countT, W / 2, gy - 60 * S); ctx.restore();
+  L.tiles.forEach(function (tl, i) {
+    var cx = gx + (i % cols) * (tw + gap), cy = gy + Math.floor(i / cols) * (th + gap), p = oBack(prog(lt, .2 + i * .3, .6 + i * .3));
+    if (p <= 0) return;
+    ctx.save(); ctx.translate(cx + tw / 2, cy + th / 2); ctx.scale(lerp(.7, 1, p), lerp(.7, 1, p)); ctx.globalAlpha = clamp(p, 0, 1); ctx.translate(-tw / 2, -th / 2);
+    ctx.fillStyle = C.darkCard; rr(ctx, 0, 0, tw, th, 24 * S); ctx.fill();
+    /* rotating conic glow border (site .glow-border) */
+    if (ctx.createConicGradient) {
+      var cg = ctx.createConicGradient(lt * 2 + i, tw / 2, th / 2);
+      cg.addColorStop(0, C.green); cg.addColorStop(.33, C.teal); cg.addColorStop(.66, "rgba(16,185,129,0)"); cg.addColorStop(1, C.green);
+      ctx.strokeStyle = cg;
+    } else ctx.strokeStyle = C.green;
+    ctx.lineWidth = 4 * S; rr(ctx, 0, 0, tw, th, 24 * S); ctx.stroke();
+    var v = Math.round(tl[0] * oCubic(prog(lt, .3 + i * .3, 1.5 + i * .3)));
+    var npx = Math.min(th * .5, tw * .6);
+    ctx.font = font("800", npx, F_SLAM); ctx.fillStyle = [C.green, C.teal, C.coral, C.gold][i]; ctx.textAlign = "center";
+    ctx.fillText(String(v), tw / 2, th * .55);
+    ctx.font = font("600", Math.min((PORT ? 38 : 30) * S, tw * .085), F_BODY); ctx.fillStyle = "#D1FAE5";
+    ctx.fillText(tl[1], tw / 2, th * .55 + (PORT ? 80 : 60) * S);
+    ctx.restore();
+  });
+}
+function sEnd(lt) {
+  var L = COPY[lang];
+  bg(C.dark);
+  /* aurora blobs */
+  [[C.green, .3, .25], [C.teal, .75, .6], [C.coral, .2, .85]].forEach(function (b, i) {
+    var bx = W * b[1] + Math.sin(lt * .8 + i) * 60 * S, by = H * b[2] + Math.cos(lt * .7 + i) * 60 * S, br = Math.max(W, H) * .45;
+    var g = ctx.createRadialGradient(bx, by, 0, bx, by, br); g.addColorStop(0, hexA(b[0], .32)); g.addColorStop(1, hexA(b[0], 0));
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  });
+  var colX = PORT ? W / 2 : W * .33, maxW = PORT ? W * .86 : W * .5;
+  var lp = fit("FROM GREY TO PLAY", "700", F_MONO, maxW), ly = PORT ? H * .26 : H * .36;
+  var e = oExpo(prog(lt, 0, .35));
+  ctx.save(); ctx.globalAlpha = e; ctx.font = font("700", lp, F_MONO); ctx.textAlign = "center"; ctx.fillStyle = C.green;
+  ctx.fillText("FROM GREY TO PLAY", colX, ly + (1 - e) * 40 * S); ctx.restore();
+  var cp = prog(lt, .3, .6);
+  ctx.save(); ctx.globalAlpha = cp; ctx.font = font("700", 34 * S, F_MONO); ctx.textAlign = "center"; ctx.fillStyle = "#E5E7EB";
+  ctx.fillText(L.city.toUpperCase(), colX, ly + 70 * S); ctx.restore();
+  /* CTA pill */
+  var bp = oBack(prog(lt, .6, .95));
+  if (bp > 0) {
+    ctx.font = font("700", (PORT ? 50 : 40) * S, F_MONO);
+    var bw = ctx.measureText(L.cta + " →").width + 80 * S, bh = (PORT ? 120 : 100) * S, by = ly + 130 * S;
+    ctx.save(); ctx.translate(colX, by + bh / 2); ctx.scale(bp, bp);
+    var pulse = 1 + Math.sin(lt * Math.PI * 2) * .02;
+    ctx.shadowColor = "rgba(16,185,129,.55)"; ctx.shadowBlur = 50 * S;
+    ctx.fillStyle = C.green; rr(ctx, -bw / 2 * pulse, -bh / 2 * pulse, bw * pulse, bh * pulse, 12 * S * 1.6); ctx.fill();
+    ctx.shadowColor = "transparent"; ctx.fillStyle = C.dark; ctx.textAlign = "center"; ctx.fillText(L.cta + " →", 0, (PORT ? 17 : 14) * S);
+    ctx.restore();
+    ctx.save(); ctx.globalAlpha = prog(lt, .9, 1.2); ctx.font = font("500", (PORT ? 36 : 30) * S, F_BODY); ctx.fillStyle = "#9CA3AF"; ctx.textAlign = "center";
+    ctx.fillText(L.cta2, colX, by + bh + 64 * S); ctx.restore();
+  }
+  /* QR */
+  var qp = oBack(prog(lt, 1.0, 1.4));
+  if (qp > 0) {
+    var qs2 = PORT ? W * .34 : H * .36, qx = PORT ? W / 2 : W * .8, qy = PORT ? H * .66 : H * .47;
+    ctx.save(); ctx.translate(qx, qy); ctx.scale(qp, qp); ctx.rotate((1 - qp) * .3);
+    ctx.fillStyle = "#FFFFFF"; rr(ctx, -qs2 / 2 - 24 * S, -qs2 / 2 - 24 * S, qs2 + 48 * S, qs2 + 48 * S, 24 * S); ctx.fill();
+    if (qrImg) ctx.drawImage(qrImg, -qs2 / 2, -qs2 / 2, qs2, qs2);
+    ctx.restore();
+    ctx.save(); ctx.globalAlpha = prog(lt, 1.3, 1.6); ctx.font = font("700", 28 * S, F_MONO); ctx.fillStyle = C.green; ctx.textAlign = "center";
+    ctx.fillText("fromgreytoplay.netlify.app", qx, qy + qs2 / 2 + 80 * S); ctx.restore();
+  }
+  /* dribbling ball on the beat */
+  var bph = (lt % 1) / 1, bh2 = 1 - Math.pow(2 * bph - 1, 2), ground = PORT ? H * .93 : H * .9, br = 46 * S;
+  var bxp = PORT ? W * .82 : W * .08 + W * .05, squash = bph < .06 || bph > .94 ? .18 : 0;
+  ctx.fillStyle = "rgba(0,0,0,.35)"; ctx.beginPath(); ctx.ellipse(bxp, ground + br, br * (1.1 - bh2 * .4), br * .2, 0, 0, 7); ctx.fill();
+  ball(bxp, ground - bh2 * 220 * S, br, lt * 3, squash);
+}
+function hexA(hex, a) { var n = parseInt(hex.slice(1), 16); return "rgba(" + (n >> 16) + "," + (n >> 8 & 255) + "," + (n & 255) + "," + a + ")"; }
+
+var DRAW = { cold: sCold, logo: sLogo, prompt: sPrompt, court: sCourt, data: sData, stack: sStack, count: sCount, end: sEnd };
+
+/* ─── frame ─── */
+function draw(t) {
+  t = clamp(t, 0, T_TOTAL - 1e-4);
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.globalAlpha = 1; ctx.globalCompositeOperation = "source-over";
+  /* camera shake */
+  var sx = 0, sy = 0;
+  HITS.forEach(function (h) { var d = t - h[0]; if (d >= 0 && d < .35) { var a = h[1] * 22 * S * Math.exp(-d * 14); sx += Math.sin(d * 90 + h[0]) * a; sy += Math.cos(d * 77 + h[0] * 3) * a; } });
+  ctx.save(); ctx.translate(sx, sy);
+  var sc = SCENES[0];
+  for (var i = 0; i < SCENES.length; i++) if (t >= SCENES[i].a) sc = SCENES[i];
+  DRAW[sc.id](t - sc.a);
+  ballWipe(t);
+  ctx.restore();
+  /* white flash into the logo sting */
+  var fl = t > 2.92 && t < 3.15 ? 1 - prog(t, 2.95, 3.15) : 0;
+  if (fl > 0) { ctx.fillStyle = "rgba(255,255,255," + fl + ")"; ctx.fillRect(0, 0, W, H); }
+  /* vignette */
+  var vg = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * .35, W / 2, H / 2, Math.hypot(W, H) * .6);
+  vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,.38)");
+  ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
+  /* film grain */
+  var fi = Math.floor(t * 24);
+  ctx.save(); ctx.globalAlpha = .07; ctx.globalCompositeOperation = "overlay";
+  ctx.translate(-hash(fi) * 256, -hash(fi + 9) * 256); ctx.fillStyle = tex.grain[fi % 4]; ctx.fillRect(0, 0, W + 256, H + 256);
+  ctx.restore();
+}
+
+/* ─── sizing ─── */
+function setSize() {
+  var portrait = ar === "9x16";
+  W = portrait ? 1080 : 1920; H = portrait ? 1920 : 1080; S = Math.min(W, H) / 1080; PORT = portrait;
+  if (!RENDER) { var q = Math.min(1, (devicePixelRatio || 1) * 0.75); W = Math.round(W * q); H = Math.round(H * q); S = Math.min(W, H) / 1080; }
+  cv.width = W; cv.height = H;
+  var st = document.getElementById("stage");
+  if (RENDER) { st.style.width = W + "px"; st.style.height = H + "px"; }
+  else {
+    var maxH = Math.max(320, innerHeight - 190), maxW = Math.min(innerWidth - 32, 1168), r = portrait ? 9 / 16 : 16 / 9;
+    var w = Math.min(maxW, maxH * r); st.style.width = Math.floor(w) + "px"; st.style.height = Math.floor(w / r) + "px";
+  }
+  buildTextures();
+}
+
+/* ─── player ─── */
+var t0 = 0, cur = 0, playing = false, last = 0, audio = null, soundOn = false;
+var $ = function (id) { return document.getElementById(id); };
+function ui() {
+  $("tc").textContent = tcode(cur);
+  $("scrub").value = String(cur / T_TOTAL);
+  var lab = playing ? "❚❚" : "▶";
+  $("play").textContent = lab; $("play").setAttribute("aria-label", playing ? "Pause" : "Play");
+  $("stage").classList.toggle("playing", playing);
+  $("lang").textContent = lang.toUpperCase(); $("ar").textContent = ar === "9x16" ? "9:16" : "16:9";
+  $("ctaT").textContent = { ro: "Semnează petiția", en: "Sign the petition", hu: "Írd alá a petíciót" }[lang];
+  $("back").textContent = { ro: "← înapoi la site", en: "← back to the site", hu: "← vissza az oldalra" }[lang];
+  $("note").textContent = COPY[lang].note;
+  document.documentElement.lang = lang;
+}
+function loop(now) {
+  if (!playing) return;
+  if (audio && soundOn && !audio.paused) cur = audio.currentTime;
+  else cur += (now - last) / 1000;
+  last = now;
+  if (cur >= T_TOTAL) { cur = T_TOTAL - 1e-3; draw(cur); playing = false; if (audio) audio.pause(); ui(); return; }
+  draw(cur); ui();
+  requestAnimationFrame(loop);
+}
+function play() {
+  if (cur >= T_TOTAL - .05) cur = 0;
+  playing = true; last = performance.now();
+  if (soundOn) { audio = audio || new Audio("/promo/soundtrack.m4a"); audio.currentTime = cur; audio.play().catch(function () {}); }
+  ui(); requestAnimationFrame(loop);
+}
+function pause() { playing = false; if (audio) audio.pause(); ui(); }
+function seek(t) { cur = clamp(t, 0, T_TOTAL - 1e-3); if (audio) audio.currentTime = cur; draw(cur); ui(); }
+
+function boot() {
+  setSize();
+  if (RENDER) {
+    document.body.classList.add("render");
+    window.__frame = function (t) { draw(t); };
+    window.__cues = CUES; window.__T = T_TOTAL;
+    window.__ready = true;
+    return;
+  }
+  /* reduced motion: a still of the end card, play only on request */
+  seek(REDUCED ? 29.6 : 0);
+  ui();
+  $("play").onclick = $("big").onclick = function () { playing ? pause() : play(); };
+  $("scrub").oninput = function () { seek(parseFloat(this.value) * T_TOTAL); };
+  $("snd").onclick = function () {
+    soundOn = !soundOn; this.textContent = soundOn ? "🔊" : "🔇"; this.setAttribute("aria-pressed", String(soundOn));
+    if (!soundOn && audio) audio.pause(); else if (playing) play();
+  };
+  $("lang").onclick = function () { lang = { ro: "en", en: "hu", hu: "ro" }[lang]; try { localStorage.setItem("g2p_lang", lang); } catch (e) {} draw(cur); ui(); };
+  $("ar").onclick = function () { ar = ar === "9x16" ? "16x9" : "9x16"; setSize(); draw(cur); ui(); };
+  $("fs").onclick = function () { var st = $("stage"); (st.requestFullscreen ? st.requestFullscreen() : Promise.reject()).catch(function () {}); };
+  addEventListener("keydown", function (e) {
+    if (e.key === " " || e.key === "k") { e.preventDefault(); playing ? pause() : play(); }
+    else if (e.key === "ArrowRight") seek(cur + 1); else if (e.key === "ArrowLeft") seek(cur - 1);
+  });
+  var rt; addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { setSize(); draw(cur); }, 150); });
+  if (!REDUCED && qs.get("autoplay") !== "0") play();
+}
+
+/* Fonts (incl. latin-ext for ș ț ă ő ű) and the QR load before the first frame. */
+var GLYPHS = "ȘȚĂÎÂșțăîâŐŰőűÁÉÍÓÖÚÜáéíóöúü→●↵‹›";
+Promise.all([
+  document.fonts.load("800 100px 'Barlow Condensed'", GLYPHS), document.fonts.load("700 100px 'Space Mono'", GLYPHS),
+  document.fonts.load("400 100px 'Space Mono'", GLYPHS), document.fonts.load("600 100px 'Libre Franklin'", GLYPHS),
+  document.fonts.load("500 100px 'Libre Franklin'", GLYPHS),
+  new Promise(function (res) { var im = new Image(); im.onload = function () { qrImg = im; res(); }; im.onerror = res; im.src = "/icons/qr-tgm.svg"; })
+]).catch(function () {}).then(boot);
+</script>
+</body>
+</html>

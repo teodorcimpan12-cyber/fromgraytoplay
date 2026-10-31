@@ -9,7 +9,7 @@
      Esri satellite tiles are not stored (Esri terms), so the satellite needs a connection.
    - Firebase Realtime Database traffic is never intercepted (live data).
    Bump CACHE on breaking changes to invalidate old caches. */
-const CACHE = "g2p-v8";
+const CACHE = "g2p-v9";
 const TILES = "g2p-tiles";
 const TILE_MAX = 800;
 const SHELL = ["/", "/manifest.json", "/icons/icon-192.png", "/icons/icon-512.png", "/icons/qr-sibiu.svg", "/icons/qr-tgm.svg",
@@ -59,6 +59,11 @@ self.addEventListener("fetch", e => {
   if (url.hostname.endsWith("firebaseio.com") || url.hostname.endsWith("firebasedatabase.app")) return;
 
   // Navigations: network-first, offline fallback to the cached shell.
+  // Standalone pages (promo, demos, hero) must not overwrite the cached app shell.
+  if (req.mode === "navigate" && /^\/(promo|demos|hero)(\/|\.html|$)/.test(url.pathname)) {
+    e.respondWith(fetch(req).catch(() => caches.match("/")));
+    return;
+  }
   if (req.mode === "navigate") {
     e.respondWith(
       fetch(req).then(res => {
