@@ -246,3 +246,14 @@ Highest civic-value next steps:
   evidence, photos in PDF, `letters/` + Impact ✉️ tab); residents' verification (`verifications/`,
   consensus of 2 devices, missions from the satellite audit). Firebase schema adds `letters/` and
   `verifications/` — `database.rules.json` must be deployed to Firebase separately.
+- Session 30 Oct 2026 (branch `claude/beautiful-newton-blkqs3`): **/promo** — `promo.html`, a
+  standalone 32 s kinetic-typography motion promo (canvas, pure `draw(t)`, 120 BPM, cuts on beats,
+  ball-wipe transitions, grain + shake, RO/EN/HU, 9:16 + 16:9). Scenes: "NU MAI E GRI" glitch slam →
+  chrome logo sting → typing prompt card + paint-splash wipe (grey turns to colour) → court
+  today/could-be slider + film strip → data slam (13/30 degraded, 12 in neighbourhoods; centre 11%
+  vs neighbourhoods 57%) → "UN TEREN. O COMUNITATE. JOC PENTRU TOȚI." → open-data counters → CTA +
+  QR. `node tools/render_promo.mjs` renders `promo/promo-{9x16,16x9}.mp4` + posters; soundtrack
+  `promo/soundtrack.m4a` mixed from Higgsfield's CC0 SFX library. Linked from footer + ⌘K.
+  Numbers are hard-coded from `COURTS_BASE` (TGM) — update `COPY` in promo.html if the map changes.
+  AI B-roll prompts for later: `higgsfield/shots.md`. Deploy surface adds `promo.html` + `promo/*`.
+  `sw.js` (g2p-v9): standalone pages no longer overwrite the cached app shell.

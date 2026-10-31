@@ -4,7 +4,7 @@
     "file": "index.html",
     "generated": "2026-06-11",
     "description": "Knowledge graph al proiectului — componente, pagini, Firebase paths, utilitare. Citit automat de Claude la fiecare sesiune.",
-    "updated": "2026-10-29"
+    "updated": "2026-10-30"
   },
   "nodes": [
     {
@@ -806,6 +806,13 @@
       "type": "firebase",
       "line": 0,
       "desc": "verifications/{id}: {courtId, city, exists, playable, missing{}, photos[≤3], dev (hash dispozitiv), ai?}."
+    },
+    {
+      "id": "PromoPage",
+      "type": "page",
+      "line": 0,
+      "file": "promo.html",
+      "desc": "Standalone /promo: 32 s kinetic-type motion promo (canvas, deterministic draw(t), 120 BPM, 9:16 + 16:9, RO/EN/HU). Rendered to promo/*.mp4 by tools/render_promo.mjs; soundtrack promo/soundtrack.m4a (CC0 SFX). Numbers from COURTS_BASE (TGM)."
     }
   ],
   "edges": [
@@ -1653,6 +1660,21 @@
       "from": "AiPhotoHint",
       "to": "fb/reports",
       "rel": "writes"
+    },
+    {
+      "from": "PromoPage",
+      "to": "COURTS_BASE",
+      "rel": "mirrors-data"
+    },
+    {
+      "from": "CommandPalette",
+      "to": "PromoPage",
+      "rel": "links"
+    },
+    {
+      "from": "Footer",
+      "to": "PromoPage",
+      "rel": "links"
     }
   ],
   "routes": {
@@ -1666,7 +1688,8 @@
     "help": "HelpPage",
     "about": "AboutPage",
     "profile": "ProfilePage",
-    "#/admin": "AdminPanel"
+    "#/admin": "AdminPanel",
+    "/promo": "PromoPage (promo.html, Netlify rewrite)"
   },
   "css_classes": {
     "layout": [
