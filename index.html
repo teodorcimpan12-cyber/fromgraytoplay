@@ -1547,6 +1547,118 @@ button,select,summary,label,[role="button"],[role="tab"],.btn,.tabs button,nav a
 @media(prefers-reduced-transparency:reduce){.navbar,.action-card{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--bgCard)}.cp-overlay,.badge-unlock-overlay{-webkit-backdrop-filter:none;backdrop-filter:none}}
 /* Reduced motion = gentler, not zero: keep the fades, drop the movement */
 @media(prefers-reduced-motion:reduce){.modal,.toast{animation:fadeIn .2s ease}.toast{transform:translateX(-50%)}.mobile-menu,.install-banner{animation:fadeIn .2s ease}.card:hover,.action-card:hover,.cd-act:hover,.btn:hover{transform:none}}
+/* === Apple fluid pack (sheets + springs) ===
+   --spring = Apple damping 0.8 / response 0.4 sampled into CSS linear() (settles in 600 ms). Used on RELEASE only:
+   the press itself stays instant (ease-out 100 ms), the way back carries a hint of momentum. */
+:root{--spring:linear(0,0.042,0.141,0.267,0.399,0.526,0.639,0.735,0.813,0.875,0.922,0.957,0.981,0.997,1.007,1.012,1.015,1.015,1.014,1.012,1.01,1.008,1.007,1.005,1.004,1.002,1.002,1.001,1.001,1,1);--spring-dur:.6s}
+@supports (transition-timing-function:linear(0,1)){
+.btn,.cd-act,.pet-submit{transition:background .2s ease,transform var(--spring-dur) var(--spring),box-shadow .2s ease,border-color .2s ease}
+.card,.action-card{transition:transform var(--spring-dur) var(--spring),box-shadow .2s ease,border-color .2s ease}
+.petition-option{transition:border-color .2s ease,background-color .2s ease,box-shadow .2s ease,transform var(--spring-dur) var(--spring)}
+}
+.btn:active,.cd-act:active,.pet-submit:enabled:active{transform:scale(.96);transition:transform .1s var(--ease-out)}
+.petition-option:active,.card.card-link:active,.action-card:active{transform:scale(.98);transition:transform .1s var(--ease-out)}
+/* Phones: every modal becomes an iOS-style sheet that rises from the bottom edge and can be flicked away */
+@media(max-width:600px){
+.modal-overlay{align-items:flex-end;padding:0}
+.modal{max-width:none !important;width:100%;border-radius:20px 20px 0 0;max-height:88vh;max-height:88dvh;padding-bottom:calc(1.4rem + env(safe-area-inset-bottom));animation:sheetIn .5s var(--ease-drawer);position:relative;touch-action:pan-y;will-change:transform}
+.modal::before{content:"";display:block;width:38px;height:5px;border-radius:3px;background:var(--border);margin:-.55rem auto .85rem;flex-shrink:0}
+.modal.sheet-drag{transition:none !important;animation:none}
+@keyframes sheetIn{from{transform:translateY(100%)}to{transform:none}}
+}
+@media(max-width:600px) and (prefers-reduced-motion:reduce){.modal{animation:fadeIn .2s ease}}
+/* === iOS premium pack (adds polish, removes nothing) === */
+/* Nav fix: between 1240 and ~1360 px the links needed 14 px more than they had and the "Acasă" pill sat glued to the logo */
+.nav-inner{gap:1rem;max-width:1240px}
+.nav-links.desktop{min-width:0}
+/* Scroll edge: no hard divider at rest; the bar materialises once content slides under it */
+.navbar{transition:box-shadow .25s ease,border-color .25s ease,background-color .25s ease}
+.navbar:not(.nav-scrolled){border-bottom-color:transparent}
+.navbar.nav-scrolled{box-shadow:0 1px 0 var(--border),0 8px 24px -12px rgba(0,0,0,.25)}
+/* Sliding pill (desktop nav) + sliding ink (tabs): one shared element glides between items like a segmented control */
+.nav-links.desktop,.tabs{position:relative}
+.glide-pill,.glide-ink{position:absolute;left:0;top:0;pointer-events:none;z-index:0;opacity:0;transition:transform .5s var(--spring,cubic-bezier(.23,1,.32,1)),width .5s var(--spring,cubic-bezier(.23,1,.32,1)),height .3s var(--ease-out),opacity .2s ease}
+.glide-pill{border-radius:8px;background:var(--green);box-shadow:0 4px 14px -4px color-mix(in srgb,var(--green) 70%,transparent)}
+.glide-ink{height:2px;border-radius:2px;background:var(--green)}
+.glide-pill.on,.glide-ink.on{opacity:1}
+.glide-pill.snap,.glide-ink.snap{transition:opacity .2s ease}
+.nav-links.desktop>a{position:relative;z-index:1}
+.nav-links.desktop.has-glide>a.active{background:transparent;transition:color .2s ease,background .15s}
+.nav-links.desktop.has-glide>a:not(.active):hover{background:color-mix(in srgb,var(--green) 14%,transparent);color:var(--text)}
+.tabs.has-glide button.active{border-bottom-color:transparent}
+.tabs button{transition:color .2s ease}
+/* Mobile menu: links cascade in after the drawer (35 ms stagger), never blocking taps */
+@media(prefers-reduced-motion:no-preference){
+.mobile-menu>a{animation:mmIn .42s var(--ease-out) backwards}
+.mobile-menu>a:nth-of-type(1){animation-delay:.06s}.mobile-menu>a:nth-of-type(2){animation-delay:.095s}.mobile-menu>a:nth-of-type(3){animation-delay:.13s}.mobile-menu>a:nth-of-type(4){animation-delay:.165s}.mobile-menu>a:nth-of-type(5){animation-delay:.2s}.mobile-menu>a:nth-of-type(6){animation-delay:.235s}.mobile-menu>a:nth-of-type(7){animation-delay:.27s}.mobile-menu>a:nth-of-type(n+8){animation-delay:.3s}
+@keyframes mmIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+}
+/* Materials: toasts become a frosted pill, modal backdrops blur what is behind them */
+.toast{background:color-mix(in srgb,var(--darkCard) 82%,transparent);-webkit-backdrop-filter:blur(18px) saturate(170%);backdrop-filter:blur(18px) saturate(170%);border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:.65rem 1.25rem;box-shadow:0 10px 30px -8px rgba(0,0,0,.45)}
+.modal-overlay{-webkit-backdrop-filter:blur(4px) saturate(120%);backdrop-filter:blur(4px) saturate(120%)}
+.modal{box-shadow:0 24px 60px -12px rgba(0,0,0,.45),0 0 0 1px color-mix(in srgb,var(--border) 60%,transparent)}
+/* Focus: a soft ring that grows in, instead of the browser default */
+:where(a,button,input,textarea,select,[tabindex]):focus-visible{outline:2px solid var(--green);outline-offset:2px;transition:outline-offset .15s var(--ease-out)}
+@media(prefers-reduced-transparency:reduce){.toast{background:var(--darkCard);-webkit-backdrop-filter:none;backdrop-filter:none}.modal-overlay{-webkit-backdrop-filter:none;backdrop-filter:none}}
+@media(prefers-reduced-motion:reduce){.glide-pill,.glide-ink{transition:opacity .2s ease}}
+/* === Apple.com pass (31 Oct 2026): values measured on apple.com, re-coloured for FG2P === */
+/* Text rendering + selection, like Apple's pages */
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+::selection{background:color-mix(in srgb,var(--green) 28%,transparent)}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+/* Global nav glass: apple.com = rgba(29,29,31,.8) + saturate(1.8) blur(20px) */
+.navbar{-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)}
+/* Pill CTAs: apple.com buttons are border-radius 980px, 11px 21px padding, tight tracking */
+.btn{border-radius:980px;padding:.6rem 1.3rem;letter-spacing:-.01em}
+.btn-sm{border-radius:980px;padding:.38rem .9rem}
+.pet-submit{border-radius:980px}
+.btn-outline{border-width:1.5px}
+/* Display type: apple.com hero = 80px / 84px / -1.2px (-0.015em). Tracking tightens as size grows */
+h1{letter-spacing:-.015em;line-height:1.08}
+h2{letter-spacing:-.01em;line-height:1.15}
+.section-title{letter-spacing:-.012em}
+.h3d-title{letter-spacing:-.01em;line-height:1.05}
+.h3d-sub{letter-spacing:-.005em}
+/* Scroll-driven reveals (Apple's sections ease in as they enter). Uses the individual translate/scale/opacity
+   properties so it composes with the existing transform-based tilt + hover lifts instead of fighting them. */
+@supports (animation-timeline:view()){
+@media(prefers-reduced-motion:no-preference){
+:where(main .card,main .section-title,main .stat-tile){animation:apReveal linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+@keyframes apReveal{from{opacity:.001;translate:0 28px;scale:.985}to{opacity:1;translate:none;scale:none}}
+/* Hero copy recedes as you scroll past it, like apple.com product heroes */
+/* the hero clips (overflow:hidden = its own scroller), so the overlay follows a named timeline on the hero itself */
+.h3d-hero{view-timeline:--g2pHero block}
+:where(.h3d-overlay){animation:apHeroOut linear both;animation-timeline:--g2pHero;animation-range:exit 0% exit 85%}
+@keyframes apHeroOut{to{opacity:.15;translate:0 -36px;scale:.97}}
+}}
+/* Hero CTAs: Apple pill pair (filled primary + glass secondary), spring release */
+.h3d-btn{border-radius:980px;padding:.72rem 1.35rem;transition:transform var(--spring-dur,.6s) var(--spring,ease-out),box-shadow .2s ease,background-color .2s ease}
+.h3d-btn:active{transform:scale(.96);transition:transform .1s var(--ease-out)}
+.h3d-btn-ghost{-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)}
+.no-fx main .card,.no-fx main .section-title,.no-fx main .stat-tile,.no-fx .h3d-overlay{animation:none !important}
+/* === F2G premium handoff (31 Oct 2026): only the non-fundamental details. Theme, fonts, colours,
+   12px cards and every playful animation stay exactly as they were. === */
+:root{--ease-apple:cubic-bezier(.28,.11,.32,1)}
+/* Headlines break into balanced lines, paragraphs avoid orphans (Apple's short, even headline rhythm) */
+h1,h2,h3,.section-title,.h3d-title{text-wrap:balance}
+p{text-wrap:pretty}
+/* Calmer rhythm on large screens: more air between sections, slightly larger section titles */
+@media(min-width:900px){.section{padding:3rem 0}.section-title{font-size:clamp(1.5rem,2.1vw,1.85rem)}}
+/* Nav links: Apple's quiet resting state (slightly dimmed), full strength on hover, 300 ms Apple ease */
+.nav-links.desktop>a:not(.active){opacity:.82;transition:opacity .3s var(--ease-apple),background-color .3s var(--ease-apple),color .3s var(--ease-apple)}
+.nav-links.desktop>a:not(.active):hover,.nav-links.desktop>a:not(.active):focus-visible{opacity:1}
+/* Colour changes on buttons use Apple's 300 ms ease; press/spring timing from the packs above is kept */
+.btn{transition:background-color .3s var(--ease-apple),color .3s var(--ease-apple),border-color .3s var(--ease-apple),box-shadow .3s var(--ease-apple),transform var(--spring-dur,.6s) var(--spring,ease-out)}
+.btn:active{transition:transform .1s var(--ease-out)}
+/* Lighter, more diffuse hover shadow on cards (no heavy shadows) */
+.card:hover{box-shadow:0 12px 32px -14px rgba(0,0,0,.22)}
+[data-theme="dark"] .card:hover{box-shadow:0 12px 32px -14px rgba(0,0,0,.6)}
+/* Mobile menu: big, confident links like Apple's full-screen menu */
+.mobile-menu>a{font-size:1.4rem;font-weight:600;letter-spacing:-.01em;padding:.6rem 1rem;line-height:1.2}
+/* Footer: quiet legal type, hairline, generous padding */
+.footer{padding:2.6rem 0 2.2rem;font-size:.76rem;line-height:1.7;letter-spacing:.005em;border-top:1px solid rgba(255,255,255,.06)}
+/* Focus: accent outline with Apple's 3 px offset */
+:where(a,button,input,textarea,select,[tabindex]):focus-visible{outline-offset:3px}
 </style>
 <script>(function(){try{var a=JSON.parse(localStorage.getItem("g2p_accent")||"null");if(a&&a.p){var r=document.documentElement;r.style.setProperty("--green",a.p);if(a.s)r.style.setProperty("--teal",a.s);r.classList.add("accent-on");}}catch(e){}})();</script>
 <script>(function(){try{var t=localStorage.getItem("g2p_theme")||(window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
@@ -18240,6 +18352,118 @@ try {
 }
 </script>
 
+<script>
+/* Apple fluid pack: drag-to-dismiss for phone sheets (.modal inside .modal-overlay, <=600px).
+   1:1 tracking from the grab point, 10 px hysteresis + direction lock, rubber-band above the top,
+   release velocity -> Apple momentum projection decides dismiss vs. spring back.
+   Dismiss = the overlay's own React onClick (the same close path as tapping the backdrop). */
+(function () {
+  try {
+    var mq = window.matchMedia("(max-width:600px)"), rm = window.matchMedia("(prefers-reduced-motion:reduce)");
+    var st = null;
+    function rubber(o, d) { return (o * d * 0.55) / (d + 0.55 * Math.abs(o)); }
+    function closer(ov) {
+      var k = Object.keys(ov).find(function (x) { return x.indexOf("__reactProps") === 0; });
+      var p = k && ov[k];
+      return p && typeof p.onClick === "function" ? p.onClick : null;
+    }
+    function scrolledAncestor(el, modal) {
+      for (var n = el; n && n !== modal.parentNode; n = n.parentNode) if (n.scrollTop > 0) return true;
+      return false;
+    }
+    document.addEventListener("touchstart", function (e) {
+      st = null;
+      if (!mq.matches || e.touches.length !== 1) return;
+      var t = e.target, modal = t.closest && t.closest(".modal"), ov = modal && modal.parentNode;
+      if (!modal || !ov || !ov.classList || !ov.classList.contains("modal-overlay")) return;
+      if (t.closest("input,textarea,select,canvas,[contenteditable],.leaflet-container,[data-no-drag]")) return;
+      if (scrolledAncestor(t, modal)) return;
+      var y = e.touches[0].clientY;
+      st = { modal: modal, ov: ov, y0: y, x0: e.touches[0].clientX, h: modal.offsetHeight, lock: 0, dy: 0, hist: [[y, e.timeStamp]] };
+    }, { passive: true });
+    document.addEventListener("touchmove", function (e) {
+      if (!st) return;
+      var y = e.touches[0].clientY, x = e.touches[0].clientX, dy = y - st.y0;
+      if (!st.lock) {
+        if (Math.abs(dy) < 10 && Math.abs(x - st.x0) < 10) return;
+        var m = st.modal, canScroll = m.scrollHeight > m.clientHeight + 2;
+        if ((dy < 0 && canScroll) || Math.abs(x - st.x0) > Math.abs(dy) || scrolledAncestor(e.target, m)) { st = null; return; }
+        st.lock = 1; m.classList.add("sheet-drag");   // keep y0: the sheet stays glued to the grab point
+      }
+      e.preventDefault();
+      st.dy = dy;
+      st.hist.push([y, e.timeStamp]); if (st.hist.length > 6) st.hist.shift();
+      var off = dy >= 0 ? dy : rubber(dy, st.h);
+      st.modal.style.transform = "translateY(" + off + "px)";
+      st.ov.style.backgroundColor = "rgba(0,0,0," + (0.6 * Math.max(0, 1 - Math.max(0, dy) / st.h)).toFixed(3) + ")";
+    }, { passive: false });
+    function end() {
+      if (!st || !st.lock) { st = null; return; }
+      var s = st; st = null;
+      var a = s.hist[0], b = s.hist[s.hist.length - 1], dt = Math.max(1, b[1] - a[1]);
+      var v = (b[0] - a[0]) / dt;                          // px/ms, + = downward
+      var projected = s.dy + v * 0.998 / (1 - 0.998);      // Apple project(): (v/1000)*d/(1-d) with v in px/s
+      var close = s.dy > 0 && (projected > s.h * 0.5 || v > 0.5) && closer(s.ov);
+      s.modal.classList.remove("sheet-drag");
+      if (close) {
+        var rest = Math.max(0, s.h - s.dy), ms = Math.max(160, Math.min(380, v > 0 ? rest / v : 380));
+        s.modal.style.transition = "transform " + ms + "ms cubic-bezier(.32,.72,0,1)";
+        s.ov.style.transition = "background-color " + ms + "ms ease";
+        s.modal.style.transform = "translateY(" + (s.h + 24) + "px)";
+        s.ov.style.backgroundColor = "rgba(0,0,0,0)";
+        try { navigator.vibrate && navigator.vibrate(8); } catch (err) {}
+        var done = false, fire = function () { if (done) return; done = true; try { close({ target: s.ov, currentTarget: s.ov, stopPropagation: function () {}, preventDefault: function () {} }); } catch (err) {} };
+        s.modal.addEventListener("transitionend", fire, { once: true });
+        setTimeout(fire, ms + 80);
+      } else {
+        s.modal.style.transition = rm.matches ? "transform .2s ease" : "transform .6s var(--spring, cubic-bezier(.23,1,.32,1))";
+        s.ov.style.transition = "background-color .3s ease";
+        s.modal.style.transform = "";
+        s.ov.style.backgroundColor = "";
+        setTimeout(function () { s.modal.style.transition = ""; s.ov.style.transition = ""; }, 650);
+      }
+    }
+    document.addEventListener("touchend", end, { passive: true });
+    document.addEventListener("touchcancel", end, { passive: true });
+  } catch (e) {}
+})();
+</script>
+<script>
+/* iOS premium pack: navbar scroll-edge state + one gliding pill/ink per nav/tab group.
+   Pure decoration on top of the existing .active classes: if anything here fails, the old styling stays. */
+(function () {
+  try {
+    var raf = 0;
+    function navEdge() { var n = document.querySelector(".navbar"); if (n) n.classList.toggle("nav-scrolled", window.scrollY > 4); }
+    window.addEventListener("scroll", navEdge, { passive: true });
+    function glide(box, sel, cls) {
+      var act = box.querySelector(sel), g = box.querySelector(":scope>." + cls);
+      if (!act) { if (g && g.classList.contains("on")) { g.classList.remove("on"); g._k = ""; } return; }
+      if (!g) { g = document.createElement("span"); g.className = cls + " snap"; g.setAttribute("aria-hidden", "true"); box.appendChild(g); box.classList.add("has-glide"); }
+      var x = act.offsetLeft, y = cls === "glide-ink" ? act.offsetTop + act.offsetHeight - 2 : act.offsetTop, w = act.offsetWidth, h = cls === "glide-ink" ? 2 : act.offsetHeight;
+      var key = x + "," + y + "," + w + "," + h;
+      if (g._k === key) return;
+      var first = !g._k; g._k = key;
+      g.style.width = w + "px"; if (cls !== "glide-ink") g.style.height = h + "px";
+      g.style.transform = "translate(" + x + "px," + y + "px)";
+      g.classList.add("on");
+      if (first) requestAnimationFrame(function () { requestAnimationFrame(function () { g.classList.remove("snap"); }); });
+    }
+    function all() {
+      raf = 0; navEdge();
+      document.querySelectorAll(".nav-links.desktop").forEach(function (b) { if (b.offsetParent) glide(b, ":scope>a.active", "glide-pill"); });
+      document.querySelectorAll(".tabs").forEach(function (b) { if (b.offsetParent) glide(b, ":scope>button.active", "glide-ink"); });
+    }
+    function soon() { if (!raf) raf = requestAnimationFrame(all); }
+    new MutationObserver(function (ms) {
+      for (var i = 0; i < ms.length; i++) { var t = ms[i].target; if (ms[i].type === "childList" || (t.parentNode && t.parentNode.classList && (t.parentNode.classList.contains("tabs") || t.parentNode.classList.contains("nav-links")))) { soon(); return; } }
+    }).observe(document.getElementById("root") || document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ["class"] });
+    window.addEventListener("resize", soon);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { document.querySelectorAll(".glide-pill,.glide-ink").forEach(function (g) { g._k = ""; }); soon(); });
+    soon();
+  } catch (e) {}
+})();
+</script>
 <script>
 /* Boot guard: if the main script could not even be parsed, show a way out instead of a frozen splash. */
 window.addEventListener("load", function () {

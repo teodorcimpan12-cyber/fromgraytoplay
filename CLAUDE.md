@@ -257,3 +257,26 @@ Highest civic-value next steps:
   Numbers are hard-coded from `COURTS_BASE` (TGM) — update `COPY` in promo.html if the map changes.
   AI B-roll prompts for later: `higgsfield/shots.md`. Deploy surface adds `promo.html` + `promo/*`.
   `sw.js` (g2p-v9): standalone pages no longer overwrite the cached app shell.
+- Session 31 Oct 2026 — motion: easing tokens `--ease-out/--ease-in-out/--ease-drawer` + `--spring`
+  (Apple damping 0.8 / response 0.4 as CSS `linear()`) in the "Motion polish" / "Apple fluid pack"
+  blocks at the end of the main `<style>`. ≤600px every `.modal` inside `.modal-overlay` is an iOS sheet:
+  rises from the bottom, grabber, drag-to-dismiss (small `<script>` before the boot guard: 10 px
+  hysteresis, 1:1 tracking, rubber-band, Apple momentum projection). Dismiss calls the overlay's own
+  React `onClick`, so a modal whose overlay has no onClick simply springs back. Opt out an element with
+  `data-no-drag`. Ctrl/Cmd+K palette has no open animation on purpose (keyboard action).
+- iOS premium pack (same session): nav fix (`.nav-inner` gap 1rem + max-width 1240px — links overflowed by
+  14 px between 1240–1360 px and the active pill touched the logo); navbar scroll-edge (`.nav-scrolled`);
+  a gliding `.glide-pill` (desktop nav) and `.glide-ink` (every `.tabs`) driven by a tiny script that only
+  reads the existing `.active` classes; staggered mobile-menu links; frosted pill toasts; blurred modal
+  backdrops; soft focus ring; 8 ms haptic tick on sheet dismiss. Nothing was removed.
+- Apple.com pass (same session; values measured on apple.com): antialiased text, green ::selection,
+  smooth scroll; nav glass saturate(180%) blur(20px); **pill buttons** (`.btn`, `.btn-sm`, `.pet-submit`,
+  `.h3d-btn` → radius 980px; cards keep 12px); display tracking (h1 -0.015em / lh 1.08, h2 -0.01em);
+  scroll-driven reveals (`animation-timeline: view()`, `:where()` so any existing animation on an element
+  wins; uses the individual `translate/scale/opacity` properties so tilt + hover transforms still compose);
+  hero copy recedes on scroll via the named timeline `--g2pHero` (the hero clips, so plain view() can't see it).
+- Premium handoff (F2G-premium-design-handoff.md, same session) — only non-fundamental details taken:
+  `text-wrap: balance/pretty`, more section air ≥900px, dimmed-at-rest nav links, Apple 300 ms ease
+  (`--ease-apple`) on colour changes, lighter card hover shadow, big 600-weight mobile-menu links,
+  quieter footer with hairline, 3 px focus offset. Deliberately NOT taken (would change fundamentals):
+  monochrome palette, Inter font, 28 px cards, no-playful-motion rule, page restructure.
