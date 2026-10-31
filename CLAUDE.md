@@ -269,3 +269,9 @@ Highest civic-value next steps:
   a gliding `.glide-pill` (desktop nav) and `.glide-ink` (every `.tabs`) driven by a tiny script that only
   reads the existing `.active` classes; staggered mobile-menu links; frosted pill toasts; blurred modal
   backdrops; soft focus ring; 8 ms haptic tick on sheet dismiss. Nothing was removed.
+- Apple.com pass (same session; values measured on apple.com): antialiased text, green ::selection,
+  smooth scroll; nav glass saturate(180%) blur(20px); **pill buttons** (`.btn`, `.btn-sm`, `.pet-submit`,
+  `.h3d-btn` → radius 980px; cards keep 12px); display tracking (h1 -0.015em / lh 1.08, h2 -0.01em);
+  scroll-driven reveals (`animation-timeline: view()`, `:where()` so any existing animation on an element
+  wins; uses the individual `translate/scale/opacity` properties so tilt + hover transforms still compose);
+  hero copy recedes on scroll via the named timeline `--g2pHero` (the hero clips, so plain view() can't see it).
