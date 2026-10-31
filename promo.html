@@ -44,6 +44,12 @@ main{flex:1;display:flex;flex-direction:column;align-items:center;gap:14px;paddi
 .btn:hover{border-color:var(--green);color:var(--green)}
 .btn.primary{background:var(--green);border-color:var(--green);color:var(--dark)}
 .btn.primary:hover{filter:brightness(1.08);color:var(--dark)}
+.btn{transition:transform .16s cubic-bezier(.23,1,.32,1),border-color .15s ease,color .15s ease;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.97);transition-duration:.1s}
+.stage .big span{transition:transform .16s cubic-bezier(.23,1,.32,1)}
+.stage .big:active span{transform:scale(.94)}
+@media(hover:none){.btn:not(.primary):hover{border-color:var(--border);color:var(--text)}.btn.primary:hover{filter:none}}
+@media(prefers-reduced-motion:reduce){.btn:active,.stage .big:active span{transform:none}}
 .btn[aria-pressed="true"]{border-color:var(--green);color:var(--green)}
 .tc{font-family:'Space Mono',monospace;font-size:.78rem;color:var(--textSec);min-width:9.5ch;text-align:center}
 .scrub{flex:1;min-width:120px;accent-color:var(--green);height:40px}

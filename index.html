@@ -1513,6 +1513,40 @@ button,select,summary,label,[role="button"],[role="tab"],.btn,.tabs button,nav a
 .card.card-link{--cond-clr:var(--green)}
 .card.card-link:hover{box-shadow:0 14px 40px rgba(0,0,0,.13),0 0 0 1px var(--cond-clr)}
 [data-theme="dark"] .card.card-link:hover{box-shadow:0 14px 40px rgba(0,0,0,.5),0 0 0 1px var(--cond-clr)}
+/* === Motion polish (31 Oct 2026, Emil Kowalski / Apple fluid-motion audit) ===
+   Last in the cascade on purpose: retunes curves + durations without touching the rules above. */
+:root{--ease-out:cubic-bezier(.23,1,.32,1);--ease-in-out:cubic-bezier(.77,0,.175,1);--ease-drawer:cubic-bezier(.32,.72,0,1)}
+/* Press feedback: instant on pointer-down, strong ease-out (built-in "ease" felt soft) */
+.btn{transition:background .2s ease,transform .16s var(--ease-out),box-shadow .2s ease}
+.btn:active,.cd-act:active,.petition-option:active,.pet-submit:enabled:active{transition-duration:.1s}
+.card,.action-card{transition:transform .2s var(--ease-out),box-shadow .2s ease,border-color .2s ease}
+.cd-act{transition:transform .16s var(--ease-out),box-shadow .2s ease,border-color .2s ease}
+/* transition:all animated layout/paint props off the compositor -> name the properties */
+.petition-option{transition:border-color .2s ease,background-color .2s ease,box-shadow .2s ease,transform .16s var(--ease-out)}
+.po-radio,.vol-box{transition:border-color .15s ease,background-color .15s ease}
+.pet-submit{transition:background-color .2s ease,color .2s ease,box-shadow .2s ease,transform .16s var(--ease-out),opacity .2s ease}
+/* Toast: slideUp replaced translateX(-50%) for 200 ms, so every toast slid in off-centre and jumped */
+.toast{animation:toastIn .26s var(--ease-out)}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,16px) scale(.97)}to{opacity:1;transform:translate(-50%,0)}}
+/* Modal + overlays: enter with ease-out, from 97 % (nothing appears from nowhere) */
+.modal{animation:modalIn .24s var(--ease-out)}
+@keyframes modalIn{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
+/* Mobile menu is a drawer: iOS drawer curve, a touch longer so the slide reads */
+.mobile-menu{animation:slideR .32s var(--ease-drawer)}
+.install-banner{animation:slideDown .3s var(--ease-out)}
+/* Command palette is opened from the keyboard (Ctrl/Cmd+K) dozens of times: it must appear instantly */
+.cp,.cp-overlay{animation:none}
+/* Navigation is the highest-frequency action: shorter, lighter wipe + page entrance */
+.page-wipe{animation-duration:.42s}
+@media(prefers-reduced-motion:no-preference){.animate-in{animation:pageEnter .3s var(--ease-out) backwards}}
+@keyframes pageEnter{from{opacity:0;transform:translateY(8px);filter:blur(3px)}to{opacity:1;transform:none;filter:none}}
+/* Touch fires sticky :hover on tap -> lifts/shifts only on real pointers */
+@media(hover:none){.card:hover,.action-card:hover,.cd-act:hover,.btn-green:hover,.btn-coral:hover,.btn-outline:hover,.pet-submit:enabled:hover,.ha-card:hover .ha-arrow{transform:none}}
+/* Materials: nav is a translucent layer; vibrancy via saturate; solid when transparency is reduced */
+.navbar{-webkit-backdrop-filter:blur(14px) saturate(170%);backdrop-filter:blur(14px) saturate(170%)}
+@media(prefers-reduced-transparency:reduce){.navbar,.action-card{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--bgCard)}.cp-overlay,.badge-unlock-overlay{-webkit-backdrop-filter:none;backdrop-filter:none}}
+/* Reduced motion = gentler, not zero: keep the fades, drop the movement */
+@media(prefers-reduced-motion:reduce){.modal,.toast{animation:fadeIn .2s ease}.toast{transform:translateX(-50%)}.mobile-menu,.install-banner{animation:fadeIn .2s ease}.card:hover,.action-card:hover,.cd-act:hover,.btn:hover{transform:none}}
 </style>
 <script>(function(){try{var a=JSON.parse(localStorage.getItem("g2p_accent")||"null");if(a&&a.p){var r=document.documentElement;r.style.setProperty("--green",a.p);if(a.s)r.style.setProperty("--teal",a.s);r.classList.add("accent-on");}}catch(e){}})();</script>
 <script>(function(){try{var t=localStorage.getItem("g2p_theme")||(window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
