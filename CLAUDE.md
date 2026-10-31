@@ -275,3 +275,8 @@ Highest civic-value next steps:
   scroll-driven reveals (`animation-timeline: view()`, `:where()` so any existing animation on an element
   wins; uses the individual `translate/scale/opacity` properties so tilt + hover transforms still compose);
   hero copy recedes on scroll via the named timeline `--g2pHero` (the hero clips, so plain view() can't see it).
+- Premium handoff (F2G-premium-design-handoff.md, same session) — only non-fundamental details taken:
+  `text-wrap: balance/pretty`, more section air ≥900px, dimmed-at-rest nav links, Apple 300 ms ease
+  (`--ease-apple`) on colour changes, lighter card hover shadow, big 600-weight mobile-menu links,
+  quieter footer with hairline, 3 px focus offset. Deliberately NOT taken (would change fundamentals):
+  monochrome palette, Inter font, 28 px cards, no-playful-motion rule, page restructure.
