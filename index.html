@@ -1567,6 +1567,40 @@ button,select,summary,label,[role="button"],[role="tab"],.btn,.tabs button,nav a
 @keyframes sheetIn{from{transform:translateY(100%)}to{transform:none}}
 }
 @media(max-width:600px) and (prefers-reduced-motion:reduce){.modal{animation:fadeIn .2s ease}}
+/* === iOS premium pack (adds polish, removes nothing) === */
+/* Nav fix: between 1240 and ~1360 px the links needed 14 px more than they had and the "Acasă" pill sat glued to the logo */
+.nav-inner{gap:1rem;max-width:1240px}
+.nav-links.desktop{min-width:0}
+/* Scroll edge: no hard divider at rest; the bar materialises once content slides under it */
+.navbar{transition:box-shadow .25s ease,border-color .25s ease,background-color .25s ease}
+.navbar:not(.nav-scrolled){border-bottom-color:transparent}
+.navbar.nav-scrolled{box-shadow:0 1px 0 var(--border),0 8px 24px -12px rgba(0,0,0,.25)}
+/* Sliding pill (desktop nav) + sliding ink (tabs): one shared element glides between items like a segmented control */
+.nav-links.desktop,.tabs{position:relative}
+.glide-pill,.glide-ink{position:absolute;left:0;top:0;pointer-events:none;z-index:0;opacity:0;transition:transform .5s var(--spring,cubic-bezier(.23,1,.32,1)),width .5s var(--spring,cubic-bezier(.23,1,.32,1)),height .3s var(--ease-out),opacity .2s ease}
+.glide-pill{border-radius:8px;background:var(--green);box-shadow:0 4px 14px -4px color-mix(in srgb,var(--green) 70%,transparent)}
+.glide-ink{height:2px;border-radius:2px;background:var(--green)}
+.glide-pill.on,.glide-ink.on{opacity:1}
+.glide-pill.snap,.glide-ink.snap{transition:opacity .2s ease}
+.nav-links.desktop>a{position:relative;z-index:1}
+.nav-links.desktop.has-glide>a.active{background:transparent;transition:color .2s ease,background .15s}
+.nav-links.desktop.has-glide>a:not(.active):hover{background:color-mix(in srgb,var(--green) 14%,transparent);color:var(--text)}
+.tabs.has-glide button.active{border-bottom-color:transparent}
+.tabs button{transition:color .2s ease}
+/* Mobile menu: links cascade in after the drawer (35 ms stagger), never blocking taps */
+@media(prefers-reduced-motion:no-preference){
+.mobile-menu>a{animation:mmIn .42s var(--ease-out) backwards}
+.mobile-menu>a:nth-of-type(1){animation-delay:.06s}.mobile-menu>a:nth-of-type(2){animation-delay:.095s}.mobile-menu>a:nth-of-type(3){animation-delay:.13s}.mobile-menu>a:nth-of-type(4){animation-delay:.165s}.mobile-menu>a:nth-of-type(5){animation-delay:.2s}.mobile-menu>a:nth-of-type(6){animation-delay:.235s}.mobile-menu>a:nth-of-type(7){animation-delay:.27s}.mobile-menu>a:nth-of-type(n+8){animation-delay:.3s}
+@keyframes mmIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+}
+/* Materials: toasts become a frosted pill, modal backdrops blur what is behind them */
+.toast{background:color-mix(in srgb,var(--darkCard) 82%,transparent);-webkit-backdrop-filter:blur(18px) saturate(170%);backdrop-filter:blur(18px) saturate(170%);border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:.65rem 1.25rem;box-shadow:0 10px 30px -8px rgba(0,0,0,.45)}
+.modal-overlay{-webkit-backdrop-filter:blur(4px) saturate(120%);backdrop-filter:blur(4px) saturate(120%)}
+.modal{box-shadow:0 24px 60px -12px rgba(0,0,0,.45),0 0 0 1px color-mix(in srgb,var(--border) 60%,transparent)}
+/* Focus: a soft ring that grows in, instead of the browser default */
+:where(a,button,input,textarea,select,[tabindex]):focus-visible{outline:2px solid var(--green);outline-offset:2px;transition:outline-offset .15s var(--ease-out)}
+@media(prefers-reduced-transparency:reduce){.toast{background:var(--darkCard);-webkit-backdrop-filter:none;backdrop-filter:none}.modal-overlay{-webkit-backdrop-filter:none;backdrop-filter:none}}
+@media(prefers-reduced-motion:reduce){.glide-pill,.glide-ink{transition:opacity .2s ease}}
 </style>
 <script>(function(){try{var a=JSON.parse(localStorage.getItem("g2p_accent")||"null");if(a&&a.p){var r=document.documentElement;r.style.setProperty("--green",a.p);if(a.s)r.style.setProperty("--teal",a.s);r.classList.add("accent-on");}}catch(e){}})();</script>
 <script>(function(){try{var t=localStorage.getItem("g2p_theme")||(window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
@@ -18319,6 +18353,7 @@ try {
         s.ov.style.transition = "background-color " + ms + "ms ease";
         s.modal.style.transform = "translateY(" + (s.h + 24) + "px)";
         s.ov.style.backgroundColor = "rgba(0,0,0,0)";
+        try { navigator.vibrate && navigator.vibrate(8); } catch (err) {}
         var done = false, fire = function () { if (done) return; done = true; try { close({ target: s.ov, currentTarget: s.ov, stopPropagation: function () {}, preventDefault: function () {} }); } catch (err) {} };
         s.modal.addEventListener("transitionend", fire, { once: true });
         setTimeout(fire, ms + 80);
@@ -18332,6 +18367,42 @@ try {
     }
     document.addEventListener("touchend", end, { passive: true });
     document.addEventListener("touchcancel", end, { passive: true });
+  } catch (e) {}
+})();
+</script>
+<script>
+/* iOS premium pack: navbar scroll-edge state + one gliding pill/ink per nav/tab group.
+   Pure decoration on top of the existing .active classes: if anything here fails, the old styling stays. */
+(function () {
+  try {
+    var raf = 0;
+    function navEdge() { var n = document.querySelector(".navbar"); if (n) n.classList.toggle("nav-scrolled", window.scrollY > 4); }
+    window.addEventListener("scroll", navEdge, { passive: true });
+    function glide(box, sel, cls) {
+      var act = box.querySelector(sel), g = box.querySelector(":scope>." + cls);
+      if (!act) { if (g && g.classList.contains("on")) { g.classList.remove("on"); g._k = ""; } return; }
+      if (!g) { g = document.createElement("span"); g.className = cls + " snap"; g.setAttribute("aria-hidden", "true"); box.appendChild(g); box.classList.add("has-glide"); }
+      var x = act.offsetLeft, y = cls === "glide-ink" ? act.offsetTop + act.offsetHeight - 2 : act.offsetTop, w = act.offsetWidth, h = cls === "glide-ink" ? 2 : act.offsetHeight;
+      var key = x + "," + y + "," + w + "," + h;
+      if (g._k === key) return;
+      var first = !g._k; g._k = key;
+      g.style.width = w + "px"; if (cls !== "glide-ink") g.style.height = h + "px";
+      g.style.transform = "translate(" + x + "px," + y + "px)";
+      g.classList.add("on");
+      if (first) requestAnimationFrame(function () { requestAnimationFrame(function () { g.classList.remove("snap"); }); });
+    }
+    function all() {
+      raf = 0; navEdge();
+      document.querySelectorAll(".nav-links.desktop").forEach(function (b) { if (b.offsetParent) glide(b, ":scope>a.active", "glide-pill"); });
+      document.querySelectorAll(".tabs").forEach(function (b) { if (b.offsetParent) glide(b, ":scope>button.active", "glide-ink"); });
+    }
+    function soon() { if (!raf) raf = requestAnimationFrame(all); }
+    new MutationObserver(function (ms) {
+      for (var i = 0; i < ms.length; i++) { var t = ms[i].target; if (ms[i].type === "childList" || (t.parentNode && t.parentNode.classList && (t.parentNode.classList.contains("tabs") || t.parentNode.classList.contains("nav-links")))) { soon(); return; } }
+    }).observe(document.getElementById("root") || document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ["class"] });
+    window.addEventListener("resize", soon);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { document.querySelectorAll(".glide-pill,.glide-ink").forEach(function (g) { g._k = ""; }); soon(); });
+    soon();
   } catch (e) {}
 })();
 </script>

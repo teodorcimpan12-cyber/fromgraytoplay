@@ -264,3 +264,8 @@ Highest civic-value next steps:
   hysteresis, 1:1 tracking, rubber-band, Apple momentum projection). Dismiss calls the overlay's own
   React `onClick`, so a modal whose overlay has no onClick simply springs back. Opt out an element with
   `data-no-drag`. Ctrl/Cmd+K palette has no open animation on purpose (keyboard action).
+- iOS premium pack (same session): nav fix (`.nav-inner` gap 1rem + max-width 1240px — links overflowed by
+  14 px between 1240–1360 px and the active pill touched the logo); navbar scroll-edge (`.nav-scrolled`);
+  a gliding `.glide-pill` (desktop nav) and `.glide-ink` (every `.tabs`) driven by a tiny script that only
+  reads the existing `.active` classes; staggered mobile-menu links; frosted pill toasts; blurred modal
+  backdrops; soft focus ring; 8 ms haptic tick on sheet dismiss. Nothing was removed.
