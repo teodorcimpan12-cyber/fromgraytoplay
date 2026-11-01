@@ -1,10 +1,10 @@
 ---
-name: video-digest
+name: watch
 description: Download a video from a link (YouTube, Instagram reel, TikTok, X, Vimeo, or a local file), grab key frames, transcribe the audio, and write it all to one folder Claude can read. Optionally turn what the video teaches into a new reusable skill. Use when the user pastes a video link and asks what it says or shows, wants a transcript or summary, wants frames or screenshots from it, or says "make this video into a skill".
 argument-hint: <video-url-or-file> [--frames N] [--lang ro|en|hu] [--skill]
 ---
 
-# video-digest
+# watch
 
 One command turns a video link into frames + transcript + a `digest.md` you can read.
 
@@ -18,8 +18,8 @@ python3 -c "import yt_dlp, faster_whisper" 2>/dev/null || pip install -q yt-dlp 
 ## 2. Run it
 
 ```bash
-python3 .claude/skills/video-digest/scripts/digest.py "<URL or file>" \
-  --out video-digest/<short-name> --frames 12
+python3 .claude/skills/watch/scripts/digest.py "<URL or file>" \
+  --out watch/<short-name> --frames 12
 ```
 
 Useful flags:
@@ -42,7 +42,7 @@ Output folder:
 video.mp4  frames/f_0001.jpg ...  frames/index.txt  transcript.txt  transcript.srt  meta.json  digest.md
 ```
 
-`video-digest/` holds downloaded media: don't commit it (it's in `.gitignore`).
+`watch/` holds downloaded media: don't commit it (it's in `.gitignore`).
 
 ## 3. Read it
 

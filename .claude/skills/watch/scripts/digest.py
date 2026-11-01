@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""video-digest: download a video from a link (or use a local file), grab frames,
+"""watch: download a video from a link (or use a local file), grab frames,
 transcribe the audio, and write everything into one folder Claude can read.
 
 Usage:
   python3 digest.py <url-or-file> [--out DIR] [--frames N] [--scene 0.3]
                     [--model small] [--lang auto] [--no-subs] [--cookies FILE]
 
-Output (DIR, default ./video-digest/<slug>):
+Output (DIR, default ./watch/<slug>):
   video.<ext>          the downloaded video
   frames/f_0001.jpg    key frames (scene changes, topped up with even spacing)
   frames/index.txt     timestamp of every frame
@@ -28,12 +28,12 @@ from pathlib import Path
 
 
 def log(msg):
-    print(f"[video-digest] {msg}", file=sys.stderr, flush=True)
+    print(f"[watch] {msg}", file=sys.stderr, flush=True)
 
 
 def need(binary):
     if not shutil.which(binary):
-        sys.exit(f"[video-digest] missing '{binary}' on PATH (install ffmpeg)")
+        sys.exit(f"[watch] missing '{binary}' on PATH (install ffmpeg)")
 
 
 def slugify(text):
@@ -68,7 +68,7 @@ def download(source, out, want_subs, lang, cookies=None):
     try:
         import yt_dlp
     except ImportError:
-        sys.exit("[video-digest] yt-dlp not installed: pip install yt-dlp")
+        sys.exit("[watch] yt-dlp not installed: pip install yt-dlp")
 
     langs = ["en.*", "ro.*", "hu.*"] if lang == "auto" else [f"{lang}.*"]
     opts = {
@@ -91,13 +91,13 @@ def download(source, out, want_subs, lang, cookies=None):
         with yt_dlp.YoutubeDL(opts) as ydl:
             info = ydl.extract_info(source, download=True)
     except yt_dlp.utils.DownloadError as e:
-        sys.exit(f"[video-digest] download failed: {str(e).replace('ERROR: ', '')}\n"
-                 "[video-digest] private/login-only link or blocked host? "
+        sys.exit(f"[watch] download failed: {str(e).replace('ERROR: ', '')}\n"
+                 "[watch] private/login-only link or blocked host? "
                  "Pass --cookies cookies.txt (your own export) or give the file directly.")
     video = next((p for p in out.glob("video.*")
                   if p.suffix not in (".vtt", ".srt", ".part", ".json")), None)
     if not video:
-        sys.exit("[video-digest] download finished but no video file was found")
+        sys.exit("[watch] download finished but no video file was found")
     subs = next(iter(sorted(out.glob("video.*.vtt")) + sorted(out.glob("video.*.srt"))), None)
     meta = {k: info.get(k) for k in
             ("title", "uploader", "upload_date", "duration", "webpage_url", "description")}
@@ -212,7 +212,7 @@ def whisper(video, out, model_name, lang):
         try:
             import whisper as owhisper
         except ImportError:
-            sys.exit("[video-digest] no transcriber: pip install faster-whisper")
+            sys.exit("[watch] no transcriber: pip install faster-whisper")
         log(f"transcribing with openai-whisper ({model_name})")
         res = owhisper.load_model(model_name).transcribe(str(wav), language=language)
         segs = [(s["start"], s["end"], s["text"].strip()) for s in res["segments"]]
@@ -225,7 +225,7 @@ def whisper(video, out, model_name, lang):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("source", help="video URL (YouTube, Instagram, TikTok, X, ...) or local file")
-    ap.add_argument("--out", help="output folder (default ./video-digest/<slug>)")
+    ap.add_argument("--out", help="output folder (default ./watch/<slug>)")
     ap.add_argument("--frames", type=int, default=12, help="max frames to keep (default 12)")
     ap.add_argument("--scene", type=float, default=0.3, help="scene-change threshold 0-1 (default 0.3)")
     ap.add_argument("--model", default="small", help="whisper model: tiny|base|small|medium|large-v3")
@@ -241,7 +241,7 @@ def main():
     else:
         base = Path(a.source).stem if os.path.exists(a.source) else \
             re.sub(r"^https?://(www\.)?", "", a.source)
-        out = Path("video-digest") / slugify(base)
+        out = Path("watch") / slugify(base)
     out.mkdir(parents=True, exist_ok=True)
 
     video, meta, subs = download(a.source, out, not a.no_subs, a.lang, a.cookies)

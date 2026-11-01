@@ -28,5 +28,5 @@ field-raw/
 # Satellite tile cache + rendered strips (regenerate with tools/sat_strips.mjs)
 tools/.cache/
 
-# video-digest downloads (media, not for the repo)
-/video-digest/
+# /watch downloads (media, not for the repo)
+/watch/
