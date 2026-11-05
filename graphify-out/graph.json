@@ -813,6 +813,18 @@
       "line": 0,
       "file": "promo.html",
       "desc": "Standalone /promo: 32 s kinetic-type motion promo (canvas, deterministic draw(t), 120 BPM, 9:16 + 16:9, RO/EN/HU). Rendered to promo/*.mp4 by tools/render_promo.mjs; soundtrack promo/soundtrack.m4a (CC0 SFX). Numbers from COURTS_BASE (TGM)."
+    },
+    {
+      "id": "CsmInvest",
+      "type": "component",
+      "line": 13098,
+      "desc": "Impact > budget tab (TGM): official CSM Târgu Mureș investments + repairs on sports grounds 2022–2025 (Law 544 reply nr. 2692/03.11.2026) — totals, by location, by year vs CSM budget, full item list"
+    },
+    {
+      "id": "CSM_INVEST",
+      "type": "data",
+      "line": 13066,
+      "desc": "29 items {y,k:i|r,loc,lei,l3?,what} verbatim from the CSM xlsx; plus CSM_BUDGET {year: total spending} from HCL 299/2022, 374/2023, 294/2024, 276/2025; CSM_SRC"
     }
   ],
   "edges": [
@@ -1675,6 +1687,16 @@
       "from": "Footer",
       "to": "PromoPage",
       "rel": "links"
+    },
+    {
+      "from": "ImpactPage",
+      "to": "CsmInvest",
+      "rel": "renders"
+    },
+    {
+      "from": "CsmInvest",
+      "to": "CSM_INVEST",
+      "rel": "reads"
     }
   ],
   "routes": {

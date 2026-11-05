@@ -280,3 +280,11 @@ Highest civic-value next steps:
   (`--ease-apple`) on colour changes, lighter card hover shadow, big 600-weight mobile-menu links,
   quieter footer with hairline, 3 px focus offset. Deliberately NOT taken (would change fundamentals):
   monochrome palette, Inter font, 28 px cards, no-playful-motion rule, page restructure.
+- Session 5 Nov 2026 — official data from Law 544/2001 replies: `CsmInvest` card first on Impact → 💰
+  (TGM) with `CSM_INVEST` (29 items, verbatim from CSM reply nr. 2692/03.11.2026) + `CSM_BUDGET`
+  (HCL 299/2022, 374/2023, 294/2024, 276/2025): 1.86M lei in 4 years, 49.5% on Liga 3 homologation +
+  Sala Polivalentă pedestrian platform; CSM budget +70% vs grounds spending −65% (2022→2025). City Hall
+  TGM (51941/04.11.2026) and Sibiu (89234/03.11.2026) extended to 30 days → answers due 25.11.2026;
+  `SibiuInvest` text + TIMELINE updated. SW cache → `g2p-v10`. `tools/smoke.mjs` accepts
+  `G2P_CDN_MIRROR=<dir>` (<dir>/<host>/<path> copies of the pinned CDN files) for sandboxes that block
+  unpkg/gstatic; unset = real CDN, unchanged.

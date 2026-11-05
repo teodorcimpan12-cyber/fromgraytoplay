@@ -6813,6 +6813,7 @@ const TIMELINE = [
   { y: 2025, ro: "Oct: Eroare administrativă 5M lei îngheață Baza Insulei — investigație Punctul.ro", en: "Oct: 5M lei admin error freezes Baza Insulei renovation — Punctul.ro investigation", hu: "Okt: 5 millió lejes hibával befagyasztják a Sziget sport bázist — Punctul.ro" },
   { y: 2026, ro: "Lansare From Grey to Play — platforma civică documentează cele 20 de terenuri din Târgu Mureș", en: "From Grey to Play launched — civic platform documents all 20 courts in Târgu Mureș", hu: "From Grey to Play indulása — a platform mind a 20 marosvásárhelyi pályát dokumentálja" },
   { y: "Oct 2026", ro: "Eseul despre G2P — Loc 1 Național la concursul ATW (Ask-Think-Write) · EdVenture", en: "The G2P essay — National #1 at the ATW (Ask-Think-Write) competition · EdVenture", hu: "A G2P-esszé — Nemzeti 1. helyezés az ATW (Kérdezz-Gondolkodj-Írj) versenyen · EdVenture" }, // TODO: HU review
+  { y: "Nov 2026", ro: "CSM Târgu Mureș răspunde cererii noastre (Legea 544/2001): 1,86 mil. lei pe terenuri în 2022–2025, aproape jumătate pe omologarea Liga 3 și o platformă pietonală", en: "CSM Târgu Mureș answers our Law 544/2001 request: 1.86M lei on sports grounds in 2022–2025, almost half on Liga 3 homologation and a pedestrian platform", hu: "A CSM Marosvásárhely válaszol 544/2001-es kérelmünkre: 1,86 millió lej sportpályákra 2022–2025 között, közel fele Liga 3 hitelesítésre és egy gyalogos platformra" }, // TODO: HU review
   { y: "Nov 2026", ro: "Astra Hack Sibiu · Innovation Week — From Grey to Play prezentată la hackathon (6–7 nov)", en: "Astra Hack Sibiu · Innovation Week — From Grey to Play presented at hackathon (6–7 Nov)", hu: "Astra Hack Szeben · Innovation Week — From Grey to Play a hackathonon (nov. 6–7)" } // TODO: HU review
 ];
 // Sibiu: only events with a public source (docs/INVESTITII_SIBIU.md). `lei` marks a public investment.
@@ -12659,7 +12660,7 @@ function ImpactPage() {
   React.createElement("button", { className: tab === "race" ? "active" : "", onClick: function() { setTab("race"); }, title: t.neighborhoodRace||"Cursa cartierelor" }, "\uD83C\uDFC1"),
   React.createElement("button", { className: tab === "letters" ? "active" : "", onClick: function() { setTab("letters"); }, title: lang === "en" ? "Letters to City Hall" : lang === "hu" ? "Levelek a Városházának" : "Scrisori către Primărie" }, "\u2709\uFE0F")),
   tab === "letters" && React.createElement(LettersTracker, null),
-  tab === "proiecte" && React.createElement(ProiecteTab, null), tab === "calc" && React.createElement(React.Fragment, null, React.createElement(ImpactCalc, null), React.createElement(InequalityReceipt, null)), tab === "city" && (ACTIVE_CITY === "tgm" ? /*#__PURE__*/React.createElement(CityComp, null) : React.createElement(SatAuditCard, null)), tab === "budget" && (ACTIVE_CITY === "tgm" ? React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(BudgetViz, null), React.createElement(BudgetWatchdog, null)) : React.createElement(SibiuInvest, null)), tab === "carbon" && /*#__PURE__*/React.createElement(CarbonCalc, null), tab === "health" && /*#__PURE__*/React.createElement(HealthCalc, null), tab === "mental" && /*#__PURE__*/React.createElement(MentalSec, null), tab === "tl" && /*#__PURE__*/React.createElement(TimelineSec, null), tab === "hood" && React.createElement(HoodChart, null),
+  tab === "proiecte" && React.createElement(ProiecteTab, null), tab === "calc" && React.createElement(React.Fragment, null, React.createElement(ImpactCalc, null), React.createElement(InequalityReceipt, null)), tab === "city" && (ACTIVE_CITY === "tgm" ? /*#__PURE__*/React.createElement(CityComp, null) : React.createElement(SatAuditCard, null)), tab === "budget" && (ACTIVE_CITY === "tgm" ? React.createElement(React.Fragment, null, React.createElement(CsmInvest, null), /*#__PURE__*/React.createElement(BudgetViz, null), React.createElement(BudgetWatchdog, null)) : React.createElement(SibiuInvest, null)), tab === "carbon" && /*#__PURE__*/React.createElement(CarbonCalc, null), tab === "health" && /*#__PURE__*/React.createElement(HealthCalc, null), tab === "mental" && /*#__PURE__*/React.createElement(MentalSec, null), tab === "tl" && /*#__PURE__*/React.createElement(TimelineSec, null), tab === "hood" && React.createElement(HoodChart, null),
   tab === "race" && React.createElement(React.Fragment, null,
     React.createElement(CouncilCountdown, null),
     React.createElement(NeighborhoodRace, null)
@@ -13055,6 +13056,105 @@ function TimelineSec() {
   }, "🔗 ", new URL(ev.src).hostname.replace(/^www\./, ""))))));
 }
 
+/* === CSM Târgu Mureș — official investments + repairs on sports grounds 2022–2025 ===
+   Source: CSM reply nr. 2692/03.11.2026 to our Law 544/2001 request nr. 51941/26.10.2026
+   (annex "Lista cu investitii si reparatii terenuri de sport 2022-2025 CSM TGM.xlsx").
+   Item text is copied verbatim from the document. l3 = work done for Liga 3 homologation.
+   CSM total spending per year = BVC CSM (HCL 299/2022, 374/2023, 294/2024, 276/2025). */
+const CSM_SRC = "CSM Târgu Mureș, adresa nr. 2692/03.11.2026 (răspuns la cererea Legea 544/2001 nr. 51941/26.10.2026)";
+const CSM_BUDGET = { 2022: 12698000, 2023: 13418000, 2024: 19231000, 2025: 21611000 };
+const CSM_INVEST = [
+  { y: 2022, k: "r", loc: "insulei", lei: 76160, what: "Reparații gard teren fotbal str. Insulei" },
+  { y: 2022, k: "r", loc: "na", lei: 18811.4, what: "Reparație hidromasaj" },
+  { y: 2022, k: "r", loc: "plutelor", lei: 363068, l3: 1, what: "Reparații teren fotbal și împrejmuiri pt omologare Liga 3, str. Plutelor" },
+  { y: 2022, k: "r", loc: "plutelor", lei: 50468.85, l3: 1, what: "Lucrări de decopertare teren din spatele peluzei pt omologare Liga 3, str. Plutelor" },
+  { y: 2022, k: "i", loc: "insulei", lei: 20825, what: "Bănci de rezerve la terenul de fotbal de pe str. Insulei" },
+  { y: 2022, k: "i", loc: "plutelor", lei: 32701.2, what: "Suport + scaune tribună teren de fotbal, str. Plutelor" },
+  { y: 2022, k: "i", loc: "plutelor", lei: 11914.88, l3: 1, what: "Tabelă marcaj electronic teren fotbal str. Plutelor pt omologare Liga 3" },
+  { y: 2022, k: "i", loc: "plutelor", lei: 17344.25, l3: 1, what: "Sistem de supraveghere bază sportivă teren fotbal, str. Plutelor pt omologare Liga 3" },
+  { y: 2022, k: "i", loc: "na", lei: 5997.6, what: "Poartă fotbal" },
+  { y: 2022, k: "i", loc: "plutelor", lei: 42318.07, what: "Gard mobil pt suporterii echipei adverse — Plutelor" },
+  { y: 2022, k: "i", loc: "mureseni", lei: 39975, what: "Sistem de iluminat teren fotbal — Mureșeni" },
+  { y: 2022, k: "r", loc: "insulei", lei: 9990, what: "Reparații iluminat teren sintetic mic Insulei" },
+  { y: 2022, k: "r", loc: "insulei", lei: 34925, what: "Reparații iluminat teren sintetic mare Insulei" },
+  { y: 2022, k: "r", loc: "plutelor", lei: 7088.81, l3: 1, what: "Modificare poartă acces ambulanță pt omologare — Plutelor" },
+  { y: 2023, k: "r", loc: "mureseni", lei: 56941.5, what: "Reparații container-vestiar — Mureșeni" },
+  { y: 2023, k: "r", loc: "mureseni", lei: 11698.58, what: "Reparații gard teren fotbal — Mureșeni" },
+  { y: 2023, k: "r", loc: "parc", lei: 28976.5, what: "Reparații terenuri de tenis — Parcul Municipal" },
+  { y: 2023, k: "r", loc: "polivalenta", lei: 459468.36, what: "Reparații platformă acces pietonal — Sala Polivalentă" },
+  { y: 2023, k: "i", loc: "na", lei: 34999.99, what: "Mese teqball — 3 buc." },
+  { y: 2023, k: "i", loc: "na", lei: 41935.98, what: "Panouri baschet" },
+  { y: 2024, k: "i", loc: "parc", lei: 18497, what: "Mese tenis de masă (Parcul Municipal)" },
+  { y: 2024, k: "i", loc: "parc", lei: 141193.5, what: "Suprafață de joc teren baschet (Parcul Municipal)" },
+  { y: 2024, k: "i", loc: "plutelor", lei: 10099.99, l3: 1, what: "Porți fotbal (Plutelor — pentru omologare)" },
+  { y: 2024, k: "r", loc: "parc", lei: 68191.39, what: "Reparații terenuri baschet (Parcul Municipal)" },
+  { y: 2025, k: "i", loc: "na", lei: 11599.98, what: "Mese tenis de masă" },
+  { y: 2025, k: "r", loc: "na", lei: 77855.75, what: "Amenajare teren tenis cu piciorul + teren baschet (asfaltare)" },
+  { y: 2025, k: "i", loc: "parc", lei: 153229.76, what: "Suprafață de joc modulară (teren baschet 2 — Parcul Municipal)" },
+  { y: 2025, k: "i", loc: "parc", lei: 4996.43, what: "Stâlpi badminton + montaj (Parcul Municipal)" },
+  { y: 2025, k: "i", loc: "parc", lei: 4989.99, what: "Stâlpi tenis cu piciorul + montaj (Parcul Municipal)" }
+];
+
+function CsmInvest() {
+  const { lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const [open, setOpen] = useState(false);
+  const loc = {
+    polivalenta: L3("Sala Polivalentă (platformă pietonală)", "Sala Polivalentă (pedestrian platform)", "Sala Polivalentă (gyalogos platform)"),
+    plutelor: L3("Baza Str. Plutelor (fotbal)", "Str. Plutelor base (football)", "Str. Plutelor bázis (foci)"),
+    parc: L3("Parcul Municipal", "Municipal Park", "Városi park"),
+    insulei: L3("Baza Str. Insulei", "Str. Insulei base", "Str. Insulei bázis"),
+    mureseni: L3("Baza Mureșeni (fotbal)", "Mureșeni base (football)", "Mureșeni bázis (foci)"),
+    na: L3("Fără locație în document", "No location in the document", "Helyszín nélkül a dokumentumban")
+  }; // TODO: HU review
+  const fmt = n => Math.round(n).toLocaleString("ro-RO");
+  const total = CSM_INVEST.reduce((s, r) => s + r.lei, 0);
+  const l3 = CSM_INVEST.filter(r => r.l3).reduce((s, r) => s + r.lei, 0);
+  const byLoc = {}; CSM_INVEST.forEach(r => { byLoc[r.loc] = (byLoc[r.loc] || 0) + r.lei; });
+  const locs = Object.keys(byLoc).sort((a, b) => byLoc[b] - byLoc[a]);
+  const years = Object.keys(CSM_BUDGET).map(Number);
+  const byYear = {}; CSM_INVEST.forEach(r => { byYear[r.y] = (byYear[r.y] || 0) + r.lei; });
+  const pct = (a, b) => (a / b * 100).toLocaleString("ro-RO", { maximumFractionDigits: 1 }) + "%";
+  const mxL = byLoc[locs[0]];
+  const mxY = Math.max.apply(null, years.map(y => byYear[y] || 0));
+  const bud0 = CSM_BUDGET[2022], bud1 = CSM_BUDGET[2025];
+  const bar = (w, color) => React.createElement("div", { style: { height: 10, borderRadius: 5, background: "var(--border)", overflow: "hidden" } },
+    React.createElement("div", { style: { width: w + "%", height: "100%", background: color, borderRadius: 5 } }));
+  return React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--teal)" } },
+    React.createElement("span", { className: "badge", style: { background: "var(--teal)", color: "#fff" } }, L3("📄 DATE OFICIALE · Legea 544/2001", "📄 OFFICIAL DATA · Law 544/2001", "📄 HIVATALOS ADAT · 544/2001")),
+    React.createElement("h3", { className: "mt-1 mb-1" }, L3("Ce a investit CSM Târgu Mureș în terenuri de sport, 2022–2025", "What CSM Târgu Mureș spent on sports grounds, 2022–2025", "Mire költött a CSM Marosvásárhely sportpályákon, 2022–2025")), // TODO: HU review
+    React.createElement("div", { className: "grid grid-3 mb-2" },
+      React.createElement("div", { style: { textAlign: "center" } }, React.createElement("div", { className: "stat-number", style: { color: "var(--teal)" } }, (total / 1e6).toLocaleString("ro-RO", { maximumFractionDigits: 2 }) + "M"), React.createElement("div", { className: "stat-label" }, L3("lei în 4 ani, " + CSM_INVEST.length + " lucrări", "lei in 4 years, " + CSM_INVEST.length + " items", "lej 4 év alatt, " + CSM_INVEST.length + " tétel"))),
+      React.createElement("div", { style: { textAlign: "center" } }, React.createElement("div", { className: "stat-number", style: { color: "var(--coral)" } }, pct(byLoc.polivalenta + l3, total)), React.createElement("div", { className: "stat-label" }, L3("pe omologarea Liga 3 + o platformă pietonală", "on Liga 3 homologation + a pedestrian platform", "Liga 3 hitelesítésre + egy gyalogos platformra"))),
+      React.createElement("div", { style: { textAlign: "center" } }, React.createElement("div", { className: "stat-number", style: { color: "var(--red)" } }, pct(byYear[2025], bud1)), React.createElement("div", { className: "stat-label" }, L3("din bugetul CSM 2025 a ajuns la terenuri", "of the 2025 CSM budget went to grounds", "a 2025-ös CSM-költségvetésből jutott pályákra")))),
+    React.createElement("h4", { className: "mb-1" }, L3("Unde au mers banii", "Where the money went", "Hová ment a pénz")),
+    locs.map(k => React.createElement("div", { key: k, style: { marginBottom: ".55rem" } },
+      React.createElement("div", { className: "flex justify-between", style: { fontSize: ".85rem", gap: ".5rem" } },
+        React.createElement("span", null, loc[k]),
+        React.createElement("b", { style: { whiteSpace: "nowrap" } }, fmt(byLoc[k]) + " lei · " + pct(byLoc[k], total))),
+      bar(byLoc[k] / mxL * 100, k === "mureseni" ? "var(--green)" : k === "na" ? "var(--textSec)" : "var(--teal)"))),
+    React.createElement("h4", { className: "mt-2 mb-1" }, L3("Bugetul CSM a crescut, investițiile în terenuri au scăzut", "CSM's budget grew, spending on grounds fell", "A CSM költségvetése nőtt, a pályákra fordított összeg csökkent")),
+    years.map(y => React.createElement("div", { key: y, style: { marginBottom: ".55rem" } },
+      React.createElement("div", { className: "flex justify-between", style: { fontSize: ".85rem", gap: ".5rem", flexWrap: "wrap" } },
+        React.createElement("span", null, React.createElement("b", null, y), " · " + L3("buget CSM ", "CSM budget ", "CSM-költségvetés ") + (CSM_BUDGET[y] / 1e6).toLocaleString("ro-RO", { maximumFractionDigits: 1 }) + "M lei"),
+        React.createElement("b", { style: { whiteSpace: "nowrap" } }, fmt(byYear[y] || 0) + " lei · " + pct(byYear[y] || 0, CSM_BUDGET[y]))),
+      bar((byYear[y] || 0) / mxY * 100, "var(--coral)"))),
+    React.createElement("p", { className: "mt-2", style: { fontSize: ".9rem" } }, L3(
+      "Între 2022 și 2025 bugetul CSM a crescut de la " + (bud0 / 1e6).toLocaleString("ro-RO", { maximumFractionDigits: 1 }) + " la " + (bud1 / 1e6).toLocaleString("ro-RO", { maximumFractionDigits: 1 }) + " milioane lei (+" + pct(bud1 - bud0, bud0) + "), iar suma pentru terenuri a scăzut de la " + fmt(byYear[2022]) + " la " + fmt(byYear[2025]) + " lei (−" + pct(byYear[2022] - byYear[2025], byYear[2022]) + ").",
+      "Between 2022 and 2025 CSM's budget rose from " + (bud0 / 1e6).toFixed(1) + " to " + (bud1 / 1e6).toFixed(1) + " million lei (+" + Math.round((bud1 - bud0) / bud0 * 100) + "%), while spending on grounds fell from " + fmt(byYear[2022]) + " to " + fmt(byYear[2025]) + " lei (−" + Math.round((byYear[2022] - byYear[2025]) / byYear[2022] * 100) + "%).",
+      "2022 és 2025 között a CSM költségvetése " + (bud0 / 1e6).toFixed(1) + "-ről " + (bud1 / 1e6).toFixed(1) + " millió lejre nőtt (+" + Math.round((bud1 - bud0) / bud0 * 100) + "%), a pályákra fordított összeg pedig " + fmt(byYear[2022]) + "-ről " + fmt(byYear[2025]) + " lejre csökkent (−" + Math.round((byYear[2022] - byYear[2025]) / byYear[2022] * 100) + "%).")), // TODO: HU review
+    React.createElement("p", { style: { fontSize: ".85rem", color: "var(--textSec)" } }, L3(
+      "Ce nu acoperă lista: CSM administrează doar bazele sale. Terenurile de bloc din cartiere — inclusiv terenul multisport de pe str. Plopilor aprobat în ian. 2025 — nu sunt în administrarea CSM, iar extrasul din SIDU 2021–2030 nu îl deține. Le-am cerut de la Primărie; aceasta a prelungit termenul de răspuns la 30 de zile (adresa nr. 51941/04.11.2026), deci până la 25.11.2026.",
+      "What the list does not cover: CSM only manages its own bases. Block courts in the neighbourhoods — including the Str. Plopilor multisport court approved in Jan 2025 — are not managed by CSM, and it does not hold the SIDU 2021–2030 extract. We asked City Hall; it extended its answer deadline to 30 days (letter nr. 51941/04.11.2026), i.e. by 25.11.2026.",
+      "Amit a lista nem fed le: a CSM csak a saját bázisait kezeli. A lakótelepi pályák — köztük a 2025 januárjában jóváhagyott Str. Plopilor multisport pálya — nem a CSM kezelésében vannak, és a SIDU 2021–2030 kivonatát sem birtokolja. A Polgármesteri Hivataltól kértük; a válaszhatáridőt 30 napra hosszabbította (51941/04.11.2026), azaz 2026.11.25-ig.")), // TODO: HU review
+    React.createElement("button", { className: "btn btn-sm btn-outline", onClick: () => setOpen(!open) }, open ? L3("Ascunde lista", "Hide the list", "Lista elrejtése") : L3("Vezi toate cele " + CSM_INVEST.length + " lucrări", "See all " + CSM_INVEST.length + " items", "Mind a " + CSM_INVEST.length + " tétel")),
+    open && React.createElement("div", { className: "mt-1", style: { fontSize: ".82rem" } }, CSM_INVEST.map((r, i) => React.createElement("div", { key: i, className: "flex justify-between", style: { gap: ".75rem", padding: ".35rem 0", borderBottom: "1px solid var(--border)" } },
+      React.createElement("span", null, React.createElement("b", null, r.y), " · ", r.k === "i" ? L3("Investiție", "Investment", "Beruházás") : L3("Reparație", "Repair", "Javítás"), " · ", r.what),
+      React.createElement("b", { style: { whiteSpace: "nowrap" } }, fmt(r.lei) + " lei")))),
+    React.createElement("p", { className: "mt-1", style: { fontSize: ".75rem", color: "var(--textSec)" } }, L3("Sursă: ", "Source: ", "Forrás: "), CSM_SRC, L3(". Bugete: HCL 299/2022, 374/2023, 294/2024, 276/2025. Textul lucrărilor e copiat din document.", ". Budgets: HCL 299/2022, 374/2023, 294/2024, 276/2025. Item text copied from the document (Romanian).", ". Költségvetések: HCL 299/2022, 374/2023, 294/2024, 276/2025. A tételek szövege a dokumentumból (románul)."))
+  );
+}
+
 /* Sibiu has no "promised vs spent" budget data: show the sourced public investments instead, and say what they don't cover. */
 function SibiuInvest() {
   const { lang } = useApp();
@@ -13067,9 +13167,9 @@ function SibiuInvest() {
         React.createElement("a", { href: ev.src, target: "_blank", rel: "noopener", style: { fontSize: ".75rem", color: "var(--textSec)" } }, "🔗")),
       React.createElement("div", { className: "font-bold", style: { color: "var(--green)", whiteSpace: "nowrap" } }, ev.lei))),
     React.createElement("p", { className: "mt-2", style: { fontSize: ".85rem", color: "var(--textSec)" } },
-      L3("Toate investițiile găsite sunt baze mari sau curți de școală. Niciunul dintre cele " + roDe(NBH_N) + "terenuri de cartier de pe hartă nu apare încă într-o investiție cu sursă — de confirmat cu Primăria (cerere conform Legii 544/2001).",
-         "Every investment found is a large base or a school yard. None of the " + NBH_N + " neighbourhood courts on the map appears yet in a sourced investment — to be confirmed with City Hall (Law 544/2001 request).",
-         "Minden talált beruházás nagy sportbázis vagy iskolaudvar. A térkép " + NBH_N + " lakótelepi pályája közül egyik sem szerepel még forrással igazolt beruházásban — a Polgármesteri Hivatallal kell megerősíteni (544/2001-es kérelem).")) // TODO: HU review
+      L3("Toate investițiile găsite sunt baze mari sau curți de școală. Niciunul dintre cele " + roDe(NBH_N) + "terenuri de cartier de pe hartă nu apare încă într-o investiție cu sursă. Am cerut datele oficiale de la Primărie (Legea 544/2001, nr. 86747/26.10.2026); aceasta a prelungit termenul (adresa nr. 89234/03.11.2026), răspunsul e așteptat până la 25.11.2026.",
+         "Every investment found is a large base or a school yard. None of the " + NBH_N + " neighbourhood courts on the map appears yet in a sourced investment. We requested the official data from City Hall (Law 544/2001, nr. 86747/26.10.2026); it extended the deadline (letter nr. 89234/03.11.2026), answer expected by 25.11.2026.",
+         "Minden talált beruházás nagy sportbázis vagy iskolaudvar. A térkép " + NBH_N + " lakótelepi pályája közül egyik sem szerepel még forrással igazolt beruházásban. A hivatalos adatokat kikértük a Polgármesteri Hivataltól (544/2001, 86747/26.10.2026); a határidőt meghosszabbították (89234/03.11.2026), válasz 2026.11.25-ig várható.")) // TODO: HU review
   );
 }
 

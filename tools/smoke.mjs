@@ -65,6 +65,27 @@ try {
   const send = (method, params = {}) => new Promise(r => { const i = ++id; pend[i] = r; ws.send(JSON.stringify({ id: i, method, params })); });
   const evalJs = async expr => (await send("Runtime.evaluate", { expression: expr, returnByValue: true, awaitPromise: true })).result?.result?.value;
   await send("Runtime.enable"); await send("Page.enable");
+  // Optional offline CDN mirror for sandboxes that block unpkg/gstatic: G2P_CDN_MIRROR=<dir> holding
+  // <dir>/<host>/<path> copies of the exact pinned files (e.g. from `npm pack`). Unset = real CDN.
+  const MIRROR = process.env.G2P_CDN_MIRROR;
+  if (MIRROR) {
+    const hosts = ["unpkg.com", "www.gstatic.com", "cdn.jsdelivr.net", "cdnjs.cloudflare.com"];
+    // sw.js fetches CDN files itself, out of reach of page-level interception: bypass it here.
+    await send("Network.enable"); await send("Network.setBypassServiceWorker", { bypass: true });
+    await send("Fetch.enable", { patterns: hosts.map(h => ({ urlPattern: "https://" + h + "/*" })) });
+    const onMsg = ws.onmessage;
+    ws.onmessage = async e => {
+      const msg = JSON.parse(e.data);
+      if (msg.method !== "Fetch.requestPaused") return onMsg(e);
+      const u = new URL(msg.params.request.url);
+      const file = join(MIRROR, u.host, normalize(decodeURIComponent(u.pathname)).replace(/^([\\/])+/, ""));
+      try {
+        const body = await readFile(file);
+        const ct = TYPES[extname(file)] || "application/octet-stream";
+        send("Fetch.fulfillRequest", { requestId: msg.params.requestId, responseCode: 200, responseHeaders: [{ name: "content-type", value: ct }, { name: "access-control-allow-origin", value: "*" }], body: body.toString("base64") });
+      } catch { send("Fetch.failRequest", { requestId: msg.params.requestId, errorReason: "InternetDisconnected" }); }
+    };
+  }
   await send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
 
   for (const [city, courtId] of CITIES) {
