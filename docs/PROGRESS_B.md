@@ -15,3 +15,11 @@
 - Hamburger: `aria-label` + `aria-expanded`, țintă 44×44.
 - Scutul admin (navbar + meniul mobil) se arată doar pentru `isAdmin`.
 - Contrast: paragraful din hero `#9CA3AF` → `#C7CBD1`; „From Grey” din HeroLite la fel.
+
+## Fix 1 (după feedback Teo)
+- Lupă (căutare / ⌘K) vizibilă pe telefon, în stânga hamburgerului, 44×44 (`.nav-cmd-m`, ≤1240px).
+- Popup-uri care „săreau” la scroll: scriptul drag-to-dismiss lua swipe-ul în sus când derula
+  overlay-ul sau un element interior, nu `.modal` → preventDefault + rubber-band. Acum doar tragerea în
+  jos de sus de tot mută foaia; `scrolledAncestor` verifică și overlay-ul. Pagina din spate nu mai
+  derulează cât e deschis un popup (`body:has(.modal-overlay)`), scroll-ul se oprește ferm la margini.
+- Merge cu live (PR #34 al sesiunii A): păstrat `ReportHashListener` + `!isPhone() && Mascot`.
