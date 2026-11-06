@@ -1670,6 +1670,14 @@ body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inse
 .navbar{padding-top:env(safe-area-inset-top,0px)}
 .toast{bottom:calc(5rem + env(safe-area-inset-bottom,0px))}
 @media(pointer:coarse){input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),textarea,select{font-size:16px!important}}
+/* === Desktop nav at 200% zoom (Nov 2026) ===
+   Between the 1240px collapse and ~1440px the desktop nav had ~22px to spare in EN once a
+   classic (Windows) scrollbar takes 15-17px; signed in, the account name (~55px) pushed it off
+   the page (and, capped at 1240px, it did so on wide screens too). Slimmer links everywhere;
+   icon-only account button up to 1440px (name stays in title/aria-label); wider cap above. */
+@media(min-width:1241px){.nav-links.desktop>a{padding-left:.48rem;padding-right:.48rem}}
+@media(min-width:1241px) and (max-width:1440px){.nav-acct-name{display:none}}
+@media(min-width:1441px){.nav-inner{max-width:1320px}}
 </style>
 <script>(function(){try{var a=JSON.parse(localStorage.getItem("g2p_accent")||"null");if(a&&a.p){var r=document.documentElement;r.style.setProperty("--green",a.p);if(a.s)r.style.setProperty("--teal",a.s);r.classList.add("accent-on");}}catch(e){}})();</script>
 <script>(function(){try{var t=localStorage.getItem("g2p_theme")||(window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="dark"?"#0F172A":"#FFFFFF");}catch(e){}})();</script>
@@ -7340,7 +7348,9 @@ function Navbar() {
   React.createElement(CitySwitch, null),
   React.createElement("div", { style: { position: "relative" } },
   /*#__PURE__*/React.createElement("button", {
+    className: "nav-acct",
     title: firebaseUser ? acctName : L3("Intră în cont", "Sign in", "Bejelentkezés"),
+    "aria-label": firebaseUser ? acctName : L3("Intră în cont", "Sign in", "Bejelentkezés"),
     "aria-haspopup": firebaseUser ? "menu" : undefined,
     "aria-expanded": firebaseUser ? acct : undefined,
     style: { display:"flex", alignItems:"center", gap:".28rem", height:28, padding:"0 .45rem", background: firebaseUser ? "color-mix(in srgb,var(--" + (isAdmin ? "coral" : "green") + ") 12%,transparent)" : "none", border: firebaseUser ? "1px solid color-mix(in srgb,var(--" + (isAdmin ? "coral" : "green") + ") 35%,transparent)" : "none", borderRadius:8, cursor:"pointer", color: firebaseUser ? (isAdmin ? "var(--coral)" : "var(--green)") : "var(--textSec)", fontSize:".7rem", fontFamily:"'Space Mono',monospace", transition:"all .18s", opacity: authReady ? 1 : .4 },
@@ -7353,7 +7363,7 @@ function Navbar() {
         : [React.createElement("rect",{key:"a",x:3,y:11,width:18,height:11,rx:2}),React.createElement("path",{key:"b",d:"M7 11V7a5 5 0 0 1 10 0v4"})]
       )
     ),
-    firebaseUser ? React.createElement("span",null,acctName.split(/[ @]/)[0].substring(0,10)) : null
+    firebaseUser ? React.createElement("span",{className:"nav-acct-name"},acctName.split(/[ @]/)[0].substring(0,10)) : null
   ),
   acct && firebaseUser && React.createElement("div", { style: { position: "fixed", inset: 0, zIndex: 499 }, onClick: () => setAcct(false) }),
   acct && firebaseUser && React.createElement("div", { className: "acct-menu", role: "menu" },

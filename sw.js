@@ -9,7 +9,7 @@
      Esri satellite tiles are not stored (Esri terms), so the satellite needs a connection.
    - Firebase Realtime Database traffic is never intercepted (live data).
    Bump CACHE on breaking changes to invalidate old caches. */
-const CACHE = "g2p-v10";
+const CACHE = "g2p-v11";
 const TILES = "g2p-tiles";
 const TILE_MAX = 800;
 const SHELL = ["/", "/manifest.json", "/icons/icon-192.png", "/icons/icon-512.png", "/icons/qr-sibiu.svg", "/icons/qr-tgm.svg",
