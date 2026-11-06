@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /tools/
+Disallow: /netlify/
+
+Sitemap: https://fromgreytoplay.netlify.app/sitemap.xml

@@ -39,7 +39,7 @@
 <link rel="apple-touch-icon" href="/icons/icon-192.png"/>
 <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152.png"/>
 <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144.png"/>
-<title>From Grey to Play</title>
+<title>From Grey to Play — Terenuri de sport în Târgu Mureș</title>
 <!-- Perf: warm up third-party origins before the parser reaches them -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -1841,11 +1841,17 @@ body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inse
   .cdx-pulse .cpulse-src{display:none}
 }
 @media(max-width:899px) and (max-height:700px){.cdx-pulse .cpulse-bot{display:none}.cdx-pulse .cpulse{padding-bottom:.2rem}}
+/* === Accessibility layer (Nov 2026): visible keyboard focus on fields + skip link === */
+input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.skip-link{position:fixed;left:.75rem;top:-4rem;z-index:100000;background:#1A1A2E;color:#fff;padding:.6rem 1rem;border-radius:980px;font:700 .85rem 'Space Mono',monospace;text-decoration:none;transition:top .18s}
+.modal:focus{outline:none}
+.skip-link:focus{top:calc(.75rem + env(safe-area-inset-top,0px));outline:3px solid #10B981;outline-offset:2px}
 </style>
 <script>(function(){try{var a=JSON.parse(localStorage.getItem("g2p_accent")||"null");if(a&&a.p){var r=document.documentElement;r.style.setProperty("--green",a.p);if(a.s)r.style.setProperty("--teal",a.s);r.classList.add("accent-on");}}catch(e){}})();</script>
 <script>(function(){try{var t=localStorage.getItem("g2p_theme")||(window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="dark"?"#0F172A":"#FFFFFF");}catch(e){}})();</script>
 </head>
 <body>
+<a class="skip-link" id="g2p-skip" href="#main">Sari la conținut</a>
 <div id="root"><div style="min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#10B981">From Grey to Play</div></div>
 <!-- Third-party scripts: required by the app script below, so kept synchronous (in order) but moved out of <head> -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -3008,14 +3014,31 @@ function activityCity(a) {
 }
 // Demo rows (reports sent from the #raporteaza QR path) stay out of the public ticker and feed.
 function realActivity(a) { return !!a && !a.demo; }
+// Guests are logged as "Anonim"/"Anon". In public feeds they read as "Someone" (T.tickAnon), never as a fake person called Anonim.
+function isAnonName(n) { const x = String(n == null ? "" : n).trim().toLowerCase(); return !x || x === "anonim" || x === "anon" || x === "anonymous" || x === "guest" || x === "vizitator"; }
+function whoName(n, t) { return isAnonName(n) ? (t && t.tickAnon) || "Someone" : anonName(n); }
+// Runs of anonymous rows of the same kind (same type + court, within 30 min) collapse into one row with a count, so a
+// burst of guest pixels or check-ins does not fill the feed with "Someone … Someone … Someone".
+function collapseAnon(list) {
+  const out = [];
+  for (const a of list) {
+    const prev = out[out.length - 1];
+    const sameKind = prev && prev.type === a.type && (prev.status || "") === (a.status || "") && (a.type === "statusChange" || (prev.courtId || prev.courtName || "") === (a.courtId || a.courtName || ""));
+    if (prev && isAnonName(a.userName) && isAnonName(prev.userName) && sameKind && Math.abs(tsOf(prev) - tsOf(a)) < 30 * 60000) prev.n = (prev.n || 1) + 1;
+    else out.push(Object.assign({}, a, { n: 1 }));
+  }
+  return out;
+}
 const ACTIVITY_ICONS = { "check-in": "🏀", petition: "✍️", photo: "📸", report: "⚠️", conditionReport: "🩺", game: "⚽", join: "🤝", pixel: "🎨", adopt: "💚" };
 // Human sentence for an activity row, from the T.feed* templates.
 function activityMsg(a, t) {
   const c = a.courtId && COURTS_ALL.find(x => x.id === a.courtId);
-  const courtName = c ? c.name : (a.courtId || "");
+  const courtName = a.type === "statusChange" && a.n > 1 ? a.n + " " + String(t.courts || "").toLowerCase() : (c ? c.name : (a.courtName || a.courtId || ""));
   const tplKey = "feed" + (a.type === "check-in" ? "Checkin" : (a.type || "").charAt(0).toUpperCase() + (a.type || "").slice(1));
-  const tpl = t[tplKey] || ((a.userName || "Anon") + " — " + (a.type || ""));
-  return tpl.replace("{name}", a.userName || "Anon").replace("{court}", courtName);
+  const stLbl = a.status ? (t["status" + String(a.status).charAt(0).toUpperCase() + String(a.status).slice(1)] || a.status) : "";
+  const who = whoName(a.userName, t);
+  const tpl = t[tplKey] || (who + " — " + (a.type || ""));
+  return tpl.replace("{name}", who).replace("{court}", courtName).replace("{status}", stLbl);
 }
 // Downscale + JPEG-compress a File so it fits in RTDB as a data URL (~80-150KB).
 // Storage bucket isn't configured (config has only databaseURL), so photos live
@@ -3291,6 +3314,8 @@ function LangFlip({ big }) {
     React.createElement("span", { className: "lf-code" }, lang.toUpperCase()));
 }
 
+/* Localised string for places outside a component (alt texts): follows <html lang>, which App keeps in sync. */
+function altL(ro, en, hu) { var l = document.documentElement.lang; return l === "en" ? en : l === "hu" ? (hu || en) : ro; }
 function compressImage(file, maxDim, quality) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -7041,7 +7066,9 @@ function Toast({
     return () => clearTimeout(t);
   }, [msg]);
   return /*#__PURE__*/React.createElement("div", {
-    className: "toast"
+    className: "toast",
+    role: "status",
+    "aria-live": "polite"
   }, msg);
 }
 
@@ -7576,11 +7603,15 @@ function Navbar() {
   }, React.createElement("svg", { className: "nav-glass", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2.4, strokeLinecap: "round", "aria-hidden": "true" },
     React.createElement("circle", { cx: 10.5, cy: 10.5, r: 6.5 }), React.createElement("path", { d: "M15.5 15.5L21 21" }))), /*#__PURE__*/React.createElement("button", {
     className: "hamburger",
+    "aria-label": lang === "en" ? "Open menu" : lang === "hu" ? "Men\u00fc megnyit\u00e1sa" : "Deschide meniul",
+    "aria-expanded": mob ? "true" : "false",
+    "aria-controls": "mobile-menu",
     onClick: () => setMob(true)
   }, "\u2630"))),
   showNotif && /*#__PURE__*/React.createElement(NotifPanel, { notif: notif, onClose: () => setShowNotif(false) }),
   mob && /*#__PURE__*/React.createElement("div", {
-    className: "mobile-menu"
+    className: "mobile-menu",
+    id: "mobile-menu"
   }, React.createElement("span", { className: "mobile-menu-brand" }, "FROM GREY TO PLAY"), /*#__PURE__*/React.createElement("button", {
     className: "mobile-close",
     "aria-label": lang === "en" ? "Close menu" : lang === "hu" ? "Men\u00fc bez\u00e1r\u00e1sa" : "\u00cenchide meniul",
@@ -9247,12 +9278,13 @@ function ActivityTicker() {
   // Activity types are stored as written by each feature ("check-in", "conditionReport", ...); only rows we can phrase are shown.
   const ICO = { petition: "✊", "check-in": "📍", checkin: "📍", photo: "📸", report: "⚠️", conditionReport: "🩺", game: "⚽", join: "👥", pixel: "🎨", adopt: "💚" };
   const VERB = { petition: t.tickPetition, "check-in": t.tickCheckin, checkin: t.tickCheckin, photo: t.tickPhoto, report: t.tickReport, conditionReport: t.tickCondition, game: t.tickGame, join: t.tickJoin, pixel: t.tickPixel, adopt: t.tickAdopt };
-  const items = data ? Object.values(data).filter(a => realActivity(a) && VERB[a.type]).sort((a, b) => tsOf(b) - tsOf(a)).slice(0, 14) : [];
-  if (!items.length) return null;
-  const nm = a => { const n = anonName(a.userName); return n === "Anonim" ? t.tickAnon : n; };
+  const items = data ? Object.values(data).filter(a => realActivity(a) && VERB[a.type]).sort((a, b) => tsOf(b) - tsOf(a)) : [];
+  const shown = collapseAnon(items).slice(0, 14);
+  if (!shown.length) return null;
+  const nm = a => whoName(a.userName, t);
   const row = key => React.createElement("div", { className: "ticker", key: key, "aria-hidden": key === "b" ? "true" : undefined },
-    items.map((a, i) => React.createElement("span", { className: "ticker-item", key: i },
-      (ICO[a.type] || "•") + " ", React.createElement("b", null, nm(a)), " " + VERB[a.type])));
+    shown.map((a, i) => React.createElement("span", { className: "ticker-item", key: i },
+      (ICO[a.type] || "•") + " ", React.createElement("b", null, nm(a)), " " + VERB[a.type] + (a.n > 1 ? " \u00d7" + a.n : ""))));
   return React.createElement("section", { className: "ticker-wrap", title: t.tickerTitle }, row("a"), row("b"));
 }
 
@@ -10527,7 +10559,7 @@ function CourtDetail({
       React.createElement("h4", { className: "mb-1 mt-2" }, "📸 ", t.gallery, " (", courtPhotos.length, ")"),
       React.createElement("div", { className: "flex gap-1 mb-2", style: { overflowX: "auto" }, "data-no-drag": "true" },
         courtPhotos.slice(0, 8).map(p => React.createElement("img", {
-          key: p.id, src: p.img, alt: "evidence", title: p.caption || "",
+          key: p.id, src: p.img, alt: p.caption || altL("Fotografie cu terenul", "Photo of the court", "Fot\u00f3 a p\u00e1ly\u00e1r\u00f3l"), title: p.caption || "",
           style: { width: 90, height: 90, objectFit: "cover", borderRadius: 8, flexShrink: 0 }
         })))),
     (c.status === "degraded" || c.status === "inProgress") && React.createElement(TaskBoard, { court: c }),
@@ -11701,8 +11733,9 @@ function ActivityFeed() {
   const { t, lang } = useApp();
   const data = useFirebase("activity");
   const list = data
-    ? Object.entries(data).map(([id, a]) => ({ id, ...a })).filter(a => realActivity(a) && activityCity(a) === ACTIVE_CITY).sort((a, b) => tsOf(b) - tsOf(a)).slice(0, 30)
+    ? Object.entries(data).map(([id, a]) => ({ id, ...a })).filter(a => realActivity(a) && activityCity(a) === ACTIVE_CITY).sort((a, b) => tsOf(b) - tsOf(a))
     : [];
+  const rows = collapseAnon(list).slice(0, 30);
   const COURT_NAMES = COURTS.reduce((acc, c) => (acc[c.id] = c.name, acc), {});
   const ICONS = { "check-in": "🏀", petition: "✍️", photo: "📸", report: "⚠️", game: "⚽", join: "🤝" };
   const msgFor = a => activityMsg(a, t);
@@ -11719,17 +11752,17 @@ function ActivityFeed() {
       /*#__PURE__*/React.createElement("span", { className: "live-dot" }),
       t.liveActivity
     ),
-    list.length === 0
+    rows.length === 0
       ? /*#__PURE__*/React.createElement("p", { style: { color: "var(--textSec)" } }, t.feedEmpty)
       : /*#__PURE__*/React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: ".5rem" } },
-          list.map((a, i) => /*#__PURE__*/React.createElement("div", {
+          rows.map((a, i) => /*#__PURE__*/React.createElement("div", {
             key: a.id,
             className: "card" + (i === 0 ? " card-accent" : ""),
             style: { display: "flex", gap: ".7rem", alignItems: "center", padding: ".7rem .9rem" }
           },
             /*#__PURE__*/React.createElement("span", { style: { fontSize: "1.3rem", lineHeight: 1, flexShrink: 0 } }, ICONS[a.type] || "•"),
             /*#__PURE__*/React.createElement("div", { style: { flex: 1, minWidth: 0 } },
-              /*#__PURE__*/React.createElement("p", { style: { margin: 0, fontSize: ".92rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, msgFor(a)),
+              /*#__PURE__*/React.createElement("p", { style: { margin: 0, fontSize: ".92rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, msgFor(a) + (a.n > 1 && a.type !== "statusChange" ? " \u00d7" + a.n : "")),
               /*#__PURE__*/React.createElement("time", { style: { fontFamily: "'Space Mono', monospace", fontSize: ".68rem", color: "var(--textSec)", textTransform: "uppercase", letterSpacing: ".06em" } }, relTime(a.timestamp, lang))
             ),
             i === 0 && /*#__PURE__*/React.createElement("span", { className: "live-dot", style: { flexShrink: 0 } })
@@ -11744,11 +11777,12 @@ function ActivityFeed() {
 function isOwnerName(n) { const x = String(n || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); return x.indexOf("teodor") >= 0 && x.indexOf("cimpan") >= 0; }
 // Shared by the activity feed and the overview: names always shown as "First L.".
 function activityMsg(a, t) {
-  const c = a.courtId ? COURTS.find(x => x.id === a.courtId) : null, courtName = c ? c.name : (a.courtId || "");
+  const c = a.courtId ? COURTS.find(x => x.id === a.courtId) : null, courtName = a.type === "statusChange" && a.n > 1 ? a.n + " " + String(t.courts || "").toLowerCase() : (c ? c.name : (a.courtName || a.courtId || ""));
+  const stLbl = a.status ? (t["status" + String(a.status).charAt(0).toUpperCase() + String(a.status).slice(1)] || a.status) : "";
   const tplKey = "feed" + (a.type === "check-in" ? "Checkin" : (a.type || "").charAt(0).toUpperCase() + (a.type || "").slice(1));
-  const who = anonName(a.userName || "Anon");
+  const who = whoName(a.userName, t);
   const tpl = t[tplKey] || (who + " — " + (a.type || ""));
-  return tpl.replace("{name}", who).replace("{court}", courtName);
+  return tpl.replace("{name}", who).replace("{court}", courtName).replace("{status}", stLbl);
 }
 const COMMUNITY_TABS = ["activity", "pixel", "forum", "events", "gallery", "teams", "leaderboard"];
 function communityTabLabel(tb, t) {
@@ -12221,7 +12255,7 @@ function GalleryTab() {
     style: { display: "none" }
   }), preview && /*#__PURE__*/React.createElement("img", {
     src: preview,
-    alt: "preview",
+    alt: altL("Previzualizarea fotografiei alese", "Preview of the chosen photo", "A kiv\u00e1lasztott fot\u00f3 el\u0151n\u00e9zete"),
     style: { width: "100%", height: 160, objectFit: "cover", borderRadius: 8, marginTop: ".6rem" }
   }), /*#__PURE__*/React.createElement("label", {
     className: "text-xs font-bold",
@@ -12266,7 +12300,7 @@ function GalleryTab() {
       style: { padding: ".6rem" }
     }, im.img ? /*#__PURE__*/React.createElement("img", {
       src: im.img,
-      alt: "evidence",
+      alt: im.caption || altL("Fotografie cu terenul", "Photo of the court", "Fot\u00f3 a p\u00e1ly\u00e1r\u00f3l"),
       style: { width: "100%", height: 150, objectFit: "cover", borderRadius: 8, display: "block" }
     }) : /*#__PURE__*/React.createElement("div", {
       style: { background: "var(--border)", height: 150, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center" }
@@ -14225,7 +14259,7 @@ function PressQR({ onClose }) {
   return ReactDOM.createPortal(React.createElement("div", { className: "pressqr", role: "dialog", "aria-label": "QR", onClick: onClose },
     React.createElement("div", { className: "pressqr-box", onClick: e => e.stopPropagation() },
       React.createElement("div", { className: "pressqr-k" }, "FROM GREY TO PLAY · " + L3("PRESĂ", "PRESS", "SAJTÓ")),
-      src ? React.createElement("img", { src: src, alt: PRESS_URL, className: "pressqr-img" })
+      src ? React.createElement("img", { src: src, alt: altL("Cod QR spre " + PRESS_URL, "QR code to " + PRESS_URL, "QR-k\u00f3d: " + PRESS_URL), className: "pressqr-img" })
           : React.createElement("div", { className: "pressqr-img pressqr-wait" }, err ? PRESS_URL.replace("https://", "") : "…"),
       React.createElement("strong", { className: "pressqr-u" }, PRESS_URL.replace("https://", "")),
       React.createElement("p", null, L3("Scanează cu camera telefonului: cifre cu sursă, comunicat și PDF.", "Scan with your phone camera: sourced numbers, release and PDF.", "Szkenneld a telefonoddal: forrásolt számok, közlemény és PDF.")),
@@ -16625,7 +16659,7 @@ function CourtConditionQuick({ onClose, courtId: presetCourt }) {
       React.createElement("p", { className: "text-sm mt-2 mb-1", style: { color: "var(--textSec)" } }, t.addPhotoOpt),
       photoDataUrl
         ? React.createElement("div", { style: { position: "relative", marginBottom: ".5rem" } },
-            React.createElement("img", { src: photoDataUrl, alt: "prev", style: { width: "100%", borderRadius: 8, maxHeight: 120, objectFit: "cover" } }),
+            React.createElement("img", { src: photoDataUrl, alt: altL("Previzualizarea fotografiei", "Photo preview", "Fot\u00f3 el\u0151n\u00e9zet"), style: { width: "100%", borderRadius: 8, maxHeight: 120, objectFit: "cover" } }),
             React.createElement("button", { onClick: () => { setPhotoDataUrl(null); setAi(null); }, style: { position: "absolute", top: 4, right: 4, background: "rgba(0,0,0,.5)", color: "#fff", border: "none", borderRadius: "50%", width: 24, height: 24, cursor: "pointer", fontSize: ".8rem" } }, "✕")
           )
         : React.createElement("label", { style: { display: "block", cursor: "pointer", marginBottom: ".5rem" } },
@@ -17122,7 +17156,7 @@ function EvidenceWall() {
         style: { display: "block", border: "2px dashed var(--border)", borderRadius: 10, padding: ".8rem", cursor: "pointer", textAlign: "center", marginBottom: ".6rem" }
       },
         preview
-          ? React.createElement("img", { src: preview, alt: "preview", style: { width: "100%", maxHeight: 200, objectFit: "cover", borderRadius: 8 } })
+          ? React.createElement("img", { src: preview, alt: altL("Previzualizarea fotografiei", "Photo preview", "Fot\u00f3 el\u0151n\u00e9zet"), style: { width: "100%", maxHeight: 200, objectFit: "cover", borderRadius: 8 } })
           : React.createElement("div", null,
               React.createElement("div", { style: { fontSize: "2.2rem" } }, "📷"),
               React.createElement("div", { className: "text-sm", style: { color: "var(--textSec)" } }, t.choosePhoto)
@@ -18695,6 +18729,12 @@ function App() {
     localStorage.setItem("g2p_lang", lang);
     document.documentElement.lang = lang;
   }, [lang]);
+  // Tab title follows the page + language (search results, history, screen-reader page-change cue).
+  useEffect(() => {
+    const base = lang === "en" ? "From Grey to Play — Sports courts in Târgu Mureș" : lang === "hu" ? "From Grey to Play — Sp\u00f3tp\u00e1ly\u00e1k Marosv\u00e1s\u00e1rhelyen" : "From Grey to Play — Terenuri de sport în Târgu Mureș";
+    const lbl = T[lang] && typeof T[lang][page] === "string" ? T[lang][page] : "";
+    document.title = page === "home" || !lbl ? base : lbl + " · From Grey to Play";
+  }, [page, lang]);
   useEffect(() => {
     localStorage.setItem("g2p_theme", theme);
     document.documentElement.setAttribute("data-theme", theme);
@@ -18998,8 +19038,11 @@ function App() {
   }, "\u2715")), cmd && /*#__PURE__*/React.createElement(CommandPalette, {
     onClose: () => setCmd(false)
   }), /*#__PURE__*/React.createElement("main", {
+    id: "main",
+    tabIndex: -1,
     style: {
-      minHeight: "80vh"
+      minHeight: "80vh",
+      outline: "none"
     }
   }, /*#__PURE__*/React.createElement("div", {
     key: page
@@ -19123,6 +19166,60 @@ try {
     window.addEventListener("resize", soon);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { document.querySelectorAll(".glide-pill,.glide-ink").forEach(function (g) { g._k = ""; }); soon(); });
     soon();
+  } catch (e) {}
+})();
+</script>
+<script>
+/* Accessibility layer: skip link + focus management for every modal, without touching each dialog. */
+(function () {
+  try {
+    var sk = document.getElementById("g2p-skip");
+    function skipText() { var l = document.documentElement.lang; return l === "en" ? "Skip to content" : l === "hu" ? "Ugr\u00e1s a tartalomhoz" : "Sari la con\u021binut"; }
+    if (sk) {
+      sk.textContent = skipText();
+      sk.addEventListener("focus", function () { sk.textContent = skipText(); });
+      /* href="#main" would hit the hash router, so move focus by hand instead. */
+      sk.addEventListener("click", function (e) { e.preventDefault(); var m = document.getElementById("main"); if (m) { m.focus(); m.scrollIntoView({ block: "start" }); } });
+    }
+    var FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]):not([type=hidden]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+    var stack = [];
+    function visible(el) { return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length); }
+    function focusables(box) { return Array.prototype.filter.call(box.querySelectorAll(FOCUSABLE), visible); }
+    function onOpen(ov) {
+      var box = ov.querySelector(".modal") || ov;
+      if (!box.getAttribute("role")) box.setAttribute("role", "dialog");
+      box.setAttribute("aria-modal", "true");
+      if (!box.hasAttribute("tabindex")) box.setAttribute("tabindex", "-1");
+      stack.push({ ov: ov, from: document.activeElement });
+      setTimeout(function () { if (!box.contains(document.activeElement)) { var f = focusables(box)[0]; (f || box).focus({ preventScroll: true }); } }, 30);
+    }
+    function onClose(entry) {
+      var from = entry.from;
+      if (from && from !== document.body && document.contains(from) && typeof from.focus === "function") { try { from.focus({ preventScroll: true }); } catch (e) {} }
+    }
+    new MutationObserver(function (ms) {
+      for (var i = 0; i < ms.length; i++) {
+        var m = ms[i];
+        for (var j = 0; j < m.addedNodes.length; j++) {
+          var n = m.addedNodes[j];
+          if (n.nodeType !== 1) continue;
+          if (n.classList && n.classList.contains("modal-overlay")) onOpen(n);
+          else if (n.querySelectorAll) Array.prototype.forEach.call(n.querySelectorAll(".modal-overlay"), onOpen);
+        }
+      }
+      for (var k = stack.length - 1; k >= 0; k--) { if (!document.contains(stack[k].ov)) { onClose(stack[k]); stack.splice(k, 1); } }
+    }).observe(document.body, { childList: true, subtree: true });
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Tab" || !stack.length) return;
+      var top = stack[stack.length - 1].ov;
+      if (!document.contains(top)) return;
+      var box = top.querySelector(".modal") || top, items = focusables(box);
+      if (!items.length) { e.preventDefault(); box.focus(); return; }
+      var first = items[0], last = items[items.length - 1], a = document.activeElement;
+      if (!box.contains(a)) { e.preventDefault(); first.focus(); }
+      else if (e.shiftKey && (a === first || a === box)) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && a === last) { e.preventDefault(); first.focus(); }
+    }, true);
   } catch (e) {}
 })();
 </script>

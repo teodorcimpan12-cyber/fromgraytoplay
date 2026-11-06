@@ -84,7 +84,9 @@ fromgreytoplay-default-rtdb/
 └── presence/{voterKey}: true                   [live online counter]
 ```
 
-Anyone can write — rules are MVP-permissive. Tighten before any press.
+Rules were tightened on 6 Nov 2026 (per-entry create-only, validated shapes, +1 counters; see `SECURITY.md`,
+tested in `tests/rules.test.mjs`). Still open: client-side-only rate limits (needs App Check), PII in public-read nodes.
+`database.rules.json` must be deployed to Firebase separately (`firebase deploy --only database`).
 
 ## Languages
 
@@ -350,3 +352,14 @@ Highest civic-value next steps:
 - Session 7 Nov 2026, 00:35 (branch `claude/finantare-230`, PR #38, NOT live): progress log shows no names (owner request; entries kept, `journal` = [time, text]). Mobile search: the ⌘K magnifier lived only inside `.nav-links.desktop` (hidden ≤1240px), so phones had none; new `button.nav-cmd-m` sits before the hamburger in `.nav-inner` (shown ≤1240px, 40×40, `margin-left:auto`), opens the same `CommandPalette`; desktop button unchanged.
 - Session 7 Nov 2026, 00:50 (branch `claude/finantare-230`, PR #38, NOT live): "Anunță-mă când pot redirecționa" was a `mailto:` link — dead on phones without a mail app. Now an in-page form in `Redirect35Card` (email + explicit consent checkbox, validation, busy state, "ești pe listă" via `g2p_r35`); writes `partnerRequests/{pushId}: {company:"3,5%: anunță-mă", email, offer:"redirect35", consent:true, lang, city, date}` — reuses the existing write-once, admin-read-only path so it works with the rules already deployed (read them in Admin → God → `partnerRequests`). Founders are first-year university students, not high-schoolers: the risk row "Fondatorii pleacă după liceu" became "Fondatorii au program încărcat și pot pleca din oraș" (no institution named on the site).
 - Session 7 Nov 2026, 01:05 (branch `claude/harti-heatmap-onboarding`, NOT live until the owner says "merge"): Courts tab bar lost the 🔥 heatmap toggle and the 📍 near-me button (both cities share the page). The report heatmap is now permanent on every `MapView` (`heat = true` default; live `reports/` counts are loaded inside `MapView`, rebuild only when the counts change via `heatKey`) — Courts map and the reports-page map. Sibiu courts carry no static `reports` count, so its heat shows only from live `reports/`. First-visit onboarding line 1 names both cities (`bothCities(lang)`: "…din Târgu Mureș și Sibiu"), not only the active one. The near-me helpers (`findNearMe`, `myLoc`) are now unreachable but left in place.
+- Session 6 Nov 2026 — agency-agents audit pass (branch `claude/affectionate-fermi-vo3vm4`): Firebase rules rewritten
+  (every formerly open node now validated per entry; 39 emulator tests in `tests/rules.test.mjs`); `SECURITY.md`
+  matches the real rules. A11y: hamburger name/`aria-expanded`, toast `role=status`, skip link (`#g2p-skip`, focuses
+  `<main id="main">`), one global script before the boot guard gives every `.modal-overlay` a focus trap, `role=dialog`
+  and focus restore, visible focus on fields, localized `alt` via `altL()`. SEO: `robots.txt` + `sitemap.xml` (deploy
+  surface now includes them), `document.title` follows page + language, search-intent `<title>`. NOT done (needs a
+  design decision): white-on-`--green` contrast is 2.5:1; `hreflang` (needs per-language URLs); crawlable per-court URLs.
+- Activity feed cleanup (6 Nov 2026, same branch): guests logged as "Anonim"/"Anon" now read "Cineva/Someone/Valaki"
+  everywhere (`isAnonName`/`whoName`); bursts of anonymous rows of the same kind collapse into one row with ×N
+  (`collapseAnon`, 30 min window, used by ActivityFeed + ActivityTicker); admin `statusChange` rows fill `{court}`/`{status}`
+  (they showed a raw "{status}") and merge into "N terenuri → status".
