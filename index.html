@@ -4,13 +4,13 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content"/>
 <meta name="theme-color" content="#FFFFFF"/>
-<meta name="description" content="From Grey to Play — PWA civic care documentează inegalitatea dintre terenurile sportive centrale și cele periferice din Târgu Mureș și mobilizează comunitatea pentru schimbare."/>
+<meta name="description" content="Platformă civică care documentează inegalitatea infrastructurii sportive și face datele verificabile."/>
 <link rel="canonical" href="https://fromgreytoplay.netlify.app/"/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://fromgreytoplay.netlify.app/"/>
 <meta property="og:site_name" content="G2P"/>
-<meta property="og:title" content="From Grey to Play — Târgu Mureș"/>
-<meta property="og:description" content="Civic PWA documenting sports infrastructure inequality in Târgu Mureș and mobilising community action for change."/>
+<meta property="og:title" content="From Grey to Play: terenuri sportive publice, Sibiu și Târgu Mureș"/>
+<meta property="og:description" content="Platformă civică care documentează inegalitatea infrastructurii sportive și face datele verificabile."/>
 <meta property="og:image" content="https://fromgreytoplay.netlify.app/icons/icon-512.png"/>
 <meta property="og:locale" content="ro_RO"/>
 <meta property="og:locale:alternate" content="en_GB"/>
@@ -25,8 +25,8 @@
      and change twitter:card from "summary" to "summary_large_image".
      Netlify Image CDN serves it at exact dimensions via the /.netlify/images URL above. -->
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="From Grey to Play — Târgu Mureș"/>
-<meta name="twitter:description" content="Civic PWA documenting sports infrastructure inequality in Târgu Mureș and mobilising community action for change."/>
+<meta name="twitter:title" content="From Grey to Play: terenuri sportive publice, Sibiu și Târgu Mureș"/>
+<meta name="twitter:description" content="Platformă civică care documentează inegalitatea infrastructurii sportive și face datele verificabile."/>
 <meta name="twitter:image" content="https://fromgreytoplay.netlify.app/icons/icon-512.png"/>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"From Grey to Play","url":"https://fromgreytoplay.netlify.app/","applicationCategory":"GovernmentApplication","operatingSystem":"Web","description":"Civic PWA documenting sports infrastructure inequality in Târgu Mureș and mobilising community action for change.","inLanguage":["ro","en","hu"],"isAccessibleForFree":true}
@@ -1777,7 +1777,7 @@ body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inse
 .cdx-addr{margin:.1rem 0 .45rem;font-size:.82rem;color:var(--textSec)}
 .cdx-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:.5rem 1rem 1.6rem;animation:fadeIn .18s}
 .cdx-bar{flex:none;position:relative;z-index:2;display:flex;align-items:flex-end;background:var(--bgCard);padding:.3rem .3rem calc(.3rem + env(safe-area-inset-bottom,0px))}
-.cdx-bar::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--fade-line)}
+.cdx-bar::before{content:"";position:absolute;left:0;right:0;top:-18px;height:18px;pointer-events:none;background:linear-gradient(180deg,transparent,var(--bgCard))}
 .cdx-tab{flex:1;min-width:0;min-height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.18rem;border:0;background:none;color:var(--textSec);font:600 .68rem/1.1 'Libre Franklin',sans-serif;cursor:pointer;touch-action:manipulation;transition:color .2s ease,transform .16s var(--ease-out,ease)}
 .cdx-tab .cdx-ic{font-size:1.4rem;line-height:1}
 .cdx-tab .cdx-lb{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -1798,6 +1798,16 @@ body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inse
   .cdx-body{padding:.5rem 1.2rem 1.6rem}
 }
 @media(prefers-reduced-motion:reduce){.cdx-body{animation:none}.ao-btn,.ao-target{transition:none}}
+/* Opener pill: orange "under construction" status with two turning gears */
+.ao-eyebrow{color:#FDBA74;background:rgba(249,115,22,.12);border-color:rgba(249,115,22,.4)}
+.ao-gears{position:relative;display:inline-block;width:1.45rem;height:1rem;flex:none}
+.ao-gear{position:absolute;fill:currentColor;stroke:none}
+.ao-gear .teeth{fill:none;stroke:currentColor;stroke-width:4;stroke-dasharray:3.14 3.14}
+.ao-gear.g1{left:0;top:-.05rem;width:1rem;height:1rem}
+.ao-gear.g2{left:.7rem;top:.28rem;width:.7rem;height:.7rem;opacity:.85}
+@keyframes aoGear{to{transform:rotate(360deg)}}
+@keyframes aoGearBack{to{transform:rotate(-360deg)}}
+@media(prefers-reduced-motion:no-preference){.ao-gear.g1{animation:aoGear 6s linear infinite}.ao-gear.g2{animation:aoGearBack 4.2s linear infinite}}
 /* Formularul 230 card */
 .r35{position:relative;overflow:hidden;border-radius:var(--radius);padding:1.2rem;background:linear-gradient(135deg,color-mix(in srgb,var(--green) 13%,var(--bgCard)),var(--bgCard) 62%);border:1px solid color-mix(in srgb,var(--green) 32%,var(--border))}
 .r35-big{font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(2.6rem,12vw,4.2rem);line-height:1;letter-spacing:-.05em;color:var(--green);margin:.5rem 0 .2rem}
@@ -9948,7 +9958,7 @@ function HomeOpener() {
       React.createElement("div", { className: "ao-bg", "aria-hidden": "true" }),
       React.createElement("div", { className: "ao-target", "aria-hidden": "true" }, target),
       React.createElement("div", { className: "container ao-inner" },
-        React.createElement("div", { className: "ao-eyebrow" }, React.createElement("span", { className: "live-dot" }), L3("Asociație în constituire", "Association being established", "Egyesület alakulóban")), // TODO: HU review
+        React.createElement("div", { className: "ao-eyebrow" }, React.createElement("span", { className: "ao-gears", "aria-hidden": "true" }, React.createElement("svg", { className: "ao-gear g1", viewBox: "0 0 24 24" }, React.createElement("circle", { cx: 12, cy: 12, r: 8, className: "teeth" }), React.createElement("path", { fillRule: "evenodd", d: "M12 6.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 1 0 0-11zm0 3.5a2 2 0 1 1 0 4 2 2 0 1 1 0-4z" })), React.createElement("svg", { className: "ao-gear g2", viewBox: "0 0 24 24" }, React.createElement("circle", { cx: 12, cy: 12, r: 8, className: "teeth" }), React.createElement("path", { fillRule: "evenodd", d: "M12 6.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 1 0 0-11zm0 3.5a2 2 0 1 1 0 4 2 2 0 1 1 0-4z" }))), L3("Asociație în constituire", "Association being established", "Egyesület alakulóban")), // TODO: HU review
         React.createElement("h1", { className: "ao-title", id: "ao-h1" },
           React.createElement("span", { className: "ao-kicker" }, L3("Asociația", "The association", "Az egyesület")),
           React.createElement("span", { className: "ao-name" }, React.createElement("b", null, "From Grey"), " ", React.createElement("em", null, "to Play"))),
@@ -13836,6 +13846,17 @@ function AssociationTab({ onFunding }) {
     [L3("Erori ale AI-ului", "AI errors"), L3("Scorul AI e etichetat „estimare” și devine „verificat” doar după confirmarea comunității.", "The AI score is labelled “estimate” and becomes “verified” only after community confirmation.")],
     [L3("O singură sursă de bani", "A single source of money"), L3("Regula de 40% și raport anual public.", "The 40% rule and a public annual report.")]
   ];
+  const journal = [
+    ["21:27", L3("Fila „Asociația” în Despre, cu statut „în constituire”; numele corectat: Drăgan Gabriel", "“Association” tab in About, marked “being established”; name corrected: Drăgan Gabriel")],
+    ["21:32", L3("Încercare: Sigiliul G2P, lanț de hash pentru semnături", "Attempt: the G2P Seal, a hash chain for signatures")],
+    ["21:48", L3("Sigiliul retras, la decizia echipei", "The Seal withdrawn, by the team's decision")],
+    ["21:53", L3("Prima pagină: titlul asociației și mesajul „Din gri, în joc.”", "Home page: the association's name and the message “From grey, to play.”")],
+    ["22:27", L3("Pagină proprie Asociația, buton Raportează, rolurile fondatorilor", "A page of its own for the Association, a Report button, the founders' roles")],
+    ["23:04", L3("Linii fade, hero 3D cu scroll pe telefon, fișa terenului stil Instagram", "Faded lines, 3D hero that scrolls on phones, an Instagram-style court sheet")],
+    ["23:24", L3("Pașii legali, proiect de statut, scara de venituri, riscuri", "Legal steps, draft statute, income ladder, risks")],
+    ["23:30", L3("Formularul 230: calculator pentru 3,5% din impozit și statusul cinstit", "Form 230: a 3.5% income-tax calculator and the honest status")],
+    ["23:36", L3("Metadate corectate, text de contact, bara fișei de teren, pastila „în constituire” portocalie cu rotițe", "Corrected metadata, contact text, court-sheet bar, orange “being established” pill with gears")]
+  ];
   const stIc = { done: "✓", doing: "●", next: "○" };
   const stTx = { done: L3("făcut", "done"), doing: L3("în lucru", "in progress"), next: L3("urmează", "next") };
   const stCol = { done: "var(--green)", doing: "var(--coral)", next: "var(--textSec)" };
@@ -13892,6 +13913,11 @@ function AssociationTab({ onFunding }) {
     React.createElement("h3", { className: "mt-3 mb-1" }, "🛡️ " + L3("Riscuri și cum le acoperim", "Risks and how we cover them")),
     React.createElement("div", { className: "card" }, risks.map(([k, v], i) => React.createElement("div", { key: i, className: i < risks.length - 1 ? "fade-b" : undefined, style: { padding: ".55rem 0" } },
       React.createElement("strong", null, k), React.createElement("div", { className: "text-sm", style: { color: "var(--textSec)" } }, v)))),
+    React.createElement("h3", { className: "mt-3 mb-1" }, "🕒 " + L3("Jurnal de progres, 6 noiembrie", "Progress log, 6 November")),
+    React.createElement("div", { className: "card" }, journal.map(([h, x], i) => React.createElement("div", { key: i, className: i < journal.length - 1 ? "fade-b" : undefined, style: { display: "flex", gap: ".75rem", padding: ".45rem 0" } },
+      React.createElement("span", { style: { fontFamily: "'Space Mono',monospace", color: "var(--green)", flex: "none" } }, h),
+      React.createElement("span", { className: "text-sm" }, x)))),
+    React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, L3("Orele sunt cele ale commit-urilor din istoricul proiectului, nu estimări.", "The times are those of the commits in the project history, not estimates.")),
     React.createElement("div", { className: "flex gap-2 mt-2", style: { flexWrap: "wrap" } },
       React.createElement("button", { className: "btn btn-green", onClick: onFunding }, "🤝 " + L3("Parteneriate și finanțare", "Partnerships and funding")),
       React.createElement("button", { className: "btn", onClick: () => { setPage("petition"); window.scrollTo(0, 0); } }, "✍️ " + L3("Semnează petiția", "Sign the petition")),
@@ -13933,7 +13959,7 @@ function FundingTab() {
     React.createElement("div", { className: "card fund-transp mt-3" },
       React.createElement("h3", { className: "mb-1" }, "🔍 " + L3("Transparență: banii, pe față", "Transparency: the money, in the open", "Átláthatóság: a pénz nyíltan")),
       row("💻", L3("Cât costă platforma", "What the platform costs", "Mennyibe kerül a platform"), "≈ 0 lei",
-        L3("Găzduire gratuită (Netlify), bază de date pe planul gratuit (Firebase), muncă voluntară. Nu strângem bani.", "Free hosting (Netlify), database on the free plan (Firebase), volunteer work. We don't collect money.", "Ingyenes tárhely (Netlify), ingyenes adatbázis (Firebase), önkéntes munka. Nem gyűjtünk pénzt.")),
+        L3("Găzduire gratuită (Netlify), bază de date pe planul gratuit (Firebase), muncă voluntară. Azi nu strângem bani. După înființare, veniturile și cheltuielile apar public pe acest site.", "Free hosting (Netlify), database on the free plan (Firebase), volunteer work. Today we collect no money. After registration, income and spending will be shown publicly on this site.", "Ingyenes tárhely (Netlify), ingyenes adatbázis (Firebase), önkéntes munka. Nem gyűjtünk pénzt.")),
       row("🏗️", L3("Cât costă renovarea unui teren", "What renovating a court costs", "Mennyibe kerül egy pálya felújítása"), L3("deviz în lucru", "estimate in progress", "költségvetés készül"),
         L3("Nu punem o cifră inventată. O publicăm când avem un deviz real, cu sursă.", "We won't put up an invented number. We'll publish it once there is a real estimate, with its source.", "Nem írunk kitalált számot. Akkor tesszük közzé, ha lesz valós költségvetés, forrással.")),
       row("🏛️", L3("Buget local", "Local budget", "Helyi költségvetés"), sib ? React.createElement(React.Fragment, null, "12 mil. lei", React.createElement(SrcRef, { id: "zsn-12m" })) : "—",
@@ -14443,7 +14469,7 @@ function AboutPage() {
           React.createElement("div", { className: "card mt-2" },
             React.createElement("h3", { className: "mb-2" }, "🗺️ " + L3("Terenurile pe hartă", "The courts on the map", "Pályák a térképen")),
             React.createElement("a", { href: "#courts", className: "btn btn-green btn-sm" }, "🏀 " + L3("Harta celor " + COURTS.length + " de terenuri", "Map of all " + COURTS.length + " courts", "Mind a " + COURTS.length + " pálya térképen")),
-            React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, L3("Platformă civică online — fără sediu fizic. Contact: ", "Online civic platform — no physical office. Contact: ", "Online civil platform — fizikai iroda nélkül. Kapcsolat: "), React.createElement("a", { href: "mailto:" + G2P_EMAIL }, G2P_EMAIL)))),
+            React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, L3("Asociația From Grey to Play (în constituire). Contact: ", "From Grey to Play Association (being established). Contact: ", "From Grey to Play Egyesület (alakulóban). Kapcsolat: "), React.createElement("a", { href: "mailto:" + G2P_EMAIL }, G2P_EMAIL)))),
         tab === "association" && React.createElement(AssociationTab, { onFunding: () => setTab("funding") }),
         tab === "sources" && React.createElement(SourcesTab, { onEssay: openEssay }),
         tab === "funding" && React.createElement(FundingTab, null),

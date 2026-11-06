@@ -830,6 +830,11 @@
    "id": "courtTileMosaic",
    "type": "util",
    "desc": "3x3 Esri World Imagery tiles (z18) around a court; backdrop slide in CourtDetail"
+  },
+  {
+   "id": "Redirect35Card",
+   "type": "component",
+   "desc": "Formularul 230 / 3.5% card (motivation, income-tax calculator, donor steps, honest gaps, mailto, copy message); top of Funding tab and AssociationTab; links ANAF guide"
   }
  ],
  "edges": [
