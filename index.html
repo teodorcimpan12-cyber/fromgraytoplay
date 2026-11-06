@@ -1733,7 +1733,7 @@ body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inse
 /* === Fade lines, magnetic opener, 3D hero gutters, court sheet (Nov 2026, branch ui-instagram-court) === */
 /* Straight section lines fade out at both ends instead of running edge to edge. */
 :root{--fade-line:linear-gradient(90deg,transparent,var(--border) 16%,var(--border) 84%,transparent)}
-.navbar,.modal-head,.tabs,.fund-row,.rate-row,.lt-row,.ticker-wrap,.fade-b,.fade-t,.cp-top,.cp-cats{border-image:var(--fade-line) 1}
+.navbar,.modal-head,.tabs,.fund-row,.rate-row,.lt-row,.fade-b,.fade-t,.cp-top,.cp-cats{border-image:var(--fade-line) 1}
 .fade-b{border-bottom:1px solid var(--border)}
 .fade-t{border-top:1px solid var(--border)}
 .footer,.ao-why{border-image:linear-gradient(90deg,transparent,rgba(255,255,255,.12) 18%,rgba(255,255,255,.12) 82%,transparent) 1}
@@ -1800,14 +1800,16 @@ body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inse
 @media(prefers-reduced-motion:reduce){.cdx-body{animation:none}.ao-btn,.ao-target{transition:none}}
 /* Opener pill: orange "under construction" status with two turning gears */
 .ao-eyebrow{color:#FDBA74;background:rgba(249,115,22,.12);border-color:rgba(249,115,22,.4)}
-.ao-gears{position:relative;display:inline-block;width:1.45rem;height:1rem;flex:none}
-.ao-gear{position:absolute;fill:currentColor;stroke:none}
-.ao-gear .teeth{fill:none;stroke:currentColor;stroke-width:4;stroke-dasharray:3.14 3.14}
-.ao-gear.g1{left:0;top:-.05rem;width:1rem;height:1rem}
-.ao-gear.g2{left:.7rem;top:.28rem;width:.7rem;height:.7rem;opacity:.85}
+.ao-gears{position:relative;display:inline-block;width:1.95rem;height:1.2rem;flex:none}
+.ao-gear{position:absolute;fill:none;stroke:currentColor;overflow:visible}
+.ao-gear .teeth{stroke-width:3.2;stroke-dasharray:3.73 3.73}
+.ao-gear .rim{stroke-width:2}
+.ao-gear .spokes{stroke-width:2.2;stroke-linecap:round}
+.ao-gear.g1{left:0;top:-.1rem;width:1.1rem;height:1.1rem}
+.ao-gear.g2{left:1.08rem;top:.35rem;width:.85rem;height:.85rem}
 @keyframes aoGear{to{transform:rotate(360deg)}}
 @keyframes aoGearBack{to{transform:rotate(-360deg)}}
-@media(prefers-reduced-motion:no-preference){.ao-gear.g1{animation:aoGear 6s linear infinite}.ao-gear.g2{animation:aoGearBack 4.2s linear infinite}}
+@media(prefers-reduced-motion:no-preference){.ao-gear.g1{animation:aoGear 5s linear infinite}.ao-gear.g2{animation:aoGearBack 3.5s linear infinite}}
 /* Formularul 230 card */
 .r35{position:relative;overflow:hidden;border-radius:var(--radius);padding:1.2rem;background:linear-gradient(135deg,color-mix(in srgb,var(--green) 13%,var(--bgCard)),var(--bgCard) 62%);border:1px solid color-mix(in srgb,var(--green) 32%,var(--border))}
 .r35-big{font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(2.6rem,12vw,4.2rem);line-height:1;letter-spacing:-.05em;color:var(--green);margin:.5rem 0 .2rem}
@@ -3345,6 +3347,10 @@ T.ro.tickPhoto = "a adăugat o dovadă foto";
 T.ro.tickReport = "a trimis o sesizare";
 T.ro.tickGame = "a pornit un joc";
 T.ro.tickJoin = "s-a alăturat unui joc";
+T.ro.tickPixel = "a pus un pixel pe mural";
+T.ro.tickAdopt = "a adoptat un teren";
+T.ro.tickCondition = "a evaluat starea unui teren";
+T.ro.tickAnon = "Cineva";
 T.ro.tickDefault = "e activ în comunitate";
 T.en.tickerTitle = "Community, live";
 T.en.tickPetition = "voted the petition";
@@ -3353,6 +3359,10 @@ T.en.tickPhoto = "added photo evidence";
 T.en.tickReport = "filed a report";
 T.en.tickGame = "started a game";
 T.en.tickJoin = "joined a game";
+T.en.tickPixel = "placed a pixel on the mural";
+T.en.tickAdopt = "adopted a court";
+T.en.tickCondition = "rated a court's condition";
+T.en.tickAnon = "Someone";
 T.en.tickDefault = "is active in the community";
 T.hu.tickerTitle = "Közösség, élőben"; // TODO: HU review
 T.hu.tickPetition = "szavazott a petícióra"; // TODO: HU review
@@ -3361,6 +3371,10 @@ T.hu.tickPhoto = "fotóbizonyítékot adott hozzá"; // TODO: HU review
 T.hu.tickReport = "bejelentést küldött"; // TODO: HU review
 T.hu.tickGame = "játékot indított"; // TODO: HU review
 T.hu.tickJoin = "csatlakozott egy játékhoz"; // TODO: HU review
+T.hu.tickPixel = "pixelt tett a falképre"; // TODO: HU review
+T.hu.tickAdopt = "örökbe fogadott egy pályát"; // TODO: HU review
+T.hu.tickCondition = "értékelt egy pálya állapotát"; // TODO: HU review
+T.hu.tickAnon = "Valaki"; // TODO: HU review
 T.hu.tickDefault = "aktív a közösségben"; // TODO: HU review
 
 /* === Heatmap strings === */
@@ -9204,13 +9218,15 @@ function Hero3D() {
 function ActivityTicker() {
   const { t } = useApp();
   const data = useFirebase("activity");
-  const items = data ? Object.values(data).filter(realActivity).sort((a, b) => tsOf(b) - tsOf(a)).slice(0, 14) : [];
+  // Activity types are stored as written by each feature ("check-in", "conditionReport", ...); only rows we can phrase are shown.
+  const ICO = { petition: "✊", "check-in": "📍", checkin: "📍", photo: "📸", report: "⚠️", conditionReport: "🩺", game: "⚽", join: "👥", pixel: "🎨", adopt: "💚" };
+  const VERB = { petition: t.tickPetition, "check-in": t.tickCheckin, checkin: t.tickCheckin, photo: t.tickPhoto, report: t.tickReport, conditionReport: t.tickCondition, game: t.tickGame, join: t.tickJoin, pixel: t.tickPixel, adopt: t.tickAdopt };
+  const items = data ? Object.values(data).filter(a => realActivity(a) && VERB[a.type]).sort((a, b) => tsOf(b) - tsOf(a)).slice(0, 14) : [];
   if (!items.length) return null;
-  const ICO = { petition: "✊", checkin: "📍", photo: "📸", report: "⚠️", game: "⚽", join: "👥" };
-  const verb = ty => ({ petition: t.tickPetition, checkin: t.tickCheckin, photo: t.tickPhoto, report: t.tickReport, game: t.tickGame, join: t.tickJoin })[ty] || t.tickDefault;
+  const nm = a => { const n = anonName(a.userName); return n === "Anonim" ? t.tickAnon : n; };
   const row = key => React.createElement("div", { className: "ticker", key: key, "aria-hidden": key === "b" ? "true" : undefined },
     items.map((a, i) => React.createElement("span", { className: "ticker-item", key: i },
-      (ICO[a.type] || "•") + " ", React.createElement("b", null, a.userName || "Anon"), " " + verb(a.type))));
+      (ICO[a.type] || "•") + " ", React.createElement("b", null, nm(a)), " " + VERB[a.type])));
   return React.createElement("section", { className: "ticker-wrap", title: t.tickerTitle }, row("a"), row("b"));
 }
 
@@ -9958,7 +9974,7 @@ function HomeOpener() {
       React.createElement("div", { className: "ao-bg", "aria-hidden": "true" }),
       React.createElement("div", { className: "ao-target", "aria-hidden": "true" }, target),
       React.createElement("div", { className: "container ao-inner" },
-        React.createElement("div", { className: "ao-eyebrow" }, React.createElement("span", { className: "ao-gears", "aria-hidden": "true" }, React.createElement("svg", { className: "ao-gear g1", viewBox: "0 0 24 24" }, React.createElement("circle", { cx: 12, cy: 12, r: 8, className: "teeth" }), React.createElement("path", { fillRule: "evenodd", d: "M12 6.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 1 0 0-11zm0 3.5a2 2 0 1 1 0 4 2 2 0 1 1 0-4z" })), React.createElement("svg", { className: "ao-gear g2", viewBox: "0 0 24 24" }, React.createElement("circle", { cx: 12, cy: 12, r: 8, className: "teeth" }), React.createElement("path", { fillRule: "evenodd", d: "M12 6.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 1 0 0-11zm0 3.5a2 2 0 1 1 0 4 2 2 0 1 1 0-4z" }))), L3("Asociație în constituire", "Association being established", "Egyesület alakulóban")), // TODO: HU review
+        React.createElement("div", { className: "ao-eyebrow" }, React.createElement("span", { className: "ao-gears", "aria-hidden": "true" }, ["g1", "g2"].map(function (k) { return React.createElement("svg", { key: k, className: "ao-gear " + k, viewBox: "0 0 24 24" }, React.createElement("circle", { cx: 12, cy: 12, r: 9.5, className: "teeth" }), React.createElement("circle", { cx: 12, cy: 12, r: 6.2, className: "rim" }), React.createElement("path", { className: "spokes", d: "M12 12V5.8M12 12L17.4 15.1M12 12L6.6 15.1" })); })), L3("Asociație în constituire", "Association being established", "Egyesület alakulóban")), // TODO: HU review
         React.createElement("h1", { className: "ao-title", id: "ao-h1" },
           React.createElement("span", { className: "ao-kicker" }, L3("Asociația", "The association", "Az egyesület")),
           React.createElement("span", { className: "ao-name" }, React.createElement("b", null, "From Grey"), " ", React.createElement("em", null, "to Play"))),
