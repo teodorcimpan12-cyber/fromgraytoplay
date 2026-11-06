@@ -184,8 +184,13 @@ test("no translation key is assigned twice (a later assignment silently override
 test("Sibiu after the satellite pass: every court has a score, stadiums are excellent, no 'unverified' left", () => {
   const start = html.indexOf("const SAT_VIEW = "), end = html.indexOf("const COURTS_ALL = ");
   const { COURTS_SIBIU } = load([extractConst("COURTS_SIBIU"), html.slice(start, end)], ["COURTS_SIBIU"]);
-  assert.equal(COURTS_SIBIU.length, 35);
-  COURTS_SIBIU.forEach(c => {
+  assert.equal(COURTS_SIBIU.length, 36);
+  // Courts added after the 35-court satellite audit (sb36 Stadionul Independența, from OSM) have no satellite
+  // verdict: they must stay honestly "unverified", with no invented condition, and point to their OSM source.
+  const late = COURTS_SIBIU.filter(c => !/^sb([1-9]|[12]\d|3[0-5])$/.test(c.id));
+  assert.equal(late.map(c => c.id).join(), "sb36");
+  late.forEach(c => { assert.equal(c.status, "unverified", c.id); assert.equal(c.condition, null, c.id); assert.ok(/^way\/\d+$/.test(c.osm), c.id); });
+  COURTS_SIBIU.filter(c => !late.includes(c)).forEach(c => {
     assert.notEqual(c.status, "unverified", c.id);
     assert.ok(c.condition >= 1 && c.condition <= 5, c.id);
     assert.ok(!/neverificat|not field-verified/i.test(c.description + JSON.stringify(c.desc || {})), c.id);
