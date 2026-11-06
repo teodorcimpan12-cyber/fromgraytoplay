@@ -292,3 +292,10 @@ Highest civic-value next steps:
   `SibiuInvest`: 2022–2026 investments only at Păltiniș, Stadionul Municipal, Obor, Lacul lui Binder; no
   amounts, no court condition, no neighbourhood court. Follow-up asks for values, condition, and who
   manages block courts.
+- Mobile platform pass (6 Nov 2026): viewport `viewport-fit=cover, interactive-widget=resizes-content`
+  (the 16 existing `env(safe-area-inset-*)` uses were all 0 before); all 78 top-level `:hover` rules now
+  sit in `@media(hover:hover) and (pointer:fine)` (non-hover selectors of the same rule stay outside);
+  `theme-color` follows the nav bar (#FFFFFF / #0F172A) on boot + theme toggle, no longer the accent;
+  app shells `100dvh` (with `100vh` fallback); `touch-action: manipulation` on controls; 16px inputs on
+  `pointer: coarse`; nav top + body sides + toast bottom padded by safe-area insets. Block "Mobile
+  platform layer" at the end of the main `<style>`. New `:hover` rules go inside the hover media query.
