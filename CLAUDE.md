@@ -220,6 +220,19 @@ Anyone can write — rules are MVP-permissive. Tighten before any press.
   static splash inside `#root`. `netlify.toml` added with cache headers —
   deploy surface now also includes `netlify.toml`. SW cache → `g2p-v4`.
 
+## Owner's backlog (asked 6 Nov 2026 — do later, not before Astra Hack)
+
+1. **Legal entity so the project can receive money** (donations, sponsors, grants, prizes). To research with
+   the owner before choosing — nothing decided, verify every legal detail at the source: an association under
+   OG 26/2000 vs. hosting the project under an existing NGO first (fiscal sponsor) vs. a company; who can be a
+   founder while team members are minors; bank account, sponsorship contracts and the 20% tax redirection
+   (formularul 230) for an NGO.
+2. **Mobile-first redesign with Impeccable** — designed for the phone first, desktop second. Start with
+   `/impeccable init` (PRODUCT.md), then `shape` → new-work; keep product truth and the brand tokens unless the
+   owner decides a rebrand. Inputs already gathered: the 6 Nov critique (25/40; P0 false precision on unverified
+   courts, hero CTA, 14-section court sheet, 8 equal actions, green #10B981 at ~2.5:1 contrast, 31×39 hamburger)
+   and the deferred directions "evidence-first hero", "verdict card", "evidence timeline".
+
 ## Roadmap priorities (from the brief)
 
 Highest civic-value next steps:
