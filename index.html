@@ -812,6 +812,51 @@ body:has(.demo-bar) .mascot{bottom:calc(58px + env(safe-area-inset-bottom))}
 .demo-rm-btns button.go{background:var(--green)}
 .demo-rm-btns button:disabled{opacity:.3}
 .demo-rm-reset{background:none;border:1px solid color-mix(in srgb,var(--white) 30%,transparent);color:inherit;border-radius:999px;padding:.55rem;cursor:pointer}
+.demo-rm-btns button{height:22vh;max-height:180px}
+.demo-rm-who{margin:0;font:700 1rem 'Space Mono',monospace;color:var(--coral)}
+.demo-rm-who b{font-size:1.35rem}
+.demo-rm-tabs{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
+.demo-rm-tabs button,.demo-rm-cats button,.demo-rm-steps button{border:1px solid color-mix(in srgb,var(--white) 25%,transparent);background:none;color:inherit;border-radius:999px;padding:.55rem .7rem;font:700 .85rem 'Space Mono',monospace;cursor:pointer}
+.demo-rm-tabs button.on,.demo-rm-cats button.on,.demo-rm-steps button.on{background:var(--green);border-color:var(--green);color:var(--dark)}
+.demo-rm-steps,.demo-rm-cats{display:flex;flex-wrap:wrap;gap:.35rem}
+.demo-rm-steps button{font-size:.72rem;padding:.4rem .6rem}
+.demo-rm-onscreen{display:flex;align-items:center;gap:.6rem;padding:.6rem .8rem;border-radius:12px;background:color-mix(in srgb,var(--coral) 22%,transparent);font-size:.85rem}
+.demo-rm-onscreen span{flex:1}
+.demo-rm-onscreen button,.demo-rm-show{border:0;border-radius:999px;padding:.55rem 1rem;font-weight:800;background:var(--coral);color:var(--dark);cursor:pointer}
+.demo-rm-show{background:var(--green);margin-top:.4rem}
+.demo-rm-show.off{background:var(--coral)}
+.demo-rm-find{width:100%;padding:.7rem .9rem;border-radius:12px;border:1px solid color-mix(in srgb,var(--white) 25%,transparent);background:color-mix(in srgb,var(--white) 8%,transparent);color:inherit;font-size:16px}
+.demo-rm-qa{display:flex;flex-direction:column;gap:.5rem;padding-bottom:2rem}
+.demo-rm-q{border-radius:12px;background:color-mix(in srgb,var(--white) 7%,transparent)}
+.demo-rm-q.open{background:color-mix(in srgb,var(--white) 12%,transparent)}
+.demo-rm-qh{display:flex;flex-direction:column;gap:.2rem;width:100%;text-align:left;background:none;border:0;color:inherit;padding:.8rem .9rem;cursor:pointer;font-size:1rem;line-height:1.3}
+.demo-rm-qc{font:700 .68rem 'Space Mono',monospace;color:var(--green);text-transform:uppercase;letter-spacing:.04em}
+.demo-rm-qb{padding:0 .9rem .9rem}
+.demo-rm-qb p{margin:0;font-size:1.08rem;line-height:1.5}
+.demo-slide{position:fixed;inset:0;z-index:8900;display:grid;place-items:center;padding:clamp(1rem,4vw,3.5rem);background:#0B1020;color:#fff;animation:fadeIn .35s ease}
+.demo-slide::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 85% 10%,color-mix(in srgb,var(--green) 22%,transparent),transparent 70%),radial-gradient(50% 45% at 5% 95%,color-mix(in srgb,var(--coral) 16%,transparent),transparent 70%);pointer-events:none}
+.demo-slide-in{position:relative;width:min(1200px,100%);display:flex;flex-direction:column;gap:clamp(.8rem,2vh,1.6rem)}
+.demo-slide-k{margin:0;font:700 clamp(.85rem,1.4vw,1.15rem) 'Space Mono',monospace;color:var(--green);letter-spacing:.06em;text-transform:uppercase}
+.demo-slide-big{display:flex;align-items:baseline;gap:clamp(.8rem,2vw,1.6rem);flex-wrap:wrap}
+.demo-slide-big b{font:700 clamp(6rem,18vw,15rem)/0.85 'Space Mono',monospace;color:var(--coral)}
+.demo-slide-big span{font-size:clamp(1.4rem,3vw,2.6rem);font-weight:700;line-height:1.15;max-width:18ch}
+.demo-slide-h{margin:0;font:700 clamp(1.8rem,4.2vw,3.6rem)/1.08 'Space Mono',monospace;letter-spacing:-.01em;text-wrap:balance}
+.demo-slide-row{display:flex;gap:clamp(1rem,3vw,3rem);align-items:center}
+.demo-slide-ul{flex:1;margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:clamp(.5rem,1.4vh,1rem)}
+.demo-slide-ul li,.demo-slide-col li{position:relative;padding-left:1.4em;font-size:clamp(1.05rem,2.1vw,1.8rem);line-height:1.3}
+.demo-slide-ul li::before,.demo-slide-col li::before{content:"";position:absolute;left:0;top:.5em;width:.55em;height:.55em;border-radius:50%;background:var(--green)}
+.demo-slide-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.8rem,2vw,1.6rem)}
+.demo-slide-col{padding:clamp(.8rem,1.6vw,1.4rem);border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+.demo-slide-col:last-child{border-color:color-mix(in srgb,var(--green) 55%,transparent)}
+.demo-slide-col h3{margin:0 0 .7rem;font:700 clamp(.9rem,1.5vw,1.2rem) 'Space Mono',monospace;color:var(--green)}
+.demo-slide-col ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.55rem}
+.demo-slide-col li{font-size:clamp(.9rem,1.45vw,1.25rem)}
+.demo-slide-qr{text-align:center;background:#fff;color:#0B1020;border-radius:16px;padding:1rem}
+.demo-slide-qr img{display:block;width:min(260px,30vh);height:auto}
+.demo-slide-qr p{margin:.5rem 0 0;font:700 .85rem 'Space Mono',monospace}
+.demo-slide-src{margin:0;font-size:clamp(.75rem,1.1vw,.95rem);opacity:.55}
+@media(prefers-reduced-motion:no-preference){.demo-slide-ul li{animation:fadeIn .5s ease both;animation-delay:calc(.15s + var(--d) * .18s)}}
+@media(max-width:760px){.demo-slide-cols{grid-template-columns:1fr}.demo-slide-row{flex-direction:column;align-items:flex-start}}
 .sb-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.28);transition:transform .3s,background .3s}
 .sb-dot.on{background:var(--white);box-shadow:0 0 8px rgba(255,255,255,.9);transform:scale(1.15)}
 /* === Neighborhood Race === */
@@ -18479,25 +18524,114 @@ function SecretKeys() {
 }
 
 /* === App === */
-/* === Demo mode (Astra Hack pitch). Secret link ?demo=1 (3 min run) or ?demo=5 (5 min run), best with &c=sibiu.
-   Next: → / Space / PageDown (clicker) or › on the bar. Back: ← / PageUp or ‹. H hides the bar.
-   Phone remote: ?demo=remote, signed in with the admin account; it writes demo/{step,at} and every demo screen follows. === */
+/* === Demo mode v2 (Astra Hack pitch, 5 min, 3 speakers). Secret link ?demo=5&c=sibiu (?demo=1 = same run).
+   Next: → / Space / PageDown (clicker) or › on the bar. Back: ← / PageUp or ‹. 1–9 jump to a step. H hides the bar. Esc closes a Q&A card.
+   Phone remote: ?demo=remote, signed in with the admin account; it writes demo/{step,at,qa} and every demo screen follows.
+   Tab "Pitch" = steps, who speaks, what to say, free jump. Tab "Întrebări" = hard jury questions with short answers;
+   "Arată pe ecran" puts a backup card on the projector (demo/qa), "Ascunde" removes it.
+   Every number on the slides has a source in docs/ (INVESTITII_SIBIU.md, tools/SAT_AUDIT.md, CLAUDE.md 5 Nov). === */
 const DEMO_Q = new URLSearchParams(location.search).get("demo");
 const DEMO_ON = DEMO_Q === "1" || DEMO_Q === "5";
 const DEMO_REMOTE = DEMO_Q === "remote";
-const DEMO_LEN = DEMO_Q === "5" ? 1 : 0; // index into each step's sec: [3 min, 5 min]
 // the pitch always opens on the grey court, and the first-visit onboarding must not cover it
 if (DEMO_ON) { try { localStorage.setItem("g2p_ob", "1"); localStorage.removeItem("g2p_hero_renov"); } catch (e) {} }
+// the phone remote must open straight on the controls, never under the onboarding
+if (DEMO_REMOTE) { try { localStorage.setItem("g2p_ob", "1"); } catch (e) {} }
+// who speaks: change the names here if the team on stage changes
+const DEMO_WHO = { T: "Teo", M: "Matei", G: "Gabriel" };
 const DEMO_STEPS = [
-  { id: "hero", sec: [20, 35], ro: "Din gri, în joc", en: "From grey to play", note: "Terenul gri. Apasă „Renovează” și lasă-l să se transforme." },
-  { id: "sat", page: "courts", sel: '[data-demo="sat"]', sec: [25, 45], ro: "Satelitul: atunci și acum", en: "Satellite: then and now", note: "Trage linia. Satelitul arată ce a văzut la data aceea, nu starea de azi." },
-  { id: "verify", sel: '[data-demo="verify"]', sec: [35, 60], ro: "Verificare live", en: "Live check", note: "Contorul e live. Verifică un teren acum, din sală, și arată cum se aprinde punctul." },
-  { id: "ai", sel: '[data-demo="ai"]', sec: [40, 70], ro: "AI: poza și scrisoarea", en: "AI: photo and letter", note: "Poza: AI-ul doar sugerează starea. Apoi scrisoarea către Primărie, gata de trimis." },
-  { id: "qr", sec: [30, 40], ro: "Scanează + ce cerem", en: "Scan + our ask", note: "Scanați codul. Cerem: primăria să publice starea terenurilor ei. Și 3 luni de mentorat." }
+  { id: "problem", who: "T", sec: 30, ro: "Problema", en: "The problem",
+    note: "Ana are 16 ani și stă în Vasile Aaron (exemplu). Terenul dintre blocuri e gri. Răspunsul oficial al Sibiului: 2022–2026, bani doar pentru 4 baze mari. Niciun teren de cartier. Nimeni nu publică starea lor.",
+    slide: { k: "Sibiu · răspuns oficial nr. 4541 / 03.11.2026", big: "0", bigL: "terenuri dintre blocuri în investițiile 2022–2026",
+      lines: ["Bani doar pentru: Păltiniș, Stadionul Municipal, Obor, Lacul lui Binder", "35 de terenuri publice de cartier pe hartă — starea lor nu o publică nimeni", "Clientul: tânărul care vrea să joace azi · și primăria, care n-are harta stării"],
+      src: "Serviciul Public Sport și Agrement Sibiu · OpenStreetMap" } },
+  { id: "hero", who: "T", sec: 25, ro: "Soluția", en: "The solution",
+    note: "O frază: From Grey to Play arată starea fiecărui teren public, cu dovezi datate, și transformă o poză într-o cerere oficială către primărie. Temele: AI + securitate + sustenabilitate. Apasă „Renovează”." },
+  { id: "scenario", who: "G", sec: 20, ro: "Ce vă arătăm", en: "What we show",
+    note: "Un singur flux, cap-coadă: Ana găsește terenul, vede istoricul din satelit, îl verifică, face o poză, AI-ul sugerează starea, iar ea trimite scrisoarea oficială.",
+    slide: { k: "Demo · un flux complet", title: "Teren gri → dovadă → cerere oficială",
+      lines: ["1 · Ana deschide harta și găsește terenul „neverificat”", "2 · Îl verifică în 60 de secunde și face o poză — AI-ul sugerează starea", "3 · Apasă „Scrisoare”: cerere către Primăria Sibiu, cu dovezi, în PDF"],
+      src: "Datele demo sunt reale; poza din demo e etichetată „demo”" } },
+  { id: "sat", who: "G", page: "courts", sel: '[data-demo="sat"]', sec: 30, ro: "Satelitul: atunci și acum", en: "Satellite: then and now",
+    note: "Trage linia. Spune: satelitul arată ce a văzut la data aceea, nu starea de azi. 4 colegi au evaluat orb toate cele 35 de terenuri." },
+  { id: "verify", who: "G", sel: '[data-demo="verify"]', sec: 30, ro: "Verificare live", en: "Live check",
+    note: "Contorul e live. Starea de azi vine de la locuitori: 3 întrebări, până la 3 poze, consens între două dispozitive." },
+  { id: "ai", who: "G", sel: '[data-demo="ai"]', sec: 35, ro: "AI: poza și scrisoarea", en: "AI: photo and letter",
+    note: "Poza: AI-ul doar SUGEREAZĂ starea (scor 1–5, probleme, cost estimativ). Apoi scrisoarea: OG 27/2002 (30 de zile) sau Legea 544/2001 (10 zile), gata de trimis." },
+  { id: "value", who: "M", sec: 50, ro: "Valoare și bani", en: "Value and money",
+    note: "Azi: o sesizare la registratură sau o postare pe Facebook se pierd. La noi: public, datat, cu termen legal la vedere. Gratuit pentru cetățeni. Spune deschis: azi nu încasăm nimic, asociația e în constituire.",
+    slide: { k: "De ce merită · cum trăiește", title: "Gratuit pentru cetățeni. Cost de rulare ≈ 0 lei.",
+      cols: [["Azi, fără noi", "Sesizare la registratură: nu e publică", "Grup de Facebook: se pierde", "Nimeni nu vede dacă s-a rezolvat"],
+             ["Cu noi", "Starea fiecărui teren, datată, cu sursă", "Cererea oficială, cu termenul legal la vedere", "Dovezi pentru cererile de finanțare ale primăriei"],
+             ["Banii (după înregistrare)", "Adoptă un teren — sponsori locali", "3,5% prin Formularul 230", "Granturi + Agenda Sportivă (ca ONG)", "Rezervări doar unde se plătește deja"]],
+      src: "Regulă: nicio sursă peste 40% · rapoarte publice" } },
+  { id: "built", who: "T", sec: 40, ro: "Cum am construit", en: "How we built it",
+    note: "Spune cinstit ce exista înainte și ce am făcut în 24 de ore. Claude a fost asistent de cod; datele, cererile oficiale și testele sunt ale noastre.",
+    slide: { k: "Arhitectură · contribuție", title: "Telefon → Firebase · Netlify Function → AI",
+      cols: [["Arhitectura", "PWA într-un fișier: React, Leaflet, offline", "Firebase: reguli publice, vot doar crește, admin pe UID", "AI doar pe server: cheia nu e în cod, 3 poze/oră", "Date: OpenStreetMap, satelit Esri Wayback, răspunsuri 544"],
+             ["Înainte de hackathon", "Harta Târgu Mureș + Sibiu, petiție", "Auditul din satelit (35 de terenuri)", "AI Court Doctor, Scrisoarea v2, verificarea locuitorilor (29 oct.)", "Cererile 544 și răspunsurile oficiale"],
+             ["În cele 24 de ore", "Sesizare fără cont + anti-spam", "Pagina Asociației + Formularul 230", "Fișa terenului nouă, heatmap pe toate hărțile", "Modul demo v2 + telecomanda cu întrebări"]],
+      src: "Istoricul complet: GitHub, commit cu commit" } },
+  { id: "qr", who: "M", sec: 30, ro: "Limite + ce urmează", en: "Limits + next",
+    note: "Limita principală: starea de azi depinde de verificările locuitorilor. Următorul test: 25 noiembrie, răspunsurile oficiale + 10 terenuri verificate. Cerem: primăria să publice starea terenurilor ei și 3 luni de mentorat. Scanați codul.",
+    slide: { k: "Limite · următorul pas", title: "Din gri, în joc.", qr: true,
+      lines: ["Limita: starea de azi vine doar din verificări — avem nevoie de oameni", "Următorul test: 25.11.2026 — răspunsurile oficiale + 10 terenuri verificate", "Cerem: primăria să publice starea terenurilor · 3 luni de mentorat"],
+      src: "" } }
+];
+// Hard jury questions. who = who answers. s = backup card that "Arată pe ecran" puts on the projector.
+const DEMO_QA = [
+  { c: "Bani", who: "M", q: "Cum sunteți sustenabili? Cât costă platforma pe lună?",
+    a: "Costul de rulare e aproape 0 lei: găzduirea (Netlify) și baza de date (Firebase) merg pe planuri gratuite. Singurul cost variabil e AI-ul — câțiva bani pe poză (estimare din consum), plafonat la 3 poze pe oră pe dispozitiv. Restul e muncă voluntară. Regula noastră: nicio sursă de bani peste 40%, ca să nu depindem de nimeni.",
+    s: { title: "Cât costă să existăm", lines: ["Găzduire + bază de date: plan gratuit", "AI: câțiva bani pe poză (estimare), max 3 poze/oră/dispozitiv", "Restul: voluntariat", "Regulă: nicio sursă de bani peste 40%"] } },
+  { c: "Bani", who: "M", q: "De unde vin banii?",
+    a: "Azi nu strângem bani, iar asociația e în constituire — o spunem direct. După înregistrare, în ordinea asta: 1) Adoptă un teren — o firmă sau un club sponsorizează un teren anume și vede public pe ce s-au dus banii; 2) 3,5% din impozit prin Formularul 230, după înscrierea în registrul ANAF; 3) granturi și Agenda Sportivă a Primăriei (Legea 350/2005), pe care doar un ONG le poate cere; 4) un abonament mic pentru panoul primăriei; 5) un comision mic pe rezervările care oricum se plătesc.",
+    s: { title: "De unde vin banii (după înregistrare)", lines: ["1 · Adoptă un teren — sponsor local, raport public", "2 · 3,5% prin Formularul 230", "3 · Granturi + Agenda Sportivă (Legea 350/2005)", "4 · Abonament mic pentru panoul primăriei", "5 · Comision mic doar pe rezervări deja plătite", "Azi: 0 lei încasați · asociație în constituire"] } },
+  { c: "Bani", who: "M", q: "Cum taxați rezervări pe terenuri care nu sunt ale voastre?",
+    a: "Nu vindem accesul la un teren care nu e al nostru. Terenurile publice gratuite rămân gratuite și la noi: rezervarea e doar o programare, regulile le pune administratorul. Taxăm doar unde proprietarul deja încasează — club privat, sală de școală închiriată, teren municipal cu plată — și doar dacă proprietarul se înscrie. Plata merge direct la el, printr-un procesator de plăți cu plăți împărțite; noi reținem un comision mic, afișat la vedere (propunere: 1 leu pe rezervare). Comisionul intră în fondul „Adoptă un teren”: fiecare rezervare plătită pe un teren privat ajută la repararea unui teren public. Forma juridică exactă o verificăm cu un jurist înainte de lansare.",
+    s: { title: "Rezervări: plătește doar cine încasează deja", lines: ["Teren public gratuit → rămâne gratuit, doar programare", "Teren cu plată + proprietarul se înscrie → plata merge direct la el", "Noi: comision mic, afișat (propunere: 1 leu / rezervare)", "Comisionul → fondul „Adoptă un teren” → repară un teren public", "Nu vindem niciodată acces la un teren care nu e al nostru"] } },
+  { c: "Bani", who: "M", q: "Ce primărie plătește? V-a zis cineva da?",
+    a: "Nicio primărie n-a semnat nimic și nu pretindem asta. Avem cereri oficiale (Legea 544) la Sibiu și Târgu Mureș. Sibiu a răspuns parțial (nr. 4541 din 3 noiembrie) și și-a prelungit termenul pentru restul până pe 25 noiembrie. Abonamentul e o ipoteză: îl testăm cu un pilot gratuit, apoi un preț mic, sub pragul de achiziție directă." },
+  { c: "Bani", who: "M", q: "Business case-ul e prea mic.",
+    a: "Da, e mic — și e intenționat. Suntem o asociație civică, nu un startup care caută exit. Succesul se măsoară în terenuri cu stare publică și sesizări rezolvate. Venitul trebuie doar să acopere un cost aproape zero și un fond de reparații." },
+  { c: "Restaurare", who: "G", q: "Când o să restaurați pe bune un teren?",
+    a: "Un teren public nu-l putem renova singuri: e al primăriei, Legea 69/2000 îi protejează destinația și orice lucrare cere acordul administratorului. Ce facem noi: dovezi publice, cereri oficiale, presiune civică și bani de la sponsori pentru un teren-pilot. Primul pas cu dată: răspunsurile oficiale vin până pe 25 noiembrie 2026. Ținta noastră — nu promisiune — e un teren-pilot în 2027, dacă avem trei lucruri: asociația înregistrată, acordul primăriei și un sponsor.",
+    s: { title: "Când restaurăm: pași, nu promisiuni", lines: ["Azi · dovezi publice pentru 35 de terenuri din Sibiu", "25.11.2026 · termenul răspunsurilor oficiale (Legea 544)", "Apoi · asociația înregistrată + un sponsor „Adoptă un teren”", "Țintă 2027 · un teren-pilot, doar cu acordul primăriei", "Terenul e al primăriei: decide ea (Legea 69/2000)"] } },
+  { c: "Restaurare", who: "G", q: "Ce puteți face fără primărie?",
+    a: "Lucruri mici, doar cu acord scris de la administrator: plase și coșuri noi, curățenie, marcaje. Și, mai important, datele: fiecare verificare și fiecare poză intră pe harta publică și devin dovezi." },
+  { c: "Restaurare", who: "G", q: "De ce v-ar asculta primăria?",
+    a: "Pentru că îi dăm exact ce îi lipsește: starea fiecărui teren, datată, cu poze — dovezile de care are nevoie ca să prioritizeze reparații și să scrie o cerere de finanțare. Fondurile naționale pentru baze sportive (Anghel Saligny) sunt oprite, deci fiecare leu trebuie pus unde contează. Iar cererile 544 au termen legal de răspuns." },
+  { c: "Restaurare", who: "G", q: "Ați fost pe teren? Câte terenuri ați verificat?",
+    a: "Nu pretindem vizite care n-au avut loc. Sibiu: 35 de terenuri din OpenStreetMap, evaluate orb din satelit de 4 colegi; un rezultat apare doar unde au fost de acord — 7 rezultate, 28 rămân „de revăzut”. Starea de azi vine din verificările locuitorilor, iar contorul de pe ecran e live. (Spune numărul de pe ecran, nu din memorie.)" },
+  { c: "Date & AI", who: "T", q: "Cât de sigur e AI-ul? Dacă greșește?",
+    a: "AI-ul doar sugerează: scor 1–5, probleme, cost estimativ și nivel de încredere. Peste tot scrie „estimare AI, nu inspecție”. Dacă poza nu arată un teren, refuză și nu scrie nimic. Starea pe hartă se schimbă doar prin consensul a cel puțin două verificări sau de către admin." },
+  { c: "Date & AI", who: "T", q: "Satelitul arată starea de azi?",
+    a: "Nu. Ultimele imagini pentru Sibiu sunt din 2021–2022. Le folosim pentru istoric — dacă un teren a apărut sau a dispărut — și scriem asta pe ecran." },
+  { c: "Date & AI", who: "T", q: "Acordul între evaluatori e slab. Datele voastre nu sunt bune.",
+    a: "Pe unele câmpuri acordul a fost slab și l-am publicat, nu l-am ascuns. De aceea 28 de terenuri sunt „de revăzut” și de aceea am construit verificarea de către locuitori: nu ne bazăm pe o singură sursă." },
+  { c: "Date & AI", who: "T", q: "Ce vă oprește de la date false sau spam?",
+    a: "Sesizarea nu cere cont, ca să fie ușoară, dar are anti-spam în aplicație și limită pe dispozitiv, iar regulile bazei de date validează fiecare câmp. Starea unui teren nu se schimbă dintr-o singură sesizare: e nevoie de consens sau de admin." },
+  { c: "Securitate", who: "T", q: "Unde e cheia API? Cine e admin?",
+    a: "Cheia AI stă doar în variabilele Netlify; funcția de pe server verifică de unde vine cererea și limitează numărul de cereri. Aveam o parolă de admin în codul public — am scos-o și o tratăm ca expusă. Acum adminul se loghează prin Firebase Auth, iar drepturile sunt verificate pe UID în regulile bazei de date, nu în browser." },
+  { c: "Securitate", who: "T", q: "GDPR: emailuri, poze cu copii?",
+    a: "Emailurile le citește doar adminul; exportul de date deschise scoate cheile de votant și pozele. Cerem poze fără fețe, cu consimțământ explicit; pozele sunt recomprimate în browser, ceea ce scoate metadatele GPS. Adminul poate șterge orice." },
+  { c: "Tehnic", who: "T", q: "De ce un singur fișier HTML? Scalează?",
+    a: "E o alegere: fără build, deploy în secunde, merge offline ca aplicație pe telefon. Avem porți de siguranță: o verificare la fiecare deploy și un test cu Chrome headless pe toate paginile, în ambele orașe. Un oraș nou înseamnă un set de date și o configurare, nu cod nou. Dacă creștem, migrăm pe Vite — scheletul există deja în repo." },
+  { c: "Tehnic", who: "T", q: "Ce ați făcut voi și ce a făcut AI-ul?",
+    a: "Am folosit Claude ca asistent de cod și o spunem deschis. Problema, deciziile, datele, cererile oficiale, auditul din satelit și testele pe telefon sunt ale noastre. Fiecare schimbare e un commit public pe GitHub, cu oră." },
+  { c: "Tehnic", who: "T", q: "Ce ați construit efectiv în cele 24 de ore?",
+    a: "Exact ce e pe slide-ul „Cum am construit”: sesizarea fără cont cu anti-spam, pagina Asociației și Formularul 230, fișa nouă a terenului, heatmap-ul pe toate hărțile, modul demo v2 cu telecomanda. AI Court Doctor și Scrisoarea v2 existau din 29 octombrie — nu le prezentăm ca fiind din 24 de ore." },
+  { c: "Concurență", who: "M", q: "Există deja aplicații: bazesportive.sibiu.ro, Sibiu City App.",
+    a: "bazesportive.sibiu.ro face programări la bazele mari, ca Obor. Noi acoperim cele 35 de terenuri dintre blocuri, unde nu există nimic. Nu vrem să concurăm: putem trimite rezervările spre sistemul lor și sesizările spre canalele oficiale. Sibiu City App: încă verificăm ce face pentru terenuri." },
+  { c: "Echipă", who: "T", q: "Ce se întâmplă după hackathon? Sunteți studenți.",
+    a: "Suntem trei fondatori majori, studenți în anul I — avem program încărcat și o scriem la riscuri. De aceea: cost de rulare aproape zero, cod public, date deschise CC BY. Proiectul poate fi preluat oricând, iar asociația îl ține în viață juridic." },
+  { c: "Echipă", who: "M", q: "Cum ajungeți în alte orașe?",
+    a: "Un oraș apare doar dacă are date verificate și măcar o persoană locală. Tehnic, un oraș nou e un fișier de date. Azi: Târgu Mureș și Sibiu, ambele live." }
 ];
 const demoClock = ms => { const s = Math.max(0, Math.round(ms / 1000)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
+const DEMO_TOTAL = DEMO_STEPS.reduce((a, x) => a + x.sec, 0) * 1000;
 function demoShow(i, setPage) {
   const s = DEMO_STEPS[i];
+  if (s.slide) return; // a slide covers the app; keep the page where it is
   setPage(s.page || "home");
   setTimeout(() => {
     const el = s.sel && document.querySelector(s.sel);
@@ -18505,11 +18639,28 @@ function demoShow(i, setPage) {
     else if (s.id === "hero") window.scrollTo({ top: 0, behavior: "smooth" });
   }, 260);
 }
+function DemoSlide({ sl, kicker, onClose }) {
+  const e = React.createElement;
+  return ReactDOM.createPortal(e("div", { className: "demo-slide", onClick: onClose },
+    e("div", { className: "demo-slide-in", onClick: ev => ev.stopPropagation() },
+      e("p", { className: "demo-slide-k" }, kicker || sl.k || ""),
+      sl.big != null && e("div", { className: "demo-slide-big" }, e("b", null, sl.big), e("span", null, sl.bigL)),
+      sl.title && e("h2", { className: "demo-slide-h" }, sl.title),
+      sl.cols ? e("div", { className: "demo-slide-cols" }, sl.cols.map((c, i) => e("div", { key: i, className: "demo-slide-col" },
+        e("h3", null, c[0]), e("ul", null, c.slice(1).map((x, j) => e("li", { key: j }, x)))))) :
+      e("div", { className: "demo-slide-row" },
+        e("ul", { className: "demo-slide-ul" }, (sl.lines || []).map((x, j) => e("li", { key: j, style: { "--d": j } }, x))),
+        sl.qr && e("div", { className: "demo-slide-qr" },
+          e("img", { src: "/icons/qr-" + ACTIVE_CITY + ".svg", alt: SITE + "/?c=" + ACTIVE_CITY, width: 260, height: 260 }),
+          e("p", null, SITE.replace("https://", "") + "/?c=" + ACTIVE_CITY))),
+      sl.src && e("p", { className: "demo-slide-src" }, "Sursă: " + sl.src))), document.body);
+}
 function DemoLayer() {
   const { setPage, lang } = useApp();
   const [step, setStep] = useState(0);
   const [hidden, setHidden] = useState(false);
-  const [qrX, setQrX] = useState(false);
+  const [slideX, setSlideX] = useState(false);
+  const [qa, setQa] = useState(-1);
   const [t0, setT0] = useState(0); // the run clock starts on the first step change
   const [stepAt, setStepAt] = useState(0);
   const [now, setNow] = useState(Date.now());
@@ -18519,7 +18670,7 @@ function DemoLayer() {
     const n = Math.max(0, Math.min(DEMO_STEPS.length - 1, i));
     const at = Date.now();
     setT0(v => v || at);
-    setStep(n); setStepAt(at); setQrX(false);
+    setStep(n); setStepAt(at); setSlideX(false); setQa(-1);
     demoShow(n, setPage);
   }, [setPage]);
   useEffect(() => { const id = setInterval(() => setNow(Date.now()), 500); return () => clearInterval(id); }, []);
@@ -18532,6 +18683,8 @@ function DemoLayer() {
       if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") d = 1;
       else if (e.key === "ArrowLeft" || e.key === "PageUp") d = -1;
       else if (e.key === "h" || e.key === "H") { setHidden(v => !v); return; }
+      else if (e.key === "Escape") { setQa(-1); return; }
+      else if (/^[1-9]$/.test(e.key) && +e.key <= DEMO_STEPS.length) { e.preventDefault(); go(+e.key - 1); return; }
       else return;
       e.preventDefault(); e.stopPropagation();
       go(stepRef.current + d);
@@ -18546,37 +18699,42 @@ function DemoLayer() {
     const cb = s => {
       const v = s.val();
       if (first) { first = false; return; }
-      if (v && typeof v.step === "number") go(v.step);
+      if (!v || typeof v.step !== "number") return;
+      const q = typeof v.qa === "number" && v.qa >= 0 && v.qa < DEMO_QA.length ? v.qa : -1;
+      if (v.step !== stepRef.current) go(v.step);
+      setQa(q);
     };
     ref.on("value", cb, () => {});
     return () => ref.off("value", cb);
   }, [go]);
   const s = DEMO_STEPS[step];
-  const total = DEMO_STEPS.reduce((a, x) => a + x.sec[DEMO_LEN], 0) * 1000;
   const runMs = t0 ? now - t0 : 0, stepMs = t0 ? now - stepAt : 0;
-  const over = stepMs > s.sec[DEMO_LEN] * 1000;
+  const over = stepMs > s.sec * 1000;
+  const q = qa >= 0 ? DEMO_QA[qa] : null;
   const e = React.createElement;
   return e(React.Fragment, null,
     !hidden && e("div", { className: "demo-bar", role: "toolbar", "aria-label": "Demo" },
       e("button", { onClick: () => go(step - 1), disabled: step === 0, "aria-label": "Înapoi" }, "‹"),
       e("span", { className: "demo-n" }, step + 1, "/", DEMO_STEPS.length),
-      e("span", { className: "demo-t" }, lang === "en" ? s.en : s.ro),
-      e("span", { className: "demo-c" + (over ? " over" : "") }, demoClock(stepMs), " · ", demoClock(runMs), "/", demoClock(total)),
+      e("span", { className: "demo-t" }, (lang === "en" ? s.en : s.ro) + " · " + DEMO_WHO[s.who]),
+      e("span", { className: "demo-c" + (over ? " over" : "") }, demoClock(stepMs), " · ", demoClock(runMs), "/", demoClock(DEMO_TOTAL)),
       e("button", { onClick: () => go(step + 1), disabled: step === DEMO_STEPS.length - 1, "aria-label": "Înainte" }, "›")),
-    s.id === "qr" && !qrX && ReactDOM.createPortal(e("div", { className: "demo-qr", onClick: () => setQrX(true) },
-      e("div", { className: "demo-qr-card", onClick: ev => ev.stopPropagation() },
-        e("img", { src: "/icons/qr-" + ACTIVE_CITY + ".svg", alt: SITE + "/?c=" + ACTIVE_CITY, width: 420, height: 420 }),
-        e("p", { className: "demo-qr-u" }, SITE.replace("https://", "") + "/?c=" + ACTIVE_CITY),
-        e("p", { className: "demo-qr-a" }, lang === "en" ? "Check a court near you." : "Verifică un teren de lângă tine."))), document.body));
+    s.slide && !slideX && !q && e(DemoSlide, { sl: s.slide, onClose: () => setSlideX(true) }),
+    q && q.s && e(DemoSlide, { sl: q.s, kicker: "Întrebare · " + q.q, onClose: () => setQa(-1) }));
 }
 function DemoRemote() {
   const { isAdmin, authReady, openAuth } = useApp();
   const live = useFirebase("demo");
+  const [tab, setTab] = useState("pitch");
+  const [cat, setCat] = useState("");
+  const [find, setFind] = useState("");
+  const [open, setOpen] = useState(-1);
   const [t0, setT0] = useState(0);
   const [stepAt, setStepAt] = useState(0);
   const [now, setNow] = useState(Date.now());
   const [err, setErr] = useState("");
-  const step = live && typeof live.step === "number" ? live.step : 0;
+  const step = live && typeof live.step === "number" ? Math.min(live.step, DEMO_STEPS.length - 1) : 0;
+  const onScreen = live && typeof live.qa === "number" && live.qa >= 0 ? live.qa : -1;
   useEffect(() => { const id = setInterval(() => setNow(Date.now()), 500); return () => clearInterval(id); }, []);
   // keep the phone screen on while it is the remote
   useEffect(() => {
@@ -18584,37 +18742,63 @@ function DemoRemote() {
     try { navigator.wakeLock && navigator.wakeLock.request("screen").then(l => { wl = l; }).catch(() => {}); } catch (e) {}
     return () => { try { wl && wl.release(); } catch (e) {} };
   }, []);
+  const write = (n, qa) => {
+    db.ref("demo").set({ step: n, at: firebase.database.ServerValue.TIMESTAMP, qa: qa })
+      .then(() => setErr(""))
+      .catch(() => setErr("Nu pot scrie demo/ — ești logat cu contul de admin? Regulile bazei de date sunt publicate?"));
+    try { navigator.vibrate && navigator.vibrate(30); } catch (e) {}
+  };
   const send = i => {
     const n = Math.max(0, Math.min(DEMO_STEPS.length - 1, i));
     const at = Date.now();
     setT0(v => v || at); setStepAt(at);
-    db.ref("demo").set({ step: n, at: firebase.database.ServerValue.TIMESTAMP })
-      .then(() => setErr(""))
-      .catch(() => setErr("Nu pot scrie demo/ — regulile bazei de date nu sunt publicate încă."));
-    try { navigator.vibrate && navigator.vibrate(30); } catch (e) {}
+    write(n, -1);
   };
   const s = DEMO_STEPS[step], nx = DEMO_STEPS[step + 1];
-  const total = DEMO_STEPS.reduce((a, x) => a + x.sec[DEMO_LEN], 0) * 1000;
-  const stepMs = t0 ? now - stepAt : 0, over = stepMs > s.sec[DEMO_LEN] * 1000;
+  const stepMs = t0 ? now - stepAt : 0, over = stepMs > s.sec * 1000;
+  const cats = DEMO_QA.reduce((a, x) => a.indexOf(x.c) < 0 ? a.concat(x.c) : a, []);
+  const f = find.trim().toLowerCase();
+  const list = DEMO_QA.map((x, i) => [x, i]).filter(([x]) => (!cat || x.c === cat) && (!f || (x.q + " " + x.a).toLowerCase().indexOf(f) >= 0));
   const e = React.createElement;
+  const top = e("div", { className: "demo-rm-top" },
+    e("span", null, step + 1, "/", DEMO_STEPS.length),
+    e("span", { className: over ? "over" : "" }, demoClock(stepMs), " / ", demoClock(s.sec * 1000)),
+    e("span", null, demoClock(t0 ? now - t0 : 0), " / ", demoClock(DEMO_TOTAL)));
+  const tabs = e("div", { className: "demo-rm-tabs", role: "tablist" },
+    e("button", { role: "tab", "aria-selected": tab === "pitch", className: tab === "pitch" ? "on" : "", onClick: () => setTab("pitch") }, "Pitch"),
+    e("button", { role: "tab", "aria-selected": tab === "qa", className: tab === "qa" ? "on" : "", onClick: () => setTab("qa") }, "Întrebări (" + DEMO_QA.length + ")"));
+  const screenBar = onScreen >= 0 && e("div", { className: "demo-rm-onscreen" },
+    e("span", null, "Pe ecran: ", DEMO_QA[onScreen].q),
+    e("button", { onClick: () => write(step, -1) }, "Ascunde"));
+  const pitch = e(React.Fragment, null,
+    e("p", { className: "demo-rm-who" }, "Vorbește: ", e("b", null, DEMO_WHO[s.who])),
+    e("h2", null, s.ro),
+    e("p", { className: "demo-rm-note" }, s.note),
+    nx && e("p", { className: "demo-rm-next" }, "Urmează: ", nx.ro, " · ", DEMO_WHO[nx.who]),
+    e("div", { className: "demo-rm-steps" }, DEMO_STEPS.map((x, i) => e("button", { key: x.id, className: i === step ? "on" : "", onClick: () => send(i) }, (i + 1) + " " + x.ro))),
+    e("div", { className: "demo-rm-btns" },
+      e("button", { onClick: () => send(step - 1), disabled: step === 0, "aria-label": "Înapoi" }, "‹"),
+      e("button", { className: "go", onClick: () => send(step + 1), disabled: !nx, "aria-label": "Înainte" }, "›")),
+    e("button", { className: "demo-rm-reset", onClick: () => { setT0(0); send(0); } }, "↺ De la început"));
+  const qaTab = e(React.Fragment, null,
+    e("input", { className: "demo-rm-find", type: "search", placeholder: "Caută (bani, AI, GDPR…)", value: find, onChange: ev => setFind(ev.target.value) }),
+    e("div", { className: "demo-rm-cats" },
+      e("button", { className: !cat ? "on" : "", onClick: () => setCat("") }, "Toate"),
+      cats.map(c => e("button", { key: c, className: cat === c ? "on" : "", onClick: () => setCat(c) }, c))),
+    e("div", { className: "demo-rm-qa" }, list.map(([x, i]) => e("div", { key: i, className: "demo-rm-q" + (open === i ? " open" : "") },
+      e("button", { className: "demo-rm-qh", "aria-expanded": open === i, onClick: () => setOpen(open === i ? -1 : i) },
+        e("span", { className: "demo-rm-qc" }, x.c + " · " + DEMO_WHO[x.who]), e("b", null, x.q)),
+      open === i && e("div", { className: "demo-rm-qb" },
+        e("p", null, x.a),
+        x.s && (onScreen === i
+          ? e("button", { className: "demo-rm-show off", onClick: () => write(step, -1) }, "Ascunde de pe ecran")
+          : e("button", { className: "demo-rm-show", onClick: () => write(step, i) }, "Arată pe ecran")))))));
   return ReactDOM.createPortal(e("div", { className: "demo-remote" },
     !authReady ? e("p", null, "…") :
     !isAdmin ? e("div", { className: "demo-rm-login" },
       e("p", null, "Telecomanda merge doar cu contul de admin."),
       e("button", { className: "btn btn-green", onClick: () => openAuth() }, "Conectează-te")) :
-    e(React.Fragment, null,
-      e("div", { className: "demo-rm-top" },
-        e("span", null, step + 1, "/", DEMO_STEPS.length),
-        e("span", { className: over ? "over" : "" }, demoClock(stepMs), " / ", demoClock(s.sec[DEMO_LEN] * 1000)),
-        e("span", null, demoClock(t0 ? now - t0 : 0), " / ", demoClock(total))),
-      e("h2", null, s.ro),
-      e("p", { className: "demo-rm-note" }, s.note),
-      nx && e("p", { className: "demo-rm-next" }, "Urmează: ", nx.ro),
-      err && e("p", { className: "demo-rm-err" }, err),
-      e("div", { className: "demo-rm-btns" },
-        e("button", { onClick: () => send(step - 1), disabled: step === 0 }, "‹"),
-        e("button", { className: "go", onClick: () => send(step + 1), disabled: !nx }, "›")),
-      e("button", { className: "demo-rm-reset", onClick: () => { setT0(0); send(0); } }, "↺ De la început"))), document.body);
+    e(React.Fragment, null, top, tabs, screenBar, err && e("p", { className: "demo-rm-err" }, err), tab === "pitch" ? pitch : qaTab)), document.body);
 }
 
 function App() {
