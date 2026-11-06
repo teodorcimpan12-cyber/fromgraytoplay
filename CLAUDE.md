@@ -323,3 +323,11 @@ Highest civic-value next steps:
   "Promovăm sănătatea și sportul prin restaurarea terenurilor de sport." + Health/Sport/Community pills; then the 3D hero scrolls in as before.
   The old hero-premium headline "Terenurile tale contează" is now an `h2` (one `h1` per page). CSS block "Association opener" at the end of the main `<style>`
   (always dark, motion gated by `prefers-reduced-motion`). HU strings are drafts (`// TODO: HU review`).
+- Session 6 Nov 2026, late night (same branch, owner feedback — "made for phones, on the road"): Home opener rebuilt mobile-first. Compact (no
+  full-viewport height below 900px), single pill "Asociație în constituire", H1 "Asociația / From Grey to Play", message "Din gri, în joc.", then **three equal
+  buttons exactly as wide as the message** (Semnează petiția · Raportează (fires `g2p:report`) · Despre asociație → `association` page); the `.ao-cta` uses
+  `width:0;min-width:100%` inside `.ao-block{width:fit-content}` to get that width. The target drawing is 5 rings at equal 20-unit spacing + dot + cross
+  (`vector-effect:non-scaling-stroke`). The descender of "j" is no longer clipped (padding-bottom on `.ao-play`). The "why" band is one heading + one line
+  (no pills; `className: "bar"` is forbidden by a test). New page **`association`** (`AssociationPage`, in `PAGE_IDS`, nav item "🏛️ Asociația" between
+  "Cum ajuți" and "Despre", class `nav-assoc`, also in ⌘K); About keeps its Asociația tab. Founder roles: Cîmpan Teodor — coordination; Trofin Matei —
+  public relations and finance; Drăgan Gabriel — external activities and project delivery.

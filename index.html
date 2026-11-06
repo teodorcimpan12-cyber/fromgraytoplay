@@ -1678,52 +1678,59 @@ body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inse
 @media(min-width:1241px){.nav-links.desktop>a{padding-left:.48rem;padding-right:.48rem}}
 @media(min-width:1241px) and (max-width:1440px){.nav-acct-name{display:none}}
 @media(min-width:1441px){.nav-inner{max-width:1320px}}
-/* === Association opener (Home, Nov 2026): name + message, then a short why, then the 3D hero ===
+/* === Association opener (Home, Nov 2026, mobile-first): name + message + 3 equal buttons, then one line of why ===
    Always dark (like the hero below it). Motion is gated behind prefers-reduced-motion. */
-.ao{position:relative;overflow:hidden;isolation:isolate;min-height:calc(100vh - 64px);min-height:calc(100dvh - 64px);display:flex;align-items:center;color:#fff;background:#0B0F1C}
-.ao-bg{position:absolute;inset:0;z-index:-1;background:
-  radial-gradient(60% 55% at 85% 12%,rgba(16,185,129,.34),transparent 62%),
-  radial-gradient(55% 50% at 8% 92%,rgba(13,148,136,.30),transparent 60%),
-  radial-gradient(40% 40% at 55% 60%,rgba(249,115,22,.14),transparent 70%),
+.ao{position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:center;color:#fff;background:#0B0F1C;min-height:0}
+@media(min-width:900px){.ao{min-height:calc(100vh - 64px);min-height:calc(100dvh - 64px)}}
+.ao-bg{position:absolute;inset:0;z-index:-2;background:
+  radial-gradient(60% 55% at 85% 10%,rgba(16,185,129,.30),transparent 62%),
+  radial-gradient(55% 50% at 6% 96%,rgba(13,148,136,.26),transparent 60%),
   linear-gradient(160deg,#0B0F1C,#111A33 55%,#0B1F1E)}
-.ao-bg::after{content:'';position:absolute;inset:0;opacity:.07;background-image:linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(70% 70% at 50% 45%,#000,transparent);mask-image:radial-gradient(70% 70% at 50% 45%,#000,transparent)}
-.ao-court{position:absolute;right:-8%;top:50%;width:min(62vw,760px);aspect-ratio:1;transform:translateY(-50%);z-index:-1;opacity:.16;pointer-events:none}
-.ao-court svg{width:100%;height:100%}
-.ao-inner{position:relative;padding-top:clamp(2.5rem,8vh,5rem);padding-bottom:clamp(2.5rem,8vh,5rem)}
-.ao .btn-ghost{color:#E5E7EB;border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.04)}
-.ao-eyebrow{display:inline-flex;align-items:center;gap:.55rem;font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:#7DF7C9;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.28);padding:.4rem .85rem;border-radius:980px}
-.ao-eyebrow i{font-style:normal;color:#FDBA74;letter-spacing:.06em}
-.ao-title{margin:1.1rem 0 0;font-family:'Space Mono',monospace;line-height:1}
-.ao-kicker{display:block;font-size:clamp(.95rem,2.4vw,1.35rem);letter-spacing:.32em;text-transform:uppercase;color:#9CA3AF;font-weight:400;margin-bottom:.6rem}
-.ao-name{display:block;font-weight:700;font-size:clamp(2.6rem,9.5vw,6.6rem);letter-spacing:-.045em;line-height:.95;color:#fff}
+.ao-bg::after{content:'';position:absolute;inset:0;opacity:.06;background-image:linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px);background-size:48px 48px;-webkit-mask-image:radial-gradient(75% 75% at 50% 45%,#000,transparent);mask-image:radial-gradient(75% 75% at 50% 45%,#000,transparent)}
+/* The target: five rings, equal 20-unit spacing, one dot, one cross. Strokes stay 1.4px at any size. */
+.ao-target{position:absolute;z-index:-1;pointer-events:none;color:#fff;opacity:.17;width:84vw;max-width:520px;aspect-ratio:1;right:-26vw;top:50%;transform:translateY(-52%)}
+.ao-target svg{display:block;width:100%;height:100%;overflow:visible}
+.ao-target circle,.ao-target path{vector-effect:non-scaling-stroke;stroke-width:1.4;fill:none;stroke:currentColor}
+.ao-target .dot{fill:currentColor;stroke:none}
+@media(min-width:900px){.ao-target{width:min(44vw,560px);right:6vw;top:50%;transform:translateY(-50%);opacity:.2}}
+.ao-inner{position:relative;padding-top:clamp(1.8rem,5vh,4rem);padding-bottom:clamp(2rem,6vh,4.5rem)}
+.ao-eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#7DF7C9;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.28);padding:.38rem .8rem;border-radius:980px}
+.ao-title{margin:1rem 0 0;font-family:'Space Mono',monospace;line-height:1}
+.ao-kicker{display:block;font-size:clamp(.8rem,2.2vw,1.2rem);letter-spacing:.3em;text-transform:uppercase;color:#9CA3AF;font-weight:400;margin-bottom:.5rem}
+.ao-name{display:block;font-weight:700;font-size:clamp(2.5rem,11.5vw,5rem);letter-spacing:-.05em;line-height:.96;color:#fff}
 .ao-name b{font-weight:700;color:#8b93a1}
 .ao-name em{font-style:normal;color:var(--green)}
-.ao-msg{margin:clamp(1.4rem,4vh,2.4rem) 0 0;font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(1.7rem,5.6vw,3.6rem);letter-spacing:-.03em;line-height:1.08;color:#E5E7EB}
-.ao-grey{color:#8b93a1;display:inline-block}
-.ao-play{display:inline-block;background:linear-gradient(100deg,#10B981,#7DF7C9 55%,#F97316);-webkit-background-clip:text;background-clip:text;color:transparent}
-.ao-cta{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:clamp(1.6rem,4vh,2.4rem)}
-.ao-scroll{position:absolute;left:50%;bottom:1.1rem;transform:translateX(-50%);font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:#9CA3AF;display:flex;flex-direction:column;align-items:center;gap:.35rem;pointer-events:none}
-.ao-scroll span{display:block;width:1px;height:26px;background:linear-gradient(#10B981,transparent)}
-.ao-why{position:relative;background:#0B0F1C;color:#E5E7EB;padding:clamp(2.6rem,7vh,4.4rem) 0;border-top:1px solid rgba(255,255,255,.06)}
-.ao-why h2{font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(1.3rem,3.6vw,2.1rem);letter-spacing:-.02em;line-height:1.2;max-width:22ch;margin:0 0 .9rem;color:#fff;text-wrap:balance}
-.ao-why p{max-width:60ch;margin:0 0 1.4rem;color:#9CA3AF;font-size:1.02rem;line-height:1.65;text-wrap:pretty}
-.ao-pills{display:flex;flex-wrap:wrap;gap:.6rem}
-.ao-pills span{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem 1rem;border-radius:980px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);font-weight:600;font-size:.92rem;color:#E5E7EB}
-@keyframes aoRise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-@keyframes aoWarm{0%,28%{color:#8b93a1;background-position:0 0}60%,100%{color:#fff}}
+/* Message and buttons share one box, so the three buttons are exactly as wide as "Din gri, in joc." */
+.ao-block{width:fit-content;max-width:100%;margin-top:clamp(1.1rem,3vh,2rem)}
+.ao-msg{margin:0;font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(1.5rem,10vw,3.4rem);letter-spacing:-.04em;line-height:1.25;white-space:nowrap;color:#E5E7EB}
+.ao-grey{color:#8b93a1}
+.ao-play{display:inline-block;padding:0 .06em .2em 0;margin:0 -.06em -.2em 0;background:linear-gradient(100deg,#10B981,#7DF7C9 55%,#F97316);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.ao-cta{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin-top:.9rem;width:0;min-width:100%}
+.ao-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;min-height:76px;padding:.7rem .35rem;border-radius:18px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#F3F4F6;font:600 .78rem/1.15 'Libre Franklin',sans-serif;text-align:center;text-wrap:balance;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.ao-btn .ic{font-size:1.4rem;line-height:1}
+.ao-btn.go{background:var(--green);border-color:transparent;color:#fff;box-shadow:0 8px 24px -8px rgba(16,185,129,.7)}
+.ao-btn.rep .ic{filter:saturate(1.1)}
+.ao-btn:active{transform:scale(.97)}
+@media(hover:hover) and (pointer:fine){.ao-btn:hover{background:rgba(255,255,255,.12)}.ao-btn.go:hover{background:#0ea371}}
+.ao-why{position:relative;background:#0B0F1C;color:#E5E7EB;padding:1.3rem 0 1.5rem;border-top:1px solid rgba(255,255,255,.06)}
+.ao-why h2{font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(1rem,3.7vw,1.5rem);letter-spacing:-.02em;line-height:1.3;margin:0 0 .3rem;color:#fff;text-wrap:balance}
+.ao-why p{margin:0;color:#9CA3AF;font-size:.9rem;line-height:1.55;max-width:56ch;text-wrap:pretty}
+@keyframes aoRise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes aoWarm{0%,28%{color:#8b93a1}60%,100%{color:#fff}}
 @keyframes aoSweep{from{background-position:100% 0}to{background-position:0 0}}
-@keyframes aoBob{0%,100%{transform:translateY(0);opacity:.7}50%{transform:translateY(5px);opacity:1}}
 @media(prefers-reduced-motion:no-preference){
-  .ao-eyebrow{animation:aoRise .7s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}
-  .ao-kicker{animation:aoRise .7s .08s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}
-  .ao-name{animation:aoRise .8s .16s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}
-  .ao-msg{animation:aoRise .8s .5s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}
-  .ao-grey{animation:aoWarm 1.8s 1.1s ease-out both}
-  .ao-play{background-size:220% 100%;animation:aoSweep 1.6s 1.3s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}
-  .ao-cta{animation:aoRise .8s .8s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}
-  .ao-scroll span{animation:aoBob 1.8s ease-in-out infinite}
+  .ao-eyebrow{animation:aoRise .6s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}
+  .ao-kicker{animation:aoRise .6s .06s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}
+  .ao-name{animation:aoRise .7s .12s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}
+  .ao-msg{animation:aoRise .7s .4s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}
+  .ao-grey{animation:aoWarm 1.6s .9s ease-out both}
+  .ao-play{background-size:220% 100%;animation:aoSweep 1.5s 1.1s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}
+  .ao-cta{animation:aoRise .7s .6s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}
 }
-@media(max-width:600px){.ao-court{right:-30%;width:110vw;opacity:.12}.ao-scroll{display:none}.ao-cta .btn{flex:1 1 100%;text-align:center}}
+@media(min-width:600px){.ao-btn{font-size:.9rem;min-height:92px;gap:.4rem}.ao-btn .ic{font-size:1.6rem}}
+/* Nav: the Association entry stands out a little */
+.nav-links a.nav-assoc{position:relative;font-weight:600;color:var(--text);background:color-mix(in srgb,var(--green) 10%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--green) 35%,transparent)}
+.nav-links a.nav-assoc.active{color:#fff;background:var(--green);box-shadow:none}
 </style>
 <script>(function(){try{var a=JSON.parse(localStorage.getItem("g2p_accent")||"null");if(a&&a.p){var r=document.documentElement;r.style.setProperty("--green",a.p);if(a.s)r.style.setProperty("--teal",a.s);r.classList.add("accent-on");}}catch(e){}})();</script>
 <script>(function(){try{var t=localStorage.getItem("g2p_theme")||(window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="dark"?"#0F172A":"#FFFFFF");}catch(e){}})();</script>
@@ -2917,7 +2924,7 @@ function shareCourt(court, t, toast) {
 /* === Hash routing. "#courts" etc. select a page; "#court-{id}" deep-links
    into CourtsPage (used by shareCourt + manifest shortcuts). "#/admin" is
    handled separately in App. === */
-const PAGE_IDS = ["home", "courts", "reports", "petition", "community", "impact", "help", "about", "profile", "press"];
+const PAGE_IDS = ["home", "courts", "reports", "petition", "community", "impact", "help", "association", "about", "profile", "press"];
 function pageFromHash() {
   const h = location.hash.replace(/^#\/?/, "");
   if (h.indexOf("court-") === 0) return "courts";
@@ -7116,7 +7123,7 @@ function CommandPalette({ onClose }) {
   [["home", t.home, "🏠", L3("acasa start", "start", "")], ["courts", t.courts, "🏟️", L3("harta terenuri", "map", "térkép")],
    ["reports", t.reportPageTitle, "⚠️", L3("probleme sesizari", "issues", "")], ["petition", t.petition, "✊", L3("semnatura vot", "sign vote", "")],
    ["community", t.community, "💬", L3("forum galerie evenimente echipe pixel clasament", "forum gallery events teams pixel leaderboard", "")],
-   ["impact", t.impact, "📊", L3("statistici cifre", "stats numbers", "")], ["help", t.help, "🤝", L3("voluntar doneaza distribuie contact", "volunteer donate share contact", "")],
+   ["impact", t.impact, "📊", L3("statistici cifre", "stats numbers", "")], ["help", t.help, "🤝", L3("voluntar doneaza distribuie contact", "volunteer donate share contact", "")], ["association", L3("Asociația", "Association", "Egyesület"), "🏛️", L3("asociatie fondatori statut constituire", "association founders statute", "")],
    ["about", t.about, "ℹ️", L3("echipa surse finantare parteneri presa", "team sources funding partners press", "")], ["profile", t.profile, "👤", L3("cont insigne", "account badges", "")]]
     .filter(pg => flags[pg[0]] !== false)
     .forEach(pg => items.push({ c: "pages", ic: pg[2], l: pg[1], kw: pg[3], run: go(pg[0]) }));
@@ -7343,6 +7350,9 @@ function Navbar() {
     k: "help",
     l: t.help
   }, {
+    k: "association",
+    l: "\uD83C\uDFDB\uFE0F " + L3("Asociația", "Association", "Egyesület")
+  }, {
     k: "about",
     l: t.about
   }].filter(n => !(settings && settings.flags && settings.flags[n.k] === false));
@@ -7352,7 +7362,7 @@ function Navbar() {
     click
   }) => /*#__PURE__*/React.createElement("a", {
     href: "#",
-    className: page === k ? "active" : "",
+    className: (page === k ? "active" : "") + (k === "association" ? " nav-assoc" : ""),
     onClick: e => {
       e.preventDefault();
       setPage(k);
@@ -9787,40 +9797,39 @@ function City3D() {
   );
 }
 
-/* === Home opener: association name + message, then a short "why". Honest status: being established. === */
+/* === Home opener: association name + message + three equal buttons, then one line of why. Honest status: being established. === */
 function HomeOpener() {
   const { lang, setPage } = useApp();
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
-  const goAbout = () => { try { sessionStorage.setItem("g2p_about_tab", "association"); } catch (e) {} setPage("about"); window.scrollTo(0, 0); };
-  const toHero = () => { const el = document.querySelector(".h3d-hero"); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); };
-  const court = React.createElement("svg", { viewBox: "0 0 200 200", fill: "none", stroke: "#fff", strokeWidth: "1.2" },
-    React.createElement("circle", { cx: 100, cy: 100, r: 92 }),
-    React.createElement("circle", { cx: 100, cy: 100, r: 26 }),
-    React.createElement("path", { d: "M100 8V192M8 100H192" }),
-    React.createElement("path", { d: "M52 100a48 48 0 0 1 96 0M52 100a48 48 0 0 0 96 0" }));
+  const go = pg => { setPage(pg); window.scrollTo(0, 0); };
+  const openReport = () => { try { window.dispatchEvent(new CustomEvent("g2p:report", { detail: { courtId: "" } })); } catch (e) {} };
+  const rings = [96, 76, 56, 36, 16].map(r => React.createElement("circle", { key: r, cx: 100, cy: 100, r: r }));
+  const target = React.createElement("svg", { viewBox: "0 0 200 200", "aria-hidden": "true" },
+    rings,
+    React.createElement("path", { d: "M100 0V200M0 100H200" }),
+    React.createElement("circle", { className: "dot", cx: 100, cy: 100, r: 4 }));
+  const btn = (cls, ic, label, fn) => React.createElement("button", { type: "button", className: "ao-btn " + cls, onClick: fn },
+    React.createElement("span", { className: "ic", "aria-hidden": "true" }, ic), React.createElement("span", null, label));
   return React.createElement(React.Fragment, null,
     React.createElement("section", { className: "ao", "aria-labelledby": "ao-h1" },
       React.createElement("div", { className: "ao-bg", "aria-hidden": "true" }),
-      React.createElement("div", { className: "ao-court", "aria-hidden": "true" }, court),
+      React.createElement("div", { className: "ao-target", "aria-hidden": "true" }, target),
       React.createElement("div", { className: "container ao-inner" },
-        React.createElement("div", { className: "ao-eyebrow" }, React.createElement("span", { className: "live-dot" }), L3("Asociație", "Association", "Egyesület"), React.createElement("i", null, "· " + L3("în constituire", "being established", "alakulóban"))),
+        React.createElement("div", { className: "ao-eyebrow" }, React.createElement("span", { className: "live-dot" }), L3("Asociație în constituire", "Association being established", "Egyesület alakulóban")), // TODO: HU review
         React.createElement("h1", { className: "ao-title", id: "ao-h1" },
           React.createElement("span", { className: "ao-kicker" }, L3("Asociația", "The association", "Az egyesület")),
           React.createElement("span", { className: "ao-name" }, React.createElement("b", null, "From Grey"), " ", React.createElement("em", null, "to Play"))),
-        React.createElement("p", { className: "ao-msg" }, L3("Din ", "From ", "") , React.createElement("span", { className: "ao-grey" }, L3("gri", "grey", "szürkéből")), L3(", în ", ", to ", ", "), React.createElement("span", { className: "ao-play" }, L3("joc", "play", "játékba")), "."), // TODO: HU review
-        React.createElement("div", { className: "ao-cta" },
-          React.createElement("button", { className: "btn btn-green", onClick: () => { setPage("petition"); window.scrollTo(0, 0); } }, "✍️ " + L3("Semnează petiția", "Sign the petition", "Írd alá a petíciót")),
-          React.createElement("button", { className: "btn btn-ghost", onClick: goAbout }, "🏛️ " + L3("Despre asociație", "About the association", "Az egyesületről")))),
-      React.createElement("button", { className: "ao-scroll", style: { background: "none", border: 0, cursor: "pointer", pointerEvents: "auto" }, onClick: toHero, "aria-label": L3("Derulează", "Scroll", "Görgess") }, L3("derulează", "scroll", "görgess"), React.createElement("span", null))),
+        React.createElement("div", { className: "ao-block" },
+          React.createElement("p", { className: "ao-msg" }, L3("Din ", "From ", ""), React.createElement("span", { className: "ao-grey" }, L3("gri", "grey", "szürkéből")), L3(", în ", ", to ", ", "), React.createElement("span", { className: "ao-play" }, L3("joc", "play", "játékba")), "."), // TODO: HU review
+          React.createElement("div", { className: "ao-cta" },
+            btn("go", "✍️", L3("Semnează petiția", "Sign the petition", "Írd alá a petíciót"), () => go("petition")),
+            btn("rep", "📍", L3("Raportează", "Report", "Jelentsd"), openReport),
+            btn("abt", "🏛️", L3("Despre asociație", "About the association", "Az egyesületről"), () => go("association")))))),
     React.createElement("section", { className: "ao-why" },
       React.createElement("div", { className: "container" },
-        React.createElement("h2", null, L3("Promovăm sănătatea și sportul prin restaurarea terenurilor de sport.", "We promote health and sport by restoring sports courts.", "Az egészséget és a sportot a sportpályák helyreállításával segítjük.")), // TODO: HU review
-        React.createElement("p", null, L3("Un teren întreținut scoate copiii și tinerii din casă, îi pune în mișcare și adună cartierul. Documentăm terenurile degradate, cerem repararea lor și arătăm public ce se schimbă.", "A well-kept court gets children and teenagers out of the house, moving, and brings the neighbourhood together. We document degraded courts, ask for them to be repaired and show publicly what changes.", "Egy karbantartott pálya kimozdítja a gyerekeket és a fiatalokat, mozgásra bírja őket, és összehozza a környéket. Dokumentáljuk az elhanyagolt pályákat, kérjük a javításukat, és nyilvánosan megmutatjuk, mi változik.")), // TODO: HU review
-        React.createElement("div", { className: "ao-pills" },
-          React.createElement("span", null, "❤️ " + L3("Sănătate", "Health", "Egészség")),
-          React.createElement("span", null, "🏀 " + L3("Sport", "Sport", "Sport")),
-          React.createElement("span", null, "🤝 " + L3("Comunitate", "Community", "Közösség")))))
-  );
+        React.createElement("div", null,
+          React.createElement("h2", null, L3("Promovăm sănătatea și sportul prin restaurarea terenurilor de sport.", "We promote health and sport by restoring sports courts.", "Az egészséget és a sportot a sportpályák helyreállításával segítjük.")), // TODO: HU review
+          React.createElement("p", null, L3("Documentăm terenurile degradate, cerem repararea lor și arătăm public ce se schimbă.", "We document degraded courts, ask for them to be repaired and show publicly what changes.", "Dokumentáljuk az elhanyagolt pályákat, kérjük a javításukat, és nyilvánosan megmutatjuk, mi változik.")))))); // TODO: HU review
 }
 
 function HomePage() {
@@ -13581,8 +13590,8 @@ function AssociationTab({ onFunding }) {
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro; // TODO: HU review (falls back to RO)
   const founders = [
     { i: "CT", name: "Cîmpan Teodor", role: L3("Coordonare", "Coordination"), color: "var(--green)" },
-    { i: "TM", name: "Trofin Matei", role: L3("Verificare Satelit", "Satellite Review"), color: "var(--teal)" },
-    { i: "DG", name: "Drăgan Gabriel", role: L3("Verificare Date", "Data Review"), color: "var(--coral)" }
+    { i: "TM", name: "Trofin Matei", role: L3("Relații publice și financiar", "Public relations and finance"), color: "var(--teal)" },
+    { i: "DG", name: "Drăgan Gabriel", role: L3("Activități externe și derularea proiectelor", "External activities and project delivery"), color: "var(--coral)" }
   ];
   const steps = [
     { st: "done", h: L3("Platforma este publică și funcționează", "The platform is public and running"), p: L3("Hartă, petiție, rapoarte și imagini satelit, deschise oricui.", "Map, petition, reports and satellite imagery, open to anyone.") },
@@ -13639,6 +13648,15 @@ function AssociationTab({ onFunding }) {
       React.createElement("button", { className: "btn btn-green", onClick: onFunding }, "🤝 " + L3("Parteneriate și finanțare", "Partnerships and funding")),
       React.createElement("button", { className: "btn", onClick: () => { setPage("petition"); window.scrollTo(0, 0); } }, "✍️ " + L3("Semnează petiția", "Sign the petition")),
       React.createElement("a", { className: "btn btn-ghost", href: "mailto:" + G2P_EMAIL }, "✉️ " + L3("Scrie-ne", "Write to us"))));
+}
+
+/* === Association page (own nav entry). Same content as the About tab, with its own header. === */
+function AssociationPage() {
+  const { setPage } = useApp();
+  return React.createElement("div", { className: "animate-in" },
+    React.createElement("section", { className: "section" },
+      React.createElement("div", { className: "container" },
+        React.createElement(AssociationTab, { onFunding: () => { try { sessionStorage.setItem("g2p_about_tab", "funding"); } catch (e) {} setPage("about"); window.scrollTo(0, 0); } }))));
 }
 
 function FundingTab() {
@@ -14156,7 +14174,7 @@ function AboutPage() {
           React.createElement("span", null, m.role)
         ))
       ),
-      React.createElement("button", { className: "btn btn-sm btn-ghost mt-2", onClick: () => { setTab("association"); setTimeout(() => { const el = document.querySelector(".about-tabs"); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 60); } }, "🏛️ " + L3("Asociația este în constituire →", "The association is being established →", "Az egyesület alakulóban van →"))
+      React.createElement("button", { className: "btn btn-sm btn-ghost mt-2", onClick: () => { setPage("association"); window.scrollTo(0, 0); } }, "🏛️ " + L3("Asociația este în constituire →", "The association is being established →", "Az egyesület alakulóban van →"))
     )
   );
   // Key data: only facts of the city on screen (TGM facts never show on Sibiu).
@@ -18650,6 +18668,8 @@ function App() {
         return /*#__PURE__*/React.createElement(ImpactPage, null);
       case "help":
         return /*#__PURE__*/React.createElement(HelpPage, null);
+      case "association":
+        return React.createElement(AssociationPage, null);
       case "about":
         return /*#__PURE__*/React.createElement(AboutPage, null);
       case "press":
