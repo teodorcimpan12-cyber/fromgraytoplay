@@ -328,7 +328,7 @@ Highest civic-value next steps:
   with a single-reader satellite estimate (`SAT_VIEW.sb36`, n:1, Esri 2022-08-06). Court detail: no condition chip,
   works progress or ✓/✗ accessibility when there is no field data (`noField`: unverified or satellite estimate) —
   accessibility shows "?"; `satGone` courts read "Nevăzut din satelit" and hide Rezervă/Joc acum; new first action
-  "Raportează" (`openReport(c.id)`); pulse says "Estimat din satelit (imagine din {y})". Home: hero primary CTA is
-  "+ Raportează un teren", the renovate toggle is a quiet `.h3d-link`; stats = mapped / community-checked / votes in
-  this city (`cityVoteTotal`); petition headline counters are per city, live results labelled "toate orașele".
+  "Raportează" (`openReport(c.id)`); pulse says "Estimat din satelit (imagine din {y})". Home hero buttons, hero copy,
+  stat tiles and the petition vote counters stay ORIGINAL on purpose (owner's call, 6 Nov: keep "▶ Renovează terenul"
+  and the global vote total) — only the drag hint moved up and the 3 stat tiles sit in one row on phones.
   `#court-` deep links skip onboarding. SW → `g2p-v12`.
