@@ -299,3 +299,8 @@ Highest civic-value next steps:
   app shells `100dvh` (with `100vh` fallback); `touch-action: manipulation` on controls; 16px inputs on
   `pointer: coarse`; nav top + body sides + toast bottom padded by safe-area insets. Block "Mobile
   platform layer" at the end of the main `<style>`. New `:hover` rules go inside the hover media query.
+- Break-ui pass on `CsmInvest` (6 Nov 2026): years/budgets derived from the data (no hardcoded 2022/2025),
+  every division guarded (`pct` → "—" on 0), unknown `loc` keys get an "Other location: key" label,
+  bars clamped 0–100 (negatives shown red, bar at 0), empty state card, "M" only ≥ 1M, RO plurals via
+  `Intl.PluralRules` (1 lucrare / 29 de lucrări), numbers formatted in the active language (ro-RO/en-GB/hu-HU),
+  rows wrap at 200% zoom, trend sentence picks rose/fell by direction. Stats 2/3 hide when their data is absent.
