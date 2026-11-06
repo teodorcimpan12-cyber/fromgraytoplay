@@ -13492,6 +13492,73 @@ function SourcesTab({ onEssay }) {
 
 /* Funding & partnerships: honest numbers first (what the platform costs, why the renovation cost
    is not on the site yet, where money could come from), then what a partner would get. */
+/* === Association tab (About). Honest status: the association is being set up, not registered yet.
+   Founders = the three adults. Nothing here claims a legal body, a bank account or any funds. === */
+function AssociationTab({ onFunding }) {
+  const { lang, setPage } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro; // TODO: HU review (falls back to RO)
+  const founders = [
+    { i: "CT", name: "Cîmpan Teodor", role: L3("Coordonare", "Coordination"), color: "var(--green)" },
+    { i: "TM", name: "Trofin Matei", role: L3("Verificare Satelit", "Satellite Review"), color: "var(--teal)" },
+    { i: "DG", name: "Drăgan Gabriel", role: L3("Verificare Date", "Data Review"), color: "var(--coral)" }
+  ];
+  const steps = [
+    { st: "done", h: L3("Platforma este publică și funcționează", "The platform is public and running"), p: L3("Hartă, petiție, rapoarte și imagini satelit, deschise oricui.", "Map, petition, reports and satellite imagery, open to anyone.") },
+    { st: "done", h: L3("Datele sunt deschise, cu sursă", "The data is open, with sources"), p: L3("Licență CC BY 4.0. Fiecare cifră trimite la sursa ei din fila Surse.", "CC BY 4.0 licence. Every number points to its source in the Sources tab.") },
+    { st: "doing", h: L3("Statut și act constitutiv", "Statute and founding act"), p: L3("Le pregătim cu cei trei fondatori majori. Se semnează la notar sau avocat.", "Being drafted with the three adult founders. Signed before a notary or lawyer.") },
+    { st: "next", h: L3("Rezervarea denumirii", "Name reservation"), p: L3("Verificare și rezervare la Ministerul Justiției.", "Check and reservation at the Ministry of Justice.") },
+    { st: "next", h: L3("Dosarul la judecătorie", "Court filing"), p: L3("Înscrierea în Registrul asociațiilor și fundațiilor (OG 26/2000).", "Entry in the Register of Associations and Foundations (OG 26/2000).") },
+    { st: "next", h: L3("CIF și cont bancar", "Tax ID and bank account"), p: L3("Abia după aceea putem primi bani, și atunci îi arătăm public.", "Only after that can we receive money, and then we show it publicly.") }
+  ];
+  const stIc = { done: "✓", doing: "●", next: "○" };
+  const stTx = { done: L3("făcut", "done"), doing: L3("în lucru", "in progress"), next: L3("urmează", "next") };
+  const stCol = { done: "var(--green)", doing: "var(--coral)", next: "var(--textSec)" };
+  const rule = (ic, k, v, note) => React.createElement("div", { className: "fund-row" },
+    React.createElement("span", { className: "fund-ic", "aria-hidden": "true" }, ic),
+    React.createElement("div", null, React.createElement("div", { className: "fund-k" }, k), note && React.createElement("div", { className: "fund-note" }, note)),
+    React.createElement("div", { className: "fund-v" }, v));
+  return React.createElement("div", null,
+    React.createElement("div", { className: "card", style: { borderLeft: "6px solid var(--coral)" } },
+      React.createElement("span", { className: "badge badge-coral" }, L3("În constituire", "Being established")),
+      React.createElement("h3", { className: "mt-1" }, "🏛️ " + L3("Asociația From Grey to Play", "The From Grey to Play Association")),
+      React.createElement("p", null, L3(
+        "Platforma a pornit de la un teren cu coșul îndoit. Acum o ducem mai departe ca asociație, ca terenurile să fie urmărite pe termen lung și să nu depindă de trei oameni.",
+        "The platform started from a court with a bent hoop. We are now taking it forward as an association, so courts are tracked for the long term and do not depend on three people.")),
+      React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } }, L3(
+        "Ce nu spunem: nu suntem încă o persoană juridică înregistrată și nu avem cont bancar. Spunem ce e gata și ce urmează.",
+        "What we do not say: we are not yet a registered legal entity and we have no bank account. We say what is done and what comes next."))),
+    React.createElement("h3", { className: "mt-3 mb-1" }, "👥 " + L3("Fondatori", "Founders")),
+    React.createElement("div", { className: "about-team-grid" }, founders.map((m, idx) => React.createElement("div", { key: idx, className: "about-member", style: { "--mc": m.color } },
+      React.createElement("div", { className: "about-avatar" }, m.i),
+      React.createElement("strong", null, m.name),
+      React.createElement("span", null, m.role)))),
+    React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, L3("Fondatorii sunt cei trei membri majori. Ceilalți tineri din echipă rămân voluntari.", "The founders are the three adult members. The other young people on the team stay volunteers.")),
+    React.createElement("h3", { className: "mt-3 mb-1" }, "🧭 " + L3("Unde suntem", "Where we are")),
+    React.createElement("ol", { className: "assoc-steps", style: { listStyle: "none", padding: 0, margin: 0, display: "grid", gap: ".6rem" } }, steps.map((s, i) => React.createElement("li", { key: i, className: "card", style: { display: "flex", gap: ".8rem", alignItems: "flex-start", padding: ".8rem 1rem" } },
+      React.createElement("span", { "aria-hidden": "true", style: { color: stCol[s.st], fontWeight: 700, fontSize: "1.2rem", lineHeight: 1.2, minWidth: "1.4rem" } }, stIc[s.st]),
+      React.createElement("div", null,
+        React.createElement("strong", null, s.h),
+        React.createElement("span", { className: "text-xs", style: { color: stCol[s.st], marginLeft: ".5rem" } }, stTx[s.st]),
+        React.createElement("div", { className: "text-sm", style: { color: "var(--textSec)" } }, s.p))))),
+    React.createElement("div", { className: "card fund-transp mt-3" },
+      React.createElement("h3", { className: "mb-1" }, "♻️ " + L3("Cum rămâne asociația în picioare", "How the association stays afloat")),
+      rule("💻", L3("Cost de funcționare", "Running cost"), "≈ 0 lei", L3("Găzduire gratuită, bază de date pe plan gratuit, muncă voluntară.", "Free hosting, database on a free plan, volunteer work.")),
+      rule("⚖️", L3("Nicio sursă peste 40%", "No source above 40%"), L3("regula noastră", "our rule"), L3("Dacă o singură sursă ar trece de 40% din venituri, o reducem sau căutăm alta.", "If one source would pass 40% of income, we reduce it or find another.")),
+      rule("🔐", L3("Bani doar prin asociație", "Money only through the association"), L3("după înregistrare", "after registration"), L3("Nu strângem bani de la nimeni până nu avem persoană juridică și cont.", "We collect no money from anyone until we have a legal entity and an account.")),
+      rule("📖", L3("Rapoarte publice", "Public reports"), L3("venituri și cheltuieli", "income and spending"), L3("Publicăm fiecare leu primit și cheltuit, pe acest site, cu sursă.", "We publish every leu received and spent, on this site, with its source."))),
+    React.createElement("h3", { className: "mt-3 mb-1" }, "💶 " + L3("De unde ar putea veni banii", "Where the money could come from")),
+    React.createElement("ul", { style: { margin: 0, paddingLeft: "1.2rem", lineHeight: 1.7 } },
+      React.createElement("li", null, L3("Contribuția fondatorilor, pentru taxele de înființare.", "The founders' own contribution, for the registration fees.")),
+      React.createElement("li", null, L3("Parteneri locali care adoptă un teren (echipament, vopsea, o zi de voluntariat).", "Local partners who adopt a court (equipment, paint, a volunteering day).")),
+      React.createElement("li", null, L3("Redirecționarea de 3,5% din impozit, doar dacă îndeplinim condițiile de eligibilitate.", "The 3.5% income tax redirection, only if we meet the eligibility conditions.")),
+      React.createElement("li", null, L3("Granturi locale și fonduri UE, ca partener sau în consorțiu.", "Local grants and EU funds, as a partner or in a consortium."))),
+    React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, L3("Nu promitem sume. Publicăm cifre doar când avem o sursă.", "We promise no amounts. We publish figures only when we have a source.")),
+    React.createElement("div", { className: "flex gap-2 mt-2", style: { flexWrap: "wrap" } },
+      React.createElement("button", { className: "btn btn-green", onClick: onFunding }, "🤝 " + L3("Parteneriate și finanțare", "Partnerships and funding")),
+      React.createElement("button", { className: "btn", onClick: () => { setPage("petition"); window.scrollTo(0, 0); } }, "✍️ " + L3("Semnează petiția", "Sign the petition")),
+      React.createElement("a", { className: "btn btn-ghost", href: "mailto:" + G2P_EMAIL }, "✉️ " + L3("Scrie-ne", "Write to us"))));
+}
+
 function FundingTab() {
   const { t, lang, toast } = useApp();
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
@@ -13967,7 +14034,7 @@ function HelpPage() {
 function AboutPage() {
   const { t, lang, setPage } = useApp();
   const [tab, setTab] = useState(() => {
-    try { const s = sessionStorage.getItem("g2p_about_tab"); if (s) { sessionStorage.removeItem("g2p_about_tab"); if (["project", "sources", "funding", "press"].indexOf(s) >= 0) return s; } } catch (e) {}
+    try { const s = sessionStorage.getItem("g2p_about_tab"); if (s) { sessionStorage.removeItem("g2p_about_tab"); if (["project", "association", "sources", "funding", "press"].indexOf(s) >= 0) return s; } } catch (e) {}
     return "project";
   });
   const [essayOpen, setEssayOpen] = useState(false);
@@ -13985,7 +14052,7 @@ function AboutPage() {
     { i: "TM", name: "Trofin Matei", role: L3("Verificare Satelit", "Satellite Review", "Műhold-ellenőrzés"), color: "var(--teal)" },
     { i: "ȚM", name: "Țurcanu Mihai", role: L3("Verificare Satelit", "Satellite Review", "Műhold-ellenőrzés"), color: "var(--teal)" },
     { i: "CI", name: "Cernescu Ionuț", role: L3("Verificare Date", "Data Review", "Adatellenőrzés"), color: "var(--coral)" },
-    { i: "DI", name: "Drăgan Ilie", role: L3("Verificare Date", "Data Review", "Adatellenőrzés"), color: "var(--coral)" },
+    { i: "DG", name: "Drăgan Gabriel", role: L3("Verificare Date", "Data Review", "Adatellenőrzés"), color: "var(--coral)" },
     { i: "CT", name: "Cîmpan Teodor", role: L3("Coordonare", "Coordination", "Koordináció"), color: "var(--green)" }
   ];
   const openEssay = () => { setTab("project"); setEssayOpen(true); setTimeout(() => { const el = document.getElementById("about-essay"); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 120); };
@@ -14006,7 +14073,8 @@ function AboutPage() {
           React.createElement("strong", null, m.name),
           React.createElement("span", null, m.role)
         ))
-      )
+      ),
+      React.createElement("button", { className: "btn btn-sm btn-ghost mt-2", onClick: () => { setTab("association"); setTimeout(() => { const el = document.querySelector(".about-tabs"); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 60); } }, "🏛️ " + L3("Asociația este în constituire →", "The association is being established →", "Az egyesület alakulóban van →"))
     )
   );
   // Key data: only facts of the city on screen (TGM facts never show on Sibiu).
@@ -14023,6 +14091,7 @@ function AboutPage() {
   ];
   const tabs = [
     ["project", "📖", t.theProject],
+    ["association", "🏛️", L3("Asociația", "The Association", "Az egyesület")],
     ["sources", "📚", L3("Surse", "Sources", "Források")],
     ["funding", "💰", L3("Finanțare & parteneriate", "Funding & partnerships", "Finanszírozás & partnerségek")],
     ["press", "📰", L3("Presă", "Press", "Sajtó")]
@@ -14054,6 +14123,7 @@ function AboutPage() {
             React.createElement("h3", { className: "mb-2" }, "🗺️ " + L3("Terenurile pe hartă", "The courts on the map", "Pályák a térképen")),
             React.createElement("a", { href: "#courts", className: "btn btn-green btn-sm" }, "🏀 " + L3("Harta celor " + COURTS.length + " de terenuri", "Map of all " + COURTS.length + " courts", "Mind a " + COURTS.length + " pálya térképen")),
             React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, L3("Platformă civică online — fără sediu fizic. Contact: ", "Online civic platform — no physical office. Contact: ", "Online civil platform — fizikai iroda nélkül. Kapcsolat: "), React.createElement("a", { href: "mailto:" + G2P_EMAIL }, G2P_EMAIL)))),
+        tab === "association" && React.createElement(AssociationTab, { onFunding: () => setTab("funding") }),
         tab === "sources" && React.createElement(SourcesTab, { onEssay: openEssay }),
         tab === "funding" && React.createElement(FundingTab, null),
         tab === "press" && React.createElement("div", { className: "card about-press" },

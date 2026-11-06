@@ -311,3 +311,9 @@ Highest civic-value next steps:
   account button icon-only 1241–1440px (`.nav-acct-name`, name kept in title/aria-label),
   `.nav-inner` max-width 1320px ≥1441px. SW → `g2p-v11`. New project skill `.claude/skills/arena`
   (/arena: parallel subagents with different strategies + blind judging rounds).
+- Session 6 Nov 2026 (branch `claude/asociatie-g2p`): About → new tab **🏛️ Asociația** (`AssociationTab`, key `association`;
+  `g2p_about_tab` accepts it). Honest status "în constituire": 3 adult founders (Cîmpan Teodor, Trofin Matei, Drăgan Gabriel),
+  steps done/in progress/next (statute, name reservation, court filing OG 26/2000, CIF + account), sustainability rules
+  (≈0 lei running cost, no source above 40%, money only through the association after registration, public reports).
+  Home-of-About hero has a button to it. Team member "Drăgan Ilie" renamed to "Drăgan Gabriel" (owner-confirmed).
+  No legal-entity, bank-account or amount claims anywhere. HU falls back to RO for the new strings (`// TODO: HU review`).
