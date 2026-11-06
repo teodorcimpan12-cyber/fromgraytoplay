@@ -1678,6 +1678,137 @@ body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inse
 @media(min-width:1241px){.nav-links.desktop>a{padding-left:.48rem;padding-right:.48rem}}
 @media(min-width:1241px) and (max-width:1440px){.nav-acct-name{display:none}}
 @media(min-width:1441px){.nav-inner{max-width:1320px}}
+/* === Association opener (Home, Nov 2026, mobile-first): name + message + 3 equal buttons, then one line of why ===
+   Always dark (like the hero below it). Motion is gated behind prefers-reduced-motion. */
+.ao{position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:center;color:#fff;background:#0B0F1C;min-height:0}
+@media(min-width:900px){.ao{min-height:calc(100vh - 64px);min-height:calc(100dvh - 64px)}}
+.ao-bg{position:absolute;inset:0;z-index:-2;background:
+  radial-gradient(60% 55% at 85% 10%,rgba(16,185,129,.30),transparent 62%),
+  radial-gradient(55% 50% at 6% 96%,rgba(13,148,136,.26),transparent 60%),
+  linear-gradient(160deg,#0B0F1C,#111A33 55%,#0B1F1E)}
+.ao-bg::after{content:'';position:absolute;inset:0;opacity:.06;background-image:linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px);background-size:48px 48px;-webkit-mask-image:radial-gradient(75% 75% at 50% 45%,#000,transparent);mask-image:radial-gradient(75% 75% at 50% 45%,#000,transparent)}
+/* The target: five rings, equal 20-unit spacing, one dot, one cross. Strokes stay 1.4px at any size. */
+.ao-target{position:absolute;z-index:-1;pointer-events:none;color:#fff;opacity:.17;width:84vw;max-width:520px;aspect-ratio:1;right:-26vw;top:50%;transform:translateY(-52%)}
+.ao-target svg{display:block;width:100%;height:100%;overflow:visible}
+.ao-target circle,.ao-target path{vector-effect:non-scaling-stroke;stroke-width:1.4;fill:none;stroke:currentColor}
+.ao-target .dot{fill:currentColor;stroke:none}
+@media(min-width:900px){.ao-target{width:min(44vw,560px);right:6vw;top:50%;transform:translateY(-50%);opacity:.2}}
+.ao-inner{position:relative;padding-top:clamp(1.8rem,5vh,4rem);padding-bottom:clamp(2rem,6vh,4.5rem)}
+.ao-eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#7DF7C9;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.28);padding:.38rem .8rem;border-radius:980px}
+.ao-title{margin:1rem 0 0;font-family:'Space Mono',monospace;line-height:1}
+.ao-kicker{display:block;font-size:clamp(.8rem,2.2vw,1.2rem);letter-spacing:.3em;text-transform:uppercase;color:#9CA3AF;font-weight:400;margin-bottom:.5rem}
+.ao-name{display:block;font-weight:700;font-size:clamp(2.5rem,11.5vw,5rem);letter-spacing:-.05em;line-height:.96;color:#fff}
+.ao-name b{font-weight:700;color:#8b93a1}
+.ao-name em{font-style:normal;color:var(--green)}
+/* Message and buttons share one box, so the three buttons are exactly as wide as "Din gri, in joc." */
+.ao-block{width:fit-content;max-width:100%;margin-top:clamp(1.1rem,3vh,2rem)}
+.ao-msg{margin:0;font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(1.5rem,10vw,3.4rem);letter-spacing:-.04em;line-height:1.25;white-space:nowrap;color:#E5E7EB}
+.ao-grey{color:#8b93a1}
+.ao-play{display:inline-block;padding:0 .06em .2em 0;margin:0 -.06em -.2em 0;background:linear-gradient(100deg,#10B981,#7DF7C9 55%,#F97316);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.ao-cta{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin-top:.9rem;width:0;min-width:100%}
+.ao-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;min-height:76px;padding:.7rem .35rem;border-radius:18px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#F3F4F6;font:600 .78rem/1.15 'Libre Franklin',sans-serif;text-align:center;text-wrap:balance;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.ao-btn .ic{font-size:1.4rem;line-height:1}
+.ao-btn.go{background:var(--green);border-color:transparent;color:#fff;box-shadow:0 8px 24px -8px rgba(16,185,129,.7)}
+.ao-btn.rep .ic{filter:saturate(1.1)}
+@media(hover:hover) and (pointer:fine){.ao-btn:hover{background:rgba(255,255,255,.12)}.ao-btn.go:hover{background:#0ea371}}
+.ao-why{position:relative;background:#0B0F1C;color:#E5E7EB;padding:1.3rem 0 1.5rem;border-top:1px solid rgba(255,255,255,.06)}
+.ao-why h2{font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(1rem,3.7vw,1.5rem);letter-spacing:-.02em;line-height:1.3;margin:0 0 .3rem;color:#fff;text-wrap:balance}
+.ao-why p{margin:0;color:#9CA3AF;font-size:.9rem;line-height:1.55;max-width:56ch;text-wrap:pretty}
+@keyframes aoRise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes aoWarm{0%,28%{color:#8b93a1}60%,100%{color:#fff}}
+@keyframes aoSweep{from{background-position:100% 0}to{background-position:0 0}}
+@media(prefers-reduced-motion:no-preference){
+  .ao-eyebrow{animation:aoRise .6s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}
+  .ao-kicker{animation:aoRise .6s .06s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}
+  .ao-name{animation:aoRise .7s .12s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}
+  .ao-msg{animation:aoRise .7s .4s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}
+  .ao-grey{animation:aoWarm 1.6s .9s ease-out both}
+  .ao-play{background-size:220% 100%;animation:aoSweep 1.5s 1.1s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}
+  .ao-cta{animation:aoRise .7s .6s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}
+}
+@media(min-width:600px){.ao-btn{font-size:.9rem;min-height:92px;gap:.4rem}.ao-btn .ic{font-size:1.6rem}}
+/* Nav: the Association entry stands out a little */
+.nav-links a.nav-assoc{position:relative;font-weight:600;color:var(--text);background:color-mix(in srgb,var(--green) 10%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--green) 35%,transparent)}
+.nav-links a.nav-assoc.active{color:#fff;background:var(--green);box-shadow:none}
+/* === Fade lines, magnetic opener, 3D hero gutters, court sheet (Nov 2026, branch ui-instagram-court) === */
+/* Straight section lines fade out at both ends instead of running edge to edge. */
+:root{--fade-line:linear-gradient(90deg,transparent,var(--border) 16%,var(--border) 84%,transparent)}
+.navbar,.modal-head,.tabs,.fund-row,.rate-row,.lt-row,.ticker-wrap,.fade-b,.fade-t,.cp-top,.cp-cats{border-image:var(--fade-line) 1}
+.fade-b{border-bottom:1px solid var(--border)}
+.fade-t{border-top:1px solid var(--border)}
+.footer,.ao-why{border-image:linear-gradient(90deg,transparent,rgba(255,255,255,.12) 18%,rgba(255,255,255,.12) 82%,transparent) 1}
+[data-theme="light"] .footer{border-image:linear-gradient(90deg,transparent,rgba(0,0,0,.12) 18%,rgba(0,0,0,.12) 82%,transparent) 1}
+/* Opener: the target lives in the top-right corner and fades out downwards, so it never reaches the buttons. */
+.ao-target{top:0;right:-24vw;width:76vw;max-width:520px;transform:translateY(-14%);-webkit-mask-image:linear-gradient(180deg,#000 38%,transparent 78%);mask-image:linear-gradient(180deg,#000 38%,transparent 78%);translate:calc(var(--px,0)*-14px) calc(var(--py,0)*-14px);transition:translate .35s var(--ease-out,cubic-bezier(.22,1,.36,1))}
+@media(min-width:900px){.ao-target{top:50%;right:4vw;width:min(40vw,540px);transform:translateY(-50%);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 40%);mask-image:linear-gradient(90deg,transparent 0,#000 40%)}}
+/* Magnetic 3D buttons (hover + fine pointer only; the script sets --tx/--ty/--rx/--ry/--gx/--gy) */
+.ao-cta{perspective:720px}
+.ao-btn{position:relative;overflow:hidden;transform:translate3d(var(--tx,0px),var(--ty,0px),0) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .28s var(--ease-out,cubic-bezier(.22,1,.36,1)),background .2s ease,box-shadow .3s ease}
+.ao-btn::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;background:radial-gradient(120px circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.28),transparent 65%);transition:opacity .25s ease}
+.ao-btn.mag{transition:transform .08s linear,background .2s ease,box-shadow .3s ease;box-shadow:0 18px 30px -14px rgba(0,0,0,.55)}
+.ao-btn.mag::after{opacity:1}
+.ao-btn:active{scale:.97}
+/* 3D hero: no kicker over the scene; on touch screens two invisible side strips keep vertical swipes scrolling the page */
+.h3d-gutter{display:none}
+@media(pointer:coarse),(hover:none){.h3d-gutter{display:block;position:absolute;top:0;bottom:0;width:16%;z-index:1;touch-action:pan-y;-webkit-tap-highlight-color:transparent}.h3d-gutter.l{left:0}.h3d-gutter.r{right:0}}
+/* Court sheet, Instagram style: photo on top, pulse always visible, tab bar at the bottom */
+.modal.cdx{padding:0;overflow:hidden;display:flex;flex-direction:column;max-width:560px;width:100%;height:min(92dvh,860px);height:min(92vh,860px);height:min(92dvh,860px);max-height:none}
+.modal.cdx::before{display:none}
+.cdx-media{flex:none;position:relative;min-width:0}
+.cdx-hero{position:relative;height:clamp(120px,21dvh,210px);overflow:hidden;background:#0B0F1C}
+.cdx-hero::after{content:"";position:absolute;left:0;right:0;top:0;height:56px;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.45),transparent)}
+.cdx-slides{display:flex;height:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.cdx-slides::-webkit-scrollbar{display:none}
+.cdx-slide{flex:0 0 100%;scroll-snap-align:center;position:relative;overflow:hidden;min-width:0}
+.cdx-slide>img{width:100%;height:100%;object-fit:cover;display:block}
+.cdx-sat{cursor:pointer;background:linear-gradient(135deg,#16213E,#0D9488)}
+.cdx-mosaic{position:absolute;left:50%;top:50%;width:768px;height:768px;scale:1.25;pointer-events:none}
+.cdx-mosaic img{position:absolute;width:256px;height:256px;display:block;max-width:none;user-select:none;-webkit-user-drag:none}
+.cdx-nosat{position:absolute;inset:0;display:grid;place-items:center;font-size:3rem;opacity:.6}
+.cdx-cap{position:absolute;left:.7rem;bottom:.55rem;padding:.2rem .6rem;border-radius:980px;font:600 .68rem/1.2 'Space Mono',monospace;color:#fff;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.cdx-count{position:absolute;right:.7rem;bottom:.55rem;padding:.2rem .6rem;border-radius:980px;font:600 .7rem/1.2 'Space Mono',monospace;color:#fff;background:rgba(0,0,0,.5)}
+.cdx-grab{position:absolute;left:50%;top:7px;width:38px;height:5px;margin-left:-19px;border-radius:3px;background:rgba(255,255,255,.55);z-index:2;pointer-events:none}
+.cdx-x{position:absolute;right:.6rem;top:.6rem;z-index:3;width:38px;height:38px;border-radius:50%;border:0;background:rgba(0,0,0,.5);color:#fff;font-size:1rem;cursor:pointer;display:grid;place-items:center;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.cdx-pulse{padding:.55rem .75rem 0}
+.cdx-pulse .cpulse{margin:0}
+.cdx-main{flex:1;min-height:0;min-width:0;display:flex;flex-direction:column}
+.cdx-head{flex:none;padding:.65rem 1rem .5rem}
+.cdx-name{margin:0;font-size:1.12rem;line-height:1.25;text-wrap:balance}
+.cdx-addr{margin:.1rem 0 .45rem;font-size:.82rem;color:var(--textSec)}
+.cdx-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:.5rem 1rem 1.6rem;animation:fadeIn .18s}
+.cdx-bar{flex:none;position:relative;z-index:2;display:flex;align-items:flex-end;background:var(--bgCard);padding:.3rem .3rem calc(.3rem + env(safe-area-inset-bottom,0px))}
+.cdx-bar::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--fade-line)}
+.cdx-tab{flex:1;min-width:0;min-height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.18rem;border:0;background:none;color:var(--textSec);font:600 .68rem/1.1 'Libre Franklin',sans-serif;cursor:pointer;touch-action:manipulation;transition:color .2s ease,transform .16s var(--ease-out,ease)}
+.cdx-tab .cdx-ic{font-size:1.4rem;line-height:1}
+.cdx-tab .cdx-lb{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cdx-tab.on{color:var(--green)}
+.cdx-tab:active{transform:scale(.94)}
+.cdx-tab.mid{color:var(--text);margin-top:-30px}
+.cdx-tab.mid .cdx-ic{width:58px;height:58px;display:grid;place-items:center;border-radius:50%;font-size:1.65rem;background:linear-gradient(135deg,var(--green),var(--teal));border:3px solid var(--bgCard);box-shadow:0 10px 24px -8px color-mix(in srgb,var(--green) 75%,transparent)}
+.cdx-tab.mid.on{color:var(--green)}
+.cdx-tab:focus-visible{outline:2px solid var(--green);outline-offset:-2px;border-radius:12px}
+@media(min-width:900px){
+  .modal.cdx{max-width:min(1000px,96vw);height:min(86vh,720px);flex-direction:row}
+  .cdx-media{width:46%;display:flex;flex-direction:column;background:#0B0F1C}
+  .cdx-hero{flex:1;height:auto;min-height:260px}
+  .cdx-pulse{padding:.7rem .8rem .8rem;background:var(--bgCard)}
+  .cdx-grab{display:none}
+  .cdx-main{flex:1}
+  .cdx-head{padding:1rem 1.2rem .6rem}
+  .cdx-body{padding:.5rem 1.2rem 1.6rem}
+}
+@media(prefers-reduced-motion:reduce){.cdx-body{animation:none}.ao-btn,.ao-target{transition:none}}
+/* Compact pulse inside the court sheet; the floating mascot steps aside while the sheet is open */
+.cdx-open .mascot{opacity:0 !important;visibility:hidden;pointer-events:none !important}
+@media(max-width:899px){
+  .cdx-hero{height:clamp(104px,17dvh,190px)}
+  .cdx-pulse .cpulse-top{padding:.45rem .8rem .1rem}
+  .cdx-pulse .cpulse-bpm{font-size:1.35rem}
+  .cdx-pulse .cpulse-scope{height:54px}
+  .cdx-pulse .cpulse-bot{padding:.3rem .8rem .55rem}
+  .cdx-pulse .cpulse-src{display:none}
+}
+@media(max-width:899px) and (max-height:700px){.cdx-pulse .cpulse-bot{display:none}.cdx-pulse .cpulse{padding-bottom:.2rem}}
 </style>
 <script>(function(){try{var a=JSON.parse(localStorage.getItem("g2p_accent")||"null");if(a&&a.p){var r=document.documentElement;r.style.setProperty("--green",a.p);if(a.s)r.style.setProperty("--teal",a.s);r.classList.add("accent-on");}}catch(e){}})();</script>
 <script>(function(){try{var t=localStorage.getItem("g2p_theme")||(window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="dark"?"#0F172A":"#FFFFFF");}catch(e){}})();</script>
@@ -2871,7 +3002,7 @@ function shareCourt(court, t, toast) {
 /* === Hash routing. "#courts" etc. select a page; "#court-{id}" deep-links
    into CourtsPage (used by shareCourt + manifest shortcuts). "#/admin" is
    handled separately in App. === */
-const PAGE_IDS = ["home", "courts", "reports", "petition", "community", "impact", "help", "about", "profile", "press"];
+const PAGE_IDS = ["home", "courts", "reports", "petition", "community", "impact", "help", "association", "about", "profile", "press"];
 function pageFromHash() {
   const h = location.hash.replace(/^#\/?/, "");
   if (h.indexOf("court-") === 0) return "courts";
@@ -7070,7 +7201,7 @@ function CommandPalette({ onClose }) {
   [["home", t.home, "🏠", L3("acasa start", "start", "")], ["courts", t.courts, "🏟️", L3("harta terenuri", "map", "térkép")],
    ["reports", t.reportPageTitle, "⚠️", L3("probleme sesizari", "issues", "")], ["petition", t.petition, "✊", L3("semnatura vot", "sign vote", "")],
    ["community", t.community, "💬", L3("forum galerie evenimente echipe pixel clasament", "forum gallery events teams pixel leaderboard", "")],
-   ["impact", t.impact, "📊", L3("statistici cifre", "stats numbers", "")], ["help", t.help, "🤝", L3("voluntar doneaza distribuie contact", "volunteer donate share contact", "")],
+   ["impact", t.impact, "📊", L3("statistici cifre", "stats numbers", "")], ["help", t.help, "🤝", L3("voluntar doneaza distribuie contact", "volunteer donate share contact", "")], ["association", L3("Asociația", "Association", "Egyesület"), "🏛️", L3("asociatie fondatori statut constituire", "association founders statute", "")],
    ["about", t.about, "ℹ️", L3("echipa surse finantare parteneri presa", "team sources funding partners press", "")], ["profile", t.profile, "👤", L3("cont insigne", "account badges", "")]]
     .filter(pg => flags[pg[0]] !== false)
     .forEach(pg => items.push({ c: "pages", ic: pg[2], l: pg[1], kw: pg[3], run: go(pg[0]) }));
@@ -7297,6 +7428,9 @@ function Navbar() {
     k: "help",
     l: t.help
   }, {
+    k: "association",
+    l: "\uD83C\uDFDB\uFE0F " + L3("Asociația", "Association", "Egyesület")
+  }, {
     k: "about",
     l: t.about
   }].filter(n => !(settings && settings.flags && settings.flags[n.k] === false));
@@ -7306,7 +7440,7 @@ function Navbar() {
     click
   }) => /*#__PURE__*/React.createElement("a", {
     href: "#",
-    className: page === k ? "active" : "",
+    className: (page === k ? "active" : "") + (k === "association" ? " nav-assoc" : ""),
     onClick: e => {
       e.preventDefault();
       setPage(k);
@@ -9007,6 +9141,8 @@ function Hero3D() {
   return React.createElement("section", { className: "h3d-hero" + (renovated ? " h3d-renov" : "") },
     React.createElement("div", { className: "h3d-sky", "aria-hidden": "true" }),
     React.createElement("div", { className: "h3d-canvas", ref: mountRef }),
+    React.createElement("div", { className: "h3d-gutter l", "aria-hidden": "true" }),
+    React.createElement("div", { className: "h3d-gutter r", "aria-hidden": "true" }),
     React.createElement("div", { className: "h3d-scrim-top" }),
     React.createElement("div", { className: "h3d-scrim" }),
     React.createElement("div", { className: "h3d-particles", "aria-hidden": "true" },
@@ -9021,7 +9157,6 @@ function Hero3D() {
       React.createElement("span", { className: "h3d-hand-tx" }, t.heroGrab)),
     cine ? React.createElement("button", { className: "h3d-skip", onClick: function () { if (apiRef.current) apiRef.current.skip(); } }, t.heroSkip) : null,
     React.createElement("div", { className: "h3d-overlay" },
-      React.createElement("div", { className: "h3d-kicker" }, t.heroKicker),
       React.createElement("div", { className: "h3d-title" }, React.createElement("span", { className: "g" }, React.createElement(LetterReveal, { text: "From Grey" })), React.createElement("br", null), React.createElement(LetterReveal, { text: "to ", base: 420 }), React.createElement("span", { className: "p" }, "Play")),
       React.createElement("p", { className: "h3d-sub" }, t.heroSub),
       React.createElement("div", { className: "h3d-cta" },
@@ -9741,6 +9876,82 @@ function City3D() {
   );
 }
 
+/* === Home opener: association name + message + three equal buttons, then one line of why. Honest status: being established. === */
+function HomeOpener() {
+  const { lang, setPage } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
+  const go = pg => { setPage(pg); window.scrollTo(0, 0); };
+  const openReport = () => { try { window.dispatchEvent(new CustomEvent("g2p:report", { detail: { courtId: "" } })); } catch (e) {} };
+  const rings = [96, 76, 56, 36, 16].map(r => React.createElement("circle", { key: r, cx: 100, cy: 100, r: r }));
+  const target = React.createElement("svg", { viewBox: "0 0 200 200", "aria-hidden": "true" },
+    rings,
+    React.createElement("path", { d: "M100 0V200M0 100H200" }),
+    React.createElement("circle", { className: "dot", cx: 100, cy: 100, r: 4 }));
+  const secRef = useRef(null);
+  // Magnetic pull + 3D tilt for the three buttons, and a little parallax on the target. Mouse only; off with reduced motion / no-fx.
+  useEffect(() => {
+    const sec = secRef.current;
+    if (!sec || !window.matchMedia || !window.matchMedia("(hover:hover) and (pointer:fine)").matches || fxReduced()) return;
+    const btns = Array.prototype.slice.call(sec.querySelectorAll(".ao-btn"));
+    let raf = 0, mx = 0, my = 0, inside = false;
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const reset = b => { b.classList.remove("mag"); ["--tx", "--ty", "--rx", "--ry"].forEach(k => b.style.removeProperty(k)); };
+    const frame = () => {
+      raf = 0;
+      const sr = sec.getBoundingClientRect();
+      if (inside) {
+        sec.style.setProperty("--px", ((mx - sr.left) / Math.max(1, sr.width) - .5).toFixed(3));
+        sec.style.setProperty("--py", ((my - sr.top) / Math.max(1, sr.height) - .5).toFixed(3));
+      } else { sec.style.removeProperty("--px"); sec.style.removeProperty("--py"); }
+      btns.forEach(b => {
+        const r = b.getBoundingClientRect();
+        const dx = mx - (r.left + r.width / 2), dy = my - (r.top + r.height / 2);
+        const reach = Math.max(r.width, r.height) / 2 + 80;
+        if (!inside || Math.hypot(dx, dy) > reach) { reset(b); return; }
+        b.classList.add("mag");
+        b.style.setProperty("--tx", clamp(dx * .2, -14, 14).toFixed(1) + "px");
+        b.style.setProperty("--ty", clamp(dy * .2, -10, 10).toFixed(1) + "px");
+        b.style.setProperty("--ry", (clamp(dx / (r.width / 2), -1, 1) * 9).toFixed(1) + "deg");
+        b.style.setProperty("--rx", (clamp(dy / (r.height / 2), -1, 1) * -9).toFixed(1) + "deg");
+        b.style.setProperty("--gx", (mx - r.left).toFixed(0) + "px");
+        b.style.setProperty("--gy", (my - r.top).toFixed(0) + "px");
+      });
+    };
+    const move = e => { mx = e.clientX; my = e.clientY; inside = true; if (!raf) raf = requestAnimationFrame(frame); };
+    const leave = () => { inside = false; if (!raf) raf = requestAnimationFrame(frame); };
+    sec.addEventListener("mousemove", move, { passive: true });
+    sec.addEventListener("mouseleave", leave);
+    return () => {
+      sec.removeEventListener("mousemove", move);
+      sec.removeEventListener("mouseleave", leave);
+      if (raf) cancelAnimationFrame(raf);
+      btns.forEach(reset);
+    };
+  }, []);
+  const btn = (cls, ic, label, fn) => React.createElement("button", { type: "button", className: "ao-btn " + cls, onClick: fn },
+    React.createElement("span", { className: "ic", "aria-hidden": "true" }, ic), React.createElement("span", null, label));
+  return React.createElement(React.Fragment, null,
+    React.createElement("section", { className: "ao", "aria-labelledby": "ao-h1", ref: secRef },
+      React.createElement("div", { className: "ao-bg", "aria-hidden": "true" }),
+      React.createElement("div", { className: "ao-target", "aria-hidden": "true" }, target),
+      React.createElement("div", { className: "container ao-inner" },
+        React.createElement("div", { className: "ao-eyebrow" }, React.createElement("span", { className: "live-dot" }), L3("Asociație în constituire", "Association being established", "Egyesület alakulóban")), // TODO: HU review
+        React.createElement("h1", { className: "ao-title", id: "ao-h1" },
+          React.createElement("span", { className: "ao-kicker" }, L3("Asociația", "The association", "Az egyesület")),
+          React.createElement("span", { className: "ao-name" }, React.createElement("b", null, "From Grey"), " ", React.createElement("em", null, "to Play"))),
+        React.createElement("div", { className: "ao-block" },
+          React.createElement("p", { className: "ao-msg" }, L3("Din ", "From ", ""), React.createElement("span", { className: "ao-grey" }, L3("gri", "grey", "szürkéből")), L3(", în ", ", to ", ", "), React.createElement("span", { className: "ao-play" }, L3("joc", "play", "játékba")), "."), // TODO: HU review
+          React.createElement("div", { className: "ao-cta" },
+            btn("go", "✍️", L3("Semnează petiția", "Sign the petition", "Írd alá a petíciót"), () => go("petition")),
+            btn("rep", "📍", L3("Raportează", "Report", "Jelentsd"), openReport),
+            btn("abt", "🏛️", L3("Despre asociație", "About the association", "Az egyesületről"), () => go("association")))))),
+    React.createElement("section", { className: "ao-why" },
+      React.createElement("div", { className: "container" },
+        React.createElement("div", null,
+          React.createElement("h2", null, L3("Promovăm sănătatea și sportul prin restaurarea terenurilor de sport.", "We promote health and sport by restoring sports courts.", "Az egészséget és a sportot a sportpályák helyreállításával segítjük.")), // TODO: HU review
+          React.createElement("p", null, L3("Documentăm terenurile degradate, cerem repararea lor și arătăm public ce se schimbă.", "We document degraded courts, ask for them to be repaired and show publicly what changes.", "Dokumentáljuk az elhanyagolt pályákat, kérjük a javításukat, és nyilvánosan megmutatjuk, mi változik.")))))); // TODO: HU review
+}
+
 function HomePage() {
   const {
     t,
@@ -9754,7 +9965,7 @@ function HomePage() {
   const heroRef = useReveal();
   return /*#__PURE__*/React.createElement("div", {
     className: "animate-in"
-  }, /*#__PURE__*/React.createElement(Hero3D, null), /*#__PURE__*/React.createElement("section", {
+  }, React.createElement(HomeOpener, null), /*#__PURE__*/React.createElement(Hero3D, null), /*#__PURE__*/React.createElement("section", {
     className: "hero-premium"
   }, /*#__PURE__*/React.createElement("div", { className: "hero-mesh" }),
      React.createElement("div", { className: "aurora", "aria-hidden": "true" }, React.createElement("span", null), React.createElement("span", null), React.createElement("span", null)),
@@ -9767,7 +9978,7 @@ function HomePage() {
     className: "reveal"
   }, /*#__PURE__*/React.createElement("div", {
     className: "hero-pill"
-  }, /*#__PURE__*/React.createElement("span", { className: "live-dot" }), " 2026"), /*#__PURE__*/React.createElement("h1", {
+  }, /*#__PURE__*/React.createElement("span", { className: "live-dot" }), " 2026"), /*#__PURE__*/React.createElement("h2", {
     className: "hero-title shimmer-text"
   }, lang === "ro" ? "Terenurile tale contează" : "Your courts matter"), /*#__PURE__*/React.createElement("p", {
     style: {
@@ -10124,6 +10335,19 @@ function RatingSection({ court }) {
 }
 
 /* === Court Detail === */
+/* Static satellite backdrop for the court sheet: 3x3 Esri World Imagery tiles (z18) around the court. */
+function courtTileMosaic(c) {
+  if (!c || typeof c.lat !== "number" || typeof c.lng !== "number") return null;
+  const z = 18, n = Math.pow(2, z), rad = c.lat * Math.PI / 180;
+  const fx = (c.lng + 180) / 360 * n;
+  const fy = (1 - Math.log(Math.tan(rad) + 1 / Math.cos(rad)) / Math.PI) / 2 * n;
+  const x0 = Math.floor(fx) - 1, y0 = Math.floor(fy) - 1;
+  const tiles = [];
+  for (let j = 0; j < 3; j++) for (let i = 0; i < 3; i++) {
+    tiles.push({ key: i + "_" + j, src: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/" + z + "/" + (y0 + j) + "/" + (x0 + i), left: i * 256, top: j * 256 });
+  }
+  return { tiles, cx: (fx - x0) * 256, cy: (fy - y0) * 256 };
+}
 function CourtDetail({
   court: c,
   onClose,
@@ -10133,7 +10357,8 @@ function CourtDetail({
     t,
     lang,
     toast,
-    user
+    user,
+    settings
   } = useApp();
   const [ci, setCi] = useState(false);
   const [showPlay, setShowPlay] = useState(false);
@@ -10152,7 +10377,6 @@ function CourtDetail({
   const gallery = useFirebase("gallery");
   const courtPhotos = gallery ? Object.entries(gallery).map(([id, g]) => ({ id, ...g })).filter(p => p.courtId === c.id).reverse() : [];
   const occ = cnt === 0 ? "empty" : cnt < 5 ? "active" : "full";
-  const qr = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(SITE + "/#court-" + c.id)}`;
   const doCI = () => {
     const uid = user?.id || "g" + Date.now();
     db.ref("courts/" + c.id + "/checkins/" + uid).set({
@@ -10175,133 +10399,130 @@ function CourtDetail({
     const onKey = e => { if (e.key === "Escape" && !e.defaultPrevented) onClose(); };
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    document.body.classList.add("cdx-open");
     window.addEventListener("keydown", onKey);
-    return () => { document.body.style.overflow = prev; window.removeEventListener("keydown", onKey); };
+    return () => { document.body.style.overflow = prev; document.body.classList.remove("cdx-open"); window.removeEventListener("keydown", onKey); };
   }, []);
-  return /*#__PURE__*/React.createElement("div", {
-    className: "modal-overlay",
-    onClick: onClose,
-    role: "dialog",
-    "aria-modal": "true",
-    "aria-label": c.name
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "modal modal-lg",
-    onClick: e => e.stopPropagation()
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "modal-head flex justify-between items-center mb-2"
-  }, /*#__PURE__*/React.createElement("h2", { style: { margin: 0, fontSize: "1.25rem" } }, c.name), /*#__PURE__*/React.createElement("button", {
-    onClick: onClose,
-    "aria-label": lang === "ro" ? "\u00cenchide" : lang === "hu" ? "Bez\u00e1r\u00e1s" : "Close",
-    className: "modal-close"
-  }, "\u2715")),/*#__PURE__*/React.createElement("p", {
-    className: "text-sm mb-1"
-  }, c.address), ((c.desc && c.desc[lang]) || c.description) && React.createElement("p", {
-    className: "text-sm mb-1",
-    style: { color: "var(--textSec)" }
-  }, (c.desc && c.desc[lang]) || c.description, c.osm && React.createElement("a", {
-    href: "https://www.openstreetmap.org/" + c.osm, target: "_blank", rel: "noopener", style: { color: "var(--green)", marginLeft: ".4rem" }
-  }, "OSM ↗"), c.src && React.createElement("a", {
-    href: c.src, target: "_blank", rel: "noopener", style: { color: "var(--green)", marginLeft: ".4rem" }
-  }, (lang === "en" ? "Source" : lang === "hu" ? "Forrás" : "Sursă") + " ↗")), /*#__PURE__*/React.createElement("div", {
-    className: "flex gap-1 mb-2",
-    style: {
-      flexWrap: "wrap"
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "badge",
-    title: getCourtWeather(c.condition, t).label,
-    style: { background: getCourtWeather(c.condition, t).color + "22", color: getCourtWeather(c.condition, t).color, marginRight: ".3rem" }
-  }, getCourtWeather(c.condition, t).icon, " ", getCourtWeather(c.condition, t).label), /*#__PURE__*/React.createElement("span", {
-    className: `badge ${courtStatusView(c, t).badge}`
-  }, courtStatusView(c, t).label), /*#__PURE__*/React.createElement("span", {
-    className: `badge ${occ === "empty" ? "badge-green" : occ === "active" ? "badge-coral" : "badge-red"}`
-  }, occ === "empty" ? "🟢 " + t.empty + " (0)" : occ === "active" ? "🟡 " + t.active + " (" + cnt + ")" : "🔴 " + t.full + " (" + cnt + ")"), React.createElement(AiEstimateBadge, { court: c })),
-  React.createElement("div", { style:{marginTop:"1rem",display:"flex",alignItems:"center",gap:"1.5rem",flexWrap:"wrap",marginBottom:"1rem"} },
-    React.createElement(CourtHealthRing, { court:c }),
-    React.createElement("div", null,
-      React.createElement("div", { className:"text-xs mb-1", style:{color:"var(--textSec)",fontFamily:"'Space Mono',monospace",textTransform:"uppercase",letterSpacing:"1.5px"} }, t.healthScore||"Scor sănătate"),
-      React.createElement("p", { className:"text-xs", style:{color:"var(--textSec)",maxWidth:180} },
-        lang==="ro"?"Calculat din stare, rapoarte și evaluări":lang==="hu"?"Állapot, jelentések és értékelések alapján":"Based on condition, reports and ratings"
-      )
-    )
-  ),
-  React.createElement(CourtPulse, { court: c }),
-  React.createElement(CourtSourcesCard, { court: c }),
-  React.createElement(AiCourtCard, { court: c, onLetter: c.category !== "gym" ? () => setShowLetter(true) : null }),
-  /*#__PURE__*/React.createElement("h4", {
-    className: "mb-1"
-  }, "Progress"), /*#__PURE__*/React.createElement("div", {
-    className: "progress-bar mb-2"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "progress-fill",
-    style: {
-      width: c.progress + "%"
-    }
-  })), /*#__PURE__*/React.createElement("h4", {
-    className: "mb-1"
-  }, "\u267F ", t.accessibility), /*#__PURE__*/React.createElement("div", {
-    className: "flex gap-1 mb-2",
-    style: {
-      flexWrap: "wrap"
-    }
-  }, Object.entries(c.accessibility || {}).map(([k, v]) => /*#__PURE__*/React.createElement("span", {
-    key: k,
-    className: `badge ${v ? "badge-green" : "badge-red"}`
-  }, k, ": ", v ? "✓" : "✗"))), courtPhotos.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h4", {
-    className: "mb-1"
-  }, "📸 ", t.gallery, " (", courtPhotos.length, ")"), /*#__PURE__*/React.createElement("div", {
-    className: "flex gap-1 mb-2",
-    style: { overflowX: "auto" }
-  }, courtPhotos.slice(0, 8).map(p => /*#__PURE__*/React.createElement("img", {
-    key: p.id,
-    src: p.img,
-    alt: "evidence",
-    title: p.caption || "",
-    style: { width: 90, height: 90, objectFit: "cover", borderRadius: 8, flexShrink: 0 }
-  })))), /*#__PURE__*/React.createElement("h4", {
-    className: "mb-1"
-  }, t.qrCode), /*#__PURE__*/React.createElement("img", {
-    src: qr,
-    alt: "QR",
-    style: {
-      width: 110,
-      height: 110,
-      borderRadius: 8
-    }
-  }),
-  React.createElement("h4", { className: "mb-1 mt-2" },
-    React.createElement("span", { className: "live-dot", style:{ display:"inline-block", verticalAlign:"middle", marginRight:".35rem" } }),
-    t.activeGames, gameCount > 0 ? " (" + gameCount + ")" : ""
-  ),
-  React.createElement(ActiveGames, { court: c }),
-  React.createElement(RatingSection, { court: c }),
-  React.createElement(SatFinding, { court: c }),
-  React.createElement(SatelliteTimeMachine, { court: c }),
-  (c.status === "degraded" || c.status === "inProgress") && React.createElement(TaskBoard, { court: c }),
-  c.category !== "gym" && React.createElement(AdoptCourt, { court: c }),
-  React.createElement(CourtTimeline, { court: c }),
-  (() => {
-    const act = (key, kind, onClick, ic, label) => React.createElement("button", { key, className: "cd-act cd-" + kind, onClick, title: label },
-      React.createElement("span", { className: "cd-ic", "aria-hidden": "true" }, ic),
-      React.createElement("span", { className: "cd-l" }, label));
-    return React.createElement("div", { className: "cd-actions" },
-      (useApp().settings?.flags?.booking) !== false && act("book", "green", onBook, "\uD83D\uDCC5", t.bookCourt),
-      act("play", "coral", () => setShowPlay(true), "\u26BD", t.playNow),
-      !ci ? act("ci", "line", doCI, "\uD83D\uDCCD", t.checkIn) : act("co", "red", doCO, "\uD83D\uDCCD", t.checkOut),
-      act("follow", following ? "line" : "teal", () => toggleFollow(c.id), following ? "\uD83D\uDD15" : "\uD83D\uDD14", following ? t.unfollow : t.follow),
-      act("share", "line", () => shareCourt(c, t, toast), "\uD83D\uDD17", t.shareCourt),
-      act("qr", "line", () => setShowQR(true), "\uD83D\uDCF1", "QR"),
-      c.category !== "gym" && act("poster", "line", () => setShowWanted(true), "\uD83E\uDEA7", lang === "en" ? "Poster" : lang === "hu" ? "Plak\u00E1t" : "Afi\u0219"),
-      c.category !== "gym" && act("letter", "line", () => setShowLetter(true), "\u2709\uFE0F", lang === "en" ? "AI letter" : lang === "hu" ? "AI-lev\u00E9l" : "Scrisoare AI")); // TODO: HU review
-  })()),
-  // Portals: inside the court modal (animated transform) a fixed overlay is trapped in the modal's box.
-  // The wrapper stops clicks bubbling (React tree) to the court overlay, which would close the court too.
-  showPlay && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(PlayNowModal, { court: c, onClose: () => setShowPlay(false) })), document.body),
-  showQR && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(CourtQRCard, { court: c, onClose: () => setShowQR(false) })), document.body),
-  showWanted && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(WantedPoster, { court: c, onClose: () => setShowWanted(false) })), document.body),
-  showLetter && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(AiLetterModal, { court: c, onClose: () => setShowLetter(false) })), document.body),
-  unlockBadge && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(BadgeUnlockModal, { badge:unlockBadge, lang:lang, onClose:()=>setUnlockBadge(null) })), document.body)
-  );
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro; // TODO: HU review
+  const [tab, setTab] = useState("info");
+  const [slide, setSlide] = useState(0);
+  const mosaic = courtTileMosaic(c);
+  const wx = getCourtWeather(c.condition, t);
+  const bookOn = !(settings && settings.flags && settings.flags.booking === false);
+  const photos = courtPhotos.slice(0, 8);
+  const slideCount = photos.length + 1;
+  const desc = (c.desc && c.desc[lang]) || c.description;
+  const act = (key, kind, onClick, ic, label) => React.createElement("button", { key, className: "cd-act cd-" + kind, onClick, title: label },
+    React.createElement("span", { className: "cd-ic", "aria-hidden": "true" }, ic),
+    React.createElement("span", { className: "cd-l" }, label));
+  const hero = React.createElement("div", { className: "cdx-hero" },
+    React.createElement("div", {
+      className: "cdx-slides", "data-no-drag": "true",
+      onScroll: e => { const el = e.currentTarget; const i = Math.round(el.scrollLeft / Math.max(1, el.clientWidth)); if (i !== slide) setSlide(i); }
+    },
+      photos.map(p => React.createElement("div", { key: p.id, className: "cdx-slide" },
+        React.createElement("img", { src: p.img, alt: p.caption || t.gallery, draggable: false }))),
+      React.createElement("div", {
+        key: "sat", className: "cdx-slide cdx-sat", role: "button", tabIndex: 0,
+        "aria-label": L3("Deschide imaginea din satelit", "Open the satellite view", "Műholdkép megnyitása"),
+        onClick: () => setTab("sat"),
+        onKeyDown: e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setTab("sat"); } }
+      },
+        mosaic ? React.createElement("div", { className: "cdx-mosaic", style: { marginLeft: -mosaic.cx, marginTop: -mosaic.cy, transformOrigin: mosaic.cx + "px " + mosaic.cy + "px" } },
+          mosaic.tiles.map(tl => React.createElement("img", { key: tl.key, src: tl.src, alt: "", draggable: false, style: { left: tl.left, top: tl.top } }))) : React.createElement("div", { className: "cdx-nosat", "aria-hidden": "true" }, "⚽"),
+        React.createElement("span", { className: "cdx-cap" }, "🛰️ " + L3("imagine din satelit", "satellite image", "műholdkép")))),
+    React.createElement("div", { className: "cdx-grab", "aria-hidden": "true" }),
+    React.createElement("button", {
+      onClick: onClose, className: "cdx-x",
+      "aria-label": lang === "ro" ? "Închide" : lang === "hu" ? "Bezárás" : "Close"
+    }, "✕"),
+    slideCount > 1 && React.createElement("span", { className: "cdx-count", "aria-hidden": "true" }, (Math.min(slide, slideCount - 1) + 1) + "/" + slideCount));
+  const head = React.createElement("div", { className: "cdx-head" },
+    React.createElement("h2", { className: "cdx-name" }, c.name),
+    React.createElement("p", { className: "cdx-addr" }, c.address),
+    React.createElement("div", { className: "flex gap-1", style: { flexWrap: "wrap" } },
+      React.createElement("span", { className: "badge", title: wx.label, style: { background: wx.color + "22", color: wx.color } }, wx.icon, " ", wx.label),
+      React.createElement("span", { className: "badge " + courtStatusView(c, t).badge }, courtStatusView(c, t).label),
+      React.createElement("span", { className: "badge " + (occ === "empty" ? "badge-green" : occ === "active" ? "badge-coral" : "badge-red") },
+        occ === "empty" ? "🟢 " + t.empty + " (0)" : occ === "active" ? "🟡 " + t.active + " (" + cnt + ")" : "🔴 " + t.full + " (" + cnt + ")"),
+      React.createElement(AiEstimateBadge, { court: c })));
+  const infoPanel = React.createElement(React.Fragment, null,
+    desc && React.createElement("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, desc, c.osm && React.createElement("a", {
+      href: "https://www.openstreetmap.org/" + c.osm, target: "_blank", rel: "noopener", style: { color: "var(--green)", marginLeft: ".4rem" }
+    }, "OSM ↗"), c.src && React.createElement("a", {
+      href: c.src, target: "_blank", rel: "noopener", style: { color: "var(--green)", marginLeft: ".4rem" }
+    }, L3("Sursă", "Source", "Forrás") + " ↗")),
+    React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "1.2rem", flexWrap: "wrap", margin: ".6rem 0 1rem" } },
+      React.createElement(CourtHealthRing, { court: c }),
+      React.createElement("div", null,
+        React.createElement("div", { className: "text-xs mb-1", style: { color: "var(--textSec)", fontFamily: "'Space Mono',monospace", textTransform: "uppercase", letterSpacing: "1.5px" } }, t.healthScore || "Scor sănătate"),
+        React.createElement("p", { className: "text-xs", style: { color: "var(--textSec)", maxWidth: 200 } },
+          L3("Calculat din stare, rapoarte și evaluări", "Based on condition, reports and ratings", "Állapot, jelentések és értékelések alapján")))),
+    React.createElement("div", { className: "cd-actions", style: { marginTop: 0 } },
+      act("play", "coral", () => setShowPlay(true), "⚽", t.playNow),
+      !ci ? act("ci", "line", doCI, "📍", t.checkIn) : act("co", "red", doCO, "📍", t.checkOut),
+      act("follow", following ? "line" : "teal", () => toggleFollow(c.id), following ? "🔕" : "🔔", following ? t.unfollow : t.follow),
+      act("share", "line", () => shareCourt(c, t, toast), "🔗", t.shareCourt),
+      c.category !== "gym" && act("poster", "line", () => setShowWanted(true), "🪧", L3("Afiș", "Poster", "Plakát")),
+      c.category !== "gym" && act("letter", "line", () => setShowLetter(true), "✉️", L3("Scrisoare AI", "AI letter", "AI-levél"))),
+    React.createElement(CourtSourcesCard, { court: c }),
+    React.createElement(AiCourtCard, { court: c, onLetter: c.category !== "gym" ? () => setShowLetter(true) : null }),
+    React.createElement("h4", { className: "mb-1 mt-2" }, "Progress"),
+    React.createElement("div", { className: "progress-bar mb-2" }, React.createElement("div", { className: "progress-fill", style: { width: c.progress + "%" } })),
+    React.createElement("h4", { className: "mb-1" }, "♿ ", t.accessibility),
+    React.createElement("div", { className: "flex gap-1 mb-2", style: { flexWrap: "wrap" } },
+      Object.entries(c.accessibility || {}).map(([k, v]) => React.createElement("span", { key: k, className: "badge " + (v ? "badge-green" : "badge-red") }, k, ": ", v ? "✓" : "✗"))));
+  const communityPanel = React.createElement(React.Fragment, null,
+    React.createElement("h4", { className: "mb-1" },
+      React.createElement("span", { className: "live-dot", style: { display: "inline-block", verticalAlign: "middle", marginRight: ".35rem" } }),
+      t.activeGames, gameCount > 0 ? " (" + gameCount + ")" : ""),
+    React.createElement(ActiveGames, { court: c }),
+    React.createElement(RatingSection, { court: c }),
+    courtPhotos.length > 0 && React.createElement(React.Fragment, null,
+      React.createElement("h4", { className: "mb-1 mt-2" }, "📸 ", t.gallery, " (", courtPhotos.length, ")"),
+      React.createElement("div", { className: "flex gap-1 mb-2", style: { overflowX: "auto" }, "data-no-drag": "true" },
+        courtPhotos.slice(0, 8).map(p => React.createElement("img", {
+          key: p.id, src: p.img, alt: "evidence", title: p.caption || "",
+          style: { width: 90, height: 90, objectFit: "cover", borderRadius: 8, flexShrink: 0 }
+        })))),
+    (c.status === "degraded" || c.status === "inProgress") && React.createElement(TaskBoard, { court: c }),
+    c.category !== "gym" && React.createElement(AdoptCourt, { court: c }),
+    React.createElement(CourtTimeline, { court: c }));
+  const satPanel = React.createElement(React.Fragment, null,
+    React.createElement(SatFinding, { court: c }),
+    React.createElement(SatelliteTimeMachine, { court: c }));
+  const items = [
+    bookOn && { k: "book", ic: "📅", label: t.bookCourt, run: onBook },
+    { k: "info", ic: "ℹ️", label: "Info", panel: true },
+    { k: "sat", ic: "🛰️", label: L3("Satelit", "Satellite", "Műhold"), panel: true, mid: true },
+    { k: "com", ic: "👥", label: L3("Comunitate", "Community", "Közösség"), panel: true },
+    { k: "qr", ic: "📱", label: "QR", run: () => setShowQR(true) }
+  ].filter(Boolean);
+  const bar = React.createElement("nav", { className: "cdx-bar", "aria-label": L3("Secțiunile terenului", "Court sections", "A pálya szakaszai") },
+    items.map(it => React.createElement("button", {
+      key: it.k, type: "button", className: "cdx-tab" + (it.mid ? " mid" : "") + (it.panel && tab === it.k ? " on" : ""),
+      "aria-current": it.panel && tab === it.k ? "true" : undefined,
+      onClick: () => { if (it.panel) setTab(it.k); else it.run(); }
+    },
+      React.createElement("span", { className: "cdx-ic", "aria-hidden": "true" }, it.ic),
+      React.createElement("span", { className: "cdx-lb" }, it.label))));
+  return React.createElement("div", {
+    className: "modal-overlay", onClick: onClose, role: "dialog", "aria-modal": "true", "aria-label": c.name
+  },
+    React.createElement("div", { className: "modal modal-lg cdx", onClick: e => e.stopPropagation() },
+      React.createElement("div", { className: "cdx-media" }, hero, React.createElement("div", { className: "cdx-pulse" }, React.createElement(CourtPulse, { court: c }))),
+      React.createElement("div", { className: "cdx-main" },
+        head,
+        React.createElement("div", { className: "cdx-body", key: tab, "data-no-drag": "true", role: "region", "aria-label": c.name },
+          tab === "info" ? infoPanel : tab === "sat" ? satPanel : communityPanel),
+        bar),
+      // Portals: inside the court modal (animated transform) a fixed overlay is trapped in the modal's box.
+      // The wrapper stops clicks bubbling (React tree) to the court overlay, which would close the court too.
+      showPlay && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(PlayNowModal, { court: c, onClose: () => setShowPlay(false) })), document.body),
+      showQR && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(CourtQRCard, { court: c, onClose: () => setShowQR(false) })), document.body),
+      showWanted && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(WantedPoster, { court: c, onClose: () => setShowWanted(false) })), document.body),
+      showLetter && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(AiLetterModal, { court: c, onClose: () => setShowLetter(false) })), document.body),
+      unlockBadge && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(BadgeUnlockModal, { badge: unlockBadge, lang: lang, onClose: () => setUnlockBadge(null) })), document.body)));
 }
 
 /* === Report Modal === */
@@ -13188,7 +13409,7 @@ function CsmInvest() {
       "What the list does not cover: CSM only manages its own bases. Block courts in the neighbourhoods — including the Str. Plopilor multisport court approved in Jan 2025 — are not managed by CSM, and it does not hold the SIDU 2021–2030 extract. We asked City Hall; it extended its answer deadline to 30 days (letter nr. 51941/04.11.2026), i.e. by 25.11.2026.",
       "Amit a lista nem fed le: a CSM csak a saját bázisait kezeli. A lakótelepi pályák — köztük a 2025 januárjában jóváhagyott Str. Plopilor multisport pálya — nem a CSM kezelésében vannak, és a SIDU 2021–2030 kivonatát sem birtokolja. A Polgármesteri Hivataltól kértük; a válaszhatáridőt 30 napra hosszabbította (51941/04.11.2026), azaz 2026.11.25-ig.")), // TODO: HU review
     e("button", { className: "btn btn-sm btn-outline", onClick: () => setOpen(!open) }, open ? L3("Ascunde lista", "Hide the list", "Lista elrejtése") : L3(n === 1 ? "Vezi lucrarea" : "Vezi toate cele " + items, n === 1 ? "See the item" : "See all " + items, n === 1 ? "A tétel" : "Mind a " + items)),
-    open && e("div", { className: "mt-1", style: { fontSize: ".82rem" } }, CSM_INVEST.map((r, i) => e("div", { key: i, className: "flex justify-between", style: { gap: ".25rem .75rem", padding: ".35rem 0", borderBottom: "1px solid var(--border)", flexWrap: "wrap" } },
+    open && e("div", { className: "mt-1", style: { fontSize: ".82rem" } }, CSM_INVEST.map((r, i) => e("div", { key: i, className: "flex justify-between fade-b", style: { gap: ".25rem .75rem", padding: ".35rem 0", flexWrap: "wrap" } },
       e("span", { style: { flex: "1 1 12rem", minWidth: 0 } }, e("b", null, r.y), " · ", r.k === "i" ? L3("Investiție", "Investment", "Beruházás") : L3("Reparație", "Repair", "Javítás"), " · ", r.what),
       amt(r.lei)))),
     src
@@ -13202,7 +13423,7 @@ function SibiuInvest() {
   const inv = TIMELINE_SIBIU.filter(ev => ev.lei);
   return React.createElement("div", { className: "card" },
     React.createElement("h3", { className: "mb-1" }, "💰 ", L3("Investiții publice în terenuri de sport — Sibiu", "Public investment in sports courts — Sibiu", "Sportpálya-beruházások — Nagyszeben")), // TODO: HU review
-    inv.map((ev, i) => React.createElement("div", { key: i, className: "flex justify-between", style: { gap: ".75rem", padding: ".45rem 0", borderBottom: "1px solid var(--border)", flexWrap: "wrap" } },
+    inv.map((ev, i) => React.createElement("div", { key: i, className: "flex justify-between fade-b", style: { gap: ".75rem", padding: ".45rem 0", flexWrap: "wrap" } },
       React.createElement("div", { style: { flex: "1 1 16rem" } }, React.createElement("b", null, ev.y), " · ", ev[lang] || ev.ro, " ",
         React.createElement("a", { href: ev.src, target: "_blank", rel: "noopener", style: { fontSize: ".75rem", color: "var(--textSec)" } }, "🔗")),
       React.createElement("div", { className: "font-bold", style: { color: "var(--green)", whiteSpace: "nowrap" } }, ev.lei))),
@@ -13289,7 +13510,7 @@ function CityHallGuide() {
     React.createElement("div", { className: "card mb-2" },
       React.createElement("h4", { className: "mb-1" }, "👤 ", L3("Cine decide", "Who decides", null)),
       CONTACTS.map(function(ct, i) {
-        return React.createElement("div", { key: i, style: { padding: ".6rem 0", borderBottom: i < CONTACTS.length - 1 ? "1px solid var(--border)" : "none" } },
+        return React.createElement("div", { key: i, className: i < CONTACTS.length - 1 ? "fade-b" : undefined, style: { padding: ".6rem 0" } },
           React.createElement("div", { style: { fontWeight: 700, fontSize: ".9rem" } }, ct.ic, " ", ct.name),
           React.createElement("div", { className: "text-xs", style: { color: "var(--textSec)", margin: ".15rem 0 .35rem" } }, ct.role),
           React.createElement("div", { className: "flex gap-1", style: { flexWrap: "wrap" } },
@@ -13492,6 +13713,128 @@ function SourcesTab({ onEssay }) {
 
 /* Funding & partnerships: honest numbers first (what the platform costs, why the renovation cost
    is not on the site yet, where money could come from), then what a partner would get. */
+/* === Association tab (About). Honest status: the association is being set up, not registered yet.
+   Founders = the three adults. Nothing here claims a legal body, a bank account or any funds. === */
+function AssociationTab({ onFunding }) {
+  const { lang, setPage } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro; // TODO: HU review (falls back to RO)
+  const founders = [
+    { i: "CT", name: "Cîmpan Teodor", role: L3("Coordonare", "Coordination"), color: "var(--green)" },
+    { i: "TM", name: "Trofin Matei", role: L3("Relații publice și financiar", "Public relations and finance"), color: "var(--teal)" },
+    { i: "DG", name: "Drăgan Gabriel", role: L3("Activități externe și derularea proiectelor", "External activities and project delivery"), color: "var(--coral)" }
+  ];
+  const steps = [
+    { st: "done", h: L3("Platforma este publică și funcționează", "The platform is public and running"), p: L3("Hartă, petiție, rapoarte și imagini satelit, deschise oricui.", "Map, petition, reports and satellite imagery, open to anyone.") },
+    { st: "done", h: L3("Datele sunt deschise, cu sursă", "The data is open, with sources"), p: L3("Licență CC BY 4.0. Fiecare cifră trimite la sursa ei din fila Surse.", "CC BY 4.0 licence. Every number points to its source in the Sources tab.") },
+    { st: "doing", h: L3("Act constitutiv și statut", "Founding act and statute"), p: L3("Le pregătim cu cei trei fondatori majori; proiectul de statut e mai jos. Se semnează în formă autentică sau atestată de avocat, altfel actul este nul.", "Being drafted with the three adult founders; the draft statute is below. Signed in notarised form or attested by a lawyer, otherwise the act is void.") },
+    { st: "next", h: L3("Rezervarea denumirii", "Name reservation"), p: L3("Dovada disponibilității numelui, de la Ministerul Justiției.", "Proof that the name is available, from the Ministry of Justice.") },
+    { st: "next", h: L3("Patrimoniul inițial", "Initial assets"), p: L3("Legea cere o sumă minimă, depusă în cont. Verificăm valoarea în vigoare și o împărțim între fondatori; rămâne fondul asociației.", "The law requires a minimum sum, paid into an account. We check the current value and split it between the founders; it stays the association's fund.") },
+    { st: "next", h: L3("Sediul", "Registered office"), p: L3("Contract de comodat sau chirie, plus extras de carte funciară.", "A loan-for-use or rental contract, plus a land-registry extract.") },
+    { st: "next", h: L3("Dosarul la judecătorie", "Court filing"), p: L3("Depunere la judecătoria din raza sediului, plus taxele. Personalitatea juridică apare la înscrierea în Registrul asociațiilor și fundațiilor (OG 26/2000).", "Filed at the court covering the office, plus fees. Legal personality starts when we are entered in the Register of Associations and Foundations (OG 26/2000).") },
+    { st: "next", h: L3("CIF, cont bancar, contabilitate", "Tax ID, bank account, bookkeeping"), p: L3("Abia după aceea putem primi bani, și atunci îi arătăm public.", "Only after that can we receive money, and then we show it publicly.") }
+  ];
+  const prep = [
+    L3("Numele „Asociația From Grey to Play”, verificat și scris la fel peste tot", "The name “Asociația From Grey to Play”, checked and written the same everywhere"),
+    L3("Cei trei fondatori confirmă în scris numele și rolurile", "The three founders confirm names and roles in writing"),
+    L3("Statutul completat și vizat de un avocat sau de o asociație gazdă", "The statute completed and reviewed by a lawyer or a host association"),
+    L3("Decizia despre aportul la patrimoniu: cât, de la cine, în ce cont", "The decision on the initial contribution: how much, from whom, into which account"),
+    L3("Cine pune la dispoziție adresa sediului și cu ce contract", "Who provides the office address, and under which contract"),
+    L3("Declarație de intenție semnată de cei trei (nu constituie asociația, dar arată angajamentul)", "A declaration of intent signed by the three (it does not create the association, but shows commitment)")
+  ];
+  const statute = [
+    [L3("Scop", "Purpose"), L3("Reducerea inegalității de acces la infrastructura sportivă publică în orașele României, prin documentare, transparență și implicarea tinerilor. Asociația este apolitică, nonprofit și nu distribuie profit.", "Reducing unequal access to public sports infrastructure in Romanian cities through documentation, transparency and youth involvement. The association is apolitical, non-profit and distributes no profit.")],
+    [L3("Obiective", "Objectives"), L3("Documentarea stării terenurilor sportive publice și publicarea datelor deschise; sprijinirea cetățenilor în exercitarea dreptului de petiționare și de acces la informații publice; acțiuni sportive și civice în comunitate; colaborare cu autorități, școli și mediul privat pentru renovarea și întreținerea terenurilor.", "Documenting the condition of public sports courts and publishing open data; helping citizens use their right to petition and to access public information; community sports and civic actions; working with authorities, schools and private partners to renovate and maintain courts.")],
+    [L3("Organe", "Bodies"), L3("Adunarea Generală (toți membrii) și Consiliul Director de 3 membri, cu mandat de 2 ani și cel mult două mandate consecutive. Cenzor sau comisie de cenzori, obligatoriu când sunt peste 15 asociați.", "The General Assembly (all members) and a Board of 3, with 2-year terms and at most two consecutive terms. An auditor or audit committee, mandatory above 15 members.")],
+    [L3("Resurse", "Resources"), L3("Cotizații, donații, sponsorizări, redirecționări din impozit, finanțări nerambursabile și venituri din activități economice accesorii, în limitele legii.", "Membership fees, donations, sponsorships, income-tax redirections, grants and income from ancillary economic activity, within the law.")],
+    [L3("Transparență", "Transparency"), L3("Raport anual de activitate și financiar, publicat pe acest site.", "An annual activity and financial report, published on this site.")],
+    [L3("Dizolvare", "Dissolution"), L3("Bunurile rămase merg la o entitate nonprofit cu scop similar, conform OG 26/2000.", "Remaining assets go to a non-profit with a similar purpose, as OG 26/2000 requires.")]
+  ];
+  const ladder = [
+    ["🧑‍🤝‍🧑", L3("Aportul fondatorilor", "Founders' contribution"), L3("Ziua 0", "Day 0"), L3("Patrimoniul inițial și o cotizație simbolică. Cerut de lege.", "The initial assets and a symbolic fee. Required by law.")],
+    ["🏷️", L3("„Adoptă un teren”", "“Adopt a court”"), L3("Lunile 1–6", "Months 1–6"), L3("Firme locale: logo pe panou după renovare, echipament în natură sau o zi de voluntariat. Începem cu scrisori de intenție.", "Local firms: a logo on the board after renovation, equipment in kind or a volunteering day. We start with letters of intent.")],
+    ["🧾", L3("3,5% din impozit", "3.5% income tax"), L3("Anul 2", "Year 2"), L3("Doar dacă ajungem pe lista beneficiarilor; verificăm condițiile.", "Only if we reach the list of beneficiaries; we check the conditions.")],
+    ["🏛️", L3("Finanțări locale (Legea 350/2005)", "Local funding (Law 350/2005)"), L3("Anul 2", "Year 2"), L3("Țintim activități, nu renovări: multe regulamente exclud infrastructura solicitantului.", "We aim at activities, not renovations: many rules exclude the applicant's own infrastructure.")],
+    ["🇪🇺", L3("Granturi UE", "EU grants"), L3("Anii 2–3", "Years 2–3"), L3("Erasmus+ Youth, European Youth Together, Erasmus+ Sport, ca partener într-un consorțiu, nu ca lider.", "Erasmus+ Youth, European Youth Together, Erasmus+ Sport, as a partner in a consortium, not as lead.")],
+    ["🎓", L3("Venituri accesorii", "Ancillary income"), L3("Anul 2", "Year 2"), L3("Ateliere și dosare PDF pentru școli și ONG-uri. Mici, în limitele legii.", "Workshops and PDF dossiers for schools and NGOs. Small, within the law.")]
+  ];
+  const risks = [
+    [L3("Fondatorii pleacă după liceu", "Founders leave after school"), L3("Fiecare formează un succesor din primul an, mandatele sunt de 2 ani, iar un manual intern predă în scris procedurile, conturile și accesul.", "Each trains a successor from year one, terms are 2 years, and an internal handbook hands over procedures, accounts and access in writing.")],
+    [L3("Costul platformei crește", "Platform costs rise"), L3("Datele sunt deschise și exportabile (CC BY 4.0), avem alertă la 70% din cota gratuită și o rezervă pentru planurile plătite.", "The data is open and exportable (CC BY 4.0), we get an alert at 70% of the free quota and keep a reserve for paid plans.")],
+    [L3("Date personale și minori", "Personal data and minors"), L3("Ne angajăm la consimțământ explicit, ștergere la cerere și fețe și plăcuțe estompate în fotografii.", "We commit to explicit consent, deletion on request, and blurred faces and plates in photos.")],
+    [L3("Acuzații de partizanat", "Accusations of partisanship"), L3("Clauză „apolitică” în statut, același ton față de orice administrație și fiecare cifră cu sursă.", "An “apolitical” clause in the statute, the same tone toward any administration, and every figure sourced.")],
+    [L3("Erori ale AI-ului", "AI errors"), L3("Scorul AI e etichetat „estimare” și devine „verificat” doar după confirmarea comunității.", "The AI score is labelled “estimate” and becomes “verified” only after community confirmation.")],
+    [L3("O singură sursă de bani", "A single source of money"), L3("Regula de 40% și raport anual public.", "The 40% rule and a public annual report.")]
+  ];
+  const stIc = { done: "✓", doing: "●", next: "○" };
+  const stTx = { done: L3("făcut", "done"), doing: L3("în lucru", "in progress"), next: L3("urmează", "next") };
+  const stCol = { done: "var(--green)", doing: "var(--coral)", next: "var(--textSec)" };
+  const rule = (ic, k, v, note) => React.createElement("div", { className: "fund-row" },
+    React.createElement("span", { className: "fund-ic", "aria-hidden": "true" }, ic),
+    React.createElement("div", null, React.createElement("div", { className: "fund-k" }, k), note && React.createElement("div", { className: "fund-note" }, note)),
+    React.createElement("div", { className: "fund-v" }, v));
+  return React.createElement("div", null,
+    React.createElement("div", { className: "card", style: { borderLeft: "6px solid var(--coral)" } },
+      React.createElement("span", { className: "badge badge-coral" }, L3("În constituire", "Being established")),
+      React.createElement("h3", { className: "mt-1" }, "🏛️ " + L3("Asociația From Grey to Play", "The From Grey to Play Association")),
+      React.createElement("p", null, L3(
+        "Platforma a pornit de la un teren cu coșul îndoit. Acum o ducem mai departe ca asociație, ca terenurile să fie urmărite pe termen lung și să nu depindă de trei oameni.",
+        "The platform started from a court with a bent hoop. We are now taking it forward as an association, so courts are tracked for the long term and do not depend on three people.")),
+      React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } }, L3(
+        "Ce nu spunem: nu suntem încă o persoană juridică înregistrată și nu avem cont bancar. Spunem ce e gata și ce urmează.",
+        "What we do not say: we are not yet a registered legal entity and we have no bank account. We say what is done and what comes next."))),
+    React.createElement("h3", { className: "mt-3 mb-1" }, "👥 " + L3("Fondatori", "Founders")),
+    React.createElement("div", { className: "about-team-grid" }, founders.map((m, idx) => React.createElement("div", { key: idx, className: "about-member", style: { "--mc": m.color } },
+      React.createElement("div", { className: "about-avatar" }, m.i),
+      React.createElement("strong", null, m.name),
+      React.createElement("span", null, m.role)))),
+    React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, L3("Fondatorii sunt cei trei membri majori. Ceilalți tineri din echipă rămân voluntari.", "The founders are the three adult members. The other young people on the team stay volunteers.")),
+    React.createElement("h3", { className: "mt-3 mb-1" }, "🧭 " + L3("Unde suntem", "Where we are")),
+    React.createElement("ol", { className: "assoc-steps", style: { listStyle: "none", padding: 0, margin: 0, display: "grid", gap: ".6rem" } }, steps.map((s, i) => React.createElement("li", { key: i, className: "card", style: { display: "flex", gap: ".8rem", alignItems: "flex-start", padding: ".8rem 1rem" } },
+      React.createElement("span", { "aria-hidden": "true", style: { color: stCol[s.st], fontWeight: 700, fontSize: "1.2rem", lineHeight: 1.2, minWidth: "1.4rem" } }, stIc[s.st]),
+      React.createElement("div", null,
+        React.createElement("strong", null, s.h),
+        React.createElement("span", { className: "text-xs", style: { color: stCol[s.st], marginLeft: ".5rem" } }, stTx[s.st]),
+        React.createElement("div", { className: "text-sm", style: { color: "var(--textSec)" } }, s.p))))),
+    React.createElement("div", { className: "card fund-transp mt-3" },
+      React.createElement("h3", { className: "mb-1" }, "♻️ " + L3("Cum rămâne asociația în picioare", "How the association stays afloat")),
+      rule("💻", L3("Cost de funcționare", "Running cost"), "≈ 0 lei", L3("Găzduire gratuită, bază de date pe plan gratuit, muncă voluntară.", "Free hosting, database on a free plan, volunteer work.")),
+      rule("⚖️", L3("Nicio sursă peste 40%", "No source above 40%"), L3("regula noastră", "our rule"), L3("Dacă o singură sursă ar trece de 40% din venituri, o reducem sau căutăm alta.", "If one source would pass 40% of income, we reduce it or find another.")),
+      rule("🔐", L3("Bani doar prin asociație", "Money only through the association"), L3("după înregistrare", "after registration"), L3("Nu strângem bani de la nimeni până nu avem persoană juridică și cont.", "We collect no money from anyone until we have a legal entity and an account.")),
+      rule("📖", L3("Rapoarte publice", "Public reports"), L3("venituri și cheltuieli", "income and spending"), L3("Publicăm fiecare leu primit și cheltuit, pe acest site, cu sursă.", "We publish every leu received and spent, on this site, with its source."))),
+    React.createElement("h3", { className: "mt-3 mb-1" }, "📝 " + L3("Pregătim acum", "What we are preparing now")),
+    React.createElement("ul", { className: "assoc-prep", style: { listStyle: "none", padding: 0, margin: 0, display: "grid", gap: ".35rem" } }, prep.map((x, i) => React.createElement("li", { key: i, style: { display: "flex", gap: ".6rem" } },
+      React.createElement("span", { "aria-hidden": "true", style: { color: "var(--textSec)" } }, "○"), React.createElement("span", null, x)))),
+    React.createElement("details", { className: "card mt-2 assoc-statute" },
+      React.createElement("summary", { style: { cursor: "pointer", fontWeight: 700 } }, "📜 " + L3("Proiect de statut (se adaptează după sfatul avocatului)", "Draft statute (adapted after a lawyer's advice)")),
+      React.createElement("div", { style: { marginTop: ".6rem" } }, statute.map(([k, v], i) => React.createElement("div", { key: i, className: i < statute.length - 1 ? "fade-b" : undefined, style: { padding: ".5rem 0" } },
+        React.createElement("strong", null, k + ". "), React.createElement("span", { className: "text-sm", style: { color: "var(--textSec)" } }, v))))),
+    React.createElement("h3", { className: "mt-3 mb-1" }, "💶 " + L3("Cum devine sustenabilă", "How it becomes sustainable")),
+    React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)", marginTop: 0 } }, L3(
+      "Asociația nu renovează terenuri cu banii ei. Documentează, cere, urmărește și face intervenții mici (vopsea, mural, coșuri) cu acordul Primăriei. Renovarea rămâne pe bugetul public, iar noi o facem imposibil de ignorat.",
+      "The association does not renovate courts with its own money. It documents, asks, follows up and makes small interventions (paint, mural, hoops) with the city's consent. Renovation stays on the public budget, and we make it impossible to ignore.")),
+    React.createElement("div", { className: "card" }, ladder.map(([ic, k, v, note], i) => React.createElement("div", { key: i, className: "fund-row" },
+      React.createElement("span", { className: "fund-ic", "aria-hidden": "true" }, ic),
+      React.createElement("div", null, React.createElement("div", { className: "fund-k" }, k), React.createElement("div", { className: "fund-note" }, note)),
+      React.createElement("div", { className: "fund-v" }, v)))),
+    React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, L3("Nu promitem sume și nu avem încă bani. Este un plan pe trei ani, nu un angajament. Publicăm cifre doar când avem o sursă.", "We promise no amounts and do not hold any money yet. This is a three-year plan, not a commitment. We publish figures only when we have a source.")),
+    React.createElement("h3", { className: "mt-3 mb-1" }, "🛡️ " + L3("Riscuri și cum le acoperim", "Risks and how we cover them")),
+    React.createElement("div", { className: "card" }, risks.map(([k, v], i) => React.createElement("div", { key: i, className: i < risks.length - 1 ? "fade-b" : undefined, style: { padding: ".55rem 0" } },
+      React.createElement("strong", null, k), React.createElement("div", { className: "text-sm", style: { color: "var(--textSec)" } }, v)))),
+    React.createElement("div", { className: "flex gap-2 mt-2", style: { flexWrap: "wrap" } },
+      React.createElement("button", { className: "btn btn-green", onClick: onFunding }, "🤝 " + L3("Parteneriate și finanțare", "Partnerships and funding")),
+      React.createElement("button", { className: "btn", onClick: () => { setPage("petition"); window.scrollTo(0, 0); } }, "✍️ " + L3("Semnează petiția", "Sign the petition")),
+      React.createElement("a", { className: "btn btn-ghost", href: "mailto:" + G2P_EMAIL }, "✉️ " + L3("Scrie-ne", "Write to us"))));
+}
+
+/* === Association page (own nav entry). Same content as the About tab, with its own header. === */
+function AssociationPage() {
+  const { setPage } = useApp();
+  return React.createElement("div", { className: "animate-in" },
+    React.createElement("section", { className: "section" },
+      React.createElement("div", { className: "container" },
+        React.createElement(AssociationTab, { onFunding: () => { try { sessionStorage.setItem("g2p_about_tab", "funding"); } catch (e) {} setPage("about"); window.scrollTo(0, 0); } }))));
+}
+
 function FundingTab() {
   const { t, lang, toast } = useApp();
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
@@ -13967,7 +14310,7 @@ function HelpPage() {
 function AboutPage() {
   const { t, lang, setPage } = useApp();
   const [tab, setTab] = useState(() => {
-    try { const s = sessionStorage.getItem("g2p_about_tab"); if (s) { sessionStorage.removeItem("g2p_about_tab"); if (["project", "sources", "funding", "press"].indexOf(s) >= 0) return s; } } catch (e) {}
+    try { const s = sessionStorage.getItem("g2p_about_tab"); if (s) { sessionStorage.removeItem("g2p_about_tab"); if (["project", "association", "sources", "funding", "press"].indexOf(s) >= 0) return s; } } catch (e) {}
     return "project";
   });
   const [essayOpen, setEssayOpen] = useState(false);
@@ -13981,34 +14324,7 @@ function AboutPage() {
   }, []);
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
   const sib = ACTIVE_CITY === "sibiu";
-  const teamMembers = [
-    { i: "TM", name: "Trofin Matei", role: L3("Verificare Satelit", "Satellite Review", "Műhold-ellenőrzés"), color: "var(--teal)" },
-    { i: "ȚM", name: "Țurcanu Mihai", role: L3("Verificare Satelit", "Satellite Review", "Műhold-ellenőrzés"), color: "var(--teal)" },
-    { i: "CI", name: "Cernescu Ionuț", role: L3("Verificare Date", "Data Review", "Adatellenőrzés"), color: "var(--coral)" },
-    { i: "DI", name: "Drăgan Ilie", role: L3("Verificare Date", "Data Review", "Adatellenőrzés"), color: "var(--coral)" },
-    { i: "CT", name: "Cîmpan Teodor", role: L3("Coordonare", "Coordination", "Koordináció"), color: "var(--green)" }
-  ];
   const openEssay = () => { setTab("project"); setEssayOpen(true); setTimeout(() => { const el = document.getElementById("about-essay"); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 120); };
-  const heroSection = React.createElement("section", { className: "section about-hero" },
-    React.createElement("div", { className: "container" },
-      React.createElement("blockquote", { className: "about-quote", style: { marginTop: 0, marginBottom: "1.4rem" } },
-        React.createElement("p", null, L3(
-          "Eu și prietenii mei nu aveam unde să ne jucăm. Terenul din cartier avea coșul îndoit și asfaltul crăpat, iar nimeni nu părea să observe. Așa că am început să le documentăm — teren cu teren.",
-          "My friends and I had nowhere to play. The court in our neighbourhood had a bent hoop and cracked asphalt, and nobody seemed to notice. So we started documenting them — one court at a time.",
-          "A barátaimmal nem volt hol játszanunk. A környékbeli pályán görbe volt a kosár és repedezett az aszfalt, és úgy tűnt, senki sem veszi észre. Ezért elkezdtük dokumentálni őket — pályáról pályára." // TODO: HU review
-        ))
-      ),
-      React.createElement("h2", { className: "section-title" }, "👥 " + L3("Echipa", "The Team", "A csapat")),
-      React.createElement("p", { className: "section-sub" }, L3("Cinci tineri, un singur scop: terenuri pe care chiar te poți juca.", "Five young people, one goal: courts you can actually play on.", "Öt fiatal, egy cél: pályák, ahol tényleg lehet játszani.")), // TODO: HU review
-      React.createElement("div", { className: "about-team-grid" },
-        teamMembers.map((m, idx) => React.createElement("div", { key: idx, className: "about-member", style: { "--mc": m.color } },
-          React.createElement("div", { className: "about-avatar" }, m.i),
-          React.createElement("strong", null, m.name),
-          React.createElement("span", null, m.role)
-        ))
-      )
-    )
-  );
   // Key data: only facts of the city on screen (TGM facts never show on Sibiu).
   const keyData = sib ? [
     { n: String(COURTS.length), l: L3("terenuri", "courts", "pálya") + (STADIUM_N ? " · " + STADIUM_N + " " + L3("stadioane", "stadiums", "stadion") : ""), c: "var(--green)", src: "osm" },
@@ -14023,12 +14339,13 @@ function AboutPage() {
   ];
   const tabs = [
     ["project", "📖", t.theProject],
+    ["association", "🏛️", L3("Asociația", "The Association", "Az egyesület")],
     ["sources", "📚", L3("Surse", "Sources", "Források")],
     ["funding", "💰", L3("Finanțare & parteneriate", "Funding & partnerships", "Finanszírozás & partnerségek")],
     ["press", "📰", L3("Presă", "Press", "Sajtó")]
   ];
   const pressPdf = () => { if (busy) return; setBusy(true); buildPressPdf(lang, pd).then(() => setBusy(false), () => setBusy(false)); };
-  return React.createElement("div", { className: "animate-in" }, heroSection,
+  return React.createElement("div", { className: "animate-in" },
     React.createElement("section", { className: "section" },
       React.createElement("div", { className: "container" },
         React.createElement("h2", { className: "section-title" }, "📖 ", t.about),
@@ -14043,7 +14360,7 @@ function AboutPage() {
                   L3("Lucrare câștigătoare · Loc 1 Național · EdVenture ATW 2026", "Winning essay · National #1 · EdVenture ATW 2026", "Nyertes dolgozat · Nemzeti 1. · EdVenture ATW 2026"))),
               React.createElement("button", { className: "btn btn-sm", style: { flexShrink: 0 }, onClick: () => setEssayOpen(o => !o) },
                 essayOpen ? L3("Închide ✕", "Close ✕", "Bezár ✕") : "📖 " + L3("Citește lucrarea", "Read essay", "Dolgozat"))),
-            essayOpen && React.createElement("div", { style: { whiteSpace: "pre-wrap", lineHeight: 1.7, fontSize: ".92rem", paddingTop: ".8rem", borderTop: "1px solid var(--border)" } }, ESSAY[lang] || ESSAY.ro)),
+            essayOpen && React.createElement("div", { className: "fade-t", style: { whiteSpace: "pre-wrap", lineHeight: 1.7, fontSize: ".92rem", paddingTop: ".8rem" } }, ESSAY[lang] || ESSAY.ro)),
           React.createElement("div", { className: "card mt-2" },
             React.createElement("h3", { className: "mb-2" }, "📊 " + L3("Date cheie", "Key Data", "Kulcsadatok")),
             React.createElement("div", { className: "grid grid-4" }, keyData.map((k, i) => React.createElement("div", { key: i, style: { textAlign: "center" } },
@@ -14054,6 +14371,7 @@ function AboutPage() {
             React.createElement("h3", { className: "mb-2" }, "🗺️ " + L3("Terenurile pe hartă", "The courts on the map", "Pályák a térképen")),
             React.createElement("a", { href: "#courts", className: "btn btn-green btn-sm" }, "🏀 " + L3("Harta celor " + COURTS.length + " de terenuri", "Map of all " + COURTS.length + " courts", "Mind a " + COURTS.length + " pálya térképen")),
             React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, L3("Platformă civică online — fără sediu fizic. Contact: ", "Online civic platform — no physical office. Contact: ", "Online civil platform — fizikai iroda nélkül. Kapcsolat: "), React.createElement("a", { href: "mailto:" + G2P_EMAIL }, G2P_EMAIL)))),
+        tab === "association" && React.createElement(AssociationTab, { onFunding: () => setTab("funding") }),
         tab === "sources" && React.createElement(SourcesTab, { onEssay: openEssay }),
         tab === "funding" && React.createElement(FundingTab, null),
         tab === "press" && React.createElement("div", { className: "card about-press" },
@@ -18498,6 +18816,8 @@ function App() {
         return /*#__PURE__*/React.createElement(ImpactPage, null);
       case "help":
         return /*#__PURE__*/React.createElement(HelpPage, null);
+      case "association":
+        return React.createElement(AssociationPage, null);
       case "about":
         return /*#__PURE__*/React.createElement(AboutPage, null);
       case "press":

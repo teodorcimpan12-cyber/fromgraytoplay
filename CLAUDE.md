@@ -311,3 +311,32 @@ Highest civic-value next steps:
   account button icon-only 1241–1440px (`.nav-acct-name`, name kept in title/aria-label),
   `.nav-inner` max-width 1320px ≥1441px. SW → `g2p-v11`. New project skill `.claude/skills/arena`
   (/arena: parallel subagents with different strategies + blind judging rounds).
+- Session 6 Nov 2026 (branch `claude/asociatie-g2p`): About → new tab **🏛️ Asociația** (`AssociationTab`, key `association`;
+  `g2p_about_tab` accepts it). Honest status "în constituire": 3 adult founders (Cîmpan Teodor, Trofin Matei, Drăgan Gabriel),
+  steps done/in progress/next (statute, name reservation, court filing OG 26/2000, CIF + account), sustainability rules
+  (≈0 lei running cost, no source above 40%, money only through the association after registration, public reports).
+  Home-of-About hero has a button to it. Team member "Drăgan Ilie" renamed to "Drăgan Gabriel" (owner-confirmed).
+  No legal-entity, bank-account or amount claims anywhere. HU falls back to RO for the new strings (`// TODO: HU review`).
+- Session 6 Nov 2026, night (same branch): Sigiliul G2P was built and then **reverted at the owner's request** (commit `0e8bef8`; nothing of it remains).
+  Home now opens with `HomeOpener` (before `Hero3D`): full-viewport dark opener with eyebrow "Asociație · în constituire", H1 "Asociația / From Grey to Play",
+  message **"Din gri, în joc."** (owner-chosen; EN "From grey, to play."), CTAs (petition, About → Asociația), then a short "why" band:
+  "Promovăm sănătatea și sportul prin restaurarea terenurilor de sport." + Health/Sport/Community pills; then the 3D hero scrolls in as before.
+  The old hero-premium headline "Terenurile tale contează" is now an `h2` (one `h1` per page). CSS block "Association opener" at the end of the main `<style>`
+  (always dark, motion gated by `prefers-reduced-motion`). HU strings are drafts (`// TODO: HU review`).
+- Session 6 Nov 2026, late night (same branch, owner feedback — "made for phones, on the road"): Home opener rebuilt mobile-first. Compact (no
+  full-viewport height below 900px), single pill "Asociație în constituire", H1 "Asociația / From Grey to Play", message "Din gri, în joc.", then **three equal
+  buttons exactly as wide as the message** (Semnează petiția · Raportează (fires `g2p:report`) · Despre asociație → `association` page); the `.ao-cta` uses
+  `width:0;min-width:100%` inside `.ao-block{width:fit-content}` to get that width. The target drawing is 5 rings at equal 20-unit spacing + dot + cross
+  (`vector-effect:non-scaling-stroke`). The descender of "j" is no longer clipped (padding-bottom on `.ao-play`). The "why" band is one heading + one line
+  (no pills; `className: "bar"` is forbidden by a test). New page **`association`** (`AssociationPage`, in `PAGE_IDS`, nav item "🏛️ Asociația" between
+  "Cum ajuți" and "Despre", class `nav-assoc`, also in ⌘K); About keeps its Asociația tab. Founder roles: Cîmpan Teodor — coordination; Trofin Matei —
+  public relations and finance; Drăgan Gabriel — external activities and project delivery.
+- Session 6 Nov 2026, evening (branch `claude/ui-instagram-court`, draft PR on top of `claude/asociatie-g2p`, NOT live until the owner says so): section lines
+  fade at both ends (`--fade-line`, `border-image`; classes `fade-b`/`fade-t` for inline rows); About lost the quote + "Echipa" block (team lives only under Asociația);
+  opener target moved to the top-right corner and masked so it never touches the buttons; opener buttons are magnetic + 3D-tilt on mouse (`HomeOpener` effect, off with
+  reduced-motion/no-fx); Hero3D: green kicker removed, two invisible `.h3d-gutter` strips (16% each, `touch-action: pan-y`, coarse pointers only) so vertical swipes scroll the page;
+  `CourtDetail` redesigned Instagram-style (`.cdx*`): photo carousel (uploaded photos, then a static Esri satellite mosaic via `courtTileMosaic`), `CourtPulse` always visible,
+  head with badges, one scrolling panel, bottom bar Rezervă · Info · Satelit (centre, raised) · Comunitate · QR (Rezervă/QR open the existing modals). Mascot hidden while the sheet is open (`body.cdx-open`).
+- Session 6 Nov 2026, night (same branch `claude/ui-instagram-court`): `AssociationTab` extended from the Astra Hack plan (no amounts, no legal-entity claims): legal steps in the order the law needs
+  (statute/act → name reservation → initial assets → office → court filing → CIF/account), "Pregătim acum" checklist, collapsible draft statute (`.assoc-statute`), "Cum devine sustenabilă" revenue ladder
+  (founders, Adoptă un teren, 3.5%, local funding, EU as partner, ancillary) and risks + answers. All strings via local `L3` (HU falls back to RO, `// TODO: HU review`).
