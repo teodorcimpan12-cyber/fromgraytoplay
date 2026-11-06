@@ -304,3 +304,10 @@ Highest civic-value next steps:
   bars clamped 0–100 (negatives shown red, bar at 0), empty state card, "M" only ≥ 1M, RO plurals via
   `Intl.PluralRules` (1 lucrare / 29 de lucrări), numbers formatted in the active language (ro-RO/en-GB/hu-HU),
   rows wrap at 200% zoom, trend sentence picks rose/fell by direction. Stats 2/3 hide when their data is absent.
+- Session 6 Nov 2026 (branch `claude/tender-cray-owgf9p`): nav at 200% zoom — between the 1240px
+  collapse and 1440px the desktop nav had ~22px spare in EN with a classic scrollbar; signed in, the
+  account name pushed it off-page (and the 1240px `.nav-inner` cap overflowed on wide screens too).
+  Fix block "Desktop nav at 200% zoom" at the end of the main `<style>`: links padding .48rem ≥1241px,
+  account button icon-only 1241–1440px (`.nav-acct-name`, name kept in title/aria-label),
+  `.nav-inner` max-width 1320px ≥1441px. SW → `g2p-v11`. New project skill `.claude/skills/arena`
+  (/arena: parallel subagents with different strategies + blind judging rounds).

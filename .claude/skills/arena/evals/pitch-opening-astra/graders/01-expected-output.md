@@ -1,0 +1,7 @@
+---
+type: llm
+focus: trace
+weight: 1
+---
+
+The result matches this description: A Romanian pitch opening of at most 90 words that uses only the given numbers, produced by at least 6 contestants with distinct strategies, blind judging and at least one revision round, followed by a short report naming the winning strategy.
