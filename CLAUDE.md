@@ -222,6 +222,8 @@ Anyone can write — rules are MVP-permissive. Tighten before any press.
 
 ## Owner's backlog (asked 6 Nov 2026 — do later, not before Astra Hack)
 
+0. **Business plan — next session starts here.** Read `docs/HANDOFF_BUSINESS_PLAN.md` first; begin by
+   writing down Teodor's ideas, then structure them. No invented numbers.
 1. **Legal entity so the project can receive money** (donations, sponsors, grants, prizes). To research with
    the owner before choosing — nothing decided, verify every legal detail at the source: an association under
    OG 26/2000 vs. hosting the project under an existing NGO first (fiscal sponsor) vs. a company; who can be a
