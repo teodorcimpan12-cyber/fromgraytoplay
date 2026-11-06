@@ -317,3 +317,9 @@ Highest civic-value next steps:
   (≈0 lei running cost, no source above 40%, money only through the association after registration, public reports).
   Home-of-About hero has a button to it. Team member "Drăgan Ilie" renamed to "Drăgan Gabriel" (owner-confirmed).
   No legal-entity, bank-account or amount claims anywhere. HU falls back to RO for the new strings (`// TODO: HU review`).
+- Session 6 Nov 2026, night (same branch): Sigiliul G2P was built and then **reverted at the owner's request** (commit `0e8bef8`; nothing of it remains).
+  Home now opens with `HomeOpener` (before `Hero3D`): full-viewport dark opener with eyebrow "Asociație · în constituire", H1 "Asociația / From Grey to Play",
+  message **"Din gri, în joc."** (owner-chosen; EN "From grey, to play."), CTAs (petition, About → Asociația), then a short "why" band:
+  "Promovăm sănătatea și sportul prin restaurarea terenurilor de sport." + Health/Sport/Community pills; then the 3D hero scrolls in as before.
+  The old hero-premium headline "Terenurile tale contează" is now an `h2` (one `h1` per page). CSS block "Association opener" at the end of the main `<style>`
+  (always dark, motion gated by `prefers-reduced-motion`). HU strings are drafts (`// TODO: HU review`).
