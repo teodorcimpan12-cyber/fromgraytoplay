@@ -288,3 +288,7 @@ Highest civic-value next steps:
   `SibiuInvest` text + TIMELINE updated. SW cache → `g2p-v10`. `tools/smoke.mjs` accepts
   `G2P_CDN_MIRROR=<dir>` (<dir>/<host>/<path> copies of the pinned CDN files) for sandboxes that block
   unpkg/gstatic; unset = real CDN, unchanged.
+- Same day: Sibiu official answer (Serviciul Public Sport și Agrement, nr. 4541/03.11.2026) shown inside
+  `SibiuInvest`: 2022–2026 investments only at Păltiniș, Stadionul Municipal, Obor, Lacul lui Binder; no
+  amounts, no court condition, no neighbourhood court. Follow-up asks for values, condition, and who
+  manages block courts.
