@@ -1710,7 +1710,6 @@ body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inse
 .ao-btn .ic{font-size:1.4rem;line-height:1}
 .ao-btn.go{background:var(--green);border-color:transparent;color:#fff;box-shadow:0 8px 24px -8px rgba(16,185,129,.7)}
 .ao-btn.rep .ic{filter:saturate(1.1)}
-.ao-btn:active{transform:scale(.97)}
 @media(hover:hover) and (pointer:fine){.ao-btn:hover{background:rgba(255,255,255,.12)}.ao-btn.go:hover{background:#0ea371}}
 .ao-why{position:relative;background:#0B0F1C;color:#E5E7EB;padding:1.3rem 0 1.5rem;border-top:1px solid rgba(255,255,255,.06)}
 .ao-why h2{font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(1rem,3.7vw,1.5rem);letter-spacing:-.02em;line-height:1.3;margin:0 0 .3rem;color:#fff;text-wrap:balance}
@@ -1731,6 +1730,85 @@ body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inse
 /* Nav: the Association entry stands out a little */
 .nav-links a.nav-assoc{position:relative;font-weight:600;color:var(--text);background:color-mix(in srgb,var(--green) 10%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--green) 35%,transparent)}
 .nav-links a.nav-assoc.active{color:#fff;background:var(--green);box-shadow:none}
+/* === Fade lines, magnetic opener, 3D hero gutters, court sheet (Nov 2026, branch ui-instagram-court) === */
+/* Straight section lines fade out at both ends instead of running edge to edge. */
+:root{--fade-line:linear-gradient(90deg,transparent,var(--border) 16%,var(--border) 84%,transparent)}
+.navbar,.modal-head,.tabs,.fund-row,.rate-row,.lt-row,.ticker-wrap,.fade-b,.fade-t,.cp-top,.cp-cats{border-image:var(--fade-line) 1}
+.fade-b{border-bottom:1px solid var(--border)}
+.fade-t{border-top:1px solid var(--border)}
+.footer,.ao-why{border-image:linear-gradient(90deg,transparent,rgba(255,255,255,.12) 18%,rgba(255,255,255,.12) 82%,transparent) 1}
+[data-theme="light"] .footer{border-image:linear-gradient(90deg,transparent,rgba(0,0,0,.12) 18%,rgba(0,0,0,.12) 82%,transparent) 1}
+/* Opener: the target lives in the top-right corner and fades out downwards, so it never reaches the buttons. */
+.ao-target{top:0;right:-24vw;width:76vw;max-width:520px;transform:translateY(-14%);-webkit-mask-image:linear-gradient(180deg,#000 38%,transparent 78%);mask-image:linear-gradient(180deg,#000 38%,transparent 78%);translate:calc(var(--px,0)*-14px) calc(var(--py,0)*-14px);transition:translate .35s var(--ease-out,cubic-bezier(.22,1,.36,1))}
+@media(min-width:900px){.ao-target{top:50%;right:4vw;width:min(40vw,540px);transform:translateY(-50%);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 40%);mask-image:linear-gradient(90deg,transparent 0,#000 40%)}}
+/* Magnetic 3D buttons (hover + fine pointer only; the script sets --tx/--ty/--rx/--ry/--gx/--gy) */
+.ao-cta{perspective:720px}
+.ao-btn{position:relative;overflow:hidden;transform:translate3d(var(--tx,0px),var(--ty,0px),0) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .28s var(--ease-out,cubic-bezier(.22,1,.36,1)),background .2s ease,box-shadow .3s ease}
+.ao-btn::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;background:radial-gradient(120px circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.28),transparent 65%);transition:opacity .25s ease}
+.ao-btn.mag{transition:transform .08s linear,background .2s ease,box-shadow .3s ease;box-shadow:0 18px 30px -14px rgba(0,0,0,.55)}
+.ao-btn.mag::after{opacity:1}
+.ao-btn:active{scale:.97}
+/* 3D hero: no kicker over the scene; on touch screens two invisible side strips keep vertical swipes scrolling the page */
+.h3d-gutter{display:none}
+@media(pointer:coarse),(hover:none){.h3d-gutter{display:block;position:absolute;top:0;bottom:0;width:16%;z-index:1;touch-action:pan-y;-webkit-tap-highlight-color:transparent}.h3d-gutter.l{left:0}.h3d-gutter.r{right:0}}
+/* Court sheet, Instagram style: photo on top, pulse always visible, tab bar at the bottom */
+.modal.cdx{padding:0;overflow:hidden;display:flex;flex-direction:column;max-width:560px;width:100%;height:min(92dvh,860px);height:min(92vh,860px);height:min(92dvh,860px);max-height:none}
+.modal.cdx::before{display:none}
+.cdx-media{flex:none;position:relative;min-width:0}
+.cdx-hero{position:relative;height:clamp(120px,21dvh,210px);overflow:hidden;background:#0B0F1C}
+.cdx-hero::after{content:"";position:absolute;left:0;right:0;top:0;height:56px;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.45),transparent)}
+.cdx-slides{display:flex;height:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.cdx-slides::-webkit-scrollbar{display:none}
+.cdx-slide{flex:0 0 100%;scroll-snap-align:center;position:relative;overflow:hidden;min-width:0}
+.cdx-slide>img{width:100%;height:100%;object-fit:cover;display:block}
+.cdx-sat{cursor:pointer;background:linear-gradient(135deg,#16213E,#0D9488)}
+.cdx-mosaic{position:absolute;left:50%;top:50%;width:768px;height:768px;scale:1.25;pointer-events:none}
+.cdx-mosaic img{position:absolute;width:256px;height:256px;display:block;max-width:none;user-select:none;-webkit-user-drag:none}
+.cdx-nosat{position:absolute;inset:0;display:grid;place-items:center;font-size:3rem;opacity:.6}
+.cdx-cap{position:absolute;left:.7rem;bottom:.55rem;padding:.2rem .6rem;border-radius:980px;font:600 .68rem/1.2 'Space Mono',monospace;color:#fff;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.cdx-count{position:absolute;right:.7rem;bottom:.55rem;padding:.2rem .6rem;border-radius:980px;font:600 .7rem/1.2 'Space Mono',monospace;color:#fff;background:rgba(0,0,0,.5)}
+.cdx-grab{position:absolute;left:50%;top:7px;width:38px;height:5px;margin-left:-19px;border-radius:3px;background:rgba(255,255,255,.55);z-index:2;pointer-events:none}
+.cdx-x{position:absolute;right:.6rem;top:.6rem;z-index:3;width:38px;height:38px;border-radius:50%;border:0;background:rgba(0,0,0,.5);color:#fff;font-size:1rem;cursor:pointer;display:grid;place-items:center;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.cdx-pulse{padding:.55rem .75rem 0}
+.cdx-pulse .cpulse{margin:0}
+.cdx-main{flex:1;min-height:0;min-width:0;display:flex;flex-direction:column}
+.cdx-head{flex:none;padding:.65rem 1rem .5rem}
+.cdx-name{margin:0;font-size:1.12rem;line-height:1.25;text-wrap:balance}
+.cdx-addr{margin:.1rem 0 .45rem;font-size:.82rem;color:var(--textSec)}
+.cdx-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:.5rem 1rem 1.6rem;animation:fadeIn .18s}
+.cdx-bar{flex:none;position:relative;z-index:2;display:flex;align-items:flex-end;background:var(--bgCard);padding:.3rem .3rem calc(.3rem + env(safe-area-inset-bottom,0px))}
+.cdx-bar::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--fade-line)}
+.cdx-tab{flex:1;min-width:0;min-height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.18rem;border:0;background:none;color:var(--textSec);font:600 .68rem/1.1 'Libre Franklin',sans-serif;cursor:pointer;touch-action:manipulation;transition:color .2s ease,transform .16s var(--ease-out,ease)}
+.cdx-tab .cdx-ic{font-size:1.4rem;line-height:1}
+.cdx-tab .cdx-lb{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cdx-tab.on{color:var(--green)}
+.cdx-tab:active{transform:scale(.94)}
+.cdx-tab.mid{color:var(--text);margin-top:-30px}
+.cdx-tab.mid .cdx-ic{width:58px;height:58px;display:grid;place-items:center;border-radius:50%;font-size:1.65rem;background:linear-gradient(135deg,var(--green),var(--teal));border:3px solid var(--bgCard);box-shadow:0 10px 24px -8px color-mix(in srgb,var(--green) 75%,transparent)}
+.cdx-tab.mid.on{color:var(--green)}
+.cdx-tab:focus-visible{outline:2px solid var(--green);outline-offset:-2px;border-radius:12px}
+@media(min-width:900px){
+  .modal.cdx{max-width:min(1000px,96vw);height:min(86vh,720px);flex-direction:row}
+  .cdx-media{width:46%;display:flex;flex-direction:column;background:#0B0F1C}
+  .cdx-hero{flex:1;height:auto;min-height:260px}
+  .cdx-pulse{padding:.7rem .8rem .8rem;background:var(--bgCard)}
+  .cdx-grab{display:none}
+  .cdx-main{flex:1}
+  .cdx-head{padding:1rem 1.2rem .6rem}
+  .cdx-body{padding:.5rem 1.2rem 1.6rem}
+}
+@media(prefers-reduced-motion:reduce){.cdx-body{animation:none}.ao-btn,.ao-target{transition:none}}
+/* Compact pulse inside the court sheet; the floating mascot steps aside while the sheet is open */
+.cdx-open .mascot{opacity:0 !important;visibility:hidden;pointer-events:none !important}
+@media(max-width:899px){
+  .cdx-hero{height:clamp(104px,17dvh,190px)}
+  .cdx-pulse .cpulse-top{padding:.45rem .8rem .1rem}
+  .cdx-pulse .cpulse-bpm{font-size:1.35rem}
+  .cdx-pulse .cpulse-scope{height:54px}
+  .cdx-pulse .cpulse-bot{padding:.3rem .8rem .55rem}
+  .cdx-pulse .cpulse-src{display:none}
+}
+@media(max-width:899px) and (max-height:700px){.cdx-pulse .cpulse-bot{display:none}.cdx-pulse .cpulse{padding-bottom:.2rem}}
 </style>
 <script>(function(){try{var a=JSON.parse(localStorage.getItem("g2p_accent")||"null");if(a&&a.p){var r=document.documentElement;r.style.setProperty("--green",a.p);if(a.s)r.style.setProperty("--teal",a.s);r.classList.add("accent-on");}}catch(e){}})();</script>
 <script>(function(){try{var t=localStorage.getItem("g2p_theme")||(window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="dark"?"#0F172A":"#FFFFFF");}catch(e){}})();</script>
@@ -9063,6 +9141,8 @@ function Hero3D() {
   return React.createElement("section", { className: "h3d-hero" + (renovated ? " h3d-renov" : "") },
     React.createElement("div", { className: "h3d-sky", "aria-hidden": "true" }),
     React.createElement("div", { className: "h3d-canvas", ref: mountRef }),
+    React.createElement("div", { className: "h3d-gutter l", "aria-hidden": "true" }),
+    React.createElement("div", { className: "h3d-gutter r", "aria-hidden": "true" }),
     React.createElement("div", { className: "h3d-scrim-top" }),
     React.createElement("div", { className: "h3d-scrim" }),
     React.createElement("div", { className: "h3d-particles", "aria-hidden": "true" },
@@ -9077,7 +9157,6 @@ function Hero3D() {
       React.createElement("span", { className: "h3d-hand-tx" }, t.heroGrab)),
     cine ? React.createElement("button", { className: "h3d-skip", onClick: function () { if (apiRef.current) apiRef.current.skip(); } }, t.heroSkip) : null,
     React.createElement("div", { className: "h3d-overlay" },
-      React.createElement("div", { className: "h3d-kicker" }, t.heroKicker),
       React.createElement("div", { className: "h3d-title" }, React.createElement("span", { className: "g" }, React.createElement(LetterReveal, { text: "From Grey" })), React.createElement("br", null), React.createElement(LetterReveal, { text: "to ", base: 420 }), React.createElement("span", { className: "p" }, "Play")),
       React.createElement("p", { className: "h3d-sub" }, t.heroSub),
       React.createElement("div", { className: "h3d-cta" },
@@ -9808,10 +9887,51 @@ function HomeOpener() {
     rings,
     React.createElement("path", { d: "M100 0V200M0 100H200" }),
     React.createElement("circle", { className: "dot", cx: 100, cy: 100, r: 4 }));
+  const secRef = useRef(null);
+  // Magnetic pull + 3D tilt for the three buttons, and a little parallax on the target. Mouse only; off with reduced motion / no-fx.
+  useEffect(() => {
+    const sec = secRef.current;
+    if (!sec || !window.matchMedia || !window.matchMedia("(hover:hover) and (pointer:fine)").matches || fxReduced()) return;
+    const btns = Array.prototype.slice.call(sec.querySelectorAll(".ao-btn"));
+    let raf = 0, mx = 0, my = 0, inside = false;
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const reset = b => { b.classList.remove("mag"); ["--tx", "--ty", "--rx", "--ry"].forEach(k => b.style.removeProperty(k)); };
+    const frame = () => {
+      raf = 0;
+      const sr = sec.getBoundingClientRect();
+      if (inside) {
+        sec.style.setProperty("--px", ((mx - sr.left) / Math.max(1, sr.width) - .5).toFixed(3));
+        sec.style.setProperty("--py", ((my - sr.top) / Math.max(1, sr.height) - .5).toFixed(3));
+      } else { sec.style.removeProperty("--px"); sec.style.removeProperty("--py"); }
+      btns.forEach(b => {
+        const r = b.getBoundingClientRect();
+        const dx = mx - (r.left + r.width / 2), dy = my - (r.top + r.height / 2);
+        const reach = Math.max(r.width, r.height) / 2 + 80;
+        if (!inside || Math.hypot(dx, dy) > reach) { reset(b); return; }
+        b.classList.add("mag");
+        b.style.setProperty("--tx", clamp(dx * .2, -14, 14).toFixed(1) + "px");
+        b.style.setProperty("--ty", clamp(dy * .2, -10, 10).toFixed(1) + "px");
+        b.style.setProperty("--ry", (clamp(dx / (r.width / 2), -1, 1) * 9).toFixed(1) + "deg");
+        b.style.setProperty("--rx", (clamp(dy / (r.height / 2), -1, 1) * -9).toFixed(1) + "deg");
+        b.style.setProperty("--gx", (mx - r.left).toFixed(0) + "px");
+        b.style.setProperty("--gy", (my - r.top).toFixed(0) + "px");
+      });
+    };
+    const move = e => { mx = e.clientX; my = e.clientY; inside = true; if (!raf) raf = requestAnimationFrame(frame); };
+    const leave = () => { inside = false; if (!raf) raf = requestAnimationFrame(frame); };
+    sec.addEventListener("mousemove", move, { passive: true });
+    sec.addEventListener("mouseleave", leave);
+    return () => {
+      sec.removeEventListener("mousemove", move);
+      sec.removeEventListener("mouseleave", leave);
+      if (raf) cancelAnimationFrame(raf);
+      btns.forEach(reset);
+    };
+  }, []);
   const btn = (cls, ic, label, fn) => React.createElement("button", { type: "button", className: "ao-btn " + cls, onClick: fn },
     React.createElement("span", { className: "ic", "aria-hidden": "true" }, ic), React.createElement("span", null, label));
   return React.createElement(React.Fragment, null,
-    React.createElement("section", { className: "ao", "aria-labelledby": "ao-h1" },
+    React.createElement("section", { className: "ao", "aria-labelledby": "ao-h1", ref: secRef },
       React.createElement("div", { className: "ao-bg", "aria-hidden": "true" }),
       React.createElement("div", { className: "ao-target", "aria-hidden": "true" }, target),
       React.createElement("div", { className: "container ao-inner" },
@@ -10215,6 +10335,19 @@ function RatingSection({ court }) {
 }
 
 /* === Court Detail === */
+/* Static satellite backdrop for the court sheet: 3x3 Esri World Imagery tiles (z18) around the court. */
+function courtTileMosaic(c) {
+  if (!c || typeof c.lat !== "number" || typeof c.lng !== "number") return null;
+  const z = 18, n = Math.pow(2, z), rad = c.lat * Math.PI / 180;
+  const fx = (c.lng + 180) / 360 * n;
+  const fy = (1 - Math.log(Math.tan(rad) + 1 / Math.cos(rad)) / Math.PI) / 2 * n;
+  const x0 = Math.floor(fx) - 1, y0 = Math.floor(fy) - 1;
+  const tiles = [];
+  for (let j = 0; j < 3; j++) for (let i = 0; i < 3; i++) {
+    tiles.push({ key: i + "_" + j, src: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/" + z + "/" + (y0 + j) + "/" + (x0 + i), left: i * 256, top: j * 256 });
+  }
+  return { tiles, cx: (fx - x0) * 256, cy: (fy - y0) * 256 };
+}
 function CourtDetail({
   court: c,
   onClose,
@@ -10224,7 +10357,8 @@ function CourtDetail({
     t,
     lang,
     toast,
-    user
+    user,
+    settings
   } = useApp();
   const [ci, setCi] = useState(false);
   const [showPlay, setShowPlay] = useState(false);
@@ -10243,7 +10377,6 @@ function CourtDetail({
   const gallery = useFirebase("gallery");
   const courtPhotos = gallery ? Object.entries(gallery).map(([id, g]) => ({ id, ...g })).filter(p => p.courtId === c.id).reverse() : [];
   const occ = cnt === 0 ? "empty" : cnt < 5 ? "active" : "full";
-  const qr = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(SITE + "/#court-" + c.id)}`;
   const doCI = () => {
     const uid = user?.id || "g" + Date.now();
     db.ref("courts/" + c.id + "/checkins/" + uid).set({
@@ -10266,133 +10399,130 @@ function CourtDetail({
     const onKey = e => { if (e.key === "Escape" && !e.defaultPrevented) onClose(); };
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    document.body.classList.add("cdx-open");
     window.addEventListener("keydown", onKey);
-    return () => { document.body.style.overflow = prev; window.removeEventListener("keydown", onKey); };
+    return () => { document.body.style.overflow = prev; document.body.classList.remove("cdx-open"); window.removeEventListener("keydown", onKey); };
   }, []);
-  return /*#__PURE__*/React.createElement("div", {
-    className: "modal-overlay",
-    onClick: onClose,
-    role: "dialog",
-    "aria-modal": "true",
-    "aria-label": c.name
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "modal modal-lg",
-    onClick: e => e.stopPropagation()
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "modal-head flex justify-between items-center mb-2"
-  }, /*#__PURE__*/React.createElement("h2", { style: { margin: 0, fontSize: "1.25rem" } }, c.name), /*#__PURE__*/React.createElement("button", {
-    onClick: onClose,
-    "aria-label": lang === "ro" ? "\u00cenchide" : lang === "hu" ? "Bez\u00e1r\u00e1s" : "Close",
-    className: "modal-close"
-  }, "\u2715")),/*#__PURE__*/React.createElement("p", {
-    className: "text-sm mb-1"
-  }, c.address), ((c.desc && c.desc[lang]) || c.description) && React.createElement("p", {
-    className: "text-sm mb-1",
-    style: { color: "var(--textSec)" }
-  }, (c.desc && c.desc[lang]) || c.description, c.osm && React.createElement("a", {
-    href: "https://www.openstreetmap.org/" + c.osm, target: "_blank", rel: "noopener", style: { color: "var(--green)", marginLeft: ".4rem" }
-  }, "OSM ↗"), c.src && React.createElement("a", {
-    href: c.src, target: "_blank", rel: "noopener", style: { color: "var(--green)", marginLeft: ".4rem" }
-  }, (lang === "en" ? "Source" : lang === "hu" ? "Forrás" : "Sursă") + " ↗")), /*#__PURE__*/React.createElement("div", {
-    className: "flex gap-1 mb-2",
-    style: {
-      flexWrap: "wrap"
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "badge",
-    title: getCourtWeather(c.condition, t).label,
-    style: { background: getCourtWeather(c.condition, t).color + "22", color: getCourtWeather(c.condition, t).color, marginRight: ".3rem" }
-  }, getCourtWeather(c.condition, t).icon, " ", getCourtWeather(c.condition, t).label), /*#__PURE__*/React.createElement("span", {
-    className: `badge ${courtStatusView(c, t).badge}`
-  }, courtStatusView(c, t).label), /*#__PURE__*/React.createElement("span", {
-    className: `badge ${occ === "empty" ? "badge-green" : occ === "active" ? "badge-coral" : "badge-red"}`
-  }, occ === "empty" ? "🟢 " + t.empty + " (0)" : occ === "active" ? "🟡 " + t.active + " (" + cnt + ")" : "🔴 " + t.full + " (" + cnt + ")"), React.createElement(AiEstimateBadge, { court: c })),
-  React.createElement("div", { style:{marginTop:"1rem",display:"flex",alignItems:"center",gap:"1.5rem",flexWrap:"wrap",marginBottom:"1rem"} },
-    React.createElement(CourtHealthRing, { court:c }),
-    React.createElement("div", null,
-      React.createElement("div", { className:"text-xs mb-1", style:{color:"var(--textSec)",fontFamily:"'Space Mono',monospace",textTransform:"uppercase",letterSpacing:"1.5px"} }, t.healthScore||"Scor sănătate"),
-      React.createElement("p", { className:"text-xs", style:{color:"var(--textSec)",maxWidth:180} },
-        lang==="ro"?"Calculat din stare, rapoarte și evaluări":lang==="hu"?"Állapot, jelentések és értékelések alapján":"Based on condition, reports and ratings"
-      )
-    )
-  ),
-  React.createElement(CourtPulse, { court: c }),
-  React.createElement(CourtSourcesCard, { court: c }),
-  React.createElement(AiCourtCard, { court: c, onLetter: c.category !== "gym" ? () => setShowLetter(true) : null }),
-  /*#__PURE__*/React.createElement("h4", {
-    className: "mb-1"
-  }, "Progress"), /*#__PURE__*/React.createElement("div", {
-    className: "progress-bar mb-2"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "progress-fill",
-    style: {
-      width: c.progress + "%"
-    }
-  })), /*#__PURE__*/React.createElement("h4", {
-    className: "mb-1"
-  }, "\u267F ", t.accessibility), /*#__PURE__*/React.createElement("div", {
-    className: "flex gap-1 mb-2",
-    style: {
-      flexWrap: "wrap"
-    }
-  }, Object.entries(c.accessibility || {}).map(([k, v]) => /*#__PURE__*/React.createElement("span", {
-    key: k,
-    className: `badge ${v ? "badge-green" : "badge-red"}`
-  }, k, ": ", v ? "✓" : "✗"))), courtPhotos.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h4", {
-    className: "mb-1"
-  }, "📸 ", t.gallery, " (", courtPhotos.length, ")"), /*#__PURE__*/React.createElement("div", {
-    className: "flex gap-1 mb-2",
-    style: { overflowX: "auto" }
-  }, courtPhotos.slice(0, 8).map(p => /*#__PURE__*/React.createElement("img", {
-    key: p.id,
-    src: p.img,
-    alt: "evidence",
-    title: p.caption || "",
-    style: { width: 90, height: 90, objectFit: "cover", borderRadius: 8, flexShrink: 0 }
-  })))), /*#__PURE__*/React.createElement("h4", {
-    className: "mb-1"
-  }, t.qrCode), /*#__PURE__*/React.createElement("img", {
-    src: qr,
-    alt: "QR",
-    style: {
-      width: 110,
-      height: 110,
-      borderRadius: 8
-    }
-  }),
-  React.createElement("h4", { className: "mb-1 mt-2" },
-    React.createElement("span", { className: "live-dot", style:{ display:"inline-block", verticalAlign:"middle", marginRight:".35rem" } }),
-    t.activeGames, gameCount > 0 ? " (" + gameCount + ")" : ""
-  ),
-  React.createElement(ActiveGames, { court: c }),
-  React.createElement(RatingSection, { court: c }),
-  React.createElement(SatFinding, { court: c }),
-  React.createElement(SatelliteTimeMachine, { court: c }),
-  (c.status === "degraded" || c.status === "inProgress") && React.createElement(TaskBoard, { court: c }),
-  c.category !== "gym" && React.createElement(AdoptCourt, { court: c }),
-  React.createElement(CourtTimeline, { court: c }),
-  (() => {
-    const act = (key, kind, onClick, ic, label) => React.createElement("button", { key, className: "cd-act cd-" + kind, onClick, title: label },
-      React.createElement("span", { className: "cd-ic", "aria-hidden": "true" }, ic),
-      React.createElement("span", { className: "cd-l" }, label));
-    return React.createElement("div", { className: "cd-actions" },
-      (useApp().settings?.flags?.booking) !== false && act("book", "green", onBook, "\uD83D\uDCC5", t.bookCourt),
-      act("play", "coral", () => setShowPlay(true), "\u26BD", t.playNow),
-      !ci ? act("ci", "line", doCI, "\uD83D\uDCCD", t.checkIn) : act("co", "red", doCO, "\uD83D\uDCCD", t.checkOut),
-      act("follow", following ? "line" : "teal", () => toggleFollow(c.id), following ? "\uD83D\uDD15" : "\uD83D\uDD14", following ? t.unfollow : t.follow),
-      act("share", "line", () => shareCourt(c, t, toast), "\uD83D\uDD17", t.shareCourt),
-      act("qr", "line", () => setShowQR(true), "\uD83D\uDCF1", "QR"),
-      c.category !== "gym" && act("poster", "line", () => setShowWanted(true), "\uD83E\uDEA7", lang === "en" ? "Poster" : lang === "hu" ? "Plak\u00E1t" : "Afi\u0219"),
-      c.category !== "gym" && act("letter", "line", () => setShowLetter(true), "\u2709\uFE0F", lang === "en" ? "AI letter" : lang === "hu" ? "AI-lev\u00E9l" : "Scrisoare AI")); // TODO: HU review
-  })()),
-  // Portals: inside the court modal (animated transform) a fixed overlay is trapped in the modal's box.
-  // The wrapper stops clicks bubbling (React tree) to the court overlay, which would close the court too.
-  showPlay && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(PlayNowModal, { court: c, onClose: () => setShowPlay(false) })), document.body),
-  showQR && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(CourtQRCard, { court: c, onClose: () => setShowQR(false) })), document.body),
-  showWanted && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(WantedPoster, { court: c, onClose: () => setShowWanted(false) })), document.body),
-  showLetter && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(AiLetterModal, { court: c, onClose: () => setShowLetter(false) })), document.body),
-  unlockBadge && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(BadgeUnlockModal, { badge:unlockBadge, lang:lang, onClose:()=>setUnlockBadge(null) })), document.body)
-  );
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro; // TODO: HU review
+  const [tab, setTab] = useState("info");
+  const [slide, setSlide] = useState(0);
+  const mosaic = courtTileMosaic(c);
+  const wx = getCourtWeather(c.condition, t);
+  const bookOn = !(settings && settings.flags && settings.flags.booking === false);
+  const photos = courtPhotos.slice(0, 8);
+  const slideCount = photos.length + 1;
+  const desc = (c.desc && c.desc[lang]) || c.description;
+  const act = (key, kind, onClick, ic, label) => React.createElement("button", { key, className: "cd-act cd-" + kind, onClick, title: label },
+    React.createElement("span", { className: "cd-ic", "aria-hidden": "true" }, ic),
+    React.createElement("span", { className: "cd-l" }, label));
+  const hero = React.createElement("div", { className: "cdx-hero" },
+    React.createElement("div", {
+      className: "cdx-slides", "data-no-drag": "true",
+      onScroll: e => { const el = e.currentTarget; const i = Math.round(el.scrollLeft / Math.max(1, el.clientWidth)); if (i !== slide) setSlide(i); }
+    },
+      photos.map(p => React.createElement("div", { key: p.id, className: "cdx-slide" },
+        React.createElement("img", { src: p.img, alt: p.caption || t.gallery, draggable: false }))),
+      React.createElement("div", {
+        key: "sat", className: "cdx-slide cdx-sat", role: "button", tabIndex: 0,
+        "aria-label": L3("Deschide imaginea din satelit", "Open the satellite view", "Műholdkép megnyitása"),
+        onClick: () => setTab("sat"),
+        onKeyDown: e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setTab("sat"); } }
+      },
+        mosaic ? React.createElement("div", { className: "cdx-mosaic", style: { marginLeft: -mosaic.cx, marginTop: -mosaic.cy, transformOrigin: mosaic.cx + "px " + mosaic.cy + "px" } },
+          mosaic.tiles.map(tl => React.createElement("img", { key: tl.key, src: tl.src, alt: "", draggable: false, style: { left: tl.left, top: tl.top } }))) : React.createElement("div", { className: "cdx-nosat", "aria-hidden": "true" }, "⚽"),
+        React.createElement("span", { className: "cdx-cap" }, "🛰️ " + L3("imagine din satelit", "satellite image", "műholdkép")))),
+    React.createElement("div", { className: "cdx-grab", "aria-hidden": "true" }),
+    React.createElement("button", {
+      onClick: onClose, className: "cdx-x",
+      "aria-label": lang === "ro" ? "Închide" : lang === "hu" ? "Bezárás" : "Close"
+    }, "✕"),
+    slideCount > 1 && React.createElement("span", { className: "cdx-count", "aria-hidden": "true" }, (Math.min(slide, slideCount - 1) + 1) + "/" + slideCount));
+  const head = React.createElement("div", { className: "cdx-head" },
+    React.createElement("h2", { className: "cdx-name" }, c.name),
+    React.createElement("p", { className: "cdx-addr" }, c.address),
+    React.createElement("div", { className: "flex gap-1", style: { flexWrap: "wrap" } },
+      React.createElement("span", { className: "badge", title: wx.label, style: { background: wx.color + "22", color: wx.color } }, wx.icon, " ", wx.label),
+      React.createElement("span", { className: "badge " + courtStatusView(c, t).badge }, courtStatusView(c, t).label),
+      React.createElement("span", { className: "badge " + (occ === "empty" ? "badge-green" : occ === "active" ? "badge-coral" : "badge-red") },
+        occ === "empty" ? "🟢 " + t.empty + " (0)" : occ === "active" ? "🟡 " + t.active + " (" + cnt + ")" : "🔴 " + t.full + " (" + cnt + ")"),
+      React.createElement(AiEstimateBadge, { court: c })));
+  const infoPanel = React.createElement(React.Fragment, null,
+    desc && React.createElement("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, desc, c.osm && React.createElement("a", {
+      href: "https://www.openstreetmap.org/" + c.osm, target: "_blank", rel: "noopener", style: { color: "var(--green)", marginLeft: ".4rem" }
+    }, "OSM ↗"), c.src && React.createElement("a", {
+      href: c.src, target: "_blank", rel: "noopener", style: { color: "var(--green)", marginLeft: ".4rem" }
+    }, L3("Sursă", "Source", "Forrás") + " ↗")),
+    React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "1.2rem", flexWrap: "wrap", margin: ".6rem 0 1rem" } },
+      React.createElement(CourtHealthRing, { court: c }),
+      React.createElement("div", null,
+        React.createElement("div", { className: "text-xs mb-1", style: { color: "var(--textSec)", fontFamily: "'Space Mono',monospace", textTransform: "uppercase", letterSpacing: "1.5px" } }, t.healthScore || "Scor sănătate"),
+        React.createElement("p", { className: "text-xs", style: { color: "var(--textSec)", maxWidth: 200 } },
+          L3("Calculat din stare, rapoarte și evaluări", "Based on condition, reports and ratings", "Állapot, jelentések és értékelések alapján")))),
+    React.createElement("div", { className: "cd-actions", style: { marginTop: 0 } },
+      act("play", "coral", () => setShowPlay(true), "⚽", t.playNow),
+      !ci ? act("ci", "line", doCI, "📍", t.checkIn) : act("co", "red", doCO, "📍", t.checkOut),
+      act("follow", following ? "line" : "teal", () => toggleFollow(c.id), following ? "🔕" : "🔔", following ? t.unfollow : t.follow),
+      act("share", "line", () => shareCourt(c, t, toast), "🔗", t.shareCourt),
+      c.category !== "gym" && act("poster", "line", () => setShowWanted(true), "🪧", L3("Afiș", "Poster", "Plakát")),
+      c.category !== "gym" && act("letter", "line", () => setShowLetter(true), "✉️", L3("Scrisoare AI", "AI letter", "AI-levél"))),
+    React.createElement(CourtSourcesCard, { court: c }),
+    React.createElement(AiCourtCard, { court: c, onLetter: c.category !== "gym" ? () => setShowLetter(true) : null }),
+    React.createElement("h4", { className: "mb-1 mt-2" }, "Progress"),
+    React.createElement("div", { className: "progress-bar mb-2" }, React.createElement("div", { className: "progress-fill", style: { width: c.progress + "%" } })),
+    React.createElement("h4", { className: "mb-1" }, "♿ ", t.accessibility),
+    React.createElement("div", { className: "flex gap-1 mb-2", style: { flexWrap: "wrap" } },
+      Object.entries(c.accessibility || {}).map(([k, v]) => React.createElement("span", { key: k, className: "badge " + (v ? "badge-green" : "badge-red") }, k, ": ", v ? "✓" : "✗"))));
+  const communityPanel = React.createElement(React.Fragment, null,
+    React.createElement("h4", { className: "mb-1" },
+      React.createElement("span", { className: "live-dot", style: { display: "inline-block", verticalAlign: "middle", marginRight: ".35rem" } }),
+      t.activeGames, gameCount > 0 ? " (" + gameCount + ")" : ""),
+    React.createElement(ActiveGames, { court: c }),
+    React.createElement(RatingSection, { court: c }),
+    courtPhotos.length > 0 && React.createElement(React.Fragment, null,
+      React.createElement("h4", { className: "mb-1 mt-2" }, "📸 ", t.gallery, " (", courtPhotos.length, ")"),
+      React.createElement("div", { className: "flex gap-1 mb-2", style: { overflowX: "auto" }, "data-no-drag": "true" },
+        courtPhotos.slice(0, 8).map(p => React.createElement("img", {
+          key: p.id, src: p.img, alt: "evidence", title: p.caption || "",
+          style: { width: 90, height: 90, objectFit: "cover", borderRadius: 8, flexShrink: 0 }
+        })))),
+    (c.status === "degraded" || c.status === "inProgress") && React.createElement(TaskBoard, { court: c }),
+    c.category !== "gym" && React.createElement(AdoptCourt, { court: c }),
+    React.createElement(CourtTimeline, { court: c }));
+  const satPanel = React.createElement(React.Fragment, null,
+    React.createElement(SatFinding, { court: c }),
+    React.createElement(SatelliteTimeMachine, { court: c }));
+  const items = [
+    bookOn && { k: "book", ic: "📅", label: t.bookCourt, run: onBook },
+    { k: "info", ic: "ℹ️", label: "Info", panel: true },
+    { k: "sat", ic: "🛰️", label: L3("Satelit", "Satellite", "Műhold"), panel: true, mid: true },
+    { k: "com", ic: "👥", label: L3("Comunitate", "Community", "Közösség"), panel: true },
+    { k: "qr", ic: "📱", label: "QR", run: () => setShowQR(true) }
+  ].filter(Boolean);
+  const bar = React.createElement("nav", { className: "cdx-bar", "aria-label": L3("Secțiunile terenului", "Court sections", "A pálya szakaszai") },
+    items.map(it => React.createElement("button", {
+      key: it.k, type: "button", className: "cdx-tab" + (it.mid ? " mid" : "") + (it.panel && tab === it.k ? " on" : ""),
+      "aria-current": it.panel && tab === it.k ? "true" : undefined,
+      onClick: () => { if (it.panel) setTab(it.k); else it.run(); }
+    },
+      React.createElement("span", { className: "cdx-ic", "aria-hidden": "true" }, it.ic),
+      React.createElement("span", { className: "cdx-lb" }, it.label))));
+  return React.createElement("div", {
+    className: "modal-overlay", onClick: onClose, role: "dialog", "aria-modal": "true", "aria-label": c.name
+  },
+    React.createElement("div", { className: "modal modal-lg cdx", onClick: e => e.stopPropagation() },
+      React.createElement("div", { className: "cdx-media" }, hero, React.createElement("div", { className: "cdx-pulse" }, React.createElement(CourtPulse, { court: c }))),
+      React.createElement("div", { className: "cdx-main" },
+        head,
+        React.createElement("div", { className: "cdx-body", key: tab, "data-no-drag": "true", role: "region", "aria-label": c.name },
+          tab === "info" ? infoPanel : tab === "sat" ? satPanel : communityPanel),
+        bar),
+      // Portals: inside the court modal (animated transform) a fixed overlay is trapped in the modal's box.
+      // The wrapper stops clicks bubbling (React tree) to the court overlay, which would close the court too.
+      showPlay && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(PlayNowModal, { court: c, onClose: () => setShowPlay(false) })), document.body),
+      showQR && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(CourtQRCard, { court: c, onClose: () => setShowQR(false) })), document.body),
+      showWanted && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(WantedPoster, { court: c, onClose: () => setShowWanted(false) })), document.body),
+      showLetter && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(AiLetterModal, { court: c, onClose: () => setShowLetter(false) })), document.body),
+      unlockBadge && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(BadgeUnlockModal, { badge: unlockBadge, lang: lang, onClose: () => setUnlockBadge(null) })), document.body)));
 }
 
 /* === Report Modal === */
@@ -13279,7 +13409,7 @@ function CsmInvest() {
       "What the list does not cover: CSM only manages its own bases. Block courts in the neighbourhoods — including the Str. Plopilor multisport court approved in Jan 2025 — are not managed by CSM, and it does not hold the SIDU 2021–2030 extract. We asked City Hall; it extended its answer deadline to 30 days (letter nr. 51941/04.11.2026), i.e. by 25.11.2026.",
       "Amit a lista nem fed le: a CSM csak a saját bázisait kezeli. A lakótelepi pályák — köztük a 2025 januárjában jóváhagyott Str. Plopilor multisport pálya — nem a CSM kezelésében vannak, és a SIDU 2021–2030 kivonatát sem birtokolja. A Polgármesteri Hivataltól kértük; a válaszhatáridőt 30 napra hosszabbította (51941/04.11.2026), azaz 2026.11.25-ig.")), // TODO: HU review
     e("button", { className: "btn btn-sm btn-outline", onClick: () => setOpen(!open) }, open ? L3("Ascunde lista", "Hide the list", "Lista elrejtése") : L3(n === 1 ? "Vezi lucrarea" : "Vezi toate cele " + items, n === 1 ? "See the item" : "See all " + items, n === 1 ? "A tétel" : "Mind a " + items)),
-    open && e("div", { className: "mt-1", style: { fontSize: ".82rem" } }, CSM_INVEST.map((r, i) => e("div", { key: i, className: "flex justify-between", style: { gap: ".25rem .75rem", padding: ".35rem 0", borderBottom: "1px solid var(--border)", flexWrap: "wrap" } },
+    open && e("div", { className: "mt-1", style: { fontSize: ".82rem" } }, CSM_INVEST.map((r, i) => e("div", { key: i, className: "flex justify-between fade-b", style: { gap: ".25rem .75rem", padding: ".35rem 0", flexWrap: "wrap" } },
       e("span", { style: { flex: "1 1 12rem", minWidth: 0 } }, e("b", null, r.y), " · ", r.k === "i" ? L3("Investiție", "Investment", "Beruházás") : L3("Reparație", "Repair", "Javítás"), " · ", r.what),
       amt(r.lei)))),
     src
@@ -13293,7 +13423,7 @@ function SibiuInvest() {
   const inv = TIMELINE_SIBIU.filter(ev => ev.lei);
   return React.createElement("div", { className: "card" },
     React.createElement("h3", { className: "mb-1" }, "💰 ", L3("Investiții publice în terenuri de sport — Sibiu", "Public investment in sports courts — Sibiu", "Sportpálya-beruházások — Nagyszeben")), // TODO: HU review
-    inv.map((ev, i) => React.createElement("div", { key: i, className: "flex justify-between", style: { gap: ".75rem", padding: ".45rem 0", borderBottom: "1px solid var(--border)", flexWrap: "wrap" } },
+    inv.map((ev, i) => React.createElement("div", { key: i, className: "flex justify-between fade-b", style: { gap: ".75rem", padding: ".45rem 0", flexWrap: "wrap" } },
       React.createElement("div", { style: { flex: "1 1 16rem" } }, React.createElement("b", null, ev.y), " · ", ev[lang] || ev.ro, " ",
         React.createElement("a", { href: ev.src, target: "_blank", rel: "noopener", style: { fontSize: ".75rem", color: "var(--textSec)" } }, "🔗")),
       React.createElement("div", { className: "font-bold", style: { color: "var(--green)", whiteSpace: "nowrap" } }, ev.lei))),
@@ -13380,7 +13510,7 @@ function CityHallGuide() {
     React.createElement("div", { className: "card mb-2" },
       React.createElement("h4", { className: "mb-1" }, "👤 ", L3("Cine decide", "Who decides", null)),
       CONTACTS.map(function(ct, i) {
-        return React.createElement("div", { key: i, style: { padding: ".6rem 0", borderBottom: i < CONTACTS.length - 1 ? "1px solid var(--border)" : "none" } },
+        return React.createElement("div", { key: i, className: i < CONTACTS.length - 1 ? "fade-b" : undefined, style: { padding: ".6rem 0" } },
           React.createElement("div", { style: { fontWeight: 700, fontSize: ".9rem" } }, ct.ic, " ", ct.name),
           React.createElement("div", { className: "text-xs", style: { color: "var(--textSec)", margin: ".15rem 0 .35rem" } }, ct.role),
           React.createElement("div", { className: "flex gap-1", style: { flexWrap: "wrap" } },
@@ -14148,35 +14278,7 @@ function AboutPage() {
   }, []);
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
   const sib = ACTIVE_CITY === "sibiu";
-  const teamMembers = [
-    { i: "TM", name: "Trofin Matei", role: L3("Verificare Satelit", "Satellite Review", "Műhold-ellenőrzés"), color: "var(--teal)" },
-    { i: "ȚM", name: "Țurcanu Mihai", role: L3("Verificare Satelit", "Satellite Review", "Műhold-ellenőrzés"), color: "var(--teal)" },
-    { i: "CI", name: "Cernescu Ionuț", role: L3("Verificare Date", "Data Review", "Adatellenőrzés"), color: "var(--coral)" },
-    { i: "DG", name: "Drăgan Gabriel", role: L3("Verificare Date", "Data Review", "Adatellenőrzés"), color: "var(--coral)" },
-    { i: "CT", name: "Cîmpan Teodor", role: L3("Coordonare", "Coordination", "Koordináció"), color: "var(--green)" }
-  ];
   const openEssay = () => { setTab("project"); setEssayOpen(true); setTimeout(() => { const el = document.getElementById("about-essay"); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 120); };
-  const heroSection = React.createElement("section", { className: "section about-hero" },
-    React.createElement("div", { className: "container" },
-      React.createElement("blockquote", { className: "about-quote", style: { marginTop: 0, marginBottom: "1.4rem" } },
-        React.createElement("p", null, L3(
-          "Eu și prietenii mei nu aveam unde să ne jucăm. Terenul din cartier avea coșul îndoit și asfaltul crăpat, iar nimeni nu părea să observe. Așa că am început să le documentăm — teren cu teren.",
-          "My friends and I had nowhere to play. The court in our neighbourhood had a bent hoop and cracked asphalt, and nobody seemed to notice. So we started documenting them — one court at a time.",
-          "A barátaimmal nem volt hol játszanunk. A környékbeli pályán görbe volt a kosár és repedezett az aszfalt, és úgy tűnt, senki sem veszi észre. Ezért elkezdtük dokumentálni őket — pályáról pályára." // TODO: HU review
-        ))
-      ),
-      React.createElement("h2", { className: "section-title" }, "👥 " + L3("Echipa", "The Team", "A csapat")),
-      React.createElement("p", { className: "section-sub" }, L3("Cinci tineri, un singur scop: terenuri pe care chiar te poți juca.", "Five young people, one goal: courts you can actually play on.", "Öt fiatal, egy cél: pályák, ahol tényleg lehet játszani.")), // TODO: HU review
-      React.createElement("div", { className: "about-team-grid" },
-        teamMembers.map((m, idx) => React.createElement("div", { key: idx, className: "about-member", style: { "--mc": m.color } },
-          React.createElement("div", { className: "about-avatar" }, m.i),
-          React.createElement("strong", null, m.name),
-          React.createElement("span", null, m.role)
-        ))
-      ),
-      React.createElement("button", { className: "btn btn-sm btn-ghost mt-2", onClick: () => { setPage("association"); window.scrollTo(0, 0); } }, "🏛️ " + L3("Asociația este în constituire →", "The association is being established →", "Az egyesület alakulóban van →"))
-    )
-  );
   // Key data: only facts of the city on screen (TGM facts never show on Sibiu).
   const keyData = sib ? [
     { n: String(COURTS.length), l: L3("terenuri", "courts", "pálya") + (STADIUM_N ? " · " + STADIUM_N + " " + L3("stadioane", "stadiums", "stadion") : ""), c: "var(--green)", src: "osm" },
@@ -14197,7 +14299,7 @@ function AboutPage() {
     ["press", "📰", L3("Presă", "Press", "Sajtó")]
   ];
   const pressPdf = () => { if (busy) return; setBusy(true); buildPressPdf(lang, pd).then(() => setBusy(false), () => setBusy(false)); };
-  return React.createElement("div", { className: "animate-in" }, heroSection,
+  return React.createElement("div", { className: "animate-in" },
     React.createElement("section", { className: "section" },
       React.createElement("div", { className: "container" },
         React.createElement("h2", { className: "section-title" }, "📖 ", t.about),
@@ -14212,7 +14314,7 @@ function AboutPage() {
                   L3("Lucrare câștigătoare · Loc 1 Național · EdVenture ATW 2026", "Winning essay · National #1 · EdVenture ATW 2026", "Nyertes dolgozat · Nemzeti 1. · EdVenture ATW 2026"))),
               React.createElement("button", { className: "btn btn-sm", style: { flexShrink: 0 }, onClick: () => setEssayOpen(o => !o) },
                 essayOpen ? L3("Închide ✕", "Close ✕", "Bezár ✕") : "📖 " + L3("Citește lucrarea", "Read essay", "Dolgozat"))),
-            essayOpen && React.createElement("div", { style: { whiteSpace: "pre-wrap", lineHeight: 1.7, fontSize: ".92rem", paddingTop: ".8rem", borderTop: "1px solid var(--border)" } }, ESSAY[lang] || ESSAY.ro)),
+            essayOpen && React.createElement("div", { className: "fade-t", style: { whiteSpace: "pre-wrap", lineHeight: 1.7, fontSize: ".92rem", paddingTop: ".8rem" } }, ESSAY[lang] || ESSAY.ro)),
           React.createElement("div", { className: "card mt-2" },
             React.createElement("h3", { className: "mb-2" }, "📊 " + L3("Date cheie", "Key Data", "Kulcsadatok")),
             React.createElement("div", { className: "grid grid-4" }, keyData.map((k, i) => React.createElement("div", { key: i, style: { textAlign: "center" } },

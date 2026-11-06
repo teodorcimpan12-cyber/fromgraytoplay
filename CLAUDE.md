@@ -331,3 +331,9 @@ Highest civic-value next steps:
   (no pills; `className: "bar"` is forbidden by a test). New page **`association`** (`AssociationPage`, in `PAGE_IDS`, nav item "🏛️ Asociația" between
   "Cum ajuți" and "Despre", class `nav-assoc`, also in ⌘K); About keeps its Asociația tab. Founder roles: Cîmpan Teodor — coordination; Trofin Matei —
   public relations and finance; Drăgan Gabriel — external activities and project delivery.
+- Session 6 Nov 2026, evening (branch `claude/ui-instagram-court`, draft PR on top of `claude/asociatie-g2p`, NOT live until the owner says so): section lines
+  fade at both ends (`--fade-line`, `border-image`; classes `fade-b`/`fade-t` for inline rows); About lost the quote + "Echipa" block (team lives only under Asociația);
+  opener target moved to the top-right corner and masked so it never touches the buttons; opener buttons are magnetic + 3D-tilt on mouse (`HomeOpener` effect, off with
+  reduced-motion/no-fx); Hero3D: green kicker removed, two invisible `.h3d-gutter` strips (16% each, `touch-action: pan-y`, coarse pointers only) so vertical swipes scroll the page;
+  `CourtDetail` redesigned Instagram-style (`.cdx*`): photo carousel (uploaded photos, then a static Esri satellite mosaic via `courtTileMosaic`), `CourtPulse` always visible,
+  head with badges, one scrolling panel, bottom bar Rezervă · Info · Satelit (centre, raised) · Comunitate · QR (Rezervă/QR open the existing modals). Mascot hidden while the sheet is open (`body.cdx-open`).
