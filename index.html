@@ -10951,6 +10951,170 @@ function PetitionShare({ total, onShared }) {
       React.createElement("button", { className: "pet-share-btn", onClick: copy, style: { "--pc": "var(--teal)" } }, React.createElement("span", { "aria-hidden": "true" }, "🔗"), L3("Copiază link", "Copy link", "Link másolása"))));
 }
 
+/* === Sigiliul G2P: tamper-evident hash chain for petition signatures. No personal data goes into the
+   chain: commitment = SHA-256(nonce|id|type|option|serverTs), seal_i = SHA-256(seal_{i-1}|commitment_i).
+   Firebase layout: seal/chain/{n} (write-once) and seal/head {n, seal} (advances only to a seal already in
+   chain/{n}). database.rules.json must be deployed for writes to succeed; if it is not, signing still works
+   and no receipt is shown. Proves "not modified after the anchor was published", nothing more. === */
+/* G2PSEAL:BEGIN */
+const G2PSeal = (function () {
+  const GENESIS = "0".repeat(64);
+  const enc = new TextEncoder();
+  const ok = () => !!(typeof crypto !== "undefined" && crypto.subtle && typeof db !== "undefined");
+  async function sha256Hex(text) {
+    const buf = await crypto.subtle.digest("SHA-256", enc.encode(text));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+  }
+  function randomNonce() {
+    const a = new Uint8Array(16);
+    crypto.getRandomValues(a);
+    return Array.from(a).map(b => b.toString(16).padStart(2, "0")).join("");
+  }
+  function joinFields(fields) {
+    for (const f of fields) if (String(f).indexOf("|") >= 0) throw new Error("reserved character in field");
+    return fields.map(String).join("|");
+  }
+  async function commit(r) { return sha256Hex(joinFields([r.nonce, r.id, r.type, r.option, r.serverTs])); }
+  async function nextSeal(prev, commitment) { return sha256Hex(joinFields([prev, commitment])); }
+  async function verifyChain(entries) {
+    let prev = GENESIS;
+    for (let i = 0; i < entries.length; i++) {
+      if (entries[i].prev !== undefined && entries[i].prev !== prev) return { ok: false, brokenAt: i, head: null };
+      const s = await nextSeal(prev, entries[i].commitment);
+      if (s !== entries[i].seal) return { ok: false, brokenAt: i, head: null };
+      prev = s;
+    }
+    return { ok: true, brokenAt: null, head: prev };
+  }
+  async function verifyReceipt(receipt, entries) {
+    const c = await commit(receipt);
+    const idx = entries.findIndex(e => e.commitment === c);
+    return { included: idx !== -1, position: idx };
+  }
+  async function serverNow() {
+    try { const off = (await db.ref(".info/serverTimeOffset").once("value")).val() || 0; return Math.round(Date.now() + off); } catch (e) { return Date.now(); }
+  }
+  // Take the next free slot. chain/{n} is write-once; the head can be advanced by anyone, so a client that
+  // dies between the two writes never blocks the chain (the next writer finishes the job).
+  async function append(rec) {
+    const commitment = await commit(rec);
+    for (let attempt = 0; attempt < 6; attempt++) {
+      const hs = (await db.ref("seal/head").once("value")).val();
+      const n = hs ? hs.n : 0;
+      const prev = hs ? hs.seal : GENESIS;
+      const pend = (await db.ref("seal/chain/" + (n + 1)).once("value")).val();
+      if (pend) { try { await db.ref("seal/head").set({ n: n + 1, seal: pend.seal }); } catch (e) {} continue; }
+      const seal = await nextSeal(prev, commitment);
+      try {
+        await db.ref("seal/chain/" + (n + 1)).set({ n: n + 1, id: rec.id, type: rec.type, option: rec.option, ts: rec.serverTs, commitment: commitment, prev: prev, seal: seal });
+      } catch (e) { continue; }
+      try { await db.ref("seal/head").set({ n: n + 1, seal: seal }); } catch (e) {}
+      return { n: n + 1, commitment: commitment, seal: seal };
+    }
+    return null;
+  }
+  async function sealSignup(id, option) {
+    const rec = { nonce: randomNonce(), id: id, type: "petition", option: option, serverTs: await serverNow() };
+    const r = await append(rec);
+    return r ? Object.assign({}, rec, { n: r.n }) : null;
+  }
+  return { GENESIS: GENESIS, ok: ok, sha256Hex: sha256Hex, commit: commit, nextSeal: nextSeal, verifyChain: verifyChain, verifyReceipt: verifyReceipt, sealSignup: sealSignup };
+})();
+/* G2PSEAL:END */
+
+function useSealChain() {
+  const [st, setSt] = useState({ loading: true, entries: [], head: null, error: false });
+  useEffect(() => {
+    const ref = db.ref("seal");
+    const cb = s => {
+      const v = s.val() || {};
+      const c = v.chain || {};
+      const arr = (Array.isArray(c) ? c : Object.keys(c).map(k => c[k])).filter(Boolean);
+      arr.sort((a, b) => a.n - b.n);
+      setSt({ loading: false, entries: arr, head: v.head || null, error: false });
+    };
+    ref.on("value", cb, () => setSt({ loading: false, entries: [], head: null, error: true }));
+    return () => ref.off("value", cb);
+  }, []);
+  return st;
+}
+
+function sealSave(name, text) { downloadFile(name, text, "text/plain"); }
+
+/* Receipt shown right after signing. Holds no name or email; only the signer can rebuild it. */
+function SealReceipt({ rec, busy }) {
+  const { lang, toast, setPage } = useApp();
+  const L3 = (ro, en) => lang === "en" ? en : ro; // TODO: HU review (falls back to RO)
+  const json = rec ? JSON.stringify({ nonce: rec.nonce, id: rec.id, type: rec.type, option: rec.option, serverTs: rec.serverTs }) : "";
+  return React.createElement("div", { className: "card mt-2", style: { borderLeft: "6px solid var(--green)" } },
+    React.createElement("h3", { className: "mb-1" }, "🔏 " + L3("Chitanța ta din Sigiliul G2P", "Your G2P Seal receipt")),
+    busy && !rec ? React.createElement("p", { className: "text-sm" }, "⏳ " + L3("Sigilăm semnătura ta în lanț…", "Sealing your signature into the chain…")) : null,
+    rec ? React.createElement("div", null,
+      React.createElement("p", { className: "text-sm" }, L3("Semnătura ta este în lanț la poziția #" + rec.n + ". Păstrează chitanța: doar tu o poți reface, iar oricine poate verifica lanțul.", "Your signature is in the chain at position #" + rec.n + ". Keep the receipt: only you can rebuild it, and anyone can verify the chain.")),
+      React.createElement("p", { className: "text-xs", style: { color: "var(--textSec)" } }, L3("Chitanța nu conține nume sau email.", "The receipt contains no name or email.")),
+      React.createElement("div", { className: "flex gap-2", style: { flexWrap: "wrap" } },
+        React.createElement("button", { className: "btn btn-sm", onClick: () => { try { navigator.clipboard.writeText(json).then(() => toast("✓")); } catch (e) { toast(json); } } }, "📋 " + L3("Copiază chitanța", "Copy receipt")),
+        React.createElement("button", { className: "btn btn-sm", onClick: () => sealSave("chitanta-g2p.json", json) }, "📥 " + L3("Descarcă", "Download")),
+        React.createElement("button", { className: "btn btn-sm btn-ghost", onClick: () => { try { sessionStorage.setItem("g2p_about_tab", "association"); } catch (e) {} setPage("about"); window.scrollTo(0, 0); } }, "🔍 " + L3("Verifică în lanț", "Check in the chain")))) : null);
+}
+
+/* Public verification: everything is computed in the visitor's browser. */
+function SealCard() {
+  const { lang, toast } = useApp();
+  const L3 = (ro, en) => lang === "en" ? en : ro; // TODO: HU review (falls back to RO)
+  const st = useSealChain();
+  const [res, setRes] = useState(null);
+  const [anchor, setAnchor] = useState("");
+  const [ares, setAres] = useState(null);
+  const [rcpt, setRcpt] = useState(() => { try { const r = JSON.parse(localStorage.getItem("g2p_seal_receipt") || "null"); return r ? JSON.stringify({ nonce: r.nonce, id: r.id, type: r.type, option: r.option, serverTs: r.serverTs }) : ""; } catch (e) { return ""; } });
+  const [rres, setRres] = useState(null);
+  const n = st.entries.length;
+  useEffect(() => {
+    let dead = false;
+    if (!n || !G2PSeal.ok()) { setRes(null); return; }
+    G2PSeal.verifyChain(st.entries).then(r => { if (!dead) setRes(r); }, () => { if (!dead) setRes(null); });
+    return () => { dead = true; };
+  }, [n, st.head && st.head.seal]);
+  const headSeal = res && res.ok ? res.head : "";
+  const short = h => h ? h.slice(0, 10) + "…" + h.slice(-6) : "";
+  const checkAnchor = () => {
+    const a = anchor.trim().toLowerCase();
+    if (!/^[0-9a-f]{64}$/.test(a)) { setAres({ bad: true, msg: L3("Ancora are 64 de caractere hex.", "The anchor is 64 hex characters.") }); return; }
+    const k = st.entries.findIndex(e => e.seal === a);
+    if (!res || !res.ok) setAres({ bad: true, msg: L3("Lanțul curent nu se verifică, deci ancora nu poate fi confirmată.", "The current chain does not verify, so the anchor cannot be confirmed.") });
+    else if (k < 0) setAres({ bad: true, msg: L3("Ancora nu apare în lanț. Fie lanțul a fost schimbat, fie ancora nu e din acest lanț.", "The anchor is not in the chain. Either the chain was changed or the anchor is not from this chain.") });
+    else setAres({ bad: false, msg: L3("Ancora este în lanț la poziția #" + (k + 1) + ". Tot ce a fost înainte de ea este neschimbat.", "The anchor is in the chain at position #" + (k + 1) + ". Everything before it is unchanged.") });
+  };
+  const checkReceipt = () => {
+    let r = null;
+    try { r = JSON.parse(rcpt); } catch (e) {}
+    if (!r || !r.nonce) { setRres({ bad: true, msg: L3("Chitanța nu este un JSON valid.", "The receipt is not valid JSON.") }); return; }
+    G2PSeal.verifyReceipt(r, st.entries).then(x => setRres(x.included ? { bad: false, msg: L3("Semnătura ta este în lanț, poziția #" + (x.position + 1) + ".", "Your signature is in the chain, position #" + (x.position + 1) + ".") } : { bad: true, msg: L3("Nu am găsit această chitanță în lanț.", "This receipt was not found in the chain.") }), () => setRres({ bad: true, msg: "…" }));
+  };
+  const outCls = r => ({ marginTop: ".5rem", fontWeight: 600, color: r.bad ? "var(--red)" : "var(--green)" });
+  const chainJson = () => JSON.stringify(st.entries.map(e => ({ n: e.n, id: e.id, ts: e.ts, commitment: e.commitment, seal: e.seal })), null, 1);
+  return React.createElement("div", { className: "card mt-3", id: "g2p-seal" },
+    React.createElement("h3", { className: "mb-1" }, "🔏 " + L3("Sigiliul G2P: verifică singur", "The G2P Seal: check it yourself")),
+    React.createElement("p", { className: "text-sm" }, L3("Fiecare semnătură nouă primește o amprentă (hash) legată de cea dinainte. Dacă cineva modifică, șterge sau adaugă retroactiv ceva, lanțul se rupe și oricine vede asta aici, fără să ne creadă pe cuvânt.", "Every new signature gets a fingerprint (hash) linked to the previous one. If anyone edits, deletes or back-dates anything, the chain breaks and anyone can see it here, without taking our word for it.")),
+    !G2PSeal.ok() ? React.createElement("p", { className: "text-sm", style: { color: "var(--red)" } }, L3("Browserul tău nu permite calculul de hash (are nevoie de HTTPS).", "Your browser cannot compute hashes (it needs HTTPS).")) : null,
+    st.loading ? React.createElement("p", { className: "text-sm" }, "⏳ …") : st.error ? React.createElement("p", { className: "text-sm", style: { color: "var(--red)" } }, L3("Nu pot citi lanțul acum.", "Cannot read the chain right now.")) : !n ? React.createElement("p", { className: "text-sm", style: { fontWeight: 600 } }, L3("Lanțul pornește cu următoarea semnătură.", "The chain starts with the next signature.")) : React.createElement("div", null,
+      React.createElement("div", { style: { fontWeight: 700, color: res ? (res.ok ? "var(--green)" : "var(--red)") : "var(--textSec)" } }, res ? (res.ok ? "✔ " + L3("Lanț intact: " + n + " semnături sigilate", "Chain intact: " + n + " signatures sealed") : "✘ " + L3("Lanț rupt la înregistrarea #" + (res.brokenAt + 1), "Chain broken at entry #" + (res.brokenAt + 1))) : "⏳ …"),
+      headSeal ? React.createElement("p", { className: "text-xs", style: { wordBreak: "break-all", fontFamily: "var(--fontMono, monospace)" } }, L3("Ancora curentă (hash-ul de cap): ", "Current anchor (head hash): "), headSeal) : null,
+      headSeal ? React.createElement("div", { className: "flex gap-2", style: { flexWrap: "wrap" } },
+        React.createElement("button", { className: "btn btn-sm", onClick: () => { try { navigator.clipboard.writeText(headSeal).then(() => toast("✓")); } catch (e) { toast(short(headSeal)); } } }, "📋 " + L3("Copiază ancora", "Copy anchor")),
+        React.createElement("button", { className: "btn btn-sm", onClick: () => sealSave("ancora-g2p.txt", headSeal + "\n" + n + " semnaturi\n" + new Date().toISOString() + "\n") }, "📥 " + L3("Descarcă ancora", "Download anchor")),
+        React.createElement("button", { className: "btn btn-sm", onClick: () => sealSave("seal-chain.json", chainJson()) }, "📥 " + L3("Descarcă lanțul", "Download chain"))) : null),
+    React.createElement("h4", { className: "mt-2" }, L3("Ancora publicată se potrivește?", "Does a published anchor match?")),
+    React.createElement("input", { value: anchor, placeholder: L3("lipește ancora (64 caractere hex)", "paste the anchor (64 hex characters)"), onChange: e => setAnchor(e.target.value), style: { width: "100%", boxSizing: "border-box" } }),
+    React.createElement("button", { className: "btn btn-sm mt-1", onClick: checkAnchor }, L3("Verifică ancora", "Check anchor")),
+    ares ? React.createElement("div", { style: outCls(ares) }, (ares.bad ? "✘ " : "✔ ") + ares.msg) : null,
+    React.createElement("h4", { className: "mt-2" }, L3("Semnătura mea este în lanț?", "Is my signature in the chain?")),
+    React.createElement("textarea", { rows: 3, value: rcpt, placeholder: L3("lipește chitanța ta (JSON)", "paste your receipt (JSON)"), onChange: e => setRcpt(e.target.value), style: { width: "100%", boxSizing: "border-box" } }),
+    React.createElement("button", { className: "btn btn-sm mt-1", onClick: checkReceipt }, L3("Verifică semnătura", "Check my signature")),
+    rres ? React.createElement("div", { style: outCls(rres) }, (rres.bad ? "✘ " : "✔ ") + rres.msg) : null,
+    React.createElement("p", { className: "text-xs mt-2", style: { color: "var(--textSec)" } }, L3("Ce dovedește: că înregistrările nu au fost schimbate după publicarea unei ancore. Ce nu dovedește: că un teren este într-adevăr degradat. Semnăturile de dinainte de pornirea Sigiliului nu sunt acoperite. Ancora devine solidă abia când o publici undeva ce nu controlăm noi (un commit public, un slide).", "What it proves: records were not changed after an anchor was published. What it does not prove: that a court is really degraded. Signatures from before the Seal started are not covered. An anchor is only solid once it is published somewhere we do not control (a public commit, a slide).")));
+}
+
 function PetitionPage() {
   const {
     t,
@@ -10966,6 +11130,8 @@ function PetitionPage() {
   const [shared, setShared] = useState(() => !!localStorage.getItem("g2p_shared"));
   const [ch, setCh] = useState("");
   const [voted, setVoted] = useState(() => !!localStorage.getItem("g2p_voted"));
+  const [sealRec, setSealRec] = useState(() => { try { return JSON.parse(localStorage.getItem("g2p_seal_receipt") || "null"); } catch (e) { return null; } });
+  const [sealBusy, setSealBusy] = useState(false);
   const [hoopDone, setHoopDone] = useState(() => !!localStorage.getItem("g2p_hoop"));
   const hoopFinish = () => {
     localStorage.setItem("g2p_hoop", "1");
@@ -11013,6 +11179,16 @@ function PetitionPage() {
       date: signupDate
     });
     db.ref("signupStats/" + signupRef.key).set({ volunteer: vol, city: ACTIVE_CITY, date: signupDate });
+    // Seal the signature into the public hash chain. Never blocks or breaks signing.
+    try {
+      if (G2PSeal.ok()) {
+        setSealBusy(true);
+        G2PSeal.sealSignup(signupRef.key, key).then(r => {
+          if (r) { try { localStorage.setItem("g2p_seal_receipt", JSON.stringify(r)); } catch (e) {} setSealRec(r); }
+          setSealBusy(false);
+        }, () => setSealBusy(false));
+      }
+    } catch (e) { setSealBusy(false); }
     logActivity("petition", name);
     const lbKey = user?.id || name.trim().replace(/[.#$/\[\]]/g, '_');
     db.ref("leaderboard/" + lbKey).transaction(v => ({
@@ -11076,6 +11252,7 @@ function PetitionPage() {
   React.createElement(PetitionSteps, { step: voted ? (shared ? 5 : 4) : (firebaseUser || noAcct) ? (name.trim().length >= 2 && emailOk ? 3 : 2) : 1 }),
   !voted && authReady && !firebaseUser && !noAcct && React.createElement(PetitionAccountStep, { onSignup: () => openAuth("signup"), onLogin: () => openAuth(), onSkip: () => setNoAcct(true) }),
   voted && React.createElement(PetitionShare, { total: total, onShared: () => { setShared(true); try { localStorage.setItem("g2p_shared", "1"); } catch (e) {} } }),
+  voted && (sealRec || sealBusy) && React.createElement(SealReceipt, { rec: sealRec, busy: sealBusy }),
   !voted && !(firebaseUser || noAcct) ? null : !voted ? /*#__PURE__*/React.createElement("div", {
     id: "g2p-vote-form",
     style: {
@@ -13546,6 +13723,7 @@ function AssociationTab({ onFunding }) {
       rule("⚖️", L3("Nicio sursă peste 40%", "No source above 40%"), L3("regula noastră", "our rule"), L3("Dacă o singură sursă ar trece de 40% din venituri, o reducem sau căutăm alta.", "If one source would pass 40% of income, we reduce it or find another.")),
       rule("🔐", L3("Bani doar prin asociație", "Money only through the association"), L3("după înregistrare", "after registration"), L3("Nu strângem bani de la nimeni până nu avem persoană juridică și cont.", "We collect no money from anyone until we have a legal entity and an account.")),
       rule("📖", L3("Rapoarte publice", "Public reports"), L3("venituri și cheltuieli", "income and spending"), L3("Publicăm fiecare leu primit și cheltuit, pe acest site, cu sursă.", "We publish every leu received and spent, on this site, with its source."))),
+    React.createElement(SealCard, null),
     React.createElement("h3", { className: "mt-3 mb-1" }, "💶 " + L3("De unde ar putea veni banii", "Where the money could come from")),
     React.createElement("ul", { style: { margin: 0, paddingLeft: "1.2rem", lineHeight: 1.7 } },
       React.createElement("li", null, L3("Contribuția fondatorilor, pentru taxele de înființare.", "The founders' own contribution, for the registration fees.")),

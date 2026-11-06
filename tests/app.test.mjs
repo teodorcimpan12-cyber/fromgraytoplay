@@ -226,3 +226,100 @@ test("verifyConsensus: one phone never verifies alone, two matching phones do", 
   // a device's latest answer replaces its earlier one
   assert.equal(verifyConsensus([{ dev: "a", exists: "no", playable: "na", at: "2026-10-01" }, a, b]).state, "verified");
 });
+
+// ---- Sigiliul G2P (hash chain) -------------------------------------------------------------------
+import { webcrypto } from "node:crypto";
+
+const sealSrc = (() => {
+  const a = html.indexOf("/* G2PSEAL:BEGIN */"), b = html.indexOf("/* G2PSEAL:END */");
+  if (a < 0 || b < 0) throw new Error("G2PSEAL markers not found");
+  return html.slice(a, b);
+})();
+
+// In-memory stand-in for the Realtime Database that enforces the same rules as database.rules.json.
+function fakeSealDb() {
+  const store = { head: null, chain: {} };
+  const G = "0".repeat(64);
+  const tick = () => new Promise(r => setTimeout(r, Math.random() * 3));
+  const refFor = path => ({
+    once: async () => {
+      await tick();
+      if (path === "seal/head") return { val: () => store.head };
+      const m = path.match(/^seal\/chain\/(\d+)$/);
+      if (m) return { val: () => store.chain[m[1]] || null };
+      if (path === ".info/serverTimeOffset") return { val: () => 0 };
+      throw new Error("unexpected path " + path);
+    },
+    set: async v => {
+      await tick();
+      if (path === "seal/head") {
+        const want = store.head ? store.head.n + 1 : 1;
+        const entry = store.chain[v.n];
+        if (v.n !== want || !entry || entry.seal !== v.seal) throw new Error("PERMISSION_DENIED head");
+        store.head = v; return;
+      }
+      const m = path.match(/^seal\/chain\/(\d+)$/);
+      if (m) {
+        if (store.chain[m[1]]) throw new Error("PERMISSION_DENIED exists");
+        const wantN = store.head ? store.head.n + 1 : 1, wantPrev = store.head ? store.head.seal : G;
+        if (v.n !== wantN || String(v.n) !== m[1] || v.prev !== wantPrev) throw new Error("PERMISSION_DENIED validate");
+        store.chain[m[1]] = v; return;
+      }
+      throw new Error("unexpected path " + path);
+    }
+  });
+  return { db: { ref: refFor }, store };
+}
+
+function loadSeal(db) {
+  const g = { crypto: webcrypto, TextEncoder, db, Array, Uint8Array, String, Object, Math, Date, Error, Promise, setTimeout };
+  return load([sealSrc], ["G2PSeal"], g).G2PSeal;
+}
+
+test("seal: honest chain verifies, any edit or deletion is detected", async () => {
+  const { db, store } = fakeSealDb();
+  const S = loadSeal(db);
+  const receipts = [];
+  for (let i = 0; i < 12; i++) receipts.push(await S.sealSignup("id" + i, ["flip", "mural", "both"][i % 3]));
+  const entries = Object.values(store.chain).sort((a, b) => a.n - b.n);
+  assert.equal(entries.length, 12);
+  assert.equal(store.head.n, 12);
+  assert.equal(store.head.seal, entries[11].seal);
+  assert.equal((await S.verifyChain(entries)).ok, true);
+  const forged = entries.map(e => ({ ...e }));
+  forged[5].commitment = await S.sha256Hex("forged");
+  const bad = await S.verifyChain(forged);
+  assert.equal(bad.ok, false); assert.equal(bad.brokenAt, 5);
+  assert.equal((await S.verifyChain(entries.filter((_, i) => i !== 3))).ok, false);
+  assert.equal((await S.verifyReceipt(receipts[4], entries)).position, 3 + 1);
+  assert.equal((await S.verifyReceipt({ ...receipts[4], option: "both" }, entries)).included, false);
+});
+
+test("seal: simultaneous signers all land in the chain, in one unbroken line", async () => {
+  const { db, store } = fakeSealDb();
+  const S = loadSeal(db);
+  const rs = await Promise.all(Array.from({ length: 5 }, (_, i) => S.sealSignup("p" + i, "flip")));
+  assert.ok(rs.every(Boolean), "every signer got a receipt");
+  const entries = Object.values(store.chain).sort((a, b) => a.n - b.n);
+  assert.equal(entries.length, 5);
+  assert.equal(new Set(entries.map(e => e.n)).size, 5);
+  assert.equal((await S.verifyChain(entries)).ok, true);
+});
+
+test("seal: a writer that died before moving the head is healed by the next signer", async () => {
+  const { db, store } = fakeSealDb();
+  const S = loadSeal(db);
+  await S.sealSignup("a", "flip");
+  // Simulate a crash: write chain/2 but never advance the head.
+  const prev = store.head.seal, commitment = await S.sha256Hex("x"), seal = await S.nextSeal(prev, commitment);
+  store.chain[2] = { n: 2, id: "dead", type: "petition", option: "flip", ts: 1, commitment, prev, seal };
+  const r = await S.sealSignup("b", "mural");
+  assert.equal(r.n, 3);
+  assert.equal(store.head.n, 3);
+  assert.equal((await S.verifyChain(Object.values(store.chain).sort((a, b) => a.n - b.n))).ok, true);
+});
+
+test("seal: fields cannot smuggle the separator", async () => {
+  const S = loadSeal(fakeSealDb().db);
+  await assert.rejects(() => S.commit({ nonce: "a|b", id: "x", type: "t", option: "o", serverTs: 1 }));
+});
