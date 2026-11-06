@@ -1,0 +1,357 @@
+<title>Teste F2G pe stradă</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Libre+Franklin:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one narrow column for a phone held in one hand; big tap chips; sticky save bar at the thumb. */
+:root{
+  --bg:#F6F7F4; --card:#FFFFFF; --fg:#1A1A2E; --muted:#5B6170; --line:#DFE3DC;
+  --green:#10B981; --green-ink:#047857; --green-soft:#D7F5E9; --coral:#F97316; --red:#DC2626; --chip:#EEF1EC;
+  --display:"Space Mono", ui-monospace, Menlo, monospace;
+  --body:"Libre Franklin", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1424; --card:#16213E; --fg:#EEF1F6; --muted:#A3ABBD; --line:#2A3556;
+  --green:#10B981; --green-ink:#6EE7B7; --green-soft:#0E3B30; --coral:#FB923C; --red:#F87171; --chip:#1D2A4C; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1424; --card:#16213E; --fg:#EEF1F6; --muted:#A3ABBD; --line:#2A3556;
+  --green:#10B981; --green-ink:#6EE7B7; --green-soft:#0E3B30; --coral:#FB923C; --red:#F87171; --chip:#1D2A4C; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 120px}
+.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+h1{font-family:var(--display);font-size:1.35rem;margin:4px 0 0;letter-spacing:-.01em;text-wrap:balance}
+h2{font-family:var(--display);font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:10px 0 0}
+.sub{color:var(--muted);margin:0;font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--chip);padding:4px;border-radius:999px}
+.tabs button{border:0;background:transparent;color:var(--fg);font:600 .95rem var(--body);padding:10px;border-radius:999px;min-height:44px}
+.tabs button[aria-selected="true"]{background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.prog{display:flex;flex-direction:column;gap:8px}
+.prow{display:grid;grid-template-columns:72px 1fr 40px;align-items:center;gap:8px;font-size:.9rem}
+.bar{height:10px;background:var(--chip);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--green);border-radius:999px;transition:width .3s}
+.num{font-family:var(--display);font-variant-numeric:tabular-nums;text-align:right}
+.big{font-family:var(--display);font-size:2rem;font-weight:700;font-variant-numeric:tabular-nums}
+.q{display:flex;flex-direction:column;gap:8px;padding-block:6px;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0}
+.qt{font-weight:600}
+.qn{font-family:var(--display);color:var(--green-ink);font-size:.8rem;margin-right:6px}
+.hint{color:var(--muted);font-size:.82rem}
+.say{font-size:.82rem;color:var(--muted);font-style:italic}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--chip);color:var(--fg);font:500 .95rem var(--body);
+  padding:10px 14px;border-radius:999px;min-height:44px;touch-action:manipulation;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--green-soft);border-color:var(--green);color:var(--fg);font-weight:700}
+.chip:focus-visible,.tabs button:focus-visible,.save:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.scale{display:grid;grid-template-columns:repeat(11,1fr);gap:4px}
+.scale .chip{padding:10px 0;border-radius:10px;font-family:var(--display);font-variant-numeric:tabular-nums;text-align:center}
+input[type=text]{width:100%;font:16px var(--body);padding:12px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--fg)}
+.link{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.link code{font-size:.85rem;background:var(--chip);padding:6px 8px;border-radius:8px;word-break:break-all}
+.small{border:1.5px solid var(--line);background:var(--card);color:var(--fg);font:600 .85rem var(--body);padding:8px 12px;border-radius:999px;min-height:40px}
+.savebar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);
+  padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));z-index:5}
+.savebar .in{max-width:560px;margin:0 auto;display:flex;gap:10px;align-items:center}
+.save{flex:1;border:0;background:var(--green);color:#06281D;font:700 1rem var(--body);padding:14px;border-radius:999px;min-height:50px}
+.save:disabled{opacity:.45}
+.count{font-size:.85rem;color:var(--muted);min-width:70px;text-align:right;font-variant-numeric:tabular-nums}
+.banner{border-radius:10px;padding:10px 12px;font-size:.9rem;background:var(--chip)}
+.banner.warn{border-left:4px solid var(--coral)}
+.banner.ok{border-left:4px solid var(--green)}
+.res{display:flex;flex-direction:column;gap:6px}
+.rrow{display:grid;grid-template-columns:minmax(0,1fr) 34px;gap:8px;align-items:center;font-size:.88rem}
+.rlab{display:flex;flex-direction:column;gap:3px;min-width:0}
+.quotes{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.quotes li{border-left:3px solid var(--green);padding-left:10px}
+.quotes small{color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.stat{background:var(--chip);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:2px}
+.stat span{font-size:.75rem;color:var(--muted)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);
+  padding:10px 16px;border-radius:999px;font-weight:600;z-index:9}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Teste F2G pe stradă</h1>
+    <p class="sub">15 oameni din afara echipei: Teo, Drăgan și Trofin câte 5. Numai bife, fără nume de persoane.</p>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" id="tab-new" aria-selected="true">Interviu nou</button>
+    <button role="tab" id="tab-res" aria-selected="false">Rezultate</button>
+  </div>
+
+  <div id="status" class="banner warn" hidden></div>
+
+  <section class="card prog" aria-label="Progres">
+    <div style="display:flex;justify-content:space-between;align-items:baseline"><strong>Progres</strong><span class="big" id="total">0/15</span></div>
+    <div id="progRows"></div>
+  </section>
+
+  <div id="view-new" class="wrap" style="gap:14px">
+    <section class="card">
+      <div class="qt">Cine intervievează?</div>
+      <div class="chips" id="who"></div>
+      <div class="hint">Se ține minte pe telefonul tău.</div>
+    </section>
+
+    <section class="card">
+      <h2 style="margin:0">Cum faci testul (2 minute)</h2>
+      <ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px">
+        <li>„Facem o aplicație pentru terenurile de sport din cartier. Ne ajuți 2 minute? Nu-ți cerem numele.” Sub 18 ani: doar cu un părinte de față sau cu acordul lui.</li>
+        <li>Dă-i telefonul cu site-ul deschis. Spune doar: <strong>„Raportează o problemă la un teren.”</strong> Nu-l ajuta.</li>
+        <li>Pornește cronometrul telefonului. Bifează ce <strong>vezi</strong> (partea A), apoi pune întrebările (partea B).</li>
+      </ol>
+      <div class="link"><code id="proto">https://fromgreytoplay.netlify.app/</code><button class="small" id="copyProto">Copiază linkul</button></div>
+    </section>
+
+    <section class="card" id="formA"></section>
+    <section class="card" id="formB"></section>
+    <section class="card" id="formC"></section>
+  </div>
+
+  <div id="view-res" class="wrap" style="gap:14px" hidden>
+    <section class="card">
+      <div class="stats">
+        <div class="stat"><span>Au terminat sesizarea</span><b class="big" id="sDone">—</b></div>
+        <div class="stat"><span>Sub 30 de secunde</span><b class="big" id="sFast">—</b></div>
+        <div class="stat"><span>Ar raporta sigur</span><b class="big" id="sYes">—</b></div>
+      </div>
+      <div class="hint">Procente din interviurile salvate. Pe slide punem doar ce e aici.</div>
+    </section>
+    <div id="resList" class="wrap" style="gap:14px"></div>
+    <section class="card">
+      <h2 style="margin:0">Citate (cu acord)</h2>
+      <ul class="quotes" id="quotes"></ul>
+    </section>
+  </div>
+</div>
+
+<div class="savebar" id="savebar"><div class="in">
+  <span class="count" id="answered">0/19</span>
+  <button class="save" id="save" disabled>Salvează interviul</button>
+</div></div>
+
+<script>
+const PEOPLE = ["Teo", "Drăgan", "Trofin"];
+const PER = 5;
+// type: one = single choice, many = multi choice, scale = 0..10
+const SECTIONS = [
+ { id:"formA", title:"A. Ce vezi (nu întreba, doar privește)", qs:[
+  {id:"time", t:"Cât i-a luat să trimită sesizarea?", type:"one", o:["Sub 30 s","30–60 s","1–2 min","Peste 2 min","Nu a terminat"]},
+  {id:"stuck", t:"Unde s-a blocat?", hint:"Bifează tot ce ai văzut.", type:"many", o:["Nicăieri","Ecranul de început","Găsirea butonului Raportează","Alegerea terenului","Categoria","Poza","I s-a cerut cont","Butonul de trimitere","Pagina se încarcă greu","Nu a înțeles ce s-a întâmplat la final"]},
+  {id:"help", t:"A cerut ajutor?", type:"one", o:["Nu","O dată","De mai multe ori"]},
+  {id:"device", t:"Pe ce telefon a testat?", type:"one", o:["Al lui, Android","Al lui, iPhone","Telefonul nostru"]},
+ ]},
+ { id:"formB", title:"B. Întreabă-l", qs:[
+  {id:"age", t:"Câți ani ai?", type:"one", o:["Sub 14","14–17","18–25","26–40","Peste 40"]},
+  {id:"city", t:"Unde locuiești?", type:"one", o:["Sibiu","Târgu Mureș","Alt oraș"]},
+  {id:"play", t:"Cât de des joci pe un teren public?", type:"one", o:["Săptămânal","Lunar","Rar","Deloc"]},
+  {id:"near", t:"Terenul cel mai apropiat de tine e…", type:"one", o:["În stare bună","Stricat, dar se poate juca","Nu se poate juca","Nu știu / nu am"]},
+  {id:"what", t:"„Cu ce crezi că te ajută aplicația?”", say:"Lasă-l să spună cu vorbele lui, apoi bifează tu.", type:"one", o:["A înțeles exact (sesizare care ajunge la primărie)","A înțeles pe jumătate","Nu a înțeles"]},
+  {id:"word", t:"„Un cuvânt despre ce ai văzut?”", hint:"Bifează cele mai apropiate de ce a zis.", type:"many", o:["Utilă","Simplă","Frumoasă","Interesantă","Confuză","Complicată","Lentă","Inutilă"]},
+  {id:"would", t:"„Ai raporta un teren stricat cu asta?”", type:"one", o:["Sigur da","Poate","Nu"]},
+  {id:"account", t:"„Ți-ai face cont ca să trimiți o sesizare?”", type:"one", o:["Da","Doar după ce trimit","Nu, aș renunța"]},
+  {id:"back", t:"„Ce te-ar face să revii?”", hint:"Maximum 2.", type:"many", max:2, o:["Să văd că s-a reparat","Răspunsul primăriei","Câți au confirmat","Prietenii mei","Clasament / insigne","Nimic"]},
+  {id:"clock", t:"„Ce înseamnă ceasul de 30 de zile?”", say:"Arată-i fișa unui teren.", type:"one", o:["A înțeles (termenul legal de răspuns)","A ghicit pe jumătate","Nu a înțeles","Nu am apucat să arăt"]},
+  {id:"email", t:"„Ai trimite un email la primărie din aplicație?”", type:"one", o:["Da, dacă e gata scris","Doar aș copia textul","Nu"]},
+  {id:"most", t:"„Ce e cel mai important pentru tine?”", hint:"Unul singur.", type:"one", o:["Terenul reparat repede","Să știu cine răspunde","Să văd istoricul","Să găsesc cu cine să joc"]},
+  {id:"pay", t:"„Cine ar trebui să plătească reparația?”", type:"one", o:["Primăria","Școala","Un sponsor","Comunitatea / donații","Nu știu"]},
+  {id:"minus", t:"„Ce ți-a plăcut cel mai puțin?”", type:"many", max:2, o:["Prea mulți pași","Prea multe efecte","Nu înțeleg scopul","Nu cred că se repară ceva","Cont obligatoriu","Nimic"]},
+ ]},
+ { id:"formC", title:"C. Încheiere", qs:[
+  {id:"nps", t:"„De la 0 la 10, cât de probabil e să o recomanzi unui prieten?”", type:"scale"},
+ ]},
+];
+const ALLQ = SECTIONS.flatMap(s => s.qs);
+const NEED = ALLQ.length;
+
+let me = null, answers = {}, quote = "", quoteOk = null, rows = [], db = null, col = null;
+try { me = localStorage.getItem("f2g_interviewer"); } catch (e) {}
+try { const d = JSON.parse(localStorage.getItem("f2g_draft") || "null"); if (d) { answers = d.answers || {}; quote = d.quote || ""; quoteOk = d.quoteOk ?? null; } } catch (e) {}
+
+const $ = id => document.getElementById(id);
+function el(tag, attrs, ...kids) { const n = document.createElement(tag); for (const k in (attrs || {})) { if (k === "class") n.className = attrs[k]; else if (k.startsWith("on")) n.addEventListener(k.slice(2), attrs[k]); else n.setAttribute(k, attrs[k]); } for (const c of kids) if (c != null) n.append(c); return n; }
+function toast(msg) { const t = el("div", { class: "toast", role: "status" }, msg); document.body.append(t); setTimeout(() => t.remove(), 2200); }
+function saveDraft() { try { localStorage.setItem("f2g_draft", JSON.stringify({ answers, quote, quoteOk })); } catch (e) {} }
+
+function renderWho() {
+  const box = $("who"); box.textContent = "";
+  for (const p of PEOPLE) box.append(el("button", { class: "chip", "aria-pressed": String(me === p), onclick: () => { me = p; try { localStorage.setItem("f2g_interviewer", p); } catch (e) {} renderWho(); updateSave(); } }, p));
+}
+
+function chipGroup(q) {
+  const wrap = el("div", { class: q.type === "scale" ? "scale" : "chips" });
+  const opts = q.type === "scale" ? Array.from({ length: 11 }, (_, i) => String(i)) : q.o;
+  for (const o of opts) {
+    const cur = answers[q.id];
+    const on = q.type === "many" ? Array.isArray(cur) && cur.includes(o) : cur === o;
+    wrap.append(el("button", { class: "chip", "aria-pressed": String(on), onclick: () => pick(q, o) }, o));
+  }
+  return wrap;
+}
+function pick(q, o) {
+  if (q.type === "many") {
+    let cur = Array.isArray(answers[q.id]) ? answers[q.id].slice() : [];
+    const exclusive = o === "Nicăieri" || o === "Nimic";
+    if (cur.includes(o)) cur = cur.filter(x => x !== o);
+    else if (exclusive) cur = [o];
+    else { cur = cur.filter(x => x !== "Nicăieri" && x !== "Nimic"); if (q.max && cur.length >= q.max) cur.shift(); cur.push(o); }
+    if (cur.length) answers[q.id] = cur; else delete answers[q.id];
+  } else {
+    if (answers[q.id] === o) delete answers[q.id]; else answers[q.id] = o;
+  }
+  saveDraft(); renderForms(); updateSave();
+}
+
+function renderForms() {
+  let n = 0;
+  for (const s of SECTIONS) {
+    const box = $(s.id); box.textContent = "";
+    box.append(el("h2", { style: "margin:0" }, s.title));
+    for (const q of s.qs) {
+      n++;
+      const head = el("div", { class: "qt" }, el("span", { class: "qn" }, String(n).padStart(2, "0")), q.t);
+      box.append(el("div", { class: "q" }, head, q.say ? el("div", { class: "say" }, q.say) : null, q.hint ? el("div", { class: "hint" }, q.hint) : null, chipGroup(q)));
+    }
+    if (s.id === "formC") {
+      const inp = el("input", { type: "text", id: "quote", placeholder: "Opțional: o frază de-a lui, cuvânt cu cuvânt", maxlength: "200" });
+      inp.value = quote;
+      inp.addEventListener("input", () => { quote = inp.value; saveDraft(); });
+      const ok = el("div", { class: "chips" }, ...["Da", "Nu"].map(v => el("button", { class: "chip", "aria-pressed": String(quoteOk === v), onclick: () => { quoteOk = quoteOk === v ? null : v; saveDraft(); renderForms(); } }, v)));
+      box.append(el("div", { class: "q" }, el("div", { class: "qt" }, "Citat (opțional)"), el("div", { class: "hint" }, "Poți folosi dictarea tastaturii. Fără nume."), inp,
+        el("div", { class: "qt" }, "Acceptă să-i punem fraza pe un slide, fără nume?"), ok));
+    }
+  }
+}
+
+function updateSave() {
+  const got = ALLQ.filter(q => answers[q.id] !== undefined).length;
+  $("answered").textContent = got + "/" + NEED;
+  $("save").disabled = !me || got < 6;
+  $("save").textContent = !me ? "Alege cine intervievează" : got < 6 ? "Bifează măcar 6 răspunsuri" : "Salvează interviul";
+}
+
+function pending() { try { return JSON.parse(localStorage.getItem("f2g_pending") || "[]"); } catch (e) { return []; } }
+function setPending(a) { try { localStorage.setItem("f2g_pending", JSON.stringify(a)); } catch (e) {} }
+
+async function save() {
+  const rec = { by: me, ts: Date.now(), answers, quote: (quote || "").trim().slice(0, 200), quoteOk: quoteOk === "Da" };
+  $("save").disabled = true;
+  try {
+    if (!col) throw new Error("offline");
+    await col.add(rec);
+    toast("Salvat. Următorul om!");
+  } catch (e) {
+    const p = pending(); p.push(rec); setPending(p);
+    toast("Salvat pe telefon. Se trimite când revine conexiunea.");
+    showStatus();
+  }
+  answers = {}; quote = ""; quoteOk = null; saveDraft();
+  renderForms(); updateSave(); window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+async function flush() {
+  if (!col) return;
+  const p = pending(); if (!p.length) return;
+  const left = [];
+  for (const r of p) { try { await col.add(r); } catch (e) { left.push(r); } }
+  setPending(left); showStatus();
+  if (p.length > left.length) toast("Am trimis " + (p.length - left.length) + " interviuri salvate pe telefon.");
+}
+
+function showStatus() {
+  const s = $("status"), p = pending().length;
+  if (!db) { s.hidden = false; s.className = "banner warn"; s.textContent = "Rezultatele comune nu sunt disponibile acum (ești delogat sau fără net). Interviurile se salvează pe telefon și se trimit mai târziu." + (p ? " În așteptare: " + p + "." : ""); return; }
+  if (p) { s.hidden = false; s.className = "banner warn"; s.textContent = "În așteptare pe acest telefon: " + p + " interviuri."; return; }
+  s.hidden = true;
+}
+
+function renderProgress() {
+  const box = $("progRows"); box.textContent = "";
+  const local = pending();
+  let total = 0;
+  for (const p of PEOPLE) {
+    const n = rows.filter(r => r.by === p).length + local.filter(r => r.by === p).length;
+    total += n;
+    const bar = el("div", { class: "bar" }); const fill = el("i"); fill.style.width = Math.min(100, n / PER * 100) + "%"; bar.append(fill);
+    box.append(el("div", { class: "prow" }, el("span", null, p), bar, el("span", { class: "num" }, n + "/" + PER)));
+  }
+  $("total").textContent = total + "/" + PEOPLE.length * PER;
+}
+
+function pct(n, d) { return d ? Math.round(n / d * 100) + "%" : "—"; }
+function renderResults() {
+  const all = rows.concat(pending());
+  const N = all.length;
+  const has = id => all.filter(r => r.answers && r.answers[id] !== undefined);
+  const t = has("time");
+  $("sDone").textContent = pct(t.filter(r => r.answers.time !== "Nu a terminat").length, t.length);
+  $("sFast").textContent = pct(t.filter(r => r.answers.time === "Sub 30 s").length, t.length);
+  const w = has("would");
+  $("sYes").textContent = pct(w.filter(r => r.answers.would === "Sigur da").length, w.length);
+
+  const list = $("resList"); list.textContent = "";
+  if (!N) { list.append(el("section", { class: "card" }, el("strong", null, "Încă nu e niciun interviu."), el("p", { class: "sub" }, "Primul interviu salvat apare aici imediat, pe telefoanele tuturor."))); }
+  else for (const q of ALLQ) {
+    const ans = has(q.id); if (!ans.length) continue;
+    const opts = q.type === "scale" ? Array.from({ length: 11 }, (_, i) => String(i)) : q.o;
+    const counts = Object.fromEntries(opts.map(o => [o, 0]));
+    for (const r of ans) { const v = r.answers[q.id]; (Array.isArray(v) ? v : [v]).forEach(x => { if (x in counts) counts[x]++; }); }
+    const card = el("section", { class: "card" }, el("div", { class: "qt" }, q.t), el("div", { class: "hint" }, ans.length + " răspunsuri" + (q.type === "many" ? " · alegere multiplă" : "")));
+    const res = el("div", { class: "res" });
+    let order = opts.slice(); if (q.type !== "scale") order.sort((a, b) => counts[b] - counts[a]);
+    if (q.type === "scale") {
+      const vals = ans.map(r => Number(r.answers[q.id])).filter(x => !isNaN(x)).sort((a, b) => a - b);
+      const med = vals.length ? (vals.length % 2 ? vals[(vals.length - 1) / 2] : (vals[vals.length / 2 - 1] + vals[vals.length / 2]) / 2) : null;
+      card.append(el("div", null, "Mediana: ", el("b", { class: "num" }, med == null ? "—" : String(med)), " din 10"));
+      order = order.filter(o => counts[o] > 0);
+    }
+    const max = Math.max(1, ...Object.values(counts));
+    for (const o of order) {
+      if (q.type !== "scale" && counts[o] === 0 && order.length > 6) continue;
+      const bar = el("div", { class: "bar" }); const fill = el("i"); fill.style.width = (counts[o] / max * 100) + "%"; bar.append(fill);
+      res.append(el("div", { class: "rrow" }, el("div", { class: "rlab" }, el("span", null, o), bar), el("span", { class: "num" }, String(counts[o]))));
+    }
+    card.append(res); list.append(card);
+  }
+  const qs = $("quotes"); qs.textContent = "";
+  const withQ = all.filter(r => r.quote && r.quoteOk);
+  if (!withQ.length) qs.append(el("li", null, el("small", null, "Niciun citat cu acord încă.")));
+  for (const r of withQ) qs.append(el("li", null, "„" + r.quote + "”", el("br"), el("small", null, [r.answers.age, r.answers.city].filter(Boolean).join(", ") + " · notat de " + r.by)));
+}
+
+function tab(which) {
+  const n = which === "new";
+  $("tab-new").setAttribute("aria-selected", String(n)); $("tab-res").setAttribute("aria-selected", String(!n));
+  $("view-new").hidden = !n; $("view-res").hidden = n; $("savebar").hidden = !n;
+  if (!n) renderResults();
+}
+$("tab-new").addEventListener("click", () => tab("new"));
+$("tab-res").addEventListener("click", () => tab("res"));
+$("save").addEventListener("click", save);
+$("copyProto").addEventListener("click", () => {
+  const txt = $("proto").textContent;
+  const done = () => toast("Link copiat");
+  try { navigator.clipboard.writeText(txt).then(done, () => { selectProto(); }); } catch (e) { selectProto(); }
+});
+function selectProto() { const r = document.createRange(); r.selectNodeContents($("proto")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast("Ține apăsat ca să copiezi"); }
+
+renderWho(); renderForms(); updateSave(); renderProgress(); showStatus();
+
+(async () => {
+  try { db = window.claude ? await window.claude.use("db") : null; } catch (e) { db = null; }
+  showStatus();
+  if (!db) return;
+  col = db.collection("interviews");
+  col.orderBy("ts", "asc").onSnapshot(snap => {
+    rows = snap.docs.map(d => d.data()).filter(Boolean);
+    renderProgress(); if (!$("view-res").hidden) renderResults();
+  }, () => { showStatus(); });
+  flush();
+  window.addEventListener("online", flush);
+})();
+</script>
