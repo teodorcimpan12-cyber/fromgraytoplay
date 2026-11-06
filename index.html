@@ -1670,6 +1670,14 @@ body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inse
 .navbar{padding-top:env(safe-area-inset-top,0px)}
 .toast{bottom:calc(5rem + env(safe-area-inset-bottom,0px))}
 @media(pointer:coarse){input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),textarea,select{font-size:16px!important}}
+/* === Hero: the renovate preview is a link, the report is the action (Nov 2026) === */
+.h3d-link{display:inline-block;align-self:flex-start;width:auto;pointer-events:auto;margin-top:.5rem;background:none;border:0;padding:.5rem .2rem;min-height:44px;font:600 .82rem/1.2 'Libre Franklin',sans-serif;color:rgba(255,255,255,.85);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+@media(hover:hover) and (pointer:fine){.h3d-link:hover{color:#fff}}
+/* the drag hint sat on top of the kicker line; lift it into the sky */
+.h3d-hint{top:17%}
+/* phones: the three home numbers read as one row instead of three screen-tall cards */
+@media(max-width:600px){.hero-premium .grid.grid-3{grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem}
+.hero-premium .stat-tile{padding:.8rem .55rem}.hero-premium .stat-number{font-size:1.7rem}.hero-premium .stat-label{font-size:.72rem;line-height:1.25}}
 /* === Desktop nav at 200% zoom (Nov 2026) ===
    Between the 1240px collapse and ~1440px the desktop nav had ~22px to spare in EN once a
    classic (Windows) scrollbar takes 15-17px; signed in, the account name (~55px) pushed it off
@@ -1960,7 +1968,7 @@ const T = {
     degraded: "Degradat",
     unverified: "Neverificat",
     excellent: "Excelent",
-    satellite: "Estimat din satelit", satGone: "Dispărut", satWorn: "Degradat", satOk: "Bun",
+    satellite: "Estimat din satelit", satGone: "Nevăzut din satelit", satWorn: "Degradat", satOk: "Bun",
     fieldVerified: "Verificat pe teren",
     verifiedShare: "{n} din {m} terenuri verificate pe teren — restul nu intră în calcul.",
     inProgress: "În lucru",
@@ -2114,7 +2122,7 @@ const T = {
     degraded: "Degraded",
     unverified: "Unverified",
     excellent: "Excellent",
-    satellite: "Satellite estimate", satGone: "Gone", satWorn: "Degraded", satOk: "Good",
+    satellite: "Satellite estimate", satGone: "Not seen from satellite", satWorn: "Degraded", satOk: "Good",
     fieldVerified: "Field-verified",
     verifiedShare: "{n} of {m} courts field-verified — the rest are not counted.",
     inProgress: "In progress",
@@ -2268,7 +2276,7 @@ const T = {
     degraded: "Leromlott",
     unverified: "Nem ellenőrzött",
     excellent: "Kiváló", // TODO: HU review
-    satellite: "Műholdas becslés", satGone: "Eltűnt", satWorn: "Leromlott", satOk: "Jó", // TODO: HU review
+    satellite: "Műholdas becslés", satGone: "Műholdról nem látható", satWorn: "Leromlott", satOk: "Jó", // TODO: HU review
     fieldVerified: "Helyszínen ellenőrizve", // TODO: HU review
     verifiedShare: "{m} pályából {n} helyszínen ellenőrizve — a többi nem számít bele.", // TODO: HU review
     inProgress: "Folyamatban",
@@ -2553,24 +2561,24 @@ T.hu.dossierForCouncil = "A Marosvásárhelyi Helyi Tanács és Polgármesteri H
 
 /* === 3D hero strings (RO/EN/HU). HU draft — // TODO: HU review === */
 T.ro.heroKicker = "Târgu Mureş · teren multifuncțional";
-T.ro.heroSub = "O oază de joacă într-un oraş gri. Apasă Renovează şi priveşte transformarea.";
-T.ro.heroRenovate = "▶ Renovează terenul"; T.ro.heroBack = "↺ Înapoi la gri"; T.ro.heroSign = "Semnează petiția";
+T.ro.heroSub = "O oază de joacă într-un oraș gri. Ai văzut un teren stricat? Spune-ne în 30 de secunde.";
+T.ro.heroRenovate = "▶ Vezi cum ar arăta renovat"; T.ro.heroReport = "＋ Raportează un teren"; T.ro.heroBack = "↺ Înapoi la gri"; T.ro.heroSign = "Semnează petiția";
 T.ro.heroHint = "trage pentru a roti · atinge mingile";
 T.ro.heroTRenov = "Se renovează terenul ✨"; T.ro.heroTGrey = "Înapoi la starea degradată"; T.ro.heroTTap = "Atinge afişele sau dulapul ℹ️";
 T.ro.heroGoal = "⚽ Gol!"; T.ro.heroBasket = "🏀 Coş!";
 T.ro.heroCatch = "🙌 Ce prindere! Echipa te vrea în teren."; T.ro.heroSeeOld = "↺ Vezi din nou cum era"; T.ro.heroGrab = "Prinde mingea și arunc-o 🏀"; T.ro.heroSkip = "Atinge ca să sari peste ⏭";
 T.ro.heroBriefs = { flip: { title: "Flip the Court", body: "Renovăm terenurile sportive deja existente din cartierele periferice — nu construim de la zero, ci readucem la viață ce a fost lăsat în paragină: suprafață nouă, coşuri şi porți reparate, marcaje şi gard. Terenurile sunt alese prin votul locuitorilor şi finanțate transparent." }, canvas: { title: "Street Canvas", body: "Transformăm zidurile gri din jurul terenului în murale create de artişti locali, pe teme propuse şi votate de comunitate. Culoare în locul betonului crăpat — un spațiu pe care cartierul îl simte al lui." }, locker: { title: "Dulap inteligent", body: "Un cabinet cu echipament (mingi, plase, pompă) pe care îl deblochezi gratuit din aplicația Flip the Court. Împrumuți, te joci, returnezi — totul urmărit digital, ca terenul să rămână echipat fără supraveghetor." } };
 T.en.heroKicker = "Târgu Mureş · multi-use court";
-T.en.heroSub = "A pocket of play in a grey city. Tap Renovate and watch it transform.";
-T.en.heroRenovate = "▶ Renovate the court"; T.en.heroBack = "↺ Back to grey"; T.en.heroSign = "Sign the petition";
+T.en.heroSub = "A pocket of play in a grey city. Seen a broken court? Tell us in 30 seconds.";
+T.en.heroRenovate = "▶ See it renovated"; T.en.heroReport = "＋ Report a court"; T.en.heroBack = "↺ Back to grey"; T.en.heroSign = "Sign the petition";
 T.en.heroHint = "drag to rotate · tap the balls";
 T.en.heroTRenov = "Renovating the court ✨"; T.en.heroTGrey = "Back to the degraded state"; T.en.heroTTap = "Tap the posters or the locker ℹ️";
 T.en.heroGoal = "⚽ Goal!"; T.en.heroBasket = "🏀 Basket!";
 T.en.heroCatch = "🙌 Great catch! The team wants you on court."; T.en.heroSeeOld = "↺ See how it used to be"; T.en.heroGrab = "Grab the ball and throw it 🏀"; T.en.heroSkip = "Tap to skip ⏭";
 T.en.heroBriefs = { flip: { title: "Flip the Court", body: "We renovate the sports courts that already exist in the outer neighbourhoods — we don't build from scratch, we bring back to life what was left to decay: new surface, repaired hoops and goals, fresh markings and a fence. Courts are chosen by residents' vote and funded transparently." }, canvas: { title: "Street Canvas", body: "We turn the grey walls around the court into murals made by local artists, on themes proposed and voted by the community. Colour instead of cracked concrete — a space the neighbourhood feels is its own." }, locker: { title: "Smart locker", body: "A cabinet with gear (balls, nets, pump) you unlock for free from the Flip the Court app. Borrow, play, return — all tracked digitally, so the court stays equipped without an attendant." } };
 T.hu.heroKicker = "Marosvásárhely · multifunkciós pálya"; // TODO: HU review
-T.hu.heroSub = "Egy játéksziget a szürke városban. Nyomd meg a Felújítás gombot, és nézd a változást.";
-T.hu.heroRenovate = "▶ Pálya felújítása"; T.hu.heroBack = "↺ Vissza a szürkéhez"; T.hu.heroSign = "Aláírom a petíciót";
+T.hu.heroSub = "Egy játéksziget a szürke városban. Láttál tönkrement pályát? Mondd el 30 másodperc alatt."; // TODO: HU review
+T.hu.heroRenovate = "▶ Nézd meg felújítva"; T.hu.heroReport = "＋ Pálya bejelentése"; // TODO: HU review T.hu.heroBack = "↺ Vissza a szürkéhez"; T.hu.heroSign = "Aláírom a petíciót";
 T.hu.heroHint = "húzd az elforgatáshoz · érintsd a labdákat";
 T.hu.heroTRenov = "A pálya felújítása ✨"; T.hu.heroTGrey = "Vissza a leromlott állapothoz"; T.hu.heroTTap = "Érintsd a plakátokat vagy a szekrényt ℹ️";
 T.hu.heroGoal = "⚽ Gól!"; T.hu.heroBasket = "🏀 Kosár!";
@@ -2626,6 +2634,15 @@ T.ro.pulseStop = "🔇 Oprește";
 T.ro.pulseSteady = "Ritm stabil — terenul trăiește";
 T.ro.pulseIrregular = "Aritmie — terenul are probleme";
 T.ro.pulseWeak = "Puls slab — terenul se stinge";
+T.ro.courtsMapped = "terenuri pe hartă";
+T.ro.courtsCheckedHome = "verificate de comunitate";
+T.ro.petitionVotesCity = "voturi în {city}";
+T.ro.allCities = "toate orașele";
+T.ro.pulseFromSat = "Estimat din satelit (imagine din {y}) — nu e starea de azi";
+T.ro.worksProgress = "Progresul lucrărilor";
+T.ro.unknownField = "nu știm încă";
+T.ro.a11yLabels = { wheelchair: "Acces scaun rulant", lighting: "Iluminat", parking: "Parcare", flatSurface: "Suprafață plană" };
+T.ro.reportHere = "Raportează";
 T.ro.pulseFlat = "Linie plată — scor de sănătate aproape zero";
 T.ro.pulseNoSignal = "FĂRĂ SEMNAL";
 T.ro.pulseNoSignalDesc = "Nimeni nu l-a verificat încă. Dă-i primul puls.";
@@ -2679,6 +2696,15 @@ T.en.pulseStop = "🔇 Stop";
 T.en.pulseSteady = "Steady rhythm — this court is alive";
 T.en.pulseIrregular = "Arrhythmia — this court is struggling";
 T.en.pulseWeak = "Weak pulse — this court is fading";
+T.en.courtsMapped = "courts on the map";
+T.en.courtsCheckedHome = "checked by the community";
+T.en.petitionVotesCity = "votes in {city}";
+T.en.allCities = "all cities";
+T.en.pulseFromSat = "Satellite estimate (image from {y}) — not today's condition";
+T.en.worksProgress = "Works progress";
+T.en.unknownField = "not known yet";
+T.en.a11yLabels = { wheelchair: "Wheelchair access", lighting: "Lighting", parking: "Parking", flatSurface: "Flat surface" };
+T.en.reportHere = "Report";
 T.en.pulseFlat = "Flatline — health score near zero";
 T.en.pulseNoSignal = "NO SIGNAL";
 T.en.pulseNoSignalDesc = "Nobody has checked it yet. Give it its first pulse.";
@@ -2733,6 +2759,15 @@ T.hu.pulseStop = "🔇 Leállítás"; // TODO: HU review
 T.hu.pulseSteady = "Egyenletes ritmus — a pálya él"; // TODO: HU review
 T.hu.pulseIrregular = "Aritmia — a pálya bajban van"; // TODO: HU review
 T.hu.pulseWeak = "Gyenge pulzus — a pálya halványul"; // TODO: HU review
+T.hu.courtsMapped = "pálya a térképen"; // TODO: HU review
+T.hu.courtsCheckedHome = "a közösség ellenőrizte"; // TODO: HU review
+T.hu.petitionVotesCity = "szavazat itt: {city}"; // TODO: HU review
+T.hu.allCities = "minden város"; // TODO: HU review
+T.hu.pulseFromSat = "Műholdas becslés ({y}-es kép) — nem a mai állapot"; // TODO: HU review
+T.hu.worksProgress = "A munkák állása"; // TODO: HU review
+T.hu.unknownField = "még nem tudjuk"; // TODO: HU review
+T.hu.a11yLabels = { wheelchair: "Kerekesszékkel", lighting: "Világítás", parking: "Parkolás", flatSurface: "Sík felület" }; // TODO: HU review
+T.hu.reportHere = "Bejelentés"; // TODO: HU review
 T.hu.pulseFlat = "Egyenes vonal — az egészségpontszám közel nulla"; // TODO: HU review
 T.hu.pulseNoSignal = "NINCS JEL"; // TODO: HU review
 T.hu.pulseNoSignalDesc = "Még senki sem ellenőrizte. Add meg az első pulzusát."; // TODO: HU review
@@ -2755,7 +2790,7 @@ function courtStatusView(court, t) {
   if (s === "satellite") {
     // Same words and colours as Târgu Mureș; the satellite origin is shown in the court detail (SatFinding).
     var sv = (court.sat && court.sat.v) || "ok";
-    return sv === "gone" ? { color: "#9F1239", badge: "badge-red", admin: "a-badge-r", label: t.satGone || "Dispărut", bad: true }
+    return sv === "gone" ? { color: "#9F1239", badge: "badge-red", admin: "a-badge-r", label: t.satGone || "Nevăzut din satelit", bad: true }
       : sv === "worn" ? { color: "#DC2626", badge: "badge-red", admin: "a-badge-r", label: t.satWorn || "Degradat", bad: true }
       : { color: "#10B981", badge: "badge-green", admin: "a-badge-g", label: t.satOk || "Bun", bad: false };
   }
@@ -6601,6 +6636,9 @@ const COURTS_SIBIU = [
    Ties go to the two most consistent reviewers. It is what the images showed, never today's condition.
    Regenerate after new exports (see tools/sat_merge.mjs). */
 const SAT_VIEW = {"sb1":{"v":"worn","n":2,"of":4,"at":"2021-02-27"},"sb2":{"v":"worn","n":2,"of":4,"at":"2022-08-06"},"sb3":{"v":"ok","n":3,"of":4,"at":"2022-08-06"},"sb4":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb5":{"v":"ok","n":2,"of":4,"at":"2021-02-27"},"sb6":{"v":"ok","n":4,"of":4,"at":"2021-02-27"},"sb7":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb8":{"v":"gone","n":3,"of":4,"at":"2021-02-27"},"sb9":{"v":"gone","n":2,"of":4,"at":"2022-08-06"},"sb10":{"v":"gone","n":2,"of":4,"at":"2022-08-06"},"sb11":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb12":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb13":{"v":"gone","n":3,"of":4,"at":"2022-08-06"},"sb14":{"v":"gone","n":3,"of":4,"at":"2022-08-06"},"sb15":{"v":"gone","n":3,"of":4,"at":"2022-08-06"},"sb16":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb17":{"v":"gone","n":4,"of":4,"at":"2022-08-06"},"sb18":{"v":"worn","n":2,"of":4,"at":"2022-08-06"},"sb19":{"v":"ok","n":2,"of":4,"at":"2021-02-27"},"sb20":{"v":"gone","n":2,"of":4,"at":"2021-02-27"},"sb21":{"v":"ok","n":3,"of":4,"at":"2022-08-06"},"sb22":{"v":"gone","n":3,"of":4,"at":"2021-02-27"},"sb23":{"v":"gone","n":3,"of":4,"at":"2021-02-27"},"sb24":{"v":"ok","n":3,"of":4,"at":"2025-03-04"},"sb25":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb26":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb27":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb28":{"v":"ok","n":3,"of":4,"at":"2021-02-27"},"sb29":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb30":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb31":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb32":{"v":"ok","n":3,"of":4,"at":"2022-08-06"},"sb33":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb34":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb35":{"v":"gone","n":2,"of":4,"at":"2021-02-27"}};
+// sb36 (Stadionul Independența) was added on 6 Nov 2026, after the blind 4-reviewer audit. One team member read the same
+// Esri capture (2022-08-06, WorldView-3, 0.31 m): grass pitch with markings and a stand, so "ok". n:1 says it is a single read.
+SAT_VIEW.sb36 = { v: "ok", n: 1, of: 1, at: "2022-08-06" };
 /* Sibiu stadiums: two OSM pitches sit inside rebuilt stadiums, so they become those stadiums (status "excellent").
    sb21 = Stadionul Municipal (OSM way 1123069978), sb8 = Baza Voința / Academia Alma (OSM way 177522036). */
 const STADIUMS_SIBIU = {
@@ -9023,8 +9061,10 @@ function Hero3D() {
       React.createElement("div", { className: "h3d-title" }, React.createElement("span", { className: "g" }, React.createElement(LetterReveal, { text: "From Grey" })), React.createElement("br", null), React.createElement(LetterReveal, { text: "to ", base: 420 }), React.createElement("span", { className: "p" }, "Play")),
       React.createElement("p", { className: "h3d-sub" }, t.heroSub),
       React.createElement("div", { className: "h3d-cta" },
-        React.createElement("button", { className: "h3d-btn h3d-btn-green" + (nudge && !renovated ? " h3d-nudge" : ""), onClick: toggle }, renovated ? t.heroSeeOld : t.heroRenovate),
-        React.createElement("button", { className: "h3d-btn h3d-btn-ghost", onClick: function () { setPage("petition"); } }, t.heroSign))),
+        React.createElement("button", { className: "h3d-btn h3d-btn-green", onClick: function () { openReport(); } }, t.heroReport),
+        React.createElement("button", { className: "h3d-btn h3d-btn-ghost", onClick: function () { setPage("petition"); } }, t.heroSign)),
+      // The grey -> renovated transformation stays, as a quiet link: it shows the idea, it is not the action.
+      React.createElement("button", { className: "h3d-link", onClick: toggle }, renovated ? t.heroSeeOld : t.heroRenovate)),
     React.createElement("div", { className: "h3d-flash", ref: flashRef }),
     brief ? React.createElement("div", { className: "h3d-modal", onClick: function () { setBrief(null); } },
       React.createElement("div", { className: "h3d-sheet", onClick: function (e) { e.stopPropagation(); } },
@@ -9739,6 +9779,15 @@ function City3D() {
   );
 }
 
+/* Petition votes per city. votes/{choice} is one global counter, but every vote also writes signupStats/{id}
+   with its city (entries from before the city field are Târgu Mureș). So: Sibiu = its signupStats entries;
+   Târgu Mureș = the global counter minus every other city's entries. */
+function cityVoteTotal(votes, stats) {
+  const all = votes ? (votes.flip || 0) + (votes.mural || 0) + (votes.both || 0) : 0;
+  const other = stats ? Object.values(stats).filter(s => s && s.city && s.city !== "tgm") : [];
+  if (ACTIVE_CITY === "tgm") return Math.max(0, all - other.length);
+  return other.filter(s => s.city === ACTIVE_CITY).length;
+}
 function HomePage() {
   const {
     t,
@@ -9747,8 +9796,15 @@ function HomePage() {
   } = useApp();
   const votes = useFirebase("votes");
   const signups = useFirebase("signupStats");
-  const tv = votes ? (votes.flip || 0) + (votes.mural || 0) + (votes.both || 0) : 0;
-  const vc = signups ? Object.values(signups).filter(s => s.volunteer).length : 0;
+  const tv = cityVoteTotal(votes, signups);
+  const vc = signups ? Object.values(signups).filter(s => s.volunteer && (s.city || "tgm") === ACTIVE_CITY).length : 0;
+  // Same rule as the community-check banner: a condition report or a residents' verification lights a court.
+  const vByCourt = verifyByCourt(useFirebase("verifications"));
+  const homeReports = useFirebase("reports");
+  const lit = {};
+  if (homeReports) Object.values(homeReports).forEach(r => { if (r && r.category === "condition" && r.courtId) lit[r.courtId] = 1; });
+  Object.keys(vByCourt).forEach(id => { lit[id] = 1; });
+  const nChecked = COURTS.filter(c => lit[c.id]).length;
   const heroRef = useReveal();
   return /*#__PURE__*/React.createElement("div", {
     className: "animate-in"
@@ -9775,11 +9831,11 @@ function HomePage() {
   }, lang === "ro" ? "Documentăm inegalitatea infrastructurii sportive din " + cityName(lang) + ". Semnează petiția, raportează terenuri degradate." : "Documenting sports infrastructure inequality in " + cityName(lang) + ". Sign the petition, report degraded courts.")),/*#__PURE__*/React.createElement("div", {
     className: "grid grid-3 mt-3"
   }, /*#__PURE__*/React.createElement(StatTile, {
-    value: COURTS.length, label: t.courtsReported, color: "var(--green)"
+    value: COURTS.length, label: t.courtsMapped, color: "var(--green)"
   }), /*#__PURE__*/React.createElement(StatTile, {
-    value: tv, label: t.petitionVotes, color: "var(--coral)"
+    value: nChecked, label: t.courtsCheckedHome, color: "var(--teal)"
   }), /*#__PURE__*/React.createElement(StatTile, {
-    value: vc, label: t.volunteers, color: "var(--teal)"
+    value: tv, label: t.petitionVotesCity.replace("{city}", cityName(lang)), color: "var(--coral)"
   })))), React.createElement(ActivityTicker, null), /*#__PURE__*/React.createElement("section", {
     className: "section"
   }, /*#__PURE__*/React.createElement("div", {
@@ -10150,6 +10206,11 @@ function CourtDetail({
   const gallery = useFirebase("gallery");
   const courtPhotos = gallery ? Object.entries(gallery).map(([id, g]) => ({ id, ...g })).filter(p => p.courtId === c.id).reverse() : [];
   const occ = cnt === 0 ? "empty" : cnt < 5 ? "active" : "full";
+  // No field data (OSM list, or a satellite estimate): condition chip, works progress and accessibility are unknown,
+  // and a court the satellite can't see is not offered for booking or a game.
+  const noField = c.status === "unverified" || c.estimate === "sat";
+  const satGone = !!(c.sat && c.sat.v === "gone");
+  const bookingOn = (useApp().settings?.flags?.booking) !== false;
   const qr = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(SITE + "/#court-" + c.id)}`;
   const doCI = () => {
     const uid = user?.id || "g" + Date.now();
@@ -10205,13 +10266,13 @@ function CourtDetail({
     style: {
       flexWrap: "wrap"
     }
-  }, /*#__PURE__*/React.createElement("span", {
+  }, !noField && /*#__PURE__*/React.createElement("span", {
     className: "badge",
     title: getCourtWeather(c.condition, t).label,
     style: { background: getCourtWeather(c.condition, t).color + "22", color: getCourtWeather(c.condition, t).color, marginRight: ".3rem" }
   }, getCourtWeather(c.condition, t).icon, " ", getCourtWeather(c.condition, t).label), /*#__PURE__*/React.createElement("span", {
     className: `badge ${courtStatusView(c, t).badge}`
-  }, courtStatusView(c, t).label), /*#__PURE__*/React.createElement("span", {
+  }, courtStatusView(c, t).label), (!noField || cnt > 0) && /*#__PURE__*/React.createElement("span", {
     className: `badge ${occ === "empty" ? "badge-green" : occ === "active" ? "badge-coral" : "badge-red"}`
   }, occ === "empty" ? "🟢 " + t.empty + " (0)" : occ === "active" ? "🟡 " + t.active + " (" + cnt + ")" : "🔴 " + t.full + " (" + cnt + ")"), React.createElement(AiEstimateBadge, { court: c })),
   React.createElement("div", { style:{marginTop:"1rem",display:"flex",alignItems:"center",gap:"1.5rem",flexWrap:"wrap",marginBottom:"1rem"} },
@@ -10226,9 +10287,9 @@ function CourtDetail({
   React.createElement(CourtPulse, { court: c }),
   React.createElement(CourtSourcesCard, { court: c }),
   React.createElement(AiCourtCard, { court: c, onLetter: c.category !== "gym" ? () => setShowLetter(true) : null }),
-  /*#__PURE__*/React.createElement("h4", {
+  !noField && /*#__PURE__*/React.createElement("h4", {
     className: "mb-1"
-  }, "Progress"), /*#__PURE__*/React.createElement("div", {
+  }, t.worksProgress), !noField && /*#__PURE__*/React.createElement("div", {
     className: "progress-bar mb-2"
   }, /*#__PURE__*/React.createElement("div", {
     className: "progress-fill",
@@ -10244,8 +10305,9 @@ function CourtDetail({
     }
   }, Object.entries(c.accessibility || {}).map(([k, v]) => /*#__PURE__*/React.createElement("span", {
     key: k,
-    className: `badge ${v ? "badge-green" : "badge-red"}`
-  }, k, ": ", v ? "✓" : "✗"))), courtPhotos.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h4", {
+    className: `badge ${noField ? "badge-gray" : v ? "badge-green" : "badge-red"}`,
+    title: noField ? t.unknownField : undefined
+  }, (t.a11yLabels && t.a11yLabels[k]) || k, ": ", noField ? "?" : v ? "✓" : "✗"))), courtPhotos.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h4", {
     className: "mb-1"
   }, "📸 ", t.gallery, " (", courtPhotos.length, ")"), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-1 mb-2",
@@ -10283,8 +10345,9 @@ function CourtDetail({
       React.createElement("span", { className: "cd-ic", "aria-hidden": "true" }, ic),
       React.createElement("span", { className: "cd-l" }, label));
     return React.createElement("div", { className: "cd-actions" },
-      (useApp().settings?.flags?.booking) !== false && act("book", "green", onBook, "\uD83D\uDCC5", t.bookCourt),
-      act("play", "coral", () => setShowPlay(true), "\u26BD", t.playNow),
+      act("report", "coral", () => openReport(c.id), "\u26A0\uFE0F", t.reportHere),
+      !satGone && bookingOn && act("book", "green", onBook, "\uD83D\uDCC5", t.bookCourt),
+      !satGone && act("play", "line", () => setShowPlay(true), "\u26BD", t.playNow),
       !ci ? act("ci", "line", doCI, "\uD83D\uDCCD", t.checkIn) : act("co", "red", doCO, "\uD83D\uDCCD", t.checkOut),
       act("follow", following ? "line" : "teal", () => toggleFollow(c.id), following ? "\uD83D\uDD15" : "\uD83D\uDD14", following ? t.unfollow : t.follow),
       act("share", "line", () => shareCourt(c, t, toast), "\uD83D\uDD17", t.shareCourt),
@@ -10989,10 +11052,12 @@ function PetitionPage() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [unlockBadge, setUnlockBadge] = useState(null);
   const { awardBadge } = useBadges();
+  const sigStats = useFirebase("signupStats");
   const flip = votes?.flip || 0,
     mural = votes?.mural || 0,
     both = votes?.both || 0,
-    total = flip + mural + both,
+    total = cityVoteTotal(votes, sigStats),
+    allTotal = flip + mural + both,
     mx = Math.max(flip, mural, both, 1);
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
   const ok = name.trim().length >= 2 && emailOk && ch !== "" && consent;
@@ -11247,9 +11312,9 @@ function PetitionPage() {
     style: {
       fontSize: "2.2rem"
     }
-  }, total), /*#__PURE__*/React.createElement("div", {
+  }, allTotal), /*#__PURE__*/React.createElement("div", {
     className: "stat-label"
-  }, t.totalVotes))), /*#__PURE__*/React.createElement("div", {
+  }, t.totalVotes, " · ", t.allCities))), /*#__PURE__*/React.createElement("div", {
     style: {
       textAlign: "center",
       marginTop: "1rem"
@@ -16497,7 +16562,7 @@ function CourtPulse({ court }) {
 
   const none = m.kind === "none";
   const msg = none ? t.pulseNoSignalDesc : { steady: t.pulseSteady, irregular: t.pulseIrregular, weak: t.pulseWeak, flat: t.pulseFlat }[m.state];
-  const src = m.kind === "score" ? t.pulseFromScore : m.kind === "community" ? t.pulseFromCommunity.replace("{n}", m.count) : "";
+  const src = m.kind === "score" ? (court.estimate === "sat" && court.sat ? t.pulseFromSat.replace("{y}", String(court.sat.at).slice(0, 4)) : t.pulseFromScore) : m.kind === "community" ? t.pulseFromCommunity.replace("{n}", m.count) : "";
   return React.createElement("div", { ref: boxRef, className: "cpulse", style: { color: m.tone }, role: "group", "aria-label": t.courtPulseTitle },
     React.createElement("div", { className: "cpulse-top" },
       React.createElement("span", { className: "cpulse-ttl" }, React.createElement("span", { className: "cpulse-rec", style: { color: m.tone } }), t.courtPulseTitle),
@@ -18152,7 +18217,7 @@ function App() {
   const [toastMsg, setToastMsg] = useState("");
   const [toastMs, setToastMs] = useState(3000);
   const [authOpen, setAuthOpen] = useState(false);
-  const [onboard, setOnboard] = useState(() => !localStorage.getItem("g2p_ob"));
+  const [onboard, setOnboard] = useState(() => { try { return !localStorage.getItem("g2p_ob") && !/^#court-/.test(location.hash); } catch (e) { return false; } });
   const [adminMode, setAdminMode] = useState(false);
   const [adminAuth, setAdminAuth] = useState(false);
   const [firebaseUser, setFirebaseUser] = useState(() => firebase.auth().currentUser);

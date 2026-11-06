@@ -311,3 +311,11 @@ Highest civic-value next steps:
   account button icon-only 1241–1440px (`.nav-acct-name`, name kept in title/aria-label),
   `.nav-inner` max-width 1320px ≥1441px. SW → `g2p-v11`. New project skill `.claude/skills/arena`
   (/arena: parallel subagents with different strategies + blind judging rounds).
+- Same day, pre-pitch honesty/design pass (Impeccable critique, PR #31): `sb36` Stadionul Independența (OSM way/40215376)
+  with a single-reader satellite estimate (`SAT_VIEW.sb36`, n:1, Esri 2022-08-06). Court detail: no condition chip,
+  works progress or ✓/✗ accessibility when there is no field data (`noField`: unverified or satellite estimate) —
+  accessibility shows "?"; `satGone` courts read "Nevăzut din satelit" and hide Rezervă/Joc acum; new first action
+  "Raportează" (`openReport(c.id)`); pulse says "Estimat din satelit (imagine din {y})". Home: hero primary CTA is
+  "+ Raportează un teren", the renovate toggle is a quiet `.h3d-link`; stats = mapped / community-checked / votes in
+  this city (`cityVoteTotal`); petition headline counters are per city, live results labelled "toate orașele".
+  `#court-` deep links skip onboarding. SW → `g2p-v12`.

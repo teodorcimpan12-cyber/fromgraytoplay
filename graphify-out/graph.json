@@ -825,6 +825,11 @@
       "type": "data",
       "line": 13066,
       "desc": "29 items {y,k:i|r,loc,lei,l3?,what} verbatim from the CSM xlsx; plus CSM_BUDGET {year: total spending} from HCL 299/2022, 374/2023, 294/2024, 276/2025; CSM_SRC"
+    },
+    {
+      "id": "cityVoteTotal",
+      "type": "util",
+      "desc": "Petition votes per city: Sibiu = signupStats with city; TGM = global votes/ minus other cities' signupStats. Used by HomePage and PetitionPage."
     }
   ],
   "edges": [
@@ -1766,7 +1771,8 @@
       "h3d-title",
       "h3d-btn",
       "h3d-btn-green",
-      "h3d-btn-ghost"
+      "h3d-btn-ghost",
+      "h3d-link"
     ],
     "admin": [
       "admin-shell",
