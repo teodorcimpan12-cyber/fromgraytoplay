@@ -13862,16 +13862,22 @@ function AssociationTab({ onFunding }) {
     [L3("Erori ale AI-ului", "AI errors"), L3("Scorul AI e etichetat „estimare” și devine „verificat” doar după confirmarea comunității.", "The AI score is labelled “estimate” and becomes “verified” only after community confirmation.")],
     [L3("O singură sursă de bani", "A single source of money"), L3("Regula de 40% și raport anual public.", "The 40% rule and a public annual report.")]
   ];
+  const TC = L3("Cîmpan Teodor, cu Claude", "Cîmpan Teodor, with Claude");
   const journal = [
-    ["21:27", L3("Fila „Asociația” în Despre, cu statut „în constituire”; numele corectat: Drăgan Gabriel", "“Association” tab in About, marked “being established”; name corrected: Drăgan Gabriel")],
-    ["21:32", L3("Încercare: Sigiliul G2P, lanț de hash pentru semnături", "Attempt: the G2P Seal, a hash chain for signatures")],
-    ["21:48", L3("Sigiliul retras, la decizia echipei", "The Seal withdrawn, by the team's decision")],
-    ["21:53", L3("Prima pagină: titlul asociației și mesajul „Din gri, în joc.”", "Home page: the association's name and the message “From grey, to play.”")],
-    ["22:27", L3("Pagină proprie Asociația, buton Raportează, rolurile fondatorilor", "A page of its own for the Association, a Report button, the founders' roles")],
-    ["23:04", L3("Linii fade, hero 3D cu scroll pe telefon, fișa terenului stil Instagram", "Faded lines, 3D hero that scrolls on phones, an Instagram-style court sheet")],
-    ["23:24", L3("Pașii legali, proiect de statut, scara de venituri, riscuri", "Legal steps, draft statute, income ladder, risks")],
-    ["23:30", L3("Formularul 230: calculator pentru 3,5% din impozit și statusul cinstit", "Form 230: a 3.5% income-tax calculator and the honest status")],
-    ["23:36", L3("Metadate corectate, text de contact, bara fișei de teren, pastila „în constituire” portocalie cu rotițe", "Corrected metadata, contact text, court-sheet bar, orange “being established” pill with gears")]
+    [L3("ziua", "day"), L3("Platformă adaptată pentru telefon: marginile sigure ale ecranului, hover doar unde există mouse, câmpuri de 16 px, bara de stare a browserului", "Platform made phone-ready: screen safe areas, hover only where a mouse exists, 16 px inputs, browser status-bar colour"), TC],
+    [L3("ziua", "day"), L3("Cardul investițiilor CSM testat cu date extreme (nume lungi, zero, cifre mari) și reparat", "The CSM investments card stress-tested with extreme data (long names, zero, huge numbers) and fixed"), TC],
+    [L3("ziua", "day"), L3("Meniul de sus corectat la zoom 200%: nu mai depășește pagina nici cu contul deschis", "Top menu fixed at 200% zoom: it no longer overflows the page, even when signed in"), TC],
+    ["16:35", L3("Versiunea cu răspunsurile oficiale (Legea 544/2001) și pachetul de animații integrată în site", "The version with the official replies (Law 544/2001) and the animation pack merged into the site"), L3("Cîmpan Teodor", "Cîmpan Teodor")],
+    ["21:27", L3("Fila „Asociația” în Despre, cu statut „în constituire”; numele corectat: Drăgan Gabriel", "“Association” tab in About, marked “being established”; name corrected: Drăgan Gabriel"), TC],
+    ["21:32", L3("Încercare: Sigiliul G2P, lanț de hash pentru semnături", "Attempt: the G2P Seal, a hash chain for signatures"), TC],
+    ["21:48", L3("Sigiliul retras, la cererea lui Cîmpan Teodor", "The Seal withdrawn, at Cîmpan Teodor's request"), TC],
+    ["21:53", L3("Prima pagină: titlul asociației și mesajul „Din gri, în joc.”", "Home page: the association's name and the message “From grey, to play.”"), TC],
+    ["22:27", L3("Pagină proprie Asociația, buton Raportează, rolurile fondatorilor", "A page of its own for the Association, a Report button, the founders' roles"), TC],
+    ["23:04", L3("Linii fade, hero 3D cu scroll pe telefon, fișa terenului stil Instagram", "Faded lines, 3D hero that scrolls on phones, an Instagram-style court sheet"), TC],
+    ["23:24", L3("Pașii legali, proiect de statut, scara de venituri, riscuri", "Legal steps, draft statute, income ladder, risks"), TC],
+    ["23:30", L3("Formularul 230: calculator pentru 3,5% din impozit și statusul cinstit", "Form 230: a 3.5% income-tax calculator and the honest status"), TC],
+    ["23:39", L3("Metadate corectate, text de contact, bara fișei de teren, pastila „în constituire” portocalie cu rotițe", "Corrected metadata, contact text, court-sheet bar, orange “being established” pill with gears"), TC],
+    ["23:51", L3("Banda de activitate arată fiecare tip de acțiune; ambele rotițe se rotesc", "The activity band shows every kind of action; both gears turn"), TC]
   ];
   const stIc = { done: "✓", doing: "●", next: "○" };
   const stTx = { done: L3("făcut", "done"), doing: L3("în lucru", "in progress"), next: L3("urmează", "next") };
@@ -13930,10 +13936,10 @@ function AssociationTab({ onFunding }) {
     React.createElement("div", { className: "card" }, risks.map(([k, v], i) => React.createElement("div", { key: i, className: i < risks.length - 1 ? "fade-b" : undefined, style: { padding: ".55rem 0" } },
       React.createElement("strong", null, k), React.createElement("div", { className: "text-sm", style: { color: "var(--textSec)" } }, v)))),
     React.createElement("h3", { className: "mt-3 mb-1" }, "🕒 " + L3("Jurnal de progres, 6 noiembrie", "Progress log, 6 November")),
-    React.createElement("div", { className: "card" }, journal.map(([h, x], i) => React.createElement("div", { key: i, className: i < journal.length - 1 ? "fade-b" : undefined, style: { display: "flex", gap: ".75rem", padding: ".45rem 0" } },
-      React.createElement("span", { style: { fontFamily: "'Space Mono',monospace", color: "var(--green)", flex: "none" } }, h),
-      React.createElement("span", { className: "text-sm" }, x)))),
-    React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, L3("Orele sunt cele ale commit-urilor din istoricul proiectului, nu estimări.", "The times are those of the commits in the project history, not estimates.")),
+    React.createElement("div", { className: "card" }, journal.map(([h, x, w], i) => React.createElement("div", { key: i, className: i < journal.length - 1 ? "fade-b" : undefined, style: { display: "flex", gap: ".75rem", padding: ".45rem 0" } },
+      React.createElement("span", { style: { fontFamily: "'Space Mono',monospace", color: "var(--green)", flex: "none", width: "3.2rem" } }, h),
+      React.createElement("span", { className: "text-sm" }, x, React.createElement("small", { style: { display: "block", color: "var(--textSec)", marginTop: ".1rem" } }, "👤 " + w))))),
+    React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, L3("Orele sunt cele ale commit-urilor din istoricul proiectului, nu estimări. La rândurile „ziua” istoricul nu păstrează ora exactă. Numele arată cine a coordonat lucrarea; adăugăm și contribuțiile celorlalți fondatori pe măsură ce le documentăm.", "The times are those of the commits in the project history, not estimates. For “day” rows the history keeps no exact hour. The names show who coordinated the work; we add the other founders' contributions as we document them.")),
     React.createElement("div", { className: "flex gap-2 mt-2", style: { flexWrap: "wrap" } },
       React.createElement("button", { className: "btn btn-green", onClick: onFunding }, "🤝 " + L3("Parteneriate și finanțare", "Partnerships and funding")),
       React.createElement("button", { className: "btn", onClick: () => { setPage("petition"); window.scrollTo(0, 0); } }, "✍️ " + L3("Semnează petiția", "Sign the petition")),
