@@ -6725,6 +6725,10 @@ const CITY_HALL = {
     registry: "Registratura Primăriei Municipiului Sibiu", address: "Str. Samuel Brukenthal nr. 2, 550178 Sibiu", tel: "0269208800", telLabel: "0269-208.800", mail: "pms@sibiu.ro",
     source: "https://www.sibiu.ro/ro/contact", retrieved: "2026-10-24" }
 }[ACTIVE_CITY];
+function bothCities(lang) {
+  const names = Object.keys(CITY_CFG).map(k => { const c = CITY_CFG[k]; return lang === "hu" ? c.nameHu : lang === "en" ? c.nameEn.split(" / ")[0] : c.nameRo; });
+  return names.join(lang === "ro" ? " și " : lang === "hu" ? " és " : " and ");
+}
 function cityName(lang) {
   const c = CITY_CFG[ACTIVE_CITY];
   return lang === "hu" ? c.nameHu : lang === "en" ? c.nameEn : c.nameRo;
@@ -7050,7 +7054,8 @@ function Onboarding({
   const screens = [{
     emoji: "🏀",
     title: "FROM GREY TO PLAY",
-    sub: lang === "ro" ? "Documentăm inegalitatea infrastructurii sportive din " + cityName(lang) : "Documenting sports infrastructure inequality in " + cityName(lang),
+    // Both cities the site covers, not only the active one.
+    sub: lang === "ro" ? "Documentăm inegalitatea infrastructurii sportive din " + bothCities("ro") : "Documenting sports infrastructure inequality in " + bothCities(lang),
     bg: "linear-gradient(135deg,#1A1A2E,#16213E)"
   }, {
     emoji: "🏚️ ↔ 🏟️",
@@ -7616,10 +7621,19 @@ function MapView({
   courts,
   height = "380px",
   onSelect,
-  heat = false,
-  heatCounts = null,
+  heat = true,
+  heatCounts: heatCountsProp = null,
   myLoc = null
 }) {
+  // The report heatmap is always on, on every map: static c.reports + the live reports/ counts.
+  const liveReports = useFirebase(heat && !heatCountsProp ? "reports" : null);
+  const heatCounts = React.useMemo(() => {
+    if (heatCountsProp) return heatCountsProp;
+    const out = {};
+    if (liveReports) Object.values(liveReports).forEach(r => { if (r && r.courtId) out[r.courtId] = (out[r.courtId] || 0) + 1; });
+    return out;
+  }, [liveReports, heatCountsProp]);
+  const heatKey = JSON.stringify(heatCounts); // rebuild the map only when the counts really change
   const ref = useRef(null);
   const mapRef = useRef(null);
   const {
@@ -7699,7 +7713,7 @@ function MapView({
       m.remove();
       mapRef.current = null;
     };
-  }, [courts, heat, heatCounts, myLoc]);
+  }, [courts, heat, heatKey, myLoc]);
   return /*#__PURE__*/React.createElement("div", {
     ref: ref,
     className: "map-box",
@@ -10100,17 +10114,10 @@ function CourtsPage() {
   const [sel, setSel] = useState(null);
   const [showRep, setShowRep] = useState(false);
   const [showBook, setShowBook] = useState(false);
-  const [heat, setHeat] = useState(false);
   const [myLoc, setMyLoc] = useState(null);
   const [locating, setLocating] = useState(false);
   const fbCourts = useFirebase("courts");
   const allGames = useFirebase("games");
-  const fbReports = useFirebase(heat ? "reports" : null);
-  const heatCounts = React.useMemo(() => {
-    const out = {};
-    if (fbReports) Object.values(fbReports).forEach(r => { if (r.courtId) out[r.courtId] = (out[r.courtId] || 0) + 1; });
-    return out;
-  }, [fbReports]);
   const extra = extraCourts(fbCourts);
   const all = [...COURTS, ...extra];
   // Season 3: live court heat — check-ins within the last 2 hours.
@@ -10221,22 +10228,9 @@ function CourtsPage() {
   }, "\uD83D\uDDFA\uFE0F"), /*#__PURE__*/React.createElement("button", {
     className: tab === "list" ? "active" : "",
     onClick: () => setTab("list")
-  }, "\uD83D\uDCCB"), tab === "map" && React.createElement("button", {
-    className: heat ? "active" : "",
-    onClick: () => { setHeat(h => !h); if (!heat) toast(t.heatmapOn); },
-    title: t.heatmap,
-    "aria-pressed": heat
-  }, "\uD83D\uDD25 " + t.heatmap),
-  React.createElement("button", {
-    className: myLoc ? "active" : "",
-    onClick: findNearMe, title: t.nearMe || "L\u00E2ng\u0103 mine",
-    "aria-pressed": !!myLoc, disabled: locating
-  }, locating ? "\uD83D\uDCCD\u2026" : "\uD83D\uDCCD")), tab === "map" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(MapView, {
+  }, "\uD83D\uDCCB")), tab === "map" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(MapView, {
     courts: filtered,
     onSelect: openCourt,
-    heat: heat,
-    heatCounts: heatCounts,
-    myLoc: myLoc,
     height: "clamp(360px, 64vh, 680px)"
   }),/*#__PURE__*/React.createElement("p", {
     className: "text-xs mt-1",
