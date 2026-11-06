@@ -359,3 +359,7 @@ Highest civic-value next steps:
   and focus restore, visible focus on fields, localized `alt` via `altL()`. SEO: `robots.txt` + `sitemap.xml` (deploy
   surface now includes them), `document.title` follows page + language, search-intent `<title>`. NOT done (needs a
   design decision): white-on-`--green` contrast is 2.5:1; `hreflang` (needs per-language URLs); crawlable per-court URLs.
+- Activity feed cleanup (6 Nov 2026, same branch): guests logged as "Anonim"/"Anon" now read "Cineva/Someone/Valaki"
+  everywhere (`isAnonName`/`whoName`); bursts of anonymous rows of the same kind collapse into one row with ×N
+  (`collapseAnon`, 30 min window, used by ActivityFeed + ActivityTicker); admin `statusChange` rows fill `{court}`/`{status}`
+  (they showed a raw "{status}") and merge into "N terenuri → status".

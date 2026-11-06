@@ -3014,14 +3014,31 @@ function activityCity(a) {
 }
 // Demo rows (reports sent from the #raporteaza QR path) stay out of the public ticker and feed.
 function realActivity(a) { return !!a && !a.demo; }
+// Guests are logged as "Anonim"/"Anon". In public feeds they read as "Someone" (T.tickAnon), never as a fake person called Anonim.
+function isAnonName(n) { const x = String(n == null ? "" : n).trim().toLowerCase(); return !x || x === "anonim" || x === "anon" || x === "anonymous" || x === "guest" || x === "vizitator"; }
+function whoName(n, t) { return isAnonName(n) ? (t && t.tickAnon) || "Someone" : anonName(n); }
+// Runs of anonymous rows of the same kind (same type + court, within 30 min) collapse into one row with a count, so a
+// burst of guest pixels or check-ins does not fill the feed with "Someone … Someone … Someone".
+function collapseAnon(list) {
+  const out = [];
+  for (const a of list) {
+    const prev = out[out.length - 1];
+    const sameKind = prev && prev.type === a.type && (prev.status || "") === (a.status || "") && (a.type === "statusChange" || (prev.courtId || prev.courtName || "") === (a.courtId || a.courtName || ""));
+    if (prev && isAnonName(a.userName) && isAnonName(prev.userName) && sameKind && Math.abs(tsOf(prev) - tsOf(a)) < 30 * 60000) prev.n = (prev.n || 1) + 1;
+    else out.push(Object.assign({}, a, { n: 1 }));
+  }
+  return out;
+}
 const ACTIVITY_ICONS = { "check-in": "🏀", petition: "✍️", photo: "📸", report: "⚠️", conditionReport: "🩺", game: "⚽", join: "🤝", pixel: "🎨", adopt: "💚" };
 // Human sentence for an activity row, from the T.feed* templates.
 function activityMsg(a, t) {
   const c = a.courtId && COURTS_ALL.find(x => x.id === a.courtId);
-  const courtName = c ? c.name : (a.courtId || "");
+  const courtName = a.type === "statusChange" && a.n > 1 ? a.n + " " + String(t.courts || "").toLowerCase() : (c ? c.name : (a.courtName || a.courtId || ""));
   const tplKey = "feed" + (a.type === "check-in" ? "Checkin" : (a.type || "").charAt(0).toUpperCase() + (a.type || "").slice(1));
-  const tpl = t[tplKey] || ((a.userName || "Anon") + " — " + (a.type || ""));
-  return tpl.replace("{name}", a.userName || "Anon").replace("{court}", courtName);
+  const stLbl = a.status ? (t["status" + String(a.status).charAt(0).toUpperCase() + String(a.status).slice(1)] || a.status) : "";
+  const who = whoName(a.userName, t);
+  const tpl = t[tplKey] || (who + " — " + (a.type || ""));
+  return tpl.replace("{name}", who).replace("{court}", courtName).replace("{status}", stLbl);
 }
 // Downscale + JPEG-compress a File so it fits in RTDB as a data URL (~80-150KB).
 // Storage bucket isn't configured (config has only databaseURL), so photos live
@@ -9261,12 +9278,13 @@ function ActivityTicker() {
   // Activity types are stored as written by each feature ("check-in", "conditionReport", ...); only rows we can phrase are shown.
   const ICO = { petition: "✊", "check-in": "📍", checkin: "📍", photo: "📸", report: "⚠️", conditionReport: "🩺", game: "⚽", join: "👥", pixel: "🎨", adopt: "💚" };
   const VERB = { petition: t.tickPetition, "check-in": t.tickCheckin, checkin: t.tickCheckin, photo: t.tickPhoto, report: t.tickReport, conditionReport: t.tickCondition, game: t.tickGame, join: t.tickJoin, pixel: t.tickPixel, adopt: t.tickAdopt };
-  const items = data ? Object.values(data).filter(a => realActivity(a) && VERB[a.type]).sort((a, b) => tsOf(b) - tsOf(a)).slice(0, 14) : [];
-  if (!items.length) return null;
-  const nm = a => { const n = anonName(a.userName); return n === "Anonim" ? t.tickAnon : n; };
+  const items = data ? Object.values(data).filter(a => realActivity(a) && VERB[a.type]).sort((a, b) => tsOf(b) - tsOf(a)) : [];
+  const shown = collapseAnon(items).slice(0, 14);
+  if (!shown.length) return null;
+  const nm = a => whoName(a.userName, t);
   const row = key => React.createElement("div", { className: "ticker", key: key, "aria-hidden": key === "b" ? "true" : undefined },
-    items.map((a, i) => React.createElement("span", { className: "ticker-item", key: i },
-      (ICO[a.type] || "•") + " ", React.createElement("b", null, nm(a)), " " + VERB[a.type])));
+    shown.map((a, i) => React.createElement("span", { className: "ticker-item", key: i },
+      (ICO[a.type] || "•") + " ", React.createElement("b", null, nm(a)), " " + VERB[a.type] + (a.n > 1 ? " \u00d7" + a.n : ""))));
   return React.createElement("section", { className: "ticker-wrap", title: t.tickerTitle }, row("a"), row("b"));
 }
 
@@ -11715,8 +11733,9 @@ function ActivityFeed() {
   const { t, lang } = useApp();
   const data = useFirebase("activity");
   const list = data
-    ? Object.entries(data).map(([id, a]) => ({ id, ...a })).filter(a => realActivity(a) && activityCity(a) === ACTIVE_CITY).sort((a, b) => tsOf(b) - tsOf(a)).slice(0, 30)
+    ? Object.entries(data).map(([id, a]) => ({ id, ...a })).filter(a => realActivity(a) && activityCity(a) === ACTIVE_CITY).sort((a, b) => tsOf(b) - tsOf(a))
     : [];
+  const rows = collapseAnon(list).slice(0, 30);
   const COURT_NAMES = COURTS.reduce((acc, c) => (acc[c.id] = c.name, acc), {});
   const ICONS = { "check-in": "🏀", petition: "✍️", photo: "📸", report: "⚠️", game: "⚽", join: "🤝" };
   const msgFor = a => activityMsg(a, t);
@@ -11733,17 +11752,17 @@ function ActivityFeed() {
       /*#__PURE__*/React.createElement("span", { className: "live-dot" }),
       t.liveActivity
     ),
-    list.length === 0
+    rows.length === 0
       ? /*#__PURE__*/React.createElement("p", { style: { color: "var(--textSec)" } }, t.feedEmpty)
       : /*#__PURE__*/React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: ".5rem" } },
-          list.map((a, i) => /*#__PURE__*/React.createElement("div", {
+          rows.map((a, i) => /*#__PURE__*/React.createElement("div", {
             key: a.id,
             className: "card" + (i === 0 ? " card-accent" : ""),
             style: { display: "flex", gap: ".7rem", alignItems: "center", padding: ".7rem .9rem" }
           },
             /*#__PURE__*/React.createElement("span", { style: { fontSize: "1.3rem", lineHeight: 1, flexShrink: 0 } }, ICONS[a.type] || "•"),
             /*#__PURE__*/React.createElement("div", { style: { flex: 1, minWidth: 0 } },
-              /*#__PURE__*/React.createElement("p", { style: { margin: 0, fontSize: ".92rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, msgFor(a)),
+              /*#__PURE__*/React.createElement("p", { style: { margin: 0, fontSize: ".92rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, msgFor(a) + (a.n > 1 && a.type !== "statusChange" ? " \u00d7" + a.n : "")),
               /*#__PURE__*/React.createElement("time", { style: { fontFamily: "'Space Mono', monospace", fontSize: ".68rem", color: "var(--textSec)", textTransform: "uppercase", letterSpacing: ".06em" } }, relTime(a.timestamp, lang))
             ),
             i === 0 && /*#__PURE__*/React.createElement("span", { className: "live-dot", style: { flexShrink: 0 } })
@@ -11758,11 +11777,12 @@ function ActivityFeed() {
 function isOwnerName(n) { const x = String(n || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); return x.indexOf("teodor") >= 0 && x.indexOf("cimpan") >= 0; }
 // Shared by the activity feed and the overview: names always shown as "First L.".
 function activityMsg(a, t) {
-  const c = a.courtId ? COURTS.find(x => x.id === a.courtId) : null, courtName = c ? c.name : (a.courtId || "");
+  const c = a.courtId ? COURTS.find(x => x.id === a.courtId) : null, courtName = a.type === "statusChange" && a.n > 1 ? a.n + " " + String(t.courts || "").toLowerCase() : (c ? c.name : (a.courtName || a.courtId || ""));
+  const stLbl = a.status ? (t["status" + String(a.status).charAt(0).toUpperCase() + String(a.status).slice(1)] || a.status) : "";
   const tplKey = "feed" + (a.type === "check-in" ? "Checkin" : (a.type || "").charAt(0).toUpperCase() + (a.type || "").slice(1));
-  const who = anonName(a.userName || "Anon");
+  const who = whoName(a.userName, t);
   const tpl = t[tplKey] || (who + " — " + (a.type || ""));
-  return tpl.replace("{name}", who).replace("{court}", courtName);
+  return tpl.replace("{name}", who).replace("{court}", courtName).replace("{status}", stLbl);
 }
 const COMMUNITY_TABS = ["activity", "pixel", "forum", "events", "gallery", "teams", "leaderboard"];
 function communityTabLabel(tb, t) {
