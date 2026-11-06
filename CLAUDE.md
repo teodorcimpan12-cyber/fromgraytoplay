@@ -337,3 +337,6 @@ Highest civic-value next steps:
   reduced-motion/no-fx); Hero3D: green kicker removed, two invisible `.h3d-gutter` strips (16% each, `touch-action: pan-y`, coarse pointers only) so vertical swipes scroll the page;
   `CourtDetail` redesigned Instagram-style (`.cdx*`): photo carousel (uploaded photos, then a static Esri satellite mosaic via `courtTileMosaic`), `CourtPulse` always visible,
   head with badges, one scrolling panel, bottom bar Rezervă · Info · Satelit (centre, raised) · Comunitate · QR (Rezervă/QR open the existing modals). Mascot hidden while the sheet is open (`body.cdx-open`).
+- Session 6 Nov 2026, night (same branch `claude/ui-instagram-court`): `AssociationTab` extended from the Astra Hack plan (no amounts, no legal-entity claims): legal steps in the order the law needs
+  (statute/act → name reservation → initial assets → office → court filing → CIF/account), "Pregătim acum" checklist, collapsible draft statute (`.assoc-statute`), "Cum devine sustenabilă" revenue ladder
+  (founders, Adoptă un teren, 3.5%, local funding, EU as partner, ancillary) and risks + answers. All strings via local `L3` (HU falls back to RO, `// TODO: HU review`).
