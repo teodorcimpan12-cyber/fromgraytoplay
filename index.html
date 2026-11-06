@@ -1824,6 +1824,11 @@ body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inse
 .r35-steps{list-style:none;padding:0;margin:1rem 0 0;display:grid;gap:.7rem}
 .r35-steps li{display:flex;gap:.75rem;align-items:flex-start}
 .r35-n{flex:none;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--green);color:#fff;font:700 .85rem/1 'Space Mono',monospace}
+.r35-sub{display:grid;gap:.5rem;width:100%;max-width:26rem;padding:.9rem;border-radius:12px;background:color-mix(in srgb,var(--bg) 70%,transparent);border:1px solid var(--border)}
+.r35-sub input[type=email]{width:100%}
+.r35-consent{display:flex;gap:.5rem;align-items:flex-start;color:var(--textSec);line-height:1.4}
+.r35-consent input{flex:none;margin-top:.15rem;width:1.1rem;height:1.1rem}
+.r35-sub-done{padding:.7rem .9rem;border-radius:12px;border:1px solid color-mix(in srgb,var(--green) 40%,transparent);background:color-mix(in srgb,var(--green) 10%,transparent);font-size:.9rem}
 .r35-honest{margin-top:1rem;padding:.8rem .95rem;border-radius:12px;border-left:4px solid var(--coral);background:color-mix(in srgb,var(--coral) 8%,transparent)}
 /* Compact pulse inside the court sheet; the floating mascot steps aside while the sheet is open */
 .cdx-open .mascot{opacity:0 !important;visibility:hidden;pointer-events:none !important}
@@ -13766,6 +13771,22 @@ function Redirect35Card() {
   const { lang, toast } = useApp();
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro; // TODO: HU review (falls back to RO)
   const [tax, setTax] = useState("");
+  // "Tell me when I can redirect": a real in-page signup (a mailto: link silently does nothing on phones without a mail app).
+  // Stored in partnerRequests/ (write-once, readable only by the admin) so it works with the rules already deployed.
+  const [sub, setSub] = useState(() => { try { return localStorage.getItem("g2p_r35") === "1" ? "done" : ""; } catch (e) { return ""; } });
+  const [subMail, setSubMail] = useState("");
+  const [subOk, setSubOk] = useState(false);
+  const [subBusy, setSubBusy] = useState(false);
+  const subValid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(subMail.trim()) && subMail.trim().length <= 120;
+  const subSend = e => {
+    if (e && e.preventDefault) e.preventDefault();
+    if (subBusy) return;
+    if (!subValid || !subOk) { toast(L3("Scrie o adresă de e-mail validă și bifează acordul.", "Enter a valid e-mail address and tick the consent box.")); return; }
+    setSubBusy(true);
+    db.ref("partnerRequests").push({ company: "3,5%: anunță-mă", email: subMail.trim().slice(0, 120), offer: "redirect35", message: "", consent: true, lang: lang, city: ACTIVE_CITY, date: new Date().toISOString() })
+      .then(() => { try { localStorage.setItem("g2p_r35", "1"); } catch (e2) {} setSub("done"); setSubBusy(false); toast(L3("Gata, te anunțăm.", "Done, we will let you know.")); },
+        () => { setSubBusy(false); toast(L3("Nu s-a trimis. Încearcă din nou sau scrie-ne la ", "It was not sent. Try again or write to us at ") + G2P_EMAIL); });
+  };
   const n = parseFloat(String(tax).replace(/\s/g, "").replace(",", "."));
   const ok = isFinite(n) && n > 0 && n < 10000000;
   const loc = lang === "en" ? "en-GB" : lang === "hu" ? "hu-HU" : "ro-RO";
@@ -13774,8 +13795,6 @@ function Redirect35Card() {
   const msg = L3(
     "Din primăvara viitoare poți decide unde ajunge 3,5% din impozitul tău pe venit, fără să plătești nimic în plus. Un grup de tineri din Târgu Mureș se înființează ca asociație ca să readucă la viață terenurile de sport din oraș. Te anunțăm când putem primi redirecționări. Detalii: " + SITE + "/#association",
     "From next spring you can decide where 3.5% of your income tax goes, at no extra cost. A group of young people in Târgu Mureș is setting up an association to bring the city's sports courts back to life. We will tell you when we can receive redirections. Details: " + SITE + "/#association");
-  const mail = "mailto:" + G2P_EMAIL + "?subject=" + encodeURIComponent(L3("Redirecționare 3,5%: anunță-mă", "3.5% redirection: let me know")) +
-    "&body=" + encodeURIComponent(L3("Bună! Vreau să fiu anunțat când pot redirecționa 3,5% din impozit către asociație.", "Hi! Please let me know when I can redirect 3.5% of my income tax to the association."));
   const steps = [
     [L3("Verifică dacă poți", "Check that you can"), L3("Ai avut în anul fiscal venituri din salarii sau asimilate (inclusiv pensionari cu venituri salariale) și ai plătit impozit pe ele? Impozitul îl vezi în fișa fiscală sau în adeverința de venit. Pentru PFA și alte venituri, citește ghidul ANAF: regulile s-au schimbat în 2024.", "Did you have salary or salary-like income in the tax year (including pensioners with salary income) and pay income tax on it? You can see the tax on your tax record or income certificate. For self-employed and other income, read the ANAF guide: the rules changed in 2024.")],
     [L3("Completează Formularul 230", "Fill in Form 230"), L3("Până la 25 mai, sub sancțiunea decăderii. Alegi procentul (maximum 3,5%) și poți opta pentru doi ani deodată.", "By 25 May, otherwise the right lapses. You choose the percentage (3.5% at most) and may opt for two years at once.")],
@@ -13812,7 +13831,19 @@ function Redirect35Card() {
       React.createElement("p", { className: "text-xs", style: { margin: ".5rem 0 0", color: "var(--textSec)" } }, L3("Nu promitem un an anume: verificăm la ANAF data-limită pentru înscrierea în registru. Sursa regulilor: ", "We promise no specific year: we are checking ANAF's deadline for entering the register. Rules from: "),
         React.createElement("a", { href: ANAF_GUIDE_URL, target: "_blank", rel: "noopener", style: { color: "var(--green)" } }, L3("ghidul ANAF pentru 3,5%", "the ANAF 3.5% guide") + " \u2197"))),
     React.createElement("div", { className: "flex gap-2 mt-2", style: { flexWrap: "wrap" } },
-      React.createElement("a", { className: "btn btn-green", href: mail }, "\u2709\uFE0F " + L3("Anunță-mă când pot redirecționa", "Tell me when I can redirect")),
+      sub === "done"
+        ? React.createElement("div", { className: "r35-sub-done", role: "status" }, "\u2705 " + L3("Ești pe listă. Îți scriem când putem primi redirecționări, nu înainte.", "You are on the list. We will write when we can receive redirections, not before."))
+        : sub === "open"
+          ? React.createElement("form", { className: "r35-sub", onSubmit: subSend, noValidate: true },
+              React.createElement("label", { htmlFor: "r35-mail", className: "text-sm" }, L3("Adresa ta de e-mail", "Your e-mail address")),
+              React.createElement("input", { id: "r35-mail", type: "email", inputMode: "email", autoComplete: "email", autoFocus: true, placeholder: "nume@exemplu.ro", value: subMail, maxLength: 120, onChange: e => setSubMail(e.target.value) }),
+              React.createElement("label", { className: "r35-consent text-xs" },
+                React.createElement("input", { type: "checkbox", checked: subOk, onChange: e => setSubOk(e.target.checked) }),
+                React.createElement("span", null, L3("Sunt de acord să primesc un singur e-mail când asociația poate primi redirecționări. Adresa nu e dată nimănui și o ștergem la cerere (" + G2P_EMAIL + ").", "I agree to receive a single e-mail when the association can receive redirections. The address is shared with no one and deleted on request (" + G2P_EMAIL + ")."))),
+              React.createElement("div", { className: "flex gap-2", style: { flexWrap: "wrap" } },
+                React.createElement("button", { type: "submit", className: "btn btn-green", disabled: subBusy || !subValid || !subOk }, subBusy ? "…" : "\u2709\uFE0F " + L3("Trimite", "Send")),
+                React.createElement("button", { type: "button", className: "btn btn-ghost", onClick: () => setSub("") }, L3("Renunț", "Cancel"))))
+          : React.createElement("button", { type: "button", className: "btn btn-green", onClick: () => setSub("open") }, "\u2709\uFE0F " + L3("Anunță-mă când pot redirecționa", "Tell me when I can redirect")),
       React.createElement("button", { type: "button", className: "btn", onClick: () => copyText(msg).then(okc => { if (okc) toast(L3("Mesaj copiat", "Message copied")); }) }, "\uD83D\uDCCB " + L3("Copiază mesajul pentru un prieten", "Copy a message for a friend"))));
 }
 
@@ -13862,7 +13893,7 @@ function AssociationTab({ onFunding }) {
     ["🎓", L3("Venituri accesorii", "Ancillary income"), L3("Anul 2", "Year 2"), L3("Ateliere și dosare PDF pentru școli și ONG-uri. Mici, în limitele legii.", "Workshops and PDF dossiers for schools and NGOs. Small, within the law.")]
   ];
   const risks = [
-    [L3("Fondatorii pleacă după liceu", "Founders leave after school"), L3("Fiecare formează un succesor din primul an, mandatele sunt de 2 ani, iar un manual intern predă în scris procedurile, conturile și accesul.", "Each trains a successor from year one, terms are 2 years, and an internal handbook hands over procedures, accounts and access in writing.")],
+    [L3("Fondatorii au program încărcat și pot pleca din oraș", "The founders have a busy schedule and may move away"), L3("Sunt studenți în anul I și, după facultate, pot ajunge în alt oraș. De aceea fiecare formează un succesor din primul an, mandatele sunt de 2 ani, iar un manual intern predă în scris procedurile, conturile și accesul.", "They are first-year university students and may end up in another city after graduating. So each trains a successor from year one, terms are 2 years, and an internal handbook hands over procedures, accounts and access in writing.")],
     [L3("Costul platformei crește", "Platform costs rise"), L3("Datele sunt deschise și exportabile (CC BY 4.0), avem alertă la 70% din cota gratuită și o rezervă pentru planurile plătite.", "The data is open and exportable (CC BY 4.0), we get an alert at 70% of the free quota and keep a reserve for paid plans.")],
     [L3("Date personale și minori", "Personal data and minors"), L3("Ne angajăm la consimțământ explicit, ștergere la cerere și fețe și plăcuțe estompate în fotografii.", "We commit to explicit consent, deletion on request, and blurred faces and plates in photos.")],
     [L3("Acuzații de partizanat", "Accusations of partisanship"), L3("Clauză „apolitică” în statut, același ton față de orice administrație și fiecare cifră cu sursă.", "An “apolitical” clause in the statute, the same tone toward any administration, and every figure sourced.")],
