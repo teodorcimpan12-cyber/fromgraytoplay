@@ -1798,6 +1798,19 @@ body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inse
   .cdx-body{padding:.5rem 1.2rem 1.6rem}
 }
 @media(prefers-reduced-motion:reduce){.cdx-body{animation:none}.ao-btn,.ao-target{transition:none}}
+/* Formularul 230 card */
+.r35{position:relative;overflow:hidden;border-radius:var(--radius);padding:1.2rem;background:linear-gradient(135deg,color-mix(in srgb,var(--green) 13%,var(--bgCard)),var(--bgCard) 62%);border:1px solid color-mix(in srgb,var(--green) 32%,var(--border))}
+.r35-big{font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(2.6rem,12vw,4.2rem);line-height:1;letter-spacing:-.05em;color:var(--green);margin:.5rem 0 .2rem}
+.r35-h{margin:0 0 .4rem;font-size:clamp(1.1rem,4.6vw,1.5rem);line-height:1.25;text-wrap:balance}
+.r35-lead{margin:0 0 1rem;max-width:62ch;line-height:1.6}
+.r35-calc{display:grid;gap:.4rem;padding:.9rem;border-radius:12px;background:color-mix(in srgb,var(--bg) 70%,transparent);border:1px solid var(--border)}
+.r35-calc input{width:100%;max-width:16rem}
+.r35-out{min-height:2.2rem;font-size:1.05rem}
+.r35-out b{color:var(--green);font-family:'Space Mono',monospace}
+.r35-steps{list-style:none;padding:0;margin:1rem 0 0;display:grid;gap:.7rem}
+.r35-steps li{display:flex;gap:.75rem;align-items:flex-start}
+.r35-n{flex:none;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--green);color:#fff;font:700 .85rem/1 'Space Mono',monospace}
+.r35-honest{margin-top:1rem;padding:.8rem .95rem;border-radius:12px;border-left:4px solid var(--coral);background:color-mix(in srgb,var(--coral) 8%,transparent)}
 /* Compact pulse inside the court sheet; the floating mascot steps aside while the sheet is open */
 .cdx-open .mascot{opacity:0 !important;visibility:hidden;pointer-events:none !important}
 @media(max-width:899px){
@@ -13713,6 +13726,63 @@ function SourcesTab({ onEssay }) {
 
 /* Funding & partnerships: honest numbers first (what the platform costs, why the renovation cost
    is not on the site yet, where money could come from), then what a partner would get. */
+/* === Formularul 230: 3.5% of the income tax. Honest about status: we cannot receive anything until the
+   association is registered and listed by ANAF. Source: ANAF guide "Ghid 3,5%" (static.anaf.ro). === */
+const ANAF_GUIDE_URL = "https://static.anaf.ro/static/10/Anaf/AsistentaContribuabili_r/Ghid_3_5_2025.pdf";
+function Redirect35Card() {
+  const { lang, toast } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro; // TODO: HU review (falls back to RO)
+  const [tax, setTax] = useState("");
+  const n = parseFloat(String(tax).replace(/\s/g, "").replace(",", "."));
+  const ok = isFinite(n) && n > 0 && n < 10000000;
+  const loc = lang === "en" ? "en-GB" : lang === "hu" ? "hu-HU" : "ro-RO";
+  const fmt = v => v.toLocaleString(loc, { maximumFractionDigits: 2 });
+  const mine = ok ? n * 0.035 : 0;
+  const msg = L3(
+    "Din primăvara viitoare poți decide unde ajunge 3,5% din impozitul tău pe venit, fără să plătești nimic în plus. Un grup de tineri din Târgu Mureș se înființează ca asociație ca să readucă la viață terenurile de sport din oraș. Te anunțăm când putem primi redirecționări. Detalii: " + SITE + "/#association",
+    "From next spring you can decide where 3.5% of your income tax goes, at no extra cost. A group of young people in Târgu Mureș is setting up an association to bring the city's sports courts back to life. We will tell you when we can receive redirections. Details: " + SITE + "/#association");
+  const mail = "mailto:" + G2P_EMAIL + "?subject=" + encodeURIComponent(L3("Redirecționare 3,5%: anunță-mă", "3.5% redirection: let me know")) +
+    "&body=" + encodeURIComponent(L3("Bună! Vreau să fiu anunțat când pot redirecționa 3,5% din impozit către asociație.", "Hi! Please let me know when I can redirect 3.5% of my income tax to the association."));
+  const steps = [
+    [L3("Verifică dacă poți", "Check that you can"), L3("Ai avut în anul fiscal venituri din salarii sau asimilate (inclusiv pensionari cu venituri salariale) și ai plătit impozit pe ele? Impozitul îl vezi în fișa fiscală sau în adeverința de venit. Pentru PFA și alte venituri, citește ghidul ANAF: regulile s-au schimbat în 2024.", "Did you have salary or salary-like income in the tax year (including pensioners with salary income) and pay income tax on it? You can see the tax on your tax record or income certificate. For self-employed and other income, read the ANAF guide: the rules changed in 2024.")],
+    [L3("Completează Formularul 230", "Fill in Form 230"), L3("Până la 25 mai, sub sancțiunea decăderii. Alegi procentul (maximum 3,5%) și poți opta pentru doi ani deodată.", "By 25 May, otherwise the right lapses. You choose the percentage (3.5% at most) and may opt for two years at once.")],
+    [L3("Scrie datele asociației", "Write the association's details"), L3("Denumirea, codul de identificare fiscală și contul bancar. Le publicăm aici abia când le avem; nu le inventăm și nu le colectăm înainte.", "The name, tax ID and bank account. We publish them here only once we have them; we do not invent them or collect anything before.")],
+    [L3("Atât", "That is all"), L3("Banii merg de la ANAF direct către asociație. Nu trec prin noi și nu trec prin tine, iar tu nu pierzi nimic.", "The money goes from ANAF straight to the association. It does not pass through us or through you, and you lose nothing.")]
+  ];
+  const needs = [
+    L3("personalitate juridică (înscrierea în Registrul asociațiilor și fundațiilor)", "legal personality (entry in the Register of Associations and Foundations)"),
+    L3("cod de identificare fiscală și cont bancar", "tax ID and a bank account"),
+    L3("înscrierea în Registrul entităților pentru care se acordă deduceri fiscale, prin formularul 163 la ANAF", "entry in ANAF's register of entities eligible for tax deductions, via form 163"),
+    L3("raportul anual către ANAF, la termen", "the annual report to ANAF, on time")
+  ];
+  return React.createElement("section", { className: "r35", "aria-labelledby": "r35-h" },
+    React.createElement("span", { className: "badge badge-green" }, "Formularul 230"),
+    React.createElement("div", { className: "r35-big", "aria-hidden": "true" }, "3,5%"),
+    React.createElement("h3", { id: "r35-h", className: "r35-h" }, L3("3,5% din impozitul tău. 0 lei din buzunarul tău.", "3.5% of your income tax. 0 lei from your pocket.")),
+    React.createElement("p", { className: "r35-lead" }, L3(
+      "Impozitul pe venit îl plătești oricum. Formularul 230 îți lasă să alegi unde ajunge 3,5% din el. Nu te costă nimic în plus, durează câteva minute o dată pe an și poate însemna, an de an, vopsea, coșuri și mingi pe un teren care ți-a lipsit.",
+      "You pay income tax anyway. Form 230 lets you choose where 3.5% of it goes. It costs nothing extra, takes a few minutes once a year, and can mean paint, hoops and balls, year after year, on a court you were missing.")),
+    React.createElement("div", { className: "r35-calc" },
+      React.createElement("label", { htmlFor: "r35-in", className: "text-sm" }, L3("Impozitul tău pe venit pe un an, în lei (din fișa fiscală)", "Your income tax for one year, in lei (from your tax record)")),
+      React.createElement("input", { id: "r35-in", type: "text", inputMode: "decimal", autoComplete: "off", placeholder: "ex. 4800", value: tax, onChange: e => setTax(e.target.value.slice(0, 12)) }),
+      React.createElement("div", { className: "r35-out", "aria-live": "polite" }, ok
+        ? React.createElement("span", null, L3("3,5% din asta = ", "3.5% of that = "), React.createElement("b", null, fmt(mine) + " lei"),
+            React.createElement("span", { className: "text-xs", style: { display: "block", color: "var(--textSec)" } }, L3("Doar aritmetică: dacă 20 de oameni fac la fel, sunt ", "Arithmetic only: if 20 people did the same, that is ") + fmt(mine * 20) + L3(" lei; 100 de oameni, ", " lei; 100 people, ") + fmt(mine * 100) + " lei."))
+        : React.createElement("span", { className: "text-sm", style: { color: "var(--textSec)" } }, L3("Scrie suma și vezi cât ai putea redirecționa.", "Enter the amount to see what you could redirect.")))),
+    React.createElement("ol", { className: "r35-steps" }, steps.map(([h, p], i) => React.createElement("li", { key: i },
+      React.createElement("span", { className: "r35-n", "aria-hidden": "true" }, i + 1),
+      React.createElement("div", null, React.createElement("strong", null, h), React.createElement("div", { className: "text-sm", style: { color: "var(--textSec)" } }, p))))),
+    React.createElement("div", { className: "r35-honest" },
+      React.createElement("strong", null, L3("Cinstit, ce ne lipsește încă", "Honestly, what we still lack")),
+      React.createElement("p", { className: "text-sm", style: { margin: ".3rem 0 .4rem" } }, L3("Nu putem primi nimic acum și nu strângem nimic. Ca să primim redirecționări avem nevoie de:", "We cannot receive anything now and we collect nothing. To receive redirections we need:")),
+      React.createElement("ul", { className: "text-sm", style: { margin: 0, paddingLeft: "1.1rem" } }, needs.map((x, i) => React.createElement("li", { key: i }, x))),
+      React.createElement("p", { className: "text-xs", style: { margin: ".5rem 0 0", color: "var(--textSec)" } }, L3("Nu promitem un an anume: verificăm la ANAF data-limită pentru înscrierea în registru. Sursa regulilor: ", "We promise no specific year: we are checking ANAF's deadline for entering the register. Rules from: "),
+        React.createElement("a", { href: ANAF_GUIDE_URL, target: "_blank", rel: "noopener", style: { color: "var(--green)" } }, L3("ghidul ANAF pentru 3,5%", "the ANAF 3.5% guide") + " \u2197"))),
+    React.createElement("div", { className: "flex gap-2 mt-2", style: { flexWrap: "wrap" } },
+      React.createElement("a", { className: "btn btn-green", href: mail }, "\u2709\uFE0F " + L3("Anunță-mă când pot redirecționa", "Tell me when I can redirect")),
+      React.createElement("button", { type: "button", className: "btn", onClick: () => copyText(msg).then(okc => { if (okc) toast(L3("Mesaj copiat", "Message copied")); }) }, "\uD83D\uDCCB " + L3("Copiază mesajul pentru un prieten", "Copy a message for a friend"))));
+}
+
 /* === Association tab (About). Honest status: the association is being set up, not registered yet.
    Founders = the three adults. Nothing here claims a legal body, a bank account or any funds. === */
 function AssociationTab({ onFunding }) {
@@ -13731,7 +13801,8 @@ function AssociationTab({ onFunding }) {
     { st: "next", h: L3("Patrimoniul inițial", "Initial assets"), p: L3("Legea cere o sumă minimă, depusă în cont. Verificăm valoarea în vigoare și o împărțim între fondatori; rămâne fondul asociației.", "The law requires a minimum sum, paid into an account. We check the current value and split it between the founders; it stays the association's fund.") },
     { st: "next", h: L3("Sediul", "Registered office"), p: L3("Contract de comodat sau chirie, plus extras de carte funciară.", "A loan-for-use or rental contract, plus a land-registry extract.") },
     { st: "next", h: L3("Dosarul la judecătorie", "Court filing"), p: L3("Depunere la judecătoria din raza sediului, plus taxele. Personalitatea juridică apare la înscrierea în Registrul asociațiilor și fundațiilor (OG 26/2000).", "Filed at the court covering the office, plus fees. Legal personality starts when we are entered in the Register of Associations and Foundations (OG 26/2000).") },
-    { st: "next", h: L3("CIF, cont bancar, contabilitate", "Tax ID, bank account, bookkeeping"), p: L3("Abia după aceea putem primi bani, și atunci îi arătăm public.", "Only after that can we receive money, and then we show it publicly.") }
+    { st: "next", h: L3("CIF, cont bancar, contabilitate", "Tax ID, bank account, bookkeeping"), p: L3("Abia după aceea putem primi bani, și atunci îi arătăm public.", "Only after that can we receive money, and then we show it publicly.") },
+    { st: "next", h: L3("Înscriere în registrul pentru 3,5%", "Entry in the 3.5% register"), p: L3("Formularul 163 la ANAF: de aici încolo oamenii pot redirecționa 3,5% din impozit prin Formularul 230.", "Form 163 at ANAF: from then on people can redirect 3.5% of their income tax through Form 230.") }
   ];
   const prep = [
     L3("Numele „Asociația From Grey to Play”, verificat și scris la fel peste tot", "The name “Asociația From Grey to Play”, checked and written the same everywhere"),
@@ -13752,7 +13823,7 @@ function AssociationTab({ onFunding }) {
   const ladder = [
     ["🧑‍🤝‍🧑", L3("Aportul fondatorilor", "Founders' contribution"), L3("Ziua 0", "Day 0"), L3("Patrimoniul inițial și o cotizație simbolică. Cerut de lege.", "The initial assets and a symbolic fee. Required by law.")],
     ["🏷️", L3("„Adoptă un teren”", "“Adopt a court”"), L3("Lunile 1–6", "Months 1–6"), L3("Firme locale: logo pe panou după renovare, echipament în natură sau o zi de voluntariat. Începem cu scrisori de intenție.", "Local firms: a logo on the board after renovation, equipment in kind or a volunteering day. We start with letters of intent.")],
-    ["🧾", L3("3,5% din impozit", "3.5% income tax"), L3("Anul 2", "Year 2"), L3("Doar dacă ajungem pe lista beneficiarilor; verificăm condițiile.", "Only if we reach the list of beneficiaries; we check the conditions.")],
+    ["🧾", L3("3,5% din impozit (Formularul 230)", "3.5% income tax (Form 230)"), L3("După înscriere", "After registration"), L3("Prima sursă recurentă, fără cost pentru donator. Intră în joc doar după înscrierea în registrul ANAF (formularul 163); verificăm data-limită, termenul oamenilor e 25 mai.", "The first recurring source, at no cost to the donor. It only starts after we are entered in ANAF's register (form 163); we check the deadline, people's own deadline is 25 May.")],
     ["🏛️", L3("Finanțări locale (Legea 350/2005)", "Local funding (Law 350/2005)"), L3("Anul 2", "Year 2"), L3("Țintim activități, nu renovări: multe regulamente exclud infrastructura solicitantului.", "We aim at activities, not renovations: many rules exclude the applicant's own infrastructure.")],
     ["🇪🇺", L3("Granturi UE", "EU grants"), L3("Anii 2–3", "Years 2–3"), L3("Erasmus+ Youth, European Youth Together, Erasmus+ Sport, ca partener într-un consorțiu, nu ca lider.", "Erasmus+ Youth, European Youth Together, Erasmus+ Sport, as a partner in a consortium, not as lead.")],
     ["🎓", L3("Venituri accesorii", "Ancillary income"), L3("Anul 2", "Year 2"), L3("Ateliere și dosare PDF pentru școli și ONG-uri. Mici, în limitele legii.", "Workshops and PDF dossiers for schools and NGOs. Small, within the law.")]
@@ -13782,6 +13853,7 @@ function AssociationTab({ onFunding }) {
       React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } }, L3(
         "Ce nu spunem: nu suntem încă o persoană juridică înregistrată și nu avem cont bancar. Spunem ce e gata și ce urmează.",
         "What we do not say: we are not yet a registered legal entity and we have no bank account. We say what is done and what comes next."))),
+    React.createElement("div", { className: "mt-3" }, React.createElement(Redirect35Card, null)),
     React.createElement("h3", { className: "mt-3 mb-1" }, "👥 " + L3("Fondatori", "Founders")),
     React.createElement("div", { className: "about-team-grid" }, founders.map((m, idx) => React.createElement("div", { key: idx, className: "about-member", style: { "--mc": m.color } },
       React.createElement("div", { className: "about-avatar" }, m.i),
@@ -13857,7 +13929,8 @@ function FundingTab() {
     React.createElement("div", null, React.createElement("div", { className: "fund-k" }, k), note && React.createElement("div", { className: "fund-note" }, note)),
     React.createElement("div", { className: "fund-v" }, v));
   return React.createElement("div", null,
-    React.createElement("div", { className: "card fund-transp" },
+    React.createElement(Redirect35Card, null),
+    React.createElement("div", { className: "card fund-transp mt-3" },
       React.createElement("h3", { className: "mb-1" }, "🔍 " + L3("Transparență: banii, pe față", "Transparency: the money, in the open", "Átláthatóság: a pénz nyíltan")),
       row("💻", L3("Cât costă platforma", "What the platform costs", "Mennyibe kerül a platform"), "≈ 0 lei",
         L3("Găzduire gratuită (Netlify), bază de date pe planul gratuit (Firebase), muncă voluntară. Nu strângem bani.", "Free hosting (Netlify), database on the free plan (Firebase), volunteer work. We don't collect money.", "Ingyenes tárhely (Netlify), ingyenes adatbázis (Firebase), önkéntes munka. Nem gyűjtünk pénzt.")),

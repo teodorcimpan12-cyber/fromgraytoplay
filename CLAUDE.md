@@ -340,3 +340,7 @@ Highest civic-value next steps:
 - Session 6 Nov 2026, night (same branch `claude/ui-instagram-court`): `AssociationTab` extended from the Astra Hack plan (no amounts, no legal-entity claims): legal steps in the order the law needs
   (statute/act → name reservation → initial assets → office → court filing → CIF/account), "Pregătim acum" checklist, collapsible draft statute (`.assoc-statute`), "Cum devine sustenabilă" revenue ladder
   (founders, Adoptă un teren, 3.5%, local funding, EU as partner, ancillary) and risks + answers. All strings via local `L3` (HU falls back to RO, `// TODO: HU review`).
+- Session 6 Nov 2026, night (branch `claude/finantare-230`): PR #36 + #37 merged on the owner's "merge" (live). New `Redirect35Card` (Formularul 230 / 3.5%) at the top of the Association page/tab
+  and of the Funding tab: motivation, income-tax calculator (3.5% × the user's own number, pure arithmetic), 4 donor steps, honest "what we still lack" (legal personality, CIF + account, ANAF register via
+  form 163, annual report), mailto "anunță-mă", copyable message. Rules from the ANAF guide `Ghid_3_5_2025.pdf` (salary/assimilated income, deadline 25 May, CIF + name + IBAN, 3.5% cap, 2-year option);
+  no CIF/IBAN/amount of ours is shown and no year is promised. Association steps gained "Înscriere în registrul pentru 3,5%"; income ladder row updated.
