@@ -317,13 +317,3 @@ Highest civic-value next steps:
   (≈0 lei running cost, no source above 40%, money only through the association after registration, public reports).
   Home-of-About hero has a button to it. Team member "Drăgan Ilie" renamed to "Drăgan Gabriel" (owner-confirmed).
   No legal-entity, bank-account or amount claims anywhere. HU falls back to RO for the new strings (`// TODO: HU review`).
-- Session 6 Nov 2026, evening (same branch): **Sigiliul G2P** — `G2PSeal` (between `/* G2PSEAL:BEGIN/END */` markers,
-  unit-tested in `tests/app.test.mjs` against a rules-enforcing fake DB). Every petition signature is appended to a SHA-256 hash
-  chain: `commitment = SHA-256(nonce|id|type|option|serverTs)` (no name/email), `seal_i = SHA-256(seal_{i-1}|commitment_i)`.
-  Firebase: `seal/chain/{n}` (write-once) + `seal/head {n, seal}` (advances only to a seal already in `chain/{n}`, so a writer that
-  dies mid-way is healed by the next signer). `database.rules.json` has the new `seal` node — **it must be deployed to Firebase
-  separately; until then signing still works and no receipt appears.** UI: `SealReceipt` on the Petition page after signing
-  (`localStorage g2p_seal_receipt`), `SealCard` in About → Asociația (live chain check in the browser, anchor check, receipt check,
-  downloads). Limits (stated on screen): proves "not modified after an anchor was published", not that a court is degraded; signatures
-  before the Seal are not covered; the rules cannot verify the hash maths, so a griefer could append garbage and the card would show
-  "chain broken" (anchors protect earlier states). Publish the head hash somewhere external (public commit, slide) to make it solid.
