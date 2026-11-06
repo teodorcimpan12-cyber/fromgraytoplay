@@ -84,7 +84,9 @@ fromgreytoplay-default-rtdb/
 └── presence/{voterKey}: true                   [live online counter]
 ```
 
-Anyone can write — rules are MVP-permissive. Tighten before any press.
+Rules were tightened on 6 Nov 2026 (per-entry create-only, validated shapes, +1 counters; see `SECURITY.md`,
+tested in `tests/rules.test.mjs`). Still open: client-side-only rate limits (needs App Check), PII in public-read nodes.
+`database.rules.json` must be deployed to Firebase separately (`firebase deploy --only database`).
 
 ## Languages
 
@@ -311,3 +313,10 @@ Highest civic-value next steps:
   account button icon-only 1241–1440px (`.nav-acct-name`, name kept in title/aria-label),
   `.nav-inner` max-width 1320px ≥1441px. SW → `g2p-v11`. New project skill `.claude/skills/arena`
   (/arena: parallel subagents with different strategies + blind judging rounds).
+- Session 6 Nov 2026 — agency-agents audit pass (branch `claude/affectionate-fermi-vo3vm4`): Firebase rules rewritten
+  (every formerly open node now validated per entry; 39 emulator tests in `tests/rules.test.mjs`); `SECURITY.md`
+  matches the real rules. A11y: hamburger name/`aria-expanded`, toast `role=status`, skip link (`#g2p-skip`, focuses
+  `<main id="main">`), one global script before the boot guard gives every `.modal-overlay` a focus trap, `role=dialog`
+  and focus restore, visible focus on fields, localized `alt` via `altL()`. SEO: `robots.txt` + `sitemap.xml` (deploy
+  surface now includes them), `document.title` follows page + language, search-intent `<title>`. NOT done (needs a
+  design decision): white-on-`--green` contrast is 2.5:1; `hreflang` (needs per-language URLs); crawlable per-court URLs.
