@@ -2843,6 +2843,8 @@ function activityCity(a) {
   const c = a.courtId && COURTS_ALL.find(x => x.id === a.courtId);
   return c ? (c.city || "tgm") : "tgm";
 }
+// Demo rows (reports sent from the #raporteaza QR path) stay out of the public ticker and feed.
+function realActivity(a) { return !!a && !a.demo; }
 const ACTIVITY_ICONS = { "check-in": "🏀", petition: "✍️", photo: "📸", report: "⚠️", conditionReport: "🩺", game: "⚽", join: "🤝", pixel: "🎨", adopt: "💚" };
 // Human sentence for an activity row, from the T.feed* templates.
 function activityMsg(a, t) {
@@ -2873,6 +2875,7 @@ const PAGE_IDS = ["home", "courts", "reports", "petition", "community", "impact"
 function pageFromHash() {
   const h = location.hash.replace(/^#\/?/, "");
   if (h.indexOf("court-") === 0) return "courts";
+  if (h === "raporteaza") return "home"; // contract with the mobile shell: ReportHashListener opens the report form
   if (!h && /^\/press\/?$/.test(location.pathname)) return "press";
   return PAGE_IDS.indexOf(h) >= 0 ? h : "home";
 }
@@ -9043,7 +9046,7 @@ function Hero3D() {
 function ActivityTicker() {
   const { t } = useApp();
   const data = useFirebase("activity");
-  const items = data ? Object.values(data).sort((a, b) => tsOf(b) - tsOf(a)).slice(0, 14) : [];
+  const items = data ? Object.values(data).filter(realActivity).sort((a, b) => tsOf(b) - tsOf(a)).slice(0, 14) : [];
   if (!items.length) return null;
   const ICO = { petition: "✊", checkin: "📍", photo: "📸", report: "⚠️", game: "⚽", join: "👥" };
   const verb = ty => ({ petition: t.tickPetition, checkin: t.tickCheckin, photo: t.tickPhoto, report: t.tickReport, game: t.tickGame, join: t.tickJoin })[ty] || t.tickDefault;
@@ -11432,7 +11435,7 @@ function ActivityFeed() {
   const { t, lang } = useApp();
   const data = useFirebase("activity");
   const list = data
-    ? Object.entries(data).map(([id, a]) => ({ id, ...a })).filter(a => activityCity(a) === ACTIVE_CITY).sort((a, b) => tsOf(b) - tsOf(a)).slice(0, 30)
+    ? Object.entries(data).map(([id, a]) => ({ id, ...a })).filter(a => realActivity(a) && activityCity(a) === ACTIVE_CITY).sort((a, b) => tsOf(b) - tsOf(a)).slice(0, 30)
     : [];
   const COURT_NAMES = COURTS.reduce((acc, c) => (acc[c.id] = c.name, acc), {});
   const ICONS = { "check-in": "🏀", petition: "✍️", photo: "📸", report: "⚠️", game: "⚽", join: "🤝" };
@@ -15597,8 +15600,8 @@ function getVoterKey() {
 }
 
 /* === Quick Report FAB + 3-step Modal ===
-   Court → issue → photo, about 20 seconds. Sending needs an account: a visitor who is not
-   signed in keeps the draft (sessionStorage g2p_report_draft), signs in, and the form comes
+   Court → issue → photo, about 20 seconds. No account needed to send (anti-spam: 2 per 10 min per device); a visitor who is not
+   who wants an account can still sign in later; the draft (sessionStorage g2p_report_draft) survives it,
    back exactly as they left it — also after a full-page Google redirect. */
 const REPORT_CATS = [["surface", "🏗️"], ["hoop", "🏀"], ["fence", "🚧"], ["lighting", "💡"], ["trash", "🗑️"], ["safety", "⚠️"], ["other", "📌"]];
 function reportDraft() { try { return JSON.parse(sessionStorage.getItem("g2p_report_draft") || "null"); } catch (e) { return null; } }
@@ -15618,7 +15621,33 @@ function QuickReportFAB() {
     open && React.createElement(QuickReportModal, { courtId: open.courtId, onClose: () => setOpen(false) })
   );
 }
-function QuickReportModal({ onClose, courtId: preset }) {
+// "#raporteaza" (QR on the pitch slide, mobile shell button) opens the report form on any page.
+// Reports sent from here are tagged demo:true. The hash is cleared once the form is open.
+function ReportHashListener() {
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    const check = () => {
+      if (location.hash !== "#raporteaza") return;
+      try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+      setOpen(true);
+    };
+    check();
+    window.addEventListener("hashchange", check);
+    return () => window.removeEventListener("hashchange", check);
+  }, []);
+  return open ? React.createElement(QuickReportModal, { demo: true, onClose: () => setOpen(false) }) : null;
+}
+// Client-side anti-spam: at most 2 reports per 10 minutes per device (voter key).
+const RQ_MAX = 2, RQ_WIN = 10 * 60 * 1000;
+function rqRecent() {
+  try {
+    const o = JSON.parse(localStorage.getItem("g2p_rq_ts") || "null");
+    const now = Date.now();
+    return o && o.vk === getVoterKey() ? (o.ts || []).filter(x => now - x < RQ_WIN) : [];
+  } catch (e) { return []; }
+}
+function rqMark() { try { localStorage.setItem("g2p_rq_ts", JSON.stringify({ vk: getVoterKey(), ts: rqRecent().concat(Date.now()) })); } catch (e) {} }
+function QuickReportModal({ onClose, courtId: preset, demo }) {
   const { t, user, toast, lang, firebaseUser, openAuth } = useApp();
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
   const fbCourts = useFirebase("courts");
@@ -15665,8 +15694,13 @@ function QuickReportModal({ onClose, courtId: preset }) {
     openAuth();
   };
   const submit = () => {
-    if (!firebaseUser) { login(); return; }
     if (!f.category || !f.courtId) { toast(t.error); return; }
+    const recent = rqRecent();
+    if (recent.length >= RQ_MAX) {
+      const mins = Math.max(1, Math.ceil((RQ_WIN - (Date.now() - Math.min.apply(null, recent))) / 60000));
+      toast(L3("Ai trimis deja 2 sesizări în ultimele 10 minute. Mai poți trimite una peste " + mins + " min.", "You already sent 2 reports in the last 10 minutes. You can send another in " + mins + " min.", "Az elmúlt 10 percben már 2 bejelentést küldtél. " + mins + " perc múlva küldhetsz újat.")); // TODO: HU review
+      return;
+    }
     setSubmitting(true);
     const now = new Date().toISOString();
     const userName = anonName(user ? user.name : "");
@@ -15674,13 +15708,18 @@ function QuickReportModal({ onClose, courtId: preset }) {
       courtId: f.courtId, courtName: court ? court.name : f.courtId, neighborhood: court ? (court.neighbourhood || "") : "",
       category: f.category, description: (f.note || "").trim().slice(0, 2000) || catLabel(f.category),
       status: "received", statusAt: { received: now }, city: ACTIVE_CITY, createdAt: now, updatedAt: now,
-      voterKey: getVoterKey(), uid: firebaseUser.uid, userName: userName
+      voterKey: getVoterKey(), userName: userName
     };
+    if (firebaseUser) payload.uid = firebaseUser.uid;
+    if (demo) payload.demo = true;
     if (f.photoDataUrl) payload.photoDataUrl = f.photoDataUrl;
     if (f.photoDataUrl && ai) payload.ai = aiStamp(ai);
     if (f.lat) { payload.lat = f.lat; payload.lng = f.lng; }
     db.ref("reports").push(payload).then(() => {
-      db.ref("activity").push({ type: "report", userName: userName, courtId: f.courtId, courtName: payload.courtName, timestamp: now });
+      rqMark();
+      const act = { type: "report", userName: userName, courtId: f.courtId, courtName: payload.courtName, timestamp: now };
+      if (demo) act.demo = true;
+      db.ref("activity").push(act);
       try { sessionStorage.removeItem("g2p_report_draft"); } catch (e) {}
       awardBadge("reporter");
       g2pSfx("whistle");
@@ -15731,10 +15770,9 @@ function QuickReportModal({ onClose, courtId: preset }) {
           r.summary && (f.note || "").indexOf(r.summary) < 0 && e("button", { type: "button", className: "ai-btn ai-btn-sm", onClick: () => setF(o => ({ ...o, note: ((o.note || "").trim() ? o.note.trim() + "\n" : "") + r.summary })) },
             "＋ ", L3("Pune în descriere", "Add to the note", "Hozzáadás a leíráshoz"))) }),
         e("textarea", { value: f.note, onChange: ev => setF(o => ({ ...o, note: ev.target.value })), rows: 2, maxLength: 2000, placeholder: L3("Vrei să adaugi ceva? (opțional)", "Anything to add? (optional)", "Szeretnél még valamit írni? (nem kötelező)"), style: { marginTop: ".6rem", resize: "vertical" } }),
-        !firebaseUser && e("p", { className: "rq-acct" }, "🔐 " + L3("Sesizările cer un cont, ca Primăria să le ia în serios. Ce ai completat rămâne aici.", "Reports need an account so City Hall takes them seriously. What you filled in stays here.", "A bejelentéshez fiók kell, hogy a Városháza komolyan vegye. Amit kitöltöttél, megmarad.")),
         f.photoDataUrl && ai && ai.isCourt === false && e("p", { className: "ai-block" }, "⛔ ", L3("Poza nu arată un teren, așa că nu o putem trimite. Scoate-o sau fă alta.", "The photo doesn't show a court, so it can't be sent. Remove it or take another.", "A fotón nincs pálya, ezért nem küldhető el. Töröld vagy készíts másikat.")),
         e("button", { className: "btn btn-green btn-block mt-1", disabled: submitting || !f.courtId || !f.category || !!(f.photoDataUrl && ai && ai.isCourt === false), onClick: submit },
-          submitting ? "…" : firebaseUser ? "📨 " + t.submit : "🔐 " + L3("Intră în cont și trimite", "Sign in and send", "Belépés és küldés")))
+          submitting ? "…" : "📨 " + t.submit))
     ));
 }
 
@@ -18493,7 +18531,7 @@ function App() {
     }
   }, /*#__PURE__*/React.createElement("div", {
     key: page
-  }, React.createElement(PageBoundary, null, P()))), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(FunEggs, null), React.createElement(EggHub, { page: page }), React.createElement(SecretKeys, null), React.createElement(Mascot, { page: page }), React.createElement(BigCelebration, null), React.createElement(ThemeFx, null), mayor && React.createElement(MayorMode, {
+  }, React.createElement(PageBoundary, null, P()))), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(ReportHashListener, null), React.createElement(FunEggs, null), React.createElement(EggHub, { page: page }), React.createElement(SecretKeys, null), React.createElement(Mascot, { page: page }), React.createElement(BigCelebration, null), React.createElement(ThemeFx, null), mayor && React.createElement(MayorMode, {
     onClose: () => setMayor(false)
   }), /*#__PURE__*/React.createElement(Footer, null), toastEl, authEl, nudgeEl, DEMO_ON && React.createElement(DemoLayer, null), DEMO_REMOTE && React.createElement(DemoRemote, null));
 }
