@@ -23,3 +23,6 @@
   jos de sus de tot mută foaia; `scrolledAncestor` verifică și overlay-ul. Pagina din spate nu mai
   derulează cât e deschis un popup (`body:has(.modal-overlay)`), scroll-ul se oprește ferm la margini.
 - Merge cu live (PR #34 al sesiunii A): păstrat `ReportHashListener` + `!isPhone() && Mascot`.
+
+## Fix 2
+- `relTime`: timestamp-urile ISO (sesizări vechi) dădeau „acum 20763 zile” (Number(ISO)=NaN→1970). Acum parsează ISO, secunde și ms; necunoscut → gol.
