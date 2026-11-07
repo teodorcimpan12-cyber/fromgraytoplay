@@ -18709,7 +18709,7 @@ const DEMO_STEPS = [
     slide: { k: "Sibiu · răspuns oficial nr. 4541 / 03.11.2026", big: "0", bigL: "terenuri dintre blocuri în investițiile 2022–2026",
       lines: ["Bani doar pentru: Păltiniș, Stadionul Municipal, Obor, Lacul lui Binder", "35 de terenuri publice de cartier pe hartă — starea lor nu o publică nimeni", "Clientul: tânărul care vrea să joace azi · și primăria, care n-are harta stării"],
       src: "Serviciul Public Sport și Agrement Sibiu · OpenStreetMap" } },
-  { id: "hero", who: "T", sec: 25, ro: "Soluția", en: "The solution",
+  { id: "hero", who: "T", sel: ".h3d-hero", sec: 25, ro: "Soluția", en: "The solution",
     note: "O frază: From Grey to Play arată starea fiecărui teren public, cu dovezi datate, și transformă o poză într-o cerere oficială către primărie. Temele: AI + securitate + sustenabilitate. Apasă „Renovează”." },
   { id: "scenario", who: "G", sec: 20, ro: "Ce vă arătăm", en: "What we show",
     note: "Un singur flux, cap-coadă: Ana găsește terenul, vede istoricul din satelit, îl verifică, face o poză, AI-ul sugerează starea, iar ea trimite scrisoarea oficială.",
@@ -19007,7 +19007,7 @@ function App() {
   const [toastMsg, setToastMsg] = useState("");
   const [toastMs, setToastMs] = useState(3000);
   const [authOpen, setAuthOpen] = useState(false);
-  const [onboard, setOnboard] = useState(() => location.hash !== "#raporteaza" && !localStorage.getItem("g2p_ob"));
+  const [onboard, setOnboard] = useState(() => !/^#(raporteaza|court-)/.test(location.hash) && !localStorage.getItem("g2p_ob")) // deep links (QR, shared court) open straight on their target;
   const [adminMode, setAdminMode] = useState(false);
   const [adminAuth, setAdminAuth] = useState(false);
   const [firebaseUser, setFirebaseUser] = useState(() => firebase.auth().currentUser);
