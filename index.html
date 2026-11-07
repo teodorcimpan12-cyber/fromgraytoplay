@@ -10555,6 +10555,7 @@ function CourtDetail({
       act("share", "line", () => shareCourt(c, t, toast), "🔗", t.shareCourt),
       c.category !== "gym" && act("poster", "line", () => setShowWanted(true), "🪧", L3("Afiș", "Poster", "Plakát")),
       c.category !== "gym" && act("letter", "line", () => setShowLetter(true), "✉️", L3("Scrisoare AI", "AI letter", "AI-levél"))),
+    React.createElement(CourtResponder, { court: c }),
     React.createElement(CourtSourcesCard, { court: c }),
     React.createElement(AiCourtCard, { court: c, onLetter: c.category !== "gym" ? () => setShowLetter(true) : null }),
     React.createElement("h4", { className: "mb-1 mt-2" }, "Progress"),
@@ -11632,10 +11633,10 @@ function LetterModal({
       if (lang === "hu") return `CÍMZETT: ${CITY_HALL.hu}\n${CITY_HALL.address}\n\nAlulírott ${n || "___"}, lakcím: ${a || areaLabel},\n\na(z) ${areaLabel} környék lakójaként kérem a város sportpályái állapotának nyilvános felmérését, különösen a(z) "${court.name}" pályáét.\n${why ? "\nMiért fontos ez nekem: " + why + "\n" : ""}\nHáttér:\n- ${nC} nyilvános sportpálya szerepel az OpenStreetMap térképen (${cityName("hu")}); állapotukat hivatalosan nem teszik közzé\n- ${total} polgár írta alá az online petíciót (${web})\n\nKérem:\n1. Minden pálya állapotának és karbantartási tervének közzétételét\n2. A leromlott pályák felvételét a beruházási költségvetésbe\n\nTisztelettel,\n${n || "___"}\nDátum: ${new Date().toLocaleDateString("hu-HU")}`;
       return `TO: ${CITY_HALL.en}\n${CITY_HALL.address}\n\nI, ${n || "___"}, residing at ${a || areaLabel},\n\nas a resident of the ${areaLabel} area, I request a public audit of the condition of the city's sports courts, in particular "${court.name}".\n${why ? "\nWhy this matters to me: " + why + "\n" : ""}\nContext:\n- ${nC} public sports courts are mapped in OpenStreetMap for ${cityName("en")}; their condition is not officially published\n- ${total} citizens signed the online petition (${web})\n\nI request:\n1. Publication of the condition and maintenance schedule of each court\n2. Inclusion of degraded courts in the investment budget\n\nSincerely,\n${n || "___"}\nDate: ${new Date().toLocaleDateString("en-GB")}`;
     }
-    if (lang === "ro") return `CĂTRE: Consiliul Local și Primăria Municipiului Târgu Mureș\n\nSubsemnatul/a ${n || "___"}, domiciliat/ă în ${a || areaLabel},\n\nÎn calitate de locuitor al zonei ${areaLabel}, solicit renovarea terenurilor sportive din cartierele periferice, în special "${court.name}".\n${why ? "\nDe ce contează pentru mine: " + why + "\n" : ""}\nArgumente:\n- ${total} cetățeni au semnat petiția online (${web})\n- 12 din 15 rezidenți consideră terenurile prea degradate\n- 5.000.000 lei înghețați printr-o eroare administrativă\n- 0% dintre terenurile periferice au fost renovate\n- Investiția se încadrează în Strategia Integrată de Dezvoltare Urbană (SIDU)\n\nPropuneri concrete:\n1. Flip-the-Court — renovarea terenurilor existente\n2. Street Canvas — mural comunitar ales prin vot\n\nCu stimă,\n${n || "___"}\nData: ${new Date().toLocaleDateString("ro-RO")}`;
+    if (lang === "ro") return `CĂTRE: Consiliul Local și Primăria Municipiului Târgu Mureș\n\nSubsemnatul/a ${n || "___"}, domiciliat/ă în ${a || areaLabel},\n\nÎn calitate de locuitor al zonei ${areaLabel}, solicit renovarea terenurilor sportive din cartierele periferice, în special "${court.name}".\n${why ? "\nDe ce contează pentru mine: " + why + "\n" : ""}\nArgumente:\n- ${total} cetățeni au semnat petiția online (${web})\n- 12 din 15 rezidenți întrebați într-un sondaj informal nu folosesc terenul cel mai apropiat, pentru că e prea degradat\n- Răspunsul CSM Târgu Mureș nr. 2692/03.11.2026: 1,86 mil. lei investiți în 4 ani, din care 49,5% pentru omologarea Liga 3 și platforma Sălii Polivalente; bugetul CSM a crescut cu 70%, iar cheltuielile cu terenurile au scăzut cu 65% (2022-2025)\n- Fișa terenului, cu poze și sesizări: ${SITE}/#court-${court.id}\n\nPropuneri concrete:\n1. Flip-the-Court — renovarea terenurilor existente\n2. Street Canvas — mural comunitar ales prin vot\n\nCu stimă,\n${n || "___"}\nData: ${new Date().toLocaleDateString("ro-RO")}`;
     // TODO: HU review — draft translation, verify with a native speaker
-    if (lang === "hu") return `CÍMZETT: Marosvásárhely Helyi Tanácsa és Polgármesteri Hivatala\n\nAlulírott ${n || "___"}, lakcím: ${a || areaLabel},\n\na(z) ${areaLabel} környék lakójaként kérem a peremkerületi sportpályák felújítását, különösen a(z) "${court.name}" pályáét.\n${why ? "\nMiért fontos ez nekem: " + why + "\n" : ""}\nÉrvek:\n- ${total} polgár írta alá az online petíciót (${web})\n- 15 lakosból 12 szerint a pályák túl rossz állapotúak\n- 5.000.000 lej befagyasztva adminisztratív hiba miatt\n- a peremkerületi pályák 0%-a lett felújítva\n- A beruházás illeszkedik az Integrált Városfejlesztési Stratégiához (SIDU)\n\nKonkrét javaslatok:\n1. Flip-the-Court — meglévő pályák felújítása\n2. Street Canvas — közösségi szavazással választott falfestmény\n\nTisztelettel,\n${n || "___"}\nDátum: ${new Date().toLocaleDateString("hu-HU")}`;
-    return `TO: Târgu Mureș City Council and City Hall\n\nI, ${n || "___"}, residing at ${a || areaLabel},\n\nas a resident of the ${areaLabel} area, I request the renovation of peripheral sports courts, in particular "${court.name}".\n${why ? "\nWhy this matters to me: " + why + "\n" : ""}\nArguments:\n- ${total} citizens signed the online petition (${web})\n- 12 of 15 residents consider the courts too degraded\n- 5,000,000 lei frozen by an administrative error\n- 0% of peripheral courts have been renovated\n- This investment fits the Integrated Urban Development Strategy (SIDU)\n\nConcrete proposals:\n1. Flip-the-Court — renovate existing courts\n2. Street Canvas — community-voted mural\n\nSincerely,\n${n || "___"}\nDate: ${new Date().toLocaleDateString("en-GB")}`;
+    if (lang === "hu") return `CÍMZETT: Marosvásárhely Helyi Tanácsa és Polgármesteri Hivatala\n\nAlulírott ${n || "___"}, lakcím: ${a || areaLabel},\n\na(z) ${areaLabel} környék lakójaként kérem a peremkerületi sportpályák felújítását, különösen a(z) "${court.name}" pályáét.\n${why ? "\nMiért fontos ez nekem: " + why + "\n" : ""}\nÉrvek:\n- ${total} polgár írta alá az online petíciót (${web})\n- Egy informális felmérésben 15 megkérdezett lakosból 12 nem használja a legközelebbi pályát, mert túl rossz állapotú\n- A CSM Marosvásárhely 2692/03.11.2026 sz. válasza: 4 év alatt 1,86 millió lej beruházás, ennek 49,5%-a a Liga 3 homologálására és a Sportcsarnok platformjára; a CSM költségvetése 70%-kal nőtt, a pályákra fordított kiadás 65%-kal csökkent (2022-2025)\n- A pálya adatlapja fotókkal és bejelentésekkel: ${SITE}/#court-${court.id}\n\nKonkrét javaslatok:\n1. Flip-the-Court — meglévő pályák felújítása\n2. Street Canvas — közösségi szavazással választott falfestmény\n\nTisztelettel,\n${n || "___"}\nDátum: ${new Date().toLocaleDateString("hu-HU")}`;
+    return `TO: Târgu Mureș City Council and City Hall\n\nI, ${n || "___"}, residing at ${a || areaLabel},\n\nas a resident of the ${areaLabel} area, I request the renovation of peripheral sports courts, in particular "${court.name}".\n${why ? "\nWhy this matters to me: " + why + "\n" : ""}\nArguments:\n- ${total} citizens signed the online petition (${web})\n- In an informal poll, 12 of 15 residents asked do not use their nearest court because it is too degraded\n- CSM Târgu Mureș reply no. 2692/03.11.2026: 1.86M lei invested in 4 years, 49.5% of it on Liga 3 homologation and the Sala Polivalentă platform; the CSM budget rose 70% while spending on the grounds fell 65% (2022-2025)\n- The court's page, with photos and reports: ${SITE}/#court-${court.id}\n\nConcrete proposals:\n1. Flip-the-Court — renovate existing courts\n2. Street Canvas — community-voted mural\n\nSincerely,\n${n || "___"}\nDate: ${new Date().toLocaleDateString("en-GB")}`;
   };
   const dl = () => {
     const text = buildLetter();
@@ -11686,8 +11687,13 @@ function LetterModal({
   };
   const email = () => {
     const subj = lang === "ro" ? "Renovarea terenurilor sportive — " + cityName(lang) : lang === "hu" ? "Sportpályák felújítása — " + cityName(lang) : "Renovation of sports courts — " + cityName(lang);
-    window.location.href = `mailto:${ACTIVE_CITY !== "tgm" ? CITY_HALL.mail : ""}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(buildLetter())}`;
+    window.location.href = `mailto:${CITY_HALL.mail}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(buildLetter())}`;
     toast(t.success);
+  };
+  // Fallback when no mail app opens: copy the letter text.
+  const copyText = () => {
+    const txt = buildLetter();
+    (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(() => toast(lang === "en" ? "Text copied" : lang === "hu" ? "Szöveg másolva" : "Text copiat")).catch(() => toast(t.error)); // TODO: HU review
   };
   return /*#__PURE__*/React.createElement("div", {
     className: "modal-overlay",
@@ -11733,6 +11739,9 @@ function LetterModal({
     className: "btn btn-green",
     onClick: email
   }, "✉️ ", t.emailLetter), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline",
+    onClick: copyText
+  }, "📋 ", lang === "en" ? "Copy the text" : lang === "hu" ? "Szöveg másolása" : "Copiază textul"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline",
     onClick: dl
   }, "📥 ", t.downloadPDF), /*#__PURE__*/React.createElement("button", {
@@ -13001,6 +13010,63 @@ function ImpactPage() {
 }
 /* Impact → ✉️: letters sent from the site (letters/: city, court, legal basis, date — no personal data),
    with the legal answer deadline counting down, and "City Hall replied" logging. */
+/* Legal answer clock, shared by LettersTracker, RequestTracker and the court page.
+   start = the date of a real registration/send; never a guess. */
+function deadlineState(startIso, days, answered, now) {
+  const start = Date.parse(startIso); now = now || Date.now();
+  if (!isFinite(start)) return null;
+  const due = start + days * 864e5;
+  return { start, due, left: Math.ceil((due - now) / 864e5), pct: Math.max(0, Math.min(100, (now - start) / (due - start) * 100)), st: answered ? "done" : now <= due ? "wait" : "late" };
+}
+// Who manages a court: c.admin in cityhall | school | private; anything else is shown as unknown (never guessed).
+const COURT_ADMIN = { cityhall: ["Primăria", "City Hall", "Városháza"], school: ["Școală", "School", "Iskola"], private: ["Privat", "Private", "Magán"], unknown: ["Necunoscut", "Unknown", "Ismeretlen"] }; // TODO: HU review
+// Our real Law 544/2001 requests, extended to 30 days by the city halls; answers due 25.11.2026.
+const CITY_544 = { tgm: { to: "Primăria Târgu Mureș", no: "51941/04.11.2026", due: "2026-11-25" }, sibiu: { to: "Primăria Sibiu", no: "89234/03.11.2026", due: "2026-11-25" } };
+// "Cine răspunde" on the court page: administrator, the 30-day clock (only from a real send), report history.
+function CourtResponder({ court: c }) {
+  const { t, lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const reports = useFirebase("reports");
+  const e = React.createElement;
+  const loc = lang === "en" ? "en-GB" : lang === "hu" ? "hu-HU" : "ro-RO";
+  const day = ms => new Date(ms).toLocaleDateString(loc, { day: "numeric", month: "short", year: "numeric" });
+  const adm = COURT_ADMIN[c.admin] ? c.admin : "unknown";
+  const ai = lang === "en" ? 1 : lang === "hu" ? 2 : 0;
+  const reps = reports ? Object.entries(reports).map(([id, r]) => Object.assign({ id }, r)).filter(r => r.courtId === c.id && r.category !== "condition")
+    .sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || ""))) : [];
+  // The clock starts only from a registration stamp entered by the admin (reports/*/cityHall.sentAt).
+  const sent = reps.filter(r => r.cityHall && r.cityHall.sentAt).sort((a, b) => String(b.cityHall.sentAt).localeCompare(String(a.cityHall.sentAt)))[0];
+  const ds = sent && deadlineState(sent.cityHall.sentAt, 30, !!sent.official || sent.status === "resolved");
+  const req = CITY_544[c.city || "tgm"], reqDone = req && (CITY_REQUESTS.find(r => r.city === (c.city || "tgm")) || {}).answeredAt;
+  const reqLate = req && !reqDone && Date.now() > Date.parse(req.due + "T23:59:59");
+  const catL = k => ({ surface: t.catSurface, hoop: t.catHoop, fence: t.catFence, lighting: t.catLighting, trash: t.catTrash, safety: t.catSafety, other: t.catOther }[k] || k);
+  const stL = k => ({ received: L3("primită", "received", "beérkezett"), analyzing: L3("în analiză", "being checked", "vizsgálat alatt"), planned: L3("planificată", "planned", "tervezett"), resolved: L3("rezolvată", "resolved", "megoldva") }[k] || k || "");
+  const muted = { color: "var(--textSec)" };
+  return e("div", { className: "card mb-2" },
+    e("h3", { className: "mb-1" }, "🏛️ ", L3("Cine răspunde", "Who answers", "Ki felel")),
+    e("p", { className: "text-sm mb-1" }, L3("Administrator: ", "Manager: ", "Kezelő: "), e("b", null, COURT_ADMIN[adm][ai]),
+      adm === "unknown" && e("span", { className: "text-xs", style: muted }, " · " + L3("încă neverificat, nu ghicim", "not verified yet, we don't guess", "még nincs ellenőrizve, nem találgatunk"))),
+    !ds && e("p", { className: "text-sm mb-1", style: muted }, "⏱️ ", L3("Nicio trimitere oficială înregistrată pentru acest teren. Ceasul de 30 de zile pornește când o sesizare e înregistrată la Primărie.", "No official submission recorded for this court. The 30-day clock starts when a report is registered at City Hall.", "Ehhez a pályához még nincs hivatalos beadvány rögzítve. A 30 napos óra akkor indul, amikor egy bejelentést iktatnak a Városházán.")),
+    ds && e("div", { className: "mb-1" },
+      e("p", { className: "text-sm" }, "📨 ", L3("Trimis la Primărie: ", "Sent to City Hall: ", "Elküldve a Városházának: "), e("b", null, day(ds.start)), sent.cityHall.regNo ? " · nr. " + sent.cityHall.regNo : "",
+        " · ", L3("termen: ", "deadline: ", "határidő: "), e("b", null, day(ds.due))),
+      ds.st === "wait" && e("div", { role: "progressbar", "aria-valuenow": Math.round(ds.pct), "aria-valuemin": 0, "aria-valuemax": 100, style: { height: 8, borderRadius: 8, background: "var(--border)", overflow: "hidden", margin: ".35rem 0" } },
+        e("i", { style: { display: "block", height: "100%", width: ds.pct + "%", background: "var(--green)" } })),
+      e("p", { className: "text-sm", style: { fontWeight: 600, color: ds.st === "late" ? "var(--coral)" : "var(--green)" } },
+        ds.st === "done" ? "✓ " + L3("Răspuns înregistrat", "Answer recorded", "Válasz rögzítve")
+          : ds.st === "wait" ? L3("Mai sunt " + Math.max(0, ds.left) + " zile", Math.max(0, ds.left) + " days left", "Még " + Math.max(0, ds.left) + " nap")
+          : L3("Termenul a trecut: fără răspuns înregistrat", "Deadline passed: no answer recorded", "A határidő lejárt: nincs rögzített válasz"))),
+    req && e("p", { className: "text-xs mb-1", style: muted }, "📄 ", L3("Cererea noastră (Legea 544/2001) către ", "Our request (Law 544/2001) to ", "Kérelmünk (544/2001-es törvény): ") + req.to + ", nr. " + req.no + " · ",
+      reqDone ? L3("răspuns primit", "answer received", "válasz megérkezett") : reqLate ? L3("fără răspuns înregistrat", "no answer recorded", "nincs rögzített válasz") : L3("răspuns așteptat până la 25.11.2026", "answer due by 25.11.2026", "válasz várható 2026.11.25-ig")),
+    e("h4", { className: "text-sm mb-1", style: { marginTop: ".6rem" } }, L3("Istoricul sesizărilor", "Report history", "Bejelentések előzményei"), reps.length ? " (" + reps.length + ")" : ""),
+    !reps.length && e("p", { className: "text-xs", style: muted }, reports ? L3("Încă nicio sesizare pentru acest teren.", "No reports for this court yet.", "Ehhez a pályához még nincs bejelentés.") : "…"),
+    reps.slice(0, 6).map(r => e("div", { key: r.id, className: "text-xs", style: { display: "flex", gap: ".5rem", flexWrap: "wrap", padding: ".3rem 0", borderTop: "1px solid var(--border)" } },
+      e("span", { style: muted }, r.createdAt ? day(Date.parse(r.createdAt)) : ""),
+      e("b", null, catL(r.category)),
+      e("span", null, stL(r.status)),
+      r.cityHall && r.cityHall.sentAt && e("span", null, "📨"),
+      r.demo && e("span", { className: "badge", style: { fontSize: ".65rem" } }, "demo"))));
+}
 function LettersTracker() {
   const { lang, toast } = useApp();
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
@@ -13012,7 +13078,7 @@ function LettersTracker() {
   const byCourt = {}; list.forEach(x => { byCourt[x.courtId] = (byCourt[x.courtId] || 0) + 1; });
   const top = Object.entries(byCourt).sort((a, b) => b[1] - a[1]).slice(0, 5);
   const nameOf = id => (COURTS_ALL.find(c => c.id === id) || { name: id }).name;
-  const daysLeft = x => { const b = LETTER_BASIS[x.basis] || LETTER_BASIS.og27; return Math.ceil((Date.parse(x.sentAt) + b.days * 864e5 - Date.now()) / 864e5); };
+  const daysLeft = x => { const b = LETTER_BASIS[x.basis] || LETTER_BASIS.og27, ds = deadlineState(x.sentAt, b.days); return ds ? ds.left : 0; };
   const save = x => {
     const r = { at: new Date().toISOString() }; if (regNo.trim()) r.regNo = regNo.trim().slice(0, 40);
     db.ref("letters/" + x.id + "/reply").set(r).then(() => { logActivity("cityReply", "", x.courtId); toast(L3("Mulțumim! Răspunsul e notat.", "Thanks! The reply is logged.", "Köszönjük! A válasz rögzítve.")); setReplying(null); setRegNo(""); })
@@ -13589,7 +13655,7 @@ function CityHallGuide() {
     var m544 = "mailto:" + CITY_HALL.mail + "?subject=" + encodeURIComponent("Cerere de acces la informatii de interes public - Legea 544/2001 - terenuri sportive") + "&body=" + encodeURIComponent("Stimata doamna / Stimate domn,\n\nIn baza Legii nr. 544/2001, va solicit in format electronic:\n1. Bugetul pe sport si spatii publice pentru anul curent (capitolul 67)\n2. Lista terenurilor sportive publice administrate de municipiu si starea lor\n3. Lista proiectelor de investitii din ultimii 3 ani privind terenurile sportive\n\nTermenul legal de raspuns este de 10 zile lucratoare.\n\nCu respect,\n[numele tau]");
     var mPet = "mailto:" + CITY_HALL.mail + "?subject=" + encodeURIComponent("Petitie - starea terenurilor sportive publice (OG 27/2002)") + "&body=" + encodeURIComponent("Catre Primarul si Consiliul Local al Municipiului " + cityRo + ",\n\nIn baza OG 27/2002, solicit:\n1. Publicarea starii si a programului de intretinere pentru fiecare teren sportiv public\n2. Includerea terenurilor degradate in bugetul de investitii\n\nDate: fromgreytoplay.netlify.app/?c=" + ACTIVE_CITY + "\n\nAstept raspuns motivat in termenul legal de 30 de zile.\n\nCu respect,\n[numele tau]");
   } else {
-  var m544 = "mailto:infopublic@tirgumures.ro?subject=" + encodeURIComponent("Cerere de acces la informatii de interes public - Legea 544/2001 - terenuri sportive") + "&body=" + encodeURIComponent("Stimata doamna / Stimate domn,\n\nIn baza Legii nr. 544/2001, va solicit in format electronic:\n1. Bugetul detaliat pe sport si spatii publice 2025 (capitolul 67)\n2. Lista proiectelor de investitii 2022-2025 privind terenurile sportive\n3. Extrasul din SIDU 2021-2030 privind infrastructura sportiva\n4. Hotararile de Consiliu Local 2022-2025 privind terenurile sportive\n5. Stadiul terenului multisport din str. Plopilor (HCL ian. 2025)\n\nTermenul legal de raspuns este de 10 zile lucratoare.\n\nCu respect,\n[numele tau]");
+  var m544 = "mailto:primaria@tirgumures.ro?subject=" + encodeURIComponent("Cerere de acces la informatii de interes public - Legea 544/2001 - terenuri sportive") + "&body=" + encodeURIComponent("Stimata doamna / Stimate domn,\n\nIn baza Legii nr. 544/2001, va solicit in format electronic:\n1. Bugetul detaliat pe sport si spatii publice 2025 (capitolul 67)\n2. Lista proiectelor de investitii 2022-2025 privind terenurile sportive\n3. Extrasul din SIDU 2021-2030 privind infrastructura sportiva\n4. Hotararile de Consiliu Local 2022-2025 privind terenurile sportive\n5. Stadiul terenului multisport din str. Plopilor (HCL ian. 2025)\n\nTermenul legal de raspuns este de 10 zile lucratoare.\n\nCu respect,\n[numele tau]");
   var mPet = "mailto:primaria@tirgumures.ro?subject=" + encodeURIComponent("Petitie - renovarea terenurilor sportive din cartierele periferice (OG 27/2002)") + "&body=" + encodeURIComponent("Catre Primarul si Consiliul Local al Municipiului Targu Mures,\n\nIn baza OG 27/2002, solicit:\n1. Includerea in bugetul 2026 a minimum 500.000 lei pentru reabilitarea a minimum 3 terenuri sportive din cartierele periferice (Tudor Vladimirescu, Unirii, Dambu Pietros)\n2. O intalnire de lucru cu Directia Tehnica si Serviciul Sport in termen de 30 de zile\n3. Includerea terenurilor de cartier in actualizarea SIDU 2021-2030\n4. Raport anual de transparenta privind investitiile sportive pe cartiere\n\nDate complete: fromgreytoplay.netlify.app\n\nAstept raspuns motivat in termenul legal de 30 de zile.\n\nCu respect,\n[numele tau]");
   }
   return React.createElement("div", { className: "mb-2" },
@@ -14493,7 +14559,7 @@ function HelpPage() {
           React.createElement("h3", { className: "mb-1" }, "🏛️ " + (lang === "ro" ? "Primăria " + cityName(lang) : cityName(lang) + " City Hall")),
           React.createElement("p", { className: "text-sm" }, "📍 " + CITY_HALL.address),
           React.createElement("p", { className: "text-sm" }, "📞 " + CITY_HALL.telLabel),
-          React.createElement("p", { className: "text-sm" }, "📧 " + (ACTIVE_CITY === "tgm" ? "primar@tirgumures.ro" : CITY_HALL.mail)),
+          React.createElement("p", { className: "text-sm" }, "📧 " + CITY_HALL.mail),
           React.createElement("p", { className: "text-sm" }, "🌐 " + (ACTIVE_CITY === "tgm" ? "www.tirgumures.ro" : "www.sibiu.ro")),
           React.createElement("button", { className: "btn btn-green mt-1", onClick: () => {
             const c = `CĂTRE: ${CITY_HALL.registry}\n${CITY_HALL.address}\n\nSubsemnatul/a _____________, domiciliat/ă în _____________,\n\nsolicit:\n1. Informare privind stadiul renovării terenurilor sportive din cartierele periferice\n2. Alocarea de fonduri pentru programul pilot Flip-the-Court\n3. Accesarea fondurilor Erasmus+ Sport KA2\n\nCu stimă,\n_____________\nData: ${new Date().toLocaleDateString("ro-RO")}`;
@@ -16175,6 +16241,8 @@ function QuickReportModal({ onClose, courtId: preset, demo }) {
   const [locating, setLocating] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [ai, setAi] = useState(null);
+  const [done, setDone] = useState(null);
+  const [auto, setAuto] = useState(false);
   useEffect(() => {
     const onKey = e => { if (e.key === "Escape" && document.querySelectorAll(".modal-overlay").length < 2) { e.preventDefault(); e.stopImmediatePropagation(); onClose(); } };
     window.addEventListener("keydown", onKey, true);
@@ -16189,15 +16257,23 @@ function QuickReportModal({ onClose, courtId: preset, demo }) {
     .filter(c => !q || norm(c.name + " " + (c.address || "") + " " + (c.neighbourhood || "")).indexOf(norm(q)) >= 0)
     .sort((a, b) => here ? (dist(a) || 99) - (dist(b) || 99) : 0)
     .slice(0, q || here ? 8 : 6);
-  const geolocate = () => {
-    if (!navigator.geolocation) { toast(t.error); return; }
+  const geolocate = silent => {
+    if (!navigator.geolocation) { if (!silent) toast(t.error); return; }
     setLocating(true);
     navigator.geolocation.getCurrentPosition(
       p => { setHere({ lat: p.coords.latitude, lng: p.coords.longitude }); setF(o => ({ ...o, lat: p.coords.latitude, lng: p.coords.longitude })); setLocating(false); },
-      () => { setLocating(false); toast(L3("Nu am primit locația. Caută terenul după nume.", "No location. Search the court by name.", "Nincs hely. Keresd a pályát név szerint.")); },
+      () => { setLocating(false); if (!silent) toast(L3("Nu am primit locația. Caută terenul după nume.", "No location. Search the court by name.", "Nincs hely. Keresd a pályát név szerint.")); },
       { timeout: 8000 }
     );
   };
+  // GPS asked once on open; refused or unavailable -> the list stays as it is.
+  useEffect(() => { if (!preset && !draft0) geolocate(true); }, []);
+  // Nearest court within 2 km is preselected; the person can still change it (step 1).
+  useEffect(() => {
+    if (!here || f.courtId || step !== 1) return;
+    const best = allCourts.map(c => [c, dist(c)]).filter(x => x[1] != null).sort((a, b) => a[1] - b[1])[0];
+    if (best && best[1] <= 2) { setF(o => ({ ...o, courtId: best[0].id })); setAuto(true); setStep(2); }
+  }, [here]);
   const pickPhoto = async e => {
     const file = e.target.files[0];
     if (!file) return;
@@ -16238,14 +16314,31 @@ function QuickReportModal({ onClose, courtId: preset, demo }) {
       try { sessionStorage.removeItem("g2p_report_draft"); } catch (e) {}
       awardBadge("reporter");
       g2pSfx("whistle");
-      toast(t.reportSubmitted);
       setSubmitting(false);
-      onClose();
+      setDone({ courtId: f.courtId, courtName: payload.courtName, category: f.category });
     }).catch(() => { setSubmitting(false); toast(t.error); });
   };
   const close = () => { try { sessionStorage.removeItem("g2p_report_draft"); } catch (e) {} onClose(); };
   const e = React.createElement;
   const stepNames = [L3("Terenul", "Court", "Pálya"), L3("Problema", "Problem", "Probléma"), L3("Poza", "Photo", "Fotó")];
+  if (done) {
+    const url = SITE + "/#court-" + done.courtId;
+    const share = () => {
+      const txt = L3("Am raportat o problemă la " + done.courtName + " (" + catLabel(done.category) + "). Vezi fișa terenului:", "I reported a problem at " + done.courtName + " (" + catLabel(done.category) + "). See the court's page:", "Problémát jelentettem: " + done.courtName + " (" + catLabel(done.category) + "). A pálya adatlapja:"); // TODO: HU review
+      if (navigator.share) { navigator.share({ title: "From Grey to Play", text: txt, url: url }).catch(() => {}); return; }
+      (navigator.clipboard ? navigator.clipboard.writeText(txt + " " + url) : Promise.reject()).then(() => toast(L3("Link copiat", "Link copied", "Link másolva"))).catch(() => toast(url));
+    };
+    return e("div", { className: "modal-overlay", onClick: onClose },
+      e("div", { className: "modal rq", onClick: ev => ev.stopPropagation(), role: "dialog", "aria-modal": "true", "aria-label": L3("Sesizare creată", "Report created", "Bejelentés létrehozva"), style: { textAlign: "center" } },
+        e("div", { style: { fontSize: "2.4rem" }, "aria-hidden": "true" }, "✅"),
+        e("h2", { style: { fontSize: "1.15rem", margin: ".3rem 0" } }, L3("Sesizare creată.", "Report created.", "Bejelentés létrehozva.")),
+        e("p", { className: "text-sm" }, L3("Termen legal de răspuns: 30 de zile.", "Legal answer deadline: 30 days.", "Törvényes válaszhatáridő: 30 nap.")),
+        e("p", { className: "text-xs mb-1", style: { color: "var(--textSec)" } }, L3("Ceasul pornește când sesizarea e înregistrată la Primărie. Îl vezi pe fișa terenului.", "The clock starts when the report is registered at City Hall. You can follow it on the court's page.", "Az óra akkor indul, amikor a bejelentést iktatják a Városházán. A pálya adatlapján követheted.")), // TODO: HU review
+        e("button", { className: "btn btn-green btn-block mt-1", onClick: share }, "📤 ", L3("Trimite mai departe", "Share", "Megosztás")),
+        e("button", { className: "btn btn-outline btn-block mt-1", onClick: () => { onClose(); location.hash = "#court-" + done.courtId; } }, "📍 ", L3("Vezi fișa terenului", "See the court's page", "A pálya adatlapja")),
+        !firebaseUser && e("button", { className: "btn btn-outline btn-block mt-1", onClick: () => { onClose(); openAuth(); } }, "🔐 ", L3("Salvează-ți sesizările (cont)", "Save your reports (account)", "Mentsd a bejelentéseidet (fiók)")),
+        e("button", { className: "btn btn-block mt-1", onClick: onClose }, L3("Închide", "Close", "Bezárás"))));
+  }
   return e("div", { className: "modal-overlay", onClick: close },
     e("div", { className: "modal modal-lg rq", onClick: ev => ev.stopPropagation(), role: "dialog", "aria-modal": "true", "aria-label": t.reportNew },
       e("div", { className: "flex justify-between items-center mb-1" },
@@ -16259,13 +16352,15 @@ function QuickReportModal({ onClose, courtId: preset, demo }) {
       step === 1 && e("div", { className: "rq-pane", key: "s1" },
         e("div", { className: "flex gap-1 mb-1" },
           e("input", { value: q, onChange: ev => setQ(ev.target.value), placeholder: L3("Caută terenul (nume, stradă, cartier)", "Search the court (name, street, area)", "Pálya keresése (név, utca, negyed)"), "aria-label": t.reportSelectCourt, style: { flex: 1 } }),
-          e("button", { className: "btn btn-sm btn-outline", onClick: geolocate, disabled: locating, style: { whiteSpace: "nowrap" } }, locating ? "…" : "📍 " + L3("Lângă mine", "Near me", "Közelben"))),
+          e("button", { className: "btn btn-sm btn-outline", onClick: () => geolocate(false), disabled: locating, style: { whiteSpace: "nowrap" } }, locating ? "…" : "📍 " + L3("Lângă mine", "Near me", "Közelben"))),
         e("div", { className: "rq-courts" }, list.map(c => e("button", { key: c.id, className: "rq-court" + (f.courtId === c.id ? " sel" : ""), onClick: () => { setF(o => ({ ...o, courtId: c.id })); setStep(2); } },
           e("span", { className: "rq-dot", style: { background: courtStatusView(c, t).color } }),
           e("span", { className: "rq-cn" }, e("b", null, c.name), e("small", null, c.address || hoodName(c.neighbourhood, lang) || "")),
           dist(c) != null && e("span", { className: "rq-km" }, dist(c) < 1 ? Math.round(dist(c) * 1000) + " m" : dist(c).toFixed(1) + " km"))),
           !list.length && e("p", { className: "text-sm", style: { color: "var(--textSec)" } }, L3("Niciun teren găsit.", "No court found.", "Nincs ilyen pálya.")))),
       step === 2 && e("div", { className: "rq-pane", key: "s2" },
+        auto && court && e("p", { className: "text-xs mb-1", style: { color: "var(--textSec)" } }, "📍 ", L3("Am ales terenul cel mai apropiat: ", "We picked the nearest court: ", "A legközelebbi pályát választottuk: "), e("b", null, court.name), " · ",
+          e("a", { href: "#", onClick: ev => { ev.preventDefault(); setAuto(false); setStep(1); } }, L3("nu e ăsta?", "not this one?", "nem ez?"))), // TODO: HU review
         e("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, L3("Ce e în neregulă? Atinge una.", "What is wrong? Tap one.", "Mi a baj? Koppints egyre.")),
         e("div", { className: "rq-cats" }, REPORT_CATS.map(c => e("button", { key: c[0], className: "rq-cat" + (f.category === c[0] ? " sel" : ""), onClick: () => { setF(o => ({ ...o, category: c[0] })); g2pSfx("click"); setStep(3); } },
           e("span", { "aria-hidden": "true" }, c[1]), catLabel(c[0]))))),
@@ -16344,15 +16439,15 @@ function AiPhotoHint({ photo, onResult, extra }) {
     // consent line + privacy note (docs/SPEC_6NOV.md §4); ticked once per device
     e("label", { className: "ai-consent" },
       e("input", { type: "checkbox", checked: ok, onChange: ev => agree(ev.target.checked) }),
-      e("span", null, L3("Trimit această poză pentru o estimare automată a stării terenului. Poza e procesată de un model AI extern (Anthropic) printr-o funcție a acestui site, fără datele de localizare din fișier. Nu fotografiez persoane.",
+      e("span", null, L3("Vreau o estimare AI a stării terenului din poză (opțional).", "I'd like an AI estimate of the court's condition from the photo (optional).", "AI-becslést kérek a pálya állapotáról a fotó alapján (nem kötelező)."), " ", // TODO: HU review
+        e("a", { href: "#", onClick: ev => { ev.preventDefault(); setPriv(v => !v); } }, priv ? L3("ascunde", "hide", "elrejt") : L3("Detalii", "Details", "Részletek")))),
+    priv && e("div", null, e("p", { className: "text-xs", style: { color: "var(--textSec)", margin: ".3rem 0" } }, L3("Trimit această poză pentru o estimare automată a stării terenului. Poza e procesată de un model AI extern (Anthropic) printr-o funcție a acestui site, fără datele de localizare din fișier. Nu fotografiez persoane.",
         "I'm sending this photo for an automatic estimate of the court's condition. It is processed by an external AI model (Anthropic) through this site's server function, without the file's location data. I'm not photographing people.",
-        "Ezt a fotót a pálya állapotának automatikus becsléséhez küldöm. Egy külső AI-modell (Anthropic) dolgozza fel az oldal szerverfunkcióján keresztül, a fájl helyadatai nélkül. Nem fényképezek embereket."), " ", // TODO: HU review
-        e("a", { href: "#", onClick: ev => { ev.preventDefault(); setPriv(v => !v); } }, priv ? L3("ascunde", "hide", "elrejt") : L3("ce trimitem?", "what is sent?", "mit küldünk?")))),
-    priv && e("ol", { className: "ai-priv" },
+        "Ezt a fotót a pálya állapotának automatikus becsléséhez küldöm. Egy külső AI-modell (Anthropic) dolgozza fel az oldal szerverfunkcióján keresztül, a fájl helyadatai nélkül. Nem fényképezek embereket.")), e("ol", { className: "ai-priv" },
       e("li", null, L3("Ce trimitem: poza (micșorată, fără EXIF/GPS), sportul și orașul terenului. Nimic despre tine.", "What we send: the photo (resized, no EXIF/GPS), the court's sport and city. Nothing about you.", "Amit küldünk: a fotó (kicsinyítve, EXIF/GPS nélkül), a pálya sportága és városa. Rólad semmit.")),
       e("li", null, L3("Cui: funcției Netlify a site-ului, care o trimite la API-ul Anthropic.", "To whom: the site's Netlify function, which sends it to the Anthropic API.", "Kinek: az oldal Netlify-funkciójának, amely az Anthropic API-nak továbbítja.")),
       e("li", null, L3("Ce păstrăm: doar dacă trimiți sesizarea — poza comprimată și diagnosticul, ca orice sesizare. Altfel, nimic.", "What we keep: only if you send the report — the compressed photo and the diagnosis, like any report. Otherwise nothing.", "Amit megőrzünk: csak ha elküldöd a bejelentést — a tömörített fotót és a diagnózist. Különben semmit.")),
-      e("li", null, L3("Ștergere: scrie-ne din pagina Despre.", "Deletion: write to us from the About page.", "Törlés: írj nekünk a Rólunk oldalról."))),
+      e("li", null, L3("Ștergere: scrie-ne din pagina Despre.", "Deletion: write to us from the About page.", "Törlés: írj nekünk a Rólunk oldalról.")))),
     e("div", { className: "ai-hint" },
       e("button", { type: "button", className: "ai-btn", onClick: run, disabled: !ok, title: ok ? "" : L3("Bifează mai întâi", "Tick the box first", "Előbb jelöld be") }, "🩺 ", L3("AI Court Doctor: citește poza", "AI Court Doctor: read the photo", "AI Court Doctor: fotó elemzése")),
       e("small", null, L3("Estimare AI — nu e o inspecție oficială. Tu decizi.", "AI estimate — not an official inspection. You decide.", "AI-becslés — nem hivatalos szemle. Te döntesz."))));
@@ -16431,7 +16526,7 @@ function AiCourtCard({ court: c, onLetter }) {
     verify && ReactDOM.createPortal(e("div", { onClick: ev => ev.stopPropagation() }, e(CourtConditionQuick, { courtId: c.id, onClose: () => setVerify(false) })), document.body));
 }
 
-const CITY_HALL_EMAIL = { tgm: "infopublic@tirgumures.ro", sibiu: "pms@sibiu.ro" };
+const CITY_HALL_EMAIL = { tgm: "primaria@tirgumures.ro", sibiu: "pms@sibiu.ro" };
 // Real letters the AI wrote on 27 Oct 2026 (claude-sonnet-5-5, live endpoint), shown as a labelled example if the AI is down, e.g. on stage.
 const AI_LETTER_EXAMPLES = {
   sibiu: { id: "sb1", name: "Teren baschet — Ștrand", at: "27.10.2026", letter: "Către Primăria Municipiului Sibiu\n\nStimată doamnă/Stimate domn,\n\nSubsemnatul/Subsemnata, locuitor tânăr al municipiului Sibiu, vă adresez respectuos această solicitare privind terenul de baschet „Teren baschet Ștrand”, situat pe Strada Doljului, în Sibiu.\n\nTerenul este un spațiu important pentru tinerii care doresc să facă mișcare în aer liber și să practice baschetul într-un mod sigur. Vă rog, de aceea, să dispuneți verificarea stării actuale a terenului, a panourilor, a inelelor și a suprafeței de joc.\n\nDacă în urma verificării se constată deficiențe, vă rog să aveți amabilitatea de a dispune efectuarea lucrărilor de reparații necesare, astfel încât terenul să poată fi folosit în condiții de siguranță.\n\nVă mulțumesc anticipat pentru atenția acordată și vă rog să primiți expresia consideraței mele.\n\nCu respect,\n[Nume]" },
@@ -17320,8 +17415,8 @@ function RequestTracker() {
   const DAY = 864e5, now = Date.now();
   const fmt = ms => new Date(ms).toLocaleDateString(lang === "en" ? "en-GB" : lang === "hu" ? "hu-HU" : "ro-RO", { day: "numeric", month: "short" });
   return React.createElement("div", { className: "rq-wrap" }, list.map(r => {
-    const reg = new Date(r.reg + "T00:00:00").getTime(), due = reg + 10 * DAY, max = reg + 30 * DAY;
-    const left = Math.ceil((due - now) / DAY), pct = Math.max(0, Math.min(100, (now - reg) / (due - reg) * 100));
+    const ds = deadlineState(r.reg + "T00:00:00", 10, !!r.answeredAt, now);
+    const reg = ds.start, due = ds.due, max = reg + 30 * DAY, left = ds.left, pct = ds.pct;
     const st = r.answeredAt ? "done" : now <= due ? "wait" : now <= max ? "late" : "over";
     const stLabel = { done: L3("Răspuns primit", "Answer received", "Válasz megérkezett"), wait: L3("Așteptăm răspunsul", "Waiting for the answer", "Várjuk a választ"), late: L3("Au trecut cele 10 zile — așteptăm, revenim", "The 10 days have passed — we're following up", "Letelt a 10 nap — újra írunk"), over: L3("Nici termenul maxim n-a fost respectat", "Even the maximum deadline was missed", "A végső határidő is lejárt") }[st];
     return React.createElement("article", { key: r.regNo, className: "card rq rq-" + st },
