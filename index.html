@@ -800,7 +800,10 @@ body:has(.demo-bar) .mascot{bottom:calc(58px + env(safe-area-inset-bottom))}
 .demo-qr-card img{display:block;width:min(420px,70vh,80vw);height:auto;margin:0 auto}
 .demo-qr-u{margin:.8rem 0 .2rem;font:700 1.15rem 'Space Mono',monospace}
 .demo-qr-a{margin:0;font-size:1.05rem}
-.demo-remote{position:fixed;inset:0;z-index:9500;display:flex;flex-direction:column;gap:.8rem;padding:1.2rem 1rem;background:var(--dark);color:var(--white);overflow:auto}
+.demo-rm-brand{margin:0;font:700 .8rem 'Space Mono',monospace;color:var(--green)}
+.demo-rm-wait{font-size:1.1rem}
+body:has(.demo-remote) .modal-overlay{z-index:9600}
+.demo-remote{position:fixed;inset:0;z-index:9500;display:flex;flex-direction:column;gap:.8rem;padding:calc(1.2rem + env(safe-area-inset-top)) 1rem calc(1.2rem + env(safe-area-inset-bottom));background:var(--dark);color:var(--white);overflow:auto}
 .demo-rm-login{margin:auto;text-align:center}
 .demo-rm-top{display:flex;justify-content:space-between;font:700 .9rem 'Space Mono',monospace}
 .demo-remote h2{margin:.4rem 0 0;font-size:1.6rem;color:var(--green)}
@@ -18886,6 +18889,20 @@ function DemoLayer() {
     s.slide && !slideX && !q && e(DemoSlide, { sl: s.slide, onClose: () => setSlideX(true) }),
     q && q.s && e(DemoSlide, { sl: q.s, kicker: "Întrebare · " + q.q, onClose: () => setQa(-1) }));
 }
+class DemoRemoteBoundary extends React.Component {
+  constructor(p) { super(p); this.state = { err: null }; }
+  static getDerivedStateFromError(e) { return { err: e }; }
+  componentDidCatch(e, info) { console.error("[G2P remote crash]", e, info && info.componentStack); }
+  render() {
+    if (!this.state.err) return this.props.children;
+    const e = React.createElement;
+    return e("div", { className: "demo-remote" },
+      e("h2", null, "Telecomanda a dat o eroare"),
+      e("p", { className: "demo-rm-err" }, String(this.state.err && this.state.err.message || this.state.err)),
+      e("p", null, "Fă o captură de ecran și trimite-o. Între timp: pe laptop folosește săgețile → ← sau cifrele 1–9."),
+      e("button", { className: "btn btn-green", onClick: () => location.reload() }, "↻ Reîncarcă"));
+  }
+}
 function DemoRemote() {
   const { isAdmin, authReady, openAuth } = useApp();
   const live = useFirebase("demo");
@@ -18897,8 +18914,10 @@ function DemoRemote() {
   const [stepAt, setStepAt] = useState(0);
   const [now, setNow] = useState(Date.now());
   const [err, setErr] = useState("");
+  const [slow, setSlow] = useState(false);
+  useEffect(() => { const id = setTimeout(() => setSlow(true), 4000); return () => clearTimeout(id); }, []);
   const step = live && typeof live.step === "number" ? Math.min(live.step, DEMO_STEPS.length - 1) : 0;
-  const onScreen = live && typeof live.qa === "number" && live.qa >= 0 ? live.qa : -1;
+  const onScreen = live && typeof live.qa === "number" && live.qa >= 0 && live.qa < DEMO_QA.length ? live.qa : -1;
   useEffect(() => { const id = setInterval(() => setNow(Date.now()), 500); return () => clearInterval(id); }, []);
   // keep the phone screen on while it is the remote
   useEffect(() => {
@@ -18958,9 +18977,11 @@ function DemoRemote() {
           ? e("button", { className: "demo-rm-show off", onClick: () => write(step, -1) }, "Ascunde de pe ecran")
           : e("button", { className: "demo-rm-show", onClick: () => write(step, i) }, "Arată pe ecran")))))));
   return ReactDOM.createPortal(e("div", { className: "demo-remote" },
-    !authReady ? e("p", null, "…") :
+    e("p", { className: "demo-rm-brand" }, "📱 Telecomandă · From Grey to Play"),
+    !authReady && !slow ? e("p", { className: "demo-rm-wait" }, "Se verifică contul…") :
     !isAdmin ? e("div", { className: "demo-rm-login" },
-      e("p", null, "Telecomanda merge doar cu contul de admin."),
+      e("p", null, authReady ? "Telecomanda merge doar cu contul de admin." : "Contul nu răspunde. Conectează-te din nou sau reîncarcă."),
+      !authReady && e("button", { className: "btn btn-outline", onClick: () => location.reload() }, "↻ Reîncarcă"),
       e("button", { className: "btn btn-green", onClick: () => openAuth() }, "Conectează-te")) :
     e(React.Fragment, null, top, tabs, screenBar, err && e("p", { className: "demo-rm-err" }, err), tab === "pitch" ? pitch : qaTab)), document.body);
 }
@@ -19265,6 +19286,10 @@ function App() {
     ? React.createElement(AuthModal, { onClose: () => setAuthOpen(false), initialMode: authOpen === "signup" ? "signup" : "login" })
     : React.createElement(ChangePasswordModal, { onClose: () => setPwOpen(false) }), document.body);
   const nudgeEl = authReady && !firebaseUser && !onboard && !adminMode && !authOpen && React.createElement(SignupNudge, { onSignup: () => setAuthOpen("signup") });
+  // Phone remote: render ONLY the remote (no nav, pages, mascot, effects), inside its own boundary,
+  // so nothing else on the site can blank the phone during the pitch.
+  if (DEMO_REMOTE) return React.createElement(AppCtx.Provider, { value: ctx },
+    React.createElement(DemoRemoteBoundary, null, React.createElement(DemoRemote, null)), toastEl, authEl);
   // Saved session still being restored → short neutral screen instead of a
   // password prompt that the owner doesn't actually need.
   if (adminMode && !authReady) return React.createElement("div", { className: "admin-login" },
@@ -19353,7 +19378,7 @@ function App() {
     key: page
   }, React.createElement(PageBoundary, null, P()))), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(ReportHashListener, null), React.createElement(FunEggs, null), React.createElement(EggHub, { page: page }), React.createElement(SecretKeys, null), !isPhone() && React.createElement(Mascot, { page: page }), React.createElement(BigCelebration, null), React.createElement(ThemeFx, null), mayor && React.createElement(MayorMode, {
     onClose: () => setMayor(false)
-  }), /*#__PURE__*/React.createElement(Footer, null), toastEl, authEl, nudgeEl, DEMO_ON && React.createElement(DemoLayer, null), DEMO_REMOTE && React.createElement(DemoRemote, null));
+  }), /*#__PURE__*/React.createElement(Footer, null), toastEl, authEl, nudgeEl, DEMO_ON && React.createElement(DemoLayer, null));
 }
 try {
   ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
