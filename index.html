@@ -816,6 +816,7 @@ body:has(.demo-remote) .modal-overlay{z-index:9600}
 .demo-rm-btns button:disabled{opacity:.3}
 .demo-rm-reset{background:none;border:1px solid color-mix(in srgb,var(--white) 30%,transparent);color:inherit;border-radius:999px;padding:.55rem;cursor:pointer}
 .demo-rm-btns button{height:22vh;max-height:180px}
+.demo-rm-renov{border:0;border-radius:16px;padding:1.1rem 1rem;font:700 1.05rem 'Space Mono',monospace;color:#0B1020;background:linear-gradient(90deg,var(--coral),var(--green));cursor:pointer}
 .demo-rm-who{margin:0;font:700 1rem 'Space Mono',monospace;color:var(--coral)}
 .demo-rm-who b{font-size:1.35rem}
 .demo-rm-tabs{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
@@ -18868,9 +18869,9 @@ function demoShow(i, setPage) {
 }
 function DemoTriad() {
   const e = React.createElement;
-  const V = [["TK", 200, 52], ["DG", 352, 312], ["TM", 48, 312]];
+  const V = [["TC", 200, 52], ["DG", 352, 312], ["TM", 48, 312]];
   const A = [[200.0, 100.0, 200.0, 153.3], [310.3, 288.2, 262.5, 261.0], [89.7, 288.2, 137.5, 261.0]];
-  return e("svg", { className: "demo-triad", viewBox: "0 0 400 370", role: "img", "aria-label": "Fondatorii TK, DG și TM, împreună: G2P" },
+  return e("svg", { className: "demo-triad", viewBox: "0 0 400 370", role: "img", "aria-label": "Fondatorii TC, DG și TM, împreună: G2P" },
     e("defs", null,
       e("linearGradient", { id: "dtg", x1: "0", y1: "0", x2: "1", y2: "1" }, e("stop", { offset: "0", stopColor: "#F97316" }), e("stop", { offset: "1", stopColor: "#10B981" })),
       e("radialGradient", { id: "dtc", cx: ".5", cy: ".45", r: ".6" }, e("stop", { offset: "0", stopColor: "#1f2a44" }), e("stop", { offset: "1", stopColor: "#0B1020" })),
@@ -18948,11 +18949,17 @@ function DemoLayer() {
   }, [go]);
   // phone remote: skip the snapshot that is already there, follow every new one
   useEffect(() => {
-    let first = true;
+    let first = true, lastAct = null;
     const ref = db.ref("demo");
     const cb = s => {
       const v = s.val();
-      if (first) { first = false; return; }
+      if (first) { first = false; lastAct = v && v.act; return; }
+      if (v && v.act && v.act !== lastAct) { // remote asked to renovate the 3D court
+        lastAct = v.act;
+        const b = document.querySelector(".h3d-btn-green");
+        if (b) { b.scrollIntoView({ behavior: "smooth", block: "nearest" }); b.click(); }
+        return;
+      }
       if (!v || typeof v.step !== "number") return;
       const q = typeof v.qa === "number" && v.qa >= 0 && v.qa < DEMO_QA.length ? v.qa : -1;
       if (v.step !== stepRef.current) go(v.step);
@@ -19012,8 +19019,10 @@ function DemoRemote() {
     try { navigator.wakeLock && navigator.wakeLock.request("screen").then(l => { wl = l; }).catch(() => {}); } catch (e) {}
     return () => { try { wl && wl.release(); } catch (e) {} };
   }, []);
-  const write = (n, qa) => {
-    db.ref("demo").set({ step: n, at: firebase.database.ServerValue.TIMESTAMP, qa: qa })
+  const write = (n, qa, act) => {
+    const v = { step: n, at: firebase.database.ServerValue.TIMESTAMP, qa: qa };
+    if (act) v.act = act;
+    db.ref("demo").set(v)
       .then(() => setErr(""))
       .catch(() => setErr("Nu pot scrie demo/ — ești logat cu contul de admin? Regulile bazei de date sunt publicate?"));
     try { navigator.vibrate && navigator.vibrate(30); } catch (e) {}
@@ -19044,6 +19053,7 @@ function DemoRemote() {
     e("p", { className: "demo-rm-who" }, "Vorbește: ", e("b", null, DEMO_WHO[s.who])),
     e("h2", null, s.ro),
     e("p", { className: "demo-rm-note" }, s.note),
+    s.id === "hero" && e("button", { className: "demo-rm-renov", onClick: () => write(step, -1, Date.now()) }, "🎨 Renovează terenul (apasă din nou: înapoi la gri)"),
     nx && e("p", { className: "demo-rm-next" }, "Urmează: ", nx.ro, " · ", DEMO_WHO[nx.who]),
     e("div", { className: "demo-rm-steps" }, DEMO_STEPS.map((x, i) => e("button", { key: x.id, className: i === step ? "on" : "", onClick: () => send(i) }, (i + 1) + " " + x.ro))),
     e("div", { className: "demo-rm-btns" },
