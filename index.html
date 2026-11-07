@@ -817,6 +817,9 @@ body:has(.demo-remote) .modal-overlay{z-index:9600}
 .demo-rm-reset{background:none;border:1px solid color-mix(in srgb,var(--white) 30%,transparent);color:inherit;border-radius:999px;padding:.55rem;cursor:pointer}
 .demo-rm-btns button{height:22vh;max-height:180px}
 .demo-rm-renov{border:0;border-radius:16px;padding:1.1rem 1rem;font:700 1.05rem 'Space Mono',monospace;color:#0B1020;background:linear-gradient(90deg,var(--coral),var(--green));cursor:pointer}
+.demo-rm-acts{display:grid;grid-template-columns:1fr 1fr;gap:.45rem}
+.demo-rm-acts .demo-rm-renov{grid-column:1/-1}
+.demo-rm-act{border:1px solid color-mix(in srgb,var(--white) 25%,transparent);background:color-mix(in srgb,var(--white) 8%,transparent);color:inherit;border-radius:14px;padding:.85rem .5rem;font:700 .85rem 'Space Mono',monospace;cursor:pointer}
 .demo-rm-who{margin:0;font:700 1rem 'Space Mono',monospace;color:var(--coral)}
 .demo-rm-who b{font-size:1.35rem}
 .demo-rm-tabs{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
@@ -9292,6 +9295,11 @@ function Hero3D() {
   var fset = useState(false), failed = fset[0], setFailed = fset[1];
   var rv = useState(false), renovated = rv[0], setRenovated = rv[1];
   var bs = useState(null), brief = bs[0], setBrief = bs[1];
+  useEffect(function () { // demo remote opens a brief (flip / canvas / locker)
+    var h = function (ev) { var k = ev && ev.detail; if (k === null || (t.heroBriefs && t.heroBriefs[k])) setBrief(k); };
+    window.addEventListener("g2p:hero-brief", h);
+    return function () { window.removeEventListener("g2p:hero-brief", h); };
+  }, []);
   var cs = useState(false), cine = cs[0], setCine = cs[1];
   var handRef = useRef(null);
   // the Renovate button breathes and hops until it has been pressed once (ever)
@@ -10618,7 +10626,7 @@ function CourtDetail({
   const photos = courtPhotos.slice(0, 8);
   const slideCount = photos.length + 1;
   const desc = (c.desc && c.desc[lang]) || c.description;
-  const act = (key, kind, onClick, ic, label) => React.createElement("button", { key, className: "cd-act cd-" + kind, onClick, title: label },
+  const act = (key, kind, onClick, ic, label) => React.createElement("button", { key, "data-act": key, className: "cd-act cd-" + kind, onClick, title: label },
     React.createElement("span", { className: "cd-ic", "aria-hidden": "true" }, ic),
     React.createElement("span", { className: "cd-l" }, label));
   const hero = React.createElement("div", { className: "cdx-hero" },
@@ -10707,7 +10715,7 @@ function CourtDetail({
   ].filter(Boolean);
   const bar = React.createElement("nav", { className: "cdx-bar", "aria-label": L3("Secțiunile terenului", "Court sections", "A pálya szakaszai") },
     items.map(it => React.createElement("button", {
-      key: it.k, type: "button", className: "cdx-tab" + (it.mid ? " mid" : "") + (it.panel && tab === it.k ? " on" : ""),
+      key: it.k, "data-k": it.k, type: "button", className: "cdx-tab" + (it.mid ? " mid" : "") + (it.panel && tab === it.k ? " on" : ""),
       "aria-current": it.panel && tab === it.k ? "true" : undefined,
       onClick: () => { if (it.panel) setTab(it.k); else it.run(); }
     },
@@ -18867,6 +18875,19 @@ function demoShow(i, setPage) {
   };
   setTimeout(find, 260);
 }
+function demoCmd(cmd) {
+  const c = String(cmd || ""), click = sel => { const b = document.querySelector(sel); if (b) { b.scrollIntoView({ behavior: "smooth", block: "nearest" }); b.click(); } };
+  if (c === "renov") return click(".h3d-hero .h3d-btn-green");
+  if (c.indexOf("brief:") === 0) { const k = c.slice(6); window.dispatchEvent(new CustomEvent("g2p:hero-brief", { detail: k === "close" ? null : k })); return; }
+  if (c.indexOf("court:") === 0) { location.hash = "#court-" + c.slice(6); return; }
+  if (c.indexOf("tab:") === 0) return click('.cdx-tab[data-k="' + c.slice(4) + '"]');
+  if (c === "play") { if (!document.querySelector('.cd-act[data-act="play"]')) click('.cdx-tab[data-k="info"]'); setTimeout(() => click('.cd-act[data-act="play"]'), 350); return; }
+  if (c === "close") { const o = document.querySelector(".modal-overlay"); if (o) o.click(); }
+}
+const DEMO_BTNS = {
+  hero: [["renov", "🎨 Renovează / înapoi la gri"], ["brief:flip", "🔄 Flip the Court"], ["brief:canvas", "🎨 Street Canvas"], ["brief:locker", "🔐 Dulap"], ["brief:close", "✕ Închide fereastra"]],
+  courts: [["court:sb11", "📍 Deschide: Centrul Civic 3"], ["tab:book", "📅 Rezervă"], ["tab:info", "ℹ️ Info"], ["tab:sat", "🛰️ Satelit"], ["tab:com", "👥 Comunitate"], ["tab:qr", "📱 QR"], ["play", "⚽ Joc acum"], ["close", "✕ Închide fereastra"]]
+};
 function DemoTriad() {
   const e = React.createElement;
   const V = [["TC", 200, 52], ["DG", 352, 312], ["TM", 48, 312]];
@@ -18954,10 +18975,9 @@ function DemoLayer() {
     const cb = s => {
       const v = s.val();
       if (first) { first = false; lastAct = v && v.act; return; }
-      if (v && v.act && v.act !== lastAct) { // remote asked to renovate the 3D court
+      if (v && v.act && v.act !== lastAct) { // a remote button: renovate, a brief, a court, a court tab, play now
         lastAct = v.act;
-        const b = document.querySelector(".h3d-btn-green");
-        if (b) { b.scrollIntoView({ behavior: "smooth", block: "nearest" }); b.click(); }
+        demoCmd(v.cmd || "renov");
         return;
       }
       if (!v || typeof v.step !== "number") return;
@@ -19019,9 +19039,9 @@ function DemoRemote() {
     try { navigator.wakeLock && navigator.wakeLock.request("screen").then(l => { wl = l; }).catch(() => {}); } catch (e) {}
     return () => { try { wl && wl.release(); } catch (e) {} };
   }, []);
-  const write = (n, qa, act) => {
+  const write = (n, qa, act, cmd) => {
     const v = { step: n, at: firebase.database.ServerValue.TIMESTAMP, qa: qa };
-    if (act) v.act = act;
+    if (act) { v.act = act; v.cmd = cmd || "renov"; }
     db.ref("demo").set(v)
       .then(() => setErr(""))
       .catch(() => setErr("Nu pot scrie demo/ — ești logat cu contul de admin? Regulile bazei de date sunt publicate?"));
@@ -19053,7 +19073,8 @@ function DemoRemote() {
     e("p", { className: "demo-rm-who" }, "Vorbește: ", e("b", null, DEMO_WHO[s.who])),
     e("h2", null, s.ro),
     e("p", { className: "demo-rm-note" }, s.note),
-    s.id === "hero" && e("button", { className: "demo-rm-renov", onClick: () => write(step, -1, Date.now()) }, "🎨 Renovează terenul (apasă din nou: înapoi la gri)"),
+    DEMO_BTNS[s.id] && e("div", { className: "demo-rm-acts" }, DEMO_BTNS[s.id].map(([cmd, lb], i) =>
+      e("button", { key: cmd, className: i === 0 ? "demo-rm-renov" : "demo-rm-act", onClick: () => write(step, -1, Date.now(), cmd) }, lb))),
     nx && e("p", { className: "demo-rm-next" }, "Urmează: ", nx.ro, " · ", DEMO_WHO[nx.who]),
     e("div", { className: "demo-rm-steps" }, DEMO_STEPS.map((x, i) => e("button", { key: x.id, className: i === step ? "on" : "", onClick: () => send(i) }, (i + 1) + " " + x.ro))),
     e("div", { className: "demo-rm-btns" },
