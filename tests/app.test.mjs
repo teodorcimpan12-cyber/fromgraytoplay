@@ -184,7 +184,12 @@ test("no translation key is assigned twice (a later assignment silently override
 test("Sibiu after the satellite pass: every court has a score, stadiums are excellent, no 'unverified' left", () => {
   const start = html.indexOf("const SAT_VIEW = "), end = html.indexOf("const COURTS_ALL = ");
   const { COURTS_SIBIU } = load([extractConst("COURTS_SIBIU"), html.slice(start, end)], ["COURTS_SIBIU"]);
-  assert.equal(COURTS_SIBIU.length, 35);
+  assert.equal(COURTS_SIBIU.length, 36);
+  // Courts added after the 35-court blind audit (sb36 Stadionul Independența) cite their OSM way and carry a
+  // single-reader satellite estimate (n:1), so the UI never presents them as a 4-reviewer verdict.
+  const late = COURTS_SIBIU.filter(c => !/^sb([1-9]|[12]\d|3[0-5])$/.test(c.id));
+  assert.equal(late.map(c => c.id).join(), "sb36");
+  late.forEach(c => { assert.ok(/^way\/\d+$/.test(c.osm), c.id); assert.equal(c.sat && c.sat.n, 1, c.id); });
   COURTS_SIBIU.forEach(c => {
     assert.notEqual(c.status, "unverified", c.id);
     assert.ok(c.condition >= 1 && c.condition <= 5, c.id);

@@ -1720,6 +1720,12 @@ body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inse
 .navbar{padding-top:env(safe-area-inset-top,0px)}
 .toast{bottom:calc(5rem + env(safe-area-inset-bottom,0px))}
 @media(pointer:coarse){input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),textarea,select{font-size:16px!important}}
+/* === Home hero tweaks (Nov 2026) === */
+/* the drag hint sat on top of the kicker line; lift it into the sky */
+.h3d-hint{top:17%}
+/* phones: the three home numbers read as one row instead of three screen-tall cards */
+@media(max-width:600px){.hero-premium .grid.grid-3{grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem}
+.hero-premium .stat-tile{padding:.8rem .55rem}.hero-premium .stat-number{font-size:1.7rem}.hero-premium .stat-label{font-size:.72rem;line-height:1.25}}
 /* === Desktop nav at 200% zoom (Nov 2026) ===
    Between the 1240px collapse and ~1440px the desktop nav had ~22px to spare in EN once a
    classic (Windows) scrollbar takes 15-17px; signed in, the account name (~55px) pushed it off
@@ -2199,7 +2205,7 @@ const T = {
     degraded: "Degradat",
     unverified: "Neverificat",
     excellent: "Excelent",
-    satellite: "Estimat din satelit", satGone: "Dispărut", satWorn: "Degradat", satOk: "Bun",
+    satellite: "Estimat din satelit", satGone: "Nevăzut din satelit", satWorn: "Degradat", satOk: "Bun",
     fieldVerified: "Verificat pe teren",
     verifiedShare: "{n} din {m} terenuri verificate pe teren — restul nu intră în calcul.",
     inProgress: "În lucru",
@@ -2353,7 +2359,7 @@ const T = {
     degraded: "Degraded",
     unverified: "Unverified",
     excellent: "Excellent",
-    satellite: "Satellite estimate", satGone: "Gone", satWorn: "Degraded", satOk: "Good",
+    satellite: "Satellite estimate", satGone: "Not seen from satellite", satWorn: "Degraded", satOk: "Good",
     fieldVerified: "Field-verified",
     verifiedShare: "{n} of {m} courts field-verified — the rest are not counted.",
     inProgress: "In progress",
@@ -2507,7 +2513,7 @@ const T = {
     degraded: "Leromlott",
     unverified: "Nem ellenőrzött",
     excellent: "Kiváló", // TODO: HU review
-    satellite: "Műholdas becslés", satGone: "Eltűnt", satWorn: "Leromlott", satOk: "Jó", // TODO: HU review
+    satellite: "Műholdas becslés", satGone: "Műholdról nem látható", satWorn: "Leromlott", satOk: "Jó", // TODO: HU review
     fieldVerified: "Helyszínen ellenőrizve", // TODO: HU review
     verifiedShare: "{m} pályából {n} helyszínen ellenőrizve — a többi nem számít bele.", // TODO: HU review
     inProgress: "Folyamatban",
@@ -2871,6 +2877,11 @@ T.ro.pulseStop = "🔇 Oprește";
 T.ro.pulseSteady = "Ritm stabil — terenul trăiește";
 T.ro.pulseIrregular = "Aritmie — terenul are probleme";
 T.ro.pulseWeak = "Puls slab — terenul se stinge";
+T.ro.pulseFromSat = "Estimat din satelit (imagine din {y}) — nu e starea de azi";
+T.ro.worksProgress = "Progresul lucrărilor";
+T.ro.unknownField = "nu știm încă";
+T.ro.a11yLabels = { wheelchair: "Acces scaun rulant", lighting: "Iluminat", parking: "Parcare", flatSurface: "Suprafață plană" };
+T.ro.reportHere = "Raportează";
 T.ro.pulseFlat = "Linie plată — scor de sănătate aproape zero";
 T.ro.pulseNoSignal = "FĂRĂ SEMNAL";
 T.ro.pulseNoSignalDesc = "Nimeni nu l-a verificat încă. Dă-i primul puls.";
@@ -2924,6 +2935,11 @@ T.en.pulseStop = "🔇 Stop";
 T.en.pulseSteady = "Steady rhythm — this court is alive";
 T.en.pulseIrregular = "Arrhythmia — this court is struggling";
 T.en.pulseWeak = "Weak pulse — this court is fading";
+T.en.pulseFromSat = "Satellite estimate (image from {y}) — not today's condition";
+T.en.worksProgress = "Works progress";
+T.en.unknownField = "not known yet";
+T.en.a11yLabels = { wheelchair: "Wheelchair access", lighting: "Lighting", parking: "Parking", flatSurface: "Flat surface" };
+T.en.reportHere = "Report";
 T.en.pulseFlat = "Flatline — health score near zero";
 T.en.pulseNoSignal = "NO SIGNAL";
 T.en.pulseNoSignalDesc = "Nobody has checked it yet. Give it its first pulse.";
@@ -2978,6 +2994,11 @@ T.hu.pulseStop = "🔇 Leállítás"; // TODO: HU review
 T.hu.pulseSteady = "Egyenletes ritmus — a pálya él"; // TODO: HU review
 T.hu.pulseIrregular = "Aritmia — a pálya bajban van"; // TODO: HU review
 T.hu.pulseWeak = "Gyenge pulzus — a pálya halványul"; // TODO: HU review
+T.hu.pulseFromSat = "Műholdas becslés ({y}-es kép) — nem a mai állapot"; // TODO: HU review
+T.hu.worksProgress = "A munkák állása"; // TODO: HU review
+T.hu.unknownField = "még nem tudjuk"; // TODO: HU review
+T.hu.a11yLabels = { wheelchair: "Kerekesszékkel", lighting: "Világítás", parking: "Parkolás", flatSurface: "Sík felület" }; // TODO: HU review
+T.hu.reportHere = "Bejelentés"; // TODO: HU review
 T.hu.pulseFlat = "Egyenes vonal — az egészségpontszám közel nulla"; // TODO: HU review
 T.hu.pulseNoSignal = "NINCS JEL"; // TODO: HU review
 T.hu.pulseNoSignalDesc = "Még senki sem ellenőrizte. Add meg az első pulzusát."; // TODO: HU review
@@ -3000,7 +3021,7 @@ function courtStatusView(court, t) {
   if (s === "satellite") {
     // Same words and colours as Târgu Mureș; the satellite origin is shown in the court detail (SatFinding).
     var sv = (court.sat && court.sat.v) || "ok";
-    return sv === "gone" ? { color: "#9F1239", badge: "badge-red", admin: "a-badge-r", label: t.satGone || "Dispărut", bad: true }
+    return sv === "gone" ? { color: "#9F1239", badge: "badge-red", admin: "a-badge-r", label: t.satGone || "Nevăzut din satelit", bad: true }
       : sv === "worn" ? { color: "#DC2626", badge: "badge-red", admin: "a-badge-r", label: t.satWorn || "Degradat", bad: true }
       : { color: "#10B981", badge: "badge-green", admin: "a-badge-g", label: t.satOk || "Bun", bad: false };
   }
@@ -6861,13 +6882,17 @@ const COURTS_SIBIU = [
   {"id":"sb32","city":"sibiu","name":"Teren baschet — Doamna Stanca","address":"Șoseaua Sibiului, Sibiu","lat":45.777,"lng":24.169136,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"doamna_stanca","category":"basketball","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de baschet (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de baschet (OpenStreetMap, neverificat pe teren).","en":"Basketball court (OpenStreetMap, not field-verified).","hu":"Kosárlabdapálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1516691149","img":null},
   {"id":"sb33","city":"sibiu","name":"Teren baschet — Dumbrăvii","address":"Strada Nicolaus Olahus, Sibiu","lat":45.78302,"lng":24.146306,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"dumbravii","category":"basketball","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de baschet (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de baschet (OpenStreetMap, neverificat pe teren).","en":"Basketball court (OpenStreetMap, not field-verified).","hu":"Kosárlabdapálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1517083899","img":null},
   {"id":"sb34","city":"sibiu","name":"Teren baschet — Reșița","address":"Strada Ana Ipătescu, Sibiu","lat":45.803389,"lng":24.165488,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"resita","category":"basketball","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de baschet (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de baschet (OpenStreetMap, neverificat pe teren).","en":"Basketball court (OpenStreetMap, not field-verified).","hu":"Kosárlabdapálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1517626704","img":null},
-  {"id":"sb35","city":"sibiu","name":"Teren fotbal — Valea Aurie 2","address":"Aleea Călăreților, Sibiu","lat":45.770167,"lng":24.132835,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"valea_aurie","category":"football","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","en":"Football court (OpenStreetMap, not field-verified).","hu":"Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1517849282","img":null}
+  {"id":"sb35","city":"sibiu","name":"Teren fotbal — Valea Aurie 2","address":"Aleea Călăreților, Sibiu","lat":45.770167,"lng":24.132835,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"valea_aurie","category":"football","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Teren de fotbal (OpenStreetMap, neverificat pe teren).","en":"Football court (OpenStreetMap, not field-verified).","hu":"Focipálya (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/1517849282","img":null},
+  {"id":"sb36","city":"sibiu","name":"Stadionul Independența","address":"Strada Oborul de vite, Sibiu","lat":45.815039,"lng":24.153217,"status":"unverified","condition":null,"occupancy":"unknown","progress":0,"reports":0,"neighbourhood":"terezian","category":"football","accessibility":{"wheelchair":false,"lighting":false,"parking":false,"flatSurface":false},"description":"Stadion de fotbal (OpenStreetMap, neverificat pe teren).","desc":{"ro":"Stadion de fotbal (OpenStreetMap, neverificat pe teren).","en":"Football stadium (OpenStreetMap, not field-verified).","hu":"Labdarúgó-stadion (OpenStreetMap, helyszínen nem ellenőrzött)."},"osm":"way/40215376","img":null}
 ];
 /* Satellite view of the Sibiu courts: majority of the 4 team reviewers (Esri World Imagery Wayback, latest capture `at`).
    Per reviewer: no court visible -> gone; overgrown/patchy surface, no markings or "degraded" -> worn; else ok.
    Ties go to the two most consistent reviewers. It is what the images showed, never today's condition.
    Regenerate after new exports (see tools/sat_merge.mjs). */
 const SAT_VIEW = {"sb1":{"v":"worn","n":2,"of":4,"at":"2021-02-27"},"sb2":{"v":"worn","n":2,"of":4,"at":"2022-08-06"},"sb3":{"v":"ok","n":3,"of":4,"at":"2022-08-06"},"sb4":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb5":{"v":"ok","n":2,"of":4,"at":"2021-02-27"},"sb6":{"v":"ok","n":4,"of":4,"at":"2021-02-27"},"sb7":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb8":{"v":"gone","n":3,"of":4,"at":"2021-02-27"},"sb9":{"v":"gone","n":2,"of":4,"at":"2022-08-06"},"sb10":{"v":"gone","n":2,"of":4,"at":"2022-08-06"},"sb11":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb12":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb13":{"v":"gone","n":3,"of":4,"at":"2022-08-06"},"sb14":{"v":"gone","n":3,"of":4,"at":"2022-08-06"},"sb15":{"v":"gone","n":3,"of":4,"at":"2022-08-06"},"sb16":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb17":{"v":"gone","n":4,"of":4,"at":"2022-08-06"},"sb18":{"v":"worn","n":2,"of":4,"at":"2022-08-06"},"sb19":{"v":"ok","n":2,"of":4,"at":"2021-02-27"},"sb20":{"v":"gone","n":2,"of":4,"at":"2021-02-27"},"sb21":{"v":"ok","n":3,"of":4,"at":"2022-08-06"},"sb22":{"v":"gone","n":3,"of":4,"at":"2021-02-27"},"sb23":{"v":"gone","n":3,"of":4,"at":"2021-02-27"},"sb24":{"v":"ok","n":3,"of":4,"at":"2025-03-04"},"sb25":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb26":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb27":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb28":{"v":"ok","n":3,"of":4,"at":"2021-02-27"},"sb29":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb30":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb31":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb32":{"v":"ok","n":3,"of":4,"at":"2022-08-06"},"sb33":{"v":"ok","n":2,"of":4,"at":"2022-08-06"},"sb34":{"v":"ok","n":4,"of":4,"at":"2022-08-06"},"sb35":{"v":"gone","n":2,"of":4,"at":"2021-02-27"}};
+// sb36 (Stadionul Independența) was added on 6 Nov 2026, after the blind 4-reviewer audit. One team member read the same
+// Esri capture (2022-08-06, WorldView-3, 0.31 m): grass pitch with markings and a stand, so "ok". n:1 says it is a single read.
+SAT_VIEW.sb36 = { v: "ok", n: 1, of: 1, at: "2022-08-06" };
 /* Sibiu stadiums: two OSM pitches sit inside rebuilt stadiums, so they become those stadiums (status "excellent").
    sb21 = Stadionul Municipal (OSM way 1123069978), sb8 = Baza Voința / Academia Alma (OSM way 177522036). */
 const STADIUMS_SIBIU = {
@@ -17216,7 +17241,7 @@ function CourtPulse({ court }) {
 
   const none = m.kind === "none";
   const msg = none ? t.pulseNoSignalDesc : { steady: t.pulseSteady, irregular: t.pulseIrregular, weak: t.pulseWeak, flat: t.pulseFlat }[m.state];
-  const src = m.kind === "score" ? t.pulseFromScore : m.kind === "community" ? t.pulseFromCommunity.replace("{n}", m.count) : "";
+  const src = m.kind === "score" ? (court.estimate === "sat" && court.sat ? t.pulseFromSat.replace("{y}", String(court.sat.at).slice(0, 4)) : t.pulseFromScore) : m.kind === "community" ? t.pulseFromCommunity.replace("{n}", m.count) : "";
   return React.createElement("div", { ref: boxRef, className: "cpulse", style: { color: m.tone }, role: "group", "aria-label": t.courtPulseTitle },
     React.createElement("div", { className: "cpulse-top" },
       React.createElement("span", { className: "cpulse-ttl" }, React.createElement("span", { className: "cpulse-rec", style: { color: m.tone } }), t.courtPulseTitle),

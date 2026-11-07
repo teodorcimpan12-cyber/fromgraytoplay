@@ -220,6 +220,21 @@ Anyone can write — rules are MVP-permissive. Tighten before any press.
   static splash inside `#root`. `netlify.toml` added with cache headers —
   deploy surface now also includes `netlify.toml`. SW cache → `g2p-v4`.
 
+## Owner's backlog (asked 6 Nov 2026 — do later, not before Astra Hack)
+
+0. **Business plan — next session starts here.** Read `docs/HANDOFF_BUSINESS_PLAN.md` first; begin by
+   writing down Teodor's ideas, then structure them. No invented numbers.
+1. **Legal entity so the project can receive money** (donations, sponsors, grants, prizes). To research with
+   the owner before choosing — nothing decided, verify every legal detail at the source: an association under
+   OG 26/2000 vs. hosting the project under an existing NGO first (fiscal sponsor) vs. a company; who can be a
+   founder while team members are minors; bank account, sponsorship contracts and the 20% tax redirection
+   (formularul 230) for an NGO.
+2. **Mobile-first redesign with Impeccable** — designed for the phone first, desktop second. Start with
+   `/impeccable init` (PRODUCT.md), then `shape` → new-work; keep product truth and the brand tokens unless the
+   owner decides a rebrand. Inputs already gathered: the 6 Nov critique (25/40; P0 false precision on unverified
+   courts, hero CTA, 14-section court sheet, 8 equal actions, green #10B981 at ~2.5:1 contrast, 31×39 hamburger)
+   and the deferred directions "evidence-first hero", "verdict card", "evidence timeline".
+
 ## Roadmap priorities (from the brief)
 
 Highest civic-value next steps:
@@ -311,6 +326,15 @@ Highest civic-value next steps:
   account button icon-only 1241–1440px (`.nav-acct-name`, name kept in title/aria-label),
   `.nav-inner` max-width 1320px ≥1441px. SW → `g2p-v11`. New project skill `.claude/skills/arena`
   (/arena: parallel subagents with different strategies + blind judging rounds).
+- Same day, pre-pitch honesty/design pass (Impeccable critique, PR #31): `sb36` Stadionul Independența (OSM way/40215376)
+  with a single-reader satellite estimate (`SAT_VIEW.sb36`, n:1, Esri 2022-08-06). Court detail: no condition chip,
+  works progress or ✓/✗ accessibility when there is no field data (`noField`: unverified or satellite estimate) —
+  accessibility shows "?"; `satGone` courts read "Nevăzut din satelit" and hide Rezervă/Joc acum; new first action
+  "Raportează" (`openReport(c.id)`) — NOTE 7 Nov: these CourtDetail edits were dropped when merging the Instagram-style
+  `.cdx` CourtDetail from production; only sb36, the pulse source line and the onboarding skip survived; pulse says "Estimat din satelit (imagine din {y})". Home hero buttons, hero copy,
+  stat tiles and the petition vote counters stay ORIGINAL on purpose (owner's call, 6 Nov: keep "▶ Renovează terenul"
+  and the global vote total) — only the drag hint moved up and the 3 stat tiles sit in one row on phones.
+  `#court-` deep links skip onboarding. SW → `g2p-v12`.
 - Session 6 Nov 2026 (branch `claude/asociatie-g2p`): About → new tab **🏛️ Asociația** (`AssociationTab`, key `association`;
   `g2p_about_tab` accepts it). Honest status "în constituire": 3 adult founders (Cîmpan Teodor, Trofin Matei, Drăgan Gabriel),
   steps done/in progress/next (statute, name reservation, court filing OG 26/2000, CIF + account), sustainability rules

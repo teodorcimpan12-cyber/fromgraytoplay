@@ -27,3 +27,6 @@ field-raw/
 
 # Satellite tile cache + rendered strips (regenerate with tools/sat_strips.mjs)
 tools/.cache/
+
+# Impeccable engine binary (~24 MB); the launcher downloads it on first run
+.claude/skills/impeccable/scripts/bin/
