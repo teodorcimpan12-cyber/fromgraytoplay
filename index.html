@@ -3975,6 +3975,7 @@ function CourtQRCard(props) {
   };
 
   return React.createElement("div", {
+    className:"qr-overlay",
     style:{position:"fixed",inset:0,zIndex:8000,background:"rgba(8,10,22,.8)",backdropFilter:"blur(8px)",display:"flex",alignItems:"center",justifyContent:"center",padding:"1rem"},
     onClick:onClose
   },
@@ -18919,10 +18920,20 @@ function demoCmd(cmd) {
     setTimeout(() => { if (!document.querySelector(".cdx")) window.dispatchEvent(new HashChangeEvent("hashchange")); }, 600);
     return;
   }
+  const topOverlay = () => { const all = document.querySelectorAll(".modal-overlay"); return all.length ? all[all.length - 1] : null; };
+  const closeTop = () => { // close the window on top: its own ✕/close button first, else a click on its backdrop
+    const q = document.querySelector(".qr-overlay");
+    if (q) { q.dispatchEvent(new MouseEvent("click", { bubbles: true })); return; }
+    const o = topOverlay(); if (!o) return;
+    const x = o.querySelector(':scope > .modal > button.modal-close, :scope > .modal > .modal-x, :scope > .modal [aria-label="Închide"], :scope > .modal [aria-label="Close"]');
+    if (x) x.click(); else o.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+  };
+  // Rezervă / QR open a window over the court sheet: pressing them again closes that window (toggle)
+  if ((c === "tab:book" || c === "tab:qr") && (document.querySelector(".qr-overlay") || document.querySelectorAll(".modal-overlay").length > 1)) { closeTop(); return; }
   if (c === "tab:sat") { click('.cdx-tab[data-k="sat"]'); setTimeout(() => window.dispatchEvent(new Event("g2p:sat-sweep")), 700); return; }
   if (c.indexOf("tab:") === 0) return click('.cdx-tab[data-k="' + c.slice(4) + '"]');
   if (c === "play") { if (!document.querySelector('.cd-act[data-act="play"]')) click('.cdx-tab[data-k="info"]'); setTimeout(() => click('.cd-act[data-act="play"]'), 300); return; }
-  if (c === "close") { const o = document.querySelector(".modal-overlay"); if (o) o.click(); }
+  if (c === "close") { closeTop(); return; }
 }
 const DEMO_BTNS = {
   hero: [["renov", "🎨 Renovează / înapoi la gri"], ["brief:flip", "🔄 Flip the Court"], ["brief:canvas", "🎨 Street Canvas"], ["brief:locker", "🔐 Dulap"], ["brief:close", "✕ Închide fereastra"]],
@@ -19047,7 +19058,7 @@ function DemoLayer() {
   return e(React.Fragment, null,
     !hidden && e("div", { className: "demo-bar", role: "toolbar", "aria-label": "Demo" },
       e("button", { onClick: () => go(step - 1), disabled: step === 0, "aria-label": "Înapoi" }, "‹"),
-      e("span", { className: "demo-n" }, e("i", { className: "demo-dot" + (conn ? " on" : "") }), step + 1, "/", DEMO_STEPS.length, " · v6"),
+      e("span", { className: "demo-n" }, e("i", { className: "demo-dot" + (conn ? " on" : "") }), step + 1, "/", DEMO_STEPS.length, " · v7"),
       e("span", { className: "demo-t" }, (lang === "en" ? s.en : s.ro) + " · " + DEMO_WHO[s.who]),
       e("span", { className: "demo-c" + (over ? " over" : "") }, demoClock(stepMs), " · ", demoClock(runMs), "/", demoClock(DEMO_TOTAL)),
       e("button", { onClick: () => go(step + 1), disabled: step === DEMO_STEPS.length - 1, "aria-label": "Înainte" }, "›")),
