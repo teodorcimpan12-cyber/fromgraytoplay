@@ -1886,6 +1886,34 @@ body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inse
   .cdx-pulse .cpulse-src{display:none}
 }
 @media(max-width:899px) and (max-height:700px){.cdx-pulse .cpulse-bot{display:none}.cdx-pulse .cpulse{padding-bottom:.2rem}}
+/* === Astra mobile shell (Astra Hack, Nov 2026) ===
+   Phones (<=600px or touch): static hero (HeroLite, no three.js), no aurora blur, ticker is a
+   still row you can swipe. */
+.h3d-lite,[data-theme="light"] .h3d-lite{height:auto;min-height:0;max-height:none;padding-top:4.2rem;background:linear-gradient(180deg,#141920,#252b33 55%,#161a20)}
+.h3d-lite .h3d-sky{display:none}
+.h3d-lite .h3d-kicker{padding-right:84px}
+.h3d-lite .h3d-title .g{color:#C7CBD1}
+.h3d-lite .h3d-overlay{position:relative;inset:auto}
+.h3d-lite .h3d-title .p{animation:none}
+.hl-report{display:flex;align-items:center;justify-content:center;gap:.55rem;width:100%;max-width:26rem;min-height:56px;margin:0 0 .8rem;padding:.9rem 1.2rem;border:none;border-radius:980px;background:var(--green);color:#fff;font-family:'Space Mono',monospace;font-weight:700;font-size:1.05rem;cursor:pointer;box-shadow:0 10px 28px rgba(16,185,129,.35);touch-action:manipulation;transition:transform .15s var(--ease-out,ease-out)}
+.hl-report:active{transform:scale(.97)}
+.hl-cta-vis .fab{opacity:0;pointer-events:none;transform:translateY(12px)}
+.fab{transition:opacity .2s,transform .2s,box-shadow .2s}
+.hamburger{min-width:44px;min-height:44px;display:none;align-items:center;justify-content:center}
+@media(max-width:1240px){.hamburger{display:inline-flex}}
+button.nav-cmd.nav-cmd-m{display:none;width:44px;height:44px;margin-left:auto;background:none;border:none}
+@media(max-width:1240px){button.nav-cmd.nav-cmd-m{display:inline-grid}}
+/* Popups: the page behind never scrolls; scrolling inside stops hard at the edges (no chaining). */
+body:has(.modal-overlay){overflow:hidden}
+.modal,.modal-overlay{overscroll-behavior:contain}
+.hl-ball{position:absolute;top:1.2rem;right:1.2rem;width:72px;height:72px;filter:drop-shadow(0 10px 18px rgba(0,0,0,.45));z-index:2}
+@media(max-width:600px),(pointer:coarse){
+  .aurora{display:none}
+  .ticker{animation:none;padding-right:1.2rem}
+  .ticker[aria-hidden]{display:none}
+  .ticker-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain;padding-left:1.2rem}
+  .ticker-wrap::-webkit-scrollbar{display:none}
+}
 </style>
 <script>(function(){try{var a=JSON.parse(localStorage.getItem("g2p_accent")||"null");if(a&&a.p){var r=document.documentElement;r.style.setProperty("--green",a.p);if(a.s)r.style.setProperty("--teal",a.s);r.classList.add("accent-on");}}catch(e){}})();</script>
 <script>(function(){try{var t=localStorage.getItem("g2p_theme")||(window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="dark"?"#0F172A":"#FFFFFF");}catch(e){}})();</script>
@@ -2762,6 +2790,8 @@ T.hu.dossierForCouncil = "A Marosvásárhelyi Helyi Tanács és Polgármesteri H
 /* === 3D hero strings (RO/EN/HU). HU draft — // TODO: HU review === */
 T.ro.heroKicker = "Târgu Mureş · teren multifuncțional";
 T.ro.heroSub = "O oază de joacă într-un oraş gri. Apasă Renovează şi priveşte transformarea.";
+T.ro.heroLiteSub = "Terenurile din cartiere stau gri. Vezi o problemă? Raportează-o în 30 de secunde.";
+T.ro.reportProblem = "Raportează o problemă";
 T.ro.heroRenovate = "▶ Renovează terenul"; T.ro.heroBack = "↺ Înapoi la gri"; T.ro.heroSign = "Semnează petiția";
 T.ro.heroHint = "trage pentru a roti · atinge mingile";
 T.ro.heroTRenov = "Se renovează terenul ✨"; T.ro.heroTGrey = "Înapoi la starea degradată"; T.ro.heroTTap = "Atinge afişele sau dulapul ℹ️";
@@ -2770,6 +2800,8 @@ T.ro.heroCatch = "🙌 Ce prindere! Echipa te vrea în teren."; T.ro.heroSeeOld 
 T.ro.heroBriefs = { flip: { title: "Flip the Court", body: "Renovăm terenurile sportive deja existente din cartierele periferice — nu construim de la zero, ci readucem la viață ce a fost lăsat în paragină: suprafață nouă, coşuri şi porți reparate, marcaje şi gard. Terenurile sunt alese prin votul locuitorilor şi finanțate transparent." }, canvas: { title: "Street Canvas", body: "Transformăm zidurile gri din jurul terenului în murale create de artişti locali, pe teme propuse şi votate de comunitate. Culoare în locul betonului crăpat — un spațiu pe care cartierul îl simte al lui." }, locker: { title: "Dulap inteligent", body: "Un cabinet cu echipament (mingi, plase, pompă) pe care îl deblochezi gratuit din aplicația Flip the Court. Împrumuți, te joci, returnezi — totul urmărit digital, ca terenul să rămână echipat fără supraveghetor." } };
 T.en.heroKicker = "Târgu Mureş · multi-use court";
 T.en.heroSub = "A pocket of play in a grey city. Tap Renovate and watch it transform.";
+T.en.heroLiteSub = "Neighbourhood courts are left grey. Seen a problem? Report it in 30 seconds.";
+T.en.reportProblem = "Report a problem";
 T.en.heroRenovate = "▶ Renovate the court"; T.en.heroBack = "↺ Back to grey"; T.en.heroSign = "Sign the petition";
 T.en.heroHint = "drag to rotate · tap the balls";
 T.en.heroTRenov = "Renovating the court ✨"; T.en.heroTGrey = "Back to the degraded state"; T.en.heroTTap = "Tap the posters or the locker ℹ️";
@@ -2778,6 +2810,8 @@ T.en.heroCatch = "🙌 Great catch! The team wants you on court."; T.en.heroSeeO
 T.en.heroBriefs = { flip: { title: "Flip the Court", body: "We renovate the sports courts that already exist in the outer neighbourhoods — we don't build from scratch, we bring back to life what was left to decay: new surface, repaired hoops and goals, fresh markings and a fence. Courts are chosen by residents' vote and funded transparently." }, canvas: { title: "Street Canvas", body: "We turn the grey walls around the court into murals made by local artists, on themes proposed and voted by the community. Colour instead of cracked concrete — a space the neighbourhood feels is its own." }, locker: { title: "Smart locker", body: "A cabinet with gear (balls, nets, pump) you unlock for free from the Flip the Court app. Borrow, play, return — all tracked digitally, so the court stays equipped without an attendant." } };
 T.hu.heroKicker = "Marosvásárhely · multifunkciós pálya"; // TODO: HU review
 T.hu.heroSub = "Egy játéksziget a szürke városban. Nyomd meg a Felújítás gombot, és nézd a változást.";
+T.hu.heroLiteSub = "A lakótelepi pályák szürkék maradnak. Láttál egy hibát? Jelentsd 30 másodperc alatt."; // TODO: HU review
+T.hu.reportProblem = "Hiba bejelentése"; // TODO: HU review
 T.hu.heroRenovate = "▶ Pálya felújítása"; T.hu.heroBack = "↺ Vissza a szürkéhez"; T.hu.heroSign = "Aláírom a petíciót";
 T.hu.heroHint = "húzd az elforgatáshoz · érintsd a labdákat";
 T.hu.heroTRenov = "A pálya felújítása ✨"; T.hu.heroTGrey = "Vissza a leromlott állapothoz"; T.hu.heroTTap = "Érintsd a plakátokat vagy a szekrényt ℹ️";
@@ -5874,7 +5908,11 @@ function haversineKm(lat1, lng1, lat2, lng2) {
 
 /* Relative time label ("acum 2h" / "2h ago" / "2 órája"). */
 function relTime(ts, lang) {
-  var diff = Math.max(0, Date.now() - (Number(ts) || 0));
+  // Timestamps come as ms numbers, ISO strings (older reports) or seconds. Unknown -> "".
+  var n = typeof ts === "number" ? ts : (Number(ts) || Date.parse(ts || "") || 0);
+  if (n > 0 && n < 1e11) n *= 1000;
+  if (!n) return "";
+  var diff = Math.max(0, Date.now() - n);
   var mins = Math.floor(diff / 60000);
   var hrs = Math.floor(diff / 3600000);
   var days = Math.floor(diff / 86400000);
@@ -7606,7 +7644,7 @@ function Navbar() {
     React.createElement("button", { role: "menuitem", onClick: () => { setAcct(false); openChangePw(); } }, "\uD83D\uDD11 " + L3("Schimbă parola", "Change password", "Jelszó módosítása")),
     React.createElement("button", { role: "menuitem", style: { color: "var(--red)" }, onClick: () => { setAcct(false); signOut(); } }, "\u21AA " + L3("Deconectare", "Sign out", "Kijelentkezés")))
   ),
-  /*#__PURE__*/React.createElement("button", {
+  isAdmin && /*#__PURE__*/React.createElement("button", {
     onClick: () => { location.hash = "#/admin"; },
     title: "Admin Panel",
     style: { display:"flex", alignItems:"center", height:28, padding:"0 .3rem", opacity: isAdmin ? 1 : 0.3, background:"none", border:"none", cursor:"pointer", color: isAdmin ? "var(--coral)" : "var(--textSec)", transition:"all .18s" }
@@ -7621,6 +7659,8 @@ function Navbar() {
   }, React.createElement("svg", { className: "nav-glass", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2.4, strokeLinecap: "round", "aria-hidden": "true" },
     React.createElement("circle", { cx: 10.5, cy: 10.5, r: 6.5 }), React.createElement("path", { d: "M15.5 15.5L21 21" }))), /*#__PURE__*/React.createElement("button", {
     className: "hamburger",
+    "aria-label": lang === "en" ? "Open menu" : lang === "hu" ? "Men\u00fc megnyit\u00e1sa" : "Deschide meniul",
+    "aria-expanded": mob ? "true" : "false",
     onClick: () => setMob(true)
   }, "\u2630"))),
   showNotif && /*#__PURE__*/React.createElement(NotifPanel, { notif: notif, onClose: () => setShowNotif(false) }),
@@ -7649,7 +7689,7 @@ function Navbar() {
   }, "🔔 " + (unreadCount ? unreadCount + " " : "") + t.notifications), firebaseUser && React.createElement("button", {
     className: "btn btn-sm btn-outline",
     onClick: () => { setMob(false); setPage("profile"); }
-  }, (isAdmin ? "\uD83D\uDC51 " : isSherif ? "\uD83D\uDC6E " : "\uD83D\uDC64 ") + acctName.split(/[ @]/)[0].substring(0, 14)), firebaseUser && React.createElement("button", {
+  }, (isAdmin ? "\uD83D\uDC51 " : isSherif ? "\uD83D\uDC6E " : "\uD83D\uDC64 ") + acctName.split(/[ @]/)[0].substring(0, 14)), isAdmin && React.createElement("button", {
     className: "btn btn-sm btn-outline",
     onClick: () => { setMob(false); openChangePw(); }
   }, "\uD83D\uDD11 " + L3("Parolă", "Password", "Jelszó")), authReady && React.createElement("button", {
@@ -9168,6 +9208,35 @@ function loadThree() {
   });
   return _g2pThreeP;
 }
+/* Astra mobile shell: phones (narrow or touch) get a static hero, no three.js, no blur/particles. */
+function isPhone() {
+  try { return window.matchMedia("(max-width:600px), (pointer:coarse)").matches; } catch (e) { return false; }
+}
+function HeroLite() {
+  var app = useApp(), t = app.t, setPage = app.setPage;
+  var ctaRef = useRef(null);
+  // While the big report button is on screen the floating .fab would duplicate it: hide the fab.
+  useEffect(function () {
+    var el = ctaRef.current, b = document.body;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    var io = new IntersectionObserver(function (es) { b.classList.toggle("hl-cta-vis", es[0].isIntersecting); });
+    io.observe(el);
+    return function () { io.disconnect(); b.classList.remove("hl-cta-vis"); };
+  }, []);
+  return React.createElement("section", { className: "h3d-hero h3d-lite" },
+    React.createElement("div", { className: "h3d-sky", "aria-hidden": "true" }),
+    React.createElement("svg", { className: "hl-ball", viewBox: "0 0 100 100", "aria-hidden": "true" },
+      React.createElement("circle", { cx: 50, cy: 50, r: 46, fill: "#E8762B" }),
+      React.createElement("path", { d: "M4 50h92M50 4v92M17 17c18 18 18 48 0 66M83 17c-18 18-18 48 0 66", fill: "none", stroke: "#1A1A2E", strokeWidth: 3.5, strokeLinecap: "round" })),
+    React.createElement("div", { className: "h3d-overlay" },
+      React.createElement("div", { className: "h3d-kicker" }, t.heroKicker),
+      React.createElement("div", { className: "h3d-title" }, React.createElement("span", { className: "g" }, "From Grey"), React.createElement("br", null), "to ", React.createElement("span", { className: "p" }, "Play")),
+      React.createElement("p", { className: "h3d-sub" }, t.heroLiteSub),
+      React.createElement("button", { className: "hl-report", ref: ctaRef, onClick: function () { location.hash = "raporteaza"; } },
+        React.createElement("span", { "aria-hidden": "true" }, "\uD83D\uDCF8"), t.reportProblem),
+      React.createElement("div", { className: "h3d-cta" },
+        React.createElement("button", { className: "h3d-btn h3d-btn-ghost", onClick: function () { setPage("petition"); } }, t.heroSign))));
+}
 var HERO_ICON = { flip: "\uD83C\uDFC0", canvas: "\uD83C\uDFA8", locker: "\uD83D\uDCF2" };
 function Hero3D() {
   var app = useApp(), t = app.t, setPage = app.setPage, toast = app.toast;
@@ -10092,7 +10161,7 @@ function HomePage() {
     className: "hero-title shimmer-text"
   }, lang === "ro" ? "Terenurile tale contează" : "Your courts matter"), /*#__PURE__*/React.createElement("p", {
     style: {
-      color: "#9CA3AF",
+      color: "#C7CBD1",
       maxWidth: 560
     }
   }, lang === "ro" ? "Documentăm inegalitatea infrastructurii sportive din " + cityName(lang) + ". Semnează petiția, raportează terenuri degradate." : "Documenting sports infrastructure inequality in " + cityName(lang) + ". Sign the petition, report degraded courts.")),/*#__PURE__*/React.createElement("div", {
@@ -18938,7 +19007,7 @@ function App() {
   const [toastMsg, setToastMsg] = useState("");
   const [toastMs, setToastMs] = useState(3000);
   const [authOpen, setAuthOpen] = useState(false);
-  const [onboard, setOnboard] = useState(() => !localStorage.getItem("g2p_ob"));
+  const [onboard, setOnboard] = useState(() => location.hash !== "#raporteaza" && !localStorage.getItem("g2p_ob"));
   const [adminMode, setAdminMode] = useState(false);
   const [adminAuth, setAdminAuth] = useState(false);
   const [firebaseUser, setFirebaseUser] = useState(() => firebase.auth().currentUser);
@@ -19282,7 +19351,7 @@ function App() {
     }
   }, /*#__PURE__*/React.createElement("div", {
     key: page
-  }, React.createElement(PageBoundary, null, P()))), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(ReportHashListener, null), React.createElement(FunEggs, null), React.createElement(EggHub, { page: page }), React.createElement(SecretKeys, null), React.createElement(Mascot, { page: page }), React.createElement(BigCelebration, null), React.createElement(ThemeFx, null), mayor && React.createElement(MayorMode, {
+  }, React.createElement(PageBoundary, null, P()))), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(ReportHashListener, null), React.createElement(FunEggs, null), React.createElement(EggHub, { page: page }), React.createElement(SecretKeys, null), !isPhone() && React.createElement(Mascot, { page: page }), React.createElement(BigCelebration, null), React.createElement(ThemeFx, null), mayor && React.createElement(MayorMode, {
     onClose: () => setMayor(false)
   }), /*#__PURE__*/React.createElement(Footer, null), toastEl, authEl, nudgeEl, DEMO_ON && React.createElement(DemoLayer, null), DEMO_REMOTE && React.createElement(DemoRemote, null));
 }
@@ -19308,8 +19377,10 @@ try {
       var p = k && ov[k];
       return p && typeof p.onClick === "function" ? p.onClick : null;
     }
+    // Any scroller between the finger and the overlay (inclusive) that is not at its top.
     function scrolledAncestor(el, modal) {
-      for (var n = el; n && n !== modal.parentNode; n = n.parentNode) if (n.scrollTop > 0) return true;
+      var stop = modal.parentNode && modal.parentNode.parentNode;
+      for (var n = el; n && n !== stop; n = n.parentNode) if (n.scrollTop > 0) return true;
       return false;
     }
     document.addEventListener("touchstart", function (e) {
@@ -19327,8 +19398,10 @@ try {
       var y = e.touches[0].clientY, x = e.touches[0].clientX, dy = y - st.y0;
       if (!st.lock) {
         if (Math.abs(dy) < 10 && Math.abs(x - st.x0) < 10) return;
-        var m = st.modal, canScroll = m.scrollHeight > m.clientHeight + 2;
-        if ((dy < 0 && canScroll) || Math.abs(x - st.x0) > Math.abs(dy) || scrolledAncestor(e.target, m)) { st = null; return; }
+        var m = st.modal;
+        // Only a downward pull from the very top drags the sheet. An upward swipe is always a
+        // native scroll (inner scrollers, the overlay itself); hijacking it made sheets bounce.
+        if (dy < 0 || Math.abs(x - st.x0) > Math.abs(dy) || scrolledAncestor(e.target, m)) { st = null; return; }
         st.lock = 1; m.classList.add("sheet-drag");   // keep y0: the sheet stays glued to the grab point
       }
       e.preventDefault();
