@@ -820,6 +820,11 @@ body:has(.demo-remote) .modal-overlay{z-index:9600}
 .demo-rm-acts{display:grid;grid-template-columns:1fr 1fr;gap:.45rem}
 .demo-rm-acts .demo-rm-renov{grid-column:1/-1}
 .demo-rm-act{border:1px solid color-mix(in srgb,var(--white) 25%,transparent);background:color-mix(in srgb,var(--white) 8%,transparent);color:inherit;border-radius:14px;padding:.85rem .5rem;font:700 .85rem 'Space Mono',monospace;cursor:pointer}
+.demo-dot{display:inline-block;width:.6rem;height:.6rem;border-radius:50%;background:var(--red);margin-right:.4rem;vertical-align:middle}
+.demo-dot.on{background:var(--green)}
+.demo-rm-sent{position:sticky;top:0;z-index:2;padding:.55rem .8rem;border-radius:12px;font:700 .9rem 'Space Mono',monospace;background:color-mix(in srgb,var(--white) 10%,transparent)}
+.demo-rm-sent.ok{background:color-mix(in srgb,var(--green) 30%,transparent)}
+.demo-rm-sent.slow,.demo-rm-sent.bad{background:color-mix(in srgb,var(--red) 35%,transparent)}
 .demo-rm-who{margin:0;font:700 1rem 'Space Mono',monospace;color:var(--coral)}
 .demo-rm-who b{font-size:1.35rem}
 .demo-rm-tabs{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
@@ -18876,13 +18881,25 @@ function demoShow(i, setPage) {
   setTimeout(find, 260);
 }
 function demoCmd(cmd) {
-  const c = String(cmd || ""), click = sel => { const b = document.querySelector(sel); if (b) { b.scrollIntoView({ behavior: "smooth", block: "nearest" }); b.click(); } };
+  const c = String(cmd || "");
+  const click = (sel, n) => { // retry for ~2.5 s: the page or the court sheet may still be rendering
+    const b = document.querySelector(sel);
+    if (b) { b.scrollIntoView({ behavior: "smooth", block: "nearest" }); b.click(); return; }
+    if ((n || 0) < 12) setTimeout(() => click(sel, (n || 0) + 1), 200);
+  };
   if (c === "renov") return click(".h3d-hero .h3d-btn-green");
   if (c.indexOf("cm:") === 0) return click('.cm-tabs [data-cm="' + c.slice(3) + '"]');
   if (c.indexOf("brief:") === 0) { const k = c.slice(6); window.dispatchEvent(new CustomEvent("g2p:hero-brief", { detail: k === "close" ? null : k })); return; }
-  if (c.indexOf("court:") === 0) { location.hash = "#court-" + c.slice(6); return; }
+  if (c.indexOf("court:") === 0) {
+    const h = "#court-" + c.slice(6);
+    if (document.querySelector(".cdx")) return; // already open
+    if (location.hash === h) { history.replaceState(null, "", location.pathname + location.search + "#courts"); }
+    location.hash = h;
+    setTimeout(() => { if (!document.querySelector(".cdx")) window.dispatchEvent(new HashChangeEvent("hashchange")); }, 600);
+    return;
+  }
   if (c.indexOf("tab:") === 0) return click('.cdx-tab[data-k="' + c.slice(4) + '"]');
-  if (c === "play") { if (!document.querySelector('.cd-act[data-act="play"]')) click('.cdx-tab[data-k="info"]'); setTimeout(() => click('.cd-act[data-act="play"]'), 350); return; }
+  if (c === "play") { if (!document.querySelector('.cd-act[data-act="play"]')) click('.cdx-tab[data-k="info"]'); setTimeout(() => click('.cd-act[data-act="play"]'), 300); return; }
   if (c === "close") { const o = document.querySelector(".modal-overlay"); if (o) o.click(); }
 }
 const DEMO_BTNS = {
@@ -18939,6 +18956,12 @@ function DemoLayer() {
   const [step, setStep] = useState(0);
   const [hidden, setHidden] = useState(false);
   const [slideX, setSlideX] = useState(false);
+  const [conn, setConn] = useState(true);
+  useEffect(() => {
+    const ref = db.ref(".info/connected"), cb = sn => setConn(!!sn.val());
+    ref.on("value", cb);
+    return () => ref.off("value", cb);
+  }, []);
   const [qa, setQa] = useState(-1);
   const [t0, setT0] = useState(0); // the run clock starts on the first step change
   const [stepAt, setStepAt] = useState(0);
@@ -19002,7 +19025,7 @@ function DemoLayer() {
   return e(React.Fragment, null,
     !hidden && e("div", { className: "demo-bar", role: "toolbar", "aria-label": "Demo" },
       e("button", { onClick: () => go(step - 1), disabled: step === 0, "aria-label": "Înapoi" }, "‹"),
-      e("span", { className: "demo-n" }, step + 1, "/", DEMO_STEPS.length, " · v4"),
+      e("span", { className: "demo-n" }, e("i", { className: "demo-dot" + (conn ? " on" : "") }), step + 1, "/", DEMO_STEPS.length, " · v5"),
       e("span", { className: "demo-t" }, (lang === "en" ? s.en : s.ro) + " · " + DEMO_WHO[s.who]),
       e("span", { className: "demo-c" + (over ? " over" : "") }, demoClock(stepMs), " · ", demoClock(runMs), "/", demoClock(DEMO_TOTAL)),
       e("button", { onClick: () => go(step + 1), disabled: step === DEMO_STEPS.length - 1, "aria-label": "Înainte" }, "›")),
@@ -19045,12 +19068,26 @@ function DemoRemote() {
     try { navigator.wakeLock && navigator.wakeLock.request("screen").then(l => { wl = l; }).catch(() => {}); } catch (e) {}
     return () => { try { wl && wl.release(); } catch (e) {} };
   }, []);
+  const [conn, setConn] = useState(true);
+  const [sent, setSent] = useState(""); // "", "wait", "ok", "slow"
+  const lastStep = useRef(0);
+  useEffect(() => { // live connection dot + reconnect as soon as the phone screen comes back
+    const ref = db.ref(".info/connected"), cb = sn => setConn(!!sn.val());
+    ref.on("value", cb);
+    const vis = () => { if (document.visibilityState === "visible") { try { db.goOnline(); } catch (e) {} try { navigator.wakeLock && navigator.wakeLock.request("screen").catch(() => {}); } catch (e) {} } };
+    document.addEventListener("visibilitychange", vis);
+    return () => { ref.off("value", cb); document.removeEventListener("visibilitychange", vis); };
+  }, []);
   const write = (n, qa, act, cmd) => {
+    lastStep.current = n;
     const v = { step: n, at: firebase.database.ServerValue.TIMESTAMP, qa: qa };
     if (act) { v.act = act; v.cmd = cmd || "renov"; }
+    setSent("wait");
+    const slow = setTimeout(() => setSent(x => x === "wait" ? "slow" : x), 2500);
+    try { db.goOnline(); } catch (e) {}
     db.ref("demo").set(v)
-      .then(() => setErr(""))
-      .catch(() => setErr("Nu pot scrie demo/ — ești logat cu contul de admin? Regulile bazei de date sunt publicate?"));
+      .then(() => { clearTimeout(slow); setErr(""); setSent("ok"); setTimeout(() => setSent(x => x === "ok" ? "" : x), 1500); })
+      .catch(() => { clearTimeout(slow); setSent(""); setErr("Nu pot scrie demo/ — ești logat cu contul de admin? Regulile bazei de date sunt publicate?"); });
     try { navigator.vibrate && navigator.vibrate(30); } catch (e) {}
   };
   const send = i => {
@@ -19066,9 +19103,12 @@ function DemoRemote() {
   const list = DEMO_QA.map((x, i) => [x, i]).filter(([x]) => (!cat || x.c === cat) && (!f || (x.q + " " + x.a).toLowerCase().indexOf(f) >= 0));
   const e = React.createElement;
   const top = e("div", { className: "demo-rm-top" },
-    e("span", null, step + 1, "/", DEMO_STEPS.length),
+    e("span", null, e("i", { className: "demo-dot" + (conn ? " on" : "") }), step + 1, "/", DEMO_STEPS.length),
     e("span", { className: over ? "over" : "" }, demoClock(stepMs), " / ", demoClock(s.sec * 1000)),
     e("span", null, demoClock(t0 ? now - t0 : 0), " / ", demoClock(DEMO_TOTAL)));
+  const status = (!conn || sent) && e("div", { className: "demo-rm-sent " + (!conn ? "bad" : sent) },
+    !conn ? "Telefonul nu e conectat — verifică internetul. Comanda pleacă singură când revine." :
+    sent === "wait" ? "⏳ Se trimite…" : sent === "ok" ? "✓ Trimis la laptop" : "⚠ Merge greu (internet slab). Așteaptă 2 secunde, nu apăsa de mai multe ori.");
   const tabs = e("div", { className: "demo-rm-tabs", role: "tablist" },
     e("button", { role: "tab", "aria-selected": tab === "pitch", className: tab === "pitch" ? "on" : "", onClick: () => setTab("pitch") }, "Pitch"),
     e("button", { role: "tab", "aria-selected": tab === "qa", className: tab === "qa" ? "on" : "", onClick: () => setTab("qa") }, "Întrebări (" + DEMO_QA.length + ")"));
@@ -19107,7 +19147,7 @@ function DemoRemote() {
       e("p", null, authReady ? "Telecomanda merge doar cu contul de admin." : "Contul nu răspunde. Conectează-te din nou sau reîncarcă."),
       !authReady && e("button", { className: "btn btn-outline", onClick: () => location.reload() }, "↻ Reîncarcă"),
       e("button", { className: "btn btn-green", onClick: () => openAuth() }, "Conectează-te")) :
-    e(React.Fragment, null, top, tabs, screenBar, err && e("p", { className: "demo-rm-err" }, err), tab === "pitch" ? pitch : qaTab)), document.body);
+    e(React.Fragment, null, top, status, tabs, screenBar, err && e("p", { className: "demo-rm-err" }, err), tab === "pitch" ? pitch : qaTab)), document.body);
 }
 
 function App() {
