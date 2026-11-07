@@ -883,6 +883,23 @@ body:has(.demo-remote) .modal-overlay{z-index:9600}
 @keyframes dsGrey{0%{color:#8A919C}50%{color:#C5CAD1}100%{color:#8A919C}}
 @keyframes dsShine{from{background-position:0 0}to{background-position:100% 0}}
 @keyframes dsPop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}}
+.demo-triad{position:absolute;top:2vh;right:1.5vw;width:min(54vw,96vh);height:auto;max-height:96vh;pointer-events:none;z-index:0}
+.demo-slide.has-triad .demo-slide-in{width:min(1400px,100%);z-index:1}
+.demo-slide.has-triad .demo-assoc,.demo-slide.has-triad .demo-slide-row{max-width:43vw}
+.demo-slide.has-triad .demo-assoc-h{font-size:clamp(2.6rem,5.6vw,6rem)}
+.dt-ini{font:700 30px 'Space Mono',monospace;fill:#fff;letter-spacing:.02em}
+.dt-g2p{font:700 34px 'Space Mono',monospace;fill:url(#dtg)}
+.dt-halo{opacity:.5}
+@media(prefers-reduced-motion:no-preference){
+.dt-tri{stroke-dasharray:1;stroke-dashoffset:1;animation:dtDraw 1.4s .3s cubic-bezier(.65,0,.35,1) forwards}
+.dt-node{animation:dsPop .6s cubic-bezier(.34,1.56,.64,1) both;animation-delay:calc(1.2s + var(--i) * .18s)}
+.dt-arrow{stroke-dasharray:1;stroke-dashoffset:1;opacity:0;animation:dtDraw .7s ease-out forwards,dtFade .2s ease-out forwards;animation-delay:calc(2s + var(--i) * .15s)}
+.dt-core{transform-origin:200px 225px;animation:dsPop .8s 2.7s cubic-bezier(.34,1.56,.64,1) both}
+.dt-halo{transform-origin:200px 225px;animation:dtPulse 2.6s 3.4s ease-in-out infinite}
+@keyframes dtDraw{to{stroke-dashoffset:0}}
+@keyframes dtFade{to{opacity:1}}
+@keyframes dtPulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.08);opacity:.15}}}
+@media(max-width:900px){.demo-triad{opacity:.35;width:90vw}.demo-slide.has-triad .demo-assoc,.demo-slide.has-triad .demo-slide-row{max-width:none}}
 .demo-slide-src{margin:0;font-size:clamp(.75rem,1.1vw,.95rem);opacity:.55}
 @media(prefers-reduced-motion:no-preference){.demo-slide-ul li{animation:fadeIn .5s ease both;animation-delay:calc(.15s + var(--d) * .18s)}}
 @media(max-width:760px){.demo-slide-cols{grid-template-columns:1fr}.demo-slide-row{flex-direction:column;align-items:flex-start}}
@@ -18849,9 +18866,29 @@ function demoShow(i, setPage) {
   };
   setTimeout(find, 260);
 }
+function DemoTriad() {
+  const e = React.createElement;
+  const V = [["TK", 200, 52], ["DG", 352, 312], ["TM", 48, 312]];
+  const A = [[200.0, 100.0, 200.0, 153.3], [310.3, 288.2, 262.5, 261.0], [89.7, 288.2, 137.5, 261.0]];
+  return e("svg", { className: "demo-triad", viewBox: "0 0 400 370", role: "img", "aria-label": "Fondatorii TK, DG și TM, împreună: G2P" },
+    e("defs", null,
+      e("linearGradient", { id: "dtg", x1: "0", y1: "0", x2: "1", y2: "1" }, e("stop", { offset: "0", stopColor: "#F97316" }), e("stop", { offset: "1", stopColor: "#10B981" })),
+      e("radialGradient", { id: "dtc", cx: ".5", cy: ".45", r: ".6" }, e("stop", { offset: "0", stopColor: "#1f2a44" }), e("stop", { offset: "1", stopColor: "#0B1020" })),
+      e("marker", { id: "dta", viewBox: "0 0 10 10", refX: "8", refY: "5", markerWidth: "7", markerHeight: "7", orient: "auto-start-reverse" }, e("path", { d: "M0 0 L10 5 L0 10 z", fill: "#10B981" }))),
+    e("polygon", { className: "dt-tri", points: "200,52 352,312 48,312", fill: "none", stroke: "url(#dtg)", strokeWidth: "3", strokeLinejoin: "round", pathLength: "1" }),
+    A.map((a, i) => e("line", { key: "a" + i, className: "dt-arrow", style: { "--i": i }, x1: a[0], y1: a[1], x2: a[2], y2: a[3], stroke: "#10B981", strokeWidth: "3", strokeLinecap: "round", markerEnd: "url(#dta)", pathLength: "1" })),
+    e("g", { className: "dt-core" },
+      e("circle", { className: "dt-halo", cx: 200, cy: 225.3, r: 74, fill: "none", stroke: "url(#dtg)", strokeWidth: "1.5" }),
+      e("circle", { cx: 200, cy: 225.3, r: 62, fill: "url(#dtc)", stroke: "url(#dtg)", strokeWidth: "4" }),
+      e("text", { x: 200, y: 236, textAnchor: "middle", className: "dt-g2p" }, "G2P")),
+    V.map(([t, x, y], i) => e("g", { key: t, className: "dt-node", style: { "--i": i, transformOrigin: x + "px " + y + "px" } },
+      e("circle", { cx: x, cy: y, r: 40, fill: "#0B1020", stroke: "url(#dtg)", strokeWidth: "3.5" }),
+      e("text", { x: x, y: y + 9, textAnchor: "middle", className: "dt-ini" }, t))));
+}
 function DemoSlide({ sl, kicker, onClose }) {
   const e = React.createElement;
-  return ReactDOM.createPortal(e("div", { className: "demo-slide", onClick: onClose },
+  return ReactDOM.createPortal(e("div", { className: "demo-slide" + (sl.assoc ? " has-triad" : ""), onClick: onClose },
+    sl.assoc && e(DemoTriad, null),
     e("div", { className: "demo-slide-in", onClick: ev => ev.stopPropagation() },
       e("p", { className: "demo-slide-k" }, kicker || sl.k || ""),
       sl.assoc && e("div", { className: "demo-assoc" },
