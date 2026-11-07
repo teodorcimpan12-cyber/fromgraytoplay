@@ -4198,6 +4198,27 @@ function SatelliteTimeMachine(props) {
   var modeSt = useState("compare"), mode = modeSt[0], setMode = modeSt[1];
   var playSt = useState(false), playing = playSt[0], setPlaying = playSt[1];
   var ratioSt = useState(0.5), ratio = ratioSt[0], setRatio = ratioSt[1];
+  useEffect(function () { // demo remote: show the compare view and sweep the slider by itself (2 slow passes)
+    var raf = 0, to = 0;
+    var h = function () {
+      setMode("compare"); setPlaying(false);
+      if (wrapRef.current) wrapRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      cancelAnimationFrame(raf); clearTimeout(to);
+      to = setTimeout(function () {
+        var t0 = performance.now(), D = 9000;
+        var tick = function (now) {
+          var k = Math.min(1, (now - t0) / D);
+          var r = 0.5 + 0.42 * Math.sin(k * Math.PI * 4);
+          ratioRef.current = r; setRatio(r);
+          var m = mapRef.current; if (m && m._tmClip) m._tmClip();
+          if (k < 1) raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
+      }, 900);
+    };
+    window.addEventListener("g2p:sat-sweep", h);
+    return function () { window.removeEventListener("g2p:sat-sweep", h); cancelAnimationFrame(raf); clearTimeout(to); };
+  }, []);
   var fsSt = useState(false), fs = fsSt[0], setFs = fsSt[1];
   var tryN = useState(0), attempt = tryN[0], setAttempt = tryN[1];
   var L3 = function (ro, en, hu) { return lang === "en" ? en : lang === "hu" ? (hu || en) : ro; };
@@ -18898,6 +18919,7 @@ function demoCmd(cmd) {
     setTimeout(() => { if (!document.querySelector(".cdx")) window.dispatchEvent(new HashChangeEvent("hashchange")); }, 600);
     return;
   }
+  if (c === "tab:sat") { click('.cdx-tab[data-k="sat"]'); setTimeout(() => window.dispatchEvent(new Event("g2p:sat-sweep")), 700); return; }
   if (c.indexOf("tab:") === 0) return click('.cdx-tab[data-k="' + c.slice(4) + '"]');
   if (c === "play") { if (!document.querySelector('.cd-act[data-act="play"]')) click('.cdx-tab[data-k="info"]'); setTimeout(() => click('.cd-act[data-act="play"]'), 300); return; }
   if (c === "close") { const o = document.querySelector(".modal-overlay"); if (o) o.click(); }
@@ -19025,7 +19047,7 @@ function DemoLayer() {
   return e(React.Fragment, null,
     !hidden && e("div", { className: "demo-bar", role: "toolbar", "aria-label": "Demo" },
       e("button", { onClick: () => go(step - 1), disabled: step === 0, "aria-label": "Înapoi" }, "‹"),
-      e("span", { className: "demo-n" }, e("i", { className: "demo-dot" + (conn ? " on" : "") }), step + 1, "/", DEMO_STEPS.length, " · v5"),
+      e("span", { className: "demo-n" }, e("i", { className: "demo-dot" + (conn ? " on" : "") }), step + 1, "/", DEMO_STEPS.length, " · v6"),
       e("span", { className: "demo-t" }, (lang === "en" ? s.en : s.ro) + " · " + DEMO_WHO[s.who]),
       e("span", { className: "demo-c" + (over ? " over" : "") }, demoClock(stepMs), " · ", demoClock(runMs), "/", demoClock(DEMO_TOTAL)),
       e("button", { onClick: () => go(step + 1), disabled: step === DEMO_STEPS.length - 1, "aria-label": "Înainte" }, "›")),
