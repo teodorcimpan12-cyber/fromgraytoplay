@@ -18,7 +18,7 @@ const CHROME = [
 ].find(p => p && existsSync(p));
 if (!CHROME) { console.log("⚠ smoke: Chrome not found — skipped (the Netlify gate still runs)."); process.exit(0); }
 
-const PAGES = ["home", "courts", "reports", "petition", "community", "impact", "help", "about", "profile"];
+const PAGES = ["home", "courts", "reports", "petition", "community", "impact", "help", "association", "about", "profile"];
 const CITIES = [["tgm", "c1"], ["sibiu", "sb1"]];
 const IGNORE = [/ERR_|net::|Failed to load resource|vibrate/i];
 const TYPES = { ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript", ".json": "application/json", ".png": "image/png", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".css": "text/css", ".webp": "image/webp" };
