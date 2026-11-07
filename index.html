@@ -812,6 +812,51 @@ body:has(.demo-bar) .mascot{bottom:calc(58px + env(safe-area-inset-bottom))}
 .demo-rm-btns button.go{background:var(--green)}
 .demo-rm-btns button:disabled{opacity:.3}
 .demo-rm-reset{background:none;border:1px solid color-mix(in srgb,var(--white) 30%,transparent);color:inherit;border-radius:999px;padding:.55rem;cursor:pointer}
+.demo-rm-btns button{height:22vh;max-height:180px}
+.demo-rm-who{margin:0;font:700 1rem 'Space Mono',monospace;color:var(--coral)}
+.demo-rm-who b{font-size:1.35rem}
+.demo-rm-tabs{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
+.demo-rm-tabs button,.demo-rm-cats button,.demo-rm-steps button{border:1px solid color-mix(in srgb,var(--white) 25%,transparent);background:none;color:inherit;border-radius:999px;padding:.55rem .7rem;font:700 .85rem 'Space Mono',monospace;cursor:pointer}
+.demo-rm-tabs button.on,.demo-rm-cats button.on,.demo-rm-steps button.on{background:var(--green);border-color:var(--green);color:var(--dark)}
+.demo-rm-steps,.demo-rm-cats{display:flex;flex-wrap:wrap;gap:.35rem}
+.demo-rm-steps button{font-size:.72rem;padding:.4rem .6rem}
+.demo-rm-onscreen{display:flex;align-items:center;gap:.6rem;padding:.6rem .8rem;border-radius:12px;background:color-mix(in srgb,var(--coral) 22%,transparent);font-size:.85rem}
+.demo-rm-onscreen span{flex:1}
+.demo-rm-onscreen button,.demo-rm-show{border:0;border-radius:999px;padding:.55rem 1rem;font-weight:800;background:var(--coral);color:var(--dark);cursor:pointer}
+.demo-rm-show{background:var(--green);margin-top:.4rem}
+.demo-rm-show.off{background:var(--coral)}
+.demo-rm-find{width:100%;padding:.7rem .9rem;border-radius:12px;border:1px solid color-mix(in srgb,var(--white) 25%,transparent);background:color-mix(in srgb,var(--white) 8%,transparent);color:inherit;font-size:16px}
+.demo-rm-qa{display:flex;flex-direction:column;gap:.5rem;padding-bottom:2rem}
+.demo-rm-q{border-radius:12px;background:color-mix(in srgb,var(--white) 7%,transparent)}
+.demo-rm-q.open{background:color-mix(in srgb,var(--white) 12%,transparent)}
+.demo-rm-qh{display:flex;flex-direction:column;gap:.2rem;width:100%;text-align:left;background:none;border:0;color:inherit;padding:.8rem .9rem;cursor:pointer;font-size:1rem;line-height:1.3}
+.demo-rm-qc{font:700 .68rem 'Space Mono',monospace;color:var(--green);text-transform:uppercase;letter-spacing:.04em}
+.demo-rm-qb{padding:0 .9rem .9rem}
+.demo-rm-qb p{margin:0;font-size:1.08rem;line-height:1.5}
+.demo-slide{position:fixed;inset:0;z-index:8900;display:grid;place-items:center;padding:clamp(1rem,4vw,3.5rem);background:#0B1020;color:#fff;animation:fadeIn .35s ease}
+.demo-slide::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 85% 10%,color-mix(in srgb,var(--green) 22%,transparent),transparent 70%),radial-gradient(50% 45% at 5% 95%,color-mix(in srgb,var(--coral) 16%,transparent),transparent 70%);pointer-events:none}
+.demo-slide-in{position:relative;width:min(1200px,100%);display:flex;flex-direction:column;gap:clamp(.8rem,2vh,1.6rem)}
+.demo-slide-k{margin:0;font:700 clamp(.85rem,1.4vw,1.15rem) 'Space Mono',monospace;color:var(--green);letter-spacing:.06em;text-transform:uppercase}
+.demo-slide-big{display:flex;align-items:baseline;gap:clamp(.8rem,2vw,1.6rem);flex-wrap:wrap}
+.demo-slide-big b{font:700 clamp(6rem,18vw,15rem)/0.85 'Space Mono',monospace;color:var(--coral)}
+.demo-slide-big span{font-size:clamp(1.4rem,3vw,2.6rem);font-weight:700;line-height:1.15;max-width:18ch}
+.demo-slide-h{margin:0;font:700 clamp(1.8rem,4.2vw,3.6rem)/1.08 'Space Mono',monospace;letter-spacing:-.01em;text-wrap:balance}
+.demo-slide-row{display:flex;gap:clamp(1rem,3vw,3rem);align-items:center}
+.demo-slide-ul{flex:1;margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:clamp(.5rem,1.4vh,1rem)}
+.demo-slide-ul li,.demo-slide-col li{position:relative;padding-left:1.4em;font-size:clamp(1.05rem,2.1vw,1.8rem);line-height:1.3}
+.demo-slide-ul li::before,.demo-slide-col li::before{content:"";position:absolute;left:0;top:.5em;width:.55em;height:.55em;border-radius:50%;background:var(--green)}
+.demo-slide-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.8rem,2vw,1.6rem)}
+.demo-slide-col{padding:clamp(.8rem,1.6vw,1.4rem);border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+.demo-slide-col:last-child{border-color:color-mix(in srgb,var(--green) 55%,transparent)}
+.demo-slide-col h3{margin:0 0 .7rem;font:700 clamp(.9rem,1.5vw,1.2rem) 'Space Mono',monospace;color:var(--green)}
+.demo-slide-col ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.55rem}
+.demo-slide-col li{font-size:clamp(.9rem,1.45vw,1.25rem)}
+.demo-slide-qr{text-align:center;background:#fff;color:#0B1020;border-radius:16px;padding:1rem}
+.demo-slide-qr img{display:block;width:min(260px,30vh);height:auto}
+.demo-slide-qr p{margin:.5rem 0 0;font:700 .85rem 'Space Mono',monospace}
+.demo-slide-src{margin:0;font-size:clamp(.75rem,1.1vw,.95rem);opacity:.55}
+@media(prefers-reduced-motion:no-preference){.demo-slide-ul li{animation:fadeIn .5s ease both;animation-delay:calc(.15s + var(--d) * .18s)}}
+@media(max-width:760px){.demo-slide-cols{grid-template-columns:1fr}.demo-slide-row{flex-direction:column;align-items:flex-start}}
 .sb-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.28);transition:transform .3s,background .3s}
 .sb-dot.on{background:var(--white);box-shadow:0 0 8px rgba(255,255,255,.9);transform:scale(1.15)}
 /* === Neighborhood Race === */
@@ -1841,6 +1886,34 @@ body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inse
   .cdx-pulse .cpulse-src{display:none}
 }
 @media(max-width:899px) and (max-height:700px){.cdx-pulse .cpulse-bot{display:none}.cdx-pulse .cpulse{padding-bottom:.2rem}}
+/* === Astra mobile shell (Astra Hack, Nov 2026) ===
+   Phones (<=600px or touch): static hero (HeroLite, no three.js), no aurora blur, ticker is a
+   still row you can swipe. */
+.h3d-lite,[data-theme="light"] .h3d-lite{height:auto;min-height:0;max-height:none;padding-top:4.2rem;background:linear-gradient(180deg,#141920,#252b33 55%,#161a20)}
+.h3d-lite .h3d-sky{display:none}
+.h3d-lite .h3d-kicker{padding-right:84px}
+.h3d-lite .h3d-title .g{color:#C7CBD1}
+.h3d-lite .h3d-overlay{position:relative;inset:auto}
+.h3d-lite .h3d-title .p{animation:none}
+.hl-report{display:flex;align-items:center;justify-content:center;gap:.55rem;width:100%;max-width:26rem;min-height:56px;margin:0 0 .8rem;padding:.9rem 1.2rem;border:none;border-radius:980px;background:var(--green);color:#fff;font-family:'Space Mono',monospace;font-weight:700;font-size:1.05rem;cursor:pointer;box-shadow:0 10px 28px rgba(16,185,129,.35);touch-action:manipulation;transition:transform .15s var(--ease-out,ease-out)}
+.hl-report:active{transform:scale(.97)}
+.hl-cta-vis .fab{opacity:0;pointer-events:none;transform:translateY(12px)}
+.fab{transition:opacity .2s,transform .2s,box-shadow .2s}
+.hamburger{min-width:44px;min-height:44px;display:none;align-items:center;justify-content:center}
+@media(max-width:1240px){.hamburger{display:inline-flex}}
+button.nav-cmd.nav-cmd-m{display:none;width:44px;height:44px;margin-left:auto;background:none;border:none}
+@media(max-width:1240px){button.nav-cmd.nav-cmd-m{display:inline-grid}}
+/* Popups: the page behind never scrolls; scrolling inside stops hard at the edges (no chaining). */
+body:has(.modal-overlay){overflow:hidden}
+.modal,.modal-overlay{overscroll-behavior:contain}
+.hl-ball{position:absolute;top:1.2rem;right:1.2rem;width:72px;height:72px;filter:drop-shadow(0 10px 18px rgba(0,0,0,.45));z-index:2}
+@media(max-width:600px),(pointer:coarse){
+  .aurora{display:none}
+  .ticker{animation:none;padding-right:1.2rem}
+  .ticker[aria-hidden]{display:none}
+  .ticker-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain;padding-left:1.2rem}
+  .ticker-wrap::-webkit-scrollbar{display:none}
+}
 </style>
 <script>(function(){try{var a=JSON.parse(localStorage.getItem("g2p_accent")||"null");if(a&&a.p){var r=document.documentElement;r.style.setProperty("--green",a.p);if(a.s)r.style.setProperty("--teal",a.s);r.classList.add("accent-on");}}catch(e){}})();</script>
 <script>(function(){try{var t=localStorage.getItem("g2p_theme")||(window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="dark"?"#0F172A":"#FFFFFF");}catch(e){}})();</script>
@@ -2717,6 +2790,8 @@ T.hu.dossierForCouncil = "A Marosvásárhelyi Helyi Tanács és Polgármesteri H
 /* === 3D hero strings (RO/EN/HU). HU draft — // TODO: HU review === */
 T.ro.heroKicker = "Târgu Mureş · teren multifuncțional";
 T.ro.heroSub = "O oază de joacă într-un oraş gri. Apasă Renovează şi priveşte transformarea.";
+T.ro.heroLiteSub = "Terenurile din cartiere stau gri. Vezi o problemă? Raportează-o în 30 de secunde.";
+T.ro.reportProblem = "Raportează o problemă";
 T.ro.heroRenovate = "▶ Renovează terenul"; T.ro.heroBack = "↺ Înapoi la gri"; T.ro.heroSign = "Semnează petiția";
 T.ro.heroHint = "trage pentru a roti · atinge mingile";
 T.ro.heroTRenov = "Se renovează terenul ✨"; T.ro.heroTGrey = "Înapoi la starea degradată"; T.ro.heroTTap = "Atinge afişele sau dulapul ℹ️";
@@ -2725,6 +2800,8 @@ T.ro.heroCatch = "🙌 Ce prindere! Echipa te vrea în teren."; T.ro.heroSeeOld 
 T.ro.heroBriefs = { flip: { title: "Flip the Court", body: "Renovăm terenurile sportive deja existente din cartierele periferice — nu construim de la zero, ci readucem la viață ce a fost lăsat în paragină: suprafață nouă, coşuri şi porți reparate, marcaje şi gard. Terenurile sunt alese prin votul locuitorilor şi finanțate transparent." }, canvas: { title: "Street Canvas", body: "Transformăm zidurile gri din jurul terenului în murale create de artişti locali, pe teme propuse şi votate de comunitate. Culoare în locul betonului crăpat — un spațiu pe care cartierul îl simte al lui." }, locker: { title: "Dulap inteligent", body: "Un cabinet cu echipament (mingi, plase, pompă) pe care îl deblochezi gratuit din aplicația Flip the Court. Împrumuți, te joci, returnezi — totul urmărit digital, ca terenul să rămână echipat fără supraveghetor." } };
 T.en.heroKicker = "Târgu Mureş · multi-use court";
 T.en.heroSub = "A pocket of play in a grey city. Tap Renovate and watch it transform.";
+T.en.heroLiteSub = "Neighbourhood courts are left grey. Seen a problem? Report it in 30 seconds.";
+T.en.reportProblem = "Report a problem";
 T.en.heroRenovate = "▶ Renovate the court"; T.en.heroBack = "↺ Back to grey"; T.en.heroSign = "Sign the petition";
 T.en.heroHint = "drag to rotate · tap the balls";
 T.en.heroTRenov = "Renovating the court ✨"; T.en.heroTGrey = "Back to the degraded state"; T.en.heroTTap = "Tap the posters or the locker ℹ️";
@@ -2733,6 +2810,8 @@ T.en.heroCatch = "🙌 Great catch! The team wants you on court."; T.en.heroSeeO
 T.en.heroBriefs = { flip: { title: "Flip the Court", body: "We renovate the sports courts that already exist in the outer neighbourhoods — we don't build from scratch, we bring back to life what was left to decay: new surface, repaired hoops and goals, fresh markings and a fence. Courts are chosen by residents' vote and funded transparently." }, canvas: { title: "Street Canvas", body: "We turn the grey walls around the court into murals made by local artists, on themes proposed and voted by the community. Colour instead of cracked concrete — a space the neighbourhood feels is its own." }, locker: { title: "Smart locker", body: "A cabinet with gear (balls, nets, pump) you unlock for free from the Flip the Court app. Borrow, play, return — all tracked digitally, so the court stays equipped without an attendant." } };
 T.hu.heroKicker = "Marosvásárhely · multifunkciós pálya"; // TODO: HU review
 T.hu.heroSub = "Egy játéksziget a szürke városban. Nyomd meg a Felújítás gombot, és nézd a változást.";
+T.hu.heroLiteSub = "A lakótelepi pályák szürkék maradnak. Láttál egy hibát? Jelentsd 30 másodperc alatt."; // TODO: HU review
+T.hu.reportProblem = "Hiba bejelentése"; // TODO: HU review
 T.hu.heroRenovate = "▶ Pálya felújítása"; T.hu.heroBack = "↺ Vissza a szürkéhez"; T.hu.heroSign = "Aláírom a petíciót";
 T.hu.heroHint = "húzd az elforgatáshoz · érintsd a labdákat";
 T.hu.heroTRenov = "A pálya felújítása ✨"; T.hu.heroTGrey = "Vissza a leromlott állapothoz"; T.hu.heroTTap = "Érintsd a plakátokat vagy a szekrényt ℹ️";
@@ -5829,7 +5908,11 @@ function haversineKm(lat1, lng1, lat2, lng2) {
 
 /* Relative time label ("acum 2h" / "2h ago" / "2 órája"). */
 function relTime(ts, lang) {
-  var diff = Math.max(0, Date.now() - (Number(ts) || 0));
+  // Timestamps come as ms numbers, ISO strings (older reports) or seconds. Unknown -> "".
+  var n = typeof ts === "number" ? ts : (Number(ts) || Date.parse(ts || "") || 0);
+  if (n > 0 && n < 1e11) n *= 1000;
+  if (!n) return "";
+  var diff = Math.max(0, Date.now() - n);
   var mins = Math.floor(diff / 60000);
   var hrs = Math.floor(diff / 3600000);
   var days = Math.floor(diff / 86400000);
@@ -7561,7 +7644,7 @@ function Navbar() {
     React.createElement("button", { role: "menuitem", onClick: () => { setAcct(false); openChangePw(); } }, "\uD83D\uDD11 " + L3("Schimbă parola", "Change password", "Jelszó módosítása")),
     React.createElement("button", { role: "menuitem", style: { color: "var(--red)" }, onClick: () => { setAcct(false); signOut(); } }, "\u21AA " + L3("Deconectare", "Sign out", "Kijelentkezés")))
   ),
-  /*#__PURE__*/React.createElement("button", {
+  isAdmin && /*#__PURE__*/React.createElement("button", {
     onClick: () => { location.hash = "#/admin"; },
     title: "Admin Panel",
     style: { display:"flex", alignItems:"center", height:28, padding:"0 .3rem", opacity: isAdmin ? 1 : 0.3, background:"none", border:"none", cursor:"pointer", color: isAdmin ? "var(--coral)" : "var(--textSec)", transition:"all .18s" }
@@ -7576,6 +7659,8 @@ function Navbar() {
   }, React.createElement("svg", { className: "nav-glass", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2.4, strokeLinecap: "round", "aria-hidden": "true" },
     React.createElement("circle", { cx: 10.5, cy: 10.5, r: 6.5 }), React.createElement("path", { d: "M15.5 15.5L21 21" }))), /*#__PURE__*/React.createElement("button", {
     className: "hamburger",
+    "aria-label": lang === "en" ? "Open menu" : lang === "hu" ? "Men\u00fc megnyit\u00e1sa" : "Deschide meniul",
+    "aria-expanded": mob ? "true" : "false",
     onClick: () => setMob(true)
   }, "\u2630"))),
   showNotif && /*#__PURE__*/React.createElement(NotifPanel, { notif: notif, onClose: () => setShowNotif(false) }),
@@ -7604,7 +7689,7 @@ function Navbar() {
   }, "🔔 " + (unreadCount ? unreadCount + " " : "") + t.notifications), firebaseUser && React.createElement("button", {
     className: "btn btn-sm btn-outline",
     onClick: () => { setMob(false); setPage("profile"); }
-  }, (isAdmin ? "\uD83D\uDC51 " : isSherif ? "\uD83D\uDC6E " : "\uD83D\uDC64 ") + acctName.split(/[ @]/)[0].substring(0, 14)), firebaseUser && React.createElement("button", {
+  }, (isAdmin ? "\uD83D\uDC51 " : isSherif ? "\uD83D\uDC6E " : "\uD83D\uDC64 ") + acctName.split(/[ @]/)[0].substring(0, 14)), isAdmin && React.createElement("button", {
     className: "btn btn-sm btn-outline",
     onClick: () => { setMob(false); openChangePw(); }
   }, "\uD83D\uDD11 " + L3("Parolă", "Password", "Jelszó")), authReady && React.createElement("button", {
@@ -9123,6 +9208,35 @@ function loadThree() {
   });
   return _g2pThreeP;
 }
+/* Astra mobile shell: phones (narrow or touch) get a static hero, no three.js, no blur/particles. */
+function isPhone() {
+  try { return window.matchMedia("(max-width:600px), (pointer:coarse)").matches; } catch (e) { return false; }
+}
+function HeroLite() {
+  var app = useApp(), t = app.t, setPage = app.setPage;
+  var ctaRef = useRef(null);
+  // While the big report button is on screen the floating .fab would duplicate it: hide the fab.
+  useEffect(function () {
+    var el = ctaRef.current, b = document.body;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    var io = new IntersectionObserver(function (es) { b.classList.toggle("hl-cta-vis", es[0].isIntersecting); });
+    io.observe(el);
+    return function () { io.disconnect(); b.classList.remove("hl-cta-vis"); };
+  }, []);
+  return React.createElement("section", { className: "h3d-hero h3d-lite" },
+    React.createElement("div", { className: "h3d-sky", "aria-hidden": "true" }),
+    React.createElement("svg", { className: "hl-ball", viewBox: "0 0 100 100", "aria-hidden": "true" },
+      React.createElement("circle", { cx: 50, cy: 50, r: 46, fill: "#E8762B" }),
+      React.createElement("path", { d: "M4 50h92M50 4v92M17 17c18 18 18 48 0 66M83 17c-18 18-18 48 0 66", fill: "none", stroke: "#1A1A2E", strokeWidth: 3.5, strokeLinecap: "round" })),
+    React.createElement("div", { className: "h3d-overlay" },
+      React.createElement("div", { className: "h3d-kicker" }, t.heroKicker),
+      React.createElement("div", { className: "h3d-title" }, React.createElement("span", { className: "g" }, "From Grey"), React.createElement("br", null), "to ", React.createElement("span", { className: "p" }, "Play")),
+      React.createElement("p", { className: "h3d-sub" }, t.heroLiteSub),
+      React.createElement("button", { className: "hl-report", ref: ctaRef, onClick: function () { location.hash = "raporteaza"; } },
+        React.createElement("span", { "aria-hidden": "true" }, "\uD83D\uDCF8"), t.reportProblem),
+      React.createElement("div", { className: "h3d-cta" },
+        React.createElement("button", { className: "h3d-btn h3d-btn-ghost", onClick: function () { setPage("petition"); } }, t.heroSign))));
+}
 var HERO_ICON = { flip: "\uD83C\uDFC0", canvas: "\uD83C\uDFA8", locker: "\uD83D\uDCF2" };
 function Hero3D() {
   var app = useApp(), t = app.t, setPage = app.setPage, toast = app.toast;
@@ -10047,7 +10161,7 @@ function HomePage() {
     className: "hero-title shimmer-text"
   }, lang === "ro" ? "Terenurile tale contează" : "Your courts matter"), /*#__PURE__*/React.createElement("p", {
     style: {
-      color: "#9CA3AF",
+      color: "#C7CBD1",
       maxWidth: 560
     }
   }, lang === "ro" ? "Documentăm inegalitatea infrastructurii sportive din " + cityName(lang) + ". Semnează petiția, raportează terenuri degradate." : "Documenting sports infrastructure inequality in " + cityName(lang) + ". Sign the petition, report degraded courts.")),/*#__PURE__*/React.createElement("div", {
@@ -10510,6 +10624,7 @@ function CourtDetail({
       act("share", "line", () => shareCourt(c, t, toast), "🔗", t.shareCourt),
       c.category !== "gym" && act("poster", "line", () => setShowWanted(true), "🪧", L3("Afiș", "Poster", "Plakát")),
       c.category !== "gym" && act("letter", "line", () => setShowLetter(true), "✉️", L3("Scrisoare AI", "AI letter", "AI-levél"))),
+    React.createElement(CourtResponder, { court: c }),
     React.createElement(CourtSourcesCard, { court: c }),
     React.createElement(AiCourtCard, { court: c, onLetter: c.category !== "gym" ? () => setShowLetter(true) : null }),
     React.createElement("h4", { className: "mb-1 mt-2" }, "Progress"),
@@ -11587,10 +11702,10 @@ function LetterModal({
       if (lang === "hu") return `CÍMZETT: ${CITY_HALL.hu}\n${CITY_HALL.address}\n\nAlulírott ${n || "___"}, lakcím: ${a || areaLabel},\n\na(z) ${areaLabel} környék lakójaként kérem a város sportpályái állapotának nyilvános felmérését, különösen a(z) "${court.name}" pályáét.\n${why ? "\nMiért fontos ez nekem: " + why + "\n" : ""}\nHáttér:\n- ${nC} nyilvános sportpálya szerepel az OpenStreetMap térképen (${cityName("hu")}); állapotukat hivatalosan nem teszik közzé\n- ${total} polgár írta alá az online petíciót (${web})\n\nKérem:\n1. Minden pálya állapotának és karbantartási tervének közzétételét\n2. A leromlott pályák felvételét a beruházási költségvetésbe\n\nTisztelettel,\n${n || "___"}\nDátum: ${new Date().toLocaleDateString("hu-HU")}`;
       return `TO: ${CITY_HALL.en}\n${CITY_HALL.address}\n\nI, ${n || "___"}, residing at ${a || areaLabel},\n\nas a resident of the ${areaLabel} area, I request a public audit of the condition of the city's sports courts, in particular "${court.name}".\n${why ? "\nWhy this matters to me: " + why + "\n" : ""}\nContext:\n- ${nC} public sports courts are mapped in OpenStreetMap for ${cityName("en")}; their condition is not officially published\n- ${total} citizens signed the online petition (${web})\n\nI request:\n1. Publication of the condition and maintenance schedule of each court\n2. Inclusion of degraded courts in the investment budget\n\nSincerely,\n${n || "___"}\nDate: ${new Date().toLocaleDateString("en-GB")}`;
     }
-    if (lang === "ro") return `CĂTRE: Consiliul Local și Primăria Municipiului Târgu Mureș\n\nSubsemnatul/a ${n || "___"}, domiciliat/ă în ${a || areaLabel},\n\nÎn calitate de locuitor al zonei ${areaLabel}, solicit renovarea terenurilor sportive din cartierele periferice, în special "${court.name}".\n${why ? "\nDe ce contează pentru mine: " + why + "\n" : ""}\nArgumente:\n- ${total} cetățeni au semnat petiția online (${web})\n- 12 din 15 rezidenți consideră terenurile prea degradate\n- 5.000.000 lei înghețați printr-o eroare administrativă\n- 0% dintre terenurile periferice au fost renovate\n- Investiția se încadrează în Strategia Integrată de Dezvoltare Urbană (SIDU)\n\nPropuneri concrete:\n1. Flip-the-Court — renovarea terenurilor existente\n2. Street Canvas — mural comunitar ales prin vot\n\nCu stimă,\n${n || "___"}\nData: ${new Date().toLocaleDateString("ro-RO")}`;
+    if (lang === "ro") return `CĂTRE: Consiliul Local și Primăria Municipiului Târgu Mureș\n\nSubsemnatul/a ${n || "___"}, domiciliat/ă în ${a || areaLabel},\n\nÎn calitate de locuitor al zonei ${areaLabel}, solicit renovarea terenurilor sportive din cartierele periferice, în special "${court.name}".\n${why ? "\nDe ce contează pentru mine: " + why + "\n" : ""}\nArgumente:\n- ${total} cetățeni au semnat petiția online (${web})\n- 12 din 15 rezidenți întrebați într-un sondaj informal nu folosesc terenul cel mai apropiat, pentru că e prea degradat\n- Răspunsul CSM Târgu Mureș nr. 2692/03.11.2026: 1,86 mil. lei investiți în 4 ani, din care 49,5% pentru omologarea Liga 3 și platforma Sălii Polivalente; bugetul CSM a crescut cu 70%, iar cheltuielile cu terenurile au scăzut cu 65% (2022-2025)\n- Fișa terenului, cu poze și sesizări: ${SITE}/#court-${court.id}\n\nPropuneri concrete:\n1. Flip-the-Court — renovarea terenurilor existente\n2. Street Canvas — mural comunitar ales prin vot\n\nCu stimă,\n${n || "___"}\nData: ${new Date().toLocaleDateString("ro-RO")}`;
     // TODO: HU review — draft translation, verify with a native speaker
-    if (lang === "hu") return `CÍMZETT: Marosvásárhely Helyi Tanácsa és Polgármesteri Hivatala\n\nAlulírott ${n || "___"}, lakcím: ${a || areaLabel},\n\na(z) ${areaLabel} környék lakójaként kérem a peremkerületi sportpályák felújítását, különösen a(z) "${court.name}" pályáét.\n${why ? "\nMiért fontos ez nekem: " + why + "\n" : ""}\nÉrvek:\n- ${total} polgár írta alá az online petíciót (${web})\n- 15 lakosból 12 szerint a pályák túl rossz állapotúak\n- 5.000.000 lej befagyasztva adminisztratív hiba miatt\n- a peremkerületi pályák 0%-a lett felújítva\n- A beruházás illeszkedik az Integrált Városfejlesztési Stratégiához (SIDU)\n\nKonkrét javaslatok:\n1. Flip-the-Court — meglévő pályák felújítása\n2. Street Canvas — közösségi szavazással választott falfestmény\n\nTisztelettel,\n${n || "___"}\nDátum: ${new Date().toLocaleDateString("hu-HU")}`;
-    return `TO: Târgu Mureș City Council and City Hall\n\nI, ${n || "___"}, residing at ${a || areaLabel},\n\nas a resident of the ${areaLabel} area, I request the renovation of peripheral sports courts, in particular "${court.name}".\n${why ? "\nWhy this matters to me: " + why + "\n" : ""}\nArguments:\n- ${total} citizens signed the online petition (${web})\n- 12 of 15 residents consider the courts too degraded\n- 5,000,000 lei frozen by an administrative error\n- 0% of peripheral courts have been renovated\n- This investment fits the Integrated Urban Development Strategy (SIDU)\n\nConcrete proposals:\n1. Flip-the-Court — renovate existing courts\n2. Street Canvas — community-voted mural\n\nSincerely,\n${n || "___"}\nDate: ${new Date().toLocaleDateString("en-GB")}`;
+    if (lang === "hu") return `CÍMZETT: Marosvásárhely Helyi Tanácsa és Polgármesteri Hivatala\n\nAlulírott ${n || "___"}, lakcím: ${a || areaLabel},\n\na(z) ${areaLabel} környék lakójaként kérem a peremkerületi sportpályák felújítását, különösen a(z) "${court.name}" pályáét.\n${why ? "\nMiért fontos ez nekem: " + why + "\n" : ""}\nÉrvek:\n- ${total} polgár írta alá az online petíciót (${web})\n- Egy informális felmérésben 15 megkérdezett lakosból 12 nem használja a legközelebbi pályát, mert túl rossz állapotú\n- A CSM Marosvásárhely 2692/03.11.2026 sz. válasza: 4 év alatt 1,86 millió lej beruházás, ennek 49,5%-a a Liga 3 homologálására és a Sportcsarnok platformjára; a CSM költségvetése 70%-kal nőtt, a pályákra fordított kiadás 65%-kal csökkent (2022-2025)\n- A pálya adatlapja fotókkal és bejelentésekkel: ${SITE}/#court-${court.id}\n\nKonkrét javaslatok:\n1. Flip-the-Court — meglévő pályák felújítása\n2. Street Canvas — közösségi szavazással választott falfestmény\n\nTisztelettel,\n${n || "___"}\nDátum: ${new Date().toLocaleDateString("hu-HU")}`;
+    return `TO: Târgu Mureș City Council and City Hall\n\nI, ${n || "___"}, residing at ${a || areaLabel},\n\nas a resident of the ${areaLabel} area, I request the renovation of peripheral sports courts, in particular "${court.name}".\n${why ? "\nWhy this matters to me: " + why + "\n" : ""}\nArguments:\n- ${total} citizens signed the online petition (${web})\n- In an informal poll, 12 of 15 residents asked do not use their nearest court because it is too degraded\n- CSM Târgu Mureș reply no. 2692/03.11.2026: 1.86M lei invested in 4 years, 49.5% of it on Liga 3 homologation and the Sala Polivalentă platform; the CSM budget rose 70% while spending on the grounds fell 65% (2022-2025)\n- The court's page, with photos and reports: ${SITE}/#court-${court.id}\n\nConcrete proposals:\n1. Flip-the-Court — renovate existing courts\n2. Street Canvas — community-voted mural\n\nSincerely,\n${n || "___"}\nDate: ${new Date().toLocaleDateString("en-GB")}`;
   };
   const dl = () => {
     const text = buildLetter();
@@ -11641,8 +11756,13 @@ function LetterModal({
   };
   const email = () => {
     const subj = lang === "ro" ? "Renovarea terenurilor sportive — " + cityName(lang) : lang === "hu" ? "Sportpályák felújítása — " + cityName(lang) : "Renovation of sports courts — " + cityName(lang);
-    window.location.href = `mailto:${ACTIVE_CITY !== "tgm" ? CITY_HALL.mail : ""}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(buildLetter())}`;
+    window.location.href = `mailto:${CITY_HALL.mail}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(buildLetter())}`;
     toast(t.success);
+  };
+  // Fallback when no mail app opens: copy the letter text.
+  const copyText = () => {
+    const txt = buildLetter();
+    (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(() => toast(lang === "en" ? "Text copied" : lang === "hu" ? "Szöveg másolva" : "Text copiat")).catch(() => toast(t.error)); // TODO: HU review
   };
   return /*#__PURE__*/React.createElement("div", {
     className: "modal-overlay",
@@ -11688,6 +11808,9 @@ function LetterModal({
     className: "btn btn-green",
     onClick: email
   }, "✉️ ", t.emailLetter), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline",
+    onClick: copyText
+  }, "📋 ", lang === "en" ? "Copy the text" : lang === "hu" ? "Szöveg másolása" : "Copiază textul"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline",
     onClick: dl
   }, "📥 ", t.downloadPDF), /*#__PURE__*/React.createElement("button", {
@@ -12956,6 +13079,63 @@ function ImpactPage() {
 }
 /* Impact → ✉️: letters sent from the site (letters/: city, court, legal basis, date — no personal data),
    with the legal answer deadline counting down, and "City Hall replied" logging. */
+/* Legal answer clock, shared by LettersTracker, RequestTracker and the court page.
+   start = the date of a real registration/send; never a guess. */
+function deadlineState(startIso, days, answered, now) {
+  const start = Date.parse(startIso); now = now || Date.now();
+  if (!isFinite(start)) return null;
+  const due = start + days * 864e5;
+  return { start, due, left: Math.ceil((due - now) / 864e5), pct: Math.max(0, Math.min(100, (now - start) / (due - start) * 100)), st: answered ? "done" : now <= due ? "wait" : "late" };
+}
+// Who manages a court: c.admin in cityhall | school | private; anything else is shown as unknown (never guessed).
+const COURT_ADMIN = { cityhall: ["Primăria", "City Hall", "Városháza"], school: ["Școală", "School", "Iskola"], private: ["Privat", "Private", "Magán"], unknown: ["Necunoscut", "Unknown", "Ismeretlen"] }; // TODO: HU review
+// Our real Law 544/2001 requests, extended to 30 days by the city halls; answers due 25.11.2026.
+const CITY_544 = { tgm: { to: "Primăria Târgu Mureș", no: "51941/04.11.2026", due: "2026-11-25" }, sibiu: { to: "Primăria Sibiu", no: "89234/03.11.2026", due: "2026-11-25" } };
+// "Cine răspunde" on the court page: administrator, the 30-day clock (only from a real send), report history.
+function CourtResponder({ court: c }) {
+  const { t, lang } = useApp();
+  const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
+  const reports = useFirebase("reports");
+  const e = React.createElement;
+  const loc = lang === "en" ? "en-GB" : lang === "hu" ? "hu-HU" : "ro-RO";
+  const day = ms => new Date(ms).toLocaleDateString(loc, { day: "numeric", month: "short", year: "numeric" });
+  const adm = COURT_ADMIN[c.admin] ? c.admin : "unknown";
+  const ai = lang === "en" ? 1 : lang === "hu" ? 2 : 0;
+  const reps = reports ? Object.entries(reports).map(([id, r]) => Object.assign({ id }, r)).filter(r => r.courtId === c.id && r.category !== "condition")
+    .sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || ""))) : [];
+  // The clock starts only from a registration stamp entered by the admin (reports/*/cityHall.sentAt).
+  const sent = reps.filter(r => r.cityHall && r.cityHall.sentAt).sort((a, b) => String(b.cityHall.sentAt).localeCompare(String(a.cityHall.sentAt)))[0];
+  const ds = sent && deadlineState(sent.cityHall.sentAt, 30, !!sent.official || sent.status === "resolved");
+  const req = CITY_544[c.city || "tgm"], reqDone = req && (CITY_REQUESTS.find(r => r.city === (c.city || "tgm")) || {}).answeredAt;
+  const reqLate = req && !reqDone && Date.now() > Date.parse(req.due + "T23:59:59");
+  const catL = k => ({ surface: t.catSurface, hoop: t.catHoop, fence: t.catFence, lighting: t.catLighting, trash: t.catTrash, safety: t.catSafety, other: t.catOther }[k] || k);
+  const stL = k => ({ received: L3("primită", "received", "beérkezett"), analyzing: L3("în analiză", "being checked", "vizsgálat alatt"), planned: L3("planificată", "planned", "tervezett"), resolved: L3("rezolvată", "resolved", "megoldva") }[k] || k || "");
+  const muted = { color: "var(--textSec)" };
+  return e("div", { className: "card mb-2" },
+    e("h3", { className: "mb-1" }, "🏛️ ", L3("Cine răspunde", "Who answers", "Ki felel")),
+    e("p", { className: "text-sm mb-1" }, L3("Administrator: ", "Manager: ", "Kezelő: "), e("b", null, COURT_ADMIN[adm][ai]),
+      adm === "unknown" && e("span", { className: "text-xs", style: muted }, " · " + L3("încă neverificat, nu ghicim", "not verified yet, we don't guess", "még nincs ellenőrizve, nem találgatunk"))),
+    !ds && e("p", { className: "text-sm mb-1", style: muted }, "⏱️ ", L3("Nicio trimitere oficială înregistrată pentru acest teren. Ceasul de 30 de zile pornește când o sesizare e înregistrată la Primărie.", "No official submission recorded for this court. The 30-day clock starts when a report is registered at City Hall.", "Ehhez a pályához még nincs hivatalos beadvány rögzítve. A 30 napos óra akkor indul, amikor egy bejelentést iktatnak a Városházán.")),
+    ds && e("div", { className: "mb-1" },
+      e("p", { className: "text-sm" }, "📨 ", L3("Trimis la Primărie: ", "Sent to City Hall: ", "Elküldve a Városházának: "), e("b", null, day(ds.start)), sent.cityHall.regNo ? " · nr. " + sent.cityHall.regNo : "",
+        " · ", L3("termen: ", "deadline: ", "határidő: "), e("b", null, day(ds.due))),
+      ds.st === "wait" && e("div", { role: "progressbar", "aria-valuenow": Math.round(ds.pct), "aria-valuemin": 0, "aria-valuemax": 100, style: { height: 8, borderRadius: 8, background: "var(--border)", overflow: "hidden", margin: ".35rem 0" } },
+        e("i", { style: { display: "block", height: "100%", width: ds.pct + "%", background: "var(--green)" } })),
+      e("p", { className: "text-sm", style: { fontWeight: 600, color: ds.st === "late" ? "var(--coral)" : "var(--green)" } },
+        ds.st === "done" ? "✓ " + L3("Răspuns înregistrat", "Answer recorded", "Válasz rögzítve")
+          : ds.st === "wait" ? L3("Mai sunt " + Math.max(0, ds.left) + " zile", Math.max(0, ds.left) + " days left", "Még " + Math.max(0, ds.left) + " nap")
+          : L3("Termenul a trecut: fără răspuns înregistrat", "Deadline passed: no answer recorded", "A határidő lejárt: nincs rögzített válasz"))),
+    req && e("p", { className: "text-xs mb-1", style: muted }, "📄 ", L3("Cererea noastră (Legea 544/2001) către ", "Our request (Law 544/2001) to ", "Kérelmünk (544/2001-es törvény): ") + req.to + ", nr. " + req.no + " · ",
+      reqDone ? L3("răspuns primit", "answer received", "válasz megérkezett") : reqLate ? L3("fără răspuns înregistrat", "no answer recorded", "nincs rögzített válasz") : L3("răspuns așteptat până la 25.11.2026", "answer due by 25.11.2026", "válasz várható 2026.11.25-ig")),
+    e("h4", { className: "text-sm mb-1", style: { marginTop: ".6rem" } }, L3("Istoricul sesizărilor", "Report history", "Bejelentések előzményei"), reps.length ? " (" + reps.length + ")" : ""),
+    !reps.length && e("p", { className: "text-xs", style: muted }, reports ? L3("Încă nicio sesizare pentru acest teren.", "No reports for this court yet.", "Ehhez a pályához még nincs bejelentés.") : "…"),
+    reps.slice(0, 6).map(r => e("div", { key: r.id, className: "text-xs", style: { display: "flex", gap: ".5rem", flexWrap: "wrap", padding: ".3rem 0", borderTop: "1px solid var(--border)" } },
+      e("span", { style: muted }, r.createdAt ? day(Date.parse(r.createdAt)) : ""),
+      e("b", null, catL(r.category)),
+      e("span", null, stL(r.status)),
+      r.cityHall && r.cityHall.sentAt && e("span", null, "📨"),
+      r.demo && e("span", { className: "badge", style: { fontSize: ".65rem" } }, "demo"))));
+}
 function LettersTracker() {
   const { lang, toast } = useApp();
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
@@ -12967,7 +13147,7 @@ function LettersTracker() {
   const byCourt = {}; list.forEach(x => { byCourt[x.courtId] = (byCourt[x.courtId] || 0) + 1; });
   const top = Object.entries(byCourt).sort((a, b) => b[1] - a[1]).slice(0, 5);
   const nameOf = id => (COURTS_ALL.find(c => c.id === id) || { name: id }).name;
-  const daysLeft = x => { const b = LETTER_BASIS[x.basis] || LETTER_BASIS.og27; return Math.ceil((Date.parse(x.sentAt) + b.days * 864e5 - Date.now()) / 864e5); };
+  const daysLeft = x => { const b = LETTER_BASIS[x.basis] || LETTER_BASIS.og27, ds = deadlineState(x.sentAt, b.days); return ds ? ds.left : 0; };
   const save = x => {
     const r = { at: new Date().toISOString() }; if (regNo.trim()) r.regNo = regNo.trim().slice(0, 40);
     db.ref("letters/" + x.id + "/reply").set(r).then(() => { logActivity("cityReply", "", x.courtId); toast(L3("Mulțumim! Răspunsul e notat.", "Thanks! The reply is logged.", "Köszönjük! A válasz rögzítve.")); setReplying(null); setRegNo(""); })
@@ -13544,7 +13724,7 @@ function CityHallGuide() {
     var m544 = "mailto:" + CITY_HALL.mail + "?subject=" + encodeURIComponent("Cerere de acces la informatii de interes public - Legea 544/2001 - terenuri sportive") + "&body=" + encodeURIComponent("Stimata doamna / Stimate domn,\n\nIn baza Legii nr. 544/2001, va solicit in format electronic:\n1. Bugetul pe sport si spatii publice pentru anul curent (capitolul 67)\n2. Lista terenurilor sportive publice administrate de municipiu si starea lor\n3. Lista proiectelor de investitii din ultimii 3 ani privind terenurile sportive\n\nTermenul legal de raspuns este de 10 zile lucratoare.\n\nCu respect,\n[numele tau]");
     var mPet = "mailto:" + CITY_HALL.mail + "?subject=" + encodeURIComponent("Petitie - starea terenurilor sportive publice (OG 27/2002)") + "&body=" + encodeURIComponent("Catre Primarul si Consiliul Local al Municipiului " + cityRo + ",\n\nIn baza OG 27/2002, solicit:\n1. Publicarea starii si a programului de intretinere pentru fiecare teren sportiv public\n2. Includerea terenurilor degradate in bugetul de investitii\n\nDate: fromgreytoplay.netlify.app/?c=" + ACTIVE_CITY + "\n\nAstept raspuns motivat in termenul legal de 30 de zile.\n\nCu respect,\n[numele tau]");
   } else {
-  var m544 = "mailto:infopublic@tirgumures.ro?subject=" + encodeURIComponent("Cerere de acces la informatii de interes public - Legea 544/2001 - terenuri sportive") + "&body=" + encodeURIComponent("Stimata doamna / Stimate domn,\n\nIn baza Legii nr. 544/2001, va solicit in format electronic:\n1. Bugetul detaliat pe sport si spatii publice 2025 (capitolul 67)\n2. Lista proiectelor de investitii 2022-2025 privind terenurile sportive\n3. Extrasul din SIDU 2021-2030 privind infrastructura sportiva\n4. Hotararile de Consiliu Local 2022-2025 privind terenurile sportive\n5. Stadiul terenului multisport din str. Plopilor (HCL ian. 2025)\n\nTermenul legal de raspuns este de 10 zile lucratoare.\n\nCu respect,\n[numele tau]");
+  var m544 = "mailto:primaria@tirgumures.ro?subject=" + encodeURIComponent("Cerere de acces la informatii de interes public - Legea 544/2001 - terenuri sportive") + "&body=" + encodeURIComponent("Stimata doamna / Stimate domn,\n\nIn baza Legii nr. 544/2001, va solicit in format electronic:\n1. Bugetul detaliat pe sport si spatii publice 2025 (capitolul 67)\n2. Lista proiectelor de investitii 2022-2025 privind terenurile sportive\n3. Extrasul din SIDU 2021-2030 privind infrastructura sportiva\n4. Hotararile de Consiliu Local 2022-2025 privind terenurile sportive\n5. Stadiul terenului multisport din str. Plopilor (HCL ian. 2025)\n\nTermenul legal de raspuns este de 10 zile lucratoare.\n\nCu respect,\n[numele tau]");
   var mPet = "mailto:primaria@tirgumures.ro?subject=" + encodeURIComponent("Petitie - renovarea terenurilor sportive din cartierele periferice (OG 27/2002)") + "&body=" + encodeURIComponent("Catre Primarul si Consiliul Local al Municipiului Targu Mures,\n\nIn baza OG 27/2002, solicit:\n1. Includerea in bugetul 2026 a minimum 500.000 lei pentru reabilitarea a minimum 3 terenuri sportive din cartierele periferice (Tudor Vladimirescu, Unirii, Dambu Pietros)\n2. O intalnire de lucru cu Directia Tehnica si Serviciul Sport in termen de 30 de zile\n3. Includerea terenurilor de cartier in actualizarea SIDU 2021-2030\n4. Raport anual de transparenta privind investitiile sportive pe cartiere\n\nDate complete: fromgreytoplay.netlify.app\n\nAstept raspuns motivat in termenul legal de 30 de zile.\n\nCu respect,\n[numele tau]");
   }
   return React.createElement("div", { className: "mb-2" },
@@ -14448,7 +14628,7 @@ function HelpPage() {
           React.createElement("h3", { className: "mb-1" }, "🏛️ " + (lang === "ro" ? "Primăria " + cityName(lang) : cityName(lang) + " City Hall")),
           React.createElement("p", { className: "text-sm" }, "📍 " + CITY_HALL.address),
           React.createElement("p", { className: "text-sm" }, "📞 " + CITY_HALL.telLabel),
-          React.createElement("p", { className: "text-sm" }, "📧 " + (ACTIVE_CITY === "tgm" ? "primar@tirgumures.ro" : CITY_HALL.mail)),
+          React.createElement("p", { className: "text-sm" }, "📧 " + CITY_HALL.mail),
           React.createElement("p", { className: "text-sm" }, "🌐 " + (ACTIVE_CITY === "tgm" ? "www.tirgumures.ro" : "www.sibiu.ro")),
           React.createElement("button", { className: "btn btn-green mt-1", onClick: () => {
             const c = `CĂTRE: ${CITY_HALL.registry}\n${CITY_HALL.address}\n\nSubsemnatul/a _____________, domiciliat/ă în _____________,\n\nsolicit:\n1. Informare privind stadiul renovării terenurilor sportive din cartierele periferice\n2. Alocarea de fonduri pentru programul pilot Flip-the-Court\n3. Accesarea fondurilor Erasmus+ Sport KA2\n\nCu stimă,\n_____________\nData: ${new Date().toLocaleDateString("ro-RO")}`;
@@ -16130,6 +16310,8 @@ function QuickReportModal({ onClose, courtId: preset, demo }) {
   const [locating, setLocating] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [ai, setAi] = useState(null);
+  const [done, setDone] = useState(null);
+  const [auto, setAuto] = useState(false);
   useEffect(() => {
     const onKey = e => { if (e.key === "Escape" && document.querySelectorAll(".modal-overlay").length < 2) { e.preventDefault(); e.stopImmediatePropagation(); onClose(); } };
     window.addEventListener("keydown", onKey, true);
@@ -16144,15 +16326,23 @@ function QuickReportModal({ onClose, courtId: preset, demo }) {
     .filter(c => !q || norm(c.name + " " + (c.address || "") + " " + (c.neighbourhood || "")).indexOf(norm(q)) >= 0)
     .sort((a, b) => here ? (dist(a) || 99) - (dist(b) || 99) : 0)
     .slice(0, q || here ? 8 : 6);
-  const geolocate = () => {
-    if (!navigator.geolocation) { toast(t.error); return; }
+  const geolocate = silent => {
+    if (!navigator.geolocation) { if (!silent) toast(t.error); return; }
     setLocating(true);
     navigator.geolocation.getCurrentPosition(
       p => { setHere({ lat: p.coords.latitude, lng: p.coords.longitude }); setF(o => ({ ...o, lat: p.coords.latitude, lng: p.coords.longitude })); setLocating(false); },
-      () => { setLocating(false); toast(L3("Nu am primit locația. Caută terenul după nume.", "No location. Search the court by name.", "Nincs hely. Keresd a pályát név szerint.")); },
+      () => { setLocating(false); if (!silent) toast(L3("Nu am primit locația. Caută terenul după nume.", "No location. Search the court by name.", "Nincs hely. Keresd a pályát név szerint.")); },
       { timeout: 8000 }
     );
   };
+  // GPS asked once on open; refused or unavailable -> the list stays as it is.
+  useEffect(() => { if (!preset && !draft0) geolocate(true); }, []);
+  // Nearest court within 2 km is preselected; the person can still change it (step 1).
+  useEffect(() => {
+    if (!here || f.courtId || step !== 1) return;
+    const best = allCourts.map(c => [c, dist(c)]).filter(x => x[1] != null).sort((a, b) => a[1] - b[1])[0];
+    if (best && best[1] <= 2) { setF(o => ({ ...o, courtId: best[0].id })); setAuto(true); setStep(2); }
+  }, [here]);
   const pickPhoto = async e => {
     const file = e.target.files[0];
     if (!file) return;
@@ -16193,14 +16383,31 @@ function QuickReportModal({ onClose, courtId: preset, demo }) {
       try { sessionStorage.removeItem("g2p_report_draft"); } catch (e) {}
       awardBadge("reporter");
       g2pSfx("whistle");
-      toast(t.reportSubmitted);
       setSubmitting(false);
-      onClose();
+      setDone({ courtId: f.courtId, courtName: payload.courtName, category: f.category });
     }).catch(() => { setSubmitting(false); toast(t.error); });
   };
   const close = () => { try { sessionStorage.removeItem("g2p_report_draft"); } catch (e) {} onClose(); };
   const e = React.createElement;
   const stepNames = [L3("Terenul", "Court", "Pálya"), L3("Problema", "Problem", "Probléma"), L3("Poza", "Photo", "Fotó")];
+  if (done) {
+    const url = SITE + "/#court-" + done.courtId;
+    const share = () => {
+      const txt = L3("Am raportat o problemă la " + done.courtName + " (" + catLabel(done.category) + "). Vezi fișa terenului:", "I reported a problem at " + done.courtName + " (" + catLabel(done.category) + "). See the court's page:", "Problémát jelentettem: " + done.courtName + " (" + catLabel(done.category) + "). A pálya adatlapja:"); // TODO: HU review
+      if (navigator.share) { navigator.share({ title: "From Grey to Play", text: txt, url: url }).catch(() => {}); return; }
+      (navigator.clipboard ? navigator.clipboard.writeText(txt + " " + url) : Promise.reject()).then(() => toast(L3("Link copiat", "Link copied", "Link másolva"))).catch(() => toast(url));
+    };
+    return e("div", { className: "modal-overlay", onClick: onClose },
+      e("div", { className: "modal rq", onClick: ev => ev.stopPropagation(), role: "dialog", "aria-modal": "true", "aria-label": L3("Sesizare creată", "Report created", "Bejelentés létrehozva"), style: { textAlign: "center" } },
+        e("div", { style: { fontSize: "2.4rem" }, "aria-hidden": "true" }, "✅"),
+        e("h2", { style: { fontSize: "1.15rem", margin: ".3rem 0" } }, L3("Sesizare creată.", "Report created.", "Bejelentés létrehozva.")),
+        e("p", { className: "text-sm" }, L3("Termen legal de răspuns: 30 de zile.", "Legal answer deadline: 30 days.", "Törvényes válaszhatáridő: 30 nap.")),
+        e("p", { className: "text-xs mb-1", style: { color: "var(--textSec)" } }, L3("Ceasul pornește când sesizarea e înregistrată la Primărie. Îl vezi pe fișa terenului.", "The clock starts when the report is registered at City Hall. You can follow it on the court's page.", "Az óra akkor indul, amikor a bejelentést iktatják a Városházán. A pálya adatlapján követheted.")), // TODO: HU review
+        e("button", { className: "btn btn-green btn-block mt-1", onClick: share }, "📤 ", L3("Trimite mai departe", "Share", "Megosztás")),
+        e("button", { className: "btn btn-outline btn-block mt-1", onClick: () => { onClose(); location.hash = "#court-" + done.courtId; } }, "📍 ", L3("Vezi fișa terenului", "See the court's page", "A pálya adatlapja")),
+        !firebaseUser && e("button", { className: "btn btn-outline btn-block mt-1", onClick: () => { onClose(); openAuth(); } }, "🔐 ", L3("Salvează-ți sesizările (cont)", "Save your reports (account)", "Mentsd a bejelentéseidet (fiók)")),
+        e("button", { className: "btn btn-block mt-1", onClick: onClose }, L3("Închide", "Close", "Bezárás"))));
+  }
   return e("div", { className: "modal-overlay", onClick: close },
     e("div", { className: "modal modal-lg rq", onClick: ev => ev.stopPropagation(), role: "dialog", "aria-modal": "true", "aria-label": t.reportNew },
       e("div", { className: "flex justify-between items-center mb-1" },
@@ -16214,13 +16421,15 @@ function QuickReportModal({ onClose, courtId: preset, demo }) {
       step === 1 && e("div", { className: "rq-pane", key: "s1" },
         e("div", { className: "flex gap-1 mb-1" },
           e("input", { value: q, onChange: ev => setQ(ev.target.value), placeholder: L3("Caută terenul (nume, stradă, cartier)", "Search the court (name, street, area)", "Pálya keresése (név, utca, negyed)"), "aria-label": t.reportSelectCourt, style: { flex: 1 } }),
-          e("button", { className: "btn btn-sm btn-outline", onClick: geolocate, disabled: locating, style: { whiteSpace: "nowrap" } }, locating ? "…" : "📍 " + L3("Lângă mine", "Near me", "Közelben"))),
+          e("button", { className: "btn btn-sm btn-outline", onClick: () => geolocate(false), disabled: locating, style: { whiteSpace: "nowrap" } }, locating ? "…" : "📍 " + L3("Lângă mine", "Near me", "Közelben"))),
         e("div", { className: "rq-courts" }, list.map(c => e("button", { key: c.id, className: "rq-court" + (f.courtId === c.id ? " sel" : ""), onClick: () => { setF(o => ({ ...o, courtId: c.id })); setStep(2); } },
           e("span", { className: "rq-dot", style: { background: courtStatusView(c, t).color } }),
           e("span", { className: "rq-cn" }, e("b", null, c.name), e("small", null, c.address || hoodName(c.neighbourhood, lang) || "")),
           dist(c) != null && e("span", { className: "rq-km" }, dist(c) < 1 ? Math.round(dist(c) * 1000) + " m" : dist(c).toFixed(1) + " km"))),
           !list.length && e("p", { className: "text-sm", style: { color: "var(--textSec)" } }, L3("Niciun teren găsit.", "No court found.", "Nincs ilyen pálya.")))),
       step === 2 && e("div", { className: "rq-pane", key: "s2" },
+        auto && court && e("p", { className: "text-xs mb-1", style: { color: "var(--textSec)" } }, "📍 ", L3("Am ales terenul cel mai apropiat: ", "We picked the nearest court: ", "A legközelebbi pályát választottuk: "), e("b", null, court.name), " · ",
+          e("a", { href: "#", onClick: ev => { ev.preventDefault(); setAuto(false); setStep(1); } }, L3("nu e ăsta?", "not this one?", "nem ez?"))), // TODO: HU review
         e("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, L3("Ce e în neregulă? Atinge una.", "What is wrong? Tap one.", "Mi a baj? Koppints egyre.")),
         e("div", { className: "rq-cats" }, REPORT_CATS.map(c => e("button", { key: c[0], className: "rq-cat" + (f.category === c[0] ? " sel" : ""), onClick: () => { setF(o => ({ ...o, category: c[0] })); g2pSfx("click"); setStep(3); } },
           e("span", { "aria-hidden": "true" }, c[1]), catLabel(c[0]))))),
@@ -16299,15 +16508,15 @@ function AiPhotoHint({ photo, onResult, extra }) {
     // consent line + privacy note (docs/SPEC_6NOV.md §4); ticked once per device
     e("label", { className: "ai-consent" },
       e("input", { type: "checkbox", checked: ok, onChange: ev => agree(ev.target.checked) }),
-      e("span", null, L3("Trimit această poză pentru o estimare automată a stării terenului. Poza e procesată de un model AI extern (Anthropic) printr-o funcție a acestui site, fără datele de localizare din fișier. Nu fotografiez persoane.",
+      e("span", null, L3("Vreau o estimare AI a stării terenului din poză (opțional).", "I'd like an AI estimate of the court's condition from the photo (optional).", "AI-becslést kérek a pálya állapotáról a fotó alapján (nem kötelező)."), " ", // TODO: HU review
+        e("a", { href: "#", onClick: ev => { ev.preventDefault(); setPriv(v => !v); } }, priv ? L3("ascunde", "hide", "elrejt") : L3("Detalii", "Details", "Részletek")))),
+    priv && e("div", null, e("p", { className: "text-xs", style: { color: "var(--textSec)", margin: ".3rem 0" } }, L3("Trimit această poză pentru o estimare automată a stării terenului. Poza e procesată de un model AI extern (Anthropic) printr-o funcție a acestui site, fără datele de localizare din fișier. Nu fotografiez persoane.",
         "I'm sending this photo for an automatic estimate of the court's condition. It is processed by an external AI model (Anthropic) through this site's server function, without the file's location data. I'm not photographing people.",
-        "Ezt a fotót a pálya állapotának automatikus becsléséhez küldöm. Egy külső AI-modell (Anthropic) dolgozza fel az oldal szerverfunkcióján keresztül, a fájl helyadatai nélkül. Nem fényképezek embereket."), " ", // TODO: HU review
-        e("a", { href: "#", onClick: ev => { ev.preventDefault(); setPriv(v => !v); } }, priv ? L3("ascunde", "hide", "elrejt") : L3("ce trimitem?", "what is sent?", "mit küldünk?")))),
-    priv && e("ol", { className: "ai-priv" },
+        "Ezt a fotót a pálya állapotának automatikus becsléséhez küldöm. Egy külső AI-modell (Anthropic) dolgozza fel az oldal szerverfunkcióján keresztül, a fájl helyadatai nélkül. Nem fényképezek embereket.")), e("ol", { className: "ai-priv" },
       e("li", null, L3("Ce trimitem: poza (micșorată, fără EXIF/GPS), sportul și orașul terenului. Nimic despre tine.", "What we send: the photo (resized, no EXIF/GPS), the court's sport and city. Nothing about you.", "Amit küldünk: a fotó (kicsinyítve, EXIF/GPS nélkül), a pálya sportága és városa. Rólad semmit.")),
       e("li", null, L3("Cui: funcției Netlify a site-ului, care o trimite la API-ul Anthropic.", "To whom: the site's Netlify function, which sends it to the Anthropic API.", "Kinek: az oldal Netlify-funkciójának, amely az Anthropic API-nak továbbítja.")),
       e("li", null, L3("Ce păstrăm: doar dacă trimiți sesizarea — poza comprimată și diagnosticul, ca orice sesizare. Altfel, nimic.", "What we keep: only if you send the report — the compressed photo and the diagnosis, like any report. Otherwise nothing.", "Amit megőrzünk: csak ha elküldöd a bejelentést — a tömörített fotót és a diagnózist. Különben semmit.")),
-      e("li", null, L3("Ștergere: scrie-ne din pagina Despre.", "Deletion: write to us from the About page.", "Törlés: írj nekünk a Rólunk oldalról."))),
+      e("li", null, L3("Ștergere: scrie-ne din pagina Despre.", "Deletion: write to us from the About page.", "Törlés: írj nekünk a Rólunk oldalról.")))),
     e("div", { className: "ai-hint" },
       e("button", { type: "button", className: "ai-btn", onClick: run, disabled: !ok, title: ok ? "" : L3("Bifează mai întâi", "Tick the box first", "Előbb jelöld be") }, "🩺 ", L3("AI Court Doctor: citește poza", "AI Court Doctor: read the photo", "AI Court Doctor: fotó elemzése")),
       e("small", null, L3("Estimare AI — nu e o inspecție oficială. Tu decizi.", "AI estimate — not an official inspection. You decide.", "AI-becslés — nem hivatalos szemle. Te döntesz."))));
@@ -16386,7 +16595,7 @@ function AiCourtCard({ court: c, onLetter }) {
     verify && ReactDOM.createPortal(e("div", { onClick: ev => ev.stopPropagation() }, e(CourtConditionQuick, { courtId: c.id, onClose: () => setVerify(false) })), document.body));
 }
 
-const CITY_HALL_EMAIL = { tgm: "infopublic@tirgumures.ro", sibiu: "pms@sibiu.ro" };
+const CITY_HALL_EMAIL = { tgm: "primaria@tirgumures.ro", sibiu: "pms@sibiu.ro" };
 // Real letters the AI wrote on 27 Oct 2026 (claude-sonnet-5-5, live endpoint), shown as a labelled example if the AI is down, e.g. on stage.
 const AI_LETTER_EXAMPLES = {
   sibiu: { id: "sb1", name: "Teren baschet — Ștrand", at: "27.10.2026", letter: "Către Primăria Municipiului Sibiu\n\nStimată doamnă/Stimate domn,\n\nSubsemnatul/Subsemnata, locuitor tânăr al municipiului Sibiu, vă adresez respectuos această solicitare privind terenul de baschet „Teren baschet Ștrand”, situat pe Strada Doljului, în Sibiu.\n\nTerenul este un spațiu important pentru tinerii care doresc să facă mișcare în aer liber și să practice baschetul într-un mod sigur. Vă rog, de aceea, să dispuneți verificarea stării actuale a terenului, a panourilor, a inelelor și a suprafeței de joc.\n\nDacă în urma verificării se constată deficiențe, vă rog să aveți amabilitatea de a dispune efectuarea lucrărilor de reparații necesare, astfel încât terenul să poată fi folosit în condiții de siguranță.\n\nVă mulțumesc anticipat pentru atenția acordată și vă rog să primiți expresia consideraței mele.\n\nCu respect,\n[Nume]" },
@@ -17275,8 +17484,8 @@ function RequestTracker() {
   const DAY = 864e5, now = Date.now();
   const fmt = ms => new Date(ms).toLocaleDateString(lang === "en" ? "en-GB" : lang === "hu" ? "hu-HU" : "ro-RO", { day: "numeric", month: "short" });
   return React.createElement("div", { className: "rq-wrap" }, list.map(r => {
-    const reg = new Date(r.reg + "T00:00:00").getTime(), due = reg + 10 * DAY, max = reg + 30 * DAY;
-    const left = Math.ceil((due - now) / DAY), pct = Math.max(0, Math.min(100, (now - reg) / (due - reg) * 100));
+    const ds = deadlineState(r.reg + "T00:00:00", 10, !!r.answeredAt, now);
+    const reg = ds.start, due = ds.due, max = reg + 30 * DAY, left = ds.left, pct = ds.pct;
     const st = r.answeredAt ? "done" : now <= due ? "wait" : now <= max ? "late" : "over";
     const stLabel = { done: L3("Răspuns primit", "Answer received", "Válasz megérkezett"), wait: L3("Așteptăm răspunsul", "Waiting for the answer", "Várjuk a választ"), late: L3("Au trecut cele 10 zile — așteptăm, revenim", "The 10 days have passed — we're following up", "Letelt a 10 nap — újra írunk"), over: L3("Nici termenul maxim n-a fost respectat", "Even the maximum deadline was missed", "A végső határidő is lejárt") }[st];
     return React.createElement("article", { key: r.regNo, className: "card rq rq-" + st },
@@ -18479,25 +18688,114 @@ function SecretKeys() {
 }
 
 /* === App === */
-/* === Demo mode (Astra Hack pitch). Secret link ?demo=1 (3 min run) or ?demo=5 (5 min run), best with &c=sibiu.
-   Next: → / Space / PageDown (clicker) or › on the bar. Back: ← / PageUp or ‹. H hides the bar.
-   Phone remote: ?demo=remote, signed in with the admin account; it writes demo/{step,at} and every demo screen follows. === */
+/* === Demo mode v2 (Astra Hack pitch, 5 min, 3 speakers). Secret link ?demo=5&c=sibiu (?demo=1 = same run).
+   Next: → / Space / PageDown (clicker) or › on the bar. Back: ← / PageUp or ‹. 1–9 jump to a step. H hides the bar. Esc closes a Q&A card.
+   Phone remote: ?demo=remote, signed in with the admin account; it writes demo/{step,at,qa} and every demo screen follows.
+   Tab "Pitch" = steps, who speaks, what to say, free jump. Tab "Întrebări" = hard jury questions with short answers;
+   "Arată pe ecran" puts a backup card on the projector (demo/qa), "Ascunde" removes it.
+   Every number on the slides has a source in docs/ (INVESTITII_SIBIU.md, tools/SAT_AUDIT.md, CLAUDE.md 5 Nov). === */
 const DEMO_Q = new URLSearchParams(location.search).get("demo");
 const DEMO_ON = DEMO_Q === "1" || DEMO_Q === "5";
 const DEMO_REMOTE = DEMO_Q === "remote";
-const DEMO_LEN = DEMO_Q === "5" ? 1 : 0; // index into each step's sec: [3 min, 5 min]
 // the pitch always opens on the grey court, and the first-visit onboarding must not cover it
 if (DEMO_ON) { try { localStorage.setItem("g2p_ob", "1"); localStorage.removeItem("g2p_hero_renov"); } catch (e) {} }
+// the phone remote must open straight on the controls, never under the onboarding
+if (DEMO_REMOTE) { try { localStorage.setItem("g2p_ob", "1"); } catch (e) {} }
+// who speaks: change the names here if the team on stage changes
+const DEMO_WHO = { T: "Teo", M: "Matei", G: "Gabriel" };
 const DEMO_STEPS = [
-  { id: "hero", sec: [20, 35], ro: "Din gri, în joc", en: "From grey to play", note: "Terenul gri. Apasă „Renovează” și lasă-l să se transforme." },
-  { id: "sat", page: "courts", sel: '[data-demo="sat"]', sec: [25, 45], ro: "Satelitul: atunci și acum", en: "Satellite: then and now", note: "Trage linia. Satelitul arată ce a văzut la data aceea, nu starea de azi." },
-  { id: "verify", sel: '[data-demo="verify"]', sec: [35, 60], ro: "Verificare live", en: "Live check", note: "Contorul e live. Verifică un teren acum, din sală, și arată cum se aprinde punctul." },
-  { id: "ai", sel: '[data-demo="ai"]', sec: [40, 70], ro: "AI: poza și scrisoarea", en: "AI: photo and letter", note: "Poza: AI-ul doar sugerează starea. Apoi scrisoarea către Primărie, gata de trimis." },
-  { id: "qr", sec: [30, 40], ro: "Scanează + ce cerem", en: "Scan + our ask", note: "Scanați codul. Cerem: primăria să publice starea terenurilor ei. Și 3 luni de mentorat." }
+  { id: "problem", who: "T", sec: 30, ro: "Problema", en: "The problem",
+    note: "Ana are 16 ani și stă în Vasile Aaron (exemplu). Terenul dintre blocuri e gri. Răspunsul oficial al Sibiului: 2022–2026, bani doar pentru 4 baze mari. Niciun teren de cartier. Nimeni nu publică starea lor.",
+    slide: { k: "Sibiu · răspuns oficial nr. 4541 / 03.11.2026", big: "0", bigL: "terenuri dintre blocuri în investițiile 2022–2026",
+      lines: ["Bani doar pentru: Păltiniș, Stadionul Municipal, Obor, Lacul lui Binder", "35 de terenuri publice de cartier pe hartă — starea lor nu o publică nimeni", "Clientul: tânărul care vrea să joace azi · și primăria, care n-are harta stării"],
+      src: "Serviciul Public Sport și Agrement Sibiu · OpenStreetMap" } },
+  { id: "hero", who: "T", sel: ".h3d-hero", sec: 25, ro: "Soluția", en: "The solution",
+    note: "O frază: From Grey to Play arată starea fiecărui teren public, cu dovezi datate, și transformă o poză într-o cerere oficială către primărie. Temele: AI + securitate + sustenabilitate. Apasă „Renovează”." },
+  { id: "scenario", who: "G", sec: 20, ro: "Ce vă arătăm", en: "What we show",
+    note: "Un singur flux, cap-coadă: Ana găsește terenul, vede istoricul din satelit, îl verifică, face o poză, AI-ul sugerează starea, iar ea trimite scrisoarea oficială.",
+    slide: { k: "Demo · un flux complet", title: "Teren gri → dovadă → cerere oficială",
+      lines: ["1 · Ana deschide harta și găsește terenul „neverificat”", "2 · Îl verifică în 60 de secunde și face o poză — AI-ul sugerează starea", "3 · Apasă „Scrisoare”: cerere către Primăria Sibiu, cu dovezi, în PDF"],
+      src: "Datele demo sunt reale; poza din demo e etichetată „demo”" } },
+  { id: "sat", who: "G", page: "courts", sel: '[data-demo="sat"]', sec: 30, ro: "Satelitul: atunci și acum", en: "Satellite: then and now",
+    note: "Trage linia. Spune: satelitul arată ce a văzut la data aceea, nu starea de azi. 4 colegi au evaluat orb toate cele 35 de terenuri." },
+  { id: "verify", who: "G", sel: '[data-demo="verify"]', sec: 30, ro: "Verificare live", en: "Live check",
+    note: "Contorul e live. Starea de azi vine de la locuitori: 3 întrebări, până la 3 poze, consens între două dispozitive." },
+  { id: "ai", who: "G", sel: '[data-demo="ai"]', sec: 35, ro: "AI: poza și scrisoarea", en: "AI: photo and letter",
+    note: "Poza: AI-ul doar SUGEREAZĂ starea (scor 1–5, probleme, cost estimativ). Apoi scrisoarea: OG 27/2002 (30 de zile) sau Legea 544/2001 (10 zile), gata de trimis." },
+  { id: "value", who: "M", sec: 50, ro: "Valoare și bani", en: "Value and money",
+    note: "Azi: o sesizare la registratură sau o postare pe Facebook se pierd. La noi: public, datat, cu termen legal la vedere. Gratuit pentru cetățeni. Spune deschis: azi nu încasăm nimic, asociația e în constituire.",
+    slide: { k: "De ce merită · cum trăiește", title: "Gratuit pentru cetățeni. Cost de rulare ≈ 0 lei.",
+      cols: [["Azi, fără noi", "Sesizare la registratură: nu e publică", "Grup de Facebook: se pierde", "Nimeni nu vede dacă s-a rezolvat"],
+             ["Cu noi", "Starea fiecărui teren, datată, cu sursă", "Cererea oficială, cu termenul legal la vedere", "Dovezi pentru cererile de finanțare ale primăriei"],
+             ["Banii (după înregistrare)", "Adoptă un teren — sponsori locali", "3,5% prin Formularul 230", "Granturi + Agenda Sportivă (ca ONG)", "Rezervări doar unde se plătește deja"]],
+      src: "Regulă: nicio sursă peste 40% · rapoarte publice" } },
+  { id: "built", who: "T", sec: 40, ro: "Cum am construit", en: "How we built it",
+    note: "Spune cinstit ce exista înainte și ce am făcut în 24 de ore. Claude a fost asistent de cod; datele, cererile oficiale și testele sunt ale noastre.",
+    slide: { k: "Arhitectură · contribuție", title: "Telefon → Firebase · Netlify Function → AI",
+      cols: [["Arhitectura", "PWA într-un fișier: React, Leaflet, offline", "Firebase: reguli publice, vot doar crește, admin pe UID", "AI doar pe server: cheia nu e în cod, 3 poze/oră", "Date: OpenStreetMap, satelit Esri Wayback, răspunsuri 544"],
+             ["Înainte de hackathon", "Harta Târgu Mureș + Sibiu, petiție", "Auditul din satelit (35 de terenuri)", "AI Court Doctor, Scrisoarea v2, verificarea locuitorilor (29 oct.)", "Cererile 544 și răspunsurile oficiale"],
+             ["În cele 24 de ore", "Sesizare fără cont + anti-spam", "Pagina Asociației + Formularul 230", "Fișa terenului nouă, heatmap pe toate hărțile", "Modul demo v2 + telecomanda cu întrebări"]],
+      src: "Istoricul complet: GitHub, commit cu commit" } },
+  { id: "qr", who: "M", sec: 30, ro: "Limite + ce urmează", en: "Limits + next",
+    note: "Limita principală: starea de azi depinde de verificările locuitorilor. Următorul test: 25 noiembrie, răspunsurile oficiale + 10 terenuri verificate. Cerem: primăria să publice starea terenurilor ei și 3 luni de mentorat. Scanați codul.",
+    slide: { k: "Limite · următorul pas", title: "Din gri, în joc.", qr: true,
+      lines: ["Limita: starea de azi vine doar din verificări — avem nevoie de oameni", "Următorul test: 25.11.2026 — răspunsurile oficiale + 10 terenuri verificate", "Cerem: primăria să publice starea terenurilor · 3 luni de mentorat"],
+      src: "" } }
+];
+// Hard jury questions. who = who answers. s = backup card that "Arată pe ecran" puts on the projector.
+const DEMO_QA = [
+  { c: "Bani", who: "M", q: "Cum sunteți sustenabili? Cât costă platforma pe lună?",
+    a: "Costul de rulare e aproape 0 lei: găzduirea (Netlify) și baza de date (Firebase) merg pe planuri gratuite. Singurul cost variabil e AI-ul — câțiva bani pe poză (estimare din consum), plafonat la 3 poze pe oră pe dispozitiv. Restul e muncă voluntară. Regula noastră: nicio sursă de bani peste 40%, ca să nu depindem de nimeni.",
+    s: { title: "Cât costă să existăm", lines: ["Găzduire + bază de date: plan gratuit", "AI: câțiva bani pe poză (estimare), max 3 poze/oră/dispozitiv", "Restul: voluntariat", "Regulă: nicio sursă de bani peste 40%"] } },
+  { c: "Bani", who: "M", q: "De unde vin banii?",
+    a: "Azi nu strângem bani, iar asociația e în constituire — o spunem direct. După înregistrare, în ordinea asta: 1) Adoptă un teren — o firmă sau un club sponsorizează un teren anume și vede public pe ce s-au dus banii; 2) 3,5% din impozit prin Formularul 230, după înscrierea în registrul ANAF; 3) granturi și Agenda Sportivă a Primăriei (Legea 350/2005), pe care doar un ONG le poate cere; 4) un abonament mic pentru panoul primăriei; 5) un comision mic pe rezervările care oricum se plătesc.",
+    s: { title: "De unde vin banii (după înregistrare)", lines: ["1 · Adoptă un teren — sponsor local, raport public", "2 · 3,5% prin Formularul 230", "3 · Granturi + Agenda Sportivă (Legea 350/2005)", "4 · Abonament mic pentru panoul primăriei", "5 · Comision mic doar pe rezervări deja plătite", "Azi: 0 lei încasați · asociație în constituire"] } },
+  { c: "Bani", who: "M", q: "Cum taxați rezervări pe terenuri care nu sunt ale voastre?",
+    a: "Nu vindem accesul la un teren care nu e al nostru. Terenurile publice gratuite rămân gratuite și la noi: rezervarea e doar o programare, regulile le pune administratorul. Taxăm doar unde proprietarul deja încasează — club privat, sală de școală închiriată, teren municipal cu plată — și doar dacă proprietarul se înscrie. Plata merge direct la el, printr-un procesator de plăți cu plăți împărțite; noi reținem un comision mic, afișat la vedere (propunere: 1 leu pe rezervare). Comisionul intră în fondul „Adoptă un teren”: fiecare rezervare plătită pe un teren privat ajută la repararea unui teren public. Forma juridică exactă o verificăm cu un jurist înainte de lansare.",
+    s: { title: "Rezervări: plătește doar cine încasează deja", lines: ["Teren public gratuit → rămâne gratuit, doar programare", "Teren cu plată + proprietarul se înscrie → plata merge direct la el", "Noi: comision mic, afișat (propunere: 1 leu / rezervare)", "Comisionul → fondul „Adoptă un teren” → repară un teren public", "Nu vindem niciodată acces la un teren care nu e al nostru"] } },
+  { c: "Bani", who: "M", q: "Ce primărie plătește? V-a zis cineva da?",
+    a: "Nicio primărie n-a semnat nimic și nu pretindem asta. Avem cereri oficiale (Legea 544) la Sibiu și Târgu Mureș. Sibiu a răspuns parțial (nr. 4541 din 3 noiembrie) și și-a prelungit termenul pentru restul până pe 25 noiembrie. Abonamentul e o ipoteză: îl testăm cu un pilot gratuit, apoi un preț mic, sub pragul de achiziție directă." },
+  { c: "Bani", who: "M", q: "Business case-ul e prea mic.",
+    a: "Da, e mic — și e intenționat. Suntem o asociație civică, nu un startup care caută exit. Succesul se măsoară în terenuri cu stare publică și sesizări rezolvate. Venitul trebuie doar să acopere un cost aproape zero și un fond de reparații." },
+  { c: "Restaurare", who: "G", q: "Când o să restaurați pe bune un teren?",
+    a: "Un teren public nu-l putem renova singuri: e al primăriei, Legea 69/2000 îi protejează destinația și orice lucrare cere acordul administratorului. Ce facem noi: dovezi publice, cereri oficiale, presiune civică și bani de la sponsori pentru un teren-pilot. Primul pas cu dată: răspunsurile oficiale vin până pe 25 noiembrie 2026. Ținta noastră — nu promisiune — e un teren-pilot în 2027, dacă avem trei lucruri: asociația înregistrată, acordul primăriei și un sponsor.",
+    s: { title: "Când restaurăm: pași, nu promisiuni", lines: ["Azi · dovezi publice pentru 35 de terenuri din Sibiu", "25.11.2026 · termenul răspunsurilor oficiale (Legea 544)", "Apoi · asociația înregistrată + un sponsor „Adoptă un teren”", "Țintă 2027 · un teren-pilot, doar cu acordul primăriei", "Terenul e al primăriei: decide ea (Legea 69/2000)"] } },
+  { c: "Restaurare", who: "G", q: "Ce puteți face fără primărie?",
+    a: "Lucruri mici, doar cu acord scris de la administrator: plase și coșuri noi, curățenie, marcaje. Și, mai important, datele: fiecare verificare și fiecare poză intră pe harta publică și devin dovezi." },
+  { c: "Restaurare", who: "G", q: "De ce v-ar asculta primăria?",
+    a: "Pentru că îi dăm exact ce îi lipsește: starea fiecărui teren, datată, cu poze — dovezile de care are nevoie ca să prioritizeze reparații și să scrie o cerere de finanțare. Fondurile naționale pentru baze sportive (Anghel Saligny) sunt oprite, deci fiecare leu trebuie pus unde contează. Iar cererile 544 au termen legal de răspuns." },
+  { c: "Restaurare", who: "G", q: "Ați fost pe teren? Câte terenuri ați verificat?",
+    a: "Nu pretindem vizite care n-au avut loc. Sibiu: 35 de terenuri din OpenStreetMap, evaluate orb din satelit de 4 colegi; un rezultat apare doar unde au fost de acord — 7 rezultate, 28 rămân „de revăzut”. Starea de azi vine din verificările locuitorilor, iar contorul de pe ecran e live. (Spune numărul de pe ecran, nu din memorie.)" },
+  { c: "Date & AI", who: "T", q: "Cât de sigur e AI-ul? Dacă greșește?",
+    a: "AI-ul doar sugerează: scor 1–5, probleme, cost estimativ și nivel de încredere. Peste tot scrie „estimare AI, nu inspecție”. Dacă poza nu arată un teren, refuză și nu scrie nimic. Starea pe hartă se schimbă doar prin consensul a cel puțin două verificări sau de către admin." },
+  { c: "Date & AI", who: "T", q: "Satelitul arată starea de azi?",
+    a: "Nu. Ultimele imagini pentru Sibiu sunt din 2021–2022. Le folosim pentru istoric — dacă un teren a apărut sau a dispărut — și scriem asta pe ecran." },
+  { c: "Date & AI", who: "T", q: "Acordul între evaluatori e slab. Datele voastre nu sunt bune.",
+    a: "Pe unele câmpuri acordul a fost slab și l-am publicat, nu l-am ascuns. De aceea 28 de terenuri sunt „de revăzut” și de aceea am construit verificarea de către locuitori: nu ne bazăm pe o singură sursă." },
+  { c: "Date & AI", who: "T", q: "Ce vă oprește de la date false sau spam?",
+    a: "Sesizarea nu cere cont, ca să fie ușoară, dar are anti-spam în aplicație și limită pe dispozitiv, iar regulile bazei de date validează fiecare câmp. Starea unui teren nu se schimbă dintr-o singură sesizare: e nevoie de consens sau de admin." },
+  { c: "Securitate", who: "T", q: "Unde e cheia API? Cine e admin?",
+    a: "Cheia AI stă doar în variabilele Netlify; funcția de pe server verifică de unde vine cererea și limitează numărul de cereri. Aveam o parolă de admin în codul public — am scos-o și o tratăm ca expusă. Acum adminul se loghează prin Firebase Auth, iar drepturile sunt verificate pe UID în regulile bazei de date, nu în browser." },
+  { c: "Securitate", who: "T", q: "GDPR: emailuri, poze cu copii?",
+    a: "Emailurile le citește doar adminul; exportul de date deschise scoate cheile de votant și pozele. Cerem poze fără fețe, cu consimțământ explicit; pozele sunt recomprimate în browser, ceea ce scoate metadatele GPS. Adminul poate șterge orice." },
+  { c: "Tehnic", who: "T", q: "De ce un singur fișier HTML? Scalează?",
+    a: "E o alegere: fără build, deploy în secunde, merge offline ca aplicație pe telefon. Avem porți de siguranță: o verificare la fiecare deploy și un test cu Chrome headless pe toate paginile, în ambele orașe. Un oraș nou înseamnă un set de date și o configurare, nu cod nou. Dacă creștem, migrăm pe Vite — scheletul există deja în repo." },
+  { c: "Tehnic", who: "T", q: "Ce ați făcut voi și ce a făcut AI-ul?",
+    a: "Am folosit Claude ca asistent de cod și o spunem deschis. Problema, deciziile, datele, cererile oficiale, auditul din satelit și testele pe telefon sunt ale noastre. Fiecare schimbare e un commit public pe GitHub, cu oră." },
+  { c: "Tehnic", who: "T", q: "Ce ați construit efectiv în cele 24 de ore?",
+    a: "Exact ce e pe slide-ul „Cum am construit”: sesizarea fără cont cu anti-spam, pagina Asociației și Formularul 230, fișa nouă a terenului, heatmap-ul pe toate hărțile, modul demo v2 cu telecomanda. AI Court Doctor și Scrisoarea v2 existau din 29 octombrie — nu le prezentăm ca fiind din 24 de ore." },
+  { c: "Concurență", who: "M", q: "Există deja aplicații: bazesportive.sibiu.ro, Sibiu City App.",
+    a: "bazesportive.sibiu.ro face programări la bazele mari, ca Obor. Noi acoperim cele 35 de terenuri dintre blocuri, unde nu există nimic. Nu vrem să concurăm: putem trimite rezervările spre sistemul lor și sesizările spre canalele oficiale. Sibiu City App: încă verificăm ce face pentru terenuri." },
+  { c: "Echipă", who: "T", q: "Ce se întâmplă după hackathon? Sunteți studenți.",
+    a: "Suntem trei fondatori majori, studenți în anul I — avem program încărcat și o scriem la riscuri. De aceea: cost de rulare aproape zero, cod public, date deschise CC BY. Proiectul poate fi preluat oricând, iar asociația îl ține în viață juridic." },
+  { c: "Echipă", who: "M", q: "Cum ajungeți în alte orașe?",
+    a: "Un oraș apare doar dacă are date verificate și măcar o persoană locală. Tehnic, un oraș nou e un fișier de date. Azi: Târgu Mureș și Sibiu, ambele live." }
 ];
 const demoClock = ms => { const s = Math.max(0, Math.round(ms / 1000)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
+const DEMO_TOTAL = DEMO_STEPS.reduce((a, x) => a + x.sec, 0) * 1000;
 function demoShow(i, setPage) {
   const s = DEMO_STEPS[i];
+  if (s.slide) return; // a slide covers the app; keep the page where it is
   setPage(s.page || "home");
   setTimeout(() => {
     const el = s.sel && document.querySelector(s.sel);
@@ -18505,11 +18803,28 @@ function demoShow(i, setPage) {
     else if (s.id === "hero") window.scrollTo({ top: 0, behavior: "smooth" });
   }, 260);
 }
+function DemoSlide({ sl, kicker, onClose }) {
+  const e = React.createElement;
+  return ReactDOM.createPortal(e("div", { className: "demo-slide", onClick: onClose },
+    e("div", { className: "demo-slide-in", onClick: ev => ev.stopPropagation() },
+      e("p", { className: "demo-slide-k" }, kicker || sl.k || ""),
+      sl.big != null && e("div", { className: "demo-slide-big" }, e("b", null, sl.big), e("span", null, sl.bigL)),
+      sl.title && e("h2", { className: "demo-slide-h" }, sl.title),
+      sl.cols ? e("div", { className: "demo-slide-cols" }, sl.cols.map((c, i) => e("div", { key: i, className: "demo-slide-col" },
+        e("h3", null, c[0]), e("ul", null, c.slice(1).map((x, j) => e("li", { key: j }, x)))))) :
+      e("div", { className: "demo-slide-row" },
+        e("ul", { className: "demo-slide-ul" }, (sl.lines || []).map((x, j) => e("li", { key: j, style: { "--d": j } }, x))),
+        sl.qr && e("div", { className: "demo-slide-qr" },
+          e("img", { src: "/icons/qr-" + ACTIVE_CITY + ".svg", alt: SITE + "/?c=" + ACTIVE_CITY, width: 260, height: 260 }),
+          e("p", null, SITE.replace("https://", "") + "/?c=" + ACTIVE_CITY))),
+      sl.src && e("p", { className: "demo-slide-src" }, "Sursă: " + sl.src))), document.body);
+}
 function DemoLayer() {
   const { setPage, lang } = useApp();
   const [step, setStep] = useState(0);
   const [hidden, setHidden] = useState(false);
-  const [qrX, setQrX] = useState(false);
+  const [slideX, setSlideX] = useState(false);
+  const [qa, setQa] = useState(-1);
   const [t0, setT0] = useState(0); // the run clock starts on the first step change
   const [stepAt, setStepAt] = useState(0);
   const [now, setNow] = useState(Date.now());
@@ -18519,7 +18834,7 @@ function DemoLayer() {
     const n = Math.max(0, Math.min(DEMO_STEPS.length - 1, i));
     const at = Date.now();
     setT0(v => v || at);
-    setStep(n); setStepAt(at); setQrX(false);
+    setStep(n); setStepAt(at); setSlideX(false); setQa(-1);
     demoShow(n, setPage);
   }, [setPage]);
   useEffect(() => { const id = setInterval(() => setNow(Date.now()), 500); return () => clearInterval(id); }, []);
@@ -18532,6 +18847,8 @@ function DemoLayer() {
       if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") d = 1;
       else if (e.key === "ArrowLeft" || e.key === "PageUp") d = -1;
       else if (e.key === "h" || e.key === "H") { setHidden(v => !v); return; }
+      else if (e.key === "Escape") { setQa(-1); return; }
+      else if (/^[1-9]$/.test(e.key) && +e.key <= DEMO_STEPS.length) { e.preventDefault(); go(+e.key - 1); return; }
       else return;
       e.preventDefault(); e.stopPropagation();
       go(stepRef.current + d);
@@ -18546,37 +18863,42 @@ function DemoLayer() {
     const cb = s => {
       const v = s.val();
       if (first) { first = false; return; }
-      if (v && typeof v.step === "number") go(v.step);
+      if (!v || typeof v.step !== "number") return;
+      const q = typeof v.qa === "number" && v.qa >= 0 && v.qa < DEMO_QA.length ? v.qa : -1;
+      if (v.step !== stepRef.current) go(v.step);
+      setQa(q);
     };
     ref.on("value", cb, () => {});
     return () => ref.off("value", cb);
   }, [go]);
   const s = DEMO_STEPS[step];
-  const total = DEMO_STEPS.reduce((a, x) => a + x.sec[DEMO_LEN], 0) * 1000;
   const runMs = t0 ? now - t0 : 0, stepMs = t0 ? now - stepAt : 0;
-  const over = stepMs > s.sec[DEMO_LEN] * 1000;
+  const over = stepMs > s.sec * 1000;
+  const q = qa >= 0 ? DEMO_QA[qa] : null;
   const e = React.createElement;
   return e(React.Fragment, null,
     !hidden && e("div", { className: "demo-bar", role: "toolbar", "aria-label": "Demo" },
       e("button", { onClick: () => go(step - 1), disabled: step === 0, "aria-label": "Înapoi" }, "‹"),
       e("span", { className: "demo-n" }, step + 1, "/", DEMO_STEPS.length),
-      e("span", { className: "demo-t" }, lang === "en" ? s.en : s.ro),
-      e("span", { className: "demo-c" + (over ? " over" : "") }, demoClock(stepMs), " · ", demoClock(runMs), "/", demoClock(total)),
+      e("span", { className: "demo-t" }, (lang === "en" ? s.en : s.ro) + " · " + DEMO_WHO[s.who]),
+      e("span", { className: "demo-c" + (over ? " over" : "") }, demoClock(stepMs), " · ", demoClock(runMs), "/", demoClock(DEMO_TOTAL)),
       e("button", { onClick: () => go(step + 1), disabled: step === DEMO_STEPS.length - 1, "aria-label": "Înainte" }, "›")),
-    s.id === "qr" && !qrX && ReactDOM.createPortal(e("div", { className: "demo-qr", onClick: () => setQrX(true) },
-      e("div", { className: "demo-qr-card", onClick: ev => ev.stopPropagation() },
-        e("img", { src: "/icons/qr-" + ACTIVE_CITY + ".svg", alt: SITE + "/?c=" + ACTIVE_CITY, width: 420, height: 420 }),
-        e("p", { className: "demo-qr-u" }, SITE.replace("https://", "") + "/?c=" + ACTIVE_CITY),
-        e("p", { className: "demo-qr-a" }, lang === "en" ? "Check a court near you." : "Verifică un teren de lângă tine."))), document.body));
+    s.slide && !slideX && !q && e(DemoSlide, { sl: s.slide, onClose: () => setSlideX(true) }),
+    q && q.s && e(DemoSlide, { sl: q.s, kicker: "Întrebare · " + q.q, onClose: () => setQa(-1) }));
 }
 function DemoRemote() {
   const { isAdmin, authReady, openAuth } = useApp();
   const live = useFirebase("demo");
+  const [tab, setTab] = useState("pitch");
+  const [cat, setCat] = useState("");
+  const [find, setFind] = useState("");
+  const [open, setOpen] = useState(-1);
   const [t0, setT0] = useState(0);
   const [stepAt, setStepAt] = useState(0);
   const [now, setNow] = useState(Date.now());
   const [err, setErr] = useState("");
-  const step = live && typeof live.step === "number" ? live.step : 0;
+  const step = live && typeof live.step === "number" ? Math.min(live.step, DEMO_STEPS.length - 1) : 0;
+  const onScreen = live && typeof live.qa === "number" && live.qa >= 0 ? live.qa : -1;
   useEffect(() => { const id = setInterval(() => setNow(Date.now()), 500); return () => clearInterval(id); }, []);
   // keep the phone screen on while it is the remote
   useEffect(() => {
@@ -18584,37 +18906,63 @@ function DemoRemote() {
     try { navigator.wakeLock && navigator.wakeLock.request("screen").then(l => { wl = l; }).catch(() => {}); } catch (e) {}
     return () => { try { wl && wl.release(); } catch (e) {} };
   }, []);
+  const write = (n, qa) => {
+    db.ref("demo").set({ step: n, at: firebase.database.ServerValue.TIMESTAMP, qa: qa })
+      .then(() => setErr(""))
+      .catch(() => setErr("Nu pot scrie demo/ — ești logat cu contul de admin? Regulile bazei de date sunt publicate?"));
+    try { navigator.vibrate && navigator.vibrate(30); } catch (e) {}
+  };
   const send = i => {
     const n = Math.max(0, Math.min(DEMO_STEPS.length - 1, i));
     const at = Date.now();
     setT0(v => v || at); setStepAt(at);
-    db.ref("demo").set({ step: n, at: firebase.database.ServerValue.TIMESTAMP })
-      .then(() => setErr(""))
-      .catch(() => setErr("Nu pot scrie demo/ — regulile bazei de date nu sunt publicate încă."));
-    try { navigator.vibrate && navigator.vibrate(30); } catch (e) {}
+    write(n, -1);
   };
   const s = DEMO_STEPS[step], nx = DEMO_STEPS[step + 1];
-  const total = DEMO_STEPS.reduce((a, x) => a + x.sec[DEMO_LEN], 0) * 1000;
-  const stepMs = t0 ? now - stepAt : 0, over = stepMs > s.sec[DEMO_LEN] * 1000;
+  const stepMs = t0 ? now - stepAt : 0, over = stepMs > s.sec * 1000;
+  const cats = DEMO_QA.reduce((a, x) => a.indexOf(x.c) < 0 ? a.concat(x.c) : a, []);
+  const f = find.trim().toLowerCase();
+  const list = DEMO_QA.map((x, i) => [x, i]).filter(([x]) => (!cat || x.c === cat) && (!f || (x.q + " " + x.a).toLowerCase().indexOf(f) >= 0));
   const e = React.createElement;
+  const top = e("div", { className: "demo-rm-top" },
+    e("span", null, step + 1, "/", DEMO_STEPS.length),
+    e("span", { className: over ? "over" : "" }, demoClock(stepMs), " / ", demoClock(s.sec * 1000)),
+    e("span", null, demoClock(t0 ? now - t0 : 0), " / ", demoClock(DEMO_TOTAL)));
+  const tabs = e("div", { className: "demo-rm-tabs", role: "tablist" },
+    e("button", { role: "tab", "aria-selected": tab === "pitch", className: tab === "pitch" ? "on" : "", onClick: () => setTab("pitch") }, "Pitch"),
+    e("button", { role: "tab", "aria-selected": tab === "qa", className: tab === "qa" ? "on" : "", onClick: () => setTab("qa") }, "Întrebări (" + DEMO_QA.length + ")"));
+  const screenBar = onScreen >= 0 && e("div", { className: "demo-rm-onscreen" },
+    e("span", null, "Pe ecran: ", DEMO_QA[onScreen].q),
+    e("button", { onClick: () => write(step, -1) }, "Ascunde"));
+  const pitch = e(React.Fragment, null,
+    e("p", { className: "demo-rm-who" }, "Vorbește: ", e("b", null, DEMO_WHO[s.who])),
+    e("h2", null, s.ro),
+    e("p", { className: "demo-rm-note" }, s.note),
+    nx && e("p", { className: "demo-rm-next" }, "Urmează: ", nx.ro, " · ", DEMO_WHO[nx.who]),
+    e("div", { className: "demo-rm-steps" }, DEMO_STEPS.map((x, i) => e("button", { key: x.id, className: i === step ? "on" : "", onClick: () => send(i) }, (i + 1) + " " + x.ro))),
+    e("div", { className: "demo-rm-btns" },
+      e("button", { onClick: () => send(step - 1), disabled: step === 0, "aria-label": "Înapoi" }, "‹"),
+      e("button", { className: "go", onClick: () => send(step + 1), disabled: !nx, "aria-label": "Înainte" }, "›")),
+    e("button", { className: "demo-rm-reset", onClick: () => { setT0(0); send(0); } }, "↺ De la început"));
+  const qaTab = e(React.Fragment, null,
+    e("input", { className: "demo-rm-find", type: "search", placeholder: "Caută (bani, AI, GDPR…)", value: find, onChange: ev => setFind(ev.target.value) }),
+    e("div", { className: "demo-rm-cats" },
+      e("button", { className: !cat ? "on" : "", onClick: () => setCat("") }, "Toate"),
+      cats.map(c => e("button", { key: c, className: cat === c ? "on" : "", onClick: () => setCat(c) }, c))),
+    e("div", { className: "demo-rm-qa" }, list.map(([x, i]) => e("div", { key: i, className: "demo-rm-q" + (open === i ? " open" : "") },
+      e("button", { className: "demo-rm-qh", "aria-expanded": open === i, onClick: () => setOpen(open === i ? -1 : i) },
+        e("span", { className: "demo-rm-qc" }, x.c + " · " + DEMO_WHO[x.who]), e("b", null, x.q)),
+      open === i && e("div", { className: "demo-rm-qb" },
+        e("p", null, x.a),
+        x.s && (onScreen === i
+          ? e("button", { className: "demo-rm-show off", onClick: () => write(step, -1) }, "Ascunde de pe ecran")
+          : e("button", { className: "demo-rm-show", onClick: () => write(step, i) }, "Arată pe ecran")))))));
   return ReactDOM.createPortal(e("div", { className: "demo-remote" },
     !authReady ? e("p", null, "…") :
     !isAdmin ? e("div", { className: "demo-rm-login" },
       e("p", null, "Telecomanda merge doar cu contul de admin."),
       e("button", { className: "btn btn-green", onClick: () => openAuth() }, "Conectează-te")) :
-    e(React.Fragment, null,
-      e("div", { className: "demo-rm-top" },
-        e("span", null, step + 1, "/", DEMO_STEPS.length),
-        e("span", { className: over ? "over" : "" }, demoClock(stepMs), " / ", demoClock(s.sec[DEMO_LEN] * 1000)),
-        e("span", null, demoClock(t0 ? now - t0 : 0), " / ", demoClock(total))),
-      e("h2", null, s.ro),
-      e("p", { className: "demo-rm-note" }, s.note),
-      nx && e("p", { className: "demo-rm-next" }, "Urmează: ", nx.ro),
-      err && e("p", { className: "demo-rm-err" }, err),
-      e("div", { className: "demo-rm-btns" },
-        e("button", { onClick: () => send(step - 1), disabled: step === 0 }, "‹"),
-        e("button", { className: "go", onClick: () => send(step + 1), disabled: !nx }, "›")),
-      e("button", { className: "demo-rm-reset", onClick: () => { setT0(0); send(0); } }, "↺ De la început"))), document.body);
+    e(React.Fragment, null, top, tabs, screenBar, err && e("p", { className: "demo-rm-err" }, err), tab === "pitch" ? pitch : qaTab)), document.body);
 }
 
 function App() {
@@ -18659,7 +19007,7 @@ function App() {
   const [toastMsg, setToastMsg] = useState("");
   const [toastMs, setToastMs] = useState(3000);
   const [authOpen, setAuthOpen] = useState(false);
-  const [onboard, setOnboard] = useState(() => !localStorage.getItem("g2p_ob"));
+  const [onboard, setOnboard] = useState(() => !/^#(raporteaza|court-)/.test(location.hash) && !localStorage.getItem("g2p_ob")) // deep links (QR, shared court) open straight on their target;
   const [adminMode, setAdminMode] = useState(false);
   const [adminAuth, setAdminAuth] = useState(false);
   const [firebaseUser, setFirebaseUser] = useState(() => firebase.auth().currentUser);
@@ -19003,7 +19351,7 @@ function App() {
     }
   }, /*#__PURE__*/React.createElement("div", {
     key: page
-  }, React.createElement(PageBoundary, null, P()))), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(ReportHashListener, null), React.createElement(FunEggs, null), React.createElement(EggHub, { page: page }), React.createElement(SecretKeys, null), React.createElement(Mascot, { page: page }), React.createElement(BigCelebration, null), React.createElement(ThemeFx, null), mayor && React.createElement(MayorMode, {
+  }, React.createElement(PageBoundary, null, P()))), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(ReportHashListener, null), React.createElement(FunEggs, null), React.createElement(EggHub, { page: page }), React.createElement(SecretKeys, null), !isPhone() && React.createElement(Mascot, { page: page }), React.createElement(BigCelebration, null), React.createElement(ThemeFx, null), mayor && React.createElement(MayorMode, {
     onClose: () => setMayor(false)
   }), /*#__PURE__*/React.createElement(Footer, null), toastEl, authEl, nudgeEl, DEMO_ON && React.createElement(DemoLayer, null), DEMO_REMOTE && React.createElement(DemoRemote, null));
 }
@@ -19029,8 +19377,10 @@ try {
       var p = k && ov[k];
       return p && typeof p.onClick === "function" ? p.onClick : null;
     }
+    // Any scroller between the finger and the overlay (inclusive) that is not at its top.
     function scrolledAncestor(el, modal) {
-      for (var n = el; n && n !== modal.parentNode; n = n.parentNode) if (n.scrollTop > 0) return true;
+      var stop = modal.parentNode && modal.parentNode.parentNode;
+      for (var n = el; n && n !== stop; n = n.parentNode) if (n.scrollTop > 0) return true;
       return false;
     }
     document.addEventListener("touchstart", function (e) {
@@ -19048,8 +19398,10 @@ try {
       var y = e.touches[0].clientY, x = e.touches[0].clientX, dy = y - st.y0;
       if (!st.lock) {
         if (Math.abs(dy) < 10 && Math.abs(x - st.x0) < 10) return;
-        var m = st.modal, canScroll = m.scrollHeight > m.clientHeight + 2;
-        if ((dy < 0 && canScroll) || Math.abs(x - st.x0) > Math.abs(dy) || scrolledAncestor(e.target, m)) { st = null; return; }
+        var m = st.modal;
+        // Only a downward pull from the very top drags the sheet. An upward swipe is always a
+        // native scroll (inner scrollers, the overlay itself); hijacking it made sheets bounce.
+        if (dy < 0 || Math.abs(x - st.x0) > Math.abs(dy) || scrolledAncestor(e.target, m)) { st = null; return; }
         st.lock = 1; m.classList.add("sheet-drag");   // keep y0: the sheet stays glued to the grab point
       }
       e.preventDefault();
