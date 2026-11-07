@@ -857,6 +857,32 @@ body:has(.demo-remote) .modal-overlay{z-index:9600}
 .demo-slide-qr{text-align:center;background:#fff;color:#0B1020;border-radius:16px;padding:1rem}
 .demo-slide-qr img{display:block;width:min(260px,30vh);height:auto}
 .demo-slide-qr p{margin:.5rem 0 0;font:700 .85rem 'Space Mono',monospace}
+.demo-assoc{display:flex;flex-direction:column;gap:clamp(.4rem,1.2vh,1rem)}
+.demo-assoc-pre{margin:0;font:700 clamp(1.1rem,2.2vw,1.9rem) 'Space Mono',monospace;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.demo-assoc-h{margin:0;font:700 clamp(3rem,8.5vw,7.5rem)/0.98 'Space Mono',monospace;letter-spacing:-.02em}
+.demo-assoc-h .dg{color:#8A919C}
+.demo-assoc-h .dp,.demo-motto .mj{background:linear-gradient(90deg,var(--coral),var(--green));-webkit-background-clip:text;background-clip:text;color:transparent}
+.demo-assoc-msg{margin:.4rem 0 0;font-size:clamp(1.2rem,2.5vw,2.2rem);line-height:1.3;max-width:34ch;text-wrap:balance}
+.demo-slide-brand{margin:0;font:700 clamp(1.6rem,3.6vw,3rem) 'Space Mono',monospace;background:linear-gradient(90deg,var(--coral),var(--green));-webkit-background-clip:text;background-clip:text;color:transparent}
+.demo-motto{margin:0;font:700 clamp(3rem,8vw,7rem)/1 'Space Mono',monospace;letter-spacing:-.02em}
+.demo-motto .mg{color:#8A919C}
+.demo-slide-qr{background:linear-gradient(135deg,var(--coral),var(--green));padding:6px;border-radius:24px;color:#fff;text-align:center;box-shadow:0 20px 60px rgba(16,185,129,.25)}
+.demo-slide-qr .dq-top{margin:.5rem .8rem .6rem;font:700 clamp(.85rem,1.3vw,1.1rem) 'Space Mono',monospace;color:#fff}
+.demo-slide-qr .dq-code{background:#fff;border-radius:18px;padding:14px}
+.demo-slide-qr .dq-code img{display:block;width:min(280px,34vh);height:auto}
+.demo-slide-qr .dq-url{margin:.55rem 0 .45rem;font:700 .9rem 'Space Mono',monospace;color:#fff}
+@media(prefers-reduced-motion:no-preference){
+.demo-assoc-pre{animation:dsUp .7s var(--ease-out,ease) both}
+.demo-assoc-h{animation:dsUp .8s .15s var(--ease-out,ease) both}
+.demo-assoc-h .dg{animation:dsGrey 2.4s 1s ease both}
+.demo-assoc-h .dp,.demo-motto .mj,.demo-slide-brand{background-size:200% 100%;animation:dsShine 4s 1s ease-in-out infinite alternate}
+.demo-assoc-msg{animation:dsUp .8s .45s var(--ease-out,ease) both}
+.demo-motto{animation:dsUp .8s var(--ease-out,ease) both}
+.demo-slide-qr{animation:dsPop .7s .5s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes dsUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes dsGrey{0%{color:#8A919C}50%{color:#C5CAD1}100%{color:#8A919C}}
+@keyframes dsShine{from{background-position:0 0}to{background-position:100% 0}}
+@keyframes dsPop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}}
 .demo-slide-src{margin:0;font-size:clamp(.75rem,1.1vw,.95rem);opacity:.55}
 @media(prefers-reduced-motion:no-preference){.demo-slide-ul li{animation:fadeIn .5s ease both;animation-delay:calc(.15s + var(--d) * .18s)}}
 @media(max-width:760px){.demo-slide-cols{grid-template-columns:1fr}.demo-slide-row{flex-direction:column;align-items:flex-start}}
@@ -18707,27 +18733,28 @@ if (DEMO_REMOTE) { try { localStorage.setItem("g2p_ob", "1"); } catch (e) {} }
 // who speaks: change the names here if the team on stage changes
 const DEMO_WHO = { T: "Teo", M: "Matei", G: "Gabriel" };
 const DEMO_STEPS = [
-  { id: "problem", who: "T", sec: 30, ro: "Problema", en: "The problem",
-    note: "Ana are 16 ani și stă în Vasile Aaron (exemplu). Terenul dintre blocuri e gri. Răspunsul oficial al Sibiului: 2022–2026, bani doar pentru 4 baze mari. Niciun teren de cartier. Nimeni nu publică starea lor.",
-    slide: { k: "Sibiu · răspuns oficial nr. 4541 / 03.11.2026", big: "0", bigL: "terenuri dintre blocuri în investițiile 2022–2026",
-      lines: ["Bani doar pentru: Păltiniș, Stadionul Municipal, Obor, Lacul lui Binder", "35 de terenuri publice de cartier pe hartă — starea lor nu o publică nimeni", "Clientul: tânărul care vrea să joace azi · și primăria, care n-are harta stării"],
-      src: "Serviciul Public Sport și Agrement Sibiu · OpenStreetMap" } },
-  { id: "hero", who: "T", sel: ".h3d-hero", sec: 25, ro: "Soluția", en: "The solution",
+  { id: "assoc", who: "T", sec: 30, ro: "Cine suntem", en: "Who we are",
+    note: "Suntem Asociația From Grey to Play, în constituire, din Sibiu. Credem că un teren de sport bun, aproape de casă, înseamnă copii mai sănătoși și cartiere mai unite. Misiunea noastră: aducem terenurile uitate dintre blocuri înapoi în joc — cu dovezi, cu oamenii din cartier și împreună cu primăria.",
+    slide: { assoc: true, k: "În constituire · Sibiu și Târgu Mureș",
+      lines: ["Sănătate — mișcare la 5 minute de casă, pentru orice copil", "Sport — terenuri sigure, reparate, folosite", "Comunitate — vecinii decid și verifică împreună"],
+      src: "" } },
+  { id: "hero", who: "T", glide: ".h3d-hero", sec: 25, ro: "Soluția", en: "The solution",
     note: "O frază: From Grey to Play arată starea fiecărui teren public, cu dovezi datate, și transformă o poză într-o cerere oficială către primărie. Temele: AI + securitate + sustenabilitate. Apasă „Renovează”." },
-  { id: "scenario", who: "G", sec: 20, ro: "Ce vă arătăm", en: "What we show",
+  { id: "scenario", who: "G", sec: 20, ro: "Cum funcționăm", en: "How we work",
     note: "Un singur flux, cap-coadă: Ana găsește terenul, vede istoricul din satelit, îl verifică, face o poză, AI-ul sugerează starea, iar ea trimite scrisoarea oficială.",
-    slide: { k: "Demo · un flux complet", title: "Teren gri → dovadă → cerere oficială",
-      lines: ["1 · Ana deschide harta și găsește terenul „neverificat”", "2 · Îl verifică în 60 de secunde și face o poză — AI-ul sugerează starea", "3 · Apasă „Scrisoare”: cerere către Primăria Sibiu, cu dovezi, în PDF"],
-      src: "Datele demo sunt reale; poza din demo e etichetată „demo”" } },
-  { id: "sat", who: "G", page: "courts", sel: '[data-demo="sat"]', sec: 30, ro: "Satelitul: atunci și acum", en: "Satellite: then and now",
-    note: "Trage linia. Spune: satelitul arată ce a văzut la data aceea, nu starea de azi. 4 colegi au evaluat orb toate cele 35 de terenuri." },
-  { id: "verify", who: "G", sel: '[data-demo="verify"]', sec: 30, ro: "Verificare live", en: "Live check",
-    note: "Contorul e live. Starea de azi vine de la locuitori: 3 întrebări, până la 3 poze, consens între două dispozitive." },
-  { id: "ai", who: "G", sel: '[data-demo="ai"]', sec: 35, ro: "AI: poza și scrisoarea", en: "AI: photo and letter",
-    note: "Poza: AI-ul doar SUGEREAZĂ starea (scor 1–5, probleme, cost estimativ). Apoi scrisoarea: OG 27/2002 (30 de zile) sau Legea 544/2001 (10 zile), gata de trimis." },
-  { id: "value", who: "M", sec: 50, ro: "Valoare și bani", en: "Value and money",
+    slide: { k: "Cum funcționăm", title: "Teren gri → dovadă → cerere oficială → teren în joc",
+      lines: ["1 · Cartografiem — fiecare teren public din oraș, pe hartă, cu istoricul din satelit", "2 · Verificăm împreună — locuitorii confirmă starea și fac poze; AI-ul doar sugerează", "3 · Cerem oficial — scrisoarea către primărie pleacă cu dovezile și termenul legal", "4 · Urmărim până se rezolvă — public, datat, până terenul e din nou în joc"],
+      src: "" } },
+  { id: "courts", who: "G", page: "courts", top: true, sec: 45, ro: "Terenurile", en: "The courts",
+    note: "Deschide un teren de pe hartă și arată: poze, satelit atunci/acum (satelitul arată data imaginii, nu starea de azi), starea, Raportează, Scrisoare." },
+
+  { id: "ai", who: "G", page: "home", sel: '[data-demo="ai"]', sec: 35, ro: "Verificare + AI", en: "Check + AI",
+    note: "Contorul e live: starea de azi vine de la locuitori, consens între două dispozitive. Poza: AI-ul doar SUGEREAZĂ starea (scor 1–5, probleme, cost estimativ). Apoi scrisoarea: OG 27/2002 (30 de zile) sau Legea 544/2001 (10 zile), gata de trimis." },
+  { id: "community", who: "M", page: "community", top: true, sec: 30, ro: "Comunitatea", en: "Community",
+    note: "Aici trăiește asociația: oamenii din cartier vorbesc, propun evenimente, fac echipe și pictează împreună peretele. Nu e o aplicație pentru primărie — e un loc al cartierului." },
+  { id: "value", who: "M", sec: 50, ro: "Asociația: sustenabilitate", en: "Association: sustainability",
     note: "Azi: o sesizare la registratură sau o postare pe Facebook se pierd. La noi: public, datat, cu termen legal la vedere. Gratuit pentru cetățeni. Spune deschis: azi nu încasăm nimic, asociația e în constituire.",
-    slide: { k: "De ce merită · cum trăiește", title: "Gratuit pentru cetățeni. Cost de rulare ≈ 0 lei.",
+    slide: { k: "Despre asociație · sustenabilitate", brand: "Asociația From Grey to Play", title: "Sustenabilă: gratuită pentru cetățeni, cost de rulare ≈ 0 lei.",
       cols: [["Azi, fără noi", "Sesizare la registratură: nu e publică", "Grup de Facebook: se pierde", "Nimeni nu vede dacă s-a rezolvat"],
              ["Cu noi", "Starea fiecărui teren, datată, cu sursă", "Cererea oficială, cu termenul legal la vedere", "Dovezi pentru cererile de finanțare ale primăriei"],
              ["Banii (după înregistrare)", "Adoptă un teren — sponsori locali", "3,5% prin Formularul 230", "Granturi + Agenda Sportivă (ca ONG)", "Rezervări doar unde se plătește deja"]],
@@ -18739,9 +18766,9 @@ const DEMO_STEPS = [
              ["Înainte de hackathon", "Harta Târgu Mureș + Sibiu, petiție", "Auditul din satelit (35 de terenuri)", "AI Court Doctor, Scrisoarea v2, verificarea locuitorilor (29 oct.)", "Cererile 544 și răspunsurile oficiale"],
              ["În cele 24 de ore", "Sesizare fără cont + anti-spam", "Pagina Asociației + Formularul 230", "Fișa terenului nouă, heatmap pe toate hărțile", "Modul demo v2 + telecomanda cu întrebări"]],
       src: "Istoricul complet: GitHub, commit cu commit" } },
-  { id: "qr", who: "M", sec: 30, ro: "Limite + ce urmează", en: "Limits + next",
+  { id: "qr", who: "M", sec: 30, ro: "Din gri, în joc", en: "From grey, to play",
     note: "Limita principală: starea de azi depinde de verificările locuitorilor. Următorul test: 25 noiembrie, răspunsurile oficiale + 10 terenuri verificate. Cerem: primăria să publice starea terenurilor ei și 3 luni de mentorat. Scanați codul.",
-    slide: { k: "Limite · următorul pas", title: "Din gri, în joc.", qr: true,
+    slide: { k: "Următorul pas", motto: true, qr: true,
       lines: ["Limita: starea de azi vine doar din verificări — avem nevoie de oameni", "Următorul test: 25.11.2026 — răspunsurile oficiale + 10 terenuri verificate", "Cerem: primăria să publice starea terenurilor · 3 luni de mentorat"],
       src: "" } }
 ];
@@ -18800,17 +18827,39 @@ function demoShow(i, setPage) {
   const s = DEMO_STEPS[i];
   if (s.slide) return; // a slide covers the app; keep the page where it is
   setPage(s.page || "home");
-  setTimeout(() => {
+  if (s.glide) { // start at the very top of the site, then glide down until the 3D hero fills the screen (and stop there)
+    window.scrollTo({ top: 0, behavior: "auto" });
+    setTimeout(() => {
+      const el = document.querySelector(s.glide);
+      if (!el) return;
+      const to = el.getBoundingClientRect().top + window.scrollY - ((document.querySelector("nav") || {}).offsetHeight || 0);
+      const from = window.scrollY, dur = 2600, t0 = performance.now();
+      const ease = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+      const tick = now => { const k = Math.min(1, (now - t0) / dur); window.scrollTo(0, from + (to - from) * ease(k)); if (k < 1) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick);
+    }, 900);
+    return;
+  }
+  if (s.top) { setTimeout(() => window.scrollTo({ top: 0, behavior: "auto" }), 260); return; }
+  let tries = 0; // the page may still be rendering: look for the target for up to ~3 s
+  const find = () => {
     const el = s.sel && document.querySelector(s.sel);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
-    else if (s.id === "hero") window.scrollTo({ top: 0, behavior: "smooth" });
-  }, 260);
+    else if (s.sel && ++tries < 12) setTimeout(find, 250);
+  };
+  setTimeout(find, 260);
 }
 function DemoSlide({ sl, kicker, onClose }) {
   const e = React.createElement;
   return ReactDOM.createPortal(e("div", { className: "demo-slide", onClick: onClose },
     e("div", { className: "demo-slide-in", onClick: ev => ev.stopPropagation() },
       e("p", { className: "demo-slide-k" }, kicker || sl.k || ""),
+      sl.assoc && e("div", { className: "demo-assoc" },
+        e("p", { className: "demo-assoc-pre" }, "Asociația"),
+        e("h1", { className: "demo-assoc-h" }, "From ", e("span", { className: "dg" }, "Grey"), " to ", e("span", { className: "dp" }, "Play")),
+        e("p", { className: "demo-assoc-msg" }, "Readucem terenurile de sport ale cartierului în joc — pentru copii mai sănătoși, mai mult sport și o comunitate care se mișcă împreună.")),
+      sl.brand && e("p", { className: "demo-slide-brand" }, sl.brand),
+      sl.motto && e("h2", { className: "demo-motto" }, "Din ", e("span", { className: "mg" }, "gri"), ", în ", e("span", { className: "mj" }, "joc"), "."),
       sl.big != null && e("div", { className: "demo-slide-big" }, e("b", null, sl.big), e("span", null, sl.bigL)),
       sl.title && e("h2", { className: "demo-slide-h" }, sl.title),
       sl.cols ? e("div", { className: "demo-slide-cols" }, sl.cols.map((c, i) => e("div", { key: i, className: "demo-slide-col" },
@@ -18818,8 +18867,9 @@ function DemoSlide({ sl, kicker, onClose }) {
       e("div", { className: "demo-slide-row" },
         e("ul", { className: "demo-slide-ul" }, (sl.lines || []).map((x, j) => e("li", { key: j, style: { "--d": j } }, x))),
         sl.qr && e("div", { className: "demo-slide-qr" },
-          e("img", { src: "/icons/qr-" + ACTIVE_CITY + ".svg", alt: SITE + "/?c=" + ACTIVE_CITY, width: 260, height: 260 }),
-          e("p", null, SITE.replace("https://", "") + "/?c=" + ACTIVE_CITY))),
+          e("p", { className: "dq-top" }, "Scanează și verifică un teren"),
+          e("div", { className: "dq-code" }, e("img", { src: "/icons/qr-" + ACTIVE_CITY + ".svg", alt: SITE + "/?c=" + ACTIVE_CITY, width: 260, height: 260 })),
+          e("p", { className: "dq-url" }, SITE.replace("https://", "")))),
       sl.src && e("p", { className: "demo-slide-src" }, "Sursă: " + sl.src))), document.body);
 }
 function DemoLayer() {
