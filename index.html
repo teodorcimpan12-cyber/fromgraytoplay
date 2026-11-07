@@ -11951,7 +11951,7 @@ function CommunityPage() {
     e("section", { className: "section" },
       e("div", { className: "container" },
         e("h2", { className: "section-title" }, "🤝 ", t.community),
-        e("div", { className: "tabs cm-tabs", role: "tablist" }, ["overview"].concat(COMMUNITY_TABS).map(tb => e("button", { key: tb, role: "tab", "aria-selected": tab === tb, className: tab === tb ? "active" : "", onClick: () => go(tb) }, communityTabLabel(tb, t)))),
+        e("div", { className: "tabs cm-tabs", role: "tablist" }, ["overview"].concat(COMMUNITY_TABS).map(tb => e("button", { key: tb, "data-cm": tb, role: "tab", "aria-selected": tab === tb, className: tab === tb ? "active" : "", onClick: () => go(tb) }, communityTabLabel(tb, t)))),
         tab !== "overview" && e("p", { className: "cm-purpose" }, purpose[tab]),
         tab === "overview" && e(CommunityOverview, { go: go, purpose: purpose }),
         tab === "activity" && e(ActivityFeed, null),
@@ -18878,6 +18878,7 @@ function demoShow(i, setPage) {
 function demoCmd(cmd) {
   const c = String(cmd || ""), click = sel => { const b = document.querySelector(sel); if (b) { b.scrollIntoView({ behavior: "smooth", block: "nearest" }); b.click(); } };
   if (c === "renov") return click(".h3d-hero .h3d-btn-green");
+  if (c.indexOf("cm:") === 0) return click('.cm-tabs [data-cm="' + c.slice(3) + '"]');
   if (c.indexOf("brief:") === 0) { const k = c.slice(6); window.dispatchEvent(new CustomEvent("g2p:hero-brief", { detail: k === "close" ? null : k })); return; }
   if (c.indexOf("court:") === 0) { location.hash = "#court-" + c.slice(6); return; }
   if (c.indexOf("tab:") === 0) return click('.cdx-tab[data-k="' + c.slice(4) + '"]');
@@ -18886,6 +18887,8 @@ function demoCmd(cmd) {
 }
 const DEMO_BTNS = {
   hero: [["renov", "🎨 Renovează / înapoi la gri"], ["brief:flip", "🔄 Flip the Court"], ["brief:canvas", "🎨 Street Canvas"], ["brief:locker", "🔐 Dulap"], ["brief:close", "✕ Închide fereastra"]],
+  community: [["cm:activity", "📡 Activitate live"], ["cm:pixel", "🎨 Pixel"], ["cm:teams", "⚽ Echipe"], ["cm:events", "📅 Evenimente"], ["cm:leaderboard", "🏆 Clasament"]],
+  value: [["page:association", "🏛️ Deschide pagina Asociației (prezintă Matei)"], ["slide", "↩ Înapoi la slide"]],
   courts: [["court:sb11", "📍 Deschide: Centrul Civic 3"], ["tab:book", "📅 Rezervă"], ["tab:info", "ℹ️ Info"], ["tab:sat", "🛰️ Satelit"], ["tab:com", "👥 Comunitate"], ["tab:qr", "📱 QR"], ["play", "⚽ Joc acum"], ["close", "✕ Închide fereastra"]]
 };
 function DemoTriad() {
@@ -18977,7 +18980,10 @@ function DemoLayer() {
       if (first) { first = false; lastAct = v && v.act; return; }
       if (v && v.act && v.act !== lastAct) { // a remote button: renovate, a brief, a court, a court tab, play now
         lastAct = v.act;
-        demoCmd(v.cmd || "renov");
+        const cmd = v.cmd || "renov";
+        if (cmd.indexOf("page:") === 0) { setSlideX(true); setPage(cmd.slice(5)); setTimeout(() => window.scrollTo({ top: 0, behavior: "auto" }), 250); return; }
+        if (cmd === "slide") { setSlideX(false); return; }
+        demoCmd(cmd);
         return;
       }
       if (!v || typeof v.step !== "number") return;
@@ -18996,7 +19002,7 @@ function DemoLayer() {
   return e(React.Fragment, null,
     !hidden && e("div", { className: "demo-bar", role: "toolbar", "aria-label": "Demo" },
       e("button", { onClick: () => go(step - 1), disabled: step === 0, "aria-label": "Înapoi" }, "‹"),
-      e("span", { className: "demo-n" }, step + 1, "/", DEMO_STEPS.length),
+      e("span", { className: "demo-n" }, step + 1, "/", DEMO_STEPS.length, " · v4"),
       e("span", { className: "demo-t" }, (lang === "en" ? s.en : s.ro) + " · " + DEMO_WHO[s.who]),
       e("span", { className: "demo-c" + (over ? " over" : "") }, demoClock(stepMs), " · ", demoClock(runMs), "/", demoClock(DEMO_TOTAL)),
       e("button", { onClick: () => go(step + 1), disabled: step === DEMO_STEPS.length - 1, "aria-label": "Înainte" }, "›")),
