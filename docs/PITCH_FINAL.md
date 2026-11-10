@@ -17,6 +17,19 @@ Regulă: numerele de pe ecran le citim de pe ecran (contorul e live), nu din mem
 | 8 | 3:40–4:20 | Teo | Slide „cum am construit” | „Aplicație web care merge offline pe telefon, Firebase cu reguli publice, AI doar pe server — cheia nu e în cod. Cinstit: harta, auditul din satelit, AI Court Doctor și Scrisoarea existau înainte. În 24 de ore am făcut: sesizarea fără cont cu anti-spam, pagina Asociației și Formularul 230, fișa nouă a terenului, heatmap-ul și acest mod demo. Claude a fost asistentul nostru de cod; datele și deciziile sunt ale noastre.” |
 | 9 | 4:20–4:50 | Matei | Slide QR | „Limita: starea de azi depinde de oameni care verifică. Următorul test: pe 25 noiembrie vin răspunsurile oficiale, iar noi vrem 10 terenuri verificate. Cerem primăriei să publice starea terenurilor ei, și vouă — trei luni de mentorat. Scanați codul și verificați un teren de lângă voi. Din gri, în joc.” |
 
+## ATENȚIE: site-ul live e înghețat (verificat 10 nov. 2026)
+
+Netlify a oprit deploy-urile de producție pe 6 nov., 23:04 (creditele echipei s-au terminat; se resetează pe 23 nov. sau după un top-up de la 10 $). De atunci `fromgreytoplay.netlify.app` servește o versiune veche (`sw.js` g2p-v11): **fără** modul demo v2, „Cine răspunde”, HeroLite pe telefon, fixul telecomenzii, iar `docs/pitch/demo-rezerva.mp4` dă 404.
+
+Codul curent (identic, byte cu byte, cu `main`) e servit de branch deploy-ul care încă merge:
+
+- Laptop/proiector: `https://claude-fix-remote-blank--fromgreytoplay.netlify.app/?demo=5&c=sibiu`, apoi tasta `1`
+- Telefon/telecomandă: `https://claude-fix-remote-blank--fromgreytoplay.netlify.app/?demo=remote` (login cu email + parolă; Google login poate să nu meargă pe acest domeniu)
+- Video de rezervă: `https://claude-fix-remote-blank--fromgreytoplay.netlify.app/docs/pitch/demo-rezerva.mp4`
+
+Verificat pe 10 nov.: slide-ul 1 se încarcă fără erori, telecomanda cere login de admin, `predeploy-check` și `smoke` sunt verzi. QR-ul de pe slide 9 duce tot pe site-ul live (cel vechi), care merge, dar fără noutățile de mai sus.
+Fix definitiv: top-up Netlify (Billing) sau așteptarea resetării din 23 nov., apoi redeploy din `main`. Dacă se termină și creditele operaționale, Netlify suspendă și site-ul live.
+
 ## Întrebări
 
 Toate cele 21, cu răspuns scurt și cine răspunde, sunt în telecomandă (tab „Întrebări”). Cele cu buton „Arată pe ecran” pun o carte pe proiector.
