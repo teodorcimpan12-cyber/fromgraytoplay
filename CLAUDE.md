@@ -368,3 +368,10 @@ Highest civic-value next steps:
   150px strip (<900px), so it renders ~4x fewer pixels; camera for the strip is `ro [0,10,-22]`, fov 27; DPR cap 2 on coarse, and a frame-budget guard
   drops `quality` by 20% after three frames over 26 ms (floor 45%). `toCourt()` now measures the canvas, not the section. The site is phone-first:
   check every change at 390px before desktop.
+- Same session, owner feedback from a real phone ("it either scrolls or doesn't work; graphics not the best"): shader v2 — linear lighting with sun + sky
+  ambient, ACES tone map, micro-relief normals, puddles that reflect the sky, wet-paint lip, two analytic 3D hoops (pole, arm, backboard, rim) that turn
+  from rusty to fresh when the paint reaches their key, analytic soft shadows for hoops and ball, resolution-aware line AA. Play model: `.ao-live` has
+  `touch-action: pan-y` below 900px, so an up/down swipe ALWAYS scrolls the page and a sideways drag or a tap on the 190px court strip plays (pointer
+  events on the section, filtered to the canvas rect by `hit()`; buttons are ignored). The ball follows the finger/cursor for ~2.4 s, a press makes a
+  growing splash, then the ball returns to its own path. `.ao-hint` pill ("Atinge sau trage pe teren") fades after the first press (`.ao-played`).
+  CDP `Input.synthesizeScrollGesture` does not scroll this page in headless Chromium; test scrolling with raw `Input.dispatchTouchEvent` swipes.
