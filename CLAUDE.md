@@ -350,3 +350,28 @@ Highest civic-value next steps:
 - Session 7 Nov 2026, 00:35 (branch `claude/finantare-230`, PR #38, NOT live): progress log shows no names (owner request; entries kept, `journal` = [time, text]). Mobile search: the ⌘K magnifier lived only inside `.nav-links.desktop` (hidden ≤1240px), so phones had none; new `button.nav-cmd-m` sits before the hamburger in `.nav-inner` (shown ≤1240px, 40×40, `margin-left:auto`), opens the same `CommandPalette`; desktop button unchanged.
 - Session 7 Nov 2026, 00:50 (branch `claude/finantare-230`, PR #38, NOT live): "Anunță-mă când pot redirecționa" was a `mailto:` link — dead on phones without a mail app. Now an in-page form in `Redirect35Card` (email + explicit consent checkbox, validation, busy state, "ești pe listă" via `g2p_r35`); writes `partnerRequests/{pushId}: {company:"3,5%: anunță-mă", email, offer:"redirect35", consent:true, lang, city, date}` — reuses the existing write-once, admin-read-only path so it works with the rules already deployed (read them in Admin → God → `partnerRequests`). Founders are first-year university students, not high-schoolers: the risk row "Fondatorii pleacă după liceu" became "Fondatorii au program încărcat și pot pleca din oraș" (no institution named on the site).
 - Session 7 Nov 2026, 01:05 (branch `claude/harti-heatmap-onboarding`, NOT live until the owner says "merge"): Courts tab bar lost the 🔥 heatmap toggle and the 📍 near-me button (both cities share the page). The report heatmap is now permanent on every `MapView` (`heat = true` default; live `reports/` counts are loaded inside `MapView`, rebuild only when the counts change via `heatKey`) — Courts map and the reports-page map. Sibiu courts carry no static `reports` count, so its heat shows only from live `reports/`. First-visit onboarding line 1 names both cities (`bothCities(lang)`: "…din Târgu Mureș și Sibiu"), not only the active one. The near-me helpers (`findNearMe`, `myLoc`) are now unreachable but left in place.
+- Session 11 Nov 2026 (branch `ccr-f015c42b-qkn89a`, NOT live until the owner says "merge"): Astra Hack result was 6th of 20 (jury: nothing wrong,
+  others scored higher) → priority is proof, not features. New `ResultsBoard` card at the top of Impact ("Rezultate până azi"): live counts via
+  `useFbCount` (`signupStats`, `reports` without `demo`/`condition`, `letters`, `CITY_REQUESTS`, `COURTS_ALL`), nothing estimated, "…" while loading.
+  New `docs/asociatie/` = draft founding file on OG 26/2000 (checklist, name reservation, office loan contract, founding act, statute, court filing);
+  drafts only, a lawyer/notary must check them; never put CNPs or home addresses in the repo. Vite migration postponed (owner asked why; not urgent).
+- Same session, showpiece (owner asked for "show-off, professional"): the Home opener's target drawing is replaced by a live court rendered by one
+  hand-written WebGL fragment shader (`COURT_FRAG` + `startCourtShader(canvas, host)`, no library). Per-pixel ray onto the ground plane; cracked grey
+  asphalt vs painted court blended by a paint mask (256×158 2D canvas uploaded as a texture). The bouncing ball and the visitor's mouse/touch stamp
+  paint; the mask decays (2% every 650 ms), so grey creeps back. `.ao-live` on the section shows `.ao-court` and hides `.ao-target` (the target stays
+  as the fallback without WebGL). ≥900px: court bottom-right, masked clear of the headline; <900px: a 118px strip under the buttons (extra
+  `padding-bottom` on `.ao-inner`). DPR capped 1.5 (1 + every other frame on coarse pointers), paused off-screen/hidden tab, one static frame under
+  `fxReduced()`. Camera numbers live in `resize()`; the JS `toCourt()` ray must stay identical to the shader's. Opener buttons use SVG line icons
+  (`aoIcon`) instead of emoji.
+- Same session, owner feedback: Results card shows **votes** (sum of `votes/`, the number used everywhere else; `signupStats` has fewer rows), has a
+  pulsing "live" tag and each number re-animates when it changes (all listeners are `on("value")`, no reload). Shader on phones: `.ao-court` is only the
+  150px strip (<900px), so it renders ~4x fewer pixels; camera for the strip is `ro [0,10,-22]`, fov 27; DPR cap 2 on coarse, and a frame-budget guard
+  drops `quality` by 20% after three frames over 26 ms (floor 45%). `toCourt()` now measures the canvas, not the section. The site is phone-first:
+  check every change at 390px before desktop.
+- Same session, owner feedback from a real phone ("it either scrolls or doesn't work; graphics not the best"): shader v2 — linear lighting with sun + sky
+  ambient, ACES tone map, micro-relief normals, puddles that reflect the sky, wet-paint lip, two analytic 3D hoops (pole, arm, backboard, rim) that turn
+  from rusty to fresh when the paint reaches their key, analytic soft shadows for hoops and ball, resolution-aware line AA. Play model: `.ao-live` has
+  `touch-action: pan-y` below 900px, so an up/down swipe ALWAYS scrolls the page and a sideways drag or a tap on the 190px court strip plays (pointer
+  events on the section, filtered to the canvas rect by `hit()`; buttons are ignored). The ball follows the finger/cursor for ~2.4 s, a press makes a
+  growing splash, then the ball returns to its own path. `.ao-hint` pill ("Atinge sau trage pe teren") fades after the first press (`.ao-played`).
+  CDP `Input.synthesizeScrollGesture` does not scroll this page in headless Chromium; test scrolling with raw `Input.dispatchTouchEvent` swipes.

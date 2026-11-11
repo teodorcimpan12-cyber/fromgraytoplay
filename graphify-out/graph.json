@@ -835,6 +835,18 @@
    "id": "Redirect35Card",
    "type": "component",
    "desc": "Formularul 230 / 3.5% card (motivation, income-tax calculator, donor steps, honest gaps, mailto, copy message); top of Funding tab and AssociationTab; links ANAF guide"
+  },
+  {
+   "id": "ResultsBoard",
+   "type": "component",
+   "line": 13155,
+   "desc": "Card „Rezultate până azi” sus pe ImpactPage: numere live (signupStats, reports fără demo/condition, letters, CITY_REQUESTS, COURTS_ALL). Nimic estimat. Folosește useFbCount."
+  },
+  {
+   "id": "startCourtShader",
+   "type": "util",
+   "line": 10153,
+   "desc": "Terenul din opener: un fragment shader WebGL scris de mână (COURT_FRAG), fără bibliotecă. Asfalt gri crăpat / teren vopsit, amestecate de o mască de vopsea (canvas 2D) în care ștampilează mingea și cursorul; masca se stinge încet. Cadru static sub reduced-motion / no-fx. Returnează stop()."
   }
  ],
  "edges": [
@@ -1707,6 +1719,31 @@
    "from": "CsmInvest",
    "to": "CSM_INVEST",
    "rel": "reads"
+  },
+  {
+   "from": "ResultsBoard",
+   "to": "fb/signupStats",
+   "rel": "reads"
+  },
+  {
+   "from": "ResultsBoard",
+   "to": "fb/reports",
+   "rel": "reads"
+  },
+  {
+   "from": "ResultsBoard",
+   "to": "fb/letters",
+   "rel": "reads"
+  },
+  {
+   "from": "ImpactPage",
+   "to": "ResultsBoard",
+   "rel": "renders"
+  },
+  {
+   "from": "HomeOpener",
+   "to": "startCourtShader",
+   "rel": "calls"
   }
  ],
  "routes": {
