@@ -1744,6 +1744,12 @@ body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inse
 .ao-target circle,.ao-target path{vector-effect:non-scaling-stroke;stroke-width:1.4;fill:none;stroke:currentColor}
 .ao-target .dot{fill:currentColor;stroke:none}
 @media(min-width:900px){.ao-target{width:min(44vw,560px);right:6vw;top:50%;transform:translateY(-50%);opacity:.2}}
+/* Shader court: fills the opener behind the text. Shown only once WebGL has started (.ao-live), then the target hides. */
+.ao-court{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;display:none;-webkit-mask-image:linear-gradient(180deg,transparent 62%,#000 80%);mask-image:linear-gradient(180deg,transparent 62%,#000 80%)}
+.ao-live .ao-court{display:block}.ao-live .ao-target{display:none}
+@media(max-width:899.98px){.ao-live .ao-inner{padding-bottom:calc(clamp(2rem,6vh,4.5rem) + 118px)}}
+@media(min-width:900px){.ao-court{-webkit-mask-image:linear-gradient(90deg,transparent 34%,#000 60%),linear-gradient(180deg,transparent 40%,#000 60%);mask-image:linear-gradient(90deg,transparent 34%,#000 60%),linear-gradient(180deg,transparent 40%,#000 60%);-webkit-mask-composite:source-in;mask-composite:intersect}}
+.ao-btn .ic svg{display:block;width:1.5rem;height:1.5rem;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .ao-inner{position:relative;padding-top:clamp(1.8rem,5vh,4rem);padding-bottom:clamp(2rem,6vh,4.5rem)}
 .ao-eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#7DF7C9;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.28);padding:.38rem .8rem;border-radius:980px}
 .ao-title{margin:1rem 0 0;font-family:'Space Mono',monospace;line-height:1}
@@ -10060,6 +10066,191 @@ function City3D() {
 }
 
 /* === Home opener: association name + message + three equal buttons, then one line of why. Honest status: being established. === */
+/* === Opener court (Nov 2026): one hand-written WebGL fragment shader, no library. A ray is cast per pixel onto the
+   ground plane; the court is drawn twice in the shader (cracked grey asphalt / freshly painted) and blended by a paint
+   mask. The mask is a small 2D canvas: the bouncing ball and the visitor's pointer stamp paint into it, and it slowly
+   decays, so the grey creeps back unless someone keeps playing. Static single frame under reduced motion / no-fx. === */
+const COURT_FRAG = `
+precision highp float;
+uniform vec2 uRes; uniform float uT, uTan, uRot;
+uniform vec3 uRo, uR, uU, uF, uBall;
+uniform sampler2D uMask;
+const vec2 HALF = vec2(14., 7.5);
+const vec2 FIELD = vec2(17., 10.5);
+float h21(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+float vn(vec2 p){ vec2 i = floor(p), f = fract(p); f = f * f * (3. - 2. * f);
+  return mix(mix(h21(i), h21(i + vec2(1., 0.)), f.x), mix(h21(i + vec2(0., 1.)), h21(i + vec2(1., 1.)), f.x), f.y); }
+float fbm(vec2 p){ float a = .5, s = 0.; for (int i = 0; i < 4; i++) { s += a * vn(p); p = p * 2.03 + 17.; a *= .5; } return s; }
+float crack(vec2 p){ vec2 i = floor(p), f = fract(p); float d1 = 8., d2 = 8.;
+  for (int y = -1; y <= 1; y++) for (int x = -1; x <= 1; x++) {
+    vec2 g = vec2(float(x), float(y)); vec2 o = vec2(h21(i + g), h21(i + g + 7.7));
+    float d = length(g + o - f); if (d < d1) { d2 = d1; d1 = d; } else if (d < d2) d2 = d; }
+  return d2 - d1; }
+float sdBox(vec2 p, vec2 b){ vec2 d = abs(p) - b; return length(max(d, 0.)) + min(max(d.x, d.y), 0.); }
+float lines(vec2 q){
+  float d = abs(sdBox(q, HALF));
+  d = min(d, max(abs(q.x), abs(q.y) - HALF.y));
+  d = min(d, abs(length(q) - 1.8));
+  vec2 a = vec2(abs(q.x), q.y);
+  d = min(d, abs(sdBox(a - vec2(HALF.x - 2.9, 0.), vec2(2.9, 2.45))));
+  d = min(d, max(abs(length(a - vec2(HALF.x - 5.8, 0.)) - 1.8), a.x - (HALF.x - 5.8)));
+  vec2 b = a - vec2(HALF.x - 1.575, 0.);
+  d = min(d, max(abs(length(b) - 6.75), b.x + 1.416));
+  d = min(d, max(abs(abs(a.y) - 6.6), max(b.x - 1.575, -1.416 - b.x)));
+  return d; }
+void main(){
+  vec2 p = (gl_FragCoord.xy * 2. - uRes) / uRes.y;
+  vec3 rd = normalize(uR * p.x * uTan + uU * p.y * uTan + uF);
+  vec3 L = normalize(vec3(.45, .75, -.5));
+  vec3 col = vec3(0.); float al = 0.;
+  if (rd.y < -.001) {
+    float t = -uRo.y / rd.y; vec3 g = uRo + rd * t;
+    vec2 q = uRot > .5 ? vec2(g.z, g.x) : g.xz;
+    float aa = t * .0016;
+    float sd = sdBox(q, HALF);
+    vec2 muv = q / FIELD * .5 + .5;
+    float m = texture2D(uMask, muv).r * step(abs(muv.x - .5), .5) * step(abs(muv.y - .5), .5);
+    float n = fbm(q * 1.3 + 3.);
+    float pm = smoothstep(.34, .52, m + (n - .5) * .4);
+    float gr = fbm(q * 2.7), st = fbm(q * .45 + 9.);
+    float ln = smoothstep(.07 + aa, .07, lines(q)) * step(sd, .12);
+    vec3 grey = vec3(.25, .26, .285) * (.7 + .6 * gr) * (.72 + .56 * st);
+    float ck = crack(q * .55 + fbm(q * .8) * .6);
+    grey *= 1. - .75 * smoothstep(.07 + aa, 0., ck) * smoothstep(.3, .55, st);
+    grey = mix(grey, vec3(.6, .6, .57), ln * .6 * smoothstep(.3, .62, fbm(q * 1.7 + 5.)));
+    grey = mix(grey, vec3(.17, .29, .15), smoothstep(.8, .92, vn(q * 6.)) * smoothstep(.5, .7, st) * .65);
+    vec2 a = vec2(abs(q.x), q.y); vec2 b = a - vec2(HALF.x - 1.575, 0.);
+    float in3 = b.x <= -1.416 ? step(length(b), 6.75) : step(abs(a.y), 6.6);
+    float key = step(sdBox(a - vec2(HALF.x - 2.9, 0.), vec2(2.9, 2.45)), 0.);
+    vec3 play = mix(vec3(.05, .55, .5), vec3(.063, .725, .506), in3);
+    play = mix(play, vec3(.976, .451, .086), max(key, step(length(q), 1.8)));
+    play = mix(vec3(.04, .3, .29), play, step(sd, 0.));
+    play *= .9 + .2 * gr;
+    play = mix(play, vec3(1.), ln);
+    play += pow(max(dot(reflect(rd, vec3(0., 1., 0.)), L), 0.), 18.) * .22;
+    col = mix(grey, play, pm);
+    col += vec3(.49, .97, .79) * pm * (1. - pm) * 2.2;
+    float shd = smoothstep(1.5 + uBall.z * .5, 0., length(q - uBall.xy));
+    col *= 1. - .6 * shd / (1. + uBall.z * .5);
+    al = 1. - smoothstep(0., 5., sdBox(q, FIELD - 1.));
+  }
+  vec3 bc = uRot > .5 ? vec3(uBall.y, uBall.z + .62, uBall.x) : vec3(uBall.x, uBall.z + .62, uBall.y);
+  vec3 oc = uRo - bc; float bb = dot(oc, rd); float h = bb * bb - (dot(oc, oc) - .3844);
+  if (h > 0.) {
+    vec3 nn = normalize(oc + rd * (-bb - sqrt(h)));
+    float sp = uT * 2.4, cs = cos(sp), sn = sin(sp);
+    vec3 s = vec3(nn.x * cs - nn.y * sn, nn.x * sn + nn.y * cs, nn.z);
+    vec3 bcol = vec3(.96, .5, .15) * (.3 + .7 * max(dot(nn, L), 0.));
+    float seam = min(min(abs(s.x), abs(s.y)), abs(abs(s.z) - .55));
+    bcol = mix(vec3(.09, .06, .04), bcol, smoothstep(.02, .06, seam));
+    bcol += pow(max(dot(reflect(rd, nn), L), 0.), 22.) * .35;
+    float e = smoothstep(0., .03, h);
+    col = mix(col * al, bcol, e); al = max(al, e);
+    gl_FragColor = vec4(col, al); return;
+  }
+  gl_FragColor = vec4(col * al, al);
+}`;
+function startCourtShader(canvas, host) {
+  let gl = null;
+  try { gl = canvas.getContext("webgl", { alpha: true, premultipliedAlpha: true, antialias: false, powerPreference: "low-power" }); } catch (e) {}
+  if (!gl) return null;
+  const mk = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null; };
+  const vs = mk(gl.VERTEX_SHADER, "attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}"), fs = mk(gl.FRAGMENT_SHADER, COURT_FRAG);
+  if (!vs || !fs) return null;
+  const prog = gl.createProgram(); gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
+  gl.useProgram(prog);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, "a"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const U = {}; ["uRes", "uT", "uTan", "uRot", "uRo", "uR", "uU", "uF", "uBall", "uMask"].forEach(k => { U[k] = gl.getUniformLocation(prog, k); });
+  // Paint mask: FIELD is 34 m x 21 m around the court centre.
+  const MW = 256, MH = 158, FX = 17, FY = 10.5;
+  const mask = document.createElement("canvas"); mask.width = MW; mask.height = MH;
+  const mc = mask.getContext("2d"); mc.fillStyle = "#000"; mc.fillRect(0, 0, MW, MH);
+  const stamp = (qx, qy, r) => {
+    const x = (qx / FX * .5 + .5) * MW, y = (qy / FY * .5 + .5) * MH, rr = r / (2 * FX) * MW;
+    const g = mc.createRadialGradient(x, y, 0, x, y, rr);
+    g.addColorStop(0, "rgba(255,255,255,.9)"); g.addColorStop(1, "rgba(255,255,255,0)");
+    mc.globalCompositeOperation = "lighter"; mc.fillStyle = g; mc.beginPath(); mc.arc(x, y, rr, 0, 6.2832); mc.fill();
+    mc.globalCompositeOperation = "source-over";
+  };
+  const ballAt = t => [12.2 * Math.sin(t * .31 + .6), 5.9 * Math.sin(t * .47 + 1.9), Math.abs(Math.sin(t * 3.1)) * 2.1];
+  for (let i = 0; i < 90; i++) { const b = ballAt(-i * .12); stamp(b[0], b[1], 3.4); } // the first frame already shows a painted stroke
+  const tex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, tex);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.uniform1i(U.uMask, 0);
+  gl.disable(gl.DEPTH_TEST); gl.clearColor(0, 0, 0, 0);
+  const coarse = !!(window.matchMedia && window.matchMedia("(pointer:coarse)").matches);
+  const still = fxReduced();
+  const cam = { ro: [0, 0, 0], r: [1, 0, 0], u: [0, 1, 0], f: [0, 0, 1], tan: .34, rot: 0, w: 1, h: 1 };
+  const norm = v => { const l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; };
+  const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  const resize = () => {
+    const w = Math.max(1, host.clientWidth), h = Math.max(1, host.clientHeight), dpr = Math.min(window.devicePixelRatio || 1, coarse ? 1 : 1.5);
+    canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+    cam.w = w; cam.h = h;
+    const wide = !!(window.matchMedia && window.matchMedia("(min-width:900px)").matches);
+    // Wide: the court sits bottom-right, clear of the headline. Narrow: a low, grazing view that fills the strip under the buttons.
+    const ta = wide ? [-22, 0, 11] : [0, 0, 78];
+    cam.ro = wide ? [-22, 30, -38] : [0, 16, -36];
+    cam.tan = Math.tan((wide ? 39 : 44) * Math.PI / 360);
+    cam.rot = 0;
+    cam.f = norm([ta[0] - cam.ro[0], ta[1] - cam.ro[1], ta[2] - cam.ro[2]]);
+    cam.r = norm(cross([0, 1, 0], cam.f)); cam.u = cross(cam.f, cam.r);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.uniform2f(U.uRes, canvas.width, canvas.height); gl.uniform1f(U.uTan, cam.tan); gl.uniform1f(U.uRot, cam.rot);
+    gl.uniform3fv(U.uRo, cam.ro); gl.uniform3fv(U.uR, cam.r); gl.uniform3fv(U.uU, cam.u); gl.uniform3fv(U.uF, cam.f);
+  };
+  // Screen point -> court coordinates (same ray as the shader).
+  const toCourt = (cx, cy) => {
+    const rc = host.getBoundingClientRect();
+    const px = ((cx - rc.left) / cam.w * 2 - 1) * (cam.w / cam.h) * cam.tan, py = (1 - (cy - rc.top) / cam.h * 2) * cam.tan;
+    const d = [cam.r[0] * px + cam.u[0] * py + cam.f[0], cam.r[1] * px + cam.u[1] * py + cam.f[1], cam.r[2] * px + cam.u[2] * py + cam.f[2]];
+    if (d[1] > -.001) return null;
+    const t = -cam.ro[1] / d[1], gx = cam.ro[0] + d[0] * t, gz = cam.ro[2] + d[2] * t;
+    return cam.rot ? [gz, gx] : [gx, gz];
+  };
+  const paint = (cx, cy) => { const q = toCourt(cx, cy); if (q && Math.abs(q[0]) < FX + 3 && Math.abs(q[1]) < FY + 3) stamp(q[0], q[1], 4.2); };
+  const onMouse = e => paint(e.clientX, e.clientY);
+  const onTouch = e => { const t = e.touches && e.touches[0]; if (t) paint(t.clientX, t.clientY); };
+  let raf = 0, visible = true, t0 = performance.now(), lastDecay = 0, skip = false, dead = false;
+  const draw = now => {
+    const t = (now - t0) / 1000, b = ballAt(t);
+    if (!still) {
+      if (b[2] < .5) stamp(b[0], b[1], 3.2);
+      if (now - lastDecay > 650) { lastDecay = now; mc.fillStyle = "rgba(0,0,0,.02)"; mc.fillRect(0, 0, MW, MH); }
+    }
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mask);
+    gl.uniform1f(U.uT, t); gl.uniform3f(U.uBall, b[0], b[1], still ? 0 : b[2]);
+    gl.clear(gl.COLOR_BUFFER_BIT); gl.drawArrays(gl.TRIANGLES, 0, 3);
+  };
+  const loop = now => {
+    raf = 0; if (dead || !visible || document.hidden) return;
+    skip = coarse && !skip; if (!skip) draw(now); // phones render every other frame
+    raf = requestAnimationFrame(loop);
+  };
+  const kick = () => { if (!still && !raf && !dead) raf = requestAnimationFrame(loop); };
+  resize(); draw(performance.now());
+  const ro = window.ResizeObserver ? new ResizeObserver(() => { resize(); draw(performance.now()); }) : null; if (ro) ro.observe(host);
+  const io = window.IntersectionObserver ? new IntersectionObserver(es => { visible = es[0].isIntersecting; kick(); }) : null; if (io) io.observe(host);
+  const onVis = () => kick();
+  if (!still) {
+    host.addEventListener("mousemove", onMouse, { passive: true });
+    host.addEventListener("touchmove", onTouch, { passive: true });
+    host.addEventListener("touchstart", onTouch, { passive: true });
+    document.addEventListener("visibilitychange", onVis);
+    kick();
+  }
+  return () => {
+    dead = true; if (raf) cancelAnimationFrame(raf);
+    if (ro) ro.disconnect(); if (io) io.disconnect();
+    host.removeEventListener("mousemove", onMouse); host.removeEventListener("touchmove", onTouch); host.removeEventListener("touchstart", onTouch);
+    document.removeEventListener("visibilitychange", onVis);
+    const lose = gl.getExtension("WEBGL_lose_context"); if (lose) lose.loseContext();
+  };
+}
 function HomeOpener() {
   const { lang, setPage } = useApp();
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
@@ -10070,7 +10261,17 @@ function HomeOpener() {
     rings,
     React.createElement("path", { d: "M100 0V200M0 100H200" }),
     React.createElement("circle", { className: "dot", cx: 100, cy: 100, r: 4 }));
-  const secRef = useRef(null);
+  const secRef = useRef(null), courtRef = useRef(null);
+  // The shader court replaces the target drawing when WebGL is available.
+  useEffect(() => {
+    const sec = secRef.current, cv = courtRef.current;
+    if (!sec || !cv) return;
+    let stop = null;
+    try { stop = startCourtShader(cv, sec); } catch (e) { stop = null; }
+    if (!stop) return;
+    sec.classList.add("ao-live");
+    return () => { sec.classList.remove("ao-live"); stop(); };
+  }, []);
   // Magnetic pull + 3D tilt for the three buttons, and a little parallax on the target. Mouse only; off with reduced motion / no-fx.
   useEffect(() => {
     const sec = secRef.current;
@@ -10111,11 +10312,13 @@ function HomeOpener() {
       btns.forEach(reset);
     };
   }, []);
+  const aoIcon = d => React.createElement("svg", { viewBox: "0 0 24 24" }, React.createElement("path", { d: d }));
   const btn = (cls, ic, label, fn) => React.createElement("button", { type: "button", className: "ao-btn " + cls, onClick: fn },
     React.createElement("span", { className: "ic", "aria-hidden": "true" }, ic), React.createElement("span", null, label));
   return React.createElement(React.Fragment, null,
     React.createElement("section", { className: "ao", "aria-labelledby": "ao-h1", ref: secRef },
       React.createElement("div", { className: "ao-bg", "aria-hidden": "true" }),
+      React.createElement("canvas", { className: "ao-court", "aria-hidden": "true", ref: courtRef }),
       React.createElement("div", { className: "ao-target", "aria-hidden": "true" }, target),
       React.createElement("div", { className: "container ao-inner" },
         React.createElement("div", { className: "ao-eyebrow" }, React.createElement("span", { className: "ao-gears", "aria-hidden": "true" }, ["g1", "g2"].map(function (k) { return React.createElement("svg", { key: k, className: "ao-gear " + k, viewBox: "0 0 24 24" }, React.createElement("circle", { cx: 12, cy: 12, r: 9.5, className: "teeth" }), React.createElement("circle", { cx: 12, cy: 12, r: 6.2, className: "rim" }), React.createElement("path", { className: "spokes", d: "M12 12V5.8M12 12L17.4 15.1M12 12L6.6 15.1" })); })), L3("Asociație în constituire", "Association being established", "Egyesület alakulóban")), // TODO: HU review
@@ -10125,9 +10328,9 @@ function HomeOpener() {
         React.createElement("div", { className: "ao-block" },
           React.createElement("p", { className: "ao-msg" }, L3("Din ", "From ", ""), React.createElement("span", { className: "ao-grey" }, L3("gri", "grey", "szürkéből")), L3(", în ", ", to ", ", "), React.createElement("span", { className: "ao-play" }, L3("joc", "play", "játékba")), "."), // TODO: HU review
           React.createElement("div", { className: "ao-cta" },
-            btn("go", "✍️", L3("Semnează petiția", "Sign the petition", "Írd alá a petíciót"), () => go("petition")),
-            btn("rep", "📍", L3("Raportează", "Report", "Jelentsd"), openReport),
-            btn("abt", "🏛️", L3("Despre asociație", "About the association", "Az egyesületről"), () => go("association")))))),
+            btn("go", aoIcon("M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"), L3("Semnează petiția", "Sign the petition", "Írd alá a petíciót"), () => go("petition")),
+            btn("rep", aoIcon("M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21zM12 12.2a2.6 2.6 0 1 0 0-5.2 2.6 2.6 0 0 0 0 5.2z"), L3("Raportează", "Report", "Jelentsd"), openReport),
+            btn("abt", aoIcon("M3 21h18M5 21V10M9.7 21V10M14.3 21V10M19 21V10M3 10l9-6 9 6z"), L3("Despre asociație", "About the association", "Az egyesületről"), () => go("association")))))),
     React.createElement("section", { className: "ao-why" },
       React.createElement("div", { className: "container" },
         React.createElement("div", null,

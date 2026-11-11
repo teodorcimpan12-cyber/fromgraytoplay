@@ -355,3 +355,11 @@ Highest civic-value next steps:
   `useFbCount` (`signupStats`, `reports` without `demo`/`condition`, `letters`, `CITY_REQUESTS`, `COURTS_ALL`), nothing estimated, "…" while loading.
   New `docs/asociatie/` = draft founding file on OG 26/2000 (checklist, name reservation, office loan contract, founding act, statute, court filing);
   drafts only, a lawyer/notary must check them; never put CNPs or home addresses in the repo. Vite migration postponed (owner asked why; not urgent).
+- Same session, showpiece (owner asked for "show-off, professional"): the Home opener's target drawing is replaced by a live court rendered by one
+  hand-written WebGL fragment shader (`COURT_FRAG` + `startCourtShader(canvas, host)`, no library). Per-pixel ray onto the ground plane; cracked grey
+  asphalt vs painted court blended by a paint mask (256×158 2D canvas uploaded as a texture). The bouncing ball and the visitor's mouse/touch stamp
+  paint; the mask decays (2% every 650 ms), so grey creeps back. `.ao-live` on the section shows `.ao-court` and hides `.ao-target` (the target stays
+  as the fallback without WebGL). ≥900px: court bottom-right, masked clear of the headline; <900px: a 118px strip under the buttons (extra
+  `padding-bottom` on `.ao-inner`). DPR capped 1.5 (1 + every other frame on coarse pointers), paused off-screen/hidden tab, one static frame under
+  `fxReduced()`. Camera numbers live in `resize()`; the JS `toCourt()` ray must stay identical to the shader's. Opener buttons use SVG line icons
+  (`aoIcon`) instead of emoji.
