@@ -363,3 +363,8 @@ Highest civic-value next steps:
   `padding-bottom` on `.ao-inner`). DPR capped 1.5 (1 + every other frame on coarse pointers), paused off-screen/hidden tab, one static frame under
   `fxReduced()`. Camera numbers live in `resize()`; the JS `toCourt()` ray must stay identical to the shader's. Opener buttons use SVG line icons
   (`aoIcon`) instead of emoji.
+- Same session, owner feedback: Results card shows **votes** (sum of `votes/`, the number used everywhere else; `signupStats` has fewer rows), has a
+  pulsing "live" tag and each number re-animates when it changes (all listeners are `on("value")`, no reload). Shader on phones: `.ao-court` is only the
+  150px strip (<900px), so it renders ~4x fewer pixels; camera for the strip is `ro [0,10,-22]`, fov 27; DPR cap 2 on coarse, and a frame-budget guard
+  drops `quality` by 20% after three frames over 26 ms (floor 45%). `toCourt()` now measures the canvas, not the section. The site is phone-first:
+  check every change at 390px before desktop.

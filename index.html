@@ -1189,6 +1189,9 @@ html.g2p-shake .card,html.g2p-shake .stat-tile{animation:cardShake .5s 3}
 .lt-basis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.5rem;margin:.2rem 0 .8rem}.lt-b{text-align:left;display:flex;flex-direction:column;gap:.2rem;padding:.6rem .75rem;border-radius:12px;border:1.5px solid var(--border);background:var(--bgCard);color:var(--text);cursor:pointer;font:inherit}.lt-b b{font-size:.86rem}.lt-b small{font-size:.72rem;color:var(--textSec)}.lt-b.on{border-color:var(--green);background:color-mix(in srgb,var(--green) 9%,var(--bgCard))}
 .lt-ev{margin:.6rem 0;padding:.6rem .75rem;border-radius:12px;background:color-mix(in srgb,var(--teal) 7%,var(--bgCard));border:1px solid var(--border);font-size:.8rem}.lt-ev ul{margin:.3rem 0;padding-left:1.1rem}.lt-ev li{margin:.1rem 0}.lt-ev small{color:var(--textSec);font-size:.72rem}
 .res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.9rem 1rem}.res-tile .stat-number{line-height:1.05;font-variant-numeric:tabular-nums}
+.res-head{display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap}.res-live{display:inline-flex;align-items:center;gap:.35rem;font:700 .68rem/1 'Space Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--green)}.res-live i{width:.5rem;height:.5rem;border-radius:50%;background:var(--green)}
+@media(prefers-reduced-motion:no-preference){.res-live i{animation:resLive 1.6s ease-in-out infinite}.res-tile .stat-number{animation:resTick .7s var(--ease-out,ease-out)}}
+@keyframes resLive{50%{opacity:.25}}@keyframes resTick{from{opacity:.2;translate:0 6px}}
 .lt-row{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .7rem;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.85rem}.lt-row .lt-n{flex:1 1 12rem;font-weight:600}.lt-due{font-family:'Space Mono',monospace;font-size:.75rem;padding:.1rem .5rem;border-radius:999px;background:var(--border)}.lt-due.late{background:var(--red);color:#fff}.lt-due.ok{background:var(--green);color:#fff}
 .ai-card p{margin:.35rem 0 0;line-height:1.4}.ai-issues{margin:.35rem 0 0;padding-left:1.1rem;color:var(--textSec);font-size:.8rem}
 .ai-tag{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem;font-size:.74rem;font-weight:700;letter-spacing:.02em;color:var(--teal)}
@@ -1745,10 +1748,10 @@ body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inse
 .ao-target .dot{fill:currentColor;stroke:none}
 @media(min-width:900px){.ao-target{width:min(44vw,560px);right:6vw;top:50%;transform:translateY(-50%);opacity:.2}}
 /* Shader court: fills the opener behind the text. Shown only once WebGL has started (.ao-live), then the target hides. */
-.ao-court{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;display:none;-webkit-mask-image:linear-gradient(180deg,transparent 62%,#000 80%);mask-image:linear-gradient(180deg,transparent 62%,#000 80%)}
+.ao-court{position:absolute;left:0;right:0;bottom:0;width:100%;height:150px;z-index:-1;pointer-events:none;display:none;-webkit-mask-image:linear-gradient(180deg,transparent,#000 38%);mask-image:linear-gradient(180deg,transparent,#000 38%)}
 .ao-live .ao-court{display:block}.ao-live .ao-target{display:none}
 @media(max-width:899.98px){.ao-live .ao-inner{padding-bottom:calc(clamp(2rem,6vh,4.5rem) + 118px)}}
-@media(min-width:900px){.ao-court{-webkit-mask-image:linear-gradient(90deg,transparent 34%,#000 60%),linear-gradient(180deg,transparent 40%,#000 60%);mask-image:linear-gradient(90deg,transparent 34%,#000 60%),linear-gradient(180deg,transparent 40%,#000 60%);-webkit-mask-composite:source-in;mask-composite:intersect}}
+@media(min-width:900px){.ao-court{top:0;height:100%;-webkit-mask-image:linear-gradient(90deg,transparent 34%,#000 60%),linear-gradient(180deg,transparent 40%,#000 60%);mask-image:linear-gradient(90deg,transparent 34%,#000 60%),linear-gradient(180deg,transparent 40%,#000 60%);-webkit-mask-composite:source-in;mask-composite:intersect}}
 .ao-btn .ic svg{display:block;width:1.5rem;height:1.5rem;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .ao-inner{position:relative;padding-top:clamp(1.8rem,5vh,4rem);padding-bottom:clamp(2rem,6vh,4.5rem)}
 .ao-eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#7DF7C9;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.28);padding:.38rem .8rem;border-radius:980px}
@@ -10187,15 +10190,16 @@ function startCourtShader(canvas, host) {
   const cam = { ro: [0, 0, 0], r: [1, 0, 0], u: [0, 1, 0], f: [0, 0, 1], tan: .34, rot: 0, w: 1, h: 1 };
   const norm = v => { const l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; };
   const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  let quality = 1; // lowered automatically when frames run long
   const resize = () => {
-    const w = Math.max(1, host.clientWidth), h = Math.max(1, host.clientHeight), dpr = Math.min(window.devicePixelRatio || 1, coarse ? 1 : 1.5);
-    canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+    const w = Math.max(1, canvas.clientWidth), h = Math.max(1, canvas.clientHeight), dpr = Math.min(window.devicePixelRatio || 1, coarse ? 2 : 1.5) * quality;
+    canvas.width = Math.max(2, Math.round(w * dpr)); canvas.height = Math.max(2, Math.round(h * dpr));
     cam.w = w; cam.h = h;
     const wide = !!(window.matchMedia && window.matchMedia("(min-width:900px)").matches);
-    // Wide: the court sits bottom-right, clear of the headline. Narrow: a low, grazing view that fills the strip under the buttons.
-    const ta = wide ? [-22, 0, 11] : [0, 0, 78];
-    cam.ro = wide ? [-22, 30, -38] : [0, 16, -36];
-    cam.tan = Math.tan((wide ? 39 : 44) * Math.PI / 360);
+    // Wide: the court sits bottom-right, clear of the headline. Narrow: the canvas is only the strip under the buttons, court across it.
+    const ta = wide ? [-22, 0, 11] : [0, 0, .6];
+    cam.ro = wide ? [-22, 30, -38] : [0, 10, -22];
+    cam.tan = Math.tan((wide ? 39 : 27) * Math.PI / 360);
     cam.rot = 0;
     cam.f = norm([ta[0] - cam.ro[0], ta[1] - cam.ro[1], ta[2] - cam.ro[2]]);
     cam.r = norm(cross([0, 1, 0], cam.f)); cam.u = cross(cam.f, cam.r);
@@ -10205,7 +10209,7 @@ function startCourtShader(canvas, host) {
   };
   // Screen point -> court coordinates (same ray as the shader).
   const toCourt = (cx, cy) => {
-    const rc = host.getBoundingClientRect();
+    const rc = canvas.getBoundingClientRect();
     const px = ((cx - rc.left) / cam.w * 2 - 1) * (cam.w / cam.h) * cam.tan, py = (1 - (cy - rc.top) / cam.h * 2) * cam.tan;
     const d = [cam.r[0] * px + cam.u[0] * py + cam.f[0], cam.r[1] * px + cam.u[1] * py + cam.f[1], cam.r[2] * px + cam.u[2] * py + cam.f[2]];
     if (d[1] > -.001) return null;
@@ -10226,14 +10230,18 @@ function startCourtShader(canvas, host) {
     gl.uniform1f(U.uT, t); gl.uniform3f(U.uBall, b[0], b[1], still ? 0 : b[2]);
     gl.clear(gl.COLOR_BUFFER_BIT); gl.drawArrays(gl.TRIANGLES, 0, 3);
   };
+  let lastNow = 0, slow = 0, fast = 0;
   const loop = now => {
-    raf = 0; if (dead || !visible || document.hidden) return;
+    raf = 0; if (dead || !visible || document.hidden) { lastNow = 0; return; }
+    // Frame budget: three long frames in a row drop the render resolution by 20% (down to 45%), so weak phones stay smooth.
+    if (lastNow) { const dt = now - lastNow; if (dt > 26 && dt < 400) { fast = 0; if (++slow >= 3 && quality > .45) { slow = 0; quality = Math.max(.45, quality * .8); resize(); } } else if (dt <= 26) { slow = 0; fast++; } }
+    lastNow = now;
     skip = coarse && !skip; if (!skip) draw(now); // phones render every other frame
     raf = requestAnimationFrame(loop);
   };
   const kick = () => { if (!still && !raf && !dead) raf = requestAnimationFrame(loop); };
   resize(); draw(performance.now());
-  const ro = window.ResizeObserver ? new ResizeObserver(() => { resize(); draw(performance.now()); }) : null; if (ro) ro.observe(host);
+  const ro = window.ResizeObserver ? new ResizeObserver(() => { resize(); draw(performance.now()); }) : null; if (ro) ro.observe(canvas);
   const io = window.IntersectionObserver ? new IntersectionObserver(es => { visible = es[0].isIntersecting; kick(); }) : null; if (io) io.observe(host);
   const onVis = () => kick();
   if (!still) {
@@ -13359,7 +13367,10 @@ function ResultsBoard() {
   const { lang } = useApp();
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
   const e = React.createElement;
-  const signups = useFbCount("signupStats");
+  const votes = useFirebase("votes");
+  const [votesReady, setVotesReady] = useState(false);
+  useEffect(() => { const ref = db.ref("votes"), fn = () => setVotesReady(true); ref.on("value", fn); return () => ref.off("value", fn); }, []);
+  const voteTotal = !votesReady ? "…" : votes ? (votes.flip || 0) + (votes.mural || 0) + (votes.both || 0) : 0;
   const reports = useFbCount("reports", r => !r.demo && r.category !== "condition");
   const letters = useFbCount("letters", x => !!x.sentAt);
   const num = (list, f) => list === null ? "…" : (f ? list.filter(f) : list).length;
@@ -13367,7 +13378,7 @@ function ResultsBoard() {
   const reqOpen = CITY_REQUESTS.filter(r => !r.answeredAt);
   const waitDays = reqOpen.length ? Math.max(0, Math.floor((now - Math.min.apply(null, reqOpen.map(r => Date.parse(r.reg + "T00:00:00")))) / 864e5)) : 0;
   const tiles = [
-    [num(signups), L3("semnături pe petiție", "petition signatures", "aláírás a petíción")],
+    [voteTotal, L3("voturi pe petiție", "petition votes", "szavazat a petíción")],
     [num(reports), L3("sesizări de la locuitori", "reports from residents", "lakossági bejelentés")],
     [num(reports, r => r.cityHall && r.cityHall.sentAt), L3("din ele, înregistrate la Primărie", "of those, registered at City Hall", "ebből a Városházán iktatva")],
     [num(reports, r => r.status === "resolved"), L3("din ele, rezolvate", "of those, resolved", "ebből megoldva")],
@@ -13377,13 +13388,14 @@ function ResultsBoard() {
     [COURTS_ALL.length, L3("terenuri documentate, în două orașe", "courts documented, in two cities", "dokumentált pálya két városban")]
   ];
   return e("div", { className: "card mb-2 res-board" },
-    e("h3", { className: "mb-1" }, "✅ ", L3("Rezultate până azi", "Results so far", "Eredmények máig")),
+    e("h3", { className: "mb-1 res-head" }, e("span", null, "✅ ", L3("Rezultate până azi", "Results so far", "Eredmények máig")),
+      e("span", { className: "res-live" }, e("i", { "aria-hidden": "true" }), L3("live", "live", "élő"))),
     e("p", { className: "text-sm mb-2", style: { color: "var(--textSec)" } }, L3(
-      "Cifre citite acum din baza de date, din ambele orașe. Nimic estimat: zero înseamnă zero, iar sesizările de test nu sunt numărate.",
-      "Numbers read right now from the database, for both cities. Nothing estimated: zero means zero, and test reports are not counted.",
-      "Az adatbázisból most kiolvasott számok, mindkét városból. Semmi becslés: a nulla nullát jelent, a tesztbejelentéseket nem számoljuk.")),
+      "Cifre din baza de date, din ambele orașe. Se schimbă singure, fără reîncărcare, când cineva votează sau trimite o sesizare. Nimic estimat; sesizările de test nu sunt numărate.",
+      "Numbers from the database, for both cities. They change on their own, without a reload, when someone votes or sends a report. Nothing estimated; test reports are not counted.",
+      "Számok az adatbázisból, mindkét városból. Újratöltés nélkül, maguktól változnak, amikor valaki szavaz vagy bejelentést küld. Semmi becslés; a tesztbejelentéseket nem számoljuk.")),
     e("div", { className: "res-grid" }, tiles.map(([n, label], i) => e("div", { key: i, className: "res-tile" },
-      e("div", { className: "stat-number" }, n),
+      e("div", { className: "stat-number", key: String(n) }, n),
       e("div", { className: "stat-label" }, label)))),
     reqOpen.length > 0 && e("p", { className: "text-sm mt-2", style: { fontWeight: 600 } }, "⏱️ ", L3(
       "Așteptăm de " + waitDays + " zile răspunsul la cererile oficiale.",
