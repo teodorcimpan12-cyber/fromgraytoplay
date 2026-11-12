@@ -7,9 +7,9 @@ sports courts in Târgu Mureș. Live at https://fromgreytoplay.netlify.app/.
 
 Replies to the owner: Romanian, very short (a few lines), no long explanations. Details only if asked.
 - "CIC" = Claude in Chrome (the browser extension).
-- Skills: before a task, pick the best available skill and use it without being asked. If none fits, look for one
-  (skill registries / `.claude/skills/install-saved-reel-skills`) and install it, following that skill's safety rules
-  (verify the repo, read the code, ask before anything needing keys or money).
+- Skills: before a task, pick the best already-installed skill and use it without being asked. If none fits, look for one
+  (skill registries / `.claude/skills/install-saved-reel-skills`) and PROPOSE it; install a new skill only after the owner
+  says yes for that skill, pinned to the exact commit SHA that was reviewed (never a moving branch).
 - GitHub Copilot works alongside Claude here: request a Copilot review on PRs; treat Copilot/autofix PRs like any
   reviewer's work (verify before merging).
 
