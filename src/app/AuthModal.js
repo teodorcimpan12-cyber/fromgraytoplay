@@ -32,7 +32,7 @@ export function AuthModal({ onClose, initialMode }) {
     if (msg.includes("network-request-failed")) return lang === "ro" ? "Eroare de rețea. Verifică conexiunea." : "Network error. Check connection.";
     if (msg.includes("invalid-email")) return L3("Email invalid", "Invalid email", "Érvénytelen e-mail");
     if (msg.includes("popup-closed-by-user") || msg.includes("cancelled-popup-request")) return "";
-    if (msg.includes("unauthorized-domain")) return L3("Domeniul nu e autorizat în Firebase Auth.", "This domain isn't authorised in Firebase Auth.", "A domain nincs engedélyezve a Firebase Authban.");
+    if (msg.includes("unauthorized-domain")) { const h = location.hostname; return L3("Google nu merge pe " + h + ". Intră de pe fromgreytoplay.netlify.app sau folosește email și parolă.", "Google sign-in does not work on " + h + ". Use fromgreytoplay.netlify.app or email and password.", "A Google-belépés nem működik itt: " + h + ". Használd a fromgreytoplay.netlify.app oldalt vagy az e-mailt."); } // TODO: HU review
     if (msg.includes("invalid-phone-number")) return L3("Număr invalid — folosește formatul +40…", "Invalid number — use the +40… format", "Érvénytelen szám — +40… formátum");
     if (msg.includes("invalid-verification-code")) return L3("Cod SMS greșit", "Wrong SMS code", "Hibás SMS-kód");
     return msg.replace(/^Firebase:\s*/, "").replace(/\s*\(auth\/[^)]+\)\.?$/, "");
