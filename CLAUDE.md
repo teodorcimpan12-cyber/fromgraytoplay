@@ -3,6 +3,10 @@
 Civic PWA documenting the inequality between central and peripheral
 sports courts in Târgu Mureș. Live at https://fromgreytoplay.netlify.app/.
 
+## Owner preference
+
+Replies to the owner: Romanian, very short (a few lines), no long explanations. Details only if asked.
+
 ## Knowledge Graph
 
 **Înainte de a genera cod sau arhitectură, citește `graphify-out/graph.json`.**
