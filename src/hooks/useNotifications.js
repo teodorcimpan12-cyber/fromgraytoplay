@@ -12,7 +12,7 @@ import { useState } from "../lib/react.js";
 export function useNotifications() {
   const { follows } = useFollows();
   const followedIds = Object.keys(follows);
-  const actData = useFirebase("activity");
+  const actData = useFirebase("activity", 100); // the bell shows at most 40 rows
   const settings = useFirebase("settings");
   const [seen, setSeen] = useState(() => parseInt(localStorage.getItem("g2p_notif_seen") || "0", 10) || 0);
   const all = actData ? Object.entries(actData).map(([id, a]) => ({ id, ...a, ts: tsOf(a) }))

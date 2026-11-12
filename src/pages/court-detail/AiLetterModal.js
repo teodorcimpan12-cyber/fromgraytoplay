@@ -1,3 +1,4 @@
+import { loadJsPDF } from "../../lib/load-jspdf.js";
 import { ACTIVE_CITY, db, g2pSfx, useApp } from "../../app/core.js";
 import { AI_LETTER_EXAMPLES } from "../../data/ai-letter-examples.js";
 import { CITY_HALL_EMAIL, CITY_RO, LETTER_BASIS, SITE } from "../../data/constants.js";
@@ -93,7 +94,7 @@ export function AiLetterModal({ court: c, onClose }) {
   const mail = () => { track("email"); window.location.href = "mailto:" + CITY_HALL_EMAIL[city === "sibiu" ? "sibiu" : "tgm"] + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(full()); };
   const imgSize = src => new Promise(res => { const im = new Image(); im.onload = () => res({ w: im.naturalWidth, h: im.naturalHeight }); im.onerror = () => res(null); im.src = src; });
   const pdf = async () => {
-    const JsPDF = window.jspdf && window.jspdf.jsPDF;
+    const JsPDF = await loadJsPDF().catch(() => null);
     if (!JsPDF) { toast(L3("PDF-ul încă se încarcă. Mai încearcă o dată.", "The PDF tool is still loading. Try again.", "A PDF még töltődik. Próbáld újra.")); return; }
     const doc = new JsPDF({ unit: "mm", format: "a4" });
     const M = 22, maxW = 210 - M * 2;

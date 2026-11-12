@@ -1,3 +1,4 @@
+import { loadJsPDF } from "./load-jspdf.js";
 import { ACTIVE_CITY, COURTS, PRESS_URL, SAT_N, SAT_RECENT, STADIUM_N, loadQRious } from "../app/core.js";
 import { G2P_EMAIL, G2P_PRESS_PHONE, SITE } from "../data/constants.js";
 import { cityName } from "./city-name.js";
@@ -67,7 +68,7 @@ export function qrDataUrl(value, size) {
   return loadQRious().then(() => new QRious({ value: value, size: size || 600, level: "M", background: "#ffffff", foreground: "#1A1A2E" }).toDataURL("image/png"));
 }
 export async function buildPressPdf(lang, d) {
-  const JsPDF = window.jspdf && window.jspdf.jsPDF;
+  const JsPDF = await loadJsPDF().catch(() => null);
   if (!JsPDF) throw new Error("jspdf");
   const doc = new JsPDF({ unit: "mm", format: "a4" });
   const W = 210, M = 18, maxW = W - M * 2;

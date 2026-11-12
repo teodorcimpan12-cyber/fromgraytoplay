@@ -429,3 +429,6 @@ Highest civic-value next steps:
   the proxy script or `netlify/` change, so it costs ONE deploy (15 credits) to activate, then nothing. Deploy previews still build the full site.
   Not verified on Netlify: that `/.netlify/functions/ai` still reaches the function under the forced `/*` rule, and that header rules apply to proxied files.
   Opener buttons: magnetic pull only on the hovered button, max 6px, so neighbours never overlap (gap stays ≥2px at 1000–1440px).
+- Session 12 Nov 2026, late (perf, ported from a local Copilot audit): jsPDF is no longer a `<script>` in `index.html`; `src/lib/load-jspdf.js`
+  loads the same pinned URL on the first PDF click (press PDF, dossier, letters) — saves ~350 KB on every first visit; SW still precaches it.
+  The navbar bell reads only the newest 100 `activity` rows (`useFirebase(path, last)` → `limitToLast`). Verified: no jsPDF at load, press PDF downloads.

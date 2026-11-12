@@ -1,3 +1,4 @@
+import { loadJsPDF } from "../../lib/load-jspdf.js";
 import { ACTIVE_CITY, CITY_HALL, COURTS, LETTER_AREAS, db, useApp } from "../../app/core.js";
 import { SITE } from "../../data/constants.js";
 import { cityName } from "../../lib/city-name.js";
@@ -34,12 +35,12 @@ export function LetterModal({
     if (lang === "hu") return `CÍMZETT: Marosvásárhely Helyi Tanácsa és Polgármesteri Hivatala\n\nAlulírott ${n || "___"}, lakcím: ${a || areaLabel},\n\na(z) ${areaLabel} környék lakójaként kérem a peremkerületi sportpályák felújítását, különösen a(z) "${court.name}" pályáét.\n${why ? "\nMiért fontos ez nekem: " + why + "\n" : ""}\nÉrvek:\n- ${total} polgár írta alá az online petíciót (${web})\n- Egy informális felmérésben 15 megkérdezett lakosból 12 nem használja a legközelebbi pályát, mert túl rossz állapotú\n- A CSM Marosvásárhely 2692/03.11.2026 sz. válasza: 4 év alatt 1,86 millió lej beruházás, ennek 49,5%-a a Liga 3 homologálására és a Sportcsarnok platformjára; a CSM költségvetése 70%-kal nőtt, a pályákra fordított kiadás 65%-kal csökkent (2022-2025)\n- A pálya adatlapja fotókkal és bejelentésekkel: ${SITE}/#court-${court.id}\n\nKonkrét javaslatok:\n1. Flip-the-Court — meglévő pályák felújítása\n2. Street Canvas — közösségi szavazással választott falfestmény\n\nTisztelettel,\n${n || "___"}\nDátum: ${new Date().toLocaleDateString("hu-HU")}`;
     return `TO: Târgu Mureș City Council and City Hall\n\nI, ${n || "___"}, residing at ${a || areaLabel},\n\nas a resident of the ${areaLabel} area, I request the renovation of peripheral sports courts, in particular "${court.name}".\n${why ? "\nWhy this matters to me: " + why + "\n" : ""}\nArguments:\n- ${total} citizens signed the online petition (${web})\n- In an informal poll, 12 of 15 residents asked do not use their nearest court because it is too degraded\n- CSM Târgu Mureș reply no. 2692/03.11.2026: 1.86M lei invested in 4 years, 49.5% of it on Liga 3 homologation and the Sala Polivalentă platform; the CSM budget rose 70% while spending on the grounds fell 65% (2022-2025)\n- The court's page, with photos and reports: ${SITE}/#court-${court.id}\n\nConcrete proposals:\n1. Flip-the-Court — renovate existing courts\n2. Street Canvas — community-voted mural\n\nSincerely,\n${n || "___"}\nDate: ${new Date().toLocaleDateString("en-GB")}`;
   };
-  const dl = () => {
+  const dl = async () => {
     const text = buildLetter();
     /* S4-F3: increment letter counter */
     db.ref("letterCount/total").transaction(v => (v || 0) + 1);
     logActivity("letter", "Cetățean", null);
-    const JsPDF = window.jspdf && window.jspdf.jsPDF;
+    const JsPDF = await loadJsPDF().catch(() => null);
     if (!JsPDF) {
       const b = new Blob([text], { type: "text/plain" });
       const el = document.createElement("a");
