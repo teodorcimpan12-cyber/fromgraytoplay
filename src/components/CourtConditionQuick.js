@@ -65,7 +65,7 @@ export function CourtConditionQuick({ onClose, courtId: presetCourt }) {
   return React.createElement("div", { className: "modal-overlay", onClick: onClose },
     React.createElement("div", { className: "modal", onClick: e => e.stopPropagation() },
       React.createElement("div", { className: "flex justify-between items-center mb-2" },
-        React.createElement("h2", { style: { fontSize: "1rem" } }, "🏟️ ", t.conditionCheck),
+        React.createElement("h2", { style: { fontSize: "1rem" } }, t.conditionCheck),
         React.createElement("button", { className: "btn btn-sm btn-outline", onClick: onClose }, t.cancel)
       ),
       React.createElement("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, t.step3Location),

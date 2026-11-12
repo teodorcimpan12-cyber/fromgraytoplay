@@ -252,7 +252,7 @@ export function City3D() {
   const anyUnknown = COURTS.some(c => c.condition == null);
   return React.createElement("section", { className: "section" },
     React.createElement("div", { className: "container" },
-      React.createElement("h2", { className: "section-title" }, "🌌 ", L3("Orașul, în 3D", "The city, in 3D", "A város 3D-ben")),
+      React.createElement("h2", { className: "section-title" }, L3("Orașul, în 3D", "The city, in 3D", "A város 3D-ben")),
       React.createElement("p", { className: "section-sub" }, !anyUnknown ? L3(
         "Fiecare stâlp e un teren real, așezat după coordonatele lui. Înălțimea arată starea (1–5); stadioanele sunt cele mai înalte.",
         "Each pillar is a real court, placed by its coordinates. Height shows its condition (1–5); the stadiums stand tallest.",

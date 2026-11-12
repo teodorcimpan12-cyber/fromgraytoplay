@@ -27,7 +27,7 @@ export function StreakCard() {
   });
   return React.createElement("div", { className: "card mb-2" },
     React.createElement("div", { className: "flex justify-between items-center mb-1" },
-      React.createElement("h3", null, "🔥 ", t.streakTitle || "Seria ta civică"),
+      React.createElement("h3", null, t.streakTitle || "Seria ta civică"),
       React.createElement("div", { className: "stat-number", style: { fontSize: "2rem", color: "var(--coral)", lineHeight: 1 } }, count)
     ),
     React.createElement("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } },

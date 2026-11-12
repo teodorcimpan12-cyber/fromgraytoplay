@@ -23,7 +23,7 @@ export function LettersTracker() {
       .catch(() => toast(L3("Nu s-a putut salva.", "Could not save.", "Nem sikerült menteni.")));
   };
   return e("div", { className: "card" },
-    e("h3", { className: "mb-1" }, "✉️ ", L3("Scrisori trimise către Primărie", "Letters sent to City Hall", "A Városházának küldött levelek")),
+    e("h3", { className: "mb-1" }, L3("Scrisori trimise către Primărie", "Letters sent to City Hall", "A Városházának küldött levelek")),
     e("p", { className: "text-sm mb-2", style: { color: "var(--textSec)" } }, L3("Fiecare scrisoare trimisă din pagina unui teren apare aici, cu termenul legal de răspuns: 30 de zile pentru o petiție (OG 27/2002), 10 zile pentru o cerere de informații (Legea 544/2001). Nu păstrăm nume sau adrese.",
       "Every letter sent from a court page shows up here with its legal answer deadline: 30 days for a petition (OG 27/2002), 10 days for an information request (Law 544/2001). We keep no names or addresses.",
       "Minden pályaoldalról küldött levél itt jelenik meg a törvényes válaszhatáridővel: petíciónál 30 nap (OG 27/2002), információkérésnél 10 nap (544/2001-es törvény). Neveket és címeket nem tárolunk.")),

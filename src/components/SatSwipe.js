@@ -135,7 +135,7 @@ export function SatSwipe() {
   const zbtn = (lbl, aria, fn, dis) => React.createElement("button", { className: "sw-zb", "aria-label": aria, disabled: dis, onPointerDown: e => e.stopPropagation(), onClick: fn }, lbl);
   return React.createElement("section", { className: "section", "data-demo": "sat" },
     React.createElement("div", { className: "container" },
-      React.createElement("h2", { className: "section-title" }, "🛰️ ", L3("Atunci și acum, din satelit", "Then and now, from space", "Akkor és most, műholdról")),
+      React.createElement("h2", { className: "section-title" }, L3("Atunci și acum, din satelit", "Then and now, from space", "Akkor és most, műholdról")),
       React.createElement("p", { className: "section-sub" }, L3("Trage de cerc ca să compari. Mărește cu două degete sau cu dublu-tap.", "Drag the circle to compare. Pinch or double-tap to zoom.", "Húzd a kört az összehasonlításhoz. Két ujjal vagy dupla koppintással nagyíts.")),
       React.createElement("div", {
         ref: boxRef, className: "sw-box" + (view.zoom > 1 ? " zoomed" : ""), style: { "--cut": cut + "%" }, tabIndex: 0, role: "slider",

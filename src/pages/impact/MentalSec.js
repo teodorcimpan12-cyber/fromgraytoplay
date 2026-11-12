@@ -8,7 +8,7 @@ export function MentalSec() {
     className: "card"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "mb-2"
-  }, "\uD83E\uDDE0 ", lang === "ro" ? "Sport și sănătate mintală" : "Sport and mental health"), /*#__PURE__*/React.createElement("p", {
+  }, lang === "ro" ? "Sport și sănătate mintală" : "Sport and mental health"), /*#__PURE__*/React.createElement("p", {
     className: "mb-2"
   }, lang === "ro" ? "Activitatea fizică reduce depresia cu 30% și anxietatea cu 20% la tineri." : "Physical activity reduces depression by 30% and anxiety by 20% in youth."), /*#__PURE__*/React.createElement("div", {
     className: "grid grid-2 mb-2"

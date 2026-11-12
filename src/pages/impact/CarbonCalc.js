@@ -12,7 +12,7 @@ export function CarbonCalc() {
     className: "card"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "mb-2"
-  }, "\uD83C\uDF31 ", lang === "ro" ? "Amprenta de carbon" : "Carbon Footprint"), /*#__PURE__*/React.createElement("label", {
+  }, lang === "ro" ? "Amprenta de carbon" : "Carbon Footprint"), /*#__PURE__*/React.createElement("label", {
     className: "text-sm"
   }, lang === "ro" ? "Tineri" : "Youth", ": ", y), /*#__PURE__*/React.createElement("input", {
     type: "range",

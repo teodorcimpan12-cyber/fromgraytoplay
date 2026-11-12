@@ -50,7 +50,7 @@ export function VerifyFlow({ court: c, onClose }) {
   return e("div", { className: "modal-overlay", onClick: onClose },
     e("div", { className: "modal vf", onClick: ev => ev.stopPropagation(), role: "dialog", "aria-modal": "true", "aria-label": L3("Verifică terenul", "Check the court", "Pálya ellenőrzése") },
       e("div", { className: "flex justify-between items-center mb-1" },
-        e("h2", { style: { fontSize: "1rem", margin: 0 } }, "🙋 ", L3("Verifică în 60 de secunde", "Check in 60 seconds", "Ellenőrzés 60 másodperc alatt")),
+        e("h2", { style: { fontSize: "1rem", margin: 0 } }, L3("Verifică în 60 de secunde", "Check in 60 seconds", "Ellenőrzés 60 másodperc alatt")),
         e("button", { className: "btn btn-sm btn-outline", onClick: onClose }, L3("Închide", "Close", "Bezár"))),
       e("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, "📍 ", c.name),
       e("p", { className: "vf-q" }, "1. ", L3("Există terenul?", "Is the court there?", "Megvan a pálya?")),

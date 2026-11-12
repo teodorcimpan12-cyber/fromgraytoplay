@@ -4,7 +4,7 @@ export function PetitionAccountStep({ onSignup, onLogin, onSkip }) {
   const { lang } = useApp();
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
   return React.createElement("div", { className: "card pet-acct" },
-    React.createElement("h3", null, "👤 " + L3("Întâi, un cont", "First, an account", "Először egy fiók")),
+    React.createElement("h3", null, L3("Întâi, un cont", "First, an account", "Először egy fiók")),
     React.createElement("p", null, L3("Cu un cont, semnătura ta e a unei persoane reale, nu un clic anonim, iar data viitoare nu mai scrii nimic din nou.",
       "With an account your signature belongs to a real person, not an anonymous click, and next time you don't type anything again.",
       "Fiókkal az aláírásod egy valódi emberé, nem névtelen kattintás.")),

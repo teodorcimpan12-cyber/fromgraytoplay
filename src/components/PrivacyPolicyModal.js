@@ -6,7 +6,7 @@ export function PrivacyPolicyModal({ onClose }) {
   return React.createElement("div", { className: "modal-overlay", onClick: onClose },
     React.createElement("div", { className: "modal", onClick: function(e) { e.stopPropagation(); }, style: { maxWidth: 600, maxHeight: "80vh", overflowY: "auto" } },
       React.createElement("div", { className: "flex justify-between items-center mb-2" },
-        React.createElement("h2", null, "🔒 ", t.privacyPolicy),
+        React.createElement("h2", null, t.privacyPolicy),
         React.createElement("button", { onClick: onClose, style: { background: "none", border: "none", fontSize: "1.4rem", color: "var(--text)" } }, "✕")
       ),
       React.createElement("div", { className: "text-sm", style: { lineHeight: 1.7, color: "var(--text)" } },

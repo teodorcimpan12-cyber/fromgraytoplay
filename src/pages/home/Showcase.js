@@ -95,7 +95,7 @@ export function Showcase() {
   ];
   return React.createElement("section", { className: "section showcase" },
     React.createElement("div", { className: "container" },
-      React.createElement("h2", { className: "section-title" }, "✨ " + L3("Ce poate face site-ul ăsta", "What this site can do", "Mit tud ez az oldal")),
+      React.createElement("h2", { className: "section-title" }, L3("Ce poate face site-ul ăsta", "What this site can do", "Mit tud ez az oldal")),
       React.createElement("p", { className: "section-sub" }, L3("Patru instrumente. Fiecare face ceva diferit.", "Four tools. Each one does something different.", "Négy eszköz, mind más-más.")),
       React.createElement("div", { ref: gridRef, className: "sc-grid sc-grid-v2" + (phase ? " " + phase : "") },
         tiles.map((tile, i) => React.createElement("button", {

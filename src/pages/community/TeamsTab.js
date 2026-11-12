@@ -31,7 +31,7 @@ export function TeamsTab() {
   })) : [];
   return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "flex justify-between items-center mb-2"
-  }, /*#__PURE__*/React.createElement("h3", null, "\u26BD ", t.teams), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("h3", null, t.teams), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-green btn-sm",
     onClick: () => setShow(!show)
   }, "+ ", lang === "ro" ? "Creează echipă" : "Create team")), show && /*#__PURE__*/React.createElement("div", {

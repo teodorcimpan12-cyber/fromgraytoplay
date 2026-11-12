@@ -26,7 +26,7 @@ export function PlayNowModal({ court, onClose }) {
   return React.createElement("div", { className: "modal-overlay", onClick: onClose },
     React.createElement("div", { className: "modal", onClick: e => e.stopPropagation() },
       React.createElement("div", { className: "flex justify-between items-center mb-2" },
-        React.createElement("h2", null, "⚽ ", t.playNow),
+        React.createElement("h2", null, t.playNow),
         React.createElement("button", { onClick: onClose, style: { background:"none",border:"none",fontSize:"1.4rem",color:"var(--text)" } }, "✕")
       ),
       React.createElement("p", { className: "text-sm mb-2", style: { color:"var(--textSec)" } }, t.playNowSub, " — ", court.name),

@@ -55,7 +55,7 @@ export function AdminLogin({
   const who = me && (me.email || me.phoneNumber || "another user");
   return React.createElement("div", { className: "admin-login" },
     React.createElement("div", { className: "admin-login-box" },
-      React.createElement("h2", null, "🔒 ADMIN"),
+      React.createElement("h2", null, "ADMIN"),
       React.createElement("p", null, "From Grey to Play"),
       privileged && React.createElement("p", { style: { color: "#D1D5DB", fontSize: ".85rem" } },
         (isAdmin ? "Owner" : "Sheriff") + " · " + who + (hasPw ? " — confirm with your own password." : " — confirm with Google.")),

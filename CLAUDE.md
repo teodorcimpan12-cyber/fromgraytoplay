@@ -83,7 +83,9 @@ fromgreytoplay-default-rtdb/
 └── presence/{voterKey}: true                   [live online counter]
 ```
 
-Anyone can write — rules are MVP-permissive. Tighten before any press.
+Rules live in `database.rules.json` (deployed to Firebase separately by the owner): no node is open-ended any more —
+every public write is create-only, +1-only or shape/size-validated. Visitors are not signed in, so there is no true
+per-person rate limit; that needs Firebase App Check (owner, in the console).
 
 ## Languages
 
@@ -381,3 +383,18 @@ Highest civic-value next steps:
   `src/data/*.js` and `public/data/*`. Two intended changes: a garbled CSS comment that swallowed the dark-mode `.card:hover` shadow was repaired
   (`src/styles/16-*.css`), and the first (dead) duplicate of `activityMsg` was dropped. Dead code parked in `src/legacy/`. SW cache → `g2p-v14`.
   Netlify needs `npm ci` to run (it does by default when `package-lock.json` exists).
+- Same session: `database.rules.json` — the 11 nodes that were `".write": true` (bookings, pixels, presence, achievements, adoptions, tasks,
+  leaderboard, games, gallery, ratings, follows) now validate key shape, types and sizes; counters accept only +1 (forum votes, gallery votes,
+  game players); leaderboard points can rise by at most 50 per write and never fall (admin bypasses via the root rule); gallery/games are
+  create-only (games may be deleted by their timer). NOT tested on the emulator and NOT deployed — after deploying, try one booking, one pixel,
+  one photo, one rating. If you add a field or a write path, update the rule in the same commit.
+- Same session, build bug caught before merge: the document-order plugin put the app `<style>` inside the Leaflet `<noscript>`, so the built site
+  was unstyled while the text crawl and smoke still passed. Fixed in `vite.config.js`; `predeploy-check` now requires a live `<style>` outside
+  `<noscript>` and `smoke` fails if `--green` is not set or `.nav-logo` is unstyled. A failed build leaves an old `dist/`: never trust smoke
+  without a green predeploy first.
+- Same session, professional cleanup (owner-approved list): Home has ONE hero (`HomeOpener`); `Hero3D` is no longer on Home (file kept, one line
+  to restore) and the old `hero-premium` headline is gone — the three stat tiles follow the opener in `.home-stats`. Home action cards use SVG line
+  icons (`.ac-svg`). Tabs are words, not emoji: Impact (Calculator, Comparație, Buget, Mediu, Sănătate, Sănătate mintală, Cronologie, Cartiere,
+  Cursă, Scrisori), Courts (Hartă/Listă), About, Community; nav item "Asociația" and ~80 h1–h4 headings lost their emoji prefix (admin and
+  easter-egg files untouched). ~880 emoji remain in body text, buttons and admin; new headings/tabs/nav items take no emoji. CSS in
+  `src/styles/20-home-single-hero.css`. HU tab labels are drafts (`// TODO: HU review`).

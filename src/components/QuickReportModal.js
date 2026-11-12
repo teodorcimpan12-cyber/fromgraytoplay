@@ -133,7 +133,7 @@ export function QuickReportModal({ onClose, courtId: preset, demo }) {
   return e("div", { className: "modal-overlay", onClick: close },
     e("div", { className: "modal modal-lg rq", onClick: ev => ev.stopPropagation(), role: "dialog", "aria-modal": "true", "aria-label": t.reportNew },
       e("div", { className: "flex justify-between items-center mb-1" },
-        e("h2", { style: { fontSize: "1rem", margin: 0 } }, "⚠️ ", t.reportNew),
+        e("h2", { style: { fontSize: "1rem", margin: 0 } }, t.reportNew),
         e("button", { className: "btn btn-sm btn-outline", onClick: close }, t.cancel)),
       e("ol", { className: "rq-steps" }, stepNames.map((n, i) => e("li", { key: i, className: i + 1 < step ? "done" : i + 1 === step ? "on" : "" },
         e("button", { disabled: i + 1 > step, onClick: () => setStep(i + 1) }, e("b", null, i + 1 < step ? "✓" : i + 1), n)))),

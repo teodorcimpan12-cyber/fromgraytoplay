@@ -125,7 +125,7 @@ export function InequalityReceipt() {
     });
   };
   return React.createElement("div", { className: "card mt-2", style: { borderLeft: "3px solid var(--red)" } },
-    React.createElement("h3", { className: "mb-1", style: { fontSize: ".95rem" } }, "🧾 ", t.receiptTitle),
+    React.createElement("h3", { className: "mb-1", style: { fontSize: ".95rem" } }, t.receiptTitle),
     React.createElement("p", { className: "text-xs mb-2", style: { color: "var(--textSec)" } }, t.receiptSub),
     React.createElement("canvas", { ref: cvRef, className: "receipt-canvas" }),
     React.createElement("div", { className: "flex gap-1", style: { justifyContent: "center" } },

@@ -41,7 +41,7 @@ export function SourcesTab({ onEssay }) {
       const list = shown.filter(s => s.city === k);
       if (!list.length) return null;
       return React.createElement("div", { key: k, className: "src-group" },
-        React.createElement("h3", { className: "src-group-h" }, (k === "general" ? "🌍 " : "📍 ") + label),
+        React.createElement("h3", { className: "src-group-h" }, (k === "general" ? "" : "📍 ") + label),
         React.createElement("div", { className: "src-grid" }, list.map(s => React.createElement("article", { key: s.id, id: "src-" + s.id, className: "src-card" + (focus === s.id ? " src-focus" : "") },
           React.createElement("div", { className: "src-top" },
             React.createElement("span", { className: "src-num" }, srcNum(s.id)),

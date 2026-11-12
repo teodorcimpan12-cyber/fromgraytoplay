@@ -11,7 +11,7 @@ export function BudgetWatchdog() {
   var gap = Math.max(0, promised - spent);
   var pct = promised > 0 ? Math.min(100, Math.round(spent / promised * 100)) : 0;
   return React.createElement("div", { className: "card mt-2" },
-    React.createElement("h3", { className: "mb-1" }, "🐕 ", t.budgetWatchdog || "Câinele de pază al bugetului"),
+    React.createElement("h3", { className: "mb-1" }, t.budgetWatchdog || "Câinele de pază al bugetului"),
     React.createElement("p", { className: "text-xs mb-2", style: { color: "var(--textSec)" } }, year),
     React.createElement("div", { className: "grid grid-2 mb-2" },
       React.createElement("div", { style: { textAlign: "center" } },

@@ -108,7 +108,7 @@ export function ProfilePage() {
     className: "card mb-2"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "mb-1"
-  }, "\u2699\uFE0F ", t.settings), /*#__PURE__*/React.createElement("div", {
+  }, t.settings), /*#__PURE__*/React.createElement("div", {
     className: "flex justify-between items-center mb-1"
   }, /*#__PURE__*/React.createElement("span", null, theme === "dark" ? "🌙 Dark" : "☀️ Light"), React.createElement(ThemeBoard, { big: true })), /*#__PURE__*/React.createElement("div", {
     className: "flex justify-between items-center mb-1"

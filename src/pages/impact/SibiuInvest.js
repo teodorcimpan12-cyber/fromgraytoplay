@@ -7,7 +7,7 @@ export function SibiuInvest() {
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
   const inv = TIMELINE_SIBIU.filter(ev => ev.lei);
   return React.createElement("div", { className: "card" },
-    React.createElement("h3", { className: "mb-1" }, "💰 ", L3("Investiții publice în terenuri de sport — Sibiu", "Public investment in sports courts — Sibiu", "Sportpálya-beruházások — Nagyszeben")), // TODO: HU review
+    React.createElement("h3", { className: "mb-1" }, L3("Investiții publice în terenuri de sport — Sibiu", "Public investment in sports courts — Sibiu", "Sportpálya-beruházások — Nagyszeben")), // TODO: HU review
     inv.map((ev, i) => React.createElement("div", { key: i, className: "flex justify-between fade-b", style: { gap: ".75rem", padding: ".45rem 0", flexWrap: "wrap" } },
       React.createElement("div", { style: { flex: "1 1 16rem" } }, React.createElement("b", null, ev.y), " · ", ev[lang] || ev.ro, " ",
         React.createElement("a", { href: ev.src, target: "_blank", rel: "noopener", style: { fontSize: ".75rem", color: "var(--textSec)" } }, "🔗")),

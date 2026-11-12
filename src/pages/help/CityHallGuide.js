@@ -42,11 +42,11 @@ export function CityHallGuide() {
   }
   return React.createElement("div", { className: "mb-2" },
     React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--green)" } },
-      React.createElement("h3", { className: "mb-1" }, "🏛️ ", L3("Ghid: cum obții renovarea de la Primărie", "Guide: how to get the renovation from City Hall", null)),
+      React.createElement("h3", { className: "mb-1" }, L3("Ghid: cum obții renovarea de la Primărie", "Guide: how to get the renovation from City Hall", null)),
       React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } },
         L3("Date reale, verificate iunie 2026 — cine decide, ce legi te ajută și pașii exacți.", "Real data, verified June 2026 — who decides, which laws help and the exact steps.", null))),
     React.createElement("div", { className: "card mb-2" },
-      React.createElement("h4", { className: "mb-1" }, "👤 ", L3("Cine decide", "Who decides", null)),
+      React.createElement("h4", { className: "mb-1" }, L3("Cine decide", "Who decides", null)),
       CONTACTS.map(function(ct, i) {
         return React.createElement("div", { key: i, className: i < CONTACTS.length - 1 ? "fade-b" : undefined, style: { padding: ".6rem 0" } },
           React.createElement("div", { style: { fontWeight: 700, fontSize: ".9rem" } }, ct.ic, " ", ct.name),
@@ -56,7 +56,7 @@ export function CityHallGuide() {
             ct.mail && React.createElement("a", { href: "mailto:" + ct.mail, className: "badge", style: { background: "var(--green)22", color: "var(--green)", textDecoration: "none" } }, "✉️ " + ct.mail)));
       })),
     React.createElement("div", { className: "card mb-2" },
-      React.createElement("h4", { className: "mb-1" }, "⚖️ ", L3("Acțiuni legale într-un click", "Legal actions in one click", null)),
+      React.createElement("h4", { className: "mb-1" }, L3("Acțiuni legale într-un click", "Legal actions in one click", null)),
       React.createElement("p", { className: "text-xs mb-1", style: { color: "var(--textSec)" } },
         L3("Email pre-completat — deschide, semnează cu numele tău, trimite. Păstrează confirmarea.", "Pre-filled email — open it, sign with your name, send. Keep the receipt.", null)),
       React.createElement("a", { href: m544, className: "btn btn-green btn-block mb-1", style: { textAlign: "center", textDecoration: "none" } },
@@ -64,14 +64,14 @@ export function CityHallGuide() {
       React.createElement("a", { href: mPet, className: "btn btn-outline btn-block", style: { textAlign: "center", textDecoration: "none" } },
         "📜 ", L3("Petiție formală — OG 27/2002 (30 de zile)", "Formal petition — OG 27/2002 (30 days)", null))),
     React.createElement("div", { className: "card mb-2" },
-      React.createElement("h4", { className: "mb-1" }, "🪜 ", L3("Pașii, în ordine", "The steps, in order", null)),
+      React.createElement("h4", { className: "mb-1" }, L3("Pașii, în ordine", "The steps, in order", null)),
       STEPS.map(function(s, i) {
         return React.createElement("div", { key: i, className: "flex gap-1 text-sm", style: { padding: ".35rem 0", alignItems: "flex-start" } },
           React.createElement("span", { style: { fontFamily: "Space Mono, monospace", fontWeight: 700, color: "var(--green)", flexShrink: 0 } }, (i + 1) + "."),
           React.createElement("span", null, s));
       })),
     React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--teal)" } },
-      React.createElement("h4", { className: "mb-1" }, "🎯 ", L3("Argumente care funcționează", "Arguments that work", null)),
+      React.createElement("h4", { className: "mb-1" }, L3("Argumente care funcționează", "Arguments that work", null)),
       ARGS.map(function(a, i) {
         return React.createElement("p", { key: i, className: "text-sm", style: { padding: ".25rem 0", lineHeight: 1.5 } }, "• " + a);
       }),

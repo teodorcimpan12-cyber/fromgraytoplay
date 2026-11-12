@@ -35,6 +35,10 @@ if (!/<\/html>\s*$/.test(html)) fail.push("dist/index.html does not end with </h
 for (const marker of ['<script type="module">', "__G2P_PARSED", '<div id="root">'])
   if (!html.includes(marker)) fail.push("dist/index.html is missing a required piece: " + marker);
 if (/<script[^>]+src="\/(src|assets)\//.test(html) || /<link[^>]+href="\/(src|assets)\//.test(html)) fail.push("dist/index.html still points at separate app files — the single-file build did not inline them");
+{ // the app stylesheet must be a live <style>: once it landed inside <noscript> and the whole site rendered unstyled
+  const plain = html.replace(/<noscript>[\s\S]*?<\/noscript>/g, "");
+  if (!/<style>[\s\S]{50000,}?<\/style>/.test(plain)) fail.push("dist/index.html has no live app <style> (missing, tiny, or inside <noscript>)");
+}
 if (!fail.length) ok("dist/index.html complete (" + Math.round(html.length / 1024) + " KB)");
 
 // 2. Every inline script parses. One stray character (e.g. a smart quote) blanks the whole site.

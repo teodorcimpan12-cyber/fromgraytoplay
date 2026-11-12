@@ -340,7 +340,7 @@ export class AdminBoundary extends React.Component {
     if (this.state.err) return React.createElement("div", {
       style: { padding: "2rem", maxWidth: 600, margin: "4rem auto", fontFamily: "monospace" }
     },
-      React.createElement("h2", { style: { color: "#F87171", marginBottom: "1rem" } }, "⚠️ Admin panel error"),
+      React.createElement("h2", { style: { color: "#F87171", marginBottom: "1rem" } }, "Admin panel error"),
       React.createElement("pre", { style: { fontSize: ".75rem", color: "#9CA3AF", overflowX: "auto", whiteSpace: "pre-wrap" } }, String(this.state.err)),
       React.createElement("button", {
         style: { marginTop: "1rem", padding: ".4rem 1rem", background: "#10B981", color: "#fff", border: "none", borderRadius: 6, cursor: "pointer" },

@@ -11,7 +11,7 @@ export function HealthCalc() {
     className: "card"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "mb-2"
-  }, "\uD83D\uDCAA ", t.healthImpact), /*#__PURE__*/React.createElement("label", {
+  }, t.healthImpact), /*#__PURE__*/React.createElement("label", {
     className: "text-sm"
   }, t.courtsRenovated, ": ", n), /*#__PURE__*/React.createElement("input", {
     type: "range",

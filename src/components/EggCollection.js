@@ -20,7 +20,7 @@ export function EggCollection({ inline, onClose }) {
   const date = ts => new Date(ts).toLocaleDateString(lang === "en" ? "en-GB" : lang === "hu" ? "hu-HU" : "ro-RO", { day: "numeric", month: "short" });
   const body = e("div", null,
     e("div", { className: "flex justify-between items-center" },
-      e("h4", { style: { fontSize: inline ? ".88rem" : "1.05rem", fontWeight: 700, margin: 0 } }, "🥚 " + L3("Secrete găsite", "Secrets found", "Megtalált titkok")),
+      e("h4", { style: { fontSize: inline ? ".88rem" : "1.05rem", fontWeight: 700, margin: 0 } }, L3("Secrete găsite", "Secrets found", "Megtalált titkok")),
       e("span", { className: "badge badge-green", style: { fontSize: ".72rem" } }, n + "/" + EGGS.length)),
     e("div", { className: "egg-bar" }, e("i", { style: { width: (n / EGGS.length * 100) + "%" } })),
     e("div", { className: "egg-grid" }, EGGS.map(x => {

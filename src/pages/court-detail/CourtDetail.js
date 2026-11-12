@@ -175,7 +175,7 @@ export function CourtDetail({
     React.createElement(AiCourtCard, { court: c, onLetter: c.category !== "gym" ? () => setShowLetter(true) : null }),
     React.createElement("h4", { className: "mb-1 mt-2" }, "Progress"),
     React.createElement("div", { className: "progress-bar mb-2" }, React.createElement("div", { className: "progress-fill", style: { width: c.progress + "%" } })),
-    React.createElement("h4", { className: "mb-1" }, "♿ ", t.accessibility),
+    React.createElement("h4", { className: "mb-1" }, t.accessibility),
     React.createElement("div", { className: "flex gap-1 mb-2", style: { flexWrap: "wrap" } },
       Object.entries(c.accessibility || {}).map(([k, v]) => React.createElement("span", { key: k, className: "badge " + (v ? "badge-green" : "badge-red") }, k, ": ", v ? "✓" : "✗"))));
   const communityPanel = React.createElement(React.Fragment, null,
@@ -185,7 +185,7 @@ export function CourtDetail({
     React.createElement(ActiveGames, { court: c }),
     React.createElement(RatingSection, { court: c }),
     courtPhotos.length > 0 && React.createElement(React.Fragment, null,
-      React.createElement("h4", { className: "mb-1 mt-2" }, "📸 ", t.gallery, " (", courtPhotos.length, ")"),
+      React.createElement("h4", { className: "mb-1 mt-2" }, t.gallery, " (", courtPhotos.length, ")"),
       React.createElement("div", { className: "flex gap-1 mb-2", style: { overflowX: "auto" }, "data-no-drag": "true" },
         courtPhotos.slice(0, 8).map(p => React.createElement("img", {
           key: p.id, src: p.img, alt: "evidence", title: p.caption || "",

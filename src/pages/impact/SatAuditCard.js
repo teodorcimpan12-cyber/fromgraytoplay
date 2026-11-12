@@ -5,7 +5,7 @@ export function SatAuditCard() {
   const { lang } = useApp();
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
   return React.createElement("div", { className: "card" },
-    React.createElement("h3", { className: "mb-1" }, "🛰️ ", L3("Sibiu din satelit", "Sibiu from space", "Nagyszeben műholdról")),
+    React.createElement("h3", { className: "mb-1" }, L3("Sibiu din satelit", "Sibiu from space", "Nagyszeben műholdról")),
     React.createElement("p", null, L3(
       "Fiecare dintre cele " + COURTS.length + " terenuri e verificat pe 6–7 imagini din satelit din 2011–2022: există? s-a construit, s-a refăcut, a dispărut? Doi membri ai echipei evaluează independent, fără să știe cartierul; un rezultat apare doar unde sunt de acord.",
       "Each of the " + COURTS.length + " courts is checked on 6–7 satellite images from 2011–2022: does it exist? was it built, resurfaced, removed? Two team members review independently, without knowing the neighbourhood; a result appears only where they agree.",

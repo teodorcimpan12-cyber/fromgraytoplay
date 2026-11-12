@@ -25,7 +25,7 @@ export function CourtTimeline({ court }) {
     return t.actDefault || "was active here";
   };
   return React.createElement("div", { className: "card mt-2" },
-    React.createElement("h4", { className: "mb-1" }, "📋 ", t.courtTimeline || "Court history"),
+    React.createElement("h4", { className: "mb-1" }, t.courtTimeline || "Court history"),
     items.length === 0
       ? React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } }, t.timelineEmpty || "No activity yet — be the first.")
       : React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: ".45rem" } },

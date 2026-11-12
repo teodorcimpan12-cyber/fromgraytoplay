@@ -29,7 +29,7 @@ export function AdoptCourt({ court }) {
     toast(t.success);
   };
   return React.createElement("div", { className: "card mt-2" },
-    React.createElement("h4", { className: "mb-1" }, "🤝 ", t.adoptCourt || "Adoptă acest teren"),
+    React.createElement("h4", { className: "mb-1" }, t.adoptCourt || "Adoptă acest teren"),
     names.length > 0 && React.createElement("div", { className: "mb-1", style: { display: "flex", flexWrap: "wrap", gap: ".3rem", alignItems: "center" } },
       React.createElement("span", { className: "text-xs font-bold", style: { color: "var(--textSec)" } }, (t.guardiansOf || "Gardieni") + ":"),
       names.map(function(n, i) { return React.createElement("span", { key: i, className: "badge badge-green" }, "🛡️ ", n); })

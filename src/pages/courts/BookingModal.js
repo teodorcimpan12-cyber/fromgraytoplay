@@ -48,7 +48,7 @@ export function BookingModal({
     onClick: e => e.stopPropagation()
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex justify-between items-center mb-2"
-  }, /*#__PURE__*/React.createElement("h2", null, "\uD83D\uDCC5 ", t.bookCourt, ": ", court.name), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("h2", null, t.bookCourt, ": ", court.name), /*#__PURE__*/React.createElement("button", {
     onClick: onClose,
     style: {
       background: "none",

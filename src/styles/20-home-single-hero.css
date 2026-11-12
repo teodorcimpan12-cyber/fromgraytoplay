@@ -1,0 +1,4 @@
+/* Home has one hero (HomeOpener). The numbers follow it in a plain band; action cards use line icons. */
+.home-stats{padding:1.5rem 0 .5rem}
+.home-stats .grid{margin-top:0}
+.ac-svg svg{width:1.35rem;height:1.35rem;display:block;fill:none;stroke:var(--green);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}

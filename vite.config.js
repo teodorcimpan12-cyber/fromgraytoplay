@@ -27,7 +27,7 @@ const keepDocumentOrder = () => ({
     };
     const style = cut("<style rel=\"stylesheet\" crossorigin>", "</style>");
     const app = cut("<script type=\"module\">", "</script>");
-    put("leaflet.css\"/>", style.replace(" rel=\"stylesheet\" crossorigin", ""), true);
+    put("leaflet.css\"/></noscript>", style.replace(" rel=\"stylesheet\" crossorigin", ""), true);
     put("<!-- app:end -->", app, false);
     writeFileSync(file, html);
   }

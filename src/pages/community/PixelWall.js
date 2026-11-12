@@ -68,7 +68,7 @@ export function PixelWall() {
   var fmt = mm + ":" + String(ss).padStart(2, "0");
   return React.createElement("div", null,
     React.createElement("div", { className: "flex justify-between items-center mb-1", style: { flexWrap: "wrap", gap: ".5rem" } },
-      React.createElement("h3", { style: { fontSize: "1rem" } }, "🎨 ", t.pixelTitle),
+      React.createElement("h3", { style: { fontSize: "1rem" } }, t.pixelTitle),
       React.createElement("span", { className: "badge badge-green" }, count + "/" + (PX_GRID * PX_GRID) + " " + t.pixelPainted)
     ),
     React.createElement("p", { className: "text-sm mb-2", style: { color: "var(--textSec)" } }, t.pixelSub),

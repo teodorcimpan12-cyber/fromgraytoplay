@@ -76,7 +76,7 @@ export function Navbar() {
     l: t.help
   }, {
     k: "association",
-    l: "\uD83C\uDFDB\uFE0F " + L3("Asociația", "Association", "Egyesület")
+    l: L3("Asociația", "Association", "Egyesület")
   }, {
     k: "about",
     l: t.about

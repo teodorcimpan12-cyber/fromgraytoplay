@@ -84,7 +84,7 @@ export function ReportsPage() {
       e("div", { className: "container" },
         e("div", { className: "rp-top" },
           e("div", null,
-            e("h2", { className: "section-title" }, "⚠️ ", t.reportPageTitle),
+            e("h2", { className: "section-title" }, t.reportPageTitle),
             e("p", { className: "section-sub" }, L3("Fiecare sesizare are un drum: o vezi pas cu pas, până la Primărie și înapoi.", "Every report has a path: follow it step by step, to City Hall and back.", "Minden bejelentésnek útja van: kövesd lépésről lépésre a Városházáig és vissza."))),
           e("button", { className: "btn btn-green", onClick: () => openReport() }, "＋ " + t.reportNew)),
         e("div", { className: "rp-pipe", role: "group", "aria-label": L3("Drumul unei sesizări", "A report's path", "Egy bejelentés útja") },

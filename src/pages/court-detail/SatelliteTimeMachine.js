@@ -197,7 +197,7 @@ export function SatelliteTimeMachine(props) {
   }
 
   var head = React.createElement("div", { className: "flex justify-between items-center mb-1", style: { gap: ".5rem", flexWrap: "wrap" } },
-    React.createElement("h4", { style: { margin: 0 } }, "🛰️ ", L3("Arhiva satelit", "Satellite archive", "Műholdas archívum")),
+    React.createElement("h4", { style: { margin: 0 } }, L3("Arhiva satelit", "Satellite archive", "Műholdas archívum")),
     caps && React.createElement("span", { className: "text-xs", style: { color: "var(--textSec)" } },
       caps.length + " " + L3("capturi reale", "real captures", "valós felvétel") + " · " + caps[0].date.slice(0, 4) + "–" + caps[caps.length - 1].date.slice(0, 4)));
 

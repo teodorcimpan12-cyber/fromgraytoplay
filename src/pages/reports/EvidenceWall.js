@@ -125,7 +125,7 @@ export function EvidenceWall() {
       )
     ),
     pairs.length > 0 && React.createElement("div", { className: "ba-wrap" },
-      React.createElement("h4", null, "⏪⏩ " + L3("Înainte / După", "Before / After", "Előtte / Utána")),
+      React.createElement("h4", null, L3("Înainte / După", "Before / After", "Előtte / Utána")),
       pairs.map(x => React.createElement("div", { key: x.c.id, className: "ba-pair card" },
         [x.b, x.a].map(p => React.createElement("figure", { key: p.id },
           React.createElement("img", { src: p.img, alt: kindLabel(p.kind) + " — " + x.c.name, loading: "lazy" }),

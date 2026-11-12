@@ -83,7 +83,7 @@ export function ReportModal({
     onClick: e => e.stopPropagation()
   }, /*#__PURE__*/React.createElement("h2", {
     className: "mb-2"
-  }, "\uD83D\uDCCD ", t.reportCourt), /*#__PURE__*/React.createElement("input", {
+  }, t.reportCourt), /*#__PURE__*/React.createElement("input", {
     placeholder: t.courtName,
     value: f.name,
     onChange: e => updateF({ name: e.target.value }),

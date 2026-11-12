@@ -8,7 +8,6 @@ import { cityName } from "../../lib/city-name.js";
 import { ActivityTicker } from "./ActivityTicker.js";
 import { City3D } from "./City3D.js";
 import { FeaturedCourt } from "./FeaturedCourt.js";
-import { Hero3D } from "./Hero3D.js";
 import { HomeAiCard } from "./HomeAiCard.js";
 import { HomeOpener } from "./HomeOpener.js";
 import { Showcase } from "./Showcase.js";
@@ -36,27 +35,14 @@ export function HomePage() {
   const heroRef = useReveal();
   return /*#__PURE__*/React.createElement("div", {
     className: "animate-in"
-  }, React.createElement(HomeOpener, null), /*#__PURE__*/React.createElement(Hero3D, null), /*#__PURE__*/React.createElement("section", {
-    className: "hero-premium"
-  }, /*#__PURE__*/React.createElement("div", { className: "hero-mesh" }),
-     React.createElement("div", { className: "aurora", "aria-hidden": "true" }, React.createElement("span", null), React.createElement("span", null), React.createElement("span", null)),
-     /*#__PURE__*/React.createElement("div", { className: "hero-grid-lines" }),
-     /*#__PURE__*/React.createElement("div", {
-    className: "container",
-    style: { position: "relative", zIndex: 1 }
+  }, React.createElement(HomeOpener, null), /*#__PURE__*/React.createElement("section", {
+    className: "home-stats"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "container"
   }, /*#__PURE__*/React.createElement("div", {
     ref: heroRef,
     className: "reveal"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "hero-pill"
-  }, /*#__PURE__*/React.createElement("span", { className: "live-dot" }), " 2026"), /*#__PURE__*/React.createElement("h2", {
-    className: "hero-title shimmer-text"
-  }, lang === "ro" ? "Terenurile tale contează" : "Your courts matter"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      color: "#C7CBD1",
-      maxWidth: 560
-    }
-  }, lang === "ro" ? "Documentăm inegalitatea infrastructurii sportive din " + cityName(lang) + ". Semnează petiția, raportează terenuri degradate." : "Documenting sports infrastructure inequality in " + cityName(lang) + ". Sign the petition, report degraded courts.")),/*#__PURE__*/React.createElement("div", {
     className: "grid grid-3 mt-3"
   }, /*#__PURE__*/React.createElement(StatTile, {
     value: COURTS.length, label: t.courtsReported, color: "var(--green)"
@@ -64,14 +50,14 @@ export function HomePage() {
     value: tv, label: t.petitionVotes, color: "var(--coral)"
   }), /*#__PURE__*/React.createElement(StatTile, {
     value: vc, label: t.volunteers, color: "var(--teal)"
-  })))), React.createElement(ActivityTicker, null), /*#__PURE__*/React.createElement("section", {
+  }))))), React.createElement(ActivityTicker, null), /*#__PURE__*/React.createElement("section", {
     className: "section"
   }, /*#__PURE__*/React.createElement("div", {
     className: "container"
   }, React.createElement(SibiuProgressBanner, null), React.createElement(HomeAiCard, null), React.createElement("div", { className: "home-actions" },
-    [["courts", "\uD83D\uDCCD", t.reportCourt], ["petition", "\u270A", t.voteTitle], ["help", "\uD83E\uDD1D", t.quickVolunteer]].map(([pg, ic, lbl]) =>
+    [["courts", "M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21zM12 12.2a2.6 2.6 0 1 0 0-5.2 2.6 2.6 0 0 0 0 5.2z", t.reportCourt], ["petition", "M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4", t.voteTitle], ["help", "M12 20s-7-4.4-7-9.6A4.1 4.1 0 0 1 12 8a4.1 4.1 0 0 1 7 2.4C19 15.6 12 20 12 20z", t.quickVolunteer]].map(([pg, ic, lbl]) =>
       React.createElement("button", { key: pg, className: "action-card ha-card", onClick: () => setPage(pg) },
-        React.createElement("span", { className: "ac-icon", "aria-hidden": "true" }, ic),
+        React.createElement("span", { className: "ac-icon ac-svg", "aria-hidden": "true" }, React.createElement("svg", { viewBox: "0 0 24 24" }, React.createElement("path", { d: ic }))),
         React.createElement("span", { className: "ha-label" }, lbl),
         React.createElement("span", { className: "ha-arrow", "aria-hidden": "true" }, "\u2192")))))), React.createElement(FeaturedCourt, null), React.createElement(City3D, null), React.createElement(Showcase, null),
   React.createElement(QuickReportFAB, null));

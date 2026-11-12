@@ -236,7 +236,7 @@ export function CityPulse(props) {
   return React.createElement("div", { className: "pulse-overlay", role: "dialog", "aria-modal": "true", "aria-label": t.pulseTitle },
     React.createElement("div", { className: "pulse-hdr" },
       React.createElement("div", null,
-        React.createElement("h3", null, "🧬 " + t.pulseTitle),
+        React.createElement("h3", null, t.pulseTitle),
         React.createElement("p", null, t.pulseSub)
       ),
       React.createElement("button", { className: "pulse-x", onClick: onClose, "aria-label": t.close }, "✕")

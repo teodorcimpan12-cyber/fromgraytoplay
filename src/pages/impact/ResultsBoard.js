@@ -29,7 +29,7 @@ export function ResultsBoard() {
     [COURTS_ALL.length, L3("terenuri documentate, în două orașe", "courts documented, in two cities", "dokumentált pálya két városban")]
   ];
   return e("div", { className: "card mb-2 res-board" },
-    e("h3", { className: "mb-1 res-head" }, e("span", null, "✅ ", L3("Rezultate până azi", "Results so far", "Eredmények máig")),
+    e("h3", { className: "mb-1 res-head" }, e("span", null, L3("Rezultate până azi", "Results so far", "Eredmények máig")),
       e("span", { className: "res-live" }, e("i", { "aria-hidden": "true" }), L3("live", "live", "élő"))),
     e("p", { className: "text-sm mb-2", style: { color: "var(--textSec)" } }, L3(
       "Cifre din baza de date, din ambele orașe. Se schimbă singure, fără reîncărcare, când cineva votează sau trimite o sesizare. Nimic estimat; sesizările de test nu sunt numărate.",

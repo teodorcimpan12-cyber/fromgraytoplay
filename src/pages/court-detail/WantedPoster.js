@@ -102,7 +102,7 @@ export function WantedPoster({ court, onClose }) {
   return React.createElement("div", { className: "modal-overlay", onClick: onClose },
     React.createElement("div", { className: "modal", onClick: function(e) { e.stopPropagation(); } },
       React.createElement("div", { className: "flex justify-between items-center mb-2" },
-        React.createElement("h2", null, "🪧 ", t.wantedPoster || "Afiș CĂUTAT"),
+        React.createElement("h2", null, t.wantedPoster || "Afiș CĂUTAT"),
         React.createElement("button", { onClick: onClose, style: { background: "none", border: "none", fontSize: "1.4rem", color: "var(--text)" } }, "✕")
       ),
       React.createElement("canvas", { ref: canvasRef, style: { width: "100%", maxWidth: 320, display: "block", margin: "0 auto", borderRadius: 8, background: "#111" } }),

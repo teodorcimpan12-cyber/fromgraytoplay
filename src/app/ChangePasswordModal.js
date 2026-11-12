@@ -26,7 +26,7 @@ export function ChangePasswordModal({ onClose }) {
     .catch(() => setErr(L3("Nu s-a putut trimite emailul.", "Could not send the email.", "Nem sikerült elküldeni.")));
   return React.createElement("div", { className: "modal-overlay", onClick: e => { if (e.target === e.currentTarget) onClose(); } },
     React.createElement("div", { className: "modal", style: { maxWidth: 400, padding: "1.5rem" } },
-      React.createElement("h3", { style: { marginBottom: ".9rem" } }, "🔑 " + L3("Schimbă parola", "Change password", "Jelszó módosítása")),
+      React.createElement("h3", { style: { marginBottom: ".9rem" } }, L3("Schimbă parola", "Change password", "Jelszó módosítása")),
       !u ? null : !hasPw ? React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)", marginBottom: "1rem" } },
         L3("Contul tău folosește Google sau numărul de telefon, deci nu are parolă la noi. Parola o schimbi din contul Google.",
            "Your account uses Google or a phone number, so it has no password here. Change it in your Google account.",

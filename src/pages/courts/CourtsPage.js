@@ -112,7 +112,7 @@ export function CourtsPage() {
     className: "flex justify-between items-center mb-2"
   }, /*#__PURE__*/React.createElement("h2", {
     className: "section-title"
-  }, "\uD83C\uDFDF\uFE0F ", t.courts), /*#__PURE__*/React.createElement("button", {
+  }, t.courts), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-green btn-sm",
     onClick: () => setShowRep(true)
   }, "+ ", t.reportCourt)), /*#__PURE__*/React.createElement(SibiuProgressBanner, null), /*#__PURE__*/React.createElement("div", {
@@ -153,10 +153,10 @@ export function CourtsPage() {
   }, /*#__PURE__*/React.createElement("button", {
     className: tab === "map" ? "active" : "",
     onClick: () => setTab("map")
-  }, "\uD83D\uDDFA\uFE0F"), /*#__PURE__*/React.createElement("button", {
+  }, lang === "en" ? "Map" : lang === "hu" ? "Térkép" : "Hartă"), /*#__PURE__*/React.createElement("button", {
     className: tab === "list" ? "active" : "",
     onClick: () => setTab("list")
-  }, "\uD83D\uDCCB")), tab === "map" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(MapView, {
+  }, lang === "en" ? "List" : lang === "hu" ? "Lista" : "Listă")), tab === "map" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(MapView, {
     courts: filtered,
     onSelect: openCourt,
     height: "clamp(360px, 64vh, 680px)"

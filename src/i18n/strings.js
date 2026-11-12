@@ -578,7 +578,7 @@ T.ro.gpsAdded = "GPS salvat!";
 T.ro.gpsOptional = "Adaugă coordonate GPS";
 T.ro.allCourts = "Toate";
 T.ro.noEvidence = "Nicio dovadă fotografică încă. Fii primul!";
-T.ro.evidenceTab = "📸 Dovezi";
+T.ro.evidenceTab = "Dovezi";
 T.en.evidenceWall = "Evidence Wall";
 T.en.evidenceSub = "Real photos from residents — documented evidence for the dossier.";
 T.en.addEvidence = "Add photo evidence";
@@ -590,7 +590,7 @@ T.en.gpsAdded = "GPS saved!";
 T.en.gpsOptional = "Add GPS coordinates";
 T.en.allCourts = "All";
 T.en.noEvidence = "No photo evidence yet. Be the first!";
-T.en.evidenceTab = "📸 Evidence";
+T.en.evidenceTab = "Evidence";
 T.hu.evidenceWall = "Bizonyítékok fala"; // TODO: HU review
 T.hu.evidenceSub = "Valódi fotók a polgároktól — dokumentált bizonyítékok."; // TODO: HU review
 T.hu.addEvidence = "Bizonyíték hozzáadása"; // TODO: HU review
@@ -602,7 +602,7 @@ T.hu.gpsAdded = "GPS mentve!"; // TODO: HU review
 T.hu.gpsOptional = "GPS koordináták hozzáadása"; // TODO: HU review
 T.hu.allCourts = "Mind"; // TODO: HU review
 T.hu.noEvidence = "Még nincs fotóbizonyíték. Légy az első!"; // TODO: HU review
-T.hu.evidenceTab = "📸 Bizonyíték"; // TODO: HU review
+T.hu.evidenceTab = "Bizonyíték"; // TODO: HU review
 
 /* #3.1 — Court ratings */
 T.ro.ratings = "Evaluări";

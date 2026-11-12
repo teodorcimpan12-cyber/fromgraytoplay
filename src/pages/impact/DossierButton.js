@@ -135,7 +135,7 @@ export function DossierButton() {
   return React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--green)" } },
     React.createElement("div", { className: "flex justify-between items-center", style: { gap: "1rem", flexWrap: "wrap" } },
       React.createElement("div", { style: { flex: 1, minWidth: 180 } },
-        React.createElement("h3", { className: "barlow", style: { fontSize: "1.15rem", marginBottom: ".25rem" } }, "📋 ", t.dossier),
+        React.createElement("h3", { className: "barlow", style: { fontSize: "1.15rem", marginBottom: ".25rem" } }, t.dossier),
         React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } }, t.dossierSub)
       ),
       React.createElement("button", {

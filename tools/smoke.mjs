@@ -108,6 +108,9 @@ try {
       if (!parsed) problems.push(city + ": main script did not run (syntax error?)");
       break;
     }
+    // The stylesheet must be applied: an unstyled page still "renders without errors".
+    if (booted && !(await evalJs("getComputedStyle(document.documentElement).getPropertyValue('--green').trim().length > 0 && getComputedStyle(document.querySelector('.nav-logo')).display !== 'inline'")))
+      problems.push(city + ": the app stylesheet is not applied (page is unstyled)");
     if (!booted) {
       problems.push(cdnDown
         ? city + ": React/Firebase could not be downloaded from the CDN after 5 tries — network problem, push again in a minute"

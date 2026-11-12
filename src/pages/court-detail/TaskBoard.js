@@ -22,7 +22,7 @@ export function TaskBoard({ court }) {
     db.ref("tasks/" + court.id + "/" + taskKey + "/volunteers/" + vk).remove();
   };
   return React.createElement("div", { className: "card mt-2" },
-    React.createElement("h4", { className: "mb-1" }, "🛠️ ", t.taskBoard || "Echipa de reparații"),
+    React.createElement("h4", { className: "mb-1" }, t.taskBoard || "Echipa de reparații"),
     React.createElement("input", { placeholder: t.yourName || "Numele tău", value: joinName, onChange: function(e) { setJoinName(e.target.value); }, className: "mb-1" }),
     React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: ".5rem" } },
       TASK_TEMPLATES.map(function(tmpl) {

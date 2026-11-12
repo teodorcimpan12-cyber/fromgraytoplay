@@ -68,7 +68,7 @@ export function OpenDataCard() {
   return React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--teal)" } },
     React.createElement("div", { className: "flex justify-between items-center", style: { gap: "1rem", flexWrap: "wrap" } },
       React.createElement("div", { style: { flex: 1, minWidth: 180 } },
-        React.createElement("h3", { className: "barlow", style: { fontSize: "1.15rem", marginBottom: ".25rem" } }, "🗂️ ", t.openData),
+        React.createElement("h3", { className: "barlow", style: { fontSize: "1.15rem", marginBottom: ".25rem" } }, t.openData),
         React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } }, t.openDataSub)
       ),
       React.createElement("div", { className: "flex gap-1", style: { flexWrap: "wrap" } },

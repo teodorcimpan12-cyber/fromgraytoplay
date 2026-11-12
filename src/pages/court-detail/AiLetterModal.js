@@ -130,7 +130,7 @@ export function AiLetterModal({ court: c, onClose }) {
   return e("div", { className: "modal-overlay", onClick: onClose },
     e("div", { className: "modal modal-lg ai-letter", onClick: ev => ev.stopPropagation(), role: "dialog", "aria-modal": "true", "aria-label": L3("Scrisoare către Primărie", "Letter to City Hall", "Levél a Városházának") },
       e("div", { className: "flex justify-between items-center mb-1" },
-        e("h2", { style: { fontSize: "1rem", margin: 0 } }, "✉️ ", L3("Scrisoare către Primărie", "Letter to City Hall", "Levél a Városházának")),
+        e("h2", { style: { fontSize: "1rem", margin: 0 } }, L3("Scrisoare către Primărie", "Letter to City Hall", "Levél a Városházának")),
         e("button", { className: "btn btn-sm btn-outline", onClick: onClose }, L3("Închide", "Close", "Bezár"))),
       e("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, "📍 ", c.name, " → ", CITY_HALL_EMAIL[city === "sibiu" ? "sibiu" : "tgm"]),
       st.s !== "done" && e("div", { className: "lt-basis", role: "radiogroup", "aria-label": L3("Tipul scrisorii", "Letter type", "Levél típusa") },

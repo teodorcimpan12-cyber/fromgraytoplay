@@ -99,7 +99,7 @@ export function LetterModal({
     onClick: e => e.stopPropagation()
   }, /*#__PURE__*/React.createElement("h2", {
     className: "mb-2"
-  }, "📄 ", t.generateLetter), /*#__PURE__*/React.createElement("input", {
+  }, t.generateLetter), /*#__PURE__*/React.createElement("input", {
     placeholder: lang === "ro" ? "Numele tău" : lang === "hu" ? "Neved" : "Your name",
     value: n,
     onChange: e => setN(e.target.value),

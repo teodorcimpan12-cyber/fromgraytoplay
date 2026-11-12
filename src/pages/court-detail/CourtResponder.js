@@ -25,7 +25,7 @@ export function CourtResponder({ court: c }) {
   const stL = k => ({ received: L3("primită", "received", "beérkezett"), analyzing: L3("în analiză", "being checked", "vizsgálat alatt"), planned: L3("planificată", "planned", "tervezett"), resolved: L3("rezolvată", "resolved", "megoldva") }[k] || k || "");
   const muted = { color: "var(--textSec)" };
   return e("div", { className: "card mb-2" },
-    e("h3", { className: "mb-1" }, "🏛️ ", L3("Cine răspunde", "Who answers", "Ki felel")),
+    e("h3", { className: "mb-1" }, L3("Cine răspunde", "Who answers", "Ki felel")),
     e("p", { className: "text-sm mb-1" }, L3("Administrator: ", "Manager: ", "Kezelő: "), e("b", null, COURT_ADMIN[adm][ai]),
       adm === "unknown" && e("span", { className: "text-xs", style: muted }, " · " + L3("încă neverificat, nu ghicim", "not verified yet, we don't guess", "még nincs ellenőrizve, nem találgatunk"))),
     !ds && e("p", { className: "text-sm mb-1", style: muted }, "⏱️ ", L3("Nicio trimitere oficială înregistrată pentru acest teren. Ceasul de 30 de zile pornește când o sesizare e înregistrată la Primărie.", "No official submission recorded for this court. The 30-day clock starts when a report is registered at City Hall.", "Ehhez a pályához még nincs hivatalos beadvány rögzítve. A 30 napos óra akkor indul, amikor egy bejelentést iktatnak a Városházán.")),
