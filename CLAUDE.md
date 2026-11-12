@@ -3,6 +3,10 @@
 Civic PWA documenting the inequality between central and peripheral
 sports courts in Târgu Mureș. Live at https://fromgreytoplay.netlify.app/.
 
+## Owner preference
+
+Replies to the owner: Romanian, very short (a few lines), no long explanations. Details only if asked.
+
 ## Knowledge Graph
 
 **Înainte de a genera cod sau arhitectură, citește `graphify-out/graph.json`.**
@@ -413,3 +417,9 @@ Highest civic-value next steps:
   (`https://teodorcimpan12-cyber.github.io/fromgraytoplay/`), after `tools/pages-rewrite.mjs /fromgraytoplay` prefixes the root paths in `dist/`
   (checked locally under the sub-path: no 404, SW scope correct). Owner must enable it once: repo Settings → Pages → Source "GitHub Actions".
   On the mirror the AI function is called on the Netlify domain (cross-origin, not verified) and canonical/OG URLs still point at Netlify.
+- Session 12 Nov 2026, night: **Netlify = proxy to GitHub Pages** (keeps fromgreytoplay.netlify.app forever without paying a deploy per merge).
+  `netlify.toml` `[context.production]` publishes `netlify-proxy/` (made by `tools/netlify-proxy.mjs`: `/* → github.io/fromgraytoplay/app/:splat 200!`);
+  `.github/workflows/pages.yml` puts the unprefixed build in `dist/app/`. Production builds are skipped by `ignore` unless `netlify.toml`,
+  the proxy script or `netlify/` change, so it costs ONE deploy (15 credits) to activate, then nothing. Deploy previews still build the full site.
+  Not verified on Netlify: that `/.netlify/functions/ai` still reaches the function under the forced `/*` rule, and that header rules apply to proxied files.
+  Opener buttons: magnetic pull only on the hovered button, max 6px, so neighbours never overlap (gap stays ≥2px at 1000–1440px).

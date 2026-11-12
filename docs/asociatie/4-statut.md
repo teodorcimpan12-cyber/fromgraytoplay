@@ -9,7 +9,7 @@
 **Art. 2. Forma juridică.** Asociația este persoană juridică română de drept privat, fără scop patrimonial, apolitică, independentă
 și neguvernamentală, constituită în temeiul OG nr. 26/2000.
 
-**Art. 3. Sediul.** Sediul este în **[adresa completă]**. Poate fi schimbat prin hotărârea Consiliului Director.
+**Art. 3. Sediul.** Sediul este în **Târgu Mureș, județul Mureș, [adresa — de mână]**. Poate fi schimbat prin hotărârea Consiliului Director.
 Asociația poate deschide filiale și sucursale, în condițiile legii.
 
 **Art. 4. Durata.** Asociația funcționează pe durată nedeterminată.

@@ -3,9 +3,9 @@
 **Părțile**
 
 1. **[nume proprietar]**, domiciliat(ă) în **[...]**, identificat(ă) cu CI **[serie, nr.]**, în calitate de **comodant** (proprietar), și
-2. **Asociația From Grey to Play (în curs de constituire)**, reprezentată de **[nume împuternicit]**, în calitate de **comodatar**.
+2. **Asociația From Grey to Play (în curs de constituire)**, reprezentată de **Cîmpan Teodor**, în calitate de **comodatar**.
 
-**Art. 1. Obiectul.** Comodantul dă în folosință gratuită comodatarului spațiul situat în **[adresa completă]**,
+**Art. 1. Obiectul.** Comodantul dă în folosință gratuită comodatarului spațiul situat în **Târgu Mureș, [adresa — de mână]**,
 înscris în cartea funciară nr. **[...]**, în suprafață de **[...] mp**, cu destinația de **sediu social** al asociației.
 
 **Art. 2. Durata.** Contractul se încheie pe **[2] ani** de la data semnării și se poate prelungi prin act adițional.

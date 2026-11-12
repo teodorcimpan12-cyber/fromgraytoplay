@@ -12,20 +12,20 @@ să constituim o asociație fără scop patrimonial, apolitică și independent�
 
 **III. Denumirea.** „Asociația From Grey to Play”, conform dovezii de disponibilitate nr. **[...]** din **[data]**, eliberată de Ministerul Justiției.
 
-**IV. Sediul.** **[adresa completă]**. Sediul poate fi schimbat prin hotărârea Consiliului Director.
+**IV. Sediul.** **Târgu Mureș, județul Mureș, [adresa — de mână]**. Sediul poate fi schimbat prin hotărârea Consiliului Director.
 
 **V. Durata.** Asociația se constituie pe durată nedeterminată.
 
 **VI. Patrimoniul inițial.** Activul patrimonial inițial este de **[suma] lei**, alcătuit din aportul în bani al asociaților:
-Cîmpan Teodor **[...] lei**, Trofin Matei **[...] lei**, Drăgan Gabriel **[...] lei**.
+Aport egal: Cîmpan Teodor **[...] lei**, Trofin Matei **[...] lei**, Drăgan Gabriel **[...] lei** (suma se stabilește după confirmarea minimului legal).
 
 **VII. Primele organe de conducere, administrare și control**
 
 - **Adunarea Generală:** toți asociații fondatori.
-- **Consiliul Director:** **[Președinte — nume]**, **[Vicepreședinte — nume]**, **[Secretar/Trezorier — nume]**.
+- **Consiliul Director:** **Cîmpan Teodor** (președinte), **Drăgan Gabriel** (vicepreședinte), **Trofin Matei** (secretar-trezorier).
 - **Cenzor:** nu se numește la constituire; devine obligatoriu când numărul asociaților depășește 15.
 
-**VIII. Persoana împuternicită** să desfășoare procedura de dobândire a personalității juridice: **[nume]**.
+**VIII. Persoana împuternicită** să desfășoare procedura de dobândire a personalității juridice: **Cîmpan Teodor**.
 
 Prezentul act s-a încheiat azi, **[data]**, în **[...]** exemplare.
 

@@ -3,14 +3,14 @@
 Către: **Ministerul Justiției — Serviciul Comunicare și Relații Publice**
 (verificați pe just.ro formularul oficial și modul de depunere: online, poștă sau ghișeu)
 
-Subsemnatul/Subsemnata **[nume și prenume]**, domiciliat(ă) în **[localitate, județ]**, telefon **[...]**, e-mail **[...]**,
+Subsemnatul/Subsemnata **Cîmpan Teodor**, domiciliat în **[adresa — de mână]**, telefon **[...]**, e-mail **[...]**,
 în calitate de membru fondator, solicit eliberarea dovezii privind disponibilitatea denumirii pentru o **asociație**:
 
 1. **Asociația From Grey to Play** (prima opțiune)
-2. **[denumire de rezervă 1]**
-3. **[denumire de rezervă 2]**
+2. Asociația Din Gri, în Joc
+3. Asociația Terenuri Deschise
 
-Sediul viitoarei asociații: **[localitate, județ]**.
+Sediul viitoarei asociații: **Târgu Mureș, județul Mureș**.
 
 Anexez dovada plății taxei de rezervare.
 
