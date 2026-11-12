@@ -27,7 +27,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: node tools/predeploy-check.mjs
+      - run: cp -r dist /tmp/app
       - run: node tools/pages-rewrite.mjs /fromgraytoplay
+      - run: cp -r /tmp/app dist/app   # unprefixed copy, served by the Netlify proxy (tools/netlify-proxy.mjs)
       - run: touch dist/.nojekyll && cp dist/index.html dist/404.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

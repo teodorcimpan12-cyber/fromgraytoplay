@@ -5,6 +5,14 @@
   publish = "dist"
   command = "node tools/predeploy-check.mjs"
 
+# Production = proxy to GitHub Pages (tools/netlify-proxy.mjs): one deploy, then merges publish for free via Pages.
+# A production build runs only when the proxy setup itself changes; deploy previews always build (they cost no credits).
+  ignore = "if [ \"$CONTEXT\" = production ]; then git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- netlify.toml tools/netlify-proxy.mjs netlify/; else exit 1; fi"
+
+[context.production]
+  publish = "netlify-proxy"
+  command = "node tools/predeploy-check.mjs && node tools/netlify-proxy.mjs"
+
 [build.environment]
   NODE_VERSION = "22"
 

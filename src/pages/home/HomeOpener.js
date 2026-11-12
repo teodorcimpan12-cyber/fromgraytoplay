@@ -168,16 +168,25 @@ export function HomeOpener() {
         sec.style.setProperty("--px", ((mx - sr.left) / Math.max(1, sr.width) - .5).toFixed(3));
         sec.style.setProperty("--py", ((my - sr.top) / Math.max(1, sr.height) - .5).toFixed(3));
       } else { sec.style.removeProperty("--px"); sec.style.removeProperty("--py"); }
+      // Only the button under the pointer (plus a 24px margin) moves, and never by more than 6px sideways:
+      // the gap is ~9px, so neighbours can no longer slide into each other.
+      let hot = null;
+      if (inside) btns.forEach(b => {
+        const r = b.getBoundingClientRect();
+        if (mx >= r.left - 24 && mx <= r.right + 24 && my >= r.top - 24 && my <= r.bottom + 24) {
+          const d = Math.abs(mx - (r.left + r.width / 2));
+          if (!hot || d < hot.d) hot = { b, d };
+        }
+      });
       btns.forEach(b => {
+        if (!hot || hot.b !== b) { reset(b); return; }
         const r = b.getBoundingClientRect();
         const dx = mx - (r.left + r.width / 2), dy = my - (r.top + r.height / 2);
-        const reach = Math.max(r.width, r.height) / 2 + 80;
-        if (!inside || Math.hypot(dx, dy) > reach) { reset(b); return; }
         b.classList.add("mag");
-        b.style.setProperty("--tx", clamp(dx * .2, -14, 14).toFixed(1) + "px");
-        b.style.setProperty("--ty", clamp(dy * .2, -10, 10).toFixed(1) + "px");
-        b.style.setProperty("--ry", (clamp(dx / (r.width / 2), -1, 1) * 9).toFixed(1) + "deg");
-        b.style.setProperty("--rx", (clamp(dy / (r.height / 2), -1, 1) * -9).toFixed(1) + "deg");
+        b.style.setProperty("--tx", clamp(dx * .08, -6, 6).toFixed(1) + "px");
+        b.style.setProperty("--ty", clamp(dy * .12, -6, 6).toFixed(1) + "px");
+        b.style.setProperty("--ry", (clamp(dx / (r.width / 2), -1, 1) * 6).toFixed(1) + "deg");
+        b.style.setProperty("--rx", (clamp(dy / (r.height / 2), -1, 1) * -6).toFixed(1) + "deg");
         b.style.setProperty("--gx", (mx - r.left).toFixed(0) + "px");
         b.style.setProperty("--gy", (my - r.top).toFixed(0) + "px");
       });
