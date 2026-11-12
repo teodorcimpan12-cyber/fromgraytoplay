@@ -27,6 +27,10 @@ const SHELL = ["/", "/manifest.json", "/icons/icon-192.png", "/icons/icon-512.pn
 const CDN_HOSTS = ["unpkg.com", "cdn.jsdelivr.net", "cdnjs.cloudflare.com", "www.gstatic.com", "fonts.googleapis.com", "fonts.gstatic.com"];
 const TILE_HOST = /^[abc]\.tile\.openstreetmap\.org$/;
 
+function isFirebaseHost(hostname, domain) {
+  return hostname === domain || hostname.endsWith("." + domain);
+}
+
 // keep the tile cache small: drop the oldest entries past TILE_MAX
 function trimTiles() {
   return caches.open(TILES).then(c => c.keys().then(k => Promise.all(k.slice(0, Math.max(0, k.length - TILE_MAX)).map(r => c.delete(r)))));
@@ -56,7 +60,7 @@ self.addEventListener("fetch", e => {
   try { url = new URL(req.url); } catch (err) { return; }
   if (url.protocol !== "https:" && url.protocol !== "http:") return;
   // Never touch realtime data channels.
-  if (url.hostname.endsWith("firebaseio.com") || url.hostname.endsWith("firebasedatabase.app")) return;
+  if (isFirebaseHost(url.hostname, "firebaseio.com") || isFirebaseHost(url.hostname, "firebasedatabase.app")) return;
 
   // Navigations: network-first, offline fallback to the cached shell.
   // Standalone pages (promo, demos, hero) must not overwrite the cached app shell.

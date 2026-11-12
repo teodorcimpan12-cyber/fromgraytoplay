@@ -54,16 +54,16 @@ try {
   if (!targets.length) throw new Error("Chrome did not start");
   ws = new WebSocket(targets[0].webSocketDebuggerUrl);
   await new Promise((r, j) => { ws.onopen = r; ws.onerror = j; });
-  let id = 0; const pend = {}; let where = "boot";
+  let id = 0; const pend = new Map(); let where = "boot";
   ws.onmessage = e => {
     const msg = JSON.parse(e.data);
-    if (msg.id && pend[msg.id]) { pend[msg.id](msg); delete pend[msg.id]; }
+    if (msg.id && pend.has(msg.id)) { pend.get(msg.id)(msg); pend.delete(msg.id); }
     let text = null;
     if (msg.method === "Runtime.exceptionThrown") text = msg.params.exceptionDetails.exception?.description || msg.params.exceptionDetails.text;
     if (msg.method === "Runtime.consoleAPICalled" && msg.params.type === "error") text = msg.params.args.map(a => a.value ?? a.description).join(" ");
     if (text && !IGNORE.some(r => r.test(text))) problems.push(where + ": " + String(text).split("\n")[0].slice(0, 220));
   };
-  const send = (method, params = {}) => new Promise(r => { const i = ++id; pend[i] = r; ws.send(JSON.stringify({ id: i, method, params })); });
+  const send = (method, params = {}) => new Promise(r => { const i = ++id; pend.set(i, r); ws.send(JSON.stringify({ id: i, method, params })); });
   const evalJs = async expr => (await send("Runtime.evaluate", { expression: expr, returnByValue: true, awaitPromise: true })).result?.result?.value;
   await send("Runtime.enable"); await send("Page.enable");
   // Optional offline CDN mirror for sandboxes that block unpkg/gstatic: G2P_CDN_MIRROR=<dir> holding
