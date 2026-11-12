@@ -3,7 +3,7 @@
 // POST /.netlify/functions/ai  { task: "photo", image: "<base64 jpeg>", court: {...}, lang }
 //                              { task: "letter", court: {...}, lang }
 const MODEL = "claude-sonnet-5-5";
-const ALLOWED = [/^https:\/\/fromgreytoplay\.netlify\.app$/, /^https:\/\/[a-z0-9-]+--fromgreytoplay\.netlify\.app$/, /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/, /^https:\/\/teodorcimpan12-cyber\.github\.io$/];
+const ALLOWED = [/^https:\/\/fromgreytoplay\.netlify\.app$/, /^https:\/\/[a-z0-9-]+--fromgreytoplay\.netlify\.app$/, /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/];
 const MAX_IMAGE = 1_600_000; // base64 chars (~1.2 MB jpeg)
 const PER_IP = 30;            // calls per IP per hour (best effort: resets when the function goes cold; a venue Wi-Fi shares one IP)
 const PHOTO_PER_KEY = 3;      // Court Doctor diagnoses per voterKey per hour (spec: docs/SPEC_6NOV.md §1)
