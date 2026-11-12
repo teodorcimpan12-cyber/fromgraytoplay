@@ -6,6 +6,12 @@ sports courts in Târgu Mureș. Live at https://fromgreytoplay.netlify.app/.
 ## Owner preference
 
 Replies to the owner: Romanian, very short (a few lines), no long explanations. Details only if asked.
+- "CIC" = Claude in Chrome (the browser extension).
+- Skills: before a task, pick the best available skill and use it without being asked. If none fits, look for one
+  (skill registries / `.claude/skills/install-saved-reel-skills`) and install it, following that skill's safety rules
+  (verify the repo, read the code, ask before anything needing keys or money).
+- GitHub Copilot works alongside Claude here: request a Copilot review on PRs; treat Copilot/autofix PRs like any
+  reviewer's work (verify before merging).
 
 ## Knowledge Graph
 
