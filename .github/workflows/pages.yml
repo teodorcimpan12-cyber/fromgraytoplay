@@ -1,0 +1,37 @@
+# Free mirror on GitHub Pages: https://<owner>.github.io/fromgraytoplay/
+# Netlify stays the main host; this keeps the newest version reachable when Netlify cannot publish.
+# One-time setup by the owner: Settings -> Pages -> Source: "GitHub Actions".
+name: Pages mirror
+on:
+  push:
+    branches: [claude/start-building-BQQ1q]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node tools/predeploy-check.mjs
+      - run: node tools/pages-rewrite.mjs /fromgraytoplay
+      - run: touch dist/.nojekyll && cp dist/index.html dist/404.html
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - id: deployment
+        uses: actions/deploy-pages@v4

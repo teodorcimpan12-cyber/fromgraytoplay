@@ -408,3 +408,8 @@ Highest civic-value next steps:
   `MENTORS[i].hash` is the SHA-256 of the account email (never the address): when the owner is signed in, `App` makes that account a sheriff with
   `role: "mentor"` in `settings/sherifs/{uid}` — the person must already have a G2P account. Sheriffs get a one-time toast (`g2p_sherif_ack_<uid>`)
   and a row in the bell (`useNotifications().sherif`). SW cache → `g2p-v15`.
+- Same afternoon, hosting: Netlify builds deploy previews but has NOT published production since the credits ran out (live stayed at SW `g2p-v11`
+  while the default branch was at v13+). Fallback: `.github/workflows/pages.yml` builds the default branch and publishes a mirror on GitHub Pages
+  (`https://teodorcimpan12-cyber.github.io/fromgraytoplay/`), after `tools/pages-rewrite.mjs /fromgraytoplay` prefixes the root paths in `dist/`
+  (checked locally under the sub-path: no 404, SW scope correct). Owner must enable it once: repo Settings → Pages → Source "GitHub Actions".
+  On the mirror the AI function is called on the Netlify domain (cross-origin, not verified) and canonical/OG URLs still point at Netlify.
