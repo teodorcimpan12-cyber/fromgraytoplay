@@ -1,0 +1,59 @@
+/* ============================================================
+   POLISH LAYER — glassmorphism, scroll reveal, skeleton, radar,
+   premium hero, refined cards. Keeps brand tokens (green/coral/teal).
+   ============================================================ */
+/* Refined card depth + smooth lift */
+.card{transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s cubic-bezier(.22,1,.36,1),border-color .2s}
+@media(hover:hover) and (pointer:fine){.card:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(0,0,0,.14)}}
+@media(hover:hover) and (pointer:fine){[data-theme="dark"] .card:hover{box-shadow:0 14px 40px rgba(0,0,0,.5)}}
+/* Glassmorphism surface */
+.glass{background:rgba(255,255,255,.72);-webkit-backdrop-filter:blur(14px) saturate(150%);backdrop-filter:blur(14px) saturate(150%);border:1px solid rgba(255,255,255,.5);box-shadow:0 8px 32px rgba(0,0,0,.1)}
+[data-theme="dark"] .glass{background:rgba(22,33,62,.6);border:1px solid rgba(255,255,255,.08)}
+/* Gradient text utility */
+.grad-text{background:linear-gradient(100deg,var(--green),var(--teal) 55%,var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+/* Scroll reveal — base hidden, .in reveals. Stagger via --d */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1);transition-delay:var(--d,0ms)}
+.reveal.in{opacity:1;transform:none}
+/* Skeleton shimmer */
+.skeleton{position:relative;overflow:hidden;background:var(--border);border-radius:8px}
+.skeleton::after{content:'';position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);animation:shimmer 1.4s infinite}
+[data-theme="dark"] .skeleton::after{background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent)}
+@keyframes shimmer{100%{transform:translateX(100%)}}
+/* Premium stat tiles */
+.stat-tile{position:relative;border-radius:16px;padding:1.3rem 1.1rem;overflow:hidden;border:1px solid var(--border);background:var(--bgCard);transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s}
+@media(hover:hover) and (pointer:fine){.stat-tile:hover{transform:translateY(-3px)}}
+.stat-tile .stat-glow{position:absolute;width:120px;height:120px;border-radius:50%;filter:blur(40px);opacity:.18;top:-30px;right:-30px}
+.stat-tile .stat-number{font-size:2.6rem;line-height:1;position:relative}
+/* Premium hero with animated gradient mesh */
+.hero-premium{position:relative;overflow:hidden;background:linear-gradient(135deg,#0F1428,#16213E 60%,#0D2A2A);color:#fff;padding:3rem 0 3.2rem}
+.hero-mesh{position:absolute;inset:0;z-index:0;opacity:.6;background:
+  radial-gradient(circle at 18% 25%,rgba(16,185,129,.32),transparent 42%),
+  radial-gradient(circle at 82% 18%,rgba(249,115,22,.22),transparent 40%),
+  radial-gradient(circle at 70% 88%,rgba(13,148,136,.30),transparent 45%);
+  animation:meshFloat 16s ease-in-out infinite}
+@keyframes meshFloat{0%,100%{transform:translate3d(0,0,0) scale(1)}33%{transform:translate3d(-3%,2%,0) scale(1.06)}66%{transform:translate3d(2%,-2%,0) scale(1.03)}}
+.hero-grid-lines{position:absolute;inset:0;z-index:0;opacity:.06;background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);background-size:44px 44px}
+.hero-title{font-family:'Barlow Condensed','Space Mono',monospace;font-weight:800;font-size:clamp(2.2rem,7vw,3.6rem);line-height:.98;letter-spacing:-1px;margin-bottom:.6rem}
+.hero-pill{display:inline-flex;align-items:center;gap:.45rem;font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:#10B981;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);padding:.35rem .8rem;border-radius:20px;margin-bottom:1rem}
+/* Radar chart (court ratings) */
+.radar-wrap{display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.rate-stars{display:inline-flex;gap:.15rem}
+.rate-star{cursor:pointer;font-size:1.5rem;line-height:1;color:var(--border);transition:transform .12s,color .15s;background:none;border:none;padding:0}
+.rate-star.on{color:var(--coral)}
+@media(hover:hover) and (pointer:fine){.rate-star:hover{transform:scale(1.18)}}
+.rate-row{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.4rem 0;border-bottom:1px solid var(--border)}
+.rate-row:last-child{border-bottom:none}
+.rate-label{font-size:.85rem;font-weight:600}
+.rate-bar{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;max-width:120px}
+.rate-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--coral),var(--green));transition:width .8s cubic-bezier(.22,1,.36,1)}
+.rate-num{font-family:'Barlow Condensed',monospace;font-weight:800;font-size:1.1rem;min-width:30px;text-align:right}
+/* Section title accent bar */
+.section-title{position:relative}
+/* Smooth page enter */
+/* backwards, not both: a retained transform/filter would make every fixed modal inside the page scroll with it */
+.animate-in{animation:pageEnter .55s cubic-bezier(.22,1,.36,1) backwards}
+@keyframes pageEnter{from{opacity:0;transform:translateY(18px) scale(.985);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+/* Dossier button glow */
+.btn-dossier{background:linear-gradient(100deg,var(--green),var(--teal));color:#fff;position:relative;overflow:hidden}
+.btn-dossier::after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-20deg);animation:sheen 3.5s ease-in-out infinite}
+@keyframes sheen{0%,100%{left:-60%}50%{left:120%}}

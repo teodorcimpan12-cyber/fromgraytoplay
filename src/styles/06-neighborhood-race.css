@@ -1,0 +1,41 @@
+/* === Neighborhood Race === */
+.race-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:.7rem;margin-bottom:.75rem}
+.race-rank{font-family:'Space Mono',monospace;font-weight:900;font-size:1.5rem;width:28px;text-align:center;flex-shrink:0}
+.race-label{font-size:.8rem;font-weight:700;white-space:nowrap}
+.race-bar-wrap{background:var(--border);border-radius:6px;overflow:hidden;height:20px;position:relative}
+.race-bar{height:100%;border-radius:6px;transition:width 1.5s cubic-bezier(.22,1,.36,1);display:flex;align-items:center;padding-left:.4rem}
+.race-score{font-family:'Space Mono',monospace;font-weight:800;font-size:.95rem;width:42px;text-align:right;flex-shrink:0}
+.race-medal{font-size:1.1rem}
+/* === Pledge Wall === */
+.pledge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.6rem;margin-top:.8rem}
+.pledge-tile{background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(13,148,136,.04));border:1px solid rgba(16,185,129,.2);border-radius:12px;padding:.7rem .65rem;cursor:default;transition:transform .2s,box-shadow .2s}
+@media(hover:hover) and (pointer:fine){.pledge-tile:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 20px rgba(16,185,129,.12)}}
+.pledge-tile .pt-emoji{font-size:1.5rem;display:block;margin-bottom:.2rem;line-height:1}
+.pledge-tile .pt-name{font-size:.72rem;font-family:'Space Mono',monospace;font-weight:700;color:var(--text);margin-bottom:.15rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pledge-tile .pt-text{font-size:.68rem;color:var(--textSec);line-height:1.35;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.pledge-tile-new{animation:pledgeIn .5s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes pledgeIn{from{opacity:0;transform:scale(0) rotate(-5deg)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.pledge-tile-new{animation:none;transform:none}@media(hover:hover) and (pointer:fine){.pledge-tile:hover{animation:none;transform:none}}}
+.no-fx .pledge-tile-new{animation:none !important}
+/* === Council Countdown === */
+.countdown-wrap{display:flex;gap:1rem;justify-content:center;margin:1rem 0}
+.countdown-unit{display:flex;flex-direction:column;align-items:center;gap:.2rem}
+.countdown-num{font-family:'Space Mono',monospace;font-weight:900;font-size:2.6rem;line-height:1;color:var(--green);min-width:60px;text-align:center;background:var(--bgCard);border:1px solid rgba(16,185,129,.25);border-radius:10px;padding:.2rem .4rem}
+.countdown-label{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--textSec)}
+.countdown-sep{font-family:'Space Mono',monospace;font-size:2rem;color:var(--green);opacity:.4;align-self:flex-start;padding-top:.5rem}
+/* ============================================================
+   SEASON 3 — CINEMA PACK
+   ============================================================ */
+/* === Satellite Time Machine === */
+.sat-map{height:260px;border-radius:var(--radius);overflow:hidden;border:2px solid var(--border)}
+.sat-slider-row{display:flex;align-items:center;gap:.6rem;margin-top:.6rem}
+.sat-slider-row input[type=range]{flex:1;padding:0;accent-color:var(--green)}
+.sat-year{font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;color:var(--textSec);flex-shrink:0}
+/* === Hoop game (petition hook) === */
+.hoop-wrap{position:relative;border-radius:var(--radius);overflow:hidden;background:#262b33}
+.hoop-canvas{display:block;width:100%;touch-action:none;cursor:grab}
+.hoop-skip{position:absolute;top:.5rem;right:.7rem;background:rgba(11,14,24,.45);border:none;color:rgba(255,255,255,.75);font-size:.72rem;font-family:'Space Mono',monospace;padding:.25rem .6rem;border-radius:14px;cursor:pointer;z-index:2}
+@media(hover:hover) and (pointer:fine){.hoop-skip:hover{color:#fff}}
+.hoop-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:rgba(11,14,24,.84);padding:1.2rem;animation:fadeIn .4s;z-index:3}
+@media(prefers-reduced-motion:reduce){.hoop-overlay{animation:none}}
+.no-fx .hoop-overlay{animation:none}

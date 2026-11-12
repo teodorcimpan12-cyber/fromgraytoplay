@@ -1,0 +1,109 @@
+/* === Fade lines, magnetic opener, 3D hero gutters, court sheet (Nov 2026, branch ui-instagram-court) === */
+/* Straight section lines fade out at both ends instead of running edge to edge. */
+:root{--fade-line:linear-gradient(90deg,transparent,var(--border) 16%,var(--border) 84%,transparent)}
+.navbar,.modal-head,.tabs,.fund-row,.rate-row,.lt-row,.fade-b,.fade-t,.cp-top,.cp-cats{border-image:var(--fade-line) 1}
+.fade-b{border-bottom:1px solid var(--border)}
+.fade-t{border-top:1px solid var(--border)}
+.footer,.ao-why{border-image:linear-gradient(90deg,transparent,rgba(255,255,255,.12) 18%,rgba(255,255,255,.12) 82%,transparent) 1}
+[data-theme="light"] .footer{border-image:linear-gradient(90deg,transparent,rgba(0,0,0,.12) 18%,rgba(0,0,0,.12) 82%,transparent) 1}
+/* Opener: the target lives in the top-right corner and fades out downwards, so it never reaches the buttons. */
+.ao-target{top:0;right:-24vw;width:76vw;max-width:520px;transform:translateY(-14%);-webkit-mask-image:linear-gradient(180deg,#000 38%,transparent 78%);mask-image:linear-gradient(180deg,#000 38%,transparent 78%);translate:calc(var(--px,0)*-14px) calc(var(--py,0)*-14px);transition:translate .35s var(--ease-out,cubic-bezier(.22,1,.36,1))}
+@media(min-width:900px){.ao-target{top:50%;right:4vw;width:min(40vw,540px);transform:translateY(-50%);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 40%);mask-image:linear-gradient(90deg,transparent 0,#000 40%)}}
+/* Magnetic 3D buttons (hover + fine pointer only; the script sets --tx/--ty/--rx/--ry/--gx/--gy) */
+.ao-cta{perspective:720px}
+.ao-btn{position:relative;overflow:hidden;transform:translate3d(var(--tx,0px),var(--ty,0px),0) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .28s var(--ease-out,cubic-bezier(.22,1,.36,1)),background .2s ease,box-shadow .3s ease}
+.ao-btn::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;background:radial-gradient(120px circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.28),transparent 65%);transition:opacity .25s ease}
+.ao-btn.mag{transition:transform .08s linear,background .2s ease,box-shadow .3s ease;box-shadow:0 18px 30px -14px rgba(0,0,0,.55)}
+.ao-btn.mag::after{opacity:1}
+.ao-btn:active{scale:.97}
+/* 3D hero: no kicker over the scene; on touch screens two invisible side strips keep vertical swipes scrolling the page */
+.h3d-gutter{display:none}
+@media(pointer:coarse),(hover:none){.h3d-gutter{display:block;position:absolute;top:0;bottom:0;width:16%;z-index:1;touch-action:pan-y;-webkit-tap-highlight-color:transparent}.h3d-gutter.l{left:0}.h3d-gutter.r{right:0}}
+/* Court sheet, Instagram style: photo on top, pulse always visible, tab bar at the bottom */
+.modal.cdx{padding:0;overflow:hidden;display:flex;flex-direction:column;max-width:560px;width:100%;height:min(92dvh,860px);height:min(92vh,860px);height:min(92dvh,860px);max-height:none}
+.modal.cdx::before{display:none}
+.cdx-media{flex:none;position:relative;min-width:0}
+.cdx-hero{position:relative;height:clamp(120px,21dvh,210px);overflow:hidden;background:#0B0F1C}
+.cdx-hero::after{content:"";position:absolute;left:0;right:0;top:0;height:56px;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.45),transparent)}
+.cdx-slides{display:flex;height:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.cdx-slides::-webkit-scrollbar{display:none}
+.cdx-slide{flex:0 0 100%;scroll-snap-align:center;position:relative;overflow:hidden;min-width:0}
+.cdx-slide>img{width:100%;height:100%;object-fit:cover;display:block}
+.cdx-sat{cursor:pointer;background:linear-gradient(135deg,#16213E,#0D9488)}
+.cdx-mosaic{position:absolute;left:50%;top:50%;width:768px;height:768px;scale:1.25;pointer-events:none}
+.cdx-mosaic img{position:absolute;width:256px;height:256px;display:block;max-width:none;user-select:none;-webkit-user-drag:none}
+.cdx-nosat{position:absolute;inset:0;display:grid;place-items:center;font-size:3rem;opacity:.6}
+.cdx-cap{position:absolute;left:.7rem;bottom:.55rem;padding:.2rem .6rem;border-radius:980px;font:600 .68rem/1.2 'Space Mono',monospace;color:#fff;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.cdx-count{position:absolute;right:.7rem;bottom:.55rem;padding:.2rem .6rem;border-radius:980px;font:600 .7rem/1.2 'Space Mono',monospace;color:#fff;background:rgba(0,0,0,.5)}
+.cdx-grab{position:absolute;left:50%;top:7px;width:38px;height:5px;margin-left:-19px;border-radius:3px;background:rgba(255,255,255,.55);z-index:2;pointer-events:none}
+.cdx-x{position:absolute;right:.6rem;top:.6rem;z-index:3;width:38px;height:38px;border-radius:50%;border:0;background:rgba(0,0,0,.5);color:#fff;font-size:1rem;cursor:pointer;display:grid;place-items:center;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.cdx-pulse{padding:.55rem .75rem 0}
+.cdx-pulse .cpulse{margin:0}
+.cdx-main{flex:1;min-height:0;min-width:0;display:flex;flex-direction:column}
+.cdx-head{flex:none;padding:.65rem 1rem .5rem}
+.cdx-name{margin:0;font-size:1.12rem;line-height:1.25;text-wrap:balance}
+.cdx-addr{margin:.1rem 0 .45rem;font-size:.82rem;color:var(--textSec)}
+.cdx-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:.5rem 1rem 1.6rem;animation:fadeIn .18s}
+.cdx-bar{flex:none;position:relative;z-index:2;display:flex;align-items:flex-end;background:var(--bgCard);padding:.3rem .3rem calc(.3rem + env(safe-area-inset-bottom,0px))}
+.cdx-bar::before{content:"";position:absolute;left:0;right:0;top:-18px;height:18px;pointer-events:none;background:linear-gradient(180deg,transparent,var(--bgCard))}
+.cdx-tab{flex:1;min-width:0;min-height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.18rem;border:0;background:none;color:var(--textSec);font:600 .68rem/1.1 'Libre Franklin',sans-serif;cursor:pointer;touch-action:manipulation;transition:color .2s ease,transform .16s var(--ease-out,ease)}
+.cdx-tab .cdx-ic{font-size:1.4rem;line-height:1}
+.cdx-tab .cdx-lb{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cdx-tab.on{color:var(--green)}
+.cdx-tab:active{transform:scale(.94)}
+.cdx-tab.mid{color:var(--text);margin-top:-30px}
+.cdx-tab.mid .cdx-ic{width:58px;height:58px;display:grid;place-items:center;border-radius:50%;font-size:1.65rem;background:linear-gradient(135deg,var(--green),var(--teal));border:3px solid var(--bgCard);box-shadow:0 10px 24px -8px color-mix(in srgb,var(--green) 75%,transparent)}
+.cdx-tab.mid.on{color:var(--green)}
+.cdx-tab:focus-visible{outline:2px solid var(--green);outline-offset:-2px;border-radius:12px}
+@media(min-width:900px){
+  .modal.cdx{max-width:min(1000px,96vw);height:min(86vh,720px);flex-direction:row}
+  .cdx-media{width:46%;display:flex;flex-direction:column;background:#0B0F1C}
+  .cdx-hero{flex:1;height:auto;min-height:260px}
+  .cdx-pulse{padding:.7rem .8rem .8rem;background:var(--bgCard)}
+  .cdx-grab{display:none}
+  .cdx-main{flex:1}
+  .cdx-head{padding:1rem 1.2rem .6rem}
+  .cdx-body{padding:.5rem 1.2rem 1.6rem}
+}
+@media(prefers-reduced-motion:reduce){.cdx-body{animation:none}.ao-btn,.ao-target{transition:none}}
+/* Opener pill: orange "under construction" status with two turning gears */
+.ao-eyebrow{color:#FDBA74;background:rgba(249,115,22,.12);border-color:rgba(249,115,22,.4)}
+.ao-gears{position:relative;display:inline-block;width:1.95rem;height:1.2rem;flex:none}
+.ao-gear{position:absolute;fill:none;stroke:currentColor;overflow:visible}
+.ao-gear .teeth{stroke-width:3.2;stroke-dasharray:3.73 3.73}
+.ao-gear .rim{stroke-width:2}
+.ao-gear .spokes{stroke-width:2.2;stroke-linecap:round}
+.ao-gear.g1{left:0;top:-.1rem;width:1.1rem;height:1.1rem}
+.ao-gear.g2{left:1.08rem;top:.35rem;width:.85rem;height:.85rem}
+@keyframes aoGear{to{transform:rotate(360deg)}}
+@keyframes aoGearBack{to{transform:rotate(-360deg)}}
+@media(prefers-reduced-motion:no-preference){.ao-gear.g1{animation:aoGear 5s linear infinite}.ao-gear.g2{animation:aoGearBack 3.5s linear infinite}}
+/* Formularul 230 card */
+.r35{position:relative;overflow:hidden;border-radius:var(--radius);padding:1.2rem;background:linear-gradient(135deg,color-mix(in srgb,var(--green) 13%,var(--bgCard)),var(--bgCard) 62%);border:1px solid color-mix(in srgb,var(--green) 32%,var(--border))}
+.r35-big{font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(2.6rem,12vw,4.2rem);line-height:1;letter-spacing:-.05em;color:var(--green);margin:.5rem 0 .2rem}
+.r35-h{margin:0 0 .4rem;font-size:clamp(1.1rem,4.6vw,1.5rem);line-height:1.25;text-wrap:balance}
+.r35-lead{margin:0 0 1rem;max-width:62ch;line-height:1.6}
+.r35-calc{display:grid;gap:.4rem;padding:.9rem;border-radius:12px;background:color-mix(in srgb,var(--bg) 70%,transparent);border:1px solid var(--border)}
+.r35-calc input{width:100%;max-width:16rem}
+.r35-out{min-height:2.2rem;font-size:1.05rem}
+.r35-out b{color:var(--green);font-family:'Space Mono',monospace}
+.r35-steps{list-style:none;padding:0;margin:1rem 0 0;display:grid;gap:.7rem}
+.r35-steps li{display:flex;gap:.75rem;align-items:flex-start}
+.r35-n{flex:none;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--green);color:#fff;font:700 .85rem/1 'Space Mono',monospace}
+.r35-sub{display:grid;gap:.5rem;width:100%;max-width:26rem;padding:.9rem;border-radius:12px;background:color-mix(in srgb,var(--bg) 70%,transparent);border:1px solid var(--border)}
+.r35-sub input[type=email]{width:100%}
+.r35-consent{display:flex;gap:.5rem;align-items:flex-start;color:var(--textSec);line-height:1.4}
+.r35-consent input{flex:none;margin-top:.15rem;width:1.1rem;height:1.1rem}
+.r35-sub-done{padding:.7rem .9rem;border-radius:12px;border:1px solid color-mix(in srgb,var(--green) 40%,transparent);background:color-mix(in srgb,var(--green) 10%,transparent);font-size:.9rem}
+.r35-honest{margin-top:1rem;padding:.8rem .95rem;border-radius:12px;border-left:4px solid var(--coral);background:color-mix(in srgb,var(--coral) 8%,transparent)}
+/* Compact pulse inside the court sheet; the floating mascot steps aside while the sheet is open */
+.cdx-open .mascot{opacity:0 !important;visibility:hidden;pointer-events:none !important}
+@media(max-width:899px){
+  .cdx-hero{height:clamp(104px,17dvh,190px)}
+  .cdx-pulse .cpulse-top{padding:.45rem .8rem .1rem}
+  .cdx-pulse .cpulse-bpm{font-size:1.35rem}
+  .cdx-pulse .cpulse-scope{height:54px}
+  .cdx-pulse .cpulse-bot{padding:.3rem .8rem .55rem}
+  .cdx-pulse .cpulse-src{display:none}
+}
+@media(max-width:899px) and (max-height:700px){.cdx-pulse .cpulse-bot{display:none}.cdx-pulse .cpulse{padding-bottom:.2rem}}

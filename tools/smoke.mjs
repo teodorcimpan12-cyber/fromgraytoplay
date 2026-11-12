@@ -23,7 +23,8 @@ const CITIES = [["tgm", "c1"], ["sibiu", "sb1"]];
 const IGNORE = [/ERR_|net::|Failed to load resource|vibrate/i];
 const TYPES = { ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript", ".json": "application/json", ".png": "image/png", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".css": "text/css", ".webp": "image/webp" };
 
-const root = process.cwd();
+const root = join(process.cwd(), "dist"); // the built site; run `npm run build` (or the predeploy check) first
+if (!existsSync(join(root, "index.html"))) { console.error("✗ smoke: dist/index.html not found — run: npm run build"); process.exit(1); }
 const server = createServer(async (req, res) => {
   const path = normalize(decodeURIComponent(new URL(req.url, "http://x").pathname)).replace(/^([\\/])+/, "");
   try {

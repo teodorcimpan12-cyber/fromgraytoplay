@@ -13,7 +13,7 @@ const root = new URL("../", import.meta.url);
 const dir = pathToFileURL(resolve(fileURLToPath(root), process.argv[2] || "tools/data/sat_reviews") + "/");
 if (!existsSync(dir)) { console.error("No reviews folder:", dir.pathname, "— save the exported JSON files there."); process.exit(1); }
 const courts = JSON.parse(readFileSync(new URL("tools/data/courts_sibiu.json", root), "utf8")).courts;
-const caps = JSON.parse(readFileSync(new URL("data/timemachine.json", root), "utf8")).courts;
+const caps = JSON.parse(readFileSync(new URL("public/data/timemachine.json", root), "utf8")).courts;
 
 const files = readdirSync(dir).filter(f => f.endsWith(".json"));
 const reviews = files.map(f => JSON.parse(readFileSync(new URL(f, dir), "utf8")))
@@ -101,7 +101,7 @@ writeFileSync(new URL("tools/data/sat_audit.json", root), JSON.stringify({
 }, null, 2) + "\n");
 
 // Small public copy for the app (court detail): findings only, no reviewer names.
-writeFileSync(new URL("data/sat_findings.json", root), JSON.stringify({
+writeFileSync(new URL("public/data/sat_findings.json", root), JSON.stringify({
   generated_at: new Date().toISOString(), reviewers: humans.length, source: "Esri World Imagery Wayback",
   courts: Object.fromEntries(audit.map(a => [a.id, { finding: a.finding, latestCapture: a.latestCapture, firstSeen: a.firstSeen, lastSeen: a.lastSeen, n: a.reviewers }]))
 }) + "\n");

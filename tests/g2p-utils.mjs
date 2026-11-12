@@ -1,9 +1,11 @@
-// Loads pieces of the single-file app (index.html) into a Node vm so they can be unit-tested
-// without duplicating code or adding a build step.
-import { readFileSync } from "node:fs";
+// Loads pieces of the app source into a Node vm so they can be unit-tested without a browser.
+import { readFileSync, readdirSync } from "node:fs";
 import vm from "node:vm";
 
-const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+// The app used to be one index.html; it is now index.html + src/. The tests keep reading it as one text.
+const root = new URL("../", import.meta.url);
+const walk = dir => readdirSync(new URL(dir, root), { withFileTypes: true }).flatMap(e => e.isDirectory() ? walk(dir + e.name + "/") : [dir + e.name]);
+const html = [readFileSync(new URL("index.html", root), "utf8"), ...walk("src/").filter(f => /\.(js|css)$/.test(f)).sort().map(f => readFileSync(new URL(f, root), "utf8"))].join("\n");
 
 function sliceBalanced(startIdx, open, close) {
   let depth = 0, i = startIdx, quote = null;
@@ -30,7 +32,8 @@ export function extractFunction(name) {
 
 export function extractConst(name, open = "[") {
   const decl = "const " + name + " = ";
-  const at = html.indexOf(decl);
+  const ex = html.indexOf("export " + decl);
+  const at = ex >= 0 ? ex + 7 : html.indexOf(decl);
   if (at < 0) throw new Error("const not found: " + name);
   const start = html.indexOf(open, at + decl.length - 1);
   const close = open === "[" ? "]" : "}";

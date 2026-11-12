@@ -1,0 +1,58 @@
+/* === Apple.com pass (31 Oct 2026): values measured on apple.com, re-coloured for FG2P === */
+/* Text rendering + selection, like Apple's pages */
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+::selection{background:color-mix(in srgb,var(--green) 28%,transparent)}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+/* Global nav glass: apple.com = rgba(29,29,31,.8) + saturate(1.8) blur(20px) */
+.navbar{-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)}
+/* Pill CTAs: apple.com buttons are border-radius 980px, 11px 21px padding, tight tracking */
+.btn{border-radius:980px;padding:.6rem 1.3rem;letter-spacing:-.01em}
+.btn-sm{border-radius:980px;padding:.38rem .9rem}
+.pet-submit{border-radius:980px}
+.btn-outline{border-width:1.5px}
+/* Display type: apple.com hero = 80px / 84px / -1.2px (-0.015em). Tracking tightens as size grows */
+h1{letter-spacing:-.015em;line-height:1.08}
+h2{letter-spacing:-.01em;line-height:1.15}
+.section-title{letter-spacing:-.012em}
+.h3d-title{letter-spacing:-.01em;line-height:1.05}
+.h3d-sub{letter-spacing:-.005em}
+/* Scroll-driven reveals (Apple's sections ease in as they enter). Uses the individual translate/scale/opacity
+   properties so it composes with the existing transform-based tilt + hover lifts instead of fighting them. */
+@supports (animation-timeline:view()){
+@media(prefers-reduced-motion:no-preference){
+:where(main .card,main .section-title,main .stat-tile){animation:apReveal linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+@keyframes apReveal{from{opacity:.001;translate:0 28px;scale:.985}to{opacity:1;translate:none;scale:none}}
+/* Hero copy recedes as you scroll past it, like apple.com product heroes */
+/* the hero clips (overflow:hidden = its own scroller), so the overlay follows a named timeline on the hero itself */
+.h3d-hero{view-timeline:--g2pHero block}
+:where(.h3d-overlay){animation:apHeroOut linear both;animation-timeline:--g2pHero;animation-range:exit 0% exit 85%}
+@keyframes apHeroOut{to{opacity:.15;translate:0 -36px;scale:.97}}
+}}
+/* Hero CTAs: Apple pill pair (filled primary + glass secondary), spring release */
+.h3d-btn{border-radius:980px;padding:.72rem 1.35rem;transition:transform var(--spring-dur,.6s) var(--spring,ease-out),box-shadow .2s ease,background-color .2s ease}
+.h3d-btn:active{transform:scale(.96);transition:transform .1s var(--ease-out)}
+.h3d-btn-ghost{-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)}
+.no-fx main .card,.no-fx main .section-title,.no-fx main .stat-tile,.no-fx .h3d-overlay{animation:none !important}
+/* === F2G premium handoff (31 Oct 2026): only the non-fundamental details. Theme, fonts, colours,
+   12px cards and every playful animation stay exactly as they were. === */
+:root{--ease-apple:cubic-bezier(.28,.11,.32,1)}
+/* Headlines break into balanced lines, paragraphs avoid orphans (Apple's short, even headline rhythm) */
+h1,h2,h3,.section-title,.h3d-title{text-wrap:balance}
+p{text-wrap:pretty}
+/* Calmer rhythm on large screens: more air between sections, slightly larger section titles */
+@media(min-width:900px){.section{padding:3rem 0}.section-title{font-size:clamp(1.5rem,2.1vw,1.85rem)}}
+/* Nav links: Apple's quiet resting state (slightly dimmed), full strength on hover, 300 ms Apple ease */
+.nav-links.desktop>a:not(.active){opacity:.82;transition:opacity .3s var(--ease-apple),background-color .3s var(--ease-apple),color .3s var(--ease-apple)}
+.nav-links.desktop>a:not(.active):focus-visible{opacity:1}@media(hover:hover) and (pointer:fine){.nav-links.desktop>a:not(.active):hover{opacity:1}}
+/* Colour changes on buttons use Apple's 300 ms ease; press/spring timing from the packs above is kept */
+.btn{transition:background-color .3s var(--ease-apple),color .3s var(--ease-apple),border-color .3s var(--ease-apple),box-shadow .3s var(--ease-apple),transform var(--spring-dur,.6s) var(--spring,ease-out)}
+.btn:active{transition:transform .1s var(--ease-out)}
+/* Lighter, more diffuse hover shadow on cards (no heavy shadows) */
+@media(hover:hover) and (pointer:fine){.card:hover{box-shadow:0 12px 32px -14px rgba(0,0,0,.22)}}
+@media(hover:hover) and (pointer:fine){[data-theme="dark"] .card:hover{box-shadow:0 12px 32px -14px rgba(0,0,0,.6)}}
+/* Mobile menu: big, confident links like Apple's full-screen menu */
+.mobile-menu>a{font-size:1.4rem;font-weight:600;letter-spacing:-.01em;padding:.6rem 1rem;line-height:1.2}
+/* Footer: quiet legal type, hairline, generous padding */
+.footer{padding:2.6rem 0 2.2rem;font-size:.76rem;line-height:1.7;letter-spacing:.005em;border-top:1px solid rgba(255,255,255,.06)}
+/* Focus: accent outline with Apple's 3 px offset */
+:where(a,button,input,textarea,select,[tabindex]):focus-visible{outline-offset:3px}

@@ -15,7 +15,7 @@ const feats = els.map(e => ({ osm: e.type + "/" + e.id, lat: e.lat ?? e.center?.
 const pitches = feats.filter(f => f.leisure === "pitch");
 const dist = (a, b) => { const R = 6371000, r = x => x * Math.PI / 180; const h = Math.sin(r(b.lat - a.lat) / 2) ** 2 + Math.cos(r(a.lat)) * Math.cos(r(b.lat)) * Math.sin(r(b.lng - a.lng) / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(h)); };
 const SPORT = { basketball: /basket/, football: /soccer|football/, multiuse: /multi|basket|soccer|handball|volley/, tennis: /tennis/, handball: /handball|multi/, volleyball: /volley|multi/ };
-const html = readFileSync(new URL("index.html", root), "utf8");
+const html = readFileSync(new URL("src/data/courts-base.js", root), "utf8");
 const addrOf = id => { const m = html.match(new RegExp('id: "' + id + '",\\s*name: "[^"]*",\\s*address: "([^"]*)"')); return m ? m[1] : ""; };
 const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
@@ -54,6 +54,6 @@ if (process.argv.includes("--apply")) {
     const re = new RegExp('(id: "' + r.id + '",[\\s\\S]*?lat: )[-0-9.]+(, lng: )[-0-9.]+');
     if (re.test(out)) { out = out.replace(re, `$1${r.new.lat}$2${r.new.lng}`); n++; }
   }
-  writeFileSync(new URL("index.html", root), out);
+  writeFileSync(new URL("src/data/courts-base.js", root), out);
   console.log("applied", n);
 }
