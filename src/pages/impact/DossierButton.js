@@ -1,3 +1,4 @@
+import { loadJsPDF } from "../../lib/load-jspdf.js";
 import { COURTS, useApp } from "../../app/core.js";
 import { SITE } from "../../data/constants.js";
 import { useFirebase } from "../../hooks/useFirebase.js";
@@ -15,7 +16,7 @@ export function DossierButton() {
   const ratings = useFirebase("ratings");
   const [busy, setBusy] = useState(false);
   const generate = async () => {
-    const JsPDF = window.jspdf && window.jspdf.jsPDF;
+    const JsPDF = await loadJsPDF().catch(() => null);
     if (!JsPDF) { toast(t.error); return; }
     setBusy(true);
     toast(t.dossierGenerating);
