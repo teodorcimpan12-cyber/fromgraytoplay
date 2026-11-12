@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import { viteSingleFile } from "vite-plugin-singlefile";
-import { readFileSync, writeFileSync } from "node:fs";
+import { cpSync, readFileSync, writeFileSync } from "node:fs";
 
 // The build still ships ONE index.html (app code and CSS inlined), exactly like the hand-written file it replaces:
 // the service worker caches "/" and the whole app works offline, and a deploy is atomic.
@@ -30,6 +30,8 @@ const keepDocumentOrder = () => ({
     put("leaflet.css\"/></noscript>", style.replace(" rel=\"stylesheet\" crossorigin", ""), true);
     put("<!-- app:end -->", app, false);
     writeFileSync(file, html);
+    // The repo root used to be the publish folder; these public links are printed on the pitch sheet.
+    cpSync("docs/pitch", "dist/docs/pitch", { recursive: true });
   }
 });
 
