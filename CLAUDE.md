@@ -31,7 +31,7 @@ Utilizare:
   scripts) + `src/`: `main.js` → `app/core.js` (module state, derived consts, side effects, in the original order) →
   `app/`, `components/`, `hooks/`, `lib/`, `pages/<slug>/`, `data/` (literal data, no imports), `i18n/strings.js` (`T`),
   `styles/00…19-*.css` (order matters, listed in `styles/index.css`). `src/legacy/` is unreachable old code, not bundled.
-- `npm run build` (Vite 5 + `vite-plugin-singlefile`) writes ONE `dist/index.html` with JS + CSS inlined, plus `public/*`
+- `npm run build` (Vite 8 + `vite-plugin-singlefile` 2.3; was Vite 5 until 12 Nov 2026) writes ONE `dist/index.html` with JS + CSS inlined, plus `public/*`
   copied as is (`manifest.json`, `sw.js`, `icons/`, `data/`, `promo/`, `promo.html`). Netlify publishes `dist/`.
 - React + Firebase + Leaflet still load from CDN as globals (`src/lib/react.js` re-exports the hooks). No JSX: components
   are `React.createElement(...)` calls.

@@ -14,7 +14,7 @@ const keepDocumentOrder = () => ({
   enforce: "post",
   closeBundle() {
     const file = "dist/index.html";
-    let html = readFileSync(file, "utf8");
+    let html = readFileSync(file, "utf8").replace(/^\uFEFF/, ""); // index.html has a BOM; Vite 8 keeps it, Vite 5 dropped it
     const cut = (open, close) => {
       const a = html.indexOf(open); if (a < 0) throw new Error("build output is missing " + open);
       const b = html.indexOf(close, a) + close.length;
