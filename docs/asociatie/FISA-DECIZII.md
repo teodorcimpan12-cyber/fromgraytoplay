@@ -1,4 +1,9 @@
-# Fișa de decizii — 5 răspunsuri și dosarul e gata de completat
+# Fișa de decizii — hotărâte 12 nov. 2026
+
+Hotărât: sediul în Târgu Mureș; Consiliul Director: Cîmpan Teodor (președinte), Drăgan Gabriel (vicepreședinte), Trofin Matei (secretar-trezorier); împuternicit: Cîmpan Teodor; aport egal; denumiri de rezervă: „Asociația Din Gri, în Joc” și „Asociația Terenuri Deschise”.
+Rămân de completat de mână: adresa sediului, CNP/CI, suma aportului, date, semnături. Actele `1`–`5` sunt completate cu restul.
+
+(Tabelul de mai jos păstrează propunerile originale.)
 
 Răspundeți în chat sau bifați aici. Cu răspunsurile, completez automat toate actele din acest folder.
 Ce NU intră în repo (e public): CNP, serie CI, adrese de domiciliu, semnături. Acelea se scriu de mână la avocat/notar.

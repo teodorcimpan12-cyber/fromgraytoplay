@@ -1,12 +1,12 @@
 # Cerere de înscriere în Registrul asociațiilor și fundațiilor (proiect)
 
-**Către Judecătoria [orașul sediului]**
+**Către Judecătoria Târgu Mureș**
 
 **Domnule Președinte,**
 
-Subsemnatul/Subsemnata **[nume împuternicit]**, domiciliat(ă) în **[...]**, în calitate de persoană împuternicită prin actul constitutiv,
+Subsemnatul/Subsemnata **Cîmpan Teodor**, domiciliat în **[adresa — de mână]**, în calitate de persoană împuternicită prin actul constitutiv,
 solicit, în temeiul art. 7 și următoarele din OG nr. 26/2000, **acordarea personalității juridice** și **înscrierea în Registrul
-asociațiilor și fundațiilor** a **Asociației From Grey to Play**, cu sediul în **[adresa]**.
+asociațiilor și fundațiilor** a **Asociației From Grey to Play**, cu sediul în **Târgu Mureș, [adresa — de mână]**.
 
 **În fapt**, asociații fondatori Cîmpan Teodor, Trofin Matei și Drăgan Gabriel au hotărât constituirea asociației, fără scop patrimonial,
 având ca scop promovarea sănătății și a sportului și reducerea inegalității de acces la infrastructura sportivă publică.
