@@ -13,6 +13,16 @@ const osm = JSON.parse(readFileSync(new URL("tools/data/osm_sibiu.json", root), 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const now = () => new Date().toISOString();
 
+function stripHtmlTags(value) {
+  let text = String(value || "");
+  let previous;
+  do {
+    previous = text;
+    text = text.replace(/<[^>]+>/g, "");
+  } while (text !== previous);
+  return text.replace(/[<>]/g, "").trim();
+}
+
 const MERGE = {
   "Hipodrom I": "Hipodrom", "Hipodrom II": "Hipodrom", "Hipodrom III": "Hipodrom", "Hipodrom IV": "Hipodrom",
   "Ștrand II": "Ștrand", "Orașul de Sus": "Centrul Istoric", "Orașul de Jos": "Centrul Istoric",
@@ -90,7 +100,7 @@ async function commonsPhoto(lat, lng) {
       photo: {
         file: p.title, thumb: ii.thumburl || ii.url, page: ii.descriptionurl, license: lic,
         license_url: md.LicenseUrl?.value || null,
-        author: (md.Artist?.value || "").replace(/<[^>]+>/g, "").trim() || "unknown",
+        author: stripHtmlTags(md.Artist?.value) || "unknown",
         retrieved_at: now()
       }
     };

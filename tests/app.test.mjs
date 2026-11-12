@@ -175,7 +175,7 @@ test("court pulse: no data means no signal, never an invented rhythm", () => {
 
 test("no translation key is assigned twice (a later assignment silently overrides the first)", () => {
   for (const lang of ["ro", "en", "hu"]) {
-    const keys = [...html.matchAll(new RegExp("^T\." + lang + "\.([A-Za-z0-9_]+) =", "gm"))].map(m => m[1]);
+    const keys = [...html.matchAll(new RegExp("^T\\." + lang + "\\.([A-Za-z0-9_]+) =", "gm"))].map(m => m[1]);
     const dupes = keys.filter((k, i) => keys.indexOf(k) !== i);
     assert.deepEqual(dupes, [], "duplicate T." + lang + " keys: " + dupes.join(", "));
   }
