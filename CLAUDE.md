@@ -17,20 +17,19 @@ Utilizare:
 
 ## Architecture
 
-- **Single-file PWA.** Everything lives in `index.html` at repo root. Build
-  output is hand-tuned, not regenerated. Deploy = upload that one file +
-  `/manifest.json`, `/sw.js`, `/icons/*` to Netlify.
-- **No bundler at root.** React + Firebase + Leaflet load from CDN
-  (unpkg / gstatic). JSX is pre-transpiled to `React.createElement(...)`
-  inside `<script>` — write new code in that same style or paste raw JSX
-  only if you also transpile it.
-- **Vite scaffold** lives under `vite-next/` as a future migration target
-  per the roadmap §5.6. Do NOT edit it for shipped features; only when
-  the user explicitly says "migrate."
+- **Vite source, single-file output** (migrated 12 Nov 2026). Source is `index.html` (shell: meta, CDN tags, small inline
+  scripts) + `src/`: `main.js` → `app/core.js` (module state, derived consts, side effects, in the original order) →
+  `app/`, `components/`, `hooks/`, `lib/`, `pages/<slug>/`, `data/` (literal data, no imports), `i18n/strings.js` (`T`),
+  `styles/00…19-*.css` (order matters, listed in `styles/index.css`). `src/legacy/` is unreachable old code, not bundled.
+- `npm run build` (Vite 5 + `vite-plugin-singlefile`) writes ONE `dist/index.html` with JS + CSS inlined, plus `public/*`
+  copied as is (`manifest.json`, `sw.js`, `icons/`, `data/`, `promo/`, `promo.html`). Netlify publishes `dist/`.
+- React + Firebase + Leaflet still load from CDN as globals (`src/lib/react.js` re-exports the hooks). No JSX: components
+  are `React.createElement(...)` calls.
+- Dev: `npm ci`, then `npm run dev`. Check: `npm run check` (builds, then tests). Smoke: `npm run smoke` (serves `dist/`).
 
 ## Safety gates (TOP PRIORITY — the live site must never break)
 
-A syntax error anywhere in the main `<script>` blanks the entire site (happened in
+A syntax error anywhere in the bundled script blanks the entire site (happened in
 `905ade1` and again in `ef587ba`: smart quotes `“en”` used as JS delimiters).
 Three gates now stand between a mistake and production:
 
@@ -84,11 +83,13 @@ fromgreytoplay-default-rtdb/
 └── presence/{voterKey}: true                   [live online counter]
 ```
 
-Anyone can write — rules are MVP-permissive. Tighten before any press.
+Rules live in `database.rules.json` (deployed to Firebase separately by the owner): no node is open-ended any more —
+every public write is create-only, +1-only or shape/size-validated. Visitors are not signed in, so there is no true
+per-person rate limit; that needs Firebase App Check (owner, in the console).
 
 ## Languages
 
-- `T.ro` and `T.en` dictionaries at ~line 184.
+- `T.ro`, `T.en`, `T.hu` live in `src/i18n/strings.js`.
 - `T.hu` was added — when adding new strings, add to all three.
 - Language switcher cycles `ro → en → hu → ro`.
 - Long-form prose (essay, timeline) lives in `ESSAY.{ro,en,hu}` and
@@ -103,9 +104,9 @@ Anyone can write — rules are MVP-permissive. Tighten before any press.
 - Toast for transient success/error: `useApp().toast("message")`.
 - Firebase reads: `useFirebase("path")`. Writes: `db.ref(path).push({...})`
   or `db.ref(path).transaction(v => (v||0)+1)` for counters.
-- Avoid touching `vite-next/` unless the task is the migration itself.
-- Don't add bundlers, package.json, or build steps at the root. Single-file
-  is the deploy surface.
+- One component per file, named exports, explicit imports. New CSS goes in a new or the last `src/styles/` file.
+- Static files that must be served as is go in `public/`.
+- Don't add runtime npm dependencies or JSX without asking; the output must stay one `dist/index.html`.
 
 ## Adding a feature — checklist
 
@@ -375,3 +376,40 @@ Highest civic-value next steps:
   events on the section, filtered to the canvas rect by `hit()`; buttons are ignored). The ball follows the finger/cursor for ~2.4 s, a press makes a
   growing splash, then the ball returns to its own path. `.ao-hint` pill ("Atinge sau trage pe teren") fades after the first press (`.ao-played`).
   CDP `Input.synthesizeScrollGesture` does not scroll this page in headless Chromium; test scrolling with raw `Input.dispatchTouchEvent` swipes.
+- Session 12 Nov 2026 (branch `ccr-f015c42b-qkn89a`, NOT live until the owner says "merge"): **Vite migration**. The 20k-line `index.html` was split
+  mechanically (acorn + scope analysis) into 203 modules under `src/`; behaviour unchanged (text parity crawl of 2 cities × 11 pages × all tabs: 80/81
+  states identical, the one difference a mid-animation counter). Static files moved to `public/`; `vite-next/` deleted. `tools/predeploy-check.mjs` now
+  builds first and checks `dist/index.html`; `tools/smoke.mjs` serves `dist/`; tests read `index.html` + `src/**` as one text. Data tools patch
+  `src/data/*.js` and `public/data/*`. Two intended changes: a garbled CSS comment that swallowed the dark-mode `.card:hover` shadow was repaired
+  (`src/styles/16-*.css`), and the first (dead) duplicate of `activityMsg` was dropped. Dead code parked in `src/legacy/`. SW cache → `g2p-v14`.
+  Netlify needs `npm ci` to run (it does by default when `package-lock.json` exists).
+- Same session: `database.rules.json` — the 11 nodes that were `".write": true` (bookings, pixels, presence, achievements, adoptions, tasks,
+  leaderboard, games, gallery, ratings, follows) now validate key shape, types and sizes; counters accept only +1 (forum votes, gallery votes,
+  game players); leaderboard points can rise by at most 50 per write and never fall (admin bypasses via the root rule); gallery/games are
+  create-only (games may be deleted by their timer). NOT tested on the emulator and NOT deployed — after deploying, try one booking, one pixel,
+  one photo, one rating. If you add a field or a write path, update the rule in the same commit.
+- Same session, build bug caught before merge: the document-order plugin put the app `<style>` inside the Leaflet `<noscript>`, so the built site
+  was unstyled while the text crawl and smoke still passed. Fixed in `vite.config.js`; `predeploy-check` now requires a live `<style>` outside
+  `<noscript>` and `smoke` fails if `--green` is not set or `.nav-logo` is unstyled. A failed build leaves an old `dist/`: never trust smoke
+  without a green predeploy first.
+- Same session, professional cleanup (owner-approved list): Home has ONE hero (`HomeOpener`); `Hero3D` is no longer on Home (file kept, one line
+  to restore) and the old `hero-premium` headline is gone — the three stat tiles follow the opener in `.home-stats`. Home action cards use SVG line
+  icons (`.ac-svg`). Tabs are words, not emoji: Impact (Calculator, Comparație, Buget, Mediu, Sănătate, Sănătate mintală, Cronologie, Cartiere,
+  Cursă, Scrisori), Courts (Hartă/Listă), About, Community; nav item "Asociația" and ~80 h1–h4 headings lost their emoji prefix (admin and
+  easter-egg files untouched). ~880 emoji remain in body text, buttons and admin; new headings/tabs/nav items take no emoji. CSS in
+  `src/styles/20-home-single-hero.css`. HU tab labels are drafts (`// TODO: HU review`).
+- Session 12 Nov 2026, afternoon (same branch): **Târgu Mureș City Hall answered** the Law 544 request (nr. 51941/11.11.2026, by email on 12.11):
+  sports budget lines 67.02.05.01 = 5,915,289 lei for 2026 (awards, project contests, partnerships); DALI in progress for courts on str. Busuiocului,
+  Budai Nagy Antal and Plopilor; the first two postponed by the Local Council on 24 Sept (cost cuts); skatepark feasibility study approved (HCL 345/19.12.2024);
+  SIDU sports pages 396–404. Stored as `CITY_REQUESTS[tgm].answer` (+ `answeredAt`, `answerNo`), rendered by `RequestTracker`; `CsmInvest` note and
+  TIMELINE updated. Sibiu's full answer is still due 25.11.2026.
+- Same afternoon: `realActivity()` hides admin `statusChange` rows from every feed and from the bell; **mentors** (`MENTORS`, `isMentor`, `MENTOR_BLUE`
+  #2F6CF7 from sibiu-it.ro in `data/constants.js`): `anonName` keeps a mentor's full name, leaderboard pins them first with a blue `.mentor-tag`.
+  `MENTORS[i].hash` is the SHA-256 of the account email (never the address): when the owner is signed in, `App` makes that account a sheriff with
+  `role: "mentor"` in `settings/sherifs/{uid}` — the person must already have a G2P account. Sheriffs get a one-time toast (`g2p_sherif_ack_<uid>`)
+  and a row in the bell (`useNotifications().sherif`). SW cache → `g2p-v15`.
+- Same afternoon, hosting: Netlify builds deploy previews but has NOT published production since the credits ran out (live stayed at SW `g2p-v11`
+  while the default branch was at v13+). Fallback: `.github/workflows/pages.yml` builds the default branch and publishes a mirror on GitHub Pages
+  (`https://teodorcimpan12-cyber.github.io/fromgraytoplay/`), after `tools/pages-rewrite.mjs /fromgraytoplay` prefixes the root paths in `dist/`
+  (checked locally under the sub-path: no 404, SW scope correct). Owner must enable it once: repo Settings → Pages → Source "GitHub Actions".
+  On the mirror the AI function is called on the Netlify domain (cross-origin, not verified) and canonical/OG URLs still point at Netlify.

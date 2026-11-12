@@ -47,7 +47,7 @@ flowchart LR
   Netlify["Netlify<br/>branch deploy"] --> HTML
 ```
 
-- **No build step.** Everything ships as `index.html` + `manifest.json` + `sw.js` + `icons/`.
+- **Vite build, one file out.** Source lives in `src/` (one module per component); `npm run build` inlines it into a single `dist/index.html`, shipped with `public/` (`manifest.json`, `sw.js`, `icons/`, `data/`). React, Firebase and Leaflet still load from CDN.
 - **Multi-city:** `?c=tgm|sibiu` → `localStorage g2p_city` → `tgm`. `COURTS` is `COURTS_ALL` filtered by city; texts, letters and City Hall contacts follow `CITY_HALL` / `cityName()`.
 - **Security:** see [SECURITY.md](SECURITY.md). Rules: public writes are create-only and validated; votes are increment-only; `signups`, `users`, `partnerRequests` are private.
 
@@ -67,7 +67,7 @@ Google sign-in needs the deployed domain (Firebase authorized domains).
 node --test tests/app.test.mjs
 ```
 
-Tests load functions and data straight from `index.html` (no duplication): weather/health-score logic,
+Tests load functions and data straight from `src/` (no duplication): weather/health-score logic,
 timestamp sorting, data invariants for both cities, translation completeness, no hardcoded secrets.
 CI runs them on every push (`.github/workflows/test.yml`).
 
@@ -76,7 +76,7 @@ CI runs them on every push (`.github/workflows/test.yml`).
 ```bash
 node tools/fetch_osm_sibiu.mjs     # Overpass → tools/data/osm_sibiu.json
 node tools/enrich_sibiu.mjs        # Nominatim + Commons → courts_sibiu.json + tools/REPORT.md
-node tools/inject_sibiu.mjs        # writes COURTS_SIBIU into index.html
+node tools/inject_sibiu.mjs        # writes COURTS_SIBIU into src/data/courts-sibiu.js
 ```
 
 ## Data & licences

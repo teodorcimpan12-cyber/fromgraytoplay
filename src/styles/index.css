@@ -1,0 +1,23 @@
+/* Order matters: this is the original single stylesheet, cut at its section headers. */
+@import "./00-base.css";
+@import "./01-spectacle-pack.css";
+@import "./02-3d-hero-scoped-h3d.css";
+@import "./03-section.css";
+@import "./04-milestone-progress-bar.css";
+@import "./05-achievement-badge-system.css";
+@import "./06-neighborhood-race.css";
+@import "./07-pixel-wall.css";
+@import "./08-mayor-mode.css";
+@import "./09-package-2-screen-crossers-secrets.css";
+@import "./10-reports-v2-pipeline-map-list.css";
+@import "./11-community-v2-overview-purposeful-tabs.css";
+@import "./12-search-palette-v2-glass-categories.css";
+@import "./13-batch-c-push-2-sources.css";
+@import "./14-premium-polish-v2.css";
+@import "./15-apple-fluid-pack-sheets-springs.css";
+@import "./16-apple-com-pass-31-oct.css";
+@import "./17-mobile-platform-layer-nov-2026.css";
+@import "./18-fade-lines-magnetic-opener-3d.css";
+@import "./19-astra-mobile-shell-astra-hack.css";
+@import "./20-home-single-hero.css";
+@import "./21-mentor.css";

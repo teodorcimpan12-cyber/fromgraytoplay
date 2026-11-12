@@ -3,7 +3,7 @@
 // promo.html is a pure function of time (window.__frame(t)), so every frame is deterministic.
 // Usage: node tools/render_promo.mjs [--lang ro|en|hu] [--fps 30] [--only 9x16|16x9] [--cues]
 //   --cues  only writes promo/cues.json (audio cue list used to mix promo/soundtrack.m4a)
-// Needs: playwright (require-able), ffmpeg on PATH. Output: promo/promo-{9x16,16x9}.mp4 + posters.
+// Needs: playwright (require-able), ffmpeg on PATH. Output: public/promo/promo-{9x16,16x9}.mp4 + posters.
 import { createServer } from "node:http";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
@@ -21,7 +21,7 @@ const TYPES = { ".html": "text/html", ".js": "text/javascript", ".json": "applic
 const root = process.cwd();
 const server = createServer(async (req, res) => {
   const p = normalize(decodeURIComponent(new URL(req.url, "http://x").pathname)).replace(/^([\\/])+/, "");
-  try { const body = await readFile(join(root, p || "index.html")); res.writeHead(200, { "content-type": TYPES[extname(p)] || "application/octet-stream" }); res.end(body); }
+  try { const body = await readFile(join(root, "public", p || "index.html")); res.writeHead(200, { "content-type": TYPES[extname(p)] || "application/octet-stream" }); res.end(body); }
   catch { res.writeHead(404); res.end(); }
 });
 await new Promise(r => server.listen(0, r));
@@ -46,10 +46,10 @@ for (const ar of ["9x16", "16x9"]) {
   await page.goto(base + "/promo.html?render=1&ar=" + ar + "&lang=" + LANG, { waitUntil: "load" });
   await page.waitForFunction(() => window.__ready === true, null, { timeout: 30000 });
   const T = await page.evaluate(() => window.__T);
-  if (CUES_ONLY) { await writeFile("promo/cues.json", JSON.stringify({ T, cues: await page.evaluate(() => window.__cues) }, null, 1)); console.log("✓ promo/cues.json"); break; }
+  if (CUES_ONLY) { await writeFile("public/promo/cues.json", JSON.stringify({ T, cues: await page.evaluate(() => window.__cues) }, null, 1)); console.log("✓ promo/cues.json"); break; }
 
   const grab = t => page.evaluate(t => { window.__frame(t); return document.getElementById("cv").toDataURL("image/jpeg", 0.94).split(",")[1]; }, t);
-  const silent = "promo/_video-" + ar + ".mp4", out = "promo/promo-" + ar + SUFFIX + ".mp4", N = Math.round(T * FPS);
+  const silent = "public/promo/_video-" + ar + ".mp4", out = "public/promo/promo-" + ar + SUFFIX + ".mp4", N = Math.round(T * FPS);
   const t0 = Date.now();
   await run("ffmpeg", ["-y", "-f", "image2pipe", "-framerate", String(FPS), "-c:v", "mjpeg", "-i", "-",
     "-c:v", "libx264", "-preset", "slow", "-crf", "27", "-pix_fmt", "yuv420p", "-movflags", "+faststart", silent], async stdin => {
@@ -62,8 +62,8 @@ for (const ar of ["9x16", "16x9"]) {
   });
   // posters for og:image / video poster
   for (const [t, name] of [[29.6, "poster-" + ar + SUFFIX + ".jpg"]]) await writeFile(join("promo", name), Buffer.from(await grab(t), "base64"));
-  if (existsSync("promo/soundtrack.m4a"))
-    await run("ffmpeg", ["-y", "-i", silent, "-i", "promo/soundtrack.m4a", "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "160k", "-shortest", "-movflags", "+faststart", out]);
+  if (existsSync("public/promo/soundtrack.m4a"))
+    await run("ffmpeg", ["-y", "-i", silent, "-i", "public/promo/soundtrack.m4a", "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "160k", "-shortest", "-movflags", "+faststart", out]);
   else await run("ffmpeg", ["-y", "-i", silent, "-c", "copy", out]);
   await import("node:fs").then(fs => fs.rmSync(silent));
   console.log("✓ " + out + " (" + N + " frames, " + ((Date.now() - t0) / 1000).toFixed(0) + " s)");

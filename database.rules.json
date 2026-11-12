@@ -57,10 +57,16 @@
         ".write": "!data.exists() || (auth != null && root.child('settings/sherifs/' + auth.uid).exists())",
         ".validate": "newData.hasChildren(['courtId','description']) && newData.child('description').isString() && newData.child('description').val().length <= 2000",
         "ai": {
-          "score": { ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5" },
-          "confidence": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1" },
+          "score": {
+            ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5"
+          },
+          "confidence": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1"
+          },
           "issues": {
-            "$i": { ".validate": "$i.matches(/^[0-9]$/) && newData.hasChildren(['type','severity','note']) && newData.child('severity').isNumber() && newData.child('severity').val() >= 1 && newData.child('severity').val() <= 3 && newData.child('note').isString() && newData.child('note').val().length <= 120" }
+            "$i": {
+              ".validate": "$i.matches(/^[0-9]$/) && newData.hasChildren(['type','severity','note']) && newData.child('severity').isNumber() && newData.child('severity').val() >= 1 && newData.child('severity').val() <= 3 && newData.child('note').isString() && newData.child('note').val().length <= 120"
+            }
           }
         }
       }
@@ -77,11 +83,11 @@
       "$id": {
         ".write": "!data.exists() || (auth != null && root.child('settings/sherifs/' + auth.uid).exists())",
         "upvotes": {
-          ".write": true,
+          ".write": "(!data.exists() && newData.val() === 1) || (data.exists() && newData.val() === data.val() + 1)",
           ".validate": "newData.isNumber()"
         },
         "downvotes": {
-          ".write": true,
+          ".write": "(!data.exists() && newData.val() === 1) || (data.exists() && newData.val() === data.val() + 1)",
           ".validate": "newData.isNumber()"
         },
         "replies": {
@@ -124,9 +130,21 @@
       "$id": {
         ".write": "!data.exists() || (auth != null && root.child('settings/sherifs/' + auth.uid).exists())",
         ".validate": "newData.hasChildren(['courtId','city','exists','playable','at','dev']) && newData.child('courtId').isString() && newData.child('courtId').val().length <= 40 && (newData.child('city').val() === 'tgm' || newData.child('city').val() === 'sibiu') && newData.child('exists').val().matches(/^(yes|no|unsure)$/) && newData.child('playable').val().matches(/^(yes|partly|no|na)$/) && newData.child('at').isString() && newData.child('at').val().length <= 30 && newData.child('dev').isString() && newData.child('dev').val().length <= 16",
-        "missing": { "$k": { ".validate": "$k.matches(/^(hoop|goal|surface|fence|lighting|clean)$/) && newData.val() === true" } },
-        "photos": { "$i": { ".validate": "$i.matches(/^[0-2]$/) && newData.isString() && newData.val().beginsWith('data:image/') && newData.val().length <= 250000" } },
-        "ai": { "score": { ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5" } }
+        "missing": {
+          "$k": {
+            ".validate": "$k.matches(/^(hoop|goal|surface|fence|lighting|clean)$/) && newData.val() === true"
+          }
+        },
+        "photos": {
+          "$i": {
+            ".validate": "$i.matches(/^[0-2]$/) && newData.isString() && newData.val().beginsWith('data:image/') && newData.val().length <= 250000"
+          }
+        },
+        "ai": {
+          "score": {
+            ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5"
+          }
+        }
       }
     },
     "letters": {
@@ -134,7 +152,9 @@
       "$id": {
         ".write": "!data.exists()",
         ".validate": "newData.hasChildren(['city','courtId','basis','sentAt']) && (newData.child('city').val() === 'tgm' || newData.child('city').val() === 'sibiu') && newData.child('courtId').isString() && newData.child('courtId').val().length <= 40 && (newData.child('basis').val() === 'og27' || newData.child('basis').val() === 'l544') && newData.child('sentAt').isString() && newData.child('sentAt').val().length <= 30",
-        "via": { ".validate": "newData.isString() && newData.val().length <= 10" },
+        "via": {
+          ".validate": "newData.isString() && newData.val().length <= 10"
+        },
         "reply": {
           ".write": "!data.exists() || (auth != null && root.child('settings/sherifs/' + auth.uid).exists())",
           ".validate": "newData.hasChildren(['at']) && newData.child('at').isString() && (!newData.child('regNo').exists() || (newData.child('regNo').isString() && newData.child('regNo').val().length <= 40))"
@@ -154,47 +174,109 @@
     },
     "bookings": {
       ".read": true,
-      ".write": true
+      "$court": {
+        "$date": {
+          ".validate": "$date.matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)",
+          "$hour": {
+            ".write": "!data.exists() || !newData.exists() || (auth != null && root.child('settings/sherifs/' + auth.uid).exists())",
+            ".validate": "$hour.matches(/^[0-9]{1,2}-[0-9]{2}$/) && newData.hasChildren(['name','ts']) && newData.child('name').isString() && newData.child('name').val().length >= 1 && newData.child('name').val().length <= 100 && newData.child('ts').isNumber()"
+          }
+        }
+      }
     },
     "pixels": {
       ".read": true,
-      ".write": true
+      "$xy": {
+        ".write": true,
+        ".validate": "$xy.matches(/^[0-9]{1,2}_[0-9]{1,2}$/) && newData.isString() && newData.val().matches(/^#[0-9a-fA-F]{6}$/)"
+      }
     },
     "presence": {
       ".read": true,
-      ".write": true
+      "$vk": {
+        ".write": true,
+        ".validate": "$vk.length <= 80 && newData.val() === true"
+      }
     },
     "achievements": {
       ".read": true,
-      ".write": true
+      "$vk": {
+        "$badge": {
+          ".write": "!data.exists() || (auth != null && root.child('settings/sherifs/' + auth.uid).exists())",
+          ".validate": "$vk.length <= 80 && $badge.length <= 100 && newData.isNumber()"
+        }
+      }
     },
     "adoptions": {
       ".read": true,
-      ".write": true
+      "$court": {
+        "$vk": {
+          ".write": true,
+          ".validate": "$vk.length <= 80 && newData.hasChildren(['name','ts']) && newData.child('name').isString() && newData.child('name').val().length >= 1 && newData.child('name').val().length <= 100 && newData.child('ts').isNumber()"
+        }
+      }
     },
     "tasks": {
       ".read": true,
-      ".write": true
+      "$court": {
+        "$task": {
+          "volunteers": {
+            "$vk": {
+              ".write": true,
+              ".validate": "$vk.length <= 80 && newData.isString() && newData.val().length >= 1 && newData.val().length <= 100"
+            }
+          }
+        }
+      }
     },
     "leaderboard": {
       ".read": true,
-      ".write": true
+      "$key": {
+        ".write": "newData.exists()",
+        ".validate": "$key.length <= 120 && newData.child('points').isNumber() && newData.child('points').val() >= (data.child('points').exists() ? data.child('points').val() : 0) && newData.child('points').val() <= (data.child('points').exists() ? data.child('points').val() : 0) + 50 && (!newData.child('name').exists() || (newData.child('name').isString() && newData.child('name').val().length <= 100))"
+      }
     },
     "games": {
       ".read": true,
-      ".write": true
+      "$court": {
+        "$id": {
+          ".write": "!data.exists() || !newData.exists() || (auth != null && root.child('settings/sherifs/' + auth.uid).exists())",
+          ".validate": "newData.hasChildren(['sport','timestamp']) && newData.child('sport').isString() && newData.child('sport').val().length <= 40 && (!newData.child('note').exists() || (newData.child('note').isString() && newData.child('note').val().length <= 300))",
+          "playerCount": {
+            ".write": "(!data.exists() && newData.val() === 1) || (data.exists() && newData.val() === data.val() + 1)",
+            ".validate": "newData.isNumber()"
+          }
+        }
+      }
     },
     "gallery": {
       ".read": true,
-      ".write": true
+      "$id": {
+        ".write": "!data.exists() || (auth != null && root.child('settings/sherifs/' + auth.uid).exists())",
+        ".validate": "newData.hasChildren(['courtId','img','timestamp']) && newData.child('img').isString() && newData.child('img').val().length <= 900000 && newData.child('img').val().beginsWith('data:image/') && (!newData.child('caption').exists() || (newData.child('caption').isString() && newData.child('caption').val().length <= 500))",
+        "votes": {
+          ".write": "(!data.exists() && newData.val() === 1) || (data.exists() && newData.val() === data.val() + 1)",
+          ".validate": "newData.isNumber()"
+        }
+      }
     },
     "ratings": {
       ".read": true,
-      ".write": true
+      "$court": {
+        "$vk": {
+          ".write": true,
+          ".validate": "$vk.length <= 80 && newData.hasChildren(['surface','lighting','equipment','safety','ts']) && newData.child('surface').isNumber() && newData.child('surface').val() >= 0 && newData.child('surface').val() <= 5 && newData.child('lighting').isNumber() && newData.child('lighting').val() >= 0 && newData.child('lighting').val() <= 5 && newData.child('equipment').isNumber() && newData.child('equipment').val() >= 0 && newData.child('equipment').val() <= 5 && newData.child('safety').isNumber() && newData.child('safety').val() >= 0 && newData.child('safety').val() <= 5"
+        }
+      }
     },
     "follows": {
       ".read": true,
-      ".write": true
+      "$vk": {
+        "$id": {
+          ".write": true,
+          ".validate": "$vk.length <= 80 && $id.length <= 40 && newData.val() === true"
+        }
+      }
     }
   }
 }

@@ -1,0 +1,48 @@
+/* === Search palette v2: glass, categories, visual results === */
+.cp-overlay{background:radial-gradient(120% 80% at 50% 0%,rgba(16,185,129,.16),rgba(8,10,22,.62) 60%);backdrop-filter:blur(10px) saturate(1.2);-webkit-backdrop-filter:blur(10px) saturate(1.2)}
+.cp.cp2{width:min(640px,100%);background:color-mix(in srgb,var(--bgCard) 82%,transparent);backdrop-filter:blur(22px) saturate(1.5);-webkit-backdrop-filter:blur(22px) saturate(1.5);border:1px solid color-mix(in srgb,var(--white) 18%,transparent);border-radius:20px;box-shadow:0 40px 100px rgba(0,0,0,.5),inset 0 1px 0 color-mix(in srgb,var(--white) 25%,transparent);animation:cp2In .34s cubic-bezier(.2,1.2,.3,1)}
+@keyframes cp2In{from{opacity:0;transform:translateY(-18px) scale(.94);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+.cp.cp2.shake{animation:cp2Shake .5s}
+@keyframes cp2Shake{20%,60%{transform:translateX(-10px) rotate(-1deg)}40%,80%{transform:translateX(10px) rotate(1deg)}}
+.cp-top{display:flex;align-items:center;gap:.6rem;padding:.35rem .9rem;border-bottom:1px solid var(--border)}
+.cp-glass{width:22px;height:22px;color:var(--green);flex-shrink:0;animation:cpGlass 2.6s ease-in-out infinite}
+.cp-glass svg{width:100%;height:100%}
+@keyframes cpGlass{0%,100%{transform:rotate(0)}50%{transform:rotate(-14deg) scale(1.08)}}
+.cp2 .cp-input{flex:1;border:0;padding:.85rem 0;font-size:1.05rem;background:transparent}
+.cp2 .cp-input:focus{outline:none;box-shadow:none}
+.cp-esc,.cp-hint kbd{font:700 .62rem 'Space Mono',monospace;padding:.15rem .4rem;border-radius:5px;border:1px solid var(--border);background:color-mix(in srgb,var(--text) 6%,transparent);color:var(--textSec);cursor:pointer}
+.cp-cats{display:flex;gap:.35rem;padding:.55rem .8rem;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.cp-cats::-webkit-scrollbar{display:none}
+.cp-cat{flex-shrink:0;display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--border);background:transparent;color:var(--textSec);border-radius:999px;padding:.28rem .7rem;font-size:.76rem;cursor:pointer;transition:all .18s}
+.cp-cat b{font:700 .62rem 'Space Mono',monospace;opacity:.7}
+@media(hover:hover) and (pointer:fine){.cp-cat:hover{color:var(--text);border-color:var(--green)}}
+.cp-cat.on{background:var(--green);border-color:var(--green);color:var(--white);box-shadow:0 4px 14px color-mix(in srgb,var(--green) 40%,transparent)}
+.cp2 .cp-list{max-height:min(52vh,460px);padding:.45rem}
+.cp2 .cp-item{gap:.75rem;padding:.5rem .6rem;border-radius:12px;animation:cpItem .3s calc(var(--i) * 18ms) both}
+@keyframes cpItem{from{opacity:0;transform:translateY(6px)}}
+.cp2 .cp-item.sel{background:color-mix(in srgb,var(--green) 13%,transparent);box-shadow:inset 3px 0 0 var(--green)}
+.cp-ic{position:relative;flex-shrink:0;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:1.05rem;background:color-mix(in srgb,var(--text) 7%,transparent)}
+.cp-ic-courts{background:color-mix(in srgb,var(--green) 14%,transparent)}
+.cp-ic-reports{background:color-mix(in srgb,var(--coral) 15%,transparent)}
+.cp-ic-actions{background:color-mix(in srgb,var(--teal) 15%,transparent)}
+.cp-ic i{position:absolute;right:-2px;bottom:-2px;width:11px;height:11px;border-radius:50%;border:2px solid var(--bgCard)}
+.cp-l{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.25}
+.cp-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cp-l small{color:var(--textSec);font-size:.74rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cp-l mark{background:color-mix(in srgb,var(--green) 28%,transparent);color:inherit;border-radius:3px;padding:0 1px}
+.cp-go{opacity:0;color:var(--green);font-weight:700;transition:opacity .15s}
+.cp-item.sel .cp-go{opacity:1}
+.cp-item.egg .cp-ic{animation:cpEgg 1.8s ease-in-out infinite}
+@keyframes cpEgg{0%,100%{transform:rotate(0)}10%{transform:rotate(-12deg)}20%{transform:rotate(10deg)}30%{transform:rotate(0)}}
+.cp2 .cp-empty{padding:2rem 1rem}
+.cp-empty-ball{font-size:2.2rem;animation:stBounce 1.05s cubic-bezier(.3,0,.7,1) infinite;margin-bottom:.4rem;transform-origin:50% 100%}
+.cp2 .cp-hint{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+.cp-city{margin-left:auto}
+@media(max-width:600px){.cp-overlay{padding-top:8vh}.cp2 .cp-hint span:not(.cp-city){display:none}.cp-city{margin-left:0}}
+button.nav-cmd{display:inline-grid;place-items:center;width:30px;height:28px;border-radius:8px;color:var(--text);transition:background .18s,color .18s}
+@media(hover:hover) and (pointer:fine){button.nav-cmd:hover{background:color-mix(in srgb,var(--green) 14%,transparent);color:var(--green)}}
+.nav-glass{width:17px;height:17px;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+@media(hover:hover) and (pointer:fine){button.nav-cmd:hover .nav-glass{transform:rotate(-18deg) scale(1.15)}}
+.ng-shine{opacity:.55}
+button.nav-cmd-m{display:none}
+@media(max-width:1240px){button.nav-cmd-m{display:inline-grid;place-items:center;width:40px;height:40px;margin-left:auto;margin-right:.1rem;padding:0;background:none;border:none;box-shadow:none;border-radius:50%;color:var(--text)}button.nav-cmd-m .nav-glass{width:22px;height:22px}}

@@ -12,7 +12,7 @@ const root = new URL("../", import.meta.url);
 const WB = "https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/";
 const UA = "FromGreyToPlay/1.0 (civic project; teodor.cimpan12@gmail.com)";
 const BOX_M = 110, SIZE = 320;
-const caps = JSON.parse(readFileSync(new URL("data/timemachine.json", root), "utf8")).courts;
+const caps = JSON.parse(readFileSync(new URL("public/data/timemachine.json", root), "utf8")).courts;
 const polys = JSON.parse(readFileSync(new URL("tools/data/sibiu_court_polygons.json", root), "utf8"));
 const courts = JSON.parse(readFileSync(new URL("tools/data/courts_sibiu.json", root), "utf8")).courts;
 const want = process.argv.slice(2);

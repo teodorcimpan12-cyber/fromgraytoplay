@@ -1,14 +1,14 @@
 // Precomputes, for every court, the distinct real satellite captures available in Esri Wayback.
 // Walks back through releases with the tilemap endpoint (z17), reads capture metadata
 // (date, resolution, provider, sensor), checks z18 availability, dedupes by capture date.
-// Output: data/timemachine.json  { courtId: [{ r, date, res, provider, sensor, z }] } (oldest → newest)
+// Output: public/data/timemachine.json  { courtId: [{ r, date, res, provider, sensor, z }] } (oldest → newest)
 // Usage: node tools/fetch_wayback.mjs && node tools/build_timemachine.mjs
 import { readFileSync, writeFileSync } from "node:fs";
 import vm from "node:vm";
 
 const root = new URL("../", import.meta.url);
-const { releases } = JSON.parse(readFileSync(new URL("data/wayback.json", root), "utf8"));
-const html = readFileSync(new URL("index.html", root), "utf8");
+const { releases } = JSON.parse(readFileSync(new URL("public/data/wayback.json", root), "utf8"));
+const html = ["src/data/courts-base.js", "src/data/courts-sibiu.js"].map(f => readFileSync(new URL(f, root), "utf8")).join("\n");
 function grab(name) {
   const at = html.indexOf("const " + name + " = [");
   let i = html.indexOf("[", at), depth = 0, q = null;
@@ -73,6 +73,6 @@ await Promise.all(Array.from({ length: 6 }, async () => {
     process.stdout.write(`${c.id}:${out[c.id].length} `);
   }
 }));
-writeFileSync(new URL("data/timemachine.json", root), JSON.stringify({ source: "Esri World Imagery Wayback", built_at: new Date().toISOString(), courts: out }));
+writeFileSync(new URL("public/data/timemachine.json", root), JSON.stringify({ source: "Esri World Imagery Wayback", built_at: new Date().toISOString(), courts: out }));
 const counts = Object.values(out).map(a => a.length);
 console.log(`\ncourts ${done}, captures min ${Math.min(...counts)} max ${Math.max(...counts)}, empty ${counts.filter(n => !n).length}`);

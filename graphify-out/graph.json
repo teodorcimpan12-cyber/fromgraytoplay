@@ -1,101 +1,101 @@
 {
  "meta": {
   "project": "From Gray to Play",
-  "file": "index.html",
+  "file": "src/ (Vite, built into one dist/index.html)",
   "generated": "2026-06-11",
   "description": "Knowledge graph al proiectului — componente, pagini, Firebase paths, utilitare. Citit automat de Claude la fiecare sesiune.",
-  "updated": "2026-10-30"
+  "updated": "2026-11-12"
  },
  "nodes": [
   {
    "id": "AppCtx",
    "type": "context",
-   "line": 229,
-   "desc": "Context global React: { t, lang, setLang, theme, setTheme, page, setPage, user, setUser, toast } + firebaseUser, authReady, openAuth, signOut (user is derived from Firebase Auth + users/{uid})"
+   "desc": "Context global React: { t, lang, setLang, theme, setTheme, page, setPage, user, setUser, toast } + firebaseUser, authReady, openAuth, signOut (user is derived from Firebase Auth + users/{uid})",
+   "file": "src/app/core.js"
   },
   {
    "id": "useApp",
    "type": "hook",
-   "line": 230,
-   "desc": "Shortcut useContext(AppCtx)"
+   "desc": "Shortcut useContext(AppCtx)",
+   "file": "src/app/core.js"
   },
   {
    "id": "useFirebase",
    "type": "hook",
-   "line": 232,
-   "desc": "Abonare realtime la o cale Firebase; returnează valoarea sau null"
+   "desc": "Abonare realtime la o cale Firebase; returnează valoarea sau null",
+   "file": "src/hooks/useFirebase.js"
   },
   {
    "id": "getVoterKey",
    "type": "util",
-   "line": 5213,
-   "desc": "Identitate anonimă stabilă din localStorage (g2p_vk). Folosit pentru 'rapoartele mele'."
+   "desc": "Identitate anonimă stabilă din localStorage (g2p_vk). Folosit pentru 'rapoartele mele'.",
+   "file": "src/lib/get-voter-key.js"
   },
   {
    "id": "logActivity",
    "type": "util",
-   "line": 805,
-   "desc": "Scrie în activity/ {type, userName, courtId, timestamp}"
+   "desc": "Scrie în activity/ {type, userName, courtId, timestamp}",
+   "file": "src/lib/log-activity.js"
   },
   {
    "id": "compressImage",
    "type": "util",
-   "line": 815,
-   "desc": "Comprimă File → dataURL (maxDim, quality). Folosit în galerie și rapoarte."
+   "desc": "Comprimă File → dataURL (maxDim, quality). Folosit în galerie și rapoarte.",
+   "file": "src/lib/compress-image.js"
   },
   {
    "id": "getCourtWeather",
    "type": "util",
-   "line": 779,
-   "desc": "Returnează {icon, label, color} pentru condiția unui teren."
+   "desc": "Returnează {icon, label, color} pentru condiția unui teren.",
+   "file": "src/lib/court-status-view.js"
   },
   {
    "id": "anonName",
    "type": "util",
-   "line": 797,
-   "desc": "Generează nume anonim din voterKey"
+   "desc": "Generează nume anonim din voterKey",
+   "file": "src/lib/next-lang.js"
   },
   {
    "id": "nextLang",
    "type": "util",
-   "line": 791,
-   "desc": "Ciclează ro → en → hu → ro"
+   "desc": "Ciclează ro → en → hu → ro",
+   "file": "src/lib/next-lang.js"
   },
   {
    "id": "T",
    "type": "i18n",
-   "line": 245,
-   "desc": "Dicționar { ro, en, hu }. Toate string-urile UI. HU = draft."
+   "desc": "Dicționar { ro, en, hu }. Toate string-urile UI. HU = draft.",
+   "file": "src/i18n/strings.js"
   },
   {
    "id": "COURTS",
    "type": "constant",
-   "line": 839,
-   "desc": "Array static cu terenurile hardcodate (id, name, address, lat, lng, condition, status, neighborhood)"
+   "desc": "Array static cu terenurile hardcodate (id, name, address, lat, lng, condition, status, neighborhood)",
+   "file": "src/app/core.js"
   },
   {
    "id": "FUNDING",
    "type": "constant",
-   "line": 939,
-   "desc": "Surse de finanțare disponibile (titlu, suma, termen, stare)"
+   "desc": "Surse de finanțare disponibile (titlu, suma, termen, stare)",
+   "file": "src/data/constants.js"
   },
   {
    "id": "BUDGET",
    "type": "constant",
-   "line": 980,
-   "desc": "Linii bugetare municipale pentru vizualizare"
+   "desc": "Linii bugetare municipale pentru vizualizare",
+   "file": "src/data/constants.js"
   },
   {
    "id": "TIMELINE",
    "type": "constant",
-   "line": 1031,
-   "desc": "Timeline civic cu evenimente (ro/en/hu)"
+   "desc": "Timeline civic cu evenimente (ro/en/hu)",
+   "file": "src/data/timeline.js"
   },
   {
    "id": "LETTER_AREAS",
    "type": "constant",
-   "line": 2989,
-   "desc": "Zone cartiere pentru generatorul de scrisori"
+   "desc": "Zone cartiere pentru generatorul de scrisori",
+   "file": "src/app/core.js"
   },
   {
    "id": "ADMIN_PW",
@@ -106,206 +106,206 @@
   {
    "id": "Toast",
    "type": "component",
-   "line": 1065,
-   "desc": "Toast transient global. Declanșat via useApp().toast('msg')"
+   "desc": "Toast transient global. Declanșat via useApp().toast('msg')",
+   "file": "src/app/App.js"
   },
   {
    "id": "Onboarding",
    "type": "component",
-   "line": 1079,
-   "desc": "Ecran onboarding 3 pași la prima vizită. Stochează done în localStorage."
+   "desc": "Ecran onboarding 3 pași la prima vizită. Stochează done în localStorage.",
+   "file": "src/app/Onboarding.js"
   },
   {
    "id": "InstallBanner",
    "type": "component",
-   "line": 1132,
-   "desc": "Banner PWA install (beforeinstallprompt)"
+   "desc": "Banner PWA install (beforeinstallprompt)",
+   "file": "src/app/InstallBanner.js"
   },
   {
    "id": "Navbar",
    "type": "component",
-   "line": 1178,
-   "desc": "Navigare sticky cu hamburger mobil. Link-uri: home, courts, reports, petition, community, impact, help."
+   "desc": "Navigare sticky cu hamburger mobil. Link-uri: home, courts, reports, petition, community, impact, help.",
+   "file": "src/app/Navbar.js"
   },
   {
    "id": "MapView",
    "type": "component",
-   "line": 1288,
-   "desc": "Leaflet map cu markere terenuri. Props: courts[], onSelect(court)."
+   "desc": "Leaflet map cu markere terenuri. Props: courts[], onSelect(court).",
+   "file": "src/components/MapView.js"
   },
   {
    "id": "Hero3D",
    "type": "component",
-   "line": 1980,
-   "desc": "Hero Three.js animat. Terenuri 3D gri→color la click. Montat în HomePage."
+   "desc": "Hero Three.js animat. Terenuri 3D gri→color la click. Montat în HomePage.",
+   "file": "src/pages/home/Hero3D.js"
   },
   {
    "id": "ActivityFeed",
    "type": "component",
-   "line": 3086,
-   "desc": "Feed live activity/ Firebase (ultimele 30). Live-dot pe cel mai recent."
+   "desc": "Feed live activity/ Firebase (ultimele 30). Live-dot pe cel mai recent.",
+   "file": "src/pages/community/ActivityFeed.js"
   },
   {
    "id": "QuickReportFAB",
    "type": "component",
-   "line": 5220,
-   "desc": "FAB verde fix bottom-right. Deschide QuickReportModal."
+   "desc": "FAB verde fix bottom-right. Deschide QuickReportModal.",
+   "file": "src/components/QuickReportFAB.js"
   },
   {
    "id": "QuickReportModal",
    "type": "component",
-   "line": 5228,
-   "desc": "Modal 3 pași: categorie → descriere+foto → teren+geo. Scrie în reports/ și activity/."
+   "desc": "Modal 3 pași: categorie → descriere+foto → teren+geo. Scrie în reports/ și activity/.",
+   "file": "src/components/QuickReportModal.js"
   },
   {
    "id": "PlayNowModal",
    "type": "component",
-   "line": 2930,
-   "desc": "Modal B2: creează un joc spontan. Sport, maxPlayers, notă. Scrie în games/{courtId}/ + activity/."
+   "desc": "Modal B2: creează un joc spontan. Sport, maxPlayers, notă. Scrie în games/{courtId}/ + activity/.",
+   "file": "src/pages/court-detail/PlayNowModal.js"
   },
   {
    "id": "ActiveGames",
    "type": "component",
-   "line": 2987,
-   "desc": "Lista jocuri active dintr-un teren. Join incrementează playerCount via transaction. Citit în CourtDetail."
+   "desc": "Lista jocuri active dintr-un teren. Join incrementează playerCount via transaction. Citit în CourtDetail.",
+   "file": "src/pages/court-detail/ActiveGames.js"
   },
   {
    "id": "NotifPanel",
    "type": "component",
-   "line": 1262,
-   "desc": "B3: panou notificări dropdown în Navbar. Filtrează activity/ după follows/{vk}. Unread = newer than g2p_notif_seen."
+   "desc": "B3: panou notificări dropdown în Navbar. Filtrează activity/ după follows/{vk}. Unread = newer than g2p_notif_seen.",
+   "file": "src/app/NotifPanel.js"
   },
   {
    "id": "useFollows",
    "type": "hook",
-   "line": 245,
-   "desc": "B3: citește follows/{voterKey}/ din Firebase. Returnează { follows, isFollowing(id), toggle(id) }."
+   "desc": "B3: citește follows/{voterKey}/ din Firebase. Returnează { follows, isFollowing(id), toggle(id) }.",
+   "file": "src/hooks/useFollows.js"
   },
   {
    "id": "ReportTimeline",
    "type": "component",
-   "line": 5332,
-   "desc": "Timeline vizual 4 pași: Primit→Analiză→Planificat→Rezolvat."
+   "desc": "Timeline vizual 4 pași: Primit→Analiză→Planificat→Rezolvat.",
+   "file": "src/pages/reports/ReportCard.js"
   },
   {
    "id": "Footer",
    "type": "component",
-   "line": 5449,
-   "desc": "Footer static cu link-uri."
+   "desc": "Footer static cu link-uri.",
+   "file": "src/app/Footer.js"
   },
   {
    "id": "HomePage",
    "type": "page",
-   "line": 2046,
-   "desc": "Pagina principală: hero 3D + statistici live (votes, signups) + QuickReportFAB."
+   "desc": "Pagina principală: hero 3D + statistici live (votes, signups) + QuickReportFAB.",
+   "file": "src/pages/home/HomePage.js"
   },
   {
    "id": "CourtsPage",
    "type": "page",
-   "line": 2190,
-   "desc": "Listă + hartă terenuri. Filtre: cartier, condiție, sport. Click → CourtDetail."
+   "desc": "Listă + hartă terenuri. Filtre: cartier, condiție, sport. Click → CourtDetail.",
+   "file": "src/pages/courts/CourtsPage.js"
   },
   {
    "id": "CourtDetail",
    "type": "page",
-   "line": 2336,
-   "desc": "Instagram-style court sheet: .cdx-media (photo carousel + CourtPulse), .cdx-head, .cdx-body (info/sat/community panel), .cdx-bar (Rezervă, Info, Satelit, Comunitate, QR)"
+   "desc": "Instagram-style court sheet: .cdx-media (photo carousel + CourtPulse), .cdx-head, .cdx-body (info/sat/community panel), .cdx-bar (Rezervă, Info, Satelit, Comunitate, QR)",
+   "file": "src/pages/court-detail/CourtDetail.js"
   },
   {
    "id": "ReportsPage",
    "type": "page",
-   "line": 5350,
-   "desc": "Pagina sesizări publice. Tabs: toate/ale mele. Filtre status/cartier/categorie."
+   "desc": "Pagina sesizări publice. Tabs: toate/ale mele. Filtre status/cartier/categorie.",
+   "file": "src/pages/reports/ReportsPage.js"
   },
   {
    "id": "PetitionPage",
    "type": "page",
-   "line": 2717,
-   "desc": "Petiție cu opțiuni flip/mural/both, voluntariat, scrisoare PDF."
+   "desc": "Petiție cu opțiuni flip/mural/both, voluntariat, scrisoare PDF.",
+   "file": "src/pages/petition/PetitionPage.js"
   },
   {
    "id": "CommunityPage",
    "type": "page",
-   "line": 3133,
-   "desc": "Hub comunitar cu tabs: activity, forum, events, gallery, teams, leaderboard."
+   "desc": "Hub comunitar cu tabs: activity, forum, events, gallery, teams, leaderboard.",
+   "file": "src/pages/community/CommunityPage.js"
   },
   {
    "id": "ImpactPage",
    "type": "page",
-   "line": 3701,
-   "desc": "Date civice: calculator impact, comparație orașe, buget vizual, carbon, sănătate, timeline."
+   "desc": "Date civice: calculator impact, comparație orașe, buget vizual, carbon, sănătate, timeline.",
+   "file": "src/pages/impact/ImpactPage.js"
   },
   {
    "id": "HelpPage",
    "type": "page",
-   "line": 4085,
-   "desc": "Ghid utilizare + FAQ."
+   "desc": "Ghid utilizare + FAQ.",
+   "file": "src/pages/help/HelpPage.js"
   },
   {
    "id": "AboutPage",
    "type": "page",
-   "line": 4251,
-   "desc": "Despre proiect, parteneri, contact."
+   "desc": "Despre proiect, parteneri, contact.",
+   "file": "src/pages/about/AboutPage.js"
   },
   {
    "id": "ProfilePage",
    "type": "page",
-   "line": 4472,
-   "desc": "Profil utilizator: editare nume, statistici personale, istoric."
+   "desc": "Profil utilizator: editare nume, statistici personale, istoric.",
+   "file": "src/pages/profile/ProfilePage.js"
   },
   {
    "id": "AdminPanel",
    "type": "page",
-   "line": 4712,
-   "desc": "Panou admin (pw: ADMIN_PW). Tabs: signups, votes, courts, activity, reports, bookings."
+   "desc": "Panou admin (pw: ADMIN_PW). Tabs: signups, votes, courts, activity, reports, bookings.",
+   "file": "src/pages/admin/AdminPanel.js"
   },
   {
    "id": "ForumTab",
    "type": "component",
-   "line": 3154,
-   "desc": "Forum comunitar cu reply-uri și voturi. Firebase: forum/"
+   "desc": "Forum comunitar cu reply-uri și voturi. Firebase: forum/",
+   "file": "src/pages/community/ForumTab.js"
   },
   {
    "id": "EventsTab",
    "type": "component",
-   "line": 3359,
-   "desc": "Evenimente cu RSVP. Firebase: events/"
+   "desc": "Evenimente cu RSVP. Firebase: events/",
+   "file": "src/pages/community/EventsTab.js"
   },
   {
    "id": "GalleryTab",
    "type": "component",
-   "line": 3423,
-   "desc": "Galerie foto cu voturi. Firebase: gallery/. Folosește compressImage."
+   "desc": "Galerie foto cu voturi. Firebase: gallery/. Folosește compressImage.",
+   "file": "src/pages/community/GalleryTab.js"
   },
   {
    "id": "TeamsTab",
    "type": "component",
-   "line": 3577,
-   "desc": "Echipe. Firebase: teams/"
+   "desc": "Echipe. Firebase: teams/",
+   "file": "src/pages/community/TeamsTab.js"
   },
   {
    "id": "LBTab",
    "type": "component",
-   "line": 3650,
-   "desc": "Clasament utilizatori. Firebase: leaderboard/"
+   "desc": "Clasament utilizatori. Firebase: leaderboard/",
+   "file": "src/pages/community/LBTab.js"
   },
   {
    "id": "ReportModal",
    "type": "component",
-   "line": 2461,
-   "desc": "Modal raportare teren degradat din CourtDetail (diferit de QuickReportModal)."
+   "desc": "Modal raportare teren degradat din CourtDetail (diferit de QuickReportModal).",
+   "file": "src/pages/courts/ReportModal.js"
   },
   {
    "id": "BookingModal",
    "type": "component",
-   "line": 2585,
-   "desc": "Modal rezervare slot orar. Firebase: bookings/{courtId}/{date}/{hour}."
+   "desc": "Modal rezervare slot orar. Firebase: bookings/{courtId}/{date}/{hour}.",
+   "file": "src/pages/courts/BookingModal.js"
   },
   {
    "id": "LetterModal",
    "type": "component",
-   "line": 2995,
-   "desc": "Generator scrisoare PDF/text către consiliu local. Folosit din PetitionPage și CourtDetail."
+   "desc": "Generator scrisoare PDF/text către consiliu local. Folosit din PetitionPage și CourtDetail.",
+   "file": "src/pages/petition/LetterModal.js"
   },
   {
    "id": "fb/votes",
@@ -390,56 +390,56 @@
   {
    "id": "EvidenceWall",
    "type": "component",
-   "line": 5700,
-   "desc": "#2.1: grid masonry dovezi foto. Upload cu GPS, filter per teren, stats (nr. martori, terenuri documentate). Scrie în gallery/ cu isEvidence:true."
+   "desc": "#2.1: grid masonry dovezi foto. Upload cu GPS, filter per teren, stats (nr. martori, terenuri documentate). Scrie în gallery/ cu isEvidence:true.",
+   "file": "src/pages/reports/EvidenceWall.js"
   },
   {
    "id": "shareCourt",
    "type": "util",
-   "line": 945,
-   "desc": "B8: Web Share API cu fallback clipboard. shareCourt(court, t, toast) → navigator.share sau clipboard.writeText."
+   "desc": "B8: Web Share API cu fallback clipboard. shareCourt(court, t, toast) → navigator.share sau clipboard.writeText.",
+   "file": "src/pages/court-detail/CourtDetail.js"
   },
   {
    "id": "useCountUp",
    "type": "hook",
-   "line": 319,
-   "desc": "Polish: animație count-up cu requestAnimationFrame, ease-out cubic. Respectă prefers-reduced-motion."
+   "desc": "Polish: animație count-up cu requestAnimationFrame, ease-out cubic. Respectă prefers-reduced-motion.",
+   "file": "src/pages/home/useCountUp.js"
   },
   {
    "id": "useReveal",
    "type": "hook",
-   "line": 342,
-   "desc": "Polish: IntersectionObserver scroll-reveal. Atașează ref, adaugă clasa .in la intrare în viewport."
+   "desc": "Polish: IntersectionObserver scroll-reveal. Atașează ref, adaugă clasa .in la intrare în viewport.",
+   "file": "src/hooks/useReveal.js"
   },
   {
    "id": "StatTile",
    "type": "component",
-   "line": 2369,
-   "desc": "Polish: tile statistică cu count-up + glow colorat. Folosit în hero HomePage."
+   "desc": "Polish: tile statistică cu count-up + glow colorat. Folosit în hero HomePage.",
+   "file": "src/pages/home/HomePage.js"
   },
   {
    "id": "RadarChart",
    "type": "component",
-   "line": 2668,
-   "desc": "#3.1: radar chart SVG pur (fără librărie) pentru 4 dimensiuni rating."
+   "desc": "#3.1: radar chart SVG pur (fără librărie) pentru 4 dimensiuni rating.",
+   "file": "src/pages/court-detail/RadarChart.js"
   },
   {
    "id": "StarPicker",
    "type": "component",
-   "line": 2690,
-   "desc": "#3.1: input stele 1-5 pentru o dimensiune de rating."
+   "desc": "#3.1: input stele 1-5 pentru o dimensiune de rating.",
+   "file": "src/pages/court-detail/RatingSection.js"
   },
   {
    "id": "RatingSection",
    "type": "component",
-   "line": 2700,
-   "desc": "#3.1: secțiune evaluare teren (suprafață/iluminat/echipament/siguranță). Radar + bare medii. Scrie ratings/{courtId}/{voterKey}. În CourtDetail."
+   "desc": "#3.1: secțiune evaluare teren (suprafață/iluminat/echipament/siguranță). Radar + bare medii. Scrie ratings/{courtId}/{voterKey}. În CourtDetail.",
+   "file": "src/pages/court-detail/RatingSection.js"
   },
   {
    "id": "DossierButton",
    "type": "component",
-   "line": 4294,
-   "desc": "#2.3: generează dosar PDF complet (cover, stats, terenuri, sesizări, dovezi foto) cu jsPDF. În ImpactPage."
+   "desc": "#2.3: generează dosar PDF complet (cover, stats, terenuri, sesizări, dovezi foto) cu jsPDF. În ImpactPage.",
+   "file": "src/pages/impact/DossierButton.js"
   },
   {
    "id": "fb/ratings",
@@ -455,20 +455,20 @@
   {
    "id": "pageFromHash",
    "type": "util",
-   "line": 1153,
-   "desc": "Hash routing: mapează location.hash (#courts, #court-{id}, …) la pagina curentă. Folosit de App la mount + hashchange. setPage din AppCtx sincronizează hash-ul (pushState)."
+   "desc": "Hash routing: mapează location.hash (#courts, #court-{id}, …) la pagina curentă. Folosit de App la mount + hashchange. setPage din AppCtx sincronizează hash-ul (pushState).",
+   "file": "src/app/App.js"
   },
   {
    "id": "downloadFile",
    "type": "util",
-   "line": 1160,
-   "desc": "Descarcă un fișier generat client-side (Blob + <a download>). Folosit de OpenDataCard."
+   "desc": "Descarcă un fișier generat client-side (Blob + <a download>). Folosit de OpenDataCard.",
+   "file": "src/lib/download-file.js"
   },
   {
    "id": "OpenDataCard",
    "type": "component",
-   "line": 4924,
-   "desc": "Export date deschise (JSON complet / CSV sesizări, licență CC BY 4.0). Strip voterKey + photoDataUrl. În ImpactPage, sub DossierButton."
+   "desc": "Export date deschise (JSON complet / CSV sesizări, licență CC BY 4.0). Strip voterKey + photoDataUrl. În ImpactPage, sub DossierButton.",
+   "file": "src/pages/impact/OpenDataCard.js"
   },
   {
    "id": "sw.js",
@@ -479,26 +479,26 @@
   {
    "id": "Reveal",
    "type": "component",
-   "line": 0,
-   "desc": "Wrapper scroll-reveal cu stagger (prop d = delay ms, as = tag). Folosește useReveal + clasa .reveal."
+   "desc": "Wrapper scroll-reveal cu stagger (prop d = delay ms, as = tag). Folosește useReveal + clasa .reveal.",
+   "file": "src/components/Reveal.js"
   },
   {
    "id": "useTilt",
    "type": "hook",
-   "line": 0,
-   "desc": "Tilt 3D care urmărește cursorul (perspective + rotateX/Y). Dezactivat pe touch și prefers-reduced-motion."
+   "desc": "Tilt 3D care urmărește cursorul (perspective + rotateX/Y). Dezactivat pe touch și prefers-reduced-motion.",
+   "file": "src/hooks/useTilt.js"
   },
   {
    "id": "TiltDiv",
    "type": "component",
-   "line": 0,
-   "desc": "Div cu useTilt (prop max = grade). Folosit pe cardurile de terenuri și StatTile."
+   "desc": "Div cu useTilt (prop max = grade). Folosit pe cardurile de terenuri și StatTile.",
+   "file": "src/components/TiltDiv.js"
   },
   {
    "id": "LetterReveal",
    "type": "component",
-   "line": 0,
-   "desc": "Reveal literă-cu-literă (clasa .lr, delay --ld). Folosit în titlul Hero3D și StoryPage. aria-label păstrează textul întreg."
+   "desc": "Reveal literă-cu-literă (clasa .lr, delay --ld). Folosit în titlul Hero3D și StoryPage. aria-label păstrează textul întreg.",
+   "file": "src/pages/home/Hero3D.js"
   },
   {
    "id": "ripple-listener",
@@ -509,8 +509,8 @@
   {
    "id": "ActivityTicker",
    "type": "component",
-   "line": 0,
-   "desc": "Marquee infinit cu activitate live din activity/ (14 itemi, două copii pentru loop, pauză la hover). Pe HomePage sub hero."
+   "desc": "Marquee infinit cu activitate live din activity/ (14 itemi, două copii pentru loop, pauză la hover). Pe HomePage sub hero.",
+   "file": "src/pages/home/ActivityTicker.js"
   },
   {
    "id": "promax-effects",
@@ -541,133 +541,152 @@
   {
    "id": "BADGES",
    "type": "constant",
-   "desc": "Array of 12 badge definitions: {id, icon, name:{ro,en,hu}, desc:{ro,en,hu}}. Season 2."
+   "desc": "Array of 12 badge definitions: {id, icon, name:{ro,en,hu}, desc:{ro,en,hu}}. Season 2.",
+   "file": "src/data/badges.js"
   },
   {
    "id": "useBadges",
    "type": "hook",
-   "desc": "Returns {earned, awardBadge}. Reads achievements/{voterKey} via useFirebase. awardBadge(id,cb) writes to achievements/ and calls cb with badge def."
+   "desc": "Returns {earned, awardBadge}. Reads achievements/{voterKey} via useFirebase. awardBadge(id,cb) writes to achievements/ and calls cb with badge def.",
+   "file": "src/hooks/useBadges.js"
   },
   {
    "id": "BadgeUnlockModal",
    "type": "component",
-   "desc": "Overlay modal cu animație pentru badge deblocat. Auto-close 4.5s. Props: {badge, lang, onClose}. Season 2."
+   "desc": "Overlay modal cu animație pentru badge deblocat. Auto-close 4.5s. Props: {badge, lang, onClose}. Season 2.",
+   "file": "src/components/BadgeUnlockModal.js"
   },
   {
    "id": "BadgesGrid",
    "type": "component",
-   "desc": "Grid 12 badge-uri earned/locked. Props: {lang}. Integrat în ProfilePage. Season 2."
+   "desc": "Grid 12 badge-uri earned/locked. Props: {lang}. Integrat în ProfilePage. Season 2.",
+   "file": "src/pages/profile/BadgesGrid.js"
   },
   {
    "id": "CourtHealthRing",
    "type": "component",
-   "desc": "SVG ring progres 0-100 scor sănătate teren. Citit din reports/ + ratings/{courtId}. Integrat în CourtDetail. Season 2."
+   "desc": "SVG ring progres 0-100 scor sănătate teren. Citit din reports/ + ratings/{courtId}. Integrat în CourtDetail. Season 2.",
+   "file": "src/pages/court-detail/CourtHealthRing.js"
   },
   {
    "id": "getCourtHealthScore",
    "type": "util",
-   "desc": "Calculează scor 0-100 din condiție(40pt), rapoarte deschise(-6/rep), ratings(30pt), checkins recente(10pt). Season 2."
+   "desc": "Calculează scor 0-100 din condiție(40pt), rapoarte deschise(-6/rep), ratings(30pt), checkins recente(10pt). Season 2.",
+   "file": "src/pages/court-detail/helpers.js"
   },
   {
    "id": "NeighborhoodRace",
    "type": "component",
-   "desc": "Bar chart race cartiere după scor civic (activitate+rapoarte). Live reads activity/ + reports/. Tab 'race' ImpactPage. Season 2."
+   "desc": "Bar chart race cartiere după scor civic (activitate+rapoarte). Live reads activity/ + reports/. Tab 'race' ImpactPage. Season 2.",
+   "file": "src/pages/impact/NeighborhoodRace.js"
   },
   {
    "id": "PledgeWall",
    "type": "component",
-   "desc": "Wall promisiuni civice. Input emoji+name+text, scrie pledges/. Integrat în PetitionPage. Season 2."
+   "desc": "Wall promisiuni civice. Input emoji+name+text, scrie pledges/. Integrat în PetitionPage. Season 2.",
+   "file": "src/pages/petition/PledgeWall.js"
   },
   {
    "id": "CourtQRCard",
    "type": "component",
-   "desc": "Modal QR code generat cu QRious (lazy CDN). Download branded PNG. Props: {court, onClose}. Integrat în CourtDetail. Season 2."
+   "desc": "Modal QR code generat cu QRious (lazy CDN). Download branded PNG. Props: {court, onClose}. Integrat în CourtDetail. Season 2.",
+   "file": "src/pages/court-detail/CourtQRCard.js"
   },
   {
    "id": "CouncilCountdown",
    "type": "component",
-   "desc": "Countdown zile/ore/min până la ședința de consiliu. Dates hardcodate. Tab 'race' ImpactPage. Season 2."
+   "desc": "Countdown zile/ore/min până la ședința de consiliu. Dates hardcodate. Tab 'race' ImpactPage. Season 2.",
+   "file": "src/pages/impact/CouncilCountdown.js"
   },
   {
    "id": "AdminSiteTab",
    "type": "component",
-   "line": 0,
-   "desc": "Admin Site Control: mentenanță, banner, broadcast toast, feature flags, teren-vedetă, accent color, danger zone (reset votes / clear activity). Scrie settings/."
+   "desc": "Admin Site Control: mentenanță, banner, broadcast toast, feature flags, teren-vedetă, accent color, danger zone (reset votes / clear activity). Scrie settings/.",
+   "file": "src/pages/admin/AdminSiteTab.js"
   },
   {
    "id": "AdminModTab",
    "type": "component",
-   "line": 0,
-   "desc": "Admin Moderation: șterge orice conținut user-generated (forum, gallery, events, teams, games, activity)."
+   "desc": "Admin Moderation: șterge orice conținut user-generated (forum, gallery, events, teams, games, activity).",
+   "file": "src/pages/admin/AdminModTab.js"
   },
   {
    "id": "CommandPalette",
    "type": "component",
-   "line": 0,
-   "desc": "Ctrl/Cmd+K (sau 🔍 în navbar, ctx.setCmd): caută pagini/terenuri/acțiuni, navigare tastatură, respectă feature flags. Deep-link terenuri prin #court-{id}."
+   "desc": "Ctrl/Cmd+K (sau 🔍 în navbar, ctx.setCmd): caută pagini/terenuri/acțiuni, navigare tastatură, respectă feature flags. Deep-link terenuri prin #court-{id}.",
+   "file": "src/app/CommandPalette.js"
   },
   {
    "id": "PresenceBadge",
    "type": "component",
-   "line": 0,
-   "desc": "Contor live 'online acum' în Navbar, puls verde. Citește presence/."
+   "desc": "Contor live 'online acum' în Navbar, puls verde. Citește presence/.",
+   "file": "src/legacy/unused.js"
   },
   {
    "id": "FeaturedCourt",
    "type": "component",
-   "line": 0,
-   "desc": "Terenul săptămânii pe Home (glow-border + tilt), ales de admin via settings/featuredCourtId."
+   "desc": "Terenul săptămânii pe Home (glow-border + tilt), ales de admin via settings/featuredCourtId.",
+   "file": "src/pages/home/FeaturedCourt.js"
   },
   {
    "id": "switchTheme",
    "type": "util",
-   "line": 0,
-   "desc": "Comutare temă cu reveal circular (View Transitions API + ReactDOM.flushSync), fallback simplu. Folosit în Navbar (desktop+mobil) și Profil."
+   "desc": "Comutare temă cu reveal circular (View Transitions API + ReactDOM.flushSync), fallback simplu. Folosit în Navbar (desktop+mobil) și Profil.",
+   "file": "src/lib/switch-theme.js"
   },
   {
    "id": "SatelliteTimeMachine",
    "type": "component",
-   "desc": "Card Leaflet în CourtDetail: două straturi satelit (Esri Wayback 2014 + World Imagery azi), slider de opacitate pentru crossfade. Se ascunde singur după 8 tileerror. Props: {court}. Season 3."
+   "desc": "Card Leaflet în CourtDetail: două straturi satelit (Esri Wayback 2014 + World Imagery azi), slider de opacitate pentru crossfade. Se ascunde singur după 8 tileerror. Props: {court}. Season 3.",
+   "file": "src/pages/court-detail/SatelliteTimeMachine.js"
   },
   {
    "id": "HoopGame",
    "type": "component",
-   "desc": "Canvas 2D la începutul PetitionPage (doar ne-votați, fără flag g2p_hoop, fără reduced-motion): aruncă mingea la un coș îndoit care deviază mereu; după 2 aruncări → mesaj + CTA semnare. Props: {onDone}. Season 3."
+   "desc": "Canvas 2D la începutul PetitionPage (doar ne-votați, fără flag g2p_hoop, fără reduced-motion): aruncă mingea la un coș îndoit care deviază mereu; după 2 aruncări → mesaj + CTA semnare. Props: {onDone}. Season 3.",
+   "file": "src/legacy/HoopGame.js"
   },
   {
    "id": "PixelWall",
    "type": "component",
-   "desc": "Mural colectiv 48×48 (tab '🎨 Pixel' în CommunityPage). 1 pixel / 10 min / voterKey (localStorage g2p_px_ts), paletă 10 culori, export PNG, contor live. Season 3."
+   "desc": "Mural colectiv 48×48 (tab '🎨 Pixel' în CommunityPage). 1 pixel / 10 min / voterKey (localStorage g2p_px_ts), paletă 10 culori, export PNG, contor live. Season 3.",
+   "file": "src/pages/community/PixelWall.js"
   },
   {
    "id": "InequalityReceipt",
    "type": "component",
-   "desc": "Bon de casă generat pe canvas (560px): linii per cartier din COURTS, taxe/investiții, total '1 RENOVARE', barcode fals, margine zimțată. Download PNG + navigator.share. Pe ImpactPage (tab calc) și PetitionPage. Season 3."
+   "desc": "Bon de casă generat pe canvas (560px): linii per cartier din COURTS, taxe/investiții, total '1 RENOVARE', barcode fals, margine zimțată. Download PNG + navigator.share. Pe ImpactPage (tab calc) și PetitionPage. Season 3.",
+   "file": "src/components/InequalityReceipt.js"
   },
   {
    "id": "HeatWatcher",
    "type": "component",
-   "desc": "Componentă invizibilă montată în App: ascultă activity (limitToLast 1) și arată toast 'alătură-te' la check-in proaspăt al altcuiva. Max 1 toast / 3 min. Season 3."
+   "desc": "Componentă invizibilă montată în App: ascultă activity (limitToLast 1) și arată toast 'alătură-te' la check-in proaspăt al altcuiva. Max 1 toast / 3 min. Season 3.",
+   "file": "src/app/App.js"
   },
   {
    "id": "AmbientLight",
    "type": "component",
-   "desc": "Overlay radial fix, subtil (opacity ~.09): nuanță aurie ±90min în jurul apusului (lookup lunar Târgu Mureș), albastru noaptea, flash roșu 2.5s la sesizare nouă (reports limitToLast 1). Oprit la reduced-motion / flags.effects=false. Season 3."
+   "desc": "Overlay radial fix, subtil (opacity ~.09): nuanță aurie ±90min în jurul apusului (lookup lunar Târgu Mureș), albastru noaptea, flash roșu 2.5s la sesizare nouă (reports limitToLast 1). Oprit la reduced-motion / flags.effects=false. Season 3.",
+   "file": "src/app/AmbientLight.js"
   },
   {
    "id": "CourtSound",
    "type": "component",
-   "desc": "Card în CourtDetail cu sinteză WebAudio: teren viu (mingi care saltă accelerat, murmur, scârțâit adidași) vs abandonat (vânt cu LFO, picături, huruit trafic). AudioContext lazy, stop/cleanup complet. Props: {court}. Season 3."
+   "desc": "Card în CourtDetail cu sinteză WebAudio: teren viu (mingi care saltă accelerat, murmur, scârțâit adidași) vs abandonat (vânt cu LFO, picături, huruit trafic). AudioContext lazy, stop/cleanup complet. Props: {court}. Season 3.",
+   "file": "src/legacy/CourtSound.js"
   },
   {
    "id": "CityPulse",
    "type": "component",
-   "desc": "Overlay full-screen (z 9500) cu time-lapse 2D-canvas ~30s al activity+signups: inele de la 'primărie' pentru petiții, burst-uri la nodurile terenurilor, contoare live, scrubber + play/pauză, Esc. Reduced-motion = stare finală statică. Lansat din ImpactPage și ⌘K (sessionStorage g2p_open_pulse). Props: {onClose}. Season 3."
+   "desc": "Overlay full-screen (z 9500) cu time-lapse 2D-canvas ~30s al activity+signups: inele de la 'primărie' pentru petiții, burst-uri la nodurile terenurilor, contoare live, scrubber + play/pauză, Esc. Reduced-motion = stare finală statică. Lansat din ImpactPage și ⌘K (sessionStorage g2p_open_pulse). Props: {onClose}. Season 3.",
+   "file": "src/pages/impact/CityPulse.js"
   },
   {
    "id": "MayorMode",
    "type": "component",
-   "desc": "Easter egg (tastează 'fixit' / ⌘K → Mayor Mode): overlay canvas cinematic în care cele 5 terenuri trec pe rând din gri crăpat în verde renovat (confetti, ken burns), apoi text type-on + CTA spre petiție. Esc/✕ închide. Props: {onClose}. Season 3."
+   "desc": "Easter egg (tastează 'fixit' / ⌘K → Mayor Mode): overlay canvas cinematic în care cele 5 terenuri trec pe rând din gri crăpat în verde renovat (confetti, ken burns), apoi text type-on + CTA spre petiție. Esc/✕ închide. Props: {onClose}. Season 3.",
+   "file": "src/app/MayorMode.js"
   },
   {
    "id": "fb/pixels",
@@ -677,47 +696,56 @@
   {
    "id": "AdminGodTab",
    "type": "component",
-   "desc": "Admin God Mode: editor brut pe orice cale Firebase, scanner noduri, backup/restore total JSON, stergeri rapide. Tab in AdminPanel."
+   "desc": "Admin God Mode: editor brut pe orice cale Firebase, scanner noduri, backup/restore total JSON, stergeri rapide. Tab in AdminPanel.",
+   "file": "src/pages/admin/AdminGodTab.js"
   },
   {
    "id": "CityHallGuide",
    "type": "component",
-   "desc": "Ghid Primarie pe Help>contact: contacte reale (Directia Tehnica, Serviciul Sport, infopublic), mailto pre-completat 544/2001 + OG 27/2002, pasi, argumente."
+   "desc": "Ghid Primarie pe Help>contact: contacte reale (Directia Tehnica, Serviciul Sport, infopublic), mailto pre-completat 544/2001 + OG 27/2002, pasi, argumente.",
+   "file": "src/pages/help/CityHallGuide.js"
   },
   {
    "id": "FunEggs",
    "type": "component",
-   "desc": "Easter eggs vizuale rare: minge/copil/caine traverseaza ecranul la 80-220s. Gated reduced-motion + flags.effects."
+   "desc": "Easter eggs vizuale rare: minge/copil/caine traverseaza ecranul la 80-220s. Gated reduced-motion + flags.effects.",
+   "file": "src/app/FunEggs.js"
   },
   {
    "id": "SecretKeys",
    "type": "component",
-   "desc": "Combinatii secrete: Konami=GOD MODE, dunk=ploaie mingi, disco=hue-rotate 8s, tgm=confetti verde, rain=ploaie fotbal."
+   "desc": "Combinatii secrete: Konami=GOD MODE, dunk=ploaie mingi, disco=hue-rotate 8s, tgm=confetti verde, rain=ploaie fotbal.",
+   "file": "src/app/SecretKeys.js"
   },
   {
    "id": "ProiecteTab",
    "type": "component",
-   "desc": "Tab Impact 🏗️: 4 proiecte reale TGM cu sume si statusuri (PROIECTE const)."
+   "desc": "Tab Impact 🏗️: 4 proiecte reale TGM cu sume si statusuri (PROIECTE const).",
+   "file": "src/pages/impact/ProiecteTab.js"
   },
   {
    "id": "CivicFactsTape",
    "type": "component",
-   "desc": "Grila 8 cifre mari verificate (CIVIC_FACTS_DATA) la top-ul paginii Impact."
+   "desc": "Grila 8 cifre mari verificate (CIVIC_FACTS_DATA) la top-ul paginii Impact.",
+   "file": "src/pages/impact/CivicFactsTape.js"
   },
   {
    "id": "resetSiteSettings",
    "type": "util",
-   "desc": "BACK TO NORMAL: clears settings/{maintenance,banner,broadcast,flags,accent,accent2,featuredCourtId,strings}; keeps sherifs + data"
+   "desc": "BACK TO NORMAL: clears settings/{maintenance,banner,broadcast,flags,accent,accent2,featuredCourtId,strings}; keeps sherifs + data",
+   "file": "src/pages/admin/helpers.js"
   },
   {
    "id": "applyAccent",
    "type": "util",
-   "desc": "Sets --green/--teal from settings/accent + settings/accent2, caches in localStorage g2p_accent (applied pre-paint in <head>)"
+   "desc": "Sets --green/--teal from settings/accent + settings/accent2, caches in localStorage g2p_accent (applied pre-paint in <head>)",
+   "file": "src/lib/save-user-profile.js"
   },
   {
    "id": "saveUserProfile",
    "type": "util",
-   "desc": "Creates users/{uid} on first Firebase sign-in (never overwrites)"
+   "desc": "Creates users/{uid} on first Firebase sign-in (never overwrites)",
+   "file": "src/lib/save-user-profile.js"
   },
   {
    "id": "firebase:settings/accent2",
@@ -732,68 +760,68 @@
   {
    "id": "AiPhotoHint",
    "type": "component",
-   "line": 15456,
-   "desc": "AI Court Doctor: bifă de consimțământ + notă de confidențialitate, apoi diagnostic structurat (scor 1–5, probleme cu gravitate 1–3, reparații, bandă de cost). Etichetă: estimare AI, nu inspecție oficială."
+   "desc": "AI Court Doctor: bifă de consimțământ + notă de confidențialitate, apoi diagnostic structurat (scor 1–5, probleme cu gravitate 1–3, reparații, bandă de cost). Etichetă: estimare AI, nu inspecție oficială.",
+   "file": "src/components/AiPhotoHint.js"
   },
   {
    "id": "AiEstimateBadge",
    "type": "component",
-   "line": 15525,
-   "desc": "Insignă „Estimare AI: N/5” în CourtDetail (mediana ultimelor 5 poze cu ai.score). Nu scrie niciodată în condition."
+   "desc": "Insignă „Estimare AI: N/5” în CourtDetail (mediana ultimelor 5 poze cu ai.score). Nu scrie niciodată în condition.",
+   "file": "src/pages/court-detail/CourtDetail.js"
   },
   {
    "id": "aiEstimateOf",
    "type": "util",
-   "line": 15518,
-   "desc": "Estimarea AI per teren din reports/*/ai.score (mediană, n, dată). Folosit de AiEstimateBadge, OpenDataCard, letterEvidence."
+   "desc": "Estimarea AI per teren din reports/*/ai.score (mediană, n, dată). Folosit de AiEstimateBadge, OpenDataCard, letterEvidence.",
+   "file": "src/lib/ai-estimate-of.js"
   },
   {
    "id": "AiLetterModal",
    "type": "component",
-   "line": 15604,
-   "desc": "Scrisoare v2: temei legal OG 27/2002 (30 zile) sau Legea 544/2001 (10 zile), bloc de dovezi, până la 3 poze în PDF, înregistrare în letters/. Disponibilă pentru toate terenurile, inclusiv stadioane."
+   "desc": "Scrisoare v2: temei legal OG 27/2002 (30 zile) sau Legea 544/2001 (10 zile), bloc de dovezi, până la 3 poze în PDF, înregistrare în letters/. Disponibilă pentru toate terenurile, inclusiv stadioane.",
+   "file": "src/pages/court-detail/AiLetterModal.js"
   },
   {
    "id": "letterEvidence",
    "type": "util",
-   "line": 15580,
-   "desc": "Dovezile din scrisoare: doar fapte ale terenului și orașului (sesizări, sursa stării, estimare AI, semnături pe oraș, link). Test unitar: fără fapte TGM în Sibiu."
+   "desc": "Dovezile din scrisoare: doar fapte ale terenului și orașului (sesizări, sursa stării, estimare AI, semnături pe oraș, link). Test unitar: fără fapte TGM în Sibiu.",
+   "file": "src/pages/court-detail/AiLetterModal.js"
   },
   {
    "id": "LettersTracker",
    "type": "component",
-   "line": 12502,
-   "desc": "Impact → ✉️: scrisorile trimise per oraș, termen legal cu numărătoare, „Primăria a răspuns” + nr. înregistrare."
+   "desc": "Impact → ✉️: scrisorile trimise per oraș, termen legal cu numărătoare, „Primăria a răspuns” + nr. înregistrare.",
+   "file": "src/pages/impact/LettersTracker.js"
   },
   {
    "id": "VerifyFlow",
    "type": "component",
-   "line": 15858,
-   "desc": "Verificare în 60 s: există? se poate juca? ce lipsește? + 1–3 poze fără oameni; scrie verifications/."
+   "desc": "Verificare în 60 s: există? se poate juca? ce lipsește? + 1–3 poze fără oameni; scrie verifications/.",
+   "file": "src/pages/court-detail/VerifyFlow.js"
   },
   {
    "id": "verifyConsensus",
    "type": "util",
-   "line": 15832,
-   "desc": "Consens: ultimul răspuns per dispozitiv; „verificat de comunitate” doar la 2 dispozitive care se potrivesc."
+   "desc": "Consens: ultimul răspuns per dispozitiv; „verificat de comunitate” doar la 2 dispozitive care se potrivesc.",
+   "file": "src/lib/verify-by-court.js"
   },
   {
    "id": "sibiuMissions",
    "type": "util",
-   "line": 15844,
-   "desc": "Misiuni: terenurile Sibiu pe care satelitul nu le poate lămuri (gone, worn, captură veche), fără cele deja confirmate."
+   "desc": "Misiuni: terenurile Sibiu pe care satelitul nu le poate lămuri (gone, worn, captură veche), fără cele deja confirmate.",
+   "file": "src/legacy/unused.js"
   },
   {
    "id": "CourtSourcesCard",
    "type": "component",
-   "line": 15920,
-   "desc": "CourtDetail: sursele stării cu date (satelit / presă / comunitate), steag de misiune, buton de verificare, link de postat."
+   "desc": "CourtDetail: sursele stării cu date (satelit / presă / comunitate), steag de misiune, buton de verificare, link de postat.",
+   "file": "src/pages/court-detail/CourtSourcesCard.js"
   },
   {
    "id": "courtsPhrase",
    "type": "util",
-   "line": 6477,
-   "desc": "Număr de terenuri pentru texte: N terenuri (dintre care S stadioane). Plus NBH_N, STADIUM_N, SAT_RECENT/SAT_N; nimic hard-codat."
+   "desc": "Număr de terenuri pentru texte: N terenuri (dintre care S stadioane). Plus NBH_N, STADIUM_N, SAT_RECENT/SAT_N; nimic hard-codat.",
+   "file": "src/legacy/StoryScroll.js"
   },
   {
    "id": "fb/letters",
@@ -817,36 +845,38 @@
   {
    "id": "CsmInvest",
    "type": "component",
-   "line": 13098,
-   "desc": "Impact > budget tab (TGM): official CSM Târgu Mureș investments + repairs on sports grounds 2022–2025 (Law 544 reply nr. 2692/03.11.2026) — totals, by location, by year vs CSM budget, full item list"
+   "desc": "Impact > budget tab (TGM): official CSM Târgu Mureș investments + repairs on sports grounds 2022–2025 (Law 544 reply nr. 2692/03.11.2026) — totals, by location, by year vs CSM budget, full item list",
+   "file": "src/pages/impact/CsmInvest.js"
   },
   {
    "id": "CSM_INVEST",
    "type": "data",
-   "line": 13066,
-   "desc": "29 items {y,k:i|r,loc,lei,l3?,what} verbatim from the CSM xlsx; plus CSM_BUDGET {year: total spending} from HCL 299/2022, 374/2023, 294/2024, 276/2025; CSM_SRC"
+   "desc": "29 items {y,k:i|r,loc,lei,l3?,what} verbatim from the CSM xlsx; plus CSM_BUDGET {year: total spending} from HCL 299/2022, 374/2023, 294/2024, 276/2025; CSM_SRC",
+   "file": "src/data/csm-invest.js"
   },
   {
    "id": "courtTileMosaic",
    "type": "util",
-   "desc": "3x3 Esri World Imagery tiles (z18) around a court; backdrop slide in CourtDetail"
+   "desc": "3x3 Esri World Imagery tiles (z18) around a court; backdrop slide in CourtDetail",
+   "file": "src/pages/court-detail/CourtDetail.js"
   },
   {
    "id": "Redirect35Card",
    "type": "component",
-   "desc": "Formularul 230 / 3.5% card (motivation, income-tax calculator, donor steps, honest gaps, mailto, copy message); top of Funding tab and AssociationTab; links ANAF guide"
+   "desc": "Formularul 230 / 3.5% card (motivation, income-tax calculator, donor steps, honest gaps, mailto, copy message); top of Funding tab and AssociationTab; links ANAF guide",
+   "file": "src/components/Redirect35Card.js"
   },
   {
    "id": "ResultsBoard",
    "type": "component",
-   "line": 13155,
-   "desc": "Card „Rezultate până azi” sus pe ImpactPage: numere live (signupStats, reports fără demo/condition, letters, CITY_REQUESTS, COURTS_ALL). Nimic estimat. Folosește useFbCount."
+   "desc": "Card „Rezultate până azi” sus pe ImpactPage: numere live (signupStats, reports fără demo/condition, letters, CITY_REQUESTS, COURTS_ALL). Nimic estimat. Folosește useFbCount.",
+   "file": "src/pages/impact/ResultsBoard.js"
   },
   {
    "id": "startCourtShader",
    "type": "util",
-   "line": 10153,
-   "desc": "Terenul din opener: un fragment shader WebGL scris de mână (COURT_FRAG), fără bibliotecă. Asfalt gri crăpat / teren vopsit, amestecate de o mască de vopsea (canvas 2D) în care ștampilează mingea și cursorul; masca se stinge încet. Cadru static sub reduced-motion / no-fx. Returnează stop()."
+   "desc": "Terenul din opener: un fragment shader WebGL scris de mână (COURT_FRAG), fără bibliotecă. Asfalt gri crăpat / teren vopsit, amestecate de o mască de vopsea (canvas 2D) în care ștampilează mingea și cursorul; masca se stinge încet. Cadru static sub reduced-motion / no-fx. Returnează stop().",
+   "file": "src/pages/home/HomeOpener.js"
   }
  ],
  "edges": [

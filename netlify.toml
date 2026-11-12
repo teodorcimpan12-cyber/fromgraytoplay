@@ -1,8 +1,8 @@
-# Static single-file PWA; the repo root is the publish directory.
-# The "build" is a safety gate only: if any check fails, Netlify cancels the deploy
-# and the last good version stays live. See tools/predeploy-check.mjs.
+# Vite builds src/ into dist/ (one index.html + the files from public/).
+# The build command is also the safety gate: tools/predeploy-check.mjs runs the build and then checks
+# the result. If anything fails, Netlify cancels the deploy and the last good version stays live.
 [build]
-  publish = "."
+  publish = "dist"
   command = "node tools/predeploy-check.mjs"
 
 [build.environment]

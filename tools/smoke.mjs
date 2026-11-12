@@ -23,7 +23,8 @@ const CITIES = [["tgm", "c1"], ["sibiu", "sb1"]];
 const IGNORE = [/ERR_|net::|Failed to load resource|vibrate/i];
 const TYPES = { ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript", ".json": "application/json", ".png": "image/png", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".css": "text/css", ".webp": "image/webp" };
 
-const root = process.cwd();
+const root = join(process.cwd(), "dist"); // the built site; run `npm run build` (or the predeploy check) first
+if (!existsSync(join(root, "index.html"))) { console.error("✗ smoke: dist/index.html not found — run: npm run build"); process.exit(1); }
 const server = createServer(async (req, res) => {
   const path = normalize(decodeURIComponent(new URL(req.url, "http://x").pathname)).replace(/^([\\/])+/, "");
   try {
@@ -107,6 +108,9 @@ try {
       if (!parsed) problems.push(city + ": main script did not run (syntax error?)");
       break;
     }
+    // The stylesheet must be applied: an unstyled page still "renders without errors".
+    if (booted && !(await evalJs("getComputedStyle(document.documentElement).getPropertyValue('--green').trim().length > 0 && getComputedStyle(document.querySelector('.nav-logo')).display !== 'inline'")))
+      problems.push(city + ": the app stylesheet is not applied (page is unstyled)");
     if (!booted) {
       problems.push(cdnDown
         ? city + ": React/Firebase could not be downloaded from the CDN after 5 tries — network problem, push again in a minute"

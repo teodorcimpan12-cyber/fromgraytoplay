@@ -1,10 +1,10 @@
 // Compares each hand-entered Târgu Mureș court with the nearest OSM sports pitch.
-// Output: tools/data/tgm_osm_match.json + console table. Does not modify index.html.
+// Output: tools/data/tgm_osm_match.json + console table. Does not modify the source.
 import { readFileSync, writeFileSync } from "node:fs";
 import vm from "node:vm";
 
 const root = new URL("../", import.meta.url);
-const html = readFileSync(new URL("index.html", root), "utf8");
+const html = readFileSync(new URL("src/data/courts-base.js", root), "utf8");
 const at = html.indexOf("const COURTS_BASE = [");
 let i = html.indexOf("[", at), depth = 0, q = null;
 for (; i < html.length; i++) {

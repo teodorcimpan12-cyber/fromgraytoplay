@@ -182,8 +182,10 @@ test("no translation key is assigned twice (a later assignment silently override
 });
 
 test("Sibiu after the satellite pass: every court has a score, stadiums are excellent, no 'unverified' left", () => {
-  const start = html.indexOf("const SAT_VIEW = "), end = html.indexOf("const COURTS_ALL = ");
-  const { COURTS_SIBIU } = load([extractConst("COURTS_SIBIU"), html.slice(start, end)], ["COURTS_SIBIU"]);
+  const start = html.indexOf("COURTS_SIBIU.forEach(c => {\n  const st = STADIUMS_SIBIU"), end = html.indexOf("export const COURTS_ALL = ");
+  assert.ok(start > 0 && end > start);
+  const { COURTS_SIBIU } = load([extractConst("COURTS_SIBIU"), extractConst("SAT_VIEW", "{"), extractConst("STADIUMS_SIBIU", "{"),
+    extractConst("SAT_SCORE", "{"), extractConst("SAT_DESC"), html.slice(start, end)], ["COURTS_SIBIU"]);
   assert.equal(COURTS_SIBIU.length, 35);
   COURTS_SIBIU.forEach(c => {
     assert.notEqual(c.status, "unverified", c.id);
