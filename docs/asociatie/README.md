@@ -27,6 +27,8 @@ Costurile vin dintr-un ghid comercial din 2026, nu dintr-o sursă oficială. Con
 4. Valabilitatea dovezii de disponibilitate a denumirii (să nu expire înainte de depunere).
 5. Dacă judecătoria de la sediu cere acte în plus (unele cer cazier fiscal al fondatorilor).
 
+**Pe scurt: răspundeți la `FISA-DECIZII.md` (5 întrebări, cu propunerea mea la fiecare).**
+
 ## Decizii pe care le luați voi înainte de pasul 2
 
 - [ ] Orașul și adresa sediului
