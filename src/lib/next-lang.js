@@ -1,5 +1,5 @@
 import { ACTIVE_CITY } from "../app/core.js";
-import { CITY_CFG, HOOD_DISPLAY, LANG_ORDER } from "../data/constants.js";
+import { CITY_CFG, HOOD_DISPLAY, LANG_ORDER, isMentor } from "../data/constants.js";
 
 export function nextLang(l) {
   const i = LANG_ORDER.indexOf(l);
@@ -9,6 +9,7 @@ export function nextLang(l) {
 export function anonName(s) {
   const x = String(s || "").trim();
   if (!x) return "Anonim";
+  if (isMentor(x)) return x; // mentors appear with their full public name
   const parts = x.split(/\s+/);
   return parts.length === 1 ? parts[0] : parts[0] + " " + parts[parts.length - 1][0] + ".";
 }

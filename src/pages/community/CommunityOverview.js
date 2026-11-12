@@ -1,7 +1,7 @@
 import { ACTIVE_CITY, db, useApp } from "../../app/core.js";
 import { useFirebase } from "../../hooks/useFirebase.js";
 import { activityMsg } from "../../lib/activity-msg.js";
-import { activityCity } from "../../lib/log-activity.js";
+import { activityCity, realActivity } from "../../lib/log-activity.js";
 import { anonName, tsOf } from "../../lib/next-lang.js";
 import { useEffect, useState } from "../../lib/react.js";
 import { relTime } from "../../lib/rel-time.js";
@@ -21,7 +21,7 @@ export function CommunityOverview({ go, purpose }) {
     return () => ref.off("value", h);
   }, []);
   const vals = o => o ? Object.keys(o).map(k => Object.assign({ id: k }, o[k])) : [];
-  const acts = vals(activity).filter(a => a && activityCity(a) === ACTIVE_CITY).sort((a, b) => tsOf(b) - tsOf(a));
+  const acts = vals(activity).filter(a => realActivity(a) && activityCity(a) === ACTIVE_CITY).sort((a, b) => tsOf(b) - tsOf(a));
   const day = Date.now() - 86400000;
   const today = acts.filter(a => tsOf(a) > day).length;
   const posts = vals(forum).sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));

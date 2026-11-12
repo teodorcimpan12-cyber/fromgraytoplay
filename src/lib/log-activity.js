@@ -17,4 +17,5 @@ export function activityCity(a) {
   return c ? (c.city || "tgm") : "tgm";
 }
 // Demo rows (reports sent from the #raporteaza QR path) stay out of the public ticker and feed.
-export function realActivity(a) { return !!a && !a.demo; }
+// Status changes made in the admin panel are bookkeeping, not community activity: never shown in a feed.
+export function realActivity(a) { return !!a && !a.demo && a.type !== "statusChange" && a.type !== "status"; }

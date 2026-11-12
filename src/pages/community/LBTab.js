@@ -1,3 +1,4 @@
+import { isMentor } from "../../data/constants.js";
 import { useApp } from "../../app/core.js";
 import { useFirebase } from "../../hooks/useFirebase.js";
 import { anonName } from "../../lib/next-lang.js";
@@ -10,7 +11,7 @@ export function LBTab() {
   } = useApp();
   const lb = useFirebase("leaderboard");
   const medals = ["🥇", "🥈", "🥉"];
-  const list = lb ? Object.values(lb).filter(u => u && !isOwnerName(u.name)).sort((a, b) => (b.points || 0) - (a.points || 0)).slice(0, 20) : [];
+  const list = lb ? Object.values(lb).filter(u => u && !isOwnerName(u.name)).sort((a, b) => (isMentor(b.name) ? 1 : 0) - (isMentor(a.name) ? 1 : 0) || (b.points || 0) - (a.points || 0)).slice(0, 20) : [];
   if (!list.length) return /*#__PURE__*/React.createElement("div", {
     className: "card",
     style: {
@@ -42,7 +43,7 @@ export function LBTab() {
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "font-bold"
-  }, anonName(u.name || "User"))), /*#__PURE__*/React.createElement("span", {
+  }, anonName(u.name || "User")), isMentor(u.name) && React.createElement("span", { className: "mentor-tag" }, "MENTOR")), /*#__PURE__*/React.createElement("span", {
     className: "font-bold text-green"
   }, u.points || 0, " pts"))), /*#__PURE__*/React.createElement("div", {
     className: "card mt-1",

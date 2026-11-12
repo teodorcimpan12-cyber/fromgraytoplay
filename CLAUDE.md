@@ -398,3 +398,13 @@ Highest civic-value next steps:
   Cursă, Scrisori), Courts (Hartă/Listă), About, Community; nav item "Asociația" and ~80 h1–h4 headings lost their emoji prefix (admin and
   easter-egg files untouched). ~880 emoji remain in body text, buttons and admin; new headings/tabs/nav items take no emoji. CSS in
   `src/styles/20-home-single-hero.css`. HU tab labels are drafts (`// TODO: HU review`).
+- Session 12 Nov 2026, afternoon (same branch): **Târgu Mureș City Hall answered** the Law 544 request (nr. 51941/11.11.2026, by email on 12.11):
+  sports budget lines 67.02.05.01 = 5,915,289 lei for 2026 (awards, project contests, partnerships); DALI in progress for courts on str. Busuiocului,
+  Budai Nagy Antal and Plopilor; the first two postponed by the Local Council on 24 Sept (cost cuts); skatepark feasibility study approved (HCL 345/19.12.2024);
+  SIDU sports pages 396–404. Stored as `CITY_REQUESTS[tgm].answer` (+ `answeredAt`, `answerNo`), rendered by `RequestTracker`; `CsmInvest` note and
+  TIMELINE updated. Sibiu's full answer is still due 25.11.2026.
+- Same afternoon: `realActivity()` hides admin `statusChange` rows from every feed and from the bell; **mentors** (`MENTORS`, `isMentor`, `MENTOR_BLUE`
+  #2F6CF7 from sibiu-it.ro in `data/constants.js`): `anonName` keeps a mentor's full name, leaderboard pins them first with a blue `.mentor-tag`.
+  `MENTORS[i].hash` is the SHA-256 of the account email (never the address): when the owner is signed in, `App` makes that account a sheriff with
+  `role: "mentor"` in `settings/sherifs/{uid}` — the person must already have a G2P account. Sheriffs get a one-time toast (`g2p_sherif_ack_<uid>`)
+  and a row in the bell (`useNotifications().sherif`). SW cache → `g2p-v15`.

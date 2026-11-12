@@ -19,7 +19,7 @@ import { SignupNudge } from "./SignupNudge.js";
 import { ThemeFx } from "./ThemeFx.js";
 import { AdminBoundary, AppCtx, COURTS, DEMO_ON, DEMO_REMOTE, DemoRemoteBoundary, PageBoundary, db, useApp } from "./core.js";
 import { QuickReportModal } from "../components/QuickReportModal.js";
-import { ADMIN_UID, NICKNAMES, PAGE_IDS } from "../data/constants.js";
+import { ADMIN_UID, MENTORS, NICKNAMES, PAGE_IDS } from "../data/constants.js";
 import { useFirebase } from "../hooks/useFirebase.js";
 import { T } from "../i18n/strings.js";
 import { g2pEgg } from "../lib/g2p-egg.js";
@@ -335,6 +335,31 @@ export function App() {
   const sherifData = useFirebase(firebaseUser ? "settings/sherifs/" + firebaseUser.uid : null);
   const isSherif = !!sherifData && !isAdmin;
   const isPrivileged = isAdmin || isSherif;
+  // Tell a sheriff once, on this device, that they were promoted.
+  useEffect(() => {
+    if (!isSherif || !firebaseUser) return;
+    const k = "g2p_sherif_ack_" + firebaseUser.uid;
+    try { if (localStorage.getItem(k)) return; localStorage.setItem(k, "1"); } catch (e) { return; }
+    toast(lang === "en" ? "You were made a sheriff. Open My account \u2192 Sheriff panel." : lang === "hu" ? "Seriff lett\u00e9l. Fi\u00f3kom \u2192 Seriff panel." : "Ai fost promovat \u0219erif. Deschide Contul meu \u2192 Panou \u0219erif.", 8000); // TODO: HU review
+  }, [isSherif]);
+  // Owner signed in: accounts whose email hash is in MENTORS become sheriffs with role "mentor" (only the owner may write settings/sherifs).
+  useEffect(() => {
+    if (!isAdmin || !window.crypto || !crypto.subtle) return;
+    const hex = b => Array.from(new Uint8Array(b), x => x.toString(16).padStart(2, "0")).join("");
+    Promise.all([db.ref("users").once("value"), db.ref("settings/sherifs").once("value")]).then(([us, sh]) => {
+      const users = us.val() || {}, sherifs = sh.val() || {};
+      Object.keys(users).forEach(uid => {
+        const u = users[uid] || {};
+        if (!u.email || (sherifs[uid] && sherifs[uid].role === "mentor")) return;
+        crypto.subtle.digest("SHA-256", new TextEncoder().encode(String(u.email).trim().toLowerCase())).then(b => {
+          const m = MENTORS.find(x => x.hash === hex(b));
+          if (!m) return;
+          return db.ref("settings/sherifs/" + uid).set({ name: m.name, role: "mentor", addedAt: (sherifs[uid] && sherifs[uid].addedAt) || Date.now() })
+            .then(() => toast(m.name + ": \u0219erif + mentor", 6000));
+        }).catch(() => {});
+      });
+    }).catch(() => {});
+  }, [isAdmin]);
   const [nickKey, setNickKey] = useState("");
   const fbEmail = firebaseUser && firebaseUser.email;
   useEffect(() => {

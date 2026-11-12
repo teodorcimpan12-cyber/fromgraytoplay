@@ -289,3 +289,9 @@ export const PARTY_DAYS = { "06-01": "kids", "11-12": "bday", "12-24": "xmas", "
 export const EASTER_DAYS = ["2026-04-05", "2026-04-06", "2026-04-12", "2026-04-13", "2027-03-28", "2027-03-29", "2027-05-02", "2027-05-03", "2028-04-16", "2028-04-17", "2029-04-01", "2029-04-02", "2029-04-08", "2029-04-09", "2030-04-21", "2030-04-22", "2030-04-28", "2030-04-29"];
 // who speaks: change the names here if the team on stage changes
 export const DEMO_WHO = { T: "Teo", M: "Matei", G: "Gabriel" };
+
+/* Mentors: shown with their full public name and a MENTOR tag (blue of sibiu-it.ro), pinned first on the leaderboard.
+   `hash` = SHA-256 of the account email (no address in the repo): when the owner is signed in, the account is made a sheriff. */
+export const MENTOR_BLUE = "#2F6CF7";
+export const MENTORS = [{ name: "Daniel Ferecatu", hash: "96375884595ce07b64488b7ea63d21b494d9263023b85cea3a395914a58670c8" }];
+export function isMentor(name) { const n = String(name || "").trim().toLowerCase().replace(/\s+/g, " "); return !!n && MENTORS.some(m => m.name.toLowerCase() === n); }

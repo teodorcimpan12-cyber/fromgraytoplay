@@ -26,7 +26,10 @@ export function RequestTracker() {
         React.createElement("i", { style: { width: pct + "%" } }),
         React.createElement("span", null, left <= 0 ? L3("azi e ultima zi", "today is the last day", "ma az utolsó nap") : L3("mai sunt " + left + (left === 1 ? " zi" : " zile"), left + (left === 1 ? " day" : " days") + " left", "még " + left + " nap"))),
       React.createElement("ul", { className: "rq-list" }, (r.asked[lang] || r.asked.ro).map((x, i) => React.createElement("li", { key: i }, x))),
-      React.createElement("p", { className: "rq-foot" }, r.answeredAt ? L3("Ce scrie în răspuns e acum la Surse, cu link.", "What the answer says is now under Sources, with a link.", "A válasz tartalma most a Forrásoknál van, linkkel.")
+      r.answer && React.createElement("div", { className: "rq-ans" },
+        React.createElement("h4", { className: "rq-h" }, L3("Ce scrie în răspuns", "What the answer says", "Mi áll a válaszban") + (r.answerNo ? " (nr. " + r.answerNo + ")" : "")),
+        React.createElement("ul", { className: "rq-list" }, (r.answer[lang] || r.answer.ro).map((x, i) => React.createElement("li", { key: i }, x)))),
+      React.createElement("p", { className: "rq-foot" }, r.answer ? L3("Rezumat fidel al adresei oficiale; nimic adăugat.", "A faithful summary of the official letter; nothing added.", "A hivatalos levél hű összefoglalása; semmi hozzáadva.") : r.answeredAt ? L3("Ce scrie în răspuns e acum la Surse, cu link.", "What the answer says is now under Sources, with a link.", "A válasz tartalma most a Forrásoknál van, linkkel.")
         : L3("Când vine răspunsul, îl publicăm aici și la Surse — exact ce scrie în el.", "When the answer arrives, we publish it here and under Sources — exactly what it says.", "Ha megjön a válasz, itt és a Forrásoknál közzétesszük — pontosan azt, ami benne áll.")));
   }));
 }

@@ -9,7 +9,7 @@ export function NotifPanel({ onClose, notif }) {
   const { t, lang, setPage } = useApp();
   const L3 = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? (hu || ro) : ro;
   const [tab, setTab] = useState("all");
-  const { all, mine, bc, seen, markRead, followedIds } = notif;
+  const { all, mine, bc, sherif, seen, markRead, followedIds } = notif;
   const list = tab === "mine" ? mine : all;
   useEffect(() => {
     const h = e => { if (e.key === "Escape") onClose(); };
@@ -41,6 +41,7 @@ export function NotifPanel({ onClose, notif }) {
         React.createElement("button", { role: "tab", "aria-selected": tab === "all", className: tab === "all" ? "on" : "", onClick: () => setTab("all") }, L3("Tot orașul", "Whole city", "Az egész város") + " · " + cityName(lang)),
         React.createElement("button", { role: "tab", "aria-selected": tab === "mine", className: tab === "mine" ? "on" : "", onClick: () => setTab("mine") }, L3("Terenurile mele", "My courts", "Pályáim") + (followedIds.length ? " (" + followedIds.length + ")" : ""))),
       React.createElement("div", { className: "ntf-list" },
+        sherif && tab === "all" && row(sherif, React.createElement("b", null, L3("Ai fost promovat șerif" + (sherif.role === "mentor" ? " și mentor" : "") + ". Poți modera comunitatea din Contul meu → Panou șerif.", "You were made a sheriff" + (sherif.role === "mentor" ? " and mentor" : "") + ". You can moderate the community from My account → Sheriff panel.", "Seriffé" + (sherif.role === "mentor" ? " és mentorrá" : "") + " léptettek elő. A közösséget a Fiókom → Seriff panelből moderálhatod.")), "\u2B50"), // TODO: HU review
         bc && tab === "all" && row(bc, React.createElement("b", null, bc.text), "📢"),
         tab === "mine" && followedIds.length === 0
           ? React.createElement("div", { className: "ntf-empty" },
