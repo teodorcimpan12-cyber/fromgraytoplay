@@ -28,3 +28,4 @@ field-raw/
 # Satellite tile cache + rendered strips (regenerate with tools/sat_strips.mjs)
 tools/.cache/
 netlify-proxy
+graphify-out/cache/
