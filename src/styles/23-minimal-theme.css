@@ -127,3 +127,4 @@ html.minimal .ao-name em{color:var(--green)!important}
 html.minimal .section-title{color:var(--sage-deep)!important}
 html.minimal[data-theme="dark"] .section-title{color:var(--text)!important}
 html.minimal .more-btn{border-color:var(--border)!important;color:var(--sage-deep)!important}
+html.minimal .footer *:not(a):not(button):not(summary){color:#EFE7DB!important}
