@@ -4,10 +4,11 @@
    Every feature stays; only the look changes. Light + dark. */
 html.minimal{
   --min-font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  --bg:#FFFFFF;--bgCard:#F6F6F4;--text:#111111;--textSec:#6B6B6B;--border:#EBEBE8;--navBg:rgba(255,255,255,.92);
-  --ink:#111111;--onInk:#FFFFFF;--shadow:none;--radius:16px;
+  --min-serif:"Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;
+  --bg:#F4F1EA;--bgCard:#FBF9F4;--text:#1C1B18;--textSec:#3B382F;--border:#E3DED3;--navBg:rgba(244,241,234,.94);
+  --ink:#DCEFE4;--onInk:#0E5E3F;--shadow:none;--radius:18px;
 }
-html.minimal[data-theme="dark"]{--bg:#0B0B0B;--bgCard:#161616;--text:#F2F2F2;--textSec:#9A9A9A;--border:#242424;--navBg:rgba(11,11,11,.92);--ink:#F2F2F2;--onInk:#0B0B0B}
+html.minimal[data-theme="dark"]{--bg:#1B1A17;--bgCard:#24221E;--text:#F1ECE1;--textSec:#DCD5C6;--border:#36332C;--navBg:rgba(27,26,23,.94);--ink:#1F3A2D;--onInk:#BFE8D0}
 html.minimal body{background:var(--bg);color:var(--text);font-size:17px;line-height:1.6;letter-spacing:-.003em}
 html.minimal body *:not(svg):not(svg *):not(code):not(pre):not(kbd):not(canvas){font-family:var(--min-font)!important}
 html.minimal h1,html.minimal h2,html.minimal h3,html.minimal h4,html.minimal .section-title,html.minimal .barlow{font-weight:650!important;letter-spacing:-.022em!important;text-transform:none!important;color:var(--text)}
@@ -76,3 +77,26 @@ html.minimal .cdx-tab.mid .cdx-ic{background:var(--ink)!important;color:var(--on
 html.minimal .cdx-tab.on{color:var(--text)!important}
 html.minimal .cdx-bar,html.minimal .modal.cdx{background:var(--bg)!important}
 html.minimal .cdx-bar::before{background:linear-gradient(180deg,transparent,var(--bg))!important}
+
+/* v2 (owner): cream paper, ink text (no grey), pale-green actions with dark-green text, editorial serif headings */
+html.minimal h1,html.minimal h2,html.minimal .section-title,html.minimal .ao-name,html.minimal .cdx-name{font-family:var(--min-serif)!important;font-weight:600!important;letter-spacing:-.015em!important}
+html.minimal h3,html.minimal h4{font-weight:650!important}
+html.minimal .card,html.minimal .stat-tile,html.minimal .ai-card,html.minimal .modal{border:1px solid var(--border)!important}
+html.minimal .btn-green,html.minimal .btn-coral,html.minimal .btn-teal,html.minimal .pet-submit,html.minimal .cdx-main-btn,html.minimal .fab{border:1px solid color-mix(in srgb,var(--onInk) 22%,transparent)!important}
+html.minimal .btn-outline,html.minimal .btn-ghost,html.minimal .btn:not(.btn-green):not(.btn-coral):not(.btn-teal){border-color:color-mix(in srgb,var(--text) 22%,transparent)!important}
+html.minimal .fab{box-shadow:0 8px 24px -10px rgba(40,35,20,.35)!important}
+html.minimal .tabs button.active,html.minimal .tabs button.on,html.minimal .tab.active{border-color:color-mix(in srgb,var(--onInk) 25%,transparent)!important}
+html.minimal .cdx-tab.mid .cdx-ic{border-color:var(--bg)!important}
+html.minimal .ao-msg{color:var(--text)!important;font-family:var(--min-serif)!important;font-style:italic;font-weight:400!important}
+html.minimal .ao-why h2{font-size:clamp(1.3rem,4.5vw,1.8rem)!important;line-height:1.25}
+/* Home actions back to three equal tiles in one row: flat, icon on top */
+html.minimal .ao-block{width:fit-content!important;max-width:none}
+html.minimal .ao-cta{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:.6rem!important;width:0!important;min-width:100%!important}
+html.minimal .ao-btn{flex-direction:column!important;justify-content:center!important;align-items:center!important;text-align:center!important;gap:.45rem!important;min-height:96px!important;padding:.9rem .5rem!important;border-radius:18px!important;font-size:.9rem!important;background:var(--bgCard)!important;border:1px solid var(--border)!important;color:var(--text)!important}
+html.minimal .ao-btn.go{background:var(--ink)!important;color:var(--onInk)!important;border-color:color-mix(in srgb,var(--onInk) 22%,transparent)!important}
+@media(max-width:380px){html.minimal .ao-cta{width:auto!important;min-width:0!important}}
+html.minimal h1 *,html.minimal h2 *,html.minimal .section-title *,html.minimal .ao-name *,html.minimal .ao-msg,html.minimal .ao-msg *{font-family:var(--min-serif)!important}
+html.minimal .ao-block{width:min(100%,520px)!important}
+html.minimal .ao-cta{width:100%!important;min-width:0!important}
+html.minimal .ao-name{font-size:clamp(2.7rem,12vw,6rem)!important;font-weight:500!important;letter-spacing:-.02em!important}
+html.minimal .ao-name em{font-style:italic}
