@@ -128,3 +128,26 @@ html.minimal .section-title{color:var(--sage-deep)!important}
 html.minimal[data-theme="dark"] .section-title{color:var(--text)!important}
 html.minimal .more-btn{border-color:var(--border)!important;color:var(--sage-deep)!important}
 html.minimal .footer *:not(a):not(button):not(summary){color:#EFE7DB!important}
+
+/* v4 (owner: phone version did not look good) — tighter rhythm on phones, no stray decoration */
+@media(max-width:600px){
+  html.minimal main .container{padding-top:1rem!important;padding-bottom:1.6rem!important}
+  html.minimal .section{padding:1rem 0!important}
+  html.minimal .section-title{font-size:2.2rem!important;margin-bottom:1rem!important}
+  html.minimal .card{padding:1.2rem!important}
+  html.minimal .mb-2{margin-bottom:1rem!important}html.minimal .mb-3{margin-bottom:1.4rem!important}
+  html.minimal .mt-2{margin-top:1rem!important}html.minimal .mt-3{margin-top:1.4rem!important}
+  html.minimal .home-stats{padding:1rem 0 0!important}
+  html.minimal .ao-inner{padding-top:2rem!important;padding-bottom:2rem!important}
+  html.minimal .ao-why .container{padding-top:1.4rem!important;padding-bottom:1.4rem!important}
+  html.minimal .ao-why h2{font-size:1.25rem!important}
+  html.minimal .rp-top{gap:.8rem}
+}
+html.minimal .navbar{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:var(--bg)!important}
+html.minimal .navbar::before,html.minimal .navbar::after,html.minimal .section::before,html.minimal .section::after{display:none!important}
+html.minimal main hr,html.minimal .home-sep,html.minimal [class*="fade-line"]{display:none!important}
+html.minimal .help-opt-ic{display:none!important}
+html.minimal .r35{background:var(--bgCard)!important;border:1px solid var(--border)!important}
+html.minimal .r35::before,html.minimal .r35::after{display:none!important}
+html.minimal .r35-n{background:var(--ink)!important;color:var(--onInk)!important;font-family:var(--min-font)!important}
+html.minimal .help-opt{grid-template-columns:1fr auto!important;grid-template-areas:"q n" "s s" "bar bar"!important;padding-left:1.1rem!important}
