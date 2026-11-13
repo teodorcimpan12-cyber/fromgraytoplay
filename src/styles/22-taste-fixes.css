@@ -1,0 +1,4 @@
+/* Taste pass, 13 Nov 2026 */
+.fab{transition:transform .25s var(--ease-out,ease),opacity .2s,box-shadow .2s}
+.fab.fab-dup{opacity:0;transform:translateY(12px) scale(.96);pointer-events:none}
+@media (pointer:coarse){.mascot-toggle{min-height:44px}}
