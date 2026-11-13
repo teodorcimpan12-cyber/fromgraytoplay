@@ -100,3 +100,30 @@ html.minimal .ao-block{width:min(100%,520px)!important}
 html.minimal .ao-cta{width:100%!important;min-width:0!important}
 html.minimal .ao-name{font-size:clamp(2.7rem,12vw,6rem)!important;font-weight:500!important;letter-spacing:-.02em!important}
 html.minimal .ao-name em{font-style:italic}
+
+/* v3 (owner inspiration: earthy, muted): the G2P colours, washed down.
+   green -> sage, coral -> terracotta, teal -> grey-green, red -> brick; sand/blush bands on cream. */
+html.minimal{
+  --green:#5B7F63;--coral:#B4683F;--teal:#6F8F85;--red:#A64B3C;
+  --bg:#F6F1EA;--bgCard:#FBF8F3;--border:#E6DCCF;--navBg:rgba(246,241,234,.94);
+  --sand:#EBD7C6;--sage-deep:#3F5E48;
+  --ink:#5B7F63;--onInk:#FBF8F3;
+}
+html.minimal[data-theme="dark"]{--green:#8DB096;--coral:#D69470;--teal:#9DB8AF;--red:#D07A6A;--bg:#1C1A16;--bgCard:#25221D;--border:#3A352D;--sand:#3A2F27;--sage-deep:#2E4636;--ink:#6E9478;--onInk:#FBF8F3}
+html.minimal .btn-green,html.minimal .btn-teal,html.minimal .pet-submit,html.minimal .cdx-main-btn,html.minimal .fab,html.minimal .ao-btn.go,html.minimal .tabs button.active,html.minimal .tabs button.on,html.minimal .tab.active{background:var(--ink)!important;color:var(--onInk)!important;border-color:var(--ink)!important}
+html.minimal .btn-coral{background:var(--coral)!important;color:var(--onInk)!important;border-color:var(--coral)!important}
+html.minimal .ao-why{background:var(--sand)!important;border-top:0!important}
+html.minimal .ao-why p{color:var(--text)!important}
+html.minimal .footer{background:var(--sage-deep)!important;color:#EFE7DB!important;border-top:0}
+html.minimal .footer a{color:#FBF8F3!important}
+html.minimal .footer .fun-set>summary{border-color:rgba(251,248,243,.35);color:#FBF8F3}
+html.minimal .nav-logo{color:var(--sage-deep)!important}
+html.minimal[data-theme="dark"] .nav-logo{color:var(--green)!important}
+html.minimal .stat-number{color:var(--sage-deep)!important}
+html.minimal[data-theme="dark"] .stat-number{color:var(--green)!important}
+html.minimal .live-dot{background:var(--green)!important}
+html.minimal .ao-eyebrow{color:var(--coral)!important;letter-spacing:.08em}
+html.minimal .ao-name em{color:var(--green)!important}
+html.minimal .section-title{color:var(--sage-deep)!important}
+html.minimal[data-theme="dark"] .section-title{color:var(--text)!important}
+html.minimal .more-btn{border-color:var(--border)!important;color:var(--sage-deep)!important}
