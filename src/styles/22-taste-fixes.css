@@ -4,3 +4,59 @@
 @media (pointer:coarse){.mascot-toggle{min-height:44px}}
 /* Community stats: three stacked pills on phones -> one quiet line */
 @media (max-width:600px){.cm-strip{gap:.3rem 1rem}.cm-strip span{background:none;border:0;padding:0;font-size:.76rem;color:var(--textSec)}}
+
+/* Court sheet, clean pass (13 Nov 2026): one scroll on phones (photo scrolls away), compact head,
+   1 main action + 3 small + "Mai mult", pulse as a chip (full ECG on tap), small health ring. */
+.modal.cdx{position:relative}
+.cdx-scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.cdx-scroll .cdx-body{overflow:visible;flex:none;min-height:0}
+.cdx-hero{height:150px}
+.cdx-x{position:absolute;right:.6rem;top:.6rem;z-index:5}
+.cdx-x svg{display:block}
+.cdx-cap{font-size:.62rem}
+.cdx-head{padding:.8rem 1rem .4rem}
+.cdx-name{font-size:1.15rem}
+.cdx-addr{margin:.15rem 0 .6rem}
+.cdx-status{display:flex;align-items:center;gap:.75rem}
+.cdx-sline{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:.15rem .35rem;font-size:.86rem;line-height:1.35}
+.cdx-sline .ai-est{flex-basis:100%;font-size:.72rem;color:var(--textSec)}
+.cdx-dot{width:9px;height:9px;border-radius:50%;flex:none}
+.cdx-occ{color:var(--textSec)}
+.cdx-occ.active{color:var(--coral)}.cdx-occ.full{color:var(--red)}
+.health-ring.sm{width:52px;height:52px}
+.health-ring.sm .health-ring-num{font-size:1rem}
+.health-ring.sm.unknown{border:3px solid var(--border);border-radius:50%;box-sizing:border-box}
+.health-ring.sm.unknown .health-ring-num{color:var(--textSec)}
+.cdx-pchip{flex:none;display:inline-flex;align-items:center;gap:.3rem;min-height:40px;padding:0 .75rem;border-radius:980px;border:1px solid var(--border);background:var(--bgCard);font:700 .9rem/1 'Space Mono',monospace;cursor:pointer}
+.cdx-pchip b{color:var(--text)}
+.cdx-pchip:not(.on){color:var(--textSec)!important}
+@media (prefers-reduced-motion:no-preference){.cdx-pchip.on .cdx-heart{display:inline-block;animation:cdxBeat .83s ease-in-out infinite}}
+@keyframes cdxBeat{0%,60%,100%{transform:scale(1)}15%{transform:scale(1.25)}30%{transform:scale(.95)}}
+.cdx-pmodal{position:relative;max-width:520px;padding:3.2rem 1rem 1rem}
+.cdx-pmodal .cpulse{margin:0}
+.cdx-pclose{position:absolute;right:.7rem;top:.6rem;z-index:2;width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--bgCard);color:var(--text);cursor:pointer}
+.cdx-actions{padding:.6rem 1rem .2rem}
+.cdx-main-btn{width:100%;min-height:48px;display:flex;align-items:center;justify-content:center;gap:.45rem}
+.cdx-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;margin-top:.5rem}
+.cdx-sm{width:100%;min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25rem;border:1px solid var(--border);border-radius:12px;background:var(--bgCard);color:var(--text);font:600 .7rem/1.15 'Libre Franklin',sans-serif;cursor:pointer;touch-action:manipulation;transition:border-color .2s,color .2s,transform .12s}
+.cdx-sm span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 .2rem}
+.cdx-sm.on{color:var(--green);border-color:color-mix(in srgb,var(--green) 45%,var(--border))}
+.cdx-sm:active{transform:scale(.96)}
+@media (hover:hover) and (pointer:fine){.cdx-sm:hover{border-color:var(--green);color:var(--green)}}
+.cdx-more-wrap{position:relative}
+.cdx-menu{position:absolute;right:0;top:calc(100% + .35rem);z-index:6;min-width:230px;padding:.35rem;border-radius:12px;border:1px solid var(--border);background:var(--bgCard);box-shadow:0 14px 34px -12px rgba(0,0,0,.35)}
+.cdx-menu button{display:flex;align-items:center;gap:.6rem;width:100%;min-height:44px;padding:0 .7rem;border:0;border-radius:8px;background:none;color:var(--text);font:500 .88rem/1.2 'Libre Franklin',sans-serif;text-align:left;cursor:pointer}
+@media (hover:hover) and (pointer:fine){.cdx-menu button:hover{background:color-mix(in srgb,var(--green) 10%,transparent)}}
+.cdx-acc{display:inline-block;margin:0 .35rem .35rem 0;padding:.25rem .65rem;border-radius:980px;font-size:.78rem;background:color-mix(in srgb,var(--green) 12%,transparent);color:var(--green)}
+.cdx-acc.no{background:color-mix(in srgb,var(--red) 10%,transparent);color:var(--red)}
+.cdx-tab .cdx-ic svg{display:block}
+.cdx-tab.mid .cdx-ic{color:#fff}
+@media(min-width:900px){
+  .modal.cdx{display:grid;grid-template-columns:46% 1fr;grid-template-rows:1fr auto}
+  .cdx-scroll{display:contents}
+  .cdx-media{grid-row:1/3;grid-column:1;width:auto;min-height:0}
+  .cdx-main{grid-column:2;grid-row:1;overflow-y:auto;overscroll-behavior:contain;display:block}
+  .cdx-bar{grid-column:2;grid-row:2}
+  .cdx-hero{height:100%}
+  .cdx-actions{padding:.6rem 1.2rem .2rem}
+}

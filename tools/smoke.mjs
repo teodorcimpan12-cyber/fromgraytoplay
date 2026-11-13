@@ -125,7 +125,14 @@ try {
       if (state && state.crashed) problems.push(where + ": page crashed (error boundary shown)");
       if (state && state.blank) problems.push(where + ": page is blank");
     }
-    if (await evalJs("!document.querySelector('.cpulse')")) problems.push(city + ": court detail did not render the pulse monitor");
+    // The court sheet shows a pulse chip; the full monitor opens when it is tapped.
+    if (await evalJs("!document.querySelector('.cdx-pchip')")) problems.push(city + ": court detail did not render the pulse chip");
+    else {
+      await evalJs("document.querySelector('.cdx-pchip').click()");
+      await sleep(600);
+      if (await evalJs("!document.querySelector('.cpulse')")) problems.push(city + ": court detail did not render the pulse monitor");
+      await evalJs("(document.querySelector('.cdx-pclose') || {click(){}}).click()");
+    }
   }
 } catch (e) {
   problems.push("smoke harness: " + e.message);
