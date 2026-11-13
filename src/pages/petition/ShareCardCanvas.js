@@ -113,7 +113,7 @@ export function ShareCardCanvas({ total }) {
 
   return React.createElement("div", { className: "card mt-2" },
     React.createElement("h3", { className: "mb-1", style: { fontSize: ".9rem" } },
-      "📤 ", lang === "ro" ? "Card partajare" : lang === "hu" ? "Megosztási kártya" : "Share card"
+      lang === "ro" ? "Card partajare" : lang === "hu" ? "Megosztási kártya" : "Share card"
     ),
     React.createElement("p", { className: "text-xs mb-2", style: { color: "var(--textSec)" } },
       lang === "ro" ? "Imagine 1200×630 gata de postat pe rețele sociale."
@@ -122,6 +122,6 @@ export function ShareCardCanvas({ total }) {
     React.createElement("canvas", { ref: canvasRef, className: "share-canvas" }),
     ready && React.createElement("button", {
       className: "btn btn-green btn-block mt-2", onClick: download
-    }, "⬇️ " + (lang === "ro" ? "Descarcă PNG" : lang === "hu" ? "PNG letöltése" : "Download PNG"))
+    }, (lang === "ro" ? "Descarcă PNG" : lang === "hu" ? "PNG letöltése" : "Download PNG"))
   );
 }

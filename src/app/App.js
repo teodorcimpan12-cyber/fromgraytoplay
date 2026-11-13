@@ -22,7 +22,7 @@ import { QuickReportModal } from "../components/QuickReportModal.js";
 import { ADMIN_UID, MENTORS, NICKNAMES, PAGE_IDS } from "../data/constants.js";
 import { useFirebase } from "../hooks/useFirebase.js";
 import { T } from "../i18n/strings.js";
-import { g2pEgg } from "../lib/g2p-egg.js";
+import { animOff, g2pEgg } from "../lib/g2p-egg.js";
 import { getVoterKey } from "../lib/get-voter-key.js";
 import { anonName } from "../lib/next-lang.js";
 import { useCallback, useEffect, useRef, useState } from "../lib/react.js";
@@ -285,9 +285,19 @@ export function App() {
       /^#[0-9a-fA-F]{6}$/.test(settings.accent2 || "") ? settings.accent2 : "");
   }, [settings, settings && settings.accent, settings && settings.accent2]);
   // Admin effects kill-switch (settings/flags/effects === false).
+  // The visitor's own "Animații" switch (footer) turns the whole site into its minimal version:
+  // no decorative motion (no-fx) plus the calm layout rules under html.minimal.
   useEffect(() => {
-    const off = !!(settings && settings.flags && settings.flags.effects === false);
-    document.documentElement.classList.toggle("no-fx", off);
+    const apply = () => {
+      const mine = animOff();
+      const off = mine || !!(settings && settings.flags && settings.flags.effects === false);
+      const r = document.documentElement;
+      r.classList.toggle("no-fx", off);
+      r.classList.toggle("minimal", mine);
+    };
+    apply();
+    window.addEventListener("g2p:anim", apply);
+    return () => window.removeEventListener("g2p:anim", apply);
   }, [settings && settings.flags && settings.flags.effects]);
   useEffect(() => {
     const h = e => {

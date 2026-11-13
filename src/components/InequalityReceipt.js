@@ -129,8 +129,8 @@ export function InequalityReceipt() {
     React.createElement("p", { className: "text-xs mb-2", style: { color: "var(--textSec)" } }, t.receiptSub),
     React.createElement("canvas", { ref: cvRef, className: "receipt-canvas" }),
     React.createElement("div", { className: "flex gap-1", style: { justifyContent: "center" } },
-      React.createElement("button", { className: "btn btn-green btn-sm", onClick: download }, "⬇️ PNG"),
-      React.createElement("button", { className: "btn btn-outline btn-sm", onClick: share }, "📤 " + t.share)
+      React.createElement("button", { className: "btn btn-green btn-sm", onClick: download }, "PNG"),
+      React.createElement("button", { className: "btn btn-outline btn-sm", onClick: share }, t.share)
     )
   );
 }

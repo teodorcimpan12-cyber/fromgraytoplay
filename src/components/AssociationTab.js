@@ -133,7 +133,7 @@ export function AssociationTab({ onFunding }) {
       React.createElement("span", { className: "text-sm" }, x)))),
     React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, L3("Orele sunt cele ale commit-urilor din istoricul proiectului, nu estimări. La rândurile „ziua” istoricul nu păstrează ora exactă.", "The times are those of the commits in the project history, not estimates. For “day” rows the history keeps no exact hour.")),
     React.createElement("div", { className: "flex gap-2 mt-2", style: { flexWrap: "wrap" } },
-      React.createElement("button", { className: "btn btn-green", onClick: onFunding }, "🤝 " + L3("Parteneriate și finanțare", "Partnerships and funding")),
-      React.createElement("button", { className: "btn", onClick: () => { setPage("petition"); window.scrollTo(0, 0); } }, "✍️ " + L3("Semnează petiția", "Sign the petition")),
-      React.createElement("a", { className: "btn btn-ghost", href: "mailto:" + G2P_EMAIL }, "✉️ " + L3("Scrie-ne", "Write to us"))));
+      React.createElement("button", { className: "btn btn-green", onClick: onFunding }, L3("Parteneriate și finanțare", "Partnerships and funding")),
+      React.createElement("button", { className: "btn", onClick: () => { setPage("petition"); window.scrollTo(0, 0); } }, L3("Semnează petiția", "Sign the petition")),
+      React.createElement("a", { className: "btn btn-ghost", href: "mailto:" + G2P_EMAIL }, L3("Scrie-ne", "Write to us"))));
 }

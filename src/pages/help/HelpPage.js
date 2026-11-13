@@ -165,6 +165,6 @@ export function HelpPage() {
             const c = `CĂTRE: ${CITY_HALL.registry}\n${CITY_HALL.address}\n\nSubsemnatul/a _____________, domiciliat/ă în _____________,\n\nsolicit:\n1. Informare privind stadiul renovării terenurilor sportive din cartierele periferice\n2. Alocarea de fonduri pentru programul pilot Flip-the-Court\n3. Accesarea fondurilor Erasmus+ Sport KA2\n\nCu stimă,\n_____________\nData: ${new Date().toLocaleDateString("ro-RO")}`;
             const b = new Blob([c], { type: "text/plain" });
             const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "cerere_g2p.txt"; a.click();
-          } }, "📥 ", t.downloadPDF)))),
+          } }, "", t.downloadPDF)))),
     report && React.createElement(QuickReportModal, { courtId: "", onClose: () => setReport(false) }));
 }

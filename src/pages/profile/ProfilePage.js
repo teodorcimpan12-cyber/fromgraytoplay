@@ -104,7 +104,7 @@ export function ProfilePage() {
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-green btn-sm mt-1",
     onClick: cert
-  }, "\uD83D\uDCDC ", t.volunteerCertificate))), /*#__PURE__*/React.createElement("div", {
+  }, "", t.volunteerCertificate))), /*#__PURE__*/React.createElement("div", {
     className: "card mb-2"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "mb-1"
@@ -122,7 +122,7 @@ export function ProfilePage() {
       ),
       React.createElement("button", { className: "btn btn-green", style: { width: "100%" },
         onClick: () => { location.hash = "#/admin"; }
-      }, "\u2192 Deschide Admin Panel")
+      }, "Deschide Admin Panel")
     ), React.createElement(StreakCard, null), React.createElement(Reveal, { as:"div", className:"card mt-2" },
     React.createElement(BadgesGrid, { lang:lang })
   ), React.createElement(Reveal, { as:"div", className:"card mt-2" }, React.createElement(EggCollection, { inline: true })), /*#__PURE__*/React.createElement("button", {

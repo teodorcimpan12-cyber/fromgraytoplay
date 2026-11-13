@@ -265,8 +265,8 @@ export function AiCourtCard({ court: c, onLetter }) {
   return e("div", { className: "ai-card" },
     e("div", { className: "ai-card-h" }, e("span", { className: "ai-card-pill" }, "✨ ", L3("NOU · AI", "NEW · AI", "ÚJ · AI")), L3("AI-ul te ajută cu terenul ăsta", "The AI helps with this court", "Az AI segít ezzel a pályával")),
     e("div", { className: "ai-card-b" },
-      e("button", { className: "btn btn-green", onClick: () => setVerify(true) }, "📷 ", L3("Pune o poză — AI-ul îți spune starea", "Add a photo — the AI reads its condition", "Tölts fel fotót — az AI megmondja az állapotát")),
-      onLetter && e("button", { className: "btn btn-outline", onClick: onLetter }, "✉️ ", L3("Scrisoare AI către Primărie", "AI letter to City Hall", "AI-levél a Városházának"))),
+      e("button", { className: "btn btn-green", onClick: () => setVerify(true) }, "", L3("Pune o poză — AI-ul îți spune starea", "Add a photo — the AI reads its condition", "Tölts fel fotót — az AI megmondja az állapotát")),
+      onLetter && e("button", { className: "btn btn-outline", onClick: onLetter }, "", L3("Scrisoare AI către Primărie", "AI letter to City Hall", "AI-levél a Városházának"))),
     verify && ReactDOM.createPortal(e("div", { onClick: ev => ev.stopPropagation() }, e(CourtConditionQuick, { courtId: c.id, onClose: () => setVerify(false) })), document.body));
 }
 export function moodOfCourt(c) {

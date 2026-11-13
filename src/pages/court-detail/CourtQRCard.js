@@ -58,7 +58,7 @@ export function CourtQRCard(props) {
       ),
       React.createElement("p", { className:"text-xs mb-2", style:{color:"var(--textSec)",wordBreak:"break-all"} }, url),
       React.createElement("div", { className:"flex gap-1 justify-center" },
-        React.createElement("button", { className:"btn btn-green btn-sm", onClick:download }, "⬇️ " + (t.qrDownload||"Descarcă QR")),
+        React.createElement("button", { className:"btn btn-green btn-sm", onClick:download }, (t.qrDownload||"Descarcă QR")),
         React.createElement("button", { className:"btn btn-outline btn-sm", onClick:onClose }, t.close||"Închide")
       )
     )

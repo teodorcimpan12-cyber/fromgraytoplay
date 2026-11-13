@@ -64,7 +64,7 @@ export function DemoRemote() {
     e("div", { className: "demo-rm-btns" },
       e("button", { onClick: () => send(step - 1), disabled: step === 0, "aria-label": "Înapoi" }, "‹"),
       e("button", { className: "go", onClick: () => send(step + 1), disabled: !nx, "aria-label": "Înainte" }, "›")),
-    e("button", { className: "demo-rm-reset", onClick: () => { setT0(0); send(0); } }, "↺ De la început"));
+    e("button", { className: "demo-rm-reset", onClick: () => { setT0(0); send(0); } }, "De la început"));
   const qaTab = e(React.Fragment, null,
     e("input", { className: "demo-rm-find", type: "search", placeholder: "Caută (bani, AI, GDPR…)", value: find, onChange: ev => setFind(ev.target.value) }),
     e("div", { className: "demo-rm-cats" },
@@ -83,7 +83,7 @@ export function DemoRemote() {
     !authReady && !slow ? e("p", { className: "demo-rm-wait" }, "Se verifică contul…") :
     !isAdmin ? e("div", { className: "demo-rm-login" },
       e("p", null, authReady ? "Telecomanda merge doar cu contul de admin." : "Contul nu răspunde. Conectează-te din nou sau reîncarcă."),
-      !authReady && e("button", { className: "btn btn-outline", onClick: () => location.reload() }, "↻ Reîncarcă"),
+      !authReady && e("button", { className: "btn btn-outline", onClick: () => location.reload() }, "Reîncarcă"),
       e("button", { className: "btn btn-green", onClick: () => openAuth() }, "Conectează-te")) :
     e(React.Fragment, null, top, tabs, screenBar, err && e("p", { className: "demo-rm-err" }, err), tab === "pitch" ? pitch : qaTab)), document.body);
 }

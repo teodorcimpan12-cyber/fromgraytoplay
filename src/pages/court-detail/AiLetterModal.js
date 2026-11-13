@@ -141,7 +141,7 @@ export function AiLetterModal({ court: c, onClose }) {
       st.s !== "done" && e("div", { className: "ai-letter-start" },
         e("p", null, L3("AI-ul scrie o scrisoare politicoasă în română, doar din ce știe site-ul despre teren: nume, stare, sesizări. Nu inventează cifre.", "The AI writes a polite letter in Romanian, only from what the site knows about this court: name, condition, reports. It invents no numbers.", "Az AI udvarias román nyelvű levelet ír, csak abból, amit az oldal tud a pályáról: név, állapot, bejelentések. Nem talál ki számokat.")),
         st.s === "err" && e("p", { className: "ai-err-t" }, aiErrMsg(st.code, L3)),
-        st.s === "err" && e("button", { className: "btn btn-outline", style: { marginRight: ".5rem" }, onClick: showExample }, "📌 ", L3("Arată un exemplu salvat", "Show a saved example", "Mentett példa")),
+        st.s === "err" && e("button", { className: "btn btn-outline", style: { marginRight: ".5rem" }, onClick: showExample }, "", L3("Arată un exemplu salvat", "Show a saved example", "Mentett példa")),
         e("button", { className: "btn btn-green", onClick: gen, disabled: st.s === "busy" }, st.s === "busy" ? "✨ " + L3("Scrie…", "Writing…", "Írja…") : "✨ " + L3("Scrie scrisoarea", "Write the letter", "Írd meg a levelet"))),
       st.s === "done" && e(React.Fragment, null,
         st.ex ? e("div", { className: "ai-tag ai-tag-ex mb-1" }, "📌 ", L3("Exemplu salvat: scris de AI pe " + ex.at + " pentru „" + ex.name + "”", "Saved example: written by AI on " + ex.at + " for “" + ex.name + "”", "Mentett példa: az AI írta " + ex.at + "-án ehhez: „" + ex.name + "”"), ex.id !== c.id ? L3(", nu pentru terenul ăsta.", ", not for this court.", ", nem ehhez a pályához.") : ".") :
@@ -153,9 +153,9 @@ export function AiLetterModal({ court: c, onClose }) {
         e("div", { className: "lt-ev" }, e("b", null, "📎 ", evTitle), e("ul", null, evidence.map((x, i) => e("li", { key: i }, x))),
           e("small", null, L3("Se adaugă singur la email și în PDF (cu până la 3 poze ale terenului).", "Added automatically to the email and the PDF (with up to 3 photos of the court).", "Automatikusan bekerül az e-mailbe és a PDF-be (legfeljebb 3 fotóval)."))),
         e("div", { className: "ai-letter-acts" },
-          e("button", { className: "btn btn-outline", onClick: copy }, "📋 ", L3("Copiază", "Copy", "Másolás")),
-          e("button", { className: "btn btn-green", onClick: mail }, "📨 ", L3("Trimite pe email", "Send by email", "Küldés e-mailben")),
-          e("button", { className: "btn btn-outline", onClick: pdf }, "📄 PDF"),
+          e("button", { className: "btn btn-outline", onClick: copy }, "", L3("Copiază", "Copy", "Másolás")),
+          e("button", { className: "btn btn-green", onClick: mail }, "", L3("Trimite pe email", "Send by email", "Küldés e-mailben")),
+          e("button", { className: "btn btn-outline", onClick: pdf }, "PDF"),
           e("button", { className: "btn btn-sm btn-outline", onClick: gen, title: L3("Scrie din nou", "Write again", "Írd újra") }, "↻")))
     ));
 }

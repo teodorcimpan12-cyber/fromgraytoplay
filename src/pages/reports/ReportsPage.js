@@ -98,17 +98,17 @@ export function ReportsPage() {
             e("button", { className: tab === "mine" ? "active" : "", onClick: () => setTab("mine") }, t.myReportsOnly),
             e("button", { className: tab === "evidence" ? "active" : "", onClick: () => setTab("evidence") }, t.evidenceTab)),
           tab !== "evidence" && !wide && e("div", { className: "rp-view", role: "group" },
-            e("button", { className: view === "list" ? "on" : "", "aria-pressed": view === "list", onClick: () => setView("list") }, "📋 " + L3("Listă", "List", "Lista")),
-            e("button", { className: view === "map" ? "on" : "", "aria-pressed": view === "map", onClick: () => setView("map") }, "🗺️ " + L3("Hartă", "Map", "Térkép")))),
+            e("button", { className: view === "list" ? "on" : "", "aria-pressed": view === "list", onClick: () => setView("list") }, L3("Listă", "List", "Lista")),
+            e("button", { className: view === "map" ? "on" : "", "aria-pressed": view === "map", onClick: () => setView("map") }, L3("Hartă", "Map", "Térkép")))),
         tab === "evidence" ? e(EvidenceWall, null) : e(React.Fragment, null,
           e("div", { className: "rp-chips" },
-            e("button", { className: "rp-chip" + (cat === "all" ? " on" : ""), onClick: () => setCat("all") }, "✨ " + L3("Toate", "All", "Mind")),
+            e("button", { className: "rp-chip" + (cat === "all" ? " on" : ""), onClick: () => setCat("all") }, L3("Toate", "All", "Mind")),
             REPORT_CATS.concat([["condition", "🩺"]]).map(c => e("button", { key: c[0], className: "rp-chip" + (cat === c[0] ? " on" : ""), onClick: () => setCat(cat === c[0] ? "all" : c[0]) },
               c[1] + " " + ({ surface: t.catSurface, hoop: t.catHoop, fence: t.catFence, lighting: t.catLighting, trash: t.catTrash, safety: t.catSafety, other: t.catOther, condition: t.conditionCheck }[c[0]]))),
             hoods.length > 1 && e("select", { value: hood, onChange: ev => setHood(ev.target.value), className: "rp-hood", "aria-label": t.neighbourhood },
               e("option", { value: "all" }, t.neighbourhood),
               hoods.map(h => e("option", { key: h, value: h }, hoodName(h, lang))))),
-          court && e("button", { className: "rp-courtchip", onClick: () => setCourt(null) }, "📍 " + courtName + "  ✕"),
+          court && e("button", { className: "rp-courtchip", onClick: () => setCourt(null) }, courtName + "  ✕"),
           wide
             ? e("div", { className: "rp-split" }, map, listEl)
             : view === "map" ? map : listEl)

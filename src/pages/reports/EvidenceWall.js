@@ -116,7 +116,7 @@ export function EvidenceWall() {
         React.createElement("button", {
           className: "btn btn-sm " + (gps ? "btn-green" : "btn-outline"),
           onClick: captureGps, title: t.gpsOptional
-        }, "📍", gps ? " ✓" : " GPS"),
+        }, "", gps ? " ✓" : " GPS"),
         React.createElement("button", {
           className: "btn btn-green", style: { flex: 1 },
           onClick: upload, disabled: busy || !preview,

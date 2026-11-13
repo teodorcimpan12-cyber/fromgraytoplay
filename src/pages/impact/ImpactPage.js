@@ -53,7 +53,7 @@ export function ImpactPage() {
         React.createElement("h3", { className: "barlow", style: { fontSize: "1.15rem", marginBottom: ".25rem" } }, t.pulseTitle),
         React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } }, t.pulseOpenSub)
       ),
-      React.createElement("button", { className: "btn btn-green", onClick: () => setPulse(true) }, "\uD83E\uDDEC " + t.pulseOpen)
+      React.createElement("button", { className: "btn btn-green", onClick: () => setPulse(true) }, t.pulseOpen)
     )
   ), /*#__PURE__*/React.createElement("div", {
     className: "tabs"

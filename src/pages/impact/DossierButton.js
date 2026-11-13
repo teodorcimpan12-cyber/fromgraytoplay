@@ -143,7 +143,7 @@ export function DossierButton() {
         className: "btn btn-dossier",
         onClick: generate, disabled: busy,
         style: { opacity: busy ? .7 : 1, whiteSpace: "nowrap" }
-      }, busy ? t.dossierGenerating : "📥 " + t.dossier)
+      }, busy ? t.dossierGenerating : t.dossier)
     )
   );
 }

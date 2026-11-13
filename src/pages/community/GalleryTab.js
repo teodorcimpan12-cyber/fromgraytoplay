@@ -158,6 +158,6 @@ export function GalleryTab() {
         db.ref(`gallery/${im.id}/votes`).transaction(v => (v || 0) + 1);
         toast("+1!");
       }
-    }, "❤️ ", im.votes || 0)));
+    }, "\u2665 ", im.votes || 0)));
   })));
 }

@@ -111,5 +111,5 @@ export function Showcase() {
       ),
       !firebaseUser && React.createElement("div", { className: "sc-cta" },
         React.createElement("p", null, L3("Toate merg mai bine cu un cont.", "Everything works better with an account.", "Fiókkal minden jobb.")),
-        React.createElement("button", { className: "btn btn-green btn-lg", onClick: () => openAuth("signup") }, "👤 " + L3("Creează cont gratuit", "Create a free account", "Ingyenes fiók")))));
+        React.createElement("button", { className: "btn btn-green btn-lg", onClick: () => openAuth("signup") }, L3("Creează cont gratuit", "Create a free account", "Ingyenes fiók")))));
 }

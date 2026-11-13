@@ -72,8 +72,8 @@ export function OpenDataCard() {
         React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } }, t.openDataSub)
       ),
       React.createElement("div", { className: "flex gap-1", style: { flexWrap: "wrap" } },
-        React.createElement("button", { className: "btn btn-outline btn-sm", onClick: exportJson }, "📥 " + t.downloadJson),
-        React.createElement("button", { className: "btn btn-outline btn-sm", onClick: exportCsv }, "📥 " + t.downloadCsv)
+        React.createElement("button", { className: "btn btn-outline btn-sm", onClick: exportJson }, t.downloadJson),
+        React.createElement("button", { className: "btn btn-outline btn-sm", onClick: exportCsv }, t.downloadCsv)
       )
     )
   );

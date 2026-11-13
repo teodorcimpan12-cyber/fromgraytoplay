@@ -71,5 +71,5 @@ export function AdminLogin({
       (!me || (privileged && !hasPw)) && React.createElement("button", { className: "ab", onClick: google, disabled: busy,
         style: { marginTop: ".5rem", background: "#fff", color: "#1F2937" } }, "G  Continue with Google"),
       (!me || hasPw) && React.createElement("button", { onClick: reset, style: ghost }, "Forgot password?"),
-      React.createElement("button", { onClick: onBack, style: ghost }, "← Back")));
+      React.createElement("button", { onClick: onBack, style: ghost }, "Back")));
 }

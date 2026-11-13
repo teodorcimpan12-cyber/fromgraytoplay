@@ -296,7 +296,7 @@ export function PetitionPage() {
     className: "pet-submit",
     disabled: !ok,
     onClick: doVote
-  }, ok ? lang === "ro" ? "✊ Semnează petiția" : "✊ Sign the petition" : lang === "ro" ? "Completează toate câmpurile + acceptă RGPD" : "Fill all fields + accept privacy policy"),
+  }, ok ? lang === "ro" ? "Semnează petiția" : "Sign the petition" : lang === "ro" ? "Completează toate câmpurile + acceptă RGPD" : "Fill all fields + accept privacy policy"),
   showPrivacy && React.createElement(PrivacyPolicyModal, { onClose: function() { setShowPrivacy(false); } })) : /*#__PURE__*/React.createElement("div", {
     className: "card mt-2",
     style: {
@@ -378,7 +378,7 @@ export function PetitionPage() {
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-coral",
     onClick: () => setShowLetter(true)
-  }, "\uD83D\uDCC4 ", t.generateLetter)), React.createElement(InequalityReceipt, null))), React.createElement(ShareCardCanvas, { total: total }),
+  }, "", t.generateLetter)), React.createElement(InequalityReceipt, null))), React.createElement(ShareCardCanvas, { total: total }),
     React.createElement(CivicMomentum, null),
     celebrateMilestone && React.createElement("div", { className: "milestone-cel" },
       React.createElement("div", { style: { fontSize: "3rem", marginBottom: ".4rem" } }, "\uD83C\uDF89"),

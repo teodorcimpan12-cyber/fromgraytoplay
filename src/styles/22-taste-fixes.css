@@ -62,3 +62,28 @@
 }
 /* the bar's top fade must sit under the raised Satelit button, not over it */
 .cdx-tab{position:relative;z-index:1}
+
+/* === Minimal mode (footer "Animații" off): html.minimal + html.no-fx ===
+   Same content and features, calm look: no live court, flat cards, no glows or gradients on surfaces. */
+.minimal .ao-court,.minimal .ao-hint{display:none!important}
+.minimal .ao-target{display:block!important}
+.minimal .aurora,.minimal .h3d-particles,.minimal .ambient-overlay,.minimal .page-wipe,.minimal .ripple{display:none!important}
+.minimal .card,.minimal .stat-tile{box-shadow:none!important;background-image:none!important;border:1px solid var(--border)}
+.minimal .card::before,.minimal .card::after,.minimal .stat-tile::before,.minimal .stat-tile::after,.minimal .glow-border::before,.minimal .glow-border::after{display:none!important}
+.minimal .shimmer-text{background:none!important;-webkit-text-fill-color:currentColor!important;color:inherit}
+.minimal .fab{box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.minimal .heat-1,.minimal .heat-2,.minimal .heat-3{box-shadow:none!important}
+@media(max-width:899.98px){.minimal .ao-live .ao-inner{padding-bottom:clamp(2rem,6vh,4.5rem)}}
+.minimal .ao-target{opacity:.35}
+.minimal .ao-gears{display:none}
+.minimal .card[style*="border-left"]{border-left:1px solid var(--border)!important}
+.minimal .stat-glow{display:none}
+@media(max-width:600px){
+  .minimal .home-stats .grid-3{grid-template-columns:repeat(3,1fr);gap:.5rem}
+  .minimal .home-stats .stat-tile{padding:.9rem .6rem;text-align:center}
+  .minimal .home-stats .stat-number{font-size:1.6rem}
+  .minimal .home-stats .stat-label{font-size:.7rem;line-height:1.25}
+}
+.minimal .ai-card{border:1px solid var(--border)!important;background:var(--bgCard)!important;box-shadow:none!important}
+.minimal .ai-card::before,.minimal .ai-card::after{display:none!important}
+.minimal .ai-card-pill{background:color-mix(in srgb,var(--green) 12%,transparent)!important;color:var(--green)!important}

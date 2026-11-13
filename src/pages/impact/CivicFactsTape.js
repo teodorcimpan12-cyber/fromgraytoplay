@@ -6,7 +6,7 @@ export function CivicFactsTape() {
   var lang = useApp().lang;
   return React.createElement("div", { className: "card mb-2", style: { padding: ".75rem" } },
     React.createElement("h4", { className: "text-xs mb-2", style: { color: "var(--textSec)", fontFamily: "Space Mono, monospace", letterSpacing: ".05em" } },
-      lang === "ro" ? "📊 NUMERELE CARE CONTEAZĂ — DATE VERIFICATE 2025" :
+      lang === "ro" ? "NUMERELE CARE CONTEAZĂ — DATE VERIFICATE 2025" :
       lang === "hu" ? "📊 A FONTOS SZÁMOK — ELLENŐRZÖTT ADATOK 2025" :
       "📊 THE NUMBERS THAT MATTER — VERIFIED DATA 2025"
     ),
