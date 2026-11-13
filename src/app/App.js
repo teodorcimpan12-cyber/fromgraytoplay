@@ -498,6 +498,7 @@ export function App() {
       case "petition":
         return /*#__PURE__*/React.createElement(PetitionPage, null);
       case "community":
+        if (isMinimal()) return /*#__PURE__*/React.createElement(HomePage, null);
         return /*#__PURE__*/React.createElement(CommunityPage, null);
       case "impact":
         return /*#__PURE__*/React.createElement(ImpactPage, null);

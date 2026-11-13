@@ -1,3 +1,4 @@
+import { isMinimal } from "../../lib/minimal.js";
 import { ACTIVE_CITY, COURTS, useApp } from "../../app/core.js";
 import { MapView } from "../../components/MapView.js";
 import { SatSwipe } from "../../components/SatSwipe.js";
@@ -160,7 +161,7 @@ export function CourtsPage() {
     courts: filtered,
     onSelect: openCourt,
     height: "clamp(360px, 64vh, 680px)"
-  }),/*#__PURE__*/React.createElement("p", {
+  }),!isMinimal() && /*#__PURE__*/React.createElement("p", {
     className: "text-xs mt-1",
     style: { color: "var(--textSec)", textAlign: "center" }
   }, lang === "ro"
@@ -210,7 +211,7 @@ export function CourtsPage() {
     style: {
       width: c.progress + "%"
     }
-  }))))))), React.createElement(SatSwipe, null), sel && /*#__PURE__*/React.createElement(CourtDetail, {
+  }))))))), !isMinimal() && React.createElement(SatSwipe, null), sel && /*#__PURE__*/React.createElement(CourtDetail, {
     court: sel,
     onClose: closeCourt,
     onBook: () => setShowBook(true)
