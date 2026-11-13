@@ -1,6 +1,9 @@
 # Kit de concurs — From Grey to Play
 
 Stare: 12 noiembrie 2026. Toate cifrele de mai jos au sursă în site sau în `CLAUDE.md`.
+
+**Pentru 14 nov.: scenariul actualizat, cu cifrele de azi-noapte și răspunsul Primăriei TGM, e în `docs/pitch/PITCH_14NOV.md` (fișă printabilă: `docs/pitch/pitch-14nov.pdf`).**
+
 **Regulă:** înainte de orice pitch, citiți cifrele vii de pe Impact → „Rezultate până azi” și înlocuiți-le aici. Niciun număr din memorie.
 
 ## 1. Lecția de la Astra Hack (locul 6 din 20)
@@ -30,7 +33,7 @@ De completat înainte: cele trei [N], cererea și obiectivul pe șase luni. Obie
 | Întrebare | Răspuns |
 |---|---|
 | Câți oameni îl folosesc? | Cifrele vii de pe Impact. Nu rotunjim în sus și nu numărăm sesizările de test. |
-| Ce s-a schimbat concret? | Azi: două cereri pe Legea 544 cu răspuns oficial de la CSM și de la Sibiu, publicate. Niciun teren renovat încă; spunem asta direct. |
+| Ce s-a schimbat concret? | Azi: trei răspunsuri oficiale pe Legea 544, publicate: CSM, Serviciul Sport Sibiu și Primăria Târgu Mureș (nr. 51941/11.11.2026: trei terenuri de cartier în proiect, două amânate pe cost). Niciun teren renovat încă; spunem asta direct. |
 | De ce ar răspunde primăria? | Pentru că cererea are bază legală și termen: 30 de zile pe OG 27/2002, 10 zile pe Legea 544/2001. Noi facem termenul vizibil public. |
 | Cum faceți bani? | Azi nu strângem bani. După înregistrare: Adoptă un teren (firme), 3,5% din impozit, finanțări locale. Nicio sursă peste 40% din venit. |
 | Cine sunt concurenții? | Sesizările la registratură (nu sunt publice) și postările pe Facebook (se pierd). Noi adăugăm dovada datată și urmărirea publică a răspunsului. |
