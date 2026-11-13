@@ -1,3 +1,4 @@
+import { isMinimal } from "../../lib/minimal.js";
 import { SatFinding, db, useApp } from "../../app/core.js";
 import { BadgeUnlockModal } from "../../components/BadgeUnlockModal.js";
 import { CourtConditionQuick } from "../../components/CourtConditionQuick.js";
@@ -152,9 +153,9 @@ export function CourtDetail({
   const small = (key, ic, label, onClick, on) => React.createElement("button", { key, type: "button", className: "cdx-sm" + (on ? " on" : ""), onClick, "aria-pressed": on == null ? undefined : !!on },
     cdxIcon(ic), React.createElement("span", null, label));
   const moreItems = [
-    { k: "play", ic: "ball", label: t.playNow, run: () => setShowPlay(true) },
+    !isMinimal() && { k: "play", ic: "ball", label: t.playNow, run: () => setShowPlay(true) },
     c.category !== "gym" && { k: "letter", ic: "mail", label: L3("Scrisoare AI către Primărie", "AI letter to City Hall", "AI-levél a Városházának"), run: () => setShowLetter(true) },
-    c.category !== "gym" && { k: "poster", ic: "poster", label: L3("Afiș pentru teren", "Court poster", "Plakát"), run: () => setShowWanted(true) }
+    c.category !== "gym" && !isMinimal() && { k: "poster", ic: "poster", label: L3("Afiș pentru teren", "Court poster", "Plakát"), run: () => setShowWanted(true) }
   ].filter(Boolean);
   const actions = React.createElement("div", { className: "cdx-actions" },
     React.createElement("button", { type: "button", className: "btn btn-green cdx-main-btn", onClick: () => setVerify(true) },
@@ -163,6 +164,7 @@ export function CourtDetail({
       !ci ? small("ci", "pin", t.checkIn, doCI) : small("co", "pin", t.checkOut, doCO, true),
       small("follow", following ? "bellOff" : "bell", following ? t.unfollow : t.follow, () => toggleFollow(c.id), following),
       small("share", "share", L3("Distribuie", "Share", "Megosztás"), () => shareCourt(c, t, toast)),
+      moreItems.length === 1 ? small(moreItems[0].k, moreItems[0].ic, L3("Scrisoare AI", "AI letter", "AI-levél"), moreItems[0].run) :
       React.createElement("div", { className: "cdx-more-wrap" },
         small("more", "more", L3("Mai mult", "More", "Több"), () => setMore(m => !m), more),
         more && React.createElement("div", { className: "cdx-menu", role: "menu" },
@@ -192,10 +194,10 @@ export function CourtDetail({
     React.createElement("div", { className: "flex gap-1 mb-2", style: { flexWrap: "wrap" } },
       Object.entries(c.accessibility || {}).map(([k, v]) => React.createElement("span", { key: k, className: "cdx-acc" + (v ? " yes" : " no") }, v ? "✓ " : "✗ ", ACC[k] || k))));
   const communityPanel = React.createElement(React.Fragment, null,
-    React.createElement("h4", { className: "mb-1" },
+    !isMinimal() && React.createElement("h4", { className: "mb-1" },
       React.createElement("span", { className: "live-dot", style: { display: "inline-block", verticalAlign: "middle", marginRight: ".35rem" } }),
       t.activeGames, gameCount > 0 ? " (" + gameCount + ")" : ""),
-    React.createElement(ActiveGames, { court: c }),
+    !isMinimal() && React.createElement(ActiveGames, { court: c }),
     React.createElement(RatingSection, { court: c }),
     courtPhotos.length > 0 && React.createElement(React.Fragment, null,
       React.createElement("h4", { className: "mb-1 mt-2" }, t.gallery, " (", courtPhotos.length, ")"),
@@ -204,8 +206,8 @@ export function CourtDetail({
           key: p.id, src: p.img, alt: "evidence", title: p.caption || "",
           style: { width: 90, height: 90, objectFit: "cover", borderRadius: 8, flexShrink: 0 }
         })))),
-    (c.status === "degraded" || c.status === "inProgress") && React.createElement(TaskBoard, { court: c }),
-    c.category !== "gym" && React.createElement(AdoptCourt, { court: c }),
+    !isMinimal() && (c.status === "degraded" || c.status === "inProgress") && React.createElement(TaskBoard, { court: c }),
+    c.category !== "gym" && !isMinimal() && React.createElement(AdoptCourt, { court: c }),
     React.createElement(CourtTimeline, { court: c }));
   const satPanel = React.createElement(React.Fragment, null,
     React.createElement(SatFinding, { court: c }),
@@ -213,9 +215,9 @@ export function CourtDetail({
   const items = [
     bookOn && { k: "book", ic: "book", label: t.bookCourt, run: onBook },
     { k: "info", ic: "info", label: "Info", panel: true },
-    { k: "sat", ic: "sat", label: L3("Satelit", "Satellite", "Műhold"), panel: true, mid: true },
+    { k: "sat", ic: "sat", label: L3("Satelit", "Satellite", "Műhold"), panel: true, mid: !isMinimal() },
     { k: "com", ic: "com", label: L3("Comunitate", "Community", "Közösség"), panel: true },
-    { k: "qr", ic: "qr", label: "QR", run: () => setShowQR(true) }
+    !isMinimal() && { k: "qr", ic: "qr", label: "QR", run: () => setShowQR(true) }
   ].filter(Boolean);
   const bar = React.createElement("nav", { className: "cdx-bar", "aria-label": L3("Secțiunile terenului", "Court sections", "A pálya szakaszai") },
     items.map(it => React.createElement("button", {

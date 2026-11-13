@@ -1,3 +1,4 @@
+import { isMinimal } from "../../lib/minimal.js";
 import { useApp } from "../../app/core.js";
 import { EggCollection } from "../../components/EggCollection.js";
 import { LangFlip } from "../../components/LangFlip.js";
@@ -123,9 +124,9 @@ export function ProfilePage() {
       React.createElement("button", { className: "btn btn-green", style: { width: "100%" },
         onClick: () => { location.hash = "#/admin"; }
       }, "Deschide Admin Panel")
-    ), React.createElement(StreakCard, null), React.createElement(Reveal, { as:"div", className:"card mt-2" },
+    ), React.createElement(StreakCard, null), !isMinimal() && React.createElement(Reveal, { as:"div", className:"card mt-2" },
     React.createElement(BadgesGrid, { lang:lang })
-  ), React.createElement(Reveal, { as:"div", className:"card mt-2" }, React.createElement(EggCollection, { inline: true })), /*#__PURE__*/React.createElement("button", {
+  ), !isMinimal() && React.createElement(Reveal, { as:"div", className:"card mt-2" }, React.createElement(EggCollection, { inline: true })), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline btn-block mt-2",
     style: {
       color: "var(--red)",

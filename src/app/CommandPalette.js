@@ -1,3 +1,4 @@
+import { isMinimal } from "../lib/minimal.js";
 import { ACTIVE_CITY, COURTS, g2pSfx, useApp } from "./core.js";
 import { CITY_CFG, LANG_NAMES } from "../data/constants.js";
 import { EGGS } from "../data/eggs.js";
@@ -61,8 +62,8 @@ export function CommandPalette({ onClose }) {
   A("📚", L3("Sursele datelor", "Data sources", "Adatforrások"), "surse sources dovezi", go("about"));
   A(theme === "dark" ? "☀️" : "🌙", t.cmdTheme, "dark light tema zi noapte", () => switchTheme(null, theme, setTheme));
   A("🌐", t.cmdLang + " → " + LANG_NAMES[nextLang(lang)], "limba language nyelv", () => setLang(nextLang(lang)));
-  if (flags.impact !== false) A("🧬", t.pulseTitle, "pulse", () => { sessionStorage.setItem("g2p_open_pulse", "1"); setPage("impact"); });
-  A("🏛️", "Mayor Mode", "fixit primar", () => { window.dispatchEvent(new Event("g2p-mayor")); });
+  if (flags.impact !== false && !isMinimal()) A("🧬", t.pulseTitle, "pulse", () => { sessionStorage.setItem("g2p_open_pulse", "1"); setPage("impact"); });
+  !isMinimal() && A("🏛️", "Mayor Mode", "fixit primar", () => { window.dispatchEvent(new Event("g2p-mayor")); });
   A("🎬", L3("Promo de 32 de secunde", "32-second promo", "32 másodperces promó"), "promo video film reel", () => { location.href = "/promo"; });
   const mascotIsOff = mascotOff();
   A("🏀", mascotIsOff ? L3("Adu mingea înapoi", "Bring the ball back", "Hozd vissza a labdát") : L3("Ascunde mingea", "Hide the ball", "Labda elrejtése"), "mascota mascot", () => {

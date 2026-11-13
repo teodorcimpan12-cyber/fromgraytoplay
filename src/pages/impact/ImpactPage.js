@@ -1,3 +1,4 @@
+import { isMinimal } from "../../lib/minimal.js";
 import { MoreSection } from "../../components/MoreSection.js";
 import { ACTIVE_CITY, useApp } from "../../app/core.js";
 import { InequalityReceipt } from "../../components/InequalityReceipt.js";
@@ -30,7 +31,7 @@ export function ImpactPage() {
     lang
   } = useApp();
   const tabL = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
-  const [tab, setTab] = useState(() => { const v = sessionStorage.getItem("g2p_impact_tab"); sessionStorage.removeItem("g2p_impact_tab"); return v || "calc"; });
+  const [tab, setTab] = useState(() => { const v = sessionStorage.getItem("g2p_impact_tab"); sessionStorage.removeItem("g2p_impact_tab"); return v || (isMinimal() ? "budget" : "calc"); });
   const [pulse, setPulse] = useState(false);
   // Command palette deep-link: open City Pulse on arrival.
   useEffect(() => {
@@ -50,7 +51,7 @@ export function ImpactPage() {
   }, t.impact), React.createElement(ResultsBoard, null), /*#__PURE__*/React.createElement("div", {
     className: "tabs"
   }, /*#__PURE__*/React.createElement("button", {
-    className: tab === "calc" ? "active" : "",
+    className: tab === "calc" ? "active" : "", hidden: isMinimal(),
     onClick: () => setTab("calc")
   }, tabL("Calculator", "Calculator", "Kalkulátor")), /*#__PURE__*/React.createElement("button", {
     className: tab === "city" ? "active" : "",
@@ -59,13 +60,13 @@ export function ImpactPage() {
     className: tab === "budget" ? "active" : "",
     onClick: () => setTab("budget")
   }, tabL("Buget", "Budget", "Költségvetés")), /*#__PURE__*/React.createElement("button", {
-    className: tab === "carbon" ? "active" : "",
+    className: tab === "carbon" ? "active" : "", hidden: isMinimal(),
     onClick: () => setTab("carbon")
   }, tabL("Mediu", "Environment", "Környezet")), /*#__PURE__*/React.createElement("button", {
-    className: tab === "health" ? "active" : "",
+    className: tab === "health" ? "active" : "", hidden: isMinimal(),
     onClick: () => setTab("health")
   }, tabL("Sănătate", "Health", "Egészség")), /*#__PURE__*/React.createElement("button", {
-    className: tab === "mental" ? "active" : "",
+    className: tab === "mental" ? "active" : "", hidden: isMinimal(),
     onClick: () => setTab("mental")
   }, tabL("Sănătate mintală", "Mental health", "Lelki egészség")), /*#__PURE__*/React.createElement("button", {
     className: tab === "tl" ? "active" : "",
@@ -79,7 +80,7 @@ export function ImpactPage() {
     React.createElement(CouncilCountdown, null),
     React.createElement(NeighborhoodRace, null)
   ), React.createElement(MoreSection, { id: "impact" }, /*#__PURE__*/React.createElement(DossierButton, null), /*#__PURE__*/React.createElement(OpenDataCard, null), React.createElement(CivicFactsTape, null),
-  React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--green)" } },
+  !isMinimal() && React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--green)" } },
     React.createElement("div", { className: "flex justify-between items-center", style: { gap: "1rem", flexWrap: "wrap" } },
       React.createElement("div", { style: { flex: 1, minWidth: 180 } },
         React.createElement("h3", { className: "barlow", style: { fontSize: "1.15rem", marginBottom: ".25rem" } }, t.pulseTitle),

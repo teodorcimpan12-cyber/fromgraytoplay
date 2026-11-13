@@ -1,3 +1,4 @@
+import { isMinimal } from "../lib/minimal.js";
 import { AdminLogin } from "./AdminLogin.js";
 import { AmbientLight } from "./AmbientLight.js";
 import { AuthModal } from "./AuthModal.js";
@@ -537,7 +538,7 @@ export function App() {
     }
   }, /*#__PURE__*/React.createElement("div", {
     key: page
-  }, React.createElement(PageBoundary, null, P()))), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(ReportHashListener, null), React.createElement(FunEggs, null), React.createElement(EggHub, { page: page }), React.createElement(SecretKeys, null), !isPhone() && React.createElement(Mascot, { page: page }), React.createElement(BigCelebration, null), React.createElement(ThemeFx, null), mayor && React.createElement(MayorMode, {
+  }, React.createElement(PageBoundary, null, P()))), React.createElement(HeatWatcher, null), !isMinimal() && React.createElement(AmbientLight, null), React.createElement(ReportHashListener, null), !isMinimal() && React.createElement(FunEggs, null), !isMinimal() && React.createElement(EggHub, { page: page }), !isMinimal() && React.createElement(SecretKeys, null), !isPhone() && !isMinimal() && React.createElement(Mascot, { page: page }), React.createElement(BigCelebration, null), React.createElement(ThemeFx, null), mayor && !isMinimal() && React.createElement(MayorMode, {
     onClose: () => setMayor(false)
   }), /*#__PURE__*/React.createElement(Footer, null), toastEl, authEl, nudgeEl, DEMO_ON && React.createElement(DemoLayer, null));
 }

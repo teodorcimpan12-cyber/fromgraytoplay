@@ -1,3 +1,4 @@
+import { isMinimal } from "../../lib/minimal.js";
 import { useApp } from "../../app/core.js";
 import { COMMUNITY_TABS } from "../../data/constants.js";
 import { useState } from "../../lib/react.js";
@@ -30,7 +31,7 @@ export function CommunityPage() {
     e("section", { className: "section" },
       e("div", { className: "container" },
         e("h2", { className: "section-title" }, t.community),
-        e("div", { className: "tabs cm-tabs", role: "tablist" }, ["overview"].concat(COMMUNITY_TABS).map(tb => e("button", { key: tb, role: "tab", "aria-selected": tab === tb, className: tab === tb ? "active" : "", onClick: () => go(tb) }, communityTabLabel(tb, t)))),
+        e("div", { className: "tabs cm-tabs", role: "tablist" }, ["overview"].concat(isMinimal() ? ["activity"] : COMMUNITY_TABS).map(tb => e("button", { key: tb, role: "tab", "aria-selected": tab === tb, className: tab === tb ? "active" : "", onClick: () => go(tb) }, communityTabLabel(tb, t)))),
         tab !== "overview" && e("p", { className: "cm-purpose" }, purpose[tab]),
         tab === "overview" && e(CommunityOverview, { go: go, purpose: purpose }),
         tab === "activity" && e(ActivityFeed, null),
