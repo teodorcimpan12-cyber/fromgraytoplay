@@ -1,0 +1,78 @@
+/* === Minimal theme (footer "Animații" off -> html.minimal) ===========================
+   A second face of the same site for a different audience: white, quiet, spacious, system type,
+   black actions, no borders or shadows, colour only where it carries meaning (court status).
+   Every feature stays; only the look changes. Light + dark. */
+html.minimal{
+  --min-font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --bg:#FFFFFF;--bgCard:#F6F6F4;--text:#111111;--textSec:#6B6B6B;--border:#EBEBE8;--navBg:rgba(255,255,255,.92);
+  --ink:#111111;--onInk:#FFFFFF;--shadow:none;--radius:16px;
+}
+html.minimal[data-theme="dark"]{--bg:#0B0B0B;--bgCard:#161616;--text:#F2F2F2;--textSec:#9A9A9A;--border:#242424;--navBg:rgba(11,11,11,.92);--ink:#F2F2F2;--onInk:#0B0B0B}
+html.minimal body{background:var(--bg);color:var(--text);font-size:17px;line-height:1.6;letter-spacing:-.003em}
+html.minimal body *:not(svg):not(svg *):not(code):not(pre):not(kbd):not(canvas){font-family:var(--min-font)!important}
+html.minimal h1,html.minimal h2,html.minimal h3,html.minimal h4,html.minimal .section-title,html.minimal .barlow{font-weight:650!important;letter-spacing:-.022em!important;text-transform:none!important;color:var(--text)}
+html.minimal .section-title{font-size:clamp(2rem,7vw,3.2rem)!important;line-height:1.05;margin:0 0 2rem!important}
+html.minimal main .container{padding-top:2.4rem;padding-bottom:2.4rem}
+@media(min-width:900px){html.minimal main .container{padding-top:4rem;padding-bottom:4rem}}
+html.minimal .mb-2{margin-bottom:1.6rem!important}html.minimal .mb-3{margin-bottom:2.2rem!important}
+html.minimal .mt-2{margin-top:1.6rem!important}html.minimal .mt-3{margin-top:2.2rem!important}
+
+/* Surfaces: no borders, no shadows, soft grey panels with room inside */
+html.minimal .card,html.minimal .stat-tile,html.minimal .ai-card,html.minimal .modal{border:0!important;box-shadow:none!important;background:var(--bgCard)!important;background-image:none!important;border-radius:var(--radius)!important}
+html.minimal .card{padding:1.6rem!important}
+html.minimal .card[style]{border-left:0!important;border-top:0!important}
+html.minimal [style*="border-left"]{border-left-color:transparent!important}
+html.minimal .modal-overlay{background:rgba(0,0,0,.35)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+
+/* Actions: one black primary, quiet secondary */
+html.minimal .btn,html.minimal .more-btn,html.minimal .cdx-sm,html.minimal .mascot-toggle{border-radius:980px!important;box-shadow:none!important;background-image:none!important;font-weight:600!important;letter-spacing:0!important}
+html.minimal .btn-green,html.minimal .btn-coral,html.minimal .btn-teal,html.minimal .pet-submit,html.minimal .cdx-main-btn,html.minimal .fab{background:var(--ink)!important;color:var(--onInk)!important;border-color:var(--ink)!important}
+html.minimal .btn-outline,html.minimal .btn-ghost,html.minimal .btn:not(.btn-green):not(.btn-coral):not(.btn-teal){background:transparent!important;color:var(--text)!important;border:1px solid var(--border)!important}
+html.minimal .btn{min-height:46px;padding-left:1.3rem;padding-right:1.3rem}
+html.minimal .fab{box-shadow:0 6px 20px rgba(0,0,0,.18)!important;animation:none!important}
+
+/* Navigation: plain words, underline for the current page */
+html.minimal .navbar{background:var(--navBg)!important;border-bottom:1px solid var(--border)!important;box-shadow:none!important}
+html.minimal .nav-logo{color:var(--text)!important;letter-spacing:-.01em}
+html.minimal .nav-links a,html.minimal .nav-links button{background:none!important;box-shadow:none!important;color:var(--textSec)!important}
+html.minimal .nav-links a.active,html.minimal .nav-links .active{color:var(--text)!important;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:2px}
+html.minimal .glide-pill,html.minimal .glide-ink{display:none!important}
+html.minimal .tabs{border:0!important;gap:.4rem;flex-wrap:wrap}
+html.minimal .tabs button,html.minimal .tab{border:1px solid var(--border)!important;border-radius:980px!important;background:transparent!important;color:var(--textSec)!important;padding:.45rem .95rem!important;min-height:40px}
+html.minimal .tabs button.active,html.minimal .tabs button.on,html.minimal .tab.active{background:var(--ink)!important;color:var(--onInk)!important;border-color:var(--ink)!important}
+html.minimal .badge{background:transparent!important;border:1px solid var(--border)!important;color:var(--textSec)!important;font-weight:600}
+
+/* Home: the dark opener becomes a white page with big type */
+html.minimal .ao{background:var(--bg)!important;color:var(--text)!important}
+html.minimal .ao-bg,html.minimal .ao-target,html.minimal .ao-court,html.minimal .ao-hint,html.minimal .ao-gears{display:none!important}
+html.minimal .ao-inner{padding-top:clamp(3rem,10vh,6rem)!important;padding-bottom:clamp(2.5rem,8vh,5rem)!important}
+html.minimal .ao-eyebrow{background:none!important;border:0!important;padding:0!important;color:var(--textSec)!important;letter-spacing:.02em}
+html.minimal .ao-kicker{color:var(--textSec)!important;letter-spacing:0!important;text-transform:none!important}
+html.minimal .ao-name b,html.minimal .ao-name em{color:var(--text)!important;background:none!important;-webkit-text-fill-color:currentColor!important}
+html.minimal .ao-name{font-size:clamp(2.6rem,11vw,5.5rem)!important;line-height:1!important;font-weight:700}
+html.minimal .ao-msg{color:var(--textSec)!important;font-weight:500!important;font-size:clamp(1.3rem,5vw,2rem)!important}
+html.minimal .ao-msg *{color:inherit!important;background:none!important;-webkit-text-fill-color:currentColor!important}
+html.minimal .ao-btn{background:transparent!important;color:var(--text)!important;border:1px solid var(--border)!important;box-shadow:none!important;translate:none!important;transform:none!important}
+html.minimal .ao-btn.go{background:var(--ink)!important;color:var(--onInk)!important;border-color:var(--ink)!important}
+html.minimal .ao-why{background:var(--bg)!important;color:var(--text)!important;border-top:1px solid var(--border)}
+html.minimal .ao-why p{color:var(--textSec)!important}
+
+/* Noise off: decorative strips and creatures; the features behind them stay reachable */
+html.minimal .ticker-wrap,html.minimal .mascot,html.minimal .ambient-overlay,html.minimal .aurora,html.minimal .stat-glow{display:none!important}
+html.minimal .stat-number{color:var(--text)!important;font-weight:700}
+html.minimal .live-dot{background:var(--textSec)!important;box-shadow:none!important}
+
+/* Footer: light and quiet */
+html.minimal .footer{background:var(--bg)!important;color:var(--textSec)!important;border-top:1px solid var(--border)}
+html.minimal .footer a{color:var(--text)!important}
+html.minimal .fun-set>summary{border-color:var(--border)}
+html.minimal hr,html.minimal .fade-b,html.minimal .fade-t{border-image:none!important;border-color:var(--border)!important}
+/* Opener actions: a clean vertical list instead of three squeezed tiles */
+html.minimal .ao-block{width:auto!important;max-width:440px}
+html.minimal .ao-cta{width:auto!important;min-width:0!important;display:grid!important;grid-template-columns:1fr!important;gap:.6rem!important;margin-top:1.8rem}
+html.minimal .ao-btn{flex-direction:row!important;justify-content:flex-start!important;gap:.75rem!important;min-height:54px!important;padding:0 1.3rem!important;border-radius:980px!important;font-size:1rem!important;text-align:left!important;width:100%!important;height:auto!important}
+html.minimal .ao-btn svg{width:20px!important;height:20px!important;flex:none}
+html.minimal .cdx-tab.mid .cdx-ic{background:var(--ink)!important;color:var(--onInk)!important;box-shadow:none!important;border-color:var(--bg)!important}
+html.minimal .cdx-tab.on{color:var(--text)!important}
+html.minimal .cdx-bar,html.minimal .modal.cdx{background:var(--bg)!important}
+html.minimal .cdx-bar::before{background:linear-gradient(180deg,transparent,var(--bg))!important}
