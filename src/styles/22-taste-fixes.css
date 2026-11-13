@@ -60,3 +60,5 @@
   .cdx-hero{height:100%}
   .cdx-actions{padding:.6rem 1.2rem .2rem}
 }
+/* the bar's top fade must sit under the raised Satelit button, not over it */
+.cdx-tab{position:relative;z-index:1}

@@ -223,7 +223,7 @@ export function CourtDetail({
       "aria-current": it.panel && tab === it.k ? "true" : undefined,
       onClick: () => { if (it.panel) setTab(it.k); else it.run(); }
     },
-      React.createElement("span", { className: "cdx-ic", "aria-hidden": "true" }, cdxIcon(it.ic, it.mid ? 26 : 22)),
+      React.createElement("span", { className: "cdx-ic", "aria-hidden": "true" }, cdxIcon(it.ic, it.mid ? 30 : 22)),
       React.createElement("span", { className: "cdx-lb" }, it.label))));
   return React.createElement("div", {
     className: "modal-overlay", onClick: onClose, role: "dialog", "aria-modal": "true", "aria-label": c.name
