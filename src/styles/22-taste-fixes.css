@@ -87,3 +87,16 @@
 .minimal .ai-card{border:1px solid var(--border)!important;background:var(--bgCard)!important;box-shadow:none!important}
 .minimal .ai-card::before,.minimal .ai-card::after{display:none!important}
 .minimal .ai-card-pill{background:color-mix(in srgb,var(--green) 12%,transparent)!important;color:var(--green)!important}
+/* "Mai mult": secondary blocks folded on every page */
+.more-sec{margin:1.5rem 0 1rem}
+.more-btn{display:flex;align-items:center;justify-content:center;gap:.35rem;margin:0 auto;min-height:44px;padding:0 1.3rem;border-radius:980px;border:1px solid var(--border);background:var(--bgCard);color:var(--text);font:600 .9rem/1 'Libre Franklin',sans-serif;cursor:pointer;touch-action:manipulation;transition:border-color .2s,color .2s}
+@media (hover:hover) and (pointer:fine){.more-btn:hover{border-color:var(--green);color:var(--green)}}
+.more-sec.open .more-btn{margin-top:1rem}
+/* Footer switches folded behind "Setări" */
+.fun-set{margin:.6rem auto;text-align:center}
+.fun-set>summary{display:inline-flex;align-items:center;gap:.35rem;min-height:44px;padding:0 1rem;cursor:pointer;list-style:none;color:inherit;opacity:.75;font-size:.85rem;font-weight:600;border-radius:980px;border:1px solid rgba(255,255,255,.18)}
+.fun-set>summary::-webkit-details-marker{display:none}
+.fun-set>summary::after{content:"";width:6px;height:6px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;rotate:45deg;margin:-3px 0 0 .2rem;transition:rotate .2s}
+.fun-set[open]>summary::after{rotate:-135deg;margin-top:3px}
+.fun-set .fun-panel{margin-top:.6rem}
+.mascot-toggle[aria-pressed="true"]{border-color:color-mix(in srgb,var(--green) 55%,transparent)}

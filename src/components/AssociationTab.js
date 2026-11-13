@@ -1,3 +1,4 @@
+import { MoreSection } from "./MoreSection.js";
 import { useApp } from "../app/core.js";
 import { Redirect35Card } from "./Redirect35Card.js";
 import { G2P_EMAIL } from "../data/constants.js";
@@ -108,6 +109,7 @@ export function AssociationTab({ onFunding }) {
       rule("⚖️", L3("Nicio sursă peste 40%", "No source above 40%"), L3("regula noastră", "our rule"), L3("Dacă o singură sursă ar trece de 40% din venituri, o reducem sau căutăm alta.", "If one source would pass 40% of income, we reduce it or find another.")),
       rule("🔐", L3("Bani doar prin asociație", "Money only through the association"), L3("după înregistrare", "after registration"), L3("Nu strângem bani de la nimeni până nu avem persoană juridică și cont.", "We collect no money from anyone until we have a legal entity and an account.")),
       rule("📖", L3("Rapoarte publice", "Public reports"), L3("venituri și cheltuieli", "income and spending"), L3("Publicăm fiecare leu primit și cheltuit, pe acest site, cu sursă.", "We publish every leu received and spent, on this site, with its source."))),
+    React.createElement(MoreSection, { id: "assoc" },
     React.createElement("h3", { className: "mt-3 mb-1" }, L3("Pregătim acum", "What we are preparing now")),
     React.createElement("ul", { className: "assoc-prep", style: { listStyle: "none", padding: 0, margin: 0, display: "grid", gap: ".35rem" } }, prep.map((x, i) => React.createElement("li", { key: i, style: { display: "flex", gap: ".6rem" } },
       React.createElement("span", { "aria-hidden": "true", style: { color: "var(--textSec)" } }, "○"), React.createElement("span", null, x)))),
@@ -131,7 +133,7 @@ export function AssociationTab({ onFunding }) {
     React.createElement("div", { className: "card" }, journal.map(([h, x], i) => React.createElement("div", { key: i, className: i < journal.length - 1 ? "fade-b" : undefined, style: { display: "flex", gap: ".75rem", padding: ".45rem 0" } },
       React.createElement("span", { style: { fontFamily: "'Space Mono',monospace", color: "var(--green)", flex: "none", width: "3.2rem" } }, h),
       React.createElement("span", { className: "text-sm" }, x)))),
-    React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, L3("Orele sunt cele ale commit-urilor din istoricul proiectului, nu estimări. La rândurile „ziua” istoricul nu păstrează ora exactă.", "The times are those of the commits in the project history, not estimates. For “day” rows the history keeps no exact hour.")),
+    React.createElement("p", { className: "text-xs mt-1", style: { color: "var(--textSec)" } }, L3("Orele sunt cele ale commit-urilor din istoricul proiectului, nu estimări. La rândurile „ziua” istoricul nu păstrează ora exactă.", "The times are those of the commits in the project history, not estimates. For “day” rows the history keeps no exact hour."))),
     React.createElement("div", { className: "flex gap-2 mt-2", style: { flexWrap: "wrap" } },
       React.createElement("button", { className: "btn btn-green", onClick: onFunding }, L3("Parteneriate și finanțare", "Partnerships and funding")),
       React.createElement("button", { className: "btn", onClick: () => { setPage("petition"); window.scrollTo(0, 0); } }, L3("Semnează petiția", "Sign the petition")),

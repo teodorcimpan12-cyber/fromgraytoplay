@@ -1,3 +1,4 @@
+import { MoreSection } from "../../components/MoreSection.js";
 import { COURTS, useApp } from "../../app/core.js";
 import { QuickReportFAB } from "../../components/QuickReportFAB.js";
 import { SibiuProgressBanner } from "../../components/SibiuProgressBanner.js";
@@ -59,6 +60,6 @@ export function HomePage() {
       React.createElement("button", { key: pg, className: "action-card ha-card", onClick: () => setPage(pg) },
         React.createElement("span", { className: "ac-icon ac-svg", "aria-hidden": "true" }, React.createElement("svg", { viewBox: "0 0 24 24" }, React.createElement("path", { d: ic }))),
         React.createElement("span", { className: "ha-label" }, lbl),
-        React.createElement("span", { className: "ha-arrow", "aria-hidden": "true" }, "\u2192")))))), React.createElement(FeaturedCourt, null), React.createElement(City3D, null), React.createElement(Showcase, null),
+        React.createElement("span", { className: "ha-arrow", "aria-hidden": "true" }, "\u2192")))))), React.createElement(MoreSection, { id: "home" }, React.createElement(FeaturedCourt, null), React.createElement(City3D, null), React.createElement(Showcase, null)),
   React.createElement(QuickReportFAB, null));
 }

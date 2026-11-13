@@ -40,11 +40,15 @@ export function FunPanel({ menu }) {
       else toast(L3("Fără permisiune, fără mișcare. 🤷", "No permission, no motion. 🤷", "Engedély nélkül nincs mozgás. 🤷"));
     }).catch(() => {});
   };
-  const B = (on, ic, label, click) => React.createElement("button", { className: "mascot-toggle", "aria-pressed": on, onClick: click }, ic + " " + label);
-  return React.createElement("div", { className: "fun-panel" + (menu ? " menu" : "") },
+  const B = (on, ic, label, click) => React.createElement("button", { className: "mascot-toggle", "aria-pressed": on, onClick: click }, label);
+  const panel = React.createElement("div", { className: "fun-panel" + (menu ? " menu" : "") },
     React.createElement(MascotToggle, null),
     B(anim, "✨", L3("Animații", "Animations", "Animációk"), () => { store("g2p_anim_off", anim ? "1" : "0", "g2p:anim"); toast(anim ? L3("Mod minimalist: fără animații și efecte.", "Minimal mode: no animations or effects.", "Minimalista mód: animációk nélkül.") : L3("Animațiile sunt pornite.", "Animations are on.", "Animációk bekapcsolva.")); }),
     B(snd, snd ? "🔊" : "🔈", L3("Sunete", "Sounds", "Hangok"), () => { store("g2p_sound", snd ? "0" : "1", "g2p:anim"); if (!snd) g2pSfx("bounce"); }),
     touch && B(mot, "📱", L3("Mișcare", "Motion", "Mozgás"), motion),
-    React.createElement("button", { className: "mascot-toggle", onClick: () => window.dispatchEvent(new CustomEvent("g2p:eggs-open")) }, "🥚 " + L3("Secrete", "Secrets", "Titkok") + " " + eggCount() + "/" + EGGS.length));
+    React.createElement("button", { className: "mascot-toggle", onClick: () => window.dispatchEvent(new CustomEvent("g2p:eggs-open")) }, L3("Secrete", "Secrets", "Titkok") + " " + eggCount() + "/" + EGGS.length));
+  if (menu) return panel;
+  // Footer: the switches sit behind one quiet "Setări" line.
+  return React.createElement("details", { className: "fun-set" },
+    React.createElement("summary", null, L3("Setări", "Settings", "Beállítások")), panel);
 }

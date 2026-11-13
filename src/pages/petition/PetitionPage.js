@@ -1,3 +1,4 @@
+import { MoreSection } from "../../components/MoreSection.js";
 import { ACTIVE_CITY, db, useApp } from "../../app/core.js";
 import { BadgeUnlockModal } from "../../components/BadgeUnlockModal.js";
 import { InequalityReceipt } from "../../components/InequalityReceipt.js";
@@ -378,8 +379,7 @@ export function PetitionPage() {
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-coral",
     onClick: () => setShowLetter(true)
-  }, "", t.generateLetter)), React.createElement(InequalityReceipt, null))), React.createElement(ShareCardCanvas, { total: total }),
-    React.createElement(CivicMomentum, null),
+  }, "", t.generateLetter)), React.createElement(InequalityReceipt, null))),
     celebrateMilestone && React.createElement("div", { className: "milestone-cel" },
       React.createElement("div", { style: { fontSize: "3rem", marginBottom: ".4rem" } }, "\uD83C\uDF89"),
       React.createElement("div", { style: { fontFamily: "'Barlow Condensed',monospace", fontSize: "2.6rem", fontWeight: 800, color: "var(--green)" } }, celebrateMilestone),
@@ -401,6 +401,9 @@ export function PetitionPage() {
     total: total
   }),
   unlockBadge && React.createElement(BadgeUnlockModal, { badge:unlockBadge, lang:lang, onClose:function(){setUnlockBadge(null);} }),
-  React.createElement(LetterCounter, null),
-  React.createElement(PledgeWall, null));
+  React.createElement(MoreSection, { id: "petition" },
+    React.createElement(ShareCardCanvas, { total: total }),
+    React.createElement(CivicMomentum, null),
+    React.createElement(LetterCounter, null),
+    React.createElement(PledgeWall, null)));
 }

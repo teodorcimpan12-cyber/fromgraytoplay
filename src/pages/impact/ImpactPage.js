@@ -1,3 +1,4 @@
+import { MoreSection } from "../../components/MoreSection.js";
 import { ACTIVE_CITY, useApp } from "../../app/core.js";
 import { InequalityReceipt } from "../../components/InequalityReceipt.js";
 import { CITIES } from "../../data/constants.js";
@@ -46,16 +47,7 @@ export function ImpactPage() {
     className: "container"
   }, /*#__PURE__*/React.createElement("h2", {
     className: "section-title"
-  }, t.impact), React.createElement(ResultsBoard, null), /*#__PURE__*/React.createElement(DossierButton, null), /*#__PURE__*/React.createElement(OpenDataCard, null), React.createElement(CivicFactsTape, null),
-  React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--green)" } },
-    React.createElement("div", { className: "flex justify-between items-center", style: { gap: "1rem", flexWrap: "wrap" } },
-      React.createElement("div", { style: { flex: 1, minWidth: 180 } },
-        React.createElement("h3", { className: "barlow", style: { fontSize: "1.15rem", marginBottom: ".25rem" } }, t.pulseTitle),
-        React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } }, t.pulseOpenSub)
-      ),
-      React.createElement("button", { className: "btn btn-green", onClick: () => setPulse(true) }, t.pulseOpen)
-    )
-  ), /*#__PURE__*/React.createElement("div", {
+  }, t.impact), React.createElement(ResultsBoard, null), /*#__PURE__*/React.createElement("div", {
     className: "tabs"
   }, /*#__PURE__*/React.createElement("button", {
     className: tab === "calc" ? "active" : "",
@@ -86,7 +78,16 @@ export function ImpactPage() {
   tab === "race" && React.createElement(React.Fragment, null,
     React.createElement(CouncilCountdown, null),
     React.createElement(NeighborhoodRace, null)
-  ))), pulse && React.createElement(CityPulse, { onClose: () => setPulse(false) }));
+  ), React.createElement(MoreSection, { id: "impact" }, /*#__PURE__*/React.createElement(DossierButton, null), /*#__PURE__*/React.createElement(OpenDataCard, null), React.createElement(CivicFactsTape, null),
+  React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--green)" } },
+    React.createElement("div", { className: "flex justify-between items-center", style: { gap: "1rem", flexWrap: "wrap" } },
+      React.createElement("div", { style: { flex: 1, minWidth: 180 } },
+        React.createElement("h3", { className: "barlow", style: { fontSize: "1.15rem", marginBottom: ".25rem" } }, t.pulseTitle),
+        React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } }, t.pulseOpenSub)
+      ),
+      React.createElement("button", { className: "btn btn-green", onClick: () => setPulse(true) }, t.pulseOpen)
+    )
+  )))), pulse && React.createElement(CityPulse, { onClose: () => setPulse(false) }));
 }
 export function CityComp() {
   const {
