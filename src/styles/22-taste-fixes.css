@@ -2,3 +2,5 @@
 .fab{transition:transform .25s var(--ease-out,ease),opacity .2s,box-shadow .2s}
 .fab.fab-dup{opacity:0;transform:translateY(12px) scale(.96);pointer-events:none}
 @media (pointer:coarse){.mascot-toggle{min-height:44px}}
+/* Community stats: three stacked pills on phones -> one quiet line */
+@media (max-width:600px){.cm-strip{gap:.3rem 1rem}.cm-strip span{background:none;border:0;padding:0;font-size:.76rem;color:var(--textSec)}}

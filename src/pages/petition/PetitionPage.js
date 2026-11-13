@@ -148,7 +148,10 @@ export function PetitionPage() {
   };
   useEffect(function() {
     if (!total) return;
-    var lastSeen = parseInt(localStorage.getItem("g2p_ms_seen") || "0");
+    var seen = localStorage.getItem("g2p_ms_seen");
+    // First visit: remember where the count is, no confetti for milestones reached before this visitor came.
+    if (seen === null) { var past = MILESTONES.filter(function(m) { return m <= total; }); localStorage.setItem("g2p_ms_seen", String(past.length ? Math.max.apply(null, past) : 0)); return; }
+    var lastSeen = parseInt(seen || "0");
     var achieved = MILESTONES.filter(function(m) { return m <= total && m > lastSeen; });
     if (achieved.length > 0) {
       var highest = Math.max.apply(null, achieved);
@@ -183,7 +186,7 @@ export function PetitionPage() {
     style: {
       textAlign: "center"
     }
-  }, "\u270A ", t.voteTitle), /*#__PURE__*/React.createElement("p", {
+  }, t.voteTitle), /*#__PURE__*/React.createElement("p", {
     className: "section-sub",
     style: {
       textAlign: "center"
