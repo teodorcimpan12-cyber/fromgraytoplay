@@ -507,6 +507,7 @@ export function App() {
       case "association":
         return React.createElement(AssociationPage, null);
       case "about":
+        if (isMinimal()) return /*#__PURE__*/React.createElement(AssociationPage, null);
         return /*#__PURE__*/React.createElement(AboutPage, null);
       case "press":
         return React.createElement(PressPage, null);

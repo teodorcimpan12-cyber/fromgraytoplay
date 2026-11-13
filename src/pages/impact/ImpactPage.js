@@ -69,17 +69,17 @@ export function ImpactPage() {
     className: tab === "mental" ? "active" : "", hidden: isMinimal(),
     onClick: () => setTab("mental")
   }, tabL("Sănătate mintală", "Mental health", "Lelki egészség")), /*#__PURE__*/React.createElement("button", {
-    className: tab === "tl" ? "active" : "",
+    className: tab === "tl" ? "active" : "", hidden: isMinimal(),
     onClick: () => setTab("tl")
   }, tabL("Cronologie", "Timeline", "Idővonal")), React.createElement("button", { className: tab === "hood" ? "active" : "", onClick: function() { setTab("hood"); }, title: "Neighbourhoods" }, tabL("Cartiere", "Neighbourhoods", "Negyedek")),
-  React.createElement("button", { className: tab === "race" ? "active" : "", onClick: function() { setTab("race"); }, title: t.neighborhoodRace||"Cursa cartierelor" }, tabL("Cursă", "Race", "Verseny")),
+  React.createElement("button", { className: tab === "race" ? "active" : "", hidden: isMinimal(), onClick: function() { setTab("race"); }, title: t.neighborhoodRace||"Cursa cartierelor" }, tabL("Cursă", "Race", "Verseny")),
   React.createElement("button", { className: tab === "letters" ? "active" : "", onClick: function() { setTab("letters"); }, title: lang === "en" ? "Letters to City Hall" : lang === "hu" ? "Levelek a Városházának" : "Scrisori către Primărie" }, tabL("Scrisori", "Letters", "Levelek"))),
   tab === "letters" && React.createElement(LettersTracker, null),
   tab === "proiecte" && React.createElement(ProiecteTab, null), tab === "calc" && React.createElement(React.Fragment, null, React.createElement(ImpactCalc, null), React.createElement(InequalityReceipt, null)), tab === "city" && (ACTIVE_CITY === "tgm" ? /*#__PURE__*/React.createElement(CityComp, null) : React.createElement(SatAuditCard, null)), tab === "budget" && (ACTIVE_CITY === "tgm" ? React.createElement(React.Fragment, null, React.createElement(CsmInvest, null), /*#__PURE__*/React.createElement(BudgetViz, null), React.createElement(BudgetWatchdog, null)) : React.createElement(SibiuInvest, null)), tab === "carbon" && /*#__PURE__*/React.createElement(CarbonCalc, null), tab === "health" && /*#__PURE__*/React.createElement(HealthCalc, null), tab === "mental" && /*#__PURE__*/React.createElement(MentalSec, null), tab === "tl" && /*#__PURE__*/React.createElement(TimelineSec, null), tab === "hood" && React.createElement(HoodChart, null),
   tab === "race" && React.createElement(React.Fragment, null,
     React.createElement(CouncilCountdown, null),
     React.createElement(NeighborhoodRace, null)
-  ), React.createElement(MoreSection, { id: "impact" }, /*#__PURE__*/React.createElement(DossierButton, null), /*#__PURE__*/React.createElement(OpenDataCard, null), React.createElement(CivicFactsTape, null),
+  ), !isMinimal() && React.createElement(MoreSection, { id: "impact" }, /*#__PURE__*/React.createElement(DossierButton, null), /*#__PURE__*/React.createElement(OpenDataCard, null), React.createElement(CivicFactsTape, null),
   !isMinimal() && React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--green)" } },
     React.createElement("div", { className: "flex justify-between items-center", style: { gap: "1rem", flexWrap: "wrap" } },
       React.createElement("div", { style: { flex: 1, minWidth: 180 } },

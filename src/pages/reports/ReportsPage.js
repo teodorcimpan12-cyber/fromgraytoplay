@@ -1,3 +1,4 @@
+import { isMinimal } from "../../lib/minimal.js";
 import { ACTIVE_CITY, COURTS, useApp } from "../../app/core.js";
 import { MapView } from "../../components/MapView.js";
 import { QuickReportFAB } from "../../components/QuickReportFAB.js";
@@ -96,12 +97,12 @@ export function ReportsPage() {
           e("div", { className: "tabs" },
             e("button", { className: tab === "all" ? "active" : "", onClick: () => setTab("all") }, t.allReports),
             e("button", { className: tab === "mine" ? "active" : "", onClick: () => setTab("mine") }, t.myReportsOnly),
-            e("button", { className: tab === "evidence" ? "active" : "", onClick: () => setTab("evidence") }, t.evidenceTab)),
-          tab !== "evidence" && !wide && e("div", { className: "rp-view", role: "group" },
+            !isMinimal() && e("button", { className: tab === "evidence" ? "active" : "", onClick: () => setTab("evidence") }, t.evidenceTab)),
+          tab !== "evidence" && !wide && !isMinimal() && e("div", { className: "rp-view", role: "group" },
             e("button", { className: view === "list" ? "on" : "", "aria-pressed": view === "list", onClick: () => setView("list") }, L3("Listă", "List", "Lista")),
             e("button", { className: view === "map" ? "on" : "", "aria-pressed": view === "map", onClick: () => setView("map") }, L3("Hartă", "Map", "Térkép")))),
         tab === "evidence" ? e(EvidenceWall, null) : e(React.Fragment, null,
-          e("div", { className: "rp-chips" },
+          !isMinimal() && e("div", { className: "rp-chips" },
             e("button", { className: "rp-chip" + (cat === "all" ? " on" : ""), onClick: () => setCat("all") }, L3("Toate", "All", "Mind")),
             REPORT_CATS.concat([["condition", "🩺"]]).map(c => e("button", { key: c[0], className: "rp-chip" + (cat === c[0] ? " on" : ""), onClick: () => setCat(cat === c[0] ? "all" : c[0]) },
               c[1] + " " + ({ surface: t.catSurface, hoop: t.catHoop, fence: t.catFence, lighting: t.catLighting, trash: t.catTrash, safety: t.catSafety, other: t.catOther, condition: t.conditionCheck }[c[0]]))),
@@ -109,7 +110,7 @@ export function ReportsPage() {
               e("option", { value: "all" }, t.neighbourhood),
               hoods.map(h => e("option", { key: h, value: h }, hoodName(h, lang))))),
           court && e("button", { className: "rp-courtchip", onClick: () => setCourt(null) }, courtName + "  ✕"),
-          wide
+          isMinimal() ? listEl : wide
             ? e("div", { className: "rp-split" }, map, listEl)
             : view === "map" ? map : listEl)
       )),

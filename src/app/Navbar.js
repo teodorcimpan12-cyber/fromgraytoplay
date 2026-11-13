@@ -109,13 +109,13 @@ export function Navbar() {
     }
   }, "FROM GREY TO PLAY"), /*#__PURE__*/React.createElement("div", {
     className: "nav-links desktop"
-  }, navs.filter(n => !(isMinimal() && n.k === "community")).map(n => /*#__PURE__*/React.createElement(NL, {
+  }, navs.filter(n => !(isMinimal() && (n.k === "community" || n.k === "about"))).map(n => /*#__PURE__*/React.createElement(NL, {
     key: n.k,
     k: n.k,
     l: n.l
   })),
   /*#__PURE__*/React.createElement("button", {
-    onClick: () => setShowNotif(v => !v),
+    onClick: () => setShowNotif(v => !v), hidden: isMinimal(),
     style: { position: "relative", padding: unreadCount > 0 ? ".35rem 1.15rem .35rem .35rem" : undefined },
     title: t.notifications,
     "aria-label": t.notifications + (unreadCount ? " (" + unreadCount + ")" : "")
@@ -188,7 +188,7 @@ export function Navbar() {
     "aria-label": lang === "en" ? "Close menu" : lang === "hu" ? "Men\u00fc bez\u00e1r\u00e1sa" : "\u00cenchide meniul",
     onClick: () => setMob(false)
   }, React.createElement("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2.4, strokeLinecap: "round", "aria-hidden": "true" },
-    React.createElement("path", { d: "M6 6l12 12M18 6L6 18" }))), navs.filter(n => !(isMinimal() && n.k === "community")).map(n => /*#__PURE__*/React.createElement(NL, {
+    React.createElement("path", { d: "M6 6l12 12M18 6L6 18" }))), navs.filter(n => !(isMinimal() && (n.k === "community" || n.k === "about"))).map(n => /*#__PURE__*/React.createElement(NL, {
     key: n.k,
     k: n.k,
     l: n.l,
@@ -202,7 +202,7 @@ export function Navbar() {
     }
   }, React.createElement(CitySwitch, null), React.createElement(LangFlip, { big: true }), React.createElement(ThemeBoard, { big: true }), React.createElement("button", {
     className: "btn btn-sm btn-outline",
-    onClick: () => { setMob(false); setShowNotif(true); }
+    onClick: () => { setMob(false); setShowNotif(true); }, hidden: isMinimal()
   }, "🔔 " + (unreadCount ? unreadCount + " " : "") + t.notifications), firebaseUser && React.createElement("button", {
     className: "btn btn-sm btn-outline",
     onClick: () => { setMob(false); setPage("profile"); }

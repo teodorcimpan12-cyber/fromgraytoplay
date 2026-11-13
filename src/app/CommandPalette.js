@@ -41,7 +41,7 @@ export function CommandPalette({ onClose }) {
    ["community", t.community, "💬", L3("forum galerie evenimente echipe pixel clasament", "forum gallery events teams pixel leaderboard", "")],
    ["impact", t.impact, "📊", L3("statistici cifre", "stats numbers", "")], ["help", t.help, "🤝", L3("voluntar doneaza distribuie contact", "volunteer donate share contact", "")], ["association", L3("Asociația", "Association", "Egyesület"), "🏛️", L3("asociatie fondatori statut constituire", "association founders statute", "")],
    ["about", t.about, "ℹ️", L3("echipa surse finantare parteneri presa", "team sources funding partners press", "")], ["profile", t.profile, "👤", L3("cont insigne", "account badges", "")]]
-    .filter(pg => flags[pg[0]] !== false && !(isMinimal() && pg[0] === "community"))
+    .filter(pg => flags[pg[0]] !== false && !(isMinimal() && (pg[0] === "community" || pg[0] === "about")))
     .forEach(pg => items.push({ c: "pages", ic: pg[2], l: pg[1], kw: pg[3], run: go(pg[0]) }));
   COURTS.forEach(c => {
     const v = courtStatusView(c, t);
