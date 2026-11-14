@@ -1,3 +1,4 @@
+import { isMinimal } from "../../lib/minimal.js";
 import { ACTIVE_CITY, db, useApp } from "../../app/core.js";
 import { useFirebase } from "../../hooks/useFirebase.js";
 import { activityMsg } from "../../lib/activity-msg.js";
@@ -30,7 +31,7 @@ export function CommunityOverview({ go, purpose }) {
   const online = presence ? Object.keys(presence).length : 0;
   const px = pixels ? Object.keys(pixels).length : 0;
   const e = React.createElement;
-  const Card = (tb, body, cta, extra) => e("button", { key: tb, className: "cm-card" + (extra || ""), onClick: () => go(tb) },
+  const Card = (tb, body, cta, extra) => isMinimal() && tb !== "activity" ? null : e("button", { key: tb, className: "cm-card" + (extra || ""), onClick: () => go(tb) },
     e("span", { className: "cm-k" }, communityTabLabel(tb, t)),
     e("span", { className: "cm-p" }, purpose[tb]),
     e("span", { className: "cm-live" }, body),
@@ -40,7 +41,7 @@ export function CommunityOverview({ go, purpose }) {
     e("div", { className: "cm-strip" },
       e("span", null, e("b", { className: "live-dot" }), online + " " + L3("online acum", "online now", "online most")),
       e("span", null, "⚡ " + today + " " + L3("acțiuni în ultimele 24 h", "actions in the last 24 h", "művelet az elmúlt 24 órában")),
-      e("span", null, "🏆 " + vals(lb).filter(u => !isOwnerName(u.name)).length + " " + L3("în clasament", "on the leaderboard", "a ranglistán"))),
+      !isMinimal() && e("span", null, "🏆 " + vals(lb).filter(u => !isOwnerName(u.name)).length + " " + L3("în clasament", "on the leaderboard", "a ranglistán"))),
     e("div", { className: "cm-grid" },
       Card("activity", acts.length
         ? e("span", { className: "cm-list" }, acts.slice(0, 3).map(a => e("span", { key: a.id }, activityMsg(a, t), e("small", null, " · " + relTime(a.timestamp, lang)))))

@@ -1,3 +1,4 @@
+import { isMinimal } from "../../lib/minimal.js";
 import { COURTS, useApp } from "../../app/core.js";
 import { fxReduced } from "../../lib/fx-reduced.js";
 import { useEffect, useRef, useState } from "../../lib/react.js";
@@ -98,7 +99,7 @@ export function Showcase() {
       React.createElement("h2", { className: "section-title" }, L3("Ce poate face site-ul ăsta", "What this site can do", "Mit tud ez az oldal")),
       React.createElement("p", { className: "section-sub" }, L3("Patru instrumente. Fiecare face ceva diferit.", "Four tools. Each one does something different.", "Négy eszköz, mind más-más.")),
       React.createElement("div", { ref: gridRef, className: "sc-grid sc-grid-v2" + (phase ? " " + phase : "") },
-        tiles.map((tile, i) => React.createElement("button", {
+        tiles.filter(tl => !(isMinimal() && tl.key === "pulse")).map((tile, i) => React.createElement("button", {
           key: tile.key, className: "sc-tile sc-tile-v2", onClick: tile.action,
           style: { "--sc-acc": tile.color, "--i": i },
           onPointerMove: tilt, onPointerLeave: untilt
@@ -111,5 +112,5 @@ export function Showcase() {
       ),
       !firebaseUser && React.createElement("div", { className: "sc-cta" },
         React.createElement("p", null, L3("Toate merg mai bine cu un cont.", "Everything works better with an account.", "Fiókkal minden jobb.")),
-        React.createElement("button", { className: "btn btn-green btn-lg", onClick: () => openAuth("signup") }, "👤 " + L3("Creează cont gratuit", "Create a free account", "Ingyenes fiók")))));
+        React.createElement("button", { className: "btn btn-green btn-lg", onClick: () => openAuth("signup") }, L3("Creează cont gratuit", "Create a free account", "Ingyenes fiók")))));
 }

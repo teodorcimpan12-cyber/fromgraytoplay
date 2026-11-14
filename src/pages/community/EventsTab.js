@@ -47,8 +47,8 @@ export function EventsTab() {
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-green btn-sm",
     onClick: () => rsvp(ev.id)
-  }, "\u2713 ", t.rsvp), /*#__PURE__*/React.createElement("button", {
+  }, "", t.rsvp), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline btn-sm",
     onClick: () => addCal(ev)
-  }, "\uD83D\uDCC5 ", t.addToCalendar)))), React.createElement(ProposeGame, { more: true }));
+  }, "", t.addToCalendar)))), React.createElement(ProposeGame, { more: true }));
 }

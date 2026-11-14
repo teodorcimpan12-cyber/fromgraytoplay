@@ -135,13 +135,13 @@ export function LetterModal({
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-green",
     onClick: email
-  }, "✉️ ", t.emailLetter), /*#__PURE__*/React.createElement("button", {
+  }, "", t.emailLetter), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline",
     onClick: copyText
-  }, "📋 ", lang === "en" ? "Copy the text" : lang === "hu" ? "Szöveg másolása" : "Copiază textul"), /*#__PURE__*/React.createElement("button", {
+  }, "", lang === "en" ? "Copy the text" : lang === "hu" ? "Szöveg másolása" : "Copiază textul"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-outline",
     onClick: dl
-  }, "📥 ", t.downloadPDF), /*#__PURE__*/React.createElement("button", {
+  }, "", t.downloadPDF), /*#__PURE__*/React.createElement("button", {
     className: "btn",
     onClick: onClose
   }, t.cancel))));

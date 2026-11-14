@@ -20,6 +20,6 @@ export function PetitionSteps({ step }) {
   return React.createElement("div", { className: "pet-steps", "aria-label": now },
     React.createElement("ol", null, steps.map((st, i) => React.createElement("li", {
       key: i, className: i + 1 < step ? "done" : i + 1 === step ? "now" : ""
-    }, React.createElement("span", { className: "ps-n" }, i + 1 < step ? "✓" : i + 1), React.createElement("span", { className: "ps-l" }, st[0] + " " + st[1])))),
+    }, React.createElement("span", { className: "ps-n" }, i + 1 < step ? "✓" : i + 1), React.createElement("span", { className: "ps-l" }, st[1])))),
     React.createElement("p", { className: "ps-now" }, now));
 }

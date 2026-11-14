@@ -10,7 +10,9 @@ export function anonName(s) {
   const x = String(s || "").trim();
   if (!x) return "Anonim";
   if (isMentor(x)) return x; // mentors appear with their full public name
-  const parts = x.split(/\s+/);
+  // Keep only words that start with a letter, so stray quotes or emoji never become an "initial".
+  const parts = x.split(/\s+/).filter(w => /^\p{L}/u.test(w));
+  if (!parts.length) return "Anonim";
   return parts.length === 1 ? parts[0] : parts[0] + " " + parts[parts.length - 1][0] + ".";
 }
 /* === Push an activity entry. Fire-and-forget. === */

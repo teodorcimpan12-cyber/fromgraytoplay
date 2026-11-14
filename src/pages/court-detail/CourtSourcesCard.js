@@ -33,7 +33,7 @@ export function CourtSourcesCard({ court: c }) {
       satL && e("span", null, satL), pressL && e("a", { href: c.src, target: "_blank", rel: "noopener" }, pressL),
       e("span", null, verifyLabel(cs, L3) || "🙋 " + L3("Comunitate: încă nicio verificare", "Community: no checks yet", "Közösség: még nincs ellenőrzés"))),
     e("div", { className: "flex gap-1", style: { flexWrap: "wrap", marginTop: ".5rem" } },
-      e("button", { className: "btn btn-sm btn-green", onClick: () => setOpen(true) }, "🙋 ", L3("Ajută-ne să verificăm (60 s)", "Help us check (60 s)", "Segíts ellenőrizni (60 mp)")),
-      e("button", { className: "btn btn-sm btn-outline", onClick: share }, "🔗 ", L3("Link pentru postare", "Link to post", "Link megosztáshoz"))),
+      e("button", { className: "btn btn-sm btn-green", onClick: () => setOpen(true) }, "", L3("Ajută-ne să verificăm (60 s)", "Help us check (60 s)", "Segíts ellenőrizni (60 mp)")),
+      e("button", { className: "btn btn-sm btn-outline", onClick: share }, "", L3("Link pentru postare", "Link to post", "Link megosztáshoz"))),
     open && ReactDOM.createPortal(e(VerifyFlow, { court: c, onClose: () => setOpen(false) }), document.body));
 }

@@ -107,8 +107,8 @@ export function WantedPoster({ court, onClose }) {
       ),
       React.createElement("canvas", { ref: canvasRef, style: { width: "100%", maxWidth: 320, display: "block", margin: "0 auto", borderRadius: 8, background: "#111" } }),
       React.createElement("div", { className: "flex gap-1 mt-2" },
-        React.createElement("button", { className: "btn btn-green", onClick: dl }, "⬇️ PNG"),
-        React.createElement("button", { className: "btn btn-outline", onClick: share }, "📤 Share")
+        React.createElement("button", { className: "btn btn-green", onClick: dl }, "PNG"),
+        React.createElement("button", { className: "btn btn-outline", onClick: share }, "Share")
       )
     )
   );

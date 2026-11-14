@@ -32,7 +32,7 @@ export function PetitionShare({ total, onShared }) {
     React.createElement("p", null, L3("O petiție cu " + total + " de semnături e ușor de ignorat. Fiecare om căruia i-o trimiți o face mai greu de ignorat.",
       "A petition with " + total + " signatures is easy to ignore. Everyone you send it to makes it harder to ignore.",
       "Egy " + total + " aláírásos petíciót könnyű figyelmen kívül hagyni. Minden megosztás nehezebbé teszi.")),
-    navigator.share && React.createElement("button", { className: "btn btn-green btn-lg btn-block", onClick: native }, "📣 " + L3("Distribuie petiția", "Share the petition", "Petíció megosztása")),
+    navigator.share && React.createElement("button", { className: "btn btn-green btn-lg btn-block", onClick: native }, L3("Distribuie petiția", "Share the petition", "Petíció megosztása")),
     React.createElement("div", { className: "pet-share-grid" },
       P.map(([n, ic, href, col]) => React.createElement("a", { key: n, className: "pet-share-btn", href, target: "_blank", rel: "noopener", onClick: hit, style: { "--pc": col } },
         React.createElement("span", { "aria-hidden": "true" }, ic), n)),

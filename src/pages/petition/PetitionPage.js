@@ -1,3 +1,5 @@
+import { isMinimal } from "../../lib/minimal.js";
+import { MoreSection } from "../../components/MoreSection.js";
 import { ACTIVE_CITY, db, useApp } from "../../app/core.js";
 import { BadgeUnlockModal } from "../../components/BadgeUnlockModal.js";
 import { InequalityReceipt } from "../../components/InequalityReceipt.js";
@@ -148,7 +150,10 @@ export function PetitionPage() {
   };
   useEffect(function() {
     if (!total) return;
-    var lastSeen = parseInt(localStorage.getItem("g2p_ms_seen") || "0");
+    var seen = localStorage.getItem("g2p_ms_seen");
+    // First visit: remember where the count is, no confetti for milestones reached before this visitor came.
+    if (seen === null) { var past = MILESTONES.filter(function(m) { return m <= total; }); localStorage.setItem("g2p_ms_seen", String(past.length ? Math.max.apply(null, past) : 0)); return; }
+    var lastSeen = parseInt(seen || "0");
     var achieved = MILESTONES.filter(function(m) { return m <= total && m > lastSeen; });
     if (achieved.length > 0) {
       var highest = Math.max.apply(null, achieved);
@@ -183,7 +188,7 @@ export function PetitionPage() {
     style: {
       textAlign: "center"
     }
-  }, "\u270A ", t.voteTitle), /*#__PURE__*/React.createElement("p", {
+  }, t.voteTitle), /*#__PURE__*/React.createElement("p", {
     className: "section-sub",
     style: {
       textAlign: "center"
@@ -293,7 +298,7 @@ export function PetitionPage() {
     className: "pet-submit",
     disabled: !ok,
     onClick: doVote
-  }, ok ? lang === "ro" ? "✊ Semnează petiția" : "✊ Sign the petition" : lang === "ro" ? "Completează toate câmpurile + acceptă RGPD" : "Fill all fields + accept privacy policy"),
+  }, ok ? lang === "ro" ? "Semnează petiția" : "Sign the petition" : lang === "ro" ? "Completează toate câmpurile + acceptă RGPD" : "Fill all fields + accept privacy policy"),
   showPrivacy && React.createElement(PrivacyPolicyModal, { onClose: function() { setShowPrivacy(false); } })) : /*#__PURE__*/React.createElement("div", {
     className: "card mt-2",
     style: {
@@ -375,8 +380,7 @@ export function PetitionPage() {
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-coral",
     onClick: () => setShowLetter(true)
-  }, "\uD83D\uDCC4 ", t.generateLetter)), React.createElement(InequalityReceipt, null))), React.createElement(ShareCardCanvas, { total: total }),
-    React.createElement(CivicMomentum, null),
+  }, "", t.generateLetter)), !isMinimal() && React.createElement(InequalityReceipt, null))),
     celebrateMilestone && React.createElement("div", { className: "milestone-cel" },
       React.createElement("div", { style: { fontSize: "3rem", marginBottom: ".4rem" } }, "\uD83C\uDF89"),
       React.createElement("div", { style: { fontFamily: "'Barlow Condensed',monospace", fontSize: "2.6rem", fontWeight: 800, color: "var(--green)" } }, celebrateMilestone),
@@ -398,6 +402,9 @@ export function PetitionPage() {
     total: total
   }),
   unlockBadge && React.createElement(BadgeUnlockModal, { badge:unlockBadge, lang:lang, onClose:function(){setUnlockBadge(null);} }),
-  React.createElement(LetterCounter, null),
-  React.createElement(PledgeWall, null));
+  React.createElement(MoreSection, { id: "petition" },
+    !isMinimal() && React.createElement(ShareCardCanvas, { total: total }),
+    React.createElement(CivicMomentum, null),
+    React.createElement(LetterCounter, null),
+    !isMinimal() && React.createElement(PledgeWall, null)));
 }

@@ -1,3 +1,4 @@
+import { MoreSection } from "../../components/MoreSection.js";
 import { ACTIVE_CITY, CITY_HALL, db, g2pSfx, useApp } from "../../app/core.js";
 import { QuickReportModal } from "../../components/QuickReportModal.js";
 import { Reveal } from "../../components/Reveal.js";
@@ -154,6 +155,7 @@ export function HelpPage() {
           React.createElement("p", { className: "text-sm mt-1", style: { color: "var(--textSec)" } }, L3("Preferi email? Scrie-ne la ", "Prefer email? Write to ", "Inkább e-mail? Írj ide: "), React.createElement("a", { href: "mailto:" + G2P_EMAIL + "?subject=" + encodeURIComponent("Voluntar — From Grey to Play") }, G2P_EMAIL))))),
     React.createElement("section", { className: "section", id: "help-cityhall" },
       React.createElement("div", { className: "container" },
+        React.createElement(MoreSection, { id: "help" },
         React.createElement(Reveal, null, React.createElement(CityHallGuide, null)),
         React.createElement(Reveal, { className: "card mb-2" },
           React.createElement("h3", { className: "mb-1" }, (lang === "ro" ? "Primăria " + cityName(lang) : cityName(lang) + " City Hall")),
@@ -165,6 +167,6 @@ export function HelpPage() {
             const c = `CĂTRE: ${CITY_HALL.registry}\n${CITY_HALL.address}\n\nSubsemnatul/a _____________, domiciliat/ă în _____________,\n\nsolicit:\n1. Informare privind stadiul renovării terenurilor sportive din cartierele periferice\n2. Alocarea de fonduri pentru programul pilot Flip-the-Court\n3. Accesarea fondurilor Erasmus+ Sport KA2\n\nCu stimă,\n_____________\nData: ${new Date().toLocaleDateString("ro-RO")}`;
             const b = new Blob([c], { type: "text/plain" });
             const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "cerere_g2p.txt"; a.click();
-          } }, "📥 ", t.downloadPDF)))),
+          } }, "", t.downloadPDF))))),
     report && React.createElement(QuickReportModal, { courtId: "", onClose: () => setReport(false) }));
 }

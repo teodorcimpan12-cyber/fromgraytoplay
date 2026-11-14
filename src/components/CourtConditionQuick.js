@@ -92,7 +92,7 @@ export function CourtConditionQuick({ onClose, courtId: presetCourt }) {
             React.createElement("input", { type: "file", accept: "image/*", capture: "environment", style: { display: "none" }, onChange: pickPhoto })
           ),
       React.createElement(AiPhotoHint, { photo: photoDataUrl, onResult: onAi, extra: r => r.condition !== "unclear" && condition && r.condition !== condition
-        && React.createElement("button", { type: "button", className: "ai-btn ai-btn-sm", onClick: () => setCondition(r.condition) }, "↪ ", (conds.find(x => x.k === r.condition) || {}).l) }),
+        && React.createElement("button", { type: "button", className: "ai-btn ai-btn-sm", onClick: () => setCondition(r.condition) }, "", (conds.find(x => x.k === r.condition) || {}).l) }),
       photoDataUrl && ai && ai.isCourt === false && React.createElement("p", { className: "ai-block" }, "⛔ ", lang === "en" ? "The photo doesn't show a court, so it can't be sent. Remove it or take another." : lang === "hu" ? "A fotón nincs pálya, ezért nem küldhető el. Töröld vagy készíts másikat." : "Poza nu arată un teren, așa că nu o putem trimite. Scoate-o sau fă alta."),
       React.createElement("button", { className: "btn btn-green btn-block mt-2", disabled: !courtId || !condition || submitting || !!(photoDataUrl && ai && ai.isCourt === false), onClick: submit }, submitting ? "..." : t.submit)
     )

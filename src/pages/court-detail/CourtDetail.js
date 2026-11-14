@@ -1,3 +1,4 @@
+import { isMinimal } from "../../lib/minimal.js";
 import { SatFinding, db, useApp } from "../../app/core.js";
 import { BadgeUnlockModal } from "../../components/BadgeUnlockModal.js";
 import { CourtConditionQuick } from "../../components/CourtConditionQuick.js";
@@ -7,7 +8,7 @@ import { useFirebase } from "../../hooks/useFirebase.js";
 import { useFollows } from "../../hooks/useFollows.js";
 import { aiEstimateOf } from "../../lib/ai-estimate-of.js";
 import { cityName } from "../../lib/city-name.js";
-import { courtStatusView, getCourtWeather } from "../../lib/court-status-view.js";
+import { courtStatusView } from "../../lib/court-status-view.js";
 import { g2pMood } from "../../lib/g2p-celebrate.js";
 import { logActivity } from "../../lib/log-activity.js";
 import { useEffect, useState } from "../../lib/react.js";
@@ -15,7 +16,8 @@ import { ActiveGames } from "./ActiveGames.js";
 import { AdoptCourt } from "./AdoptCourt.js";
 import { AiLetterModal } from "./AiLetterModal.js";
 import { CourtHealthRing } from "./CourtHealthRing.js";
-import { CourtPulse } from "./CourtPulse.js";
+import { CourtPulseChip } from "./CourtPulseChip.js";
+import { cdxIcon } from "./cdx-icons.js";
 import { CourtQRCard } from "./CourtQRCard.js";
 import { CourtResponder } from "./CourtResponder.js";
 import { CourtSourcesCard } from "./CourtSourcesCard.js";
@@ -72,6 +74,15 @@ export function CourtDetail({
   const [showWanted, setShowWanted] = useState(false);
   const [showLetter, setShowLetter] = useState(false);
   const [unlockBadge, setUnlockBadge] = useState(null);
+  const [verify, setVerify] = useState(false);
+  const [more, setMore] = useState(false);
+  useEffect(() => {
+    if (!more) return;
+    const off = e => { if (!e.target.closest || !e.target.closest(".cdx-more-wrap")) setMore(false); };
+    const esc = e => { if (e.key === "Escape") { e.preventDefault(); setMore(false); } };
+    document.addEventListener("pointerdown", off); window.addEventListener("keydown", esc, true);
+    return () => { document.removeEventListener("pointerdown", off); window.removeEventListener("keydown", esc, true); };
+  }, [more]);
   const { awardBadge } = useBadges();
   const { isFollowing, toggle: toggleFollow } = useFollows();
   const following = isFollowing(c.id);
@@ -112,7 +123,6 @@ export function CourtDetail({
   const [tab, setTab] = useState("info");
   const [slide, setSlide] = useState(0);
   const mosaic = courtTileMosaic(c);
-  const wx = getCourtWeather(c.condition, t);
   const bookOn = !(settings && settings.flags && settings.flags.booking === false);
   const photos = courtPhotos.slice(0, 8);
   const slideCount = photos.length + 1;
@@ -134,55 +144,60 @@ export function CourtDetail({
         onKeyDown: e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setTab("sat"); } }
       },
         mosaic ? React.createElement("div", { className: "cdx-mosaic", style: { marginLeft: -mosaic.cx, marginTop: -mosaic.cy, transformOrigin: mosaic.cx + "px " + mosaic.cy + "px" } },
-          mosaic.tiles.map(tl => React.createElement("img", { key: tl.key, src: tl.src, alt: "", draggable: false, style: { left: tl.left, top: tl.top } }))) : React.createElement("div", { className: "cdx-nosat", "aria-hidden": "true" }, "⚽"),
-        React.createElement("span", { className: "cdx-cap" }, "🛰️ " + L3("imagine din satelit", "satellite image", "műholdkép")))),
+          mosaic.tiles.map(tl => React.createElement("img", { key: tl.key, src: tl.src, alt: "", draggable: false, style: { left: tl.left, top: tl.top } }))) : React.createElement("div", { className: "cdx-nosat", "aria-hidden": "true" }, ""),
+        React.createElement("span", { className: "cdx-cap" }, L3("imagine din satelit", "satellite image", "műholdkép")))),
     React.createElement("div", { className: "cdx-grab", "aria-hidden": "true" }),
-    React.createElement("button", {
-      onClick: onClose, className: "cdx-x",
-      "aria-label": lang === "ro" ? "Închide" : lang === "hu" ? "Bezárás" : "Close"
-    }, "✕"),
     slideCount > 1 && React.createElement("span", { className: "cdx-count", "aria-hidden": "true" }, (Math.min(slide, slideCount - 1) + 1) + "/" + slideCount));
+  const sv = courtStatusView(c, t);
+  const ACC = { wheelchair: L3("Acces scaun rulant", "Wheelchair access", "Kerekesszékkel"), lighting: L3("Iluminat", "Lighting", "Világítás"), parking: L3("Parcare", "Parking", "Parkolás"), flatSurface: L3("Suprafață plană", "Flat surface", "Sík felület") };
+  const small = (key, ic, label, onClick, on) => React.createElement("button", { key, type: "button", className: "cdx-sm" + (on ? " on" : ""), onClick, "aria-pressed": on == null ? undefined : !!on },
+    cdxIcon(ic), React.createElement("span", null, label));
+  const moreItems = [
+    !isMinimal() && { k: "play", ic: "ball", label: t.playNow, run: () => setShowPlay(true) },
+    c.category !== "gym" && { k: "letter", ic: "mail", label: L3("Scrisoare AI către Primărie", "AI letter to City Hall", "AI-levél a Városházának"), run: () => setShowLetter(true) },
+    c.category !== "gym" && !isMinimal() && { k: "poster", ic: "poster", label: L3("Afiș pentru teren", "Court poster", "Plakát"), run: () => setShowWanted(true) }
+  ].filter(Boolean);
+  const actions = React.createElement("div", { className: "cdx-actions" },
+    React.createElement("button", { type: "button", className: "btn btn-green cdx-main-btn", onClick: () => setVerify(true) },
+      cdxIcon("camera", 20), " ", L3("Raportează cu o poză", "Report with a photo", "Jelentés fotóval")),
+    React.createElement("div", { className: "cdx-row" },
+      !ci ? small("ci", "pin", t.checkIn, doCI) : small("co", "pin", t.checkOut, doCO, true),
+      small("follow", following ? "bellOff" : "bell", following ? t.unfollow : t.follow, () => toggleFollow(c.id), following),
+      small("share", "share", L3("Distribuie", "Share", "Megosztás"), () => shareCourt(c, t, toast)),
+      moreItems.length === 1 ? small(moreItems[0].k, moreItems[0].ic, L3("Scrisoare AI", "AI letter", "AI-levél"), moreItems[0].run) :
+      React.createElement("div", { className: "cdx-more-wrap" },
+        small("more", "more", L3("Mai mult", "More", "Több"), () => setMore(m => !m), more),
+        more && React.createElement("div", { className: "cdx-menu", role: "menu" },
+          moreItems.map(it => React.createElement("button", { key: it.k, type: "button", role: "menuitem", onClick: () => { setMore(false); it.run(); } }, cdxIcon(it.ic, 18), it.label))))));
   const head = React.createElement("div", { className: "cdx-head" },
     React.createElement("h2", { className: "cdx-name" }, c.name),
     React.createElement("p", { className: "cdx-addr" }, c.address),
-    React.createElement("div", { className: "flex gap-1", style: { flexWrap: "wrap" } },
-      React.createElement("span", { className: "badge", title: wx.label, style: { background: wx.color + "22", color: wx.color } }, wx.icon, " ", wx.label),
-      React.createElement("span", { className: "badge " + courtStatusView(c, t).badge }, courtStatusView(c, t).label),
-      React.createElement("span", { className: "badge " + (occ === "empty" ? "badge-green" : occ === "active" ? "badge-coral" : "badge-red") },
-        occ === "empty" ? "🟢 " + t.empty + " (0)" : occ === "active" ? "🟡 " + t.active + " (" + cnt + ")" : "🔴 " + t.full + " (" + cnt + ")"),
-      React.createElement(AiEstimateBadge, { court: c })));
+    React.createElement("div", { className: "cdx-status" },
+      React.createElement(CourtHealthRing, { court: c, small: true }),
+      React.createElement("div", { className: "cdx-sline" },
+        React.createElement("span", { className: "cdx-dot", style: { background: sv.color } }),
+        React.createElement("b", null, sv.label),
+        React.createElement("span", { className: "cdx-occ " + occ }, " · " + (occ === "empty" ? t.empty : occ === "active" ? t.active + " (" + cnt + ")" : t.full + " (" + cnt + ")")),
+        React.createElement(AiEstimateBadge, { court: c })),
+      React.createElement(CourtPulseChip, { court: c })));
   const infoPanel = React.createElement(React.Fragment, null,
     desc && React.createElement("p", { className: "text-sm mb-1", style: { color: "var(--textSec)" } }, desc, c.osm && React.createElement("a", {
       href: "https://www.openstreetmap.org/" + c.osm, target: "_blank", rel: "noopener", style: { color: "var(--green)", marginLeft: ".4rem" }
     }, "OSM ↗"), c.src && React.createElement("a", {
       href: c.src, target: "_blank", rel: "noopener", style: { color: "var(--green)", marginLeft: ".4rem" }
     }, L3("Sursă", "Source", "Forrás") + " ↗")),
-    React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "1.2rem", flexWrap: "wrap", margin: ".6rem 0 1rem" } },
-      React.createElement(CourtHealthRing, { court: c }),
-      React.createElement("div", null,
-        React.createElement("div", { className: "text-xs mb-1", style: { color: "var(--textSec)", fontFamily: "'Space Mono',monospace", textTransform: "uppercase", letterSpacing: "1.5px" } }, t.healthScore || "Scor sănătate"),
-        React.createElement("p", { className: "text-xs", style: { color: "var(--textSec)", maxWidth: 200 } },
-          L3("Calculat din stare, rapoarte și evaluări", "Based on condition, reports and ratings", "Állapot, jelentések és értékelések alapján")))),
-    React.createElement("div", { className: "cd-actions", style: { marginTop: 0 } },
-      act("play", "coral", () => setShowPlay(true), "⚽", t.playNow),
-      !ci ? act("ci", "line", doCI, "📍", t.checkIn) : act("co", "red", doCO, "📍", t.checkOut),
-      act("follow", following ? "line" : "teal", () => toggleFollow(c.id), following ? "🔕" : "🔔", following ? t.unfollow : t.follow),
-      act("share", "line", () => shareCourt(c, t, toast), "🔗", t.shareCourt),
-      c.category !== "gym" && act("poster", "line", () => setShowWanted(true), "🪧", L3("Afiș", "Poster", "Plakát")),
-      c.category !== "gym" && act("letter", "line", () => setShowLetter(true), "✉️", L3("Scrisoare AI", "AI letter", "AI-levél"))),
     React.createElement(CourtResponder, { court: c }),
     React.createElement(CourtSourcesCard, { court: c }),
-    React.createElement(AiCourtCard, { court: c, onLetter: c.category !== "gym" ? () => setShowLetter(true) : null }),
-    React.createElement("h4", { className: "mb-1 mt-2" }, "Progress"),
+    React.createElement("h4", { className: "mb-1 mt-2" }, L3("Progres", "Progress", "Haladás")),
     React.createElement("div", { className: "progress-bar mb-2" }, React.createElement("div", { className: "progress-fill", style: { width: c.progress + "%" } })),
     React.createElement("h4", { className: "mb-1" }, t.accessibility),
     React.createElement("div", { className: "flex gap-1 mb-2", style: { flexWrap: "wrap" } },
-      Object.entries(c.accessibility || {}).map(([k, v]) => React.createElement("span", { key: k, className: "badge " + (v ? "badge-green" : "badge-red") }, k, ": ", v ? "✓" : "✗"))));
+      Object.entries(c.accessibility || {}).map(([k, v]) => React.createElement("span", { key: k, className: "cdx-acc" + (v ? " yes" : " no") }, v ? "✓ " : "✗ ", ACC[k] || k))));
   const communityPanel = React.createElement(React.Fragment, null,
-    React.createElement("h4", { className: "mb-1" },
+    !isMinimal() && React.createElement("h4", { className: "mb-1" },
       React.createElement("span", { className: "live-dot", style: { display: "inline-block", verticalAlign: "middle", marginRight: ".35rem" } }),
       t.activeGames, gameCount > 0 ? " (" + gameCount + ")" : ""),
-    React.createElement(ActiveGames, { court: c }),
+    !isMinimal() && React.createElement(ActiveGames, { court: c }),
     React.createElement(RatingSection, { court: c }),
     courtPhotos.length > 0 && React.createElement(React.Fragment, null,
       React.createElement("h4", { className: "mb-1 mt-2" }, t.gallery, " (", courtPhotos.length, ")"),
@@ -191,18 +206,18 @@ export function CourtDetail({
           key: p.id, src: p.img, alt: "evidence", title: p.caption || "",
           style: { width: 90, height: 90, objectFit: "cover", borderRadius: 8, flexShrink: 0 }
         })))),
-    (c.status === "degraded" || c.status === "inProgress") && React.createElement(TaskBoard, { court: c }),
-    c.category !== "gym" && React.createElement(AdoptCourt, { court: c }),
+    !isMinimal() && (c.status === "degraded" || c.status === "inProgress") && React.createElement(TaskBoard, { court: c }),
+    c.category !== "gym" && !isMinimal() && React.createElement(AdoptCourt, { court: c }),
     React.createElement(CourtTimeline, { court: c }));
   const satPanel = React.createElement(React.Fragment, null,
     React.createElement(SatFinding, { court: c }),
     React.createElement(SatelliteTimeMachine, { court: c }));
   const items = [
-    bookOn && { k: "book", ic: "📅", label: t.bookCourt, run: onBook },
-    { k: "info", ic: "ℹ️", label: "Info", panel: true },
-    { k: "sat", ic: "🛰️", label: L3("Satelit", "Satellite", "Műhold"), panel: true, mid: true },
-    { k: "com", ic: "👥", label: L3("Comunitate", "Community", "Közösség"), panel: true },
-    { k: "qr", ic: "📱", label: "QR", run: () => setShowQR(true) }
+    bookOn && { k: "book", ic: "book", label: t.bookCourt, run: onBook },
+    { k: "info", ic: "info", label: "Info", panel: true },
+    { k: "sat", ic: "sat", label: L3("Satelit", "Satellite", "Műhold"), panel: true, mid: !isMinimal() },
+    { k: "com", ic: "com", label: L3("Comunitate", "Community", "Közösség"), panel: true },
+    !isMinimal() && { k: "qr", ic: "qr", label: "QR", run: () => setShowQR(true) }
   ].filter(Boolean);
   const bar = React.createElement("nav", { className: "cdx-bar", "aria-label": L3("Secțiunile terenului", "Court sections", "A pálya szakaszai") },
     items.map(it => React.createElement("button", {
@@ -210,18 +225,22 @@ export function CourtDetail({
       "aria-current": it.panel && tab === it.k ? "true" : undefined,
       onClick: () => { if (it.panel) setTab(it.k); else it.run(); }
     },
-      React.createElement("span", { className: "cdx-ic", "aria-hidden": "true" }, it.ic),
+      React.createElement("span", { className: "cdx-ic", "aria-hidden": "true" }, cdxIcon(it.ic, it.mid ? 30 : 22)),
       React.createElement("span", { className: "cdx-lb" }, it.label))));
   return React.createElement("div", {
     className: "modal-overlay", onClick: onClose, role: "dialog", "aria-modal": "true", "aria-label": c.name
   },
     React.createElement("div", { className: "modal modal-lg cdx", onClick: e => e.stopPropagation() },
-      React.createElement("div", { className: "cdx-media" }, hero, React.createElement("div", { className: "cdx-pulse" }, React.createElement(CourtPulse, { court: c }))),
-      React.createElement("div", { className: "cdx-main" },
-        head,
-        React.createElement("div", { className: "cdx-body", key: tab, "data-no-drag": "true", role: "region", "aria-label": c.name },
-          tab === "info" ? infoPanel : tab === "sat" ? satPanel : communityPanel),
-        bar),
+      React.createElement("button", { type: "button", onClick: onClose, className: "cdx-x", "aria-label": lang === "ro" ? "Închide" : lang === "hu" ? "Bezárás" : "Close" }, cdxIcon("x", 18)),
+      React.createElement("div", { className: "cdx-scroll" },
+        React.createElement("div", { className: "cdx-media" }, hero),
+        React.createElement("div", { className: "cdx-main" },
+          head,
+          tab === "info" && actions,
+          React.createElement("div", { className: "cdx-body", key: tab, role: "region", "aria-label": c.name },
+            tab === "info" ? infoPanel : tab === "sat" ? satPanel : communityPanel))),
+      bar,
+      verify && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(CourtConditionQuick, { courtId: c.id, onClose: () => setVerify(false) })), document.body),
       // Portals: inside the court modal (animated transform) a fixed overlay is trapped in the modal's box.
       // The wrapper stops clicks bubbling (React tree) to the court overlay, which would close the court too.
       showPlay && ReactDOM.createPortal(React.createElement("div", { onClick: ev => ev.stopPropagation() }, React.createElement(PlayNowModal, { court: c, onClose: () => setShowPlay(false) })), document.body),
@@ -248,8 +267,8 @@ export function AiCourtCard({ court: c, onLetter }) {
   return e("div", { className: "ai-card" },
     e("div", { className: "ai-card-h" }, e("span", { className: "ai-card-pill" }, "✨ ", L3("NOU · AI", "NEW · AI", "ÚJ · AI")), L3("AI-ul te ajută cu terenul ăsta", "The AI helps with this court", "Az AI segít ezzel a pályával")),
     e("div", { className: "ai-card-b" },
-      e("button", { className: "btn btn-green", onClick: () => setVerify(true) }, "📷 ", L3("Pune o poză — AI-ul îți spune starea", "Add a photo — the AI reads its condition", "Tölts fel fotót — az AI megmondja az állapotát")),
-      onLetter && e("button", { className: "btn btn-outline", onClick: onLetter }, "✉️ ", L3("Scrisoare AI către Primărie", "AI letter to City Hall", "AI-levél a Városházának"))),
+      e("button", { className: "btn btn-green", onClick: () => setVerify(true) }, "", L3("Pune o poză — AI-ul îți spune starea", "Add a photo — the AI reads its condition", "Tölts fel fotót — az AI megmondja az állapotát")),
+      onLetter && e("button", { className: "btn btn-outline", onClick: onLetter }, "", L3("Scrisoare AI către Primărie", "AI letter to City Hall", "AI-levél a Városházának"))),
     verify && ReactDOM.createPortal(e("div", { onClick: ev => ev.stopPropagation() }, e(CourtConditionQuick, { courtId: c.id, onClose: () => setVerify(false) })), document.body));
 }
 export function moodOfCourt(c) {

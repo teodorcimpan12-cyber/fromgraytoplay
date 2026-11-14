@@ -1,3 +1,5 @@
+import { isMinimal } from "../../lib/minimal.js";
+import { MoreSection } from "../../components/MoreSection.js";
 import { ACTIVE_CITY, useApp } from "../../app/core.js";
 import { InequalityReceipt } from "../../components/InequalityReceipt.js";
 import { CITIES } from "../../data/constants.js";
@@ -29,7 +31,7 @@ export function ImpactPage() {
     lang
   } = useApp();
   const tabL = (ro, en, hu) => lang === "en" ? en : lang === "hu" ? hu : ro; // TODO: HU review
-  const [tab, setTab] = useState(() => { const v = sessionStorage.getItem("g2p_impact_tab"); sessionStorage.removeItem("g2p_impact_tab"); return v || "calc"; });
+  const [tab, setTab] = useState(() => { const v = sessionStorage.getItem("g2p_impact_tab"); sessionStorage.removeItem("g2p_impact_tab"); return v || (isMinimal() ? "budget" : "calc"); });
   const [pulse, setPulse] = useState(false);
   // Command palette deep-link: open City Pulse on arrival.
   useEffect(() => {
@@ -46,19 +48,10 @@ export function ImpactPage() {
     className: "container"
   }, /*#__PURE__*/React.createElement("h2", {
     className: "section-title"
-  }, t.impact), React.createElement(ResultsBoard, null), /*#__PURE__*/React.createElement(DossierButton, null), /*#__PURE__*/React.createElement(OpenDataCard, null), React.createElement(CivicFactsTape, null),
-  React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--green)" } },
-    React.createElement("div", { className: "flex justify-between items-center", style: { gap: "1rem", flexWrap: "wrap" } },
-      React.createElement("div", { style: { flex: 1, minWidth: 180 } },
-        React.createElement("h3", { className: "barlow", style: { fontSize: "1.15rem", marginBottom: ".25rem" } }, t.pulseTitle),
-        React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } }, t.pulseOpenSub)
-      ),
-      React.createElement("button", { className: "btn btn-green", onClick: () => setPulse(true) }, "\uD83E\uDDEC " + t.pulseOpen)
-    )
-  ), /*#__PURE__*/React.createElement("div", {
+  }, t.impact), React.createElement(ResultsBoard, null), /*#__PURE__*/React.createElement("div", {
     className: "tabs"
   }, /*#__PURE__*/React.createElement("button", {
-    className: tab === "calc" ? "active" : "",
+    className: tab === "calc" ? "active" : "", hidden: isMinimal(),
     onClick: () => setTab("calc")
   }, tabL("Calculator", "Calculator", "Kalkulátor")), /*#__PURE__*/React.createElement("button", {
     className: tab === "city" ? "active" : "",
@@ -67,26 +60,35 @@ export function ImpactPage() {
     className: tab === "budget" ? "active" : "",
     onClick: () => setTab("budget")
   }, tabL("Buget", "Budget", "Költségvetés")), /*#__PURE__*/React.createElement("button", {
-    className: tab === "carbon" ? "active" : "",
+    className: tab === "carbon" ? "active" : "", hidden: isMinimal(),
     onClick: () => setTab("carbon")
   }, tabL("Mediu", "Environment", "Környezet")), /*#__PURE__*/React.createElement("button", {
-    className: tab === "health" ? "active" : "",
+    className: tab === "health" ? "active" : "", hidden: isMinimal(),
     onClick: () => setTab("health")
   }, tabL("Sănătate", "Health", "Egészség")), /*#__PURE__*/React.createElement("button", {
-    className: tab === "mental" ? "active" : "",
+    className: tab === "mental" ? "active" : "", hidden: isMinimal(),
     onClick: () => setTab("mental")
   }, tabL("Sănătate mintală", "Mental health", "Lelki egészség")), /*#__PURE__*/React.createElement("button", {
-    className: tab === "tl" ? "active" : "",
+    className: tab === "tl" ? "active" : "", hidden: isMinimal(),
     onClick: () => setTab("tl")
   }, tabL("Cronologie", "Timeline", "Idővonal")), React.createElement("button", { className: tab === "hood" ? "active" : "", onClick: function() { setTab("hood"); }, title: "Neighbourhoods" }, tabL("Cartiere", "Neighbourhoods", "Negyedek")),
-  React.createElement("button", { className: tab === "race" ? "active" : "", onClick: function() { setTab("race"); }, title: t.neighborhoodRace||"Cursa cartierelor" }, tabL("Cursă", "Race", "Verseny")),
+  React.createElement("button", { className: tab === "race" ? "active" : "", hidden: isMinimal(), onClick: function() { setTab("race"); }, title: t.neighborhoodRace||"Cursa cartierelor" }, tabL("Cursă", "Race", "Verseny")),
   React.createElement("button", { className: tab === "letters" ? "active" : "", onClick: function() { setTab("letters"); }, title: lang === "en" ? "Letters to City Hall" : lang === "hu" ? "Levelek a Városházának" : "Scrisori către Primărie" }, tabL("Scrisori", "Letters", "Levelek"))),
   tab === "letters" && React.createElement(LettersTracker, null),
   tab === "proiecte" && React.createElement(ProiecteTab, null), tab === "calc" && React.createElement(React.Fragment, null, React.createElement(ImpactCalc, null), React.createElement(InequalityReceipt, null)), tab === "city" && (ACTIVE_CITY === "tgm" ? /*#__PURE__*/React.createElement(CityComp, null) : React.createElement(SatAuditCard, null)), tab === "budget" && (ACTIVE_CITY === "tgm" ? React.createElement(React.Fragment, null, React.createElement(CsmInvest, null), /*#__PURE__*/React.createElement(BudgetViz, null), React.createElement(BudgetWatchdog, null)) : React.createElement(SibiuInvest, null)), tab === "carbon" && /*#__PURE__*/React.createElement(CarbonCalc, null), tab === "health" && /*#__PURE__*/React.createElement(HealthCalc, null), tab === "mental" && /*#__PURE__*/React.createElement(MentalSec, null), tab === "tl" && /*#__PURE__*/React.createElement(TimelineSec, null), tab === "hood" && React.createElement(HoodChart, null),
   tab === "race" && React.createElement(React.Fragment, null,
     React.createElement(CouncilCountdown, null),
     React.createElement(NeighborhoodRace, null)
-  ))), pulse && React.createElement(CityPulse, { onClose: () => setPulse(false) }));
+  ), !isMinimal() && React.createElement(MoreSection, { id: "impact" }, /*#__PURE__*/React.createElement(DossierButton, null), /*#__PURE__*/React.createElement(OpenDataCard, null), React.createElement(CivicFactsTape, null),
+  !isMinimal() && React.createElement("div", { className: "card mb-2", style: { borderLeft: "4px solid var(--green)" } },
+    React.createElement("div", { className: "flex justify-between items-center", style: { gap: "1rem", flexWrap: "wrap" } },
+      React.createElement("div", { style: { flex: 1, minWidth: 180 } },
+        React.createElement("h3", { className: "barlow", style: { fontSize: "1.15rem", marginBottom: ".25rem" } }, t.pulseTitle),
+        React.createElement("p", { className: "text-sm", style: { color: "var(--textSec)" } }, t.pulseOpenSub)
+      ),
+      React.createElement("button", { className: "btn btn-green", onClick: () => setPulse(true) }, t.pulseOpen)
+    )
+  )))), pulse && React.createElement(CityPulse, { onClose: () => setPulse(false) }));
 }
 export function CityComp() {
   const {

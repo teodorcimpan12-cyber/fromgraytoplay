@@ -125,9 +125,9 @@ export function QuickReportModal({ onClose, courtId: preset, demo }) {
         e("h2", { style: { fontSize: "1.15rem", margin: ".3rem 0" } }, L3("Sesizare creată.", "Report created.", "Bejelentés létrehozva.")),
         e("p", { className: "text-sm" }, L3("Termen legal de răspuns: 30 de zile.", "Legal answer deadline: 30 days.", "Törvényes válaszhatáridő: 30 nap.")),
         e("p", { className: "text-xs mb-1", style: { color: "var(--textSec)" } }, L3("Ceasul pornește când sesizarea e înregistrată la Primărie. Îl vezi pe fișa terenului.", "The clock starts when the report is registered at City Hall. You can follow it on the court's page.", "Az óra akkor indul, amikor a bejelentést iktatják a Városházán. A pálya adatlapján követheted.")), // TODO: HU review
-        e("button", { className: "btn btn-green btn-block mt-1", onClick: share }, "📤 ", L3("Trimite mai departe", "Share", "Megosztás")),
-        e("button", { className: "btn btn-outline btn-block mt-1", onClick: () => { onClose(); location.hash = "#court-" + done.courtId; } }, "📍 ", L3("Vezi fișa terenului", "See the court's page", "A pálya adatlapja")),
-        !firebaseUser && e("button", { className: "btn btn-outline btn-block mt-1", onClick: () => { onClose(); openAuth(); } }, "🔐 ", L3("Salvează-ți sesizările (cont)", "Save your reports (account)", "Mentsd a bejelentéseidet (fiók)")),
+        e("button", { className: "btn btn-green btn-block mt-1", onClick: share }, "", L3("Trimite mai departe", "Share", "Megosztás")),
+        e("button", { className: "btn btn-outline btn-block mt-1", onClick: () => { onClose(); location.hash = "#court-" + done.courtId; } }, "", L3("Vezi fișa terenului", "See the court's page", "A pálya adatlapja")),
+        !firebaseUser && e("button", { className: "btn btn-outline btn-block mt-1", onClick: () => { onClose(); openAuth(); } }, "", L3("Salvează-ți sesizările (cont)", "Save your reports (account)", "Mentsd a bejelentéseidet (fiók)")),
         e("button", { className: "btn btn-block mt-1", onClick: onClose }, L3("Închide", "Close", "Bezárás"))));
   }
   return e("div", { className: "modal-overlay", onClick: close },
@@ -167,7 +167,7 @@ export function QuickReportModal({ onClose, courtId: preset, demo }) {
               e("input", { type: "file", accept: "image/*", capture: "environment", style: { display: "none" }, onChange: pickPhoto })),
         e(AiPhotoHint, { photo: f.photoDataUrl, onResult: setAi, extra: r => e("div", { className: "ai-acts" },
           r.category !== "none" && r.category !== f.category && e("button", { type: "button", className: "ai-btn ai-btn-sm", onClick: () => setF(o => ({ ...o, category: r.category })) },
-            "↪ ", (REPORT_CATS.find(c => c[0] === r.category) || [0, "📌"])[1], " ", catLabel(r.category)),
+            "", (REPORT_CATS.find(c => c[0] === r.category) || [0, "📌"])[1], " ", catLabel(r.category)),
           r.summary && (f.note || "").indexOf(r.summary) < 0 && e("button", { type: "button", className: "ai-btn ai-btn-sm", onClick: () => setF(o => ({ ...o, note: ((o.note || "").trim() ? o.note.trim() + "\n" : "") + r.summary })) },
             "＋ ", L3("Pune în descriere", "Add to the note", "Hozzáadás a leíráshoz"))) }),
         e("textarea", { value: f.note, onChange: ev => setF(o => ({ ...o, note: ev.target.value })), rows: 2, maxLength: 2000, placeholder: L3("Vrei să adaugi ceva? (opțional)", "Anything to add? (optional)", "Szeretnél még valamit írni? (nem kötelező)"), style: { marginTop: ".6rem", resize: "vertical" } }),

@@ -60,9 +60,9 @@ export function CityHallGuide() {
       React.createElement("p", { className: "text-xs mb-1", style: { color: "var(--textSec)" } },
         L3("Email pre-completat — deschide, semnează cu numele tău, trimite. Păstrează confirmarea.", "Pre-filled email — open it, sign with your name, send. Keep the receipt.", null)),
       React.createElement("a", { href: m544, className: "btn btn-green btn-block mb-1", style: { textAlign: "center", textDecoration: "none" } },
-        "📄 ", L3("Cerere informații — Legea 544/2001 (10 zile)", "Information request — Law 544/2001 (10 days)", null)),
+        "", L3("Cerere informații — Legea 544/2001 (10 zile)", "Information request — Law 544/2001 (10 days)", null)),
       React.createElement("a", { href: mPet, className: "btn btn-outline btn-block", style: { textAlign: "center", textDecoration: "none" } },
-        "📜 ", L3("Petiție formală — OG 27/2002 (30 de zile)", "Formal petition — OG 27/2002 (30 days)", null))),
+        "", L3("Petiție formală — OG 27/2002 (30 de zile)", "Formal petition — OG 27/2002 (30 days)", null))),
     React.createElement("div", { className: "card mb-2" },
       React.createElement("h4", { className: "mb-1" }, L3("Pașii, în ordine", "The steps, in order", null)),
       STEPS.map(function(s, i) {

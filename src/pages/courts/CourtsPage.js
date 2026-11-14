@@ -1,3 +1,4 @@
+import { isMinimal } from "../../lib/minimal.js";
 import { ACTIVE_CITY, COURTS, useApp } from "../../app/core.js";
 import { MapView } from "../../components/MapView.js";
 import { SatSwipe } from "../../components/SatSwipe.js";
@@ -160,12 +161,12 @@ export function CourtsPage() {
     courts: filtered,
     onSelect: openCourt,
     height: "clamp(360px, 64vh, 680px)"
-  }),/*#__PURE__*/React.createElement("p", {
+  }),!isMinimal() && /*#__PURE__*/React.createElement("p", {
     className: "text-xs mt-1",
     style: { color: "var(--textSec)", textAlign: "center" }
   }, lang === "ro"
     ? /*#__PURE__*/React.createElement("span", null, ACTIVE_CITY === "sibiu" ? "Surs\u0103: OpenStreetMap + auditul din satelit al echipei; stadioane din presa local\u0103. " : "Surs\u0103: cercetare de teren + date municipale T\xE2rgu Mure\u0219. ", /*#__PURE__*/React.createElement("a", { href: "https://www.google.com/maps/search/terenuri+sport+" + (ACTIVE_CITY === "sibiu" ? "Sibiu" : "Targu+Mures"), target: "_blank", style: { color: "var(--green)" } }, "Caut\u0103 pe Google Maps \u2192"))
-    : /*#__PURE__*/React.createElement("span", null, ACTIVE_CITY === "sibiu" ? "Source: OpenStreetMap + the team's satellite audit; stadiums from local press. " : "Source: field research + T\xE2rgu Mure\u0219 municipal data. ", /*#__PURE__*/React.createElement("a", { href: "https://www.google.com/maps/search/sports+courts+" + (ACTIVE_CITY === "sibiu" ? "Sibiu" : "Targu+Mures"), target: "_blank", style: { color: "var(--green)" } }, "Search Google Maps \u2192"))), React.createElement(AtlasSportCard, null)), tab === "list" && /*#__PURE__*/React.createElement("div", {
+    : /*#__PURE__*/React.createElement("span", null, ACTIVE_CITY === "sibiu" ? "Source: OpenStreetMap + the team's satellite audit; stadiums from local press. " : "Source: field research + T\xE2rgu Mure\u0219 municipal data. ", /*#__PURE__*/React.createElement("a", { href: "https://www.google.com/maps/search/sports+courts+" + (ACTIVE_CITY === "sibiu" ? "Sibiu" : "Targu+Mures"), target: "_blank", style: { color: "var(--green)" } }, "Search Google Maps \u2192"))), !isMinimal() && React.createElement(AtlasSportCard, null)), tab === "list" && /*#__PURE__*/React.createElement("div", {
     className: "grid gap-1"
   }, filtered.map(c => /*#__PURE__*/React.createElement(TiltDiv, {
     key: c.id,
@@ -210,7 +211,7 @@ export function CourtsPage() {
     style: {
       width: c.progress + "%"
     }
-  }))))))), React.createElement(SatSwipe, null), sel && /*#__PURE__*/React.createElement(CourtDetail, {
+  }))))))), !isMinimal() && React.createElement(SatSwipe, null), sel && /*#__PURE__*/React.createElement(CourtDetail, {
     court: sel,
     onClose: closeCourt,
     onBook: () => setShowBook(true)

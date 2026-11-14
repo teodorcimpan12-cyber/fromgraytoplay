@@ -1,3 +1,4 @@
+import { isMinimal } from "../lib/minimal.js";
 import { AdminLogin } from "./AdminLogin.js";
 import { AmbientLight } from "./AmbientLight.js";
 import { AuthModal } from "./AuthModal.js";
@@ -22,7 +23,7 @@ import { QuickReportModal } from "../components/QuickReportModal.js";
 import { ADMIN_UID, MENTORS, NICKNAMES, PAGE_IDS } from "../data/constants.js";
 import { useFirebase } from "../hooks/useFirebase.js";
 import { T } from "../i18n/strings.js";
-import { g2pEgg } from "../lib/g2p-egg.js";
+import { animOff, g2pEgg } from "../lib/g2p-egg.js";
 import { getVoterKey } from "../lib/get-voter-key.js";
 import { anonName } from "../lib/next-lang.js";
 import { useCallback, useEffect, useRef, useState } from "../lib/react.js";
@@ -285,9 +286,19 @@ export function App() {
       /^#[0-9a-fA-F]{6}$/.test(settings.accent2 || "") ? settings.accent2 : "");
   }, [settings, settings && settings.accent, settings && settings.accent2]);
   // Admin effects kill-switch (settings/flags/effects === false).
+  // The visitor's own "Animații" switch (footer) turns the whole site into its minimal version:
+  // no decorative motion (no-fx) plus the calm layout rules under html.minimal.
   useEffect(() => {
-    const off = !!(settings && settings.flags && settings.flags.effects === false);
-    document.documentElement.classList.toggle("no-fx", off);
+    const apply = () => {
+      const mine = animOff();
+      const off = mine || !!(settings && settings.flags && settings.flags.effects === false);
+      const r = document.documentElement;
+      r.classList.toggle("no-fx", off);
+      r.classList.toggle("minimal", mine);
+    };
+    apply();
+    window.addEventListener("g2p:anim", apply);
+    return () => window.removeEventListener("g2p:anim", apply);
   }, [settings && settings.flags && settings.flags.effects]);
   useEffect(() => {
     const h = e => {
@@ -487,6 +498,7 @@ export function App() {
       case "petition":
         return /*#__PURE__*/React.createElement(PetitionPage, null);
       case "community":
+        if (isMinimal()) return /*#__PURE__*/React.createElement(HomePage, null);
         return /*#__PURE__*/React.createElement(CommunityPage, null);
       case "impact":
         return /*#__PURE__*/React.createElement(ImpactPage, null);
@@ -495,6 +507,7 @@ export function App() {
       case "association":
         return React.createElement(AssociationPage, null);
       case "about":
+        if (isMinimal()) return /*#__PURE__*/React.createElement(AssociationPage, null);
         return /*#__PURE__*/React.createElement(AboutPage, null);
       case "press":
         return React.createElement(PressPage, null);
@@ -527,7 +540,7 @@ export function App() {
     }
   }, /*#__PURE__*/React.createElement("div", {
     key: page
-  }, React.createElement(PageBoundary, null, P()))), React.createElement(HeatWatcher, null), React.createElement(AmbientLight, null), React.createElement(ReportHashListener, null), React.createElement(FunEggs, null), React.createElement(EggHub, { page: page }), React.createElement(SecretKeys, null), !isPhone() && React.createElement(Mascot, { page: page }), React.createElement(BigCelebration, null), React.createElement(ThemeFx, null), mayor && React.createElement(MayorMode, {
+  }, React.createElement(PageBoundary, null, P()))), React.createElement(HeatWatcher, null), !isMinimal() && React.createElement(AmbientLight, null), React.createElement(ReportHashListener, null), !isMinimal() && React.createElement(FunEggs, null), !isMinimal() && React.createElement(EggHub, { page: page }), !isMinimal() && React.createElement(SecretKeys, null), !isPhone() && !isMinimal() && React.createElement(Mascot, { page: page }), React.createElement(BigCelebration, null), React.createElement(ThemeFx, null), mayor && !isMinimal() && React.createElement(MayorMode, {
     onClose: () => setMayor(false)
   }), /*#__PURE__*/React.createElement(Footer, null), toastEl, authEl, nudgeEl, DEMO_ON && React.createElement(DemoLayer, null));
 }

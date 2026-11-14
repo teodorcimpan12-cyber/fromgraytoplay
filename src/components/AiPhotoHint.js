@@ -35,12 +35,12 @@ export function AiPhotoHint({ photo, onResult, extra }) {
       e("li", null, L3("Ce păstrăm: doar dacă trimiți sesizarea — poza comprimată și diagnosticul, ca orice sesizare. Altfel, nimic.", "What we keep: only if you send the report — the compressed photo and the diagnosis, like any report. Otherwise nothing.", "Amit megőrzünk: csak ha elküldöd a bejelentést — a tömörített fotót és a diagnózist. Különben semmit.")),
       e("li", null, L3("Ștergere: scrie-ne din pagina Despre.", "Deletion: write to us from the About page.", "Törlés: írj nekünk a Rólunk oldalról.")))),
     e("div", { className: "ai-hint" },
-      e("button", { type: "button", className: "ai-btn", onClick: run, disabled: !ok, title: ok ? "" : L3("Bifează mai întâi", "Tick the box first", "Előbb jelöld be") }, "🩺 ", L3("AI Court Doctor: citește poza", "AI Court Doctor: read the photo", "AI Court Doctor: fotó elemzése")),
+      e("button", { type: "button", className: "ai-btn", onClick: run, disabled: !ok, title: ok ? "" : L3("Bifează mai întâi", "Tick the box first", "Előbb jelöld be") }, "", L3("AI Court Doctor: citește poza", "AI Court Doctor: read the photo", "AI Court Doctor: fotó elemzése")),
       e("small", null, L3("Estimare AI — nu e o inspecție oficială. Tu decizi.", "AI estimate — not an official inspection. You decide.", "AI-becslés — nem hivatalos szemle. Te döntesz."))));
   if (st.s === "busy") return e("div", { className: "ai-hint ai-busy", role: "status" }, e("span", { className: "ai-spark", "aria-hidden": "true" }, "✨"), L3("AI-ul se uită la poză…", "The AI is looking at the photo…", "Az AI nézi a fotót…"));
   if (st.s === "err") return e("div", { className: "ai-hint ai-err", role: "status" },
     e("span", null, aiErrMsg(st.code, L3)),
-    st.code !== "bad_image" && e("button", { type: "button", className: "ai-btn ai-btn-sm", onClick: run }, "↻ ", L3("Încearcă iar", "Try again", "Újra")));
+    st.code !== "bad_image" && e("button", { type: "button", className: "ai-btn ai-btn-sm", onClick: run }, "", L3("Încearcă iar", "Try again", "Újra")));
   const r = st.r;
   if (!r.isCourt) return e("div", { className: "ai-card", role: "status" },
     e("div", { className: "ai-tag" }, "✨ ", L3("Estimare AI din poză", "AI estimate from the photo", "AI-becslés a fotóból")),

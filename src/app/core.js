@@ -324,8 +324,8 @@ export class PageBoundary extends React.Component {
           React.createElement("h2", { style: { fontSize: "1.1rem", marginBottom: ".5rem" } }, L("Mingea a ieșit din teren.", "The ball went out of bounds.", "A labda kiment a pályáról.")),
           React.createElement("p", { className: "text-sm mb-2", style: { color: "var(--textSec)" } }, L("Pagina asta a întâmpinat o eroare. Restul site-ului funcționează.", "This page hit an error. The rest of the site still works.", "Ez az oldal hibába ütközött. Az oldal többi része működik.")),
           React.createElement("div", { className: "flex gap-1", style: { justifyContent: "center", flexWrap: "wrap" } },
-            React.createElement("button", { className: "btn btn-green", onClick: () => location.reload() }, "↻ ", L("Reîncarcă", "Reload", "Újratöltés")),
-            React.createElement("button", { className: "btn btn-outline", onClick: () => { location.hash = "#home"; this.setState({ err: null }); } }, "🏠 ", L("Acasă", "Home", "Kezdőlap"))
+            React.createElement("button", { className: "btn btn-green", onClick: () => location.reload() }, "", L("Reîncarcă", "Reload", "Újratöltés")),
+            React.createElement("button", { className: "btn btn-outline", onClick: () => { location.hash = "#home"; this.setState({ err: null }); } }, "", L("Acasă", "Home", "Kezdőlap"))
           )
         )
       )
@@ -345,7 +345,7 @@ export class AdminBoundary extends React.Component {
       React.createElement("button", {
         style: { marginTop: "1rem", padding: ".4rem 1rem", background: "#10B981", color: "#fff", border: "none", borderRadius: 6, cursor: "pointer" },
         onClick: () => this.setState({ err: null })
-      }, "↩ Retry")
+      }, "Retry")
     );
     return this.props.children;
   }
@@ -380,7 +380,7 @@ export class DemoRemoteBoundary extends React.Component {
       e("h2", null, "Telecomanda a dat o eroare"),
       e("p", { className: "demo-rm-err" }, String(this.state.err && this.state.err.message || this.state.err)),
       e("p", null, "Fă o captură de ecran și trimite-o. Între timp: pe laptop folosește săgețile → ← sau cifrele 1–9."),
-      e("button", { className: "btn btn-green", onClick: () => location.reload() }, "↻ Reîncarcă"));
+      e("button", { className: "btn btn-green", onClick: () => location.reload() }, "Reîncarcă"));
   }
 }
 try {

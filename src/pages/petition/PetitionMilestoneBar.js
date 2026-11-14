@@ -10,7 +10,7 @@ export function PetitionMilestoneBar({ total }) {
   return React.createElement("div", { className: "card mb-3", style: { borderLeft: "3px solid var(--green)" } },
     React.createElement("div", { className: "flex justify-between items-center mb-1" },
       React.createElement("span", { style: { fontWeight: 700, fontSize: ".88rem" } },
-        "🎯 ", lang === "ro" ? "Progres petiție" : lang === "hu" ? "Petíció állapota" : "Petition progress"
+        lang === "ro" ? "Progres petiție" : lang === "hu" ? "Petíció állapota" : "Petition progress"
       ),
       React.createElement("span", {
         style: { fontFamily: "'Barlow Condensed',monospace", fontSize: "1.4rem", fontWeight: 800, color: "var(--green)" }

@@ -77,8 +77,8 @@ export function Redirect35Card() {
                 React.createElement("input", { type: "checkbox", checked: subOk, onChange: e => setSubOk(e.target.checked) }),
                 React.createElement("span", null, L3("Sunt de acord să primesc un singur e-mail când asociația poate primi redirecționări. Adresa nu e dată nimănui și o ștergem la cerere (" + G2P_EMAIL + ").", "I agree to receive a single e-mail when the association can receive redirections. The address is shared with no one and deleted on request (" + G2P_EMAIL + ")."))),
               React.createElement("div", { className: "flex gap-2", style: { flexWrap: "wrap" } },
-                React.createElement("button", { type: "submit", className: "btn btn-green", disabled: subBusy || !subValid || !subOk }, subBusy ? "…" : "\u2709\uFE0F " + L3("Trimite", "Send")),
+                React.createElement("button", { type: "submit", className: "btn btn-green", disabled: subBusy || !subValid || !subOk }, subBusy ? "…" : L3("Trimite", "Send")),
                 React.createElement("button", { type: "button", className: "btn btn-ghost", onClick: () => setSub("") }, L3("Renunț", "Cancel"))))
-          : React.createElement("button", { type: "button", className: "btn btn-green", onClick: () => setSub("open") }, "\u2709\uFE0F " + L3("Anunță-mă când pot redirecționa", "Tell me when I can redirect")),
-      React.createElement("button", { type: "button", className: "btn", onClick: () => copyText(msg).then(okc => { if (okc) toast(L3("Mesaj copiat", "Message copied")); }) }, "\uD83D\uDCCB " + L3("Copiază mesajul pentru un prieten", "Copy a message for a friend"))));
+          : React.createElement("button", { type: "button", className: "btn btn-green", onClick: () => setSub("open") }, L3("Anunță-mă când pot redirecționa", "Tell me when I can redirect")),
+      React.createElement("button", { type: "button", className: "btn", onClick: () => copyText(msg).then(okc => { if (okc) toast(L3("Mesaj copiat", "Message copied")); }) }, L3("Copiază mesajul pentru un prieten", "Copy a message for a friend"))));
 }

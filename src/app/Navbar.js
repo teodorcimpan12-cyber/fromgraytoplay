@@ -1,3 +1,5 @@
+import { isMinimal } from "../lib/minimal.js";
+import { cdxIcon } from "../pages/court-detail/cdx-icons.js";
 import { FunPanel } from "./FunPanel.js";
 import { NotifPanel } from "./NotifPanel.js";
 import { ACTIVE_CITY, useApp } from "./core.js";
@@ -107,17 +109,17 @@ export function Navbar() {
     }
   }, "FROM GREY TO PLAY"), /*#__PURE__*/React.createElement("div", {
     className: "nav-links desktop"
-  }, navs.map(n => /*#__PURE__*/React.createElement(NL, {
+  }, navs.filter(n => !(isMinimal() && (n.k === "community" || n.k === "about"))).map(n => /*#__PURE__*/React.createElement(NL, {
     key: n.k,
     k: n.k,
     l: n.l
   })),
   /*#__PURE__*/React.createElement("button", {
-    onClick: () => setShowNotif(v => !v),
+    onClick: () => setShowNotif(v => !v), hidden: isMinimal(),
     style: { position: "relative", padding: unreadCount > 0 ? ".35rem 1.15rem .35rem .35rem" : undefined },
     title: t.notifications,
     "aria-label": t.notifications + (unreadCount ? " (" + unreadCount + ")" : "")
-  }, "🔔", unreadCount > 0 && /*#__PURE__*/React.createElement("span", {
+  }, cdxIcon("bell", 20), unreadCount > 0 && /*#__PURE__*/React.createElement("span", {
     style: { position:"absolute", top:"1px", right:"0", background:"var(--coral)", color:"#fff", borderRadius:"50%", fontSize:".6rem", fontWeight:700, minWidth:"16px", height:"16px", lineHeight:"16px", textAlign:"center", padding:"0 2px" }
   }, unreadCount > 9 ? "9+" : unreadCount)),
   /*#__PURE__*/React.createElement("button", {
@@ -186,7 +188,7 @@ export function Navbar() {
     "aria-label": lang === "en" ? "Close menu" : lang === "hu" ? "Men\u00fc bez\u00e1r\u00e1sa" : "\u00cenchide meniul",
     onClick: () => setMob(false)
   }, React.createElement("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2.4, strokeLinecap: "round", "aria-hidden": "true" },
-    React.createElement("path", { d: "M6 6l12 12M18 6L6 18" }))), navs.map(n => /*#__PURE__*/React.createElement(NL, {
+    React.createElement("path", { d: "M6 6l12 12M18 6L6 18" }))), navs.filter(n => !(isMinimal() && (n.k === "community" || n.k === "about"))).map(n => /*#__PURE__*/React.createElement(NL, {
     key: n.k,
     k: n.k,
     l: n.l,
@@ -200,7 +202,7 @@ export function Navbar() {
     }
   }, React.createElement(CitySwitch, null), React.createElement(LangFlip, { big: true }), React.createElement(ThemeBoard, { big: true }), React.createElement("button", {
     className: "btn btn-sm btn-outline",
-    onClick: () => { setMob(false); setShowNotif(true); }
+    onClick: () => { setMob(false); setShowNotif(true); }, hidden: isMinimal()
   }, "🔔 " + (unreadCount ? unreadCount + " " : "") + t.notifications), firebaseUser && React.createElement("button", {
     className: "btn btn-sm btn-outline",
     onClick: () => { setMob(false); setPage("profile"); }
@@ -213,5 +215,5 @@ export function Navbar() {
   }, firebaseUser ? (lang === "ro" ? "Deconectare" : lang === "hu" ? "Kijelentkezés" : "Sign out") : (lang === "ro" ? "Cont (Google / email / SMS)" : lang === "hu" ? "Fiók" : "Account (Google / email / SMS)")), React.createElement("button", {
     className: "btn btn-sm btn-outline",
     onClick: () => { setMob(false); location.hash = "#/admin"; }
-  }, "🛡️ Admin")), React.createElement(FunPanel, { menu: true })));
+  }, "Admin")), React.createElement(FunPanel, { menu: true })));
 }

@@ -278,7 +278,7 @@ export function CityPulse(props) {
             if (navigator.share) { navigator.share({title:"City Pulse — From Grey to Play",text:text,url:url}); }
             else { window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text)+"&url="+encodeURIComponent(url),"_blank"); }
           }
-        }, "📤 " + (lang==="ro"?"Distribuie":"Share")),
+        }, (lang==="ro"?"Distribuie":"Share")),
         React.createElement("button", {
           className: "btn btn-sm",
           style:{background:"#F97316",color:"#fff"},
@@ -294,7 +294,7 @@ export function CityPulse(props) {
           className: "btn btn-sm",
           style:{background:"#10B981",color:"#fff"},
           onClick: function() { onClose(); setTimeout(function(){document.getElementById("g2p-vote-form") && document.getElementById("g2p-vote-form").scrollIntoView({behavior:"smooth"});},100); }
-        }, "✍️ " + (lang==="ro"?"Semnează petiția":"Sign petition"))
+        }, (lang==="ro"?"Semnează petiția":"Sign petition"))
       )
     )
   );

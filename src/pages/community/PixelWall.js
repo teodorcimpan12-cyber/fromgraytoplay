@@ -89,7 +89,7 @@ export function PixelWall() {
               });
             })),
       React.createElement("div", { style: { textAlign: "center" } },
-        React.createElement("button", { className: "btn btn-outline btn-sm", onClick: exportPng }, "⬇️ PNG"))
+        React.createElement("button", { className: "btn btn-outline btn-sm", onClick: exportPng }, "PNG"))
     )
   );
 }
