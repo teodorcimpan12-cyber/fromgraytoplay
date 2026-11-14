@@ -1,6 +1,6 @@
 # Pitch From Grey to Play — 14 noiembrie 2026
 
-Pregătit în noaptea de 13→14 nov. Cifrele de mai jos sunt citite din baza de date la 13 nov., noaptea.
+Pregătit în noaptea de 13→14 nov. Cifrele **reverificate pe 14 nov., ora 02:00**, direct în baza de date și pe ecranul Impact al oglinzii github.io.
 **Dimineață, recitiți-le pe Impact → „Rezultate până azi” și scrieți-le aici cu pixul.**
 
 ## 0. ATENȚIE: ce link deschideți
@@ -12,19 +12,22 @@ Versiunea curentă, cu răspunsul Primăriei TGM și „Rezultate până azi”,
 
 - Demo pe proiector: `…github.io/fromgraytoplay/?demo=5&c=sibiu` (verificat azi-noapte: slide-ul „0” pornește).
 - Telecomanda pe telefon: `…github.io/fromgraytoplay/?demo=remote`, logat cu adminul **prin email și parolă** (Google nu merge pe github.io decât dacă adăugați domeniul în Firebase → Authentication → Settings → Authorized domains). **Testați-o dimineață** (n-am putut testa logarea azi-noapte). Dacă nu merge: Gabriel apasă → pe laptop.
-- Verificat azi-noapte pe github.io: pașii 1–9 se încarcă, satelitul merge, QR-ul apare, nicio eroare.
+- Reverificat pe 14 nov., 02:00, pe github.io (Chrome headless, 1440×900): pașii 1–9 se încarcă în ordine (Problema → Limite + ce urmează), QR-ul apare la pasul 9, zero erori în consolă. Oglinda rulează versiunea curentă (cache `g2p-v15`); Netlify e tot la `g2p-v11`.
 - QR-ul din demo duce la Netlify (versiunea veche, dar funcțională). E în regulă pentru juriu; nu-l schimbăm în ziua pitch-ului.
 
-## 1. Cifrele (13 nov., noaptea)
+## 1. Cifrele (14 nov., 02:00) — exact ce arată ecranul Impact
 
 | Ce | Cât | Cum o spunem |
 |---|---|---|
 | Voturi pe petiție | **183** | „183 de voturi” |
 | Sesizări de la locuitori (fără teste) | **5** | Toate din 6 nov., o parte de la echipă și mentori. Nu le umflăm: „5 sesizări, toate din ziua hackathonului.” |
-| Înregistrate la primărie / rezolvate | **0 / 0** | Nu le spunem dacă nu suntem întrebați; dacă da, „zero, încă”. |
-| Cereri oficiale (Legea 544) cu răspuns | **CSM TGM, Primăria TGM, Serviciul Sport Sibiu** | Primăria Sibiu: răspuns complet până pe 25.11. |
+| Înregistrate la primărie / rezolvate | **Ecranul arată 1 / 0** | ⚠️ Vezi mai jos „Înainte de pitch”. Rezolvate: „zero, încă”. |
+| Cereri oficiale (Legea 544) cu răspuns | Ecranul arată **1 / 2** (cererile către cele două primării) | „Două cereri către primării: Târgu Mureș a răspuns, Sibiu are termen 25 noiembrie.” Separat, au răspuns și CSM TGM și Serviciul Sport Sibiu (nu intră în acel 1/2). |
 | Terenuri documentate | **65** (30 TGM + 35 Sibiu) | |
+| Scrisori trimise prin site | **0** | Nu le pomenim. |
 | TGM: degradate | **13 din 30**; 12 în cartiere; centru 11%, cartiere 57% | |
+
+**⚠️ Înainte de pitch: „1 înregistrată la Primărie”.** Sesizarea e Sibiu, Teren fotbal Ștrand, iluminat (6 nov.). Data de înregistrare pusă pe ea (6 nov., 10:00) e *înaintea* creării sesizării (13:38), deci pare apăsată din Admin în timpul demo-ului de la Astra. Dacă n-ați depus-o efectiv la Primăria Sibiu: Admin → Sesizări → scoateți marcajul „trimisă la Primărie” (sau puneți-l doar dacă aveți număr de înregistrare). Dacă juriul întreabă și n-ați apucat: „Una e marcată; o verificăm, nu o numărăm ca rezultat.”
 
 ## 2. Ce e nou de la Astra Hack (de spus!)
 
@@ -44,7 +47,7 @@ Lecția de la Astra (locul 6 din 20): juriul n-a găsit greșeli, dar nu aveam d
 | 0:00–0:25 | Teo | Home (terenul desenat) | „În Târgu Mureș, 13 din cele 30 de terenuri publice sunt degradate. 12 sunt în cartiere. În centru, 11% sunt degradate; în cartiere, 57%. Unde locuiești decide dacă ai unde să joci.” |
 | 0:25–0:55 | Teo | Impact → Buget | „Am cerut oficial datele. Clubul orașului a cheltuit 1,86 milioane de lei în patru ani; aproape jumătate pe omologarea pentru Liga 3 și o platformă pietonală. Iar acum două zile, Primăria ne-a răspuns: are trei terenuri de cartier în proiect. Două au fost amânate în septembrie, ca prea scumpe.” |
 | 0:55–1:35 | Gabriel | Demo: un teren | „From Grey to Play arată starea fiecărui teren, cu dovezi datate. Un singur drum: găsesc terenul, văd istoricul din satelit, fac o poză, AI-ul estimează starea și scrie clar «estimare, nu inspecție», apoi trimit o cerere oficială cu termenul legal la vedere.” |
-| 1:35–2:05 | Gabriel | Impact → Rezultate până azi | „Cifre vii, nu estimări: 183 de voturi, 3 răspunsuri oficiale publicate, 65 de terenuri în două orașe. Sesizări: 5, toate din ziua hackathonului. Știm că asta e partea slabă și o spunem.” |
+| 1:35–2:05 | Gabriel | Impact → Rezultate până azi | „Cifre vii, nu estimări: 183 de voturi, 65 de terenuri în două orașe, iar Primăria Târgu Mureș ne-a răspuns oficial. Sibiu are termen pe 25 noiembrie. Sesizări: 5, toate din ziua hackathonului. Știm că asta e partea slabă și o spunem.” |
 | 2:05–2:35 | Matei | Asociația | „Costul de funcționare e aproape zero. Suntem trei studenți în anul întâi și înființăm o asociație, ca banii să treacă doar printr-o entitate cu rapoarte publice. După înregistrare: firme care adoptă un teren, 3,5% din impozit, finanțări locale. Nicio sursă peste 40%.” |
 | 2:35–3:00 | Matei | QR | „Limita noastră: starea de azi depinde de oameni care verifică. De aceea cerem [CEREREA]. În șase luni: asociația înregistrată, 10 terenuri verificate de locuitori și dosarul de dovezi pentru cele trei terenuri din răspunsul Primăriei. Scanați și verificați un teren de lângă voi. Din gri, în joc.” |
 
@@ -81,7 +84,18 @@ Regula rămâne: dacă nu știm, „Nu știm încă. Iată cum aflăm.” Niciod
 6. Repetiție cu cronometru: 3:00 (sau 4:50 pentru formatul de 5 minute). Completați [CEREREA] și „ce faceți cu premiul”.
 7. Nu modificați cod în ziua pitch-ului. Nu dați merge la nimic.
 
-## 7. Ce nu spunem
+## 7. Dacă ceva nu merge pe scenă
+
+| Problemă | Ce faceți (fără pauză) |
+|---|---|
+| Internetul pică | Porniți `demo-rezerva.mp4` (descărcat dimineață) și vorbiți peste el. Hotspot pe al doilea telefon. |
+| Pagina rămâne albă | `Ctrl+Shift+R`. Dacă tot nu: Netlify (`fromgreytoplay.netlify.app/?demo=5&c=sibiu`: versiune veche, demo de 5 pași, fără slide-urile cu răspunsurile oficiale; verificat că pornește) sau video. |
+| Apare ecranul de bun venit („Treci peste”) | Apăsați „Treci peste”, apoi `1`. Deschideți linkul o dată dimineață pe laptopul de pitch, ca să nu mai apară. |
+| Telecomanda nu se loghează | Gabriel apasă `→` pe laptop. Nu depanați pe scenă. |
+| Satelitul nu încarcă | Spuneți fraza și treceți mai departe; pagina se ascunde singură după erori. |
+| Depășiți timpul | Săriți pasul 8 („Cum am construit”). Finalul (pasul 9 + cererea) nu se taie niciodată. |
+
+## 8. Ce nu spunem
 
 - Că asociația există juridic, că avem cont bancar sau CIF.
 - Că Primăria a promis ceva sau că proiectele se vor face datorită nouă.
