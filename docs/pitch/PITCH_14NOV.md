@@ -89,7 +89,7 @@ Regula rămâne: dacă nu știm, „Nu știm încă. Iată cum aflăm.” Niciod
 | Problemă | Ce faceți (fără pauză) |
 |---|---|
 | Internetul pică | Porniți `demo-rezerva.mp4` (descărcat dimineață) și vorbiți peste el. Hotspot pe al doilea telefon. |
-| Pagina rămâne albă | `Ctrl+Shift+R`. Dacă tot nu: Netlify (`fromgreytoplay.netlify.app/?demo=5&c=sibiu`: versiune veche, demo de 5 pași, fără slide-urile cu răspunsurile oficiale; verificat că pornește) sau video. |
+| Pagina rămâne albă | `Ctrl+Shift+R`. Dacă tot nu: rezerva identică `deploy-preview-59--fromgreytoplay.netlify.app/?demo=5&c=sibiu` (versiunea curentă, 9 pași, verificat la 02:10), apoi Netlify (`fromgreytoplay.netlify.app/?demo=5&c=sibiu`: versiune veche, demo de 5 pași, fără slide-urile cu răspunsurile oficiale; verificat că pornește) sau video. |
 | Apare ecranul de bun venit („Treci peste”) | Apăsați „Treci peste”, apoi `1`. Deschideți linkul o dată dimineață pe laptopul de pitch, ca să nu mai apară. |
 | Telecomanda nu se loghează | Gabriel apasă `→` pe laptop. Nu depanați pe scenă. |
 | Satelitul nu încarcă | Spuneți fraza și treceți mai departe; pagina se ascunde singură după erori. |
