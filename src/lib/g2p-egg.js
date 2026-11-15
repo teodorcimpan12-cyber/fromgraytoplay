@@ -5,7 +5,8 @@ import { fxReduced } from "./fx-reduced.js";
 export function g2pEgg(id) { try { window.dispatchEvent(new CustomEvent("g2p:egg", { detail: { id: id } })); } catch (e) {} }
 export function eggsFound() { try { return JSON.parse(localStorage.getItem("g2p_eggs") || "{}") || {}; } catch (e) { return {}; } }
 export function eggCount() { const f = eggsFound(); return EGGS.filter(x => f[x.id]).length; }
-export function animOff() { try { return localStorage.getItem("g2p_anim_off") === "1"; } catch (e) { return false; } }
+// The pitch demo (?demo=1 / ?demo=5) always runs the full version: minimal mode hides the satellite step.
+export function animOff() { try { return localStorage.getItem("g2p_anim_off") === "1" && !/[?&]demo=[15](&|$)/.test(location.search); } catch (e) { return false; } }
 export function funFx() { return !fxReduced() && !animOff(); }
 // iOS asks for motion permission (button in FunPanel); elsewhere motion is on unless switched off.
 export function motionNeedsPerm() { return typeof DeviceMotionEvent !== "undefined" && typeof DeviceMotionEvent.requestPermission === "function"; }
