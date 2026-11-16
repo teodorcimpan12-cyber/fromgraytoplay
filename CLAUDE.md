@@ -432,3 +432,9 @@ Highest civic-value next steps:
 - Session 12 Nov 2026, late (perf, ported from a local Copilot audit): jsPDF is no longer a `<script>` in `index.html`; `src/lib/load-jspdf.js`
   loads the same pinned URL on the first PDF click (press PDF, dossier, letters) — saves ~350 KB on every first visit; SW still precaches it.
   The navbar bell reads only the newest 100 `activity` rows (`useFirebase(path, last)` → `limitToLast`). Verified: no jsPDF at load, press PDF downloads.
+- Night 15→16 Nov 2026 (branch `claude/admiring-allen-hup3xe`, pitch prep): `docs/PITCH_16NOV.md` + `docs/pitch/fisa-pitch-16nov.{html,pdf}`
+  (3-min and 5-min scripts with the TGM City Hall answer, live numbers of 15 Nov, new jury questions). Pitch URL is the Pages mirror
+  `teodorcimpan12-cyber.github.io/fromgraytoplay/?demo=5&c=sibiu` — Netlify production still serves v11 with the old 5-step demo, and
+  `/fromgraytoplay/app/` (proxy copy) cannot load `/data/*`, so the satellite step is missing there. Demo fixes: `?demo=1|5` ignores the
+  visitor's minimal mode (`animOff()` + the head script), since minimal hides `SatSwipe`; step 2 targets `.ao-court` (Hero3D left Home);
+  slide 8 says "Înainte de Astra Hack" / "La Astra Hack (24 h)".
