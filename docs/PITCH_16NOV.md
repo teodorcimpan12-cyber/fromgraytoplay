@@ -1,6 +1,6 @@
 # Pitch From Grey to Play — 16 nov. 2026
 
-Pregătit în noaptea de 15 spre 16 nov. Cifrele sunt citite din baza de date la 15 nov., seara. **Pe scenă le citiți de pe ecran (Impact → „Rezultate până azi”), nu din fișa asta.**
+Pregătit în noaptea de 15 spre 16 nov.; recitit și retestat pe 16 nov. la 02:05 (ora României). Cifrele din baza de date nu s-au schimbat față de 15 nov. seara. **Pe scenă le citiți de pe ecran (Impact → „Rezultate până azi”), nu din fișa asta.**
 
 ## 0. Linkul de pitch (important)
 
@@ -12,13 +12,21 @@ Pregătit în noaptea de 15 spre 16 nov. Cifrele sunt citite din baza de date la
 
 Telefonul-telecomandă: `teodorcimpan12-cyber.github.io/fromgraytoplay/?demo=remote`, logat cu adminul (email + parolă). Nu am putut testa logarea pe acest domeniu. Dacă nu merge: săgețile → ← și cifrele 1–9 pe laptop.
 
+## 0b. Ce am testat azi-noapte (16 nov., 02:05)
+
+- `predeploy-check` verde, `smoke` verde (2 orașe × 11 ecrane, Chrome headless, zero erori).
+- Modul demo `?demo=5&c=sibiu`, cu „Animații” **oprit** pe laptop: toți cei 9 pași se deschid, satelitul (pasul 4) apare, pasul 2 arată terenul live. Zero erori în consolă.
+- Ambele linkuri publice se încarcă fără erori: mirror-ul GitHub (v15) și netlify.app (v11, versiune veche, dar funcțională).
+- **Atenție, varianta de 3 minute** (fără `?demo=`): dacă pe laptop e oprit comutatorul „Animații” (Setări, în subsol), site-ul e în versiunea minimală și **satelitul nu apare**. Porniți „Animații” înainte.
+- **QR-ul de pe slide-ul 9** duce la `fromgreytoplay.netlify.app/?c=sibiu`, adică versiunea veche (v11). Merge, dar fără răspunsul Primăriei TGM. Nu e grav pentru public; doar nu le spuneți „scanați și vedeți răspunsul primăriei”.
+
 ## 1. Ce e nou de la Astra Hack (de spus, sunt dovezi)
 
 1. **Primăria Târgu Mureș a răspuns** la cererea pe Legea 544 (nr. 51941/11.11.2026): trei terenuri de cartier sunt în proiectare (DALI): str. Busuiocului, str. Budai Nagy Antal, str. Plopilor. **Două dintre ele au fost amânate** de Consiliul Local pe 24 septembrie, ca să scadă costurile. Bugetul compartimentului de sport pe 2026: 5.915.289 lei, pe premii, concursuri de proiecte și parteneriate.
 2. Avem acum **trei răspunsuri oficiale**: CSM Târgu Mureș (nr. 2692/03.11.2026), Primăria Sibiu (nr. 4541/03.11.2026, parțial, restul până pe 25.11), Primăria Târgu Mureș (51941/11.11.2026).
 3. Site-ul are o versiune minimală, calmă (comutatorul „Animații”), iar modul demo pornește mereu versiunea completă.
 
-## 2. Cifre la 15 nov., seara (verificați-le dimineață pe Impact)
+## 2. Cifre la 16 nov., 02:05 (identice cu 15 nov. seara; verificați-le dimineață pe Impact)
 
 - **183** de voturi pe petiție
 - **5** sesizări de la locuitori (3 de la oameni din afara echipei), **1** înregistrată la Primărie, **0** rezolvate
@@ -50,6 +58,12 @@ Aceeași ordine ca la Astra (`docs/PITCH_FINAL.md`), cu trei schimbări:
 - **Pasul 8 (Teo):** slide-ul spune acum „Înainte de Astra Hack” și „La Astra Hack (24 h)”. Spui: „Ce vedeți a fost construit înainte și la Astra Hack. De atunci am adăugat răspunsurile oficiale și versiunea minimală.”
 - **Pasul 9 (Matei), text nou:** „De la ultimul pitch: Primăria Târgu Mureș ne-a răspuns oficial. Trei terenuri de cartier sunt în proiectare, două au fost amânate. Exact asta vrem să facem vizibil. Următorul test: 25 noiembrie, restul răspunsului de la Sibiu, și 10 terenuri verificate; azi avem [N]. Cerem [cererea]. Scanați codul. Din gri, în joc.”
 
+## 4b. Pitch de 60 de secunde (networking, întrebarea „ce faceți?”)
+
+**RO:** „În Târgu Mureș, 57% din terenurile de sport din cartiere sunt degradate; în centru, 11%. From Grey to Play arată public starea fiecărui teren și transformă o poză într-o cerere oficială către primărie, cu termen legal la vedere. Am cerut deja datele pe Legea 544: Primăria are trei terenuri de cartier în proiect, două amânate ca prea scumpe. Noi aducem dovezile care decid prioritatea. Suntem trei studenți, costul e aproape zero, iar asociația e în constituire.”
+
+**EN:** "In Târgu Mureș, 57% of neighbourhood sports courts are run down; in the centre, 11%. From Grey to Play shows the condition of every public court and turns a phone photo into an official request to City Hall, with the legal deadline in public. We already used the freedom-of-information law: City Hall has three neighbourhood courts in design, and two were postponed as too expensive. We bring the evidence that decides which court comes first. We are three first-year students, running costs are close to zero, and our association is being set up."
+
 ## 5. Ce trebuie completat înainte (Teo, 5 minute)
 
 - **Cererea** (o singură propoziție, depinde de concurs). Implicit: „trei luni de mentorat juridic pentru asociație și un oraș pilot”.
@@ -70,7 +84,7 @@ Aceeași ordine ca la Astra (`docs/PITCH_FINAL.md`), cu trei schimbări:
 ## 7. Dimineața, în ordinea asta
 
 1. **Merge PR-ul din noaptea asta** (cel puțin 90 de minute înainte), apoi așteptați ~3 minute să se publice mirror-ul. Fără merge, pașii 2 și 8 au textele vechi; restul merge oricum.
-2. Laptop: Chrome, zoom 100%, F11, notificări oprite, încărcător. Deschideți linkul de pitch, apăsați `1`.
+2. Laptop: Chrome, zoom 100%, F11, notificări oprite, încărcător. Deschideți linkul de pitch, apăsați `1`. Pentru varianta de 3 minute: Setări → „Animații” pornit.
 3. Telefon Teo: `?demo=remote`, logat. Dacă logarea nu merge, telecomanda e Gabriel cu săgețile.
 4. Hotspot pregătit pe al doilea telefon.
 5. Test QR pe un telefon care n-a deschis site-ul (fereastră privată).
