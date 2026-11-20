@@ -3,20 +3,22 @@
    When an answer arrives: set `answeredAt`, and add what it says to SOURCES as a new source. === */
 export const CITY_REQUESTS = [
   { city: "tgm", to: "Primăria Târgu Mureș", regNo: "51941", reg: "2026-10-26", answeredAt: "2026-11-11", answerNo: "51941/11.11.2026",
-    // City Hall reply nr. 51941/11.11.2026 (signed by the mayor and the secretary general), received by email on 12.11.2026.
+    // City Hall reply nr. 51941/11.11.2026 (signed by the mayor and the secretary general), received by email on 12.11.2026; follow-up email 16.11.2026 (Stadionul Municipal, HCL 367/2023).
     answer: {
       ro: ["Buget: compartimentul de sport gestionează doar pozițiile din cap. 67.02.05.01 Sport: premierea sportivilor, două sesiuni de concurs de proiecte sportive și acțiuni neprevăzute/parteneriate. Total pe 2026: 5.915.289 lei.",
         "Proiecte în derulare (DALI): amenajare teren de sport pe str. Busuiocului, pe str. Budai Nagy Antal și pe str. Plopilor.",
         "Proiect aprobat: studiu de fezabilitate pentru un skatepark în parcul sportiv municipal (HCL nr. 345 din 19.12.2024, singura hotărâre indicată pentru 2022–2025).",
         "În ședința de Consiliu Local din 24 septembrie, proiectele de pe str. Busuiocului și str. Budai Nagy Antal au fost amânate: consilierii au cerut reducerea costurilor.",
         "Str. Plopilor: documentația DALI este în curs.",
-        "SIDU 2021–2030: infrastructura sportivă este la paginile 396–404 din strategia publicată pe site-ul primăriei."],
+        "SIDU 2021–2030: infrastructura sportivă este la paginile 396–404 din strategia publicată pe site-ul primăriei.",
+        "Completare (e-mail, 16.11.2026): conform HCL nr. 367 din 26.10.2023, Stadionul Municipal este administrat de Direcția Școli, care nu a derulat proiecte de investiții acolo; singurele cheltuieli au fost administrative (curățenie, utilități, mentenanță, reparații)."],
       en: ["Budget: the sports office only manages the lines of chapter 67.02.05.01 Sport: awards for athletes, two sessions of the sports project contest and unforeseen actions/partnerships. Total for 2026: 5,915,289 lei.",
         "Projects under way (DALI design stage): sports court on Busuiocului St., on Budai Nagy Antal St. and on Plopilor St.",
         "Approved project: feasibility study for a skatepark in the municipal sports park (Council Decision 345 of 19.12.2024, the only decision named for 2022–2025).",
         "At the Local Council meeting of 24 September the Busuiocului St. and Budai Nagy Antal St. projects were postponed: councillors asked for lower costs.",
         "Plopilor St.: the DALI documentation is in progress.",
-        "SIDU 2021–2030: sports infrastructure is on pages 396–404 of the strategy published on the City Hall website."],
+        "SIDU 2021–2030: sports infrastructure is on pages 396–404 of the strategy published on the City Hall website.",
+        "Follow-up (email, 16.11.2026): under Council Decision 367 of 26.10.2023 the Municipal Stadium is managed by the Schools Directorate, which ran no investment projects there; the only spending was administrative (cleaning, utilities, maintenance, repairs)."],
       hu: null }, // TODO: HU review (falls back to RO)
     asked: {
       ro: ["Bugetul detaliat pe sport și spații publice 2025 (cap. 67)", "Proiectele de investiții 2022–2025 pentru terenuri sportive", "Extrasul din SIDU 2021–2030 despre infrastructura sportivă", "Hotărârile de Consiliu Local 2022–2025 despre terenuri sportive", "Stadiul terenului multisport din str. Plopilor (HCL ian. 2025)"],
