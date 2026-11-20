@@ -11,6 +11,7 @@ import { ActivityTicker } from "./ActivityTicker.js";
 import { City3D } from "./City3D.js";
 import { FeaturedCourt } from "./FeaturedCourt.js";
 import { HomeAiCard } from "./HomeAiCard.js";
+import { Hero3D } from "./Hero3D.js";
 import { HomeOpener } from "./HomeOpener.js";
 import { Showcase } from "./Showcase.js";
 import { useCountUp } from "./useCountUp.js";
@@ -37,7 +38,7 @@ export function HomePage() {
   const heroRef = useReveal();
   return /*#__PURE__*/React.createElement("div", {
     className: "animate-in"
-  }, React.createElement(HomeOpener, null), /*#__PURE__*/React.createElement("section", {
+  }, React.createElement(HomeOpener, null), React.createElement(Hero3D, null), /*#__PURE__*/React.createElement("section", {
     className: "home-stats"
   }, /*#__PURE__*/React.createElement("div", {
     className: "container"
