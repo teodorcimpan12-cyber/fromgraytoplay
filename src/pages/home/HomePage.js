@@ -38,7 +38,7 @@ export function HomePage() {
   const heroRef = useReveal();
   return /*#__PURE__*/React.createElement("div", {
     className: "animate-in"
-  }, React.createElement(HomeOpener, null), React.createElement(Hero3D, null), /*#__PURE__*/React.createElement("section", {
+  }, React.createElement(HomeOpener, null), !isMinimal() && React.createElement(Hero3D, null), /*#__PURE__*/React.createElement("section", {
     className: "home-stats"
   }, /*#__PURE__*/React.createElement("div", {
     className: "container"
